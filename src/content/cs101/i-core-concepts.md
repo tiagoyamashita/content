@@ -5,7 +5,7 @@ group: "Networking"
 order: 1
 ---
 Networking — Part I
-Layers, addressing, reliability, and common protocols.
+Layers, addressing, reliability, and common protocols.  asdasdasd
 
 ## 1. Goals & layered models
 - Split concerns: physical bits → frames → packets → segments → messages.
