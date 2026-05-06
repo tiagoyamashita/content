@@ -2,7 +2,7 @@
 label: "Guide"
 subtitle: "Topics and folders"
 group: "Getting started"
-order: 1
+order: 10
 ---
 Using this notes repo
 How the folders and metadata fit together, and how to add a new topic.
@@ -15,12 +15,17 @@ All notes live under **`src/content/`**:
 - **`src/content/<topic-folder>/`** — one folder per sidebar section (e.g. `python`, `sysdesign`).
 - **`src/content/<topic-folder>/_meta.json`** — defines the section title and sort order among sections.
 - **`src/content/<topic-folder>/*.md`** — individual notes (Markdown plus YAML frontmatter).
+- **`src/content/<topic-folder>/<subfolder>/`** — optional nested folder for a **collapsible submenu** under that topic (each subfolder gets its own **`_meta.json`** and its own **`.md`** files).
 
-Keep topic folder names short, lowercase, and hyphenated (`machine-learning`, not `Machine Learning`).
+Keep folder names short, lowercase, and hyphenated (`machine-learning`, not `Machine Learning`).
+
+### Example in this repo
+
+Under **`getting-started/`**, the **`intro/`** subfolder groups **Installation** and **Setup** as separate files—see **`getting-started/intro/_meta.json`** plus **`i-installation.md`** and **`ii-setup.md`**. Use the same pattern anywhere you want a submenu (`advanced/`, `labs/`, etc.).
 
 ## 2. Section metadata (`_meta.json`)
 
-Each topic folder needs **`_meta.json`** next to the `.md` files:
+Each **topic** folder needs **`_meta.json`** next to its notes (and next to any subfolders):
 
 ```json
 {
@@ -29,7 +34,9 @@ Each topic folder needs **`_meta.json`** next to the `.md` files:
 }
 ```
 
-**`order`** controls placement in the section list (lower numbers appear earlier). Pick a value that fits alongside existing sections; adjust others if you need a specific sequence.
+Each **nested subfolder** (submenu) also has its own **`_meta.json`** with the same shape—the **`label`** becomes the submenu title in clients that support collapsible groups.
+
+**`order`** controls placement among siblings (sections at the content root, or notes/subfolders inside one topic). Lower numbers appear earlier.
 
 ## 3. Note frontmatter
 
@@ -75,7 +82,8 @@ Avoid renaming files casually if bookmarks or external links point at GitHub pat
 1. Create **`src/content/<your-topic>/`**.
 2. Add **`src/content/<your-topic>/_meta.json`** with **`label`** and **`order`**.
 3. Add one or more **`.md`** files with frontmatter **`label`**, **`subtitle`** (unless the single-label exception applies), **`group`**, **`order`**, and a filename built from the rule above.
-4. Commit and push **`main`** (this repo uses **`main`**, not **`master`**).
+4. Optional: add **`src/content/<your-topic>/<subfolder>/`** with its own **`_meta.json`**, then put related **`.md`** files inside that subfolder (same frontmatter and naming rules).
+5. Commit and push **`main`** (this repo uses **`main`**, not **`master`**).
 
 ## 6. Cursor Notes / GitHub settings
 
@@ -89,7 +97,7 @@ To load these notes from GitHub in Cursor:
 
 After changing folder or file names, refresh or sync so the client refetches the tree.
 
-## 7. Quick template
+## 7. Quick template (topic + nested intro submenu)
 
 **`_meta.json`** for a new topic **`robotics`**:
 
@@ -114,4 +122,21 @@ Robotics — Part I: Overview
 Your intro paragraph and sections follow here.
 ```
 
-That is enough for the structure to stay consistent with the rest of this repo.
+**Nested submenu** under robotics:
+
+```text
+src/content/robotics/intro/_meta.json
+src/content/robotics/intro/i-installation.md
+src/content/robotics/intro/ii-setup.md
+```
+
+**`intro/_meta.json`**:
+
+```json
+{
+  "label": "Intro",
+  "order": 1
+}
+```
+
+That matches how **`getting-started/intro/`** is laid out in this repository.
