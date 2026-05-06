@@ -166,3 +166,5 @@ Layers, addressing, reliability, and common protocols.  asdasdasd
 - Trace a browser request: DNS → TCP connect → TLS → HTTP GET.
 - Compare when you’d pick UDP vs TCP for a new service.
 - Sketch home LAN: ISP modem, router/NAT, DNS resolution path.
+
+| Command | Purpose | | --------------------- | ----------------------------- | | `ping` | Test connectivity (uses ICMP) | | `traceroute` | Show packet route | | `netstat` | Display active connections | | `ipconfig`/`ifconfig` | Show network configuration | | `nslookup`/`dig` | DNS queries |
