@@ -1,0 +1,117 @@
+---
+label: "Guide"
+subtitle: "Topics and folders"
+group: "Getting started"
+order: 1
+---
+Using this notes repo
+How the folders and metadata fit together, and how to add a new topic.
+
+## 1. Layout
+
+All notes live under **`src/content/`**:
+
+- **`src/content/_meta.json`** — root metadata for the whole library (required by GitHub-backed viewers such as Cursor Notes).
+- **`src/content/<topic-folder>/`** — one folder per sidebar section (e.g. `python`, `sysdesign`).
+- **`src/content/<topic-folder>/_meta.json`** — defines the section title and sort order among sections.
+- **`src/content/<topic-folder>/*.md`** — individual notes (Markdown plus YAML frontmatter).
+
+Keep topic folder names short, lowercase, and hyphenated (`machine-learning`, not `Machine Learning`).
+
+## 2. Section metadata (`_meta.json`)
+
+Each topic folder needs **`_meta.json`** next to the `.md` files:
+
+```json
+{
+  "label": "Human-readable section title",
+  "order": 3
+}
+```
+
+**`order`** controls placement in the section list (lower numbers appear earlier). Pick a value that fits alongside existing sections; adjust others if you need a specific sequence.
+
+## 3. Note frontmatter
+
+Every **`.md`** file starts with YAML between **`---`** lines:
+
+```yaml
+---
+label: "I"
+subtitle: "Basics & syntax"
+group: "Python"
+order: 1
+---
+```
+
+| Field | Purpose |
+|--------|---------|
+| **`label`** | Short marker for ordering or numbering (Roman numerals, “Guide”, etc.). Used at the start of the filename (see below). |
+| **`subtitle`** | Distinguishes the piece inside the section; becomes part of the filename. Omit only if the note is a single special page (see memory estimator example). |
+| **`group`** | Display grouping / curriculum name; usually matches the topic’s theme (same string across notes in that topic is fine). |
+| **`order`** | Sort order of this note **within** its folder (or within that group, depending on how your viewer sorts). |
+
+Optional keys (only if you already use them elsewhere): e.g. **`groupOrder`**.
+
+After the closing **`---`**, write a title line and the body in Markdown as usual.
+
+## 4. File naming
+
+Filenames follow:
+
+**`{label}-{subtitle-slug}.md`** in **kebab-case** (lowercase; spaces and punctuation → hyphens; **`&`** → **`and`**).
+
+Examples:
+
+- label **`I`**, subtitle **`ML Foundations`** → **`i-ml-foundations.md`**
+- label **`III`**, subtitle **`Beans & dependency injection`** → **`iii-beans-and-dependency-injection.md`**
+
+If there is **no** `subtitle`, use **`{label-slug}.md`** only (e.g. **`memory-estimator.md`**).
+
+Avoid renaming files casually if bookmarks or external links point at GitHub paths; prefer **`git mv`** when you change names.
+
+## 5. Adding a new topic (checklist)
+
+1. Create **`src/content/<your-topic>/`**.
+2. Add **`src/content/<your-topic>/_meta.json`** with **`label`** and **`order`**.
+3. Add one or more **`.md`** files with frontmatter **`label`**, **`subtitle`** (unless the single-label exception applies), **`group`**, **`order`**, and a filename built from the rule above.
+4. Commit and push **`main`** (this repo uses **`main`**, not **`master`**).
+
+## 6. Cursor Notes / GitHub settings
+
+To load these notes from GitHub in Cursor:
+
+1. Open **GitHub** settings from the Notes UI (menu).
+2. Set **owner/repo** to your GitHub repository.
+3. Set **branch** to **`main`** (or whatever branch you push to).
+4. Set **content path** to **`src/content`** so the root **`_meta.json`** and all topic folders resolve correctly.
+5. Use a token with repo access if the repository is private.
+
+After changing folder or file names, refresh or sync so the client refetches the tree.
+
+## 7. Quick template
+
+**`_meta.json`** for a new topic **`robotics`**:
+
+```json
+{
+  "label": "Robotics",
+  "order": 10
+}
+```
+
+**`src/content/robotics/i-overview.md`**:
+
+```yaml
+---
+label: "I"
+subtitle: "Overview"
+group: "Robotics"
+order: 1
+---
+Robotics — Part I: Overview
+
+Your intro paragraph and sections follow here.
+```
+
+That is enough for the structure to stay consistent with the rest of this repo.
