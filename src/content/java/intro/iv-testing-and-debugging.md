@@ -27,20 +27,43 @@ Build basics, automated testing with JUnit, and effective debugging.
 - **Parameterized tests** (`@ParameterizedTest` + sources) cover many inputs without copy-paste.
 
 
-## 4. Test doubles and scope
+## 4. Passed / failed / skipped every run (Maven / Gradle)
+
+**Maven Surefire** prints a one-line tally when the suite finishes, for example:
+
+```text
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 2
+```
+
+- **Failures** — assertion failed (`Assertions.*`, Hamcrest, etc.).
+- **Errors** — unexpected exception (setup blew up, NPE in test).
+- **Skipped** — JUnit **`@Disabled`**, Assumptions that abort, or Surefire excludes.
+
+Use **`mvn test`** from the module root; failed tests repeat stack traces above that summary. For quieter logs keep the summary visible:
+
+```text
+mvn -q test
+```
+
+**Gradle**: **`gradle test`** ends with something like **`14 tests completed, 2 skipped`** (wording varies by version).
+
+Those numbers refresh **on every run** in the terminal; they are not written into your Markdown notes unless you add CI or a script that captures output.
+
+
+## 5. Test doubles and scope
 - **Unit tests**: isolate one class or function — collaborators replaced with fakes/mocks/stubs when I/O or complexity distracts.
 - **Integration tests**: real wiring — DB, HTTP, filesystem — slower but catch composition bugs.
 - Avoid testing trivial getters unless they encode rules; focus on behavior and edge cases.
 
 
-## 5. Debugging workflow
+## 6. Debugging workflow
 - **Reproduce** reliably — smallest failing input or deterministic seed for flaky cases.
 - **Breakpoints** stop execution; inspect stack frames, locals, and evaluate expressions.
 - **Step over / into / out** navigates call hierarchy; conditional breakpoints filter noise.
 - **`Thread` panes** show deadlocks and waits; **heap dumps** help memory leaks after reproduction.
 
 
-## 6. Logging and defensive habits
+## 7. Logging and defensive habits
 - Use **`java.lang.System.Logger`** or SLF4J + backend — levels (`ERROR`, `WARN`, `INFO`, `DEBUG`) filter noise in prod.
 - Log **context** (correlation id, user-less identifiers), never secrets or full PII without policy.
 - Pair logging with tests: when fixing a bug, add a failing test first when feasible (**test-driven debugging**).

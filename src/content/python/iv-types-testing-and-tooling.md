@@ -136,6 +136,35 @@ def test_tmp_writes(tmp_path):
     assert p.read_text(encoding="utf-8") == "ok"
 ```
 
+### Passed / failed / skipped on every run
+
+Default **`pytest -q`** hides **why** tests were skipped. Use **`pytest -ra`** so each run ends with a **summary**: skipped (`s`), xfailed (`x`), xpassed (`X`), deselected, etc.
+
+```text
+pytest -ra
+pytest -v          # every test name + PASSED/FAILED/SKIPPED as it runs
+pytest --tb=short  # shorter tracebacks; combine with -ra
+```
+
+Persist that behavior so you do not have to type flags:
+
+```ini
+# pytest.ini (repo root) or [tool.pytest.ini_options] in pyproject.toml
+[pytest]
+addopts = -ra
+```
+
+Example footer you should see after runs:
+
+```text
+=========================== short test summary info ============================
+SKIPPED [1] test_api.py:15: need NETWORK=1
+FAILED test_math.py::test_bad - AssertionError: ...
+=========== 1 failed, 12 passed, 1 skipped, 1 warning in 0.42s ============
+```
+
+The last line’s counts (**passed / failed / skipped**) update **every time** you run **`pytest`**; nothing in Markdown auto-syncs unless CI commits reports.
+
 
 ## 5. Debugging workflow
 - **`breakpoint()`** (**`pdb`**) drops into an interactive shell at a line — **`n`**, **`s`**, **`c`**, **`p expr`**.
@@ -184,7 +213,7 @@ select = ["E", "F", "I"]
 ```text
 python -m compileall src
 ruff check src
-pytest -q
+pytest -q -ra
 ```
 
 
