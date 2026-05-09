@@ -44,3 +44,5 @@ Managed Prometheus/Grafana stacks often expose Terraform providers—keep **clus
 ## 6. Where Terraform stops
 
 Day-two workload rollout semantics remain Kubernetes controllers—Terraform provisions clusters/add-ons; **kubectl/Helm/GitOps** handle frequent microservice churn unless you intentionally unify via **`kubernetes_*`** resources (trade-offs on blast radius & plan runtime).
+
+See **Real world deployment** for a concrete repo layout and VPC + EKS module sketch.
