@@ -44,4 +44,4 @@ kubectl describe pod -n prod <pod-name>
 kubectl logs -n prod deploy/checkout-api --tail=200 -f
 ```
 
-Next: **Networking & policy**, then **GitOps & operations**.
+Next: **Networking & policy**, then **GitOps & operations**. For **Dockerfiles**, images, and signals before you tune probes, see **Dockerizing apps**.

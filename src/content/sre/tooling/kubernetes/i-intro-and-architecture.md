@@ -33,4 +33,4 @@ Worker Nodes execute Pods; the control plane failure modes tend to be **cluster-
 
 You mostly **`kubectl apply -f`** YAML (or Helm/Kustomize manifests). Controllers converge reality toward spec; drift can still happen via broken controllers or manual **`kubectl edit`**—**GitOps** (see **GitOps & operations**) adds audit trail + rollback semantics.
 
-Continue with **Workloads & health**, **Networking & policy**, and **GitOps & operations** in this folder.
+Continue with **Workloads & health**, **Networking & policy**, **GitOps & operations**, and **Dockerizing apps** in this folder.
