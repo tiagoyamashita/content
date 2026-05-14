@@ -10,15 +10,41 @@ Drag **nodes** (app server, Redis, Kibana, load balancer, …), connect them, ex
 
 ## Open the canvas next to your notes
 
-1. In the file tree, open **`system-design-canvas.html`** (same folder as this note).
-2. **Right‑click** the file → **Reveal in File Explorer** (or **Copy Path**), then **double‑click** the `.html` file so it opens in Chrome / Edge / Firefox.
-3. Put the browser window **next to** Cursor (or on a second monitor) so you can read the written notes while sketching.
+**Why a Markdown link does not work here:** Cursor Notes (and similar GitHub-backed viewers) only treat **`.md` notes** as in-app destinations. A click on something like `system-design-canvas.html` is not opened as a file — the app often **drops you back on the root / menu**. The HTML must be opened **outside** the notes pane (browser or editor preview).
 
-**Relative link** (works when browsing the repo on GitHub: open the file, then use **Raw** or download and open locally):
+**Path in this repo** (from the workspace root):
 
-[System design canvas → `system-design-canvas.html`](system-design-canvas.html)
+```text
+src/content/sysdesign/system-design-canvas.html
+```
 
-If your viewer blocks local links, paste the full path to `system-design-canvas.html` into the browser address bar, or use **Simple Browser** / **Live Preview** in the editor pointed at that file.
+### Option A — File Explorer
+
+1. In Cursor’s **Explorer**, open **`src/content/sysdesign/system-design-canvas.html`**.
+2. **Right‑click** the tab or file → **Reveal in File Explorer**.
+3. **Double‑click** the `.html` file so your default browser opens it.
+
+### Option B — Terminal from repo root (fastest)
+
+**Windows (PowerShell or cmd):**
+
+```bat
+start "" "src\content\sysdesign\system-design-canvas.html"
+```
+
+**macOS:**
+
+```bash
+open src/content/sysdesign/system-design-canvas.html
+```
+
+Run that with the **terminal’s current folder** set to the **`content`** repo root (the folder that contains `src`).
+
+### Option C — Simple Browser / Live Preview
+
+If you use **Simple Browser** or **Live Preview**, paste a **`file:///`** URL to that same path after you copy it from Explorer (**Copy path**), or point the preview at the file from the command palette.
+
+Dock the browser (or second window) **beside** Notes so you can read this page while using the canvas.
 
 ## What's in the canvas
 
