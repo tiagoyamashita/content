@@ -17,7 +17,7 @@ Before application data (e.g. HTTP):
 3. **Establish shared secrets** — often via **Diffie–Hellman** (or ECDH) so **forward secrecy** is possible: compromise of the server’s long-term key does not decrypt old sessions if ephemeral keys were used.
 4. **Derive session keys** — symmetric keys used for bulk encryption of the rest of the connection.
 
-## 2. Classic 1-RTT full handshake (conceptual)
+## 2. Classic full handshake (conceptual)
 
 Modern TLS 1.2/1.3 differ in detail; a simplified story:
 
@@ -27,6 +27,54 @@ Modern TLS 1.2/1.3 differ in detail; a simplified story:
 4. **Server Finished** — both sides now derive **traffic keys** and send **encrypted** application data (HTTP).
 
 **TLS 1.3** reduces round trips (often **1-RTT** for first connection; **0-RTT** resumption exists but has replay trade-offs).
+
+### Sequence diagram (TLS 1.2–style, simplified)
+
+Diagram below: **TCP is already up**; then the **TLS record layer** exchanges handshake messages. Cipher names and optional messages (**ServerKeyExchange**, **client auth**) are omitted for clarity. **TLS 1.3** encrypts most of the server’s first flight and usually completes in fewer round trips—same goals (agree keys, authenticate server, **Finished** proves transcript integrity).
+
+```plantuml
+@startuml tls-handshake-overview
+skinparam sequenceMessageAlign center
+
+actor "Client\n(browser, curl, ...)" as C
+participant "Server\n(TLS stack)" as S
+
+== TCP established (SYN / SYN-ACK / ACK done) ==
+
+C -> S: **ClientHello**\nTLS version offer, cipher suites,\nrandom, session id,\n**SNI** (desired hostname),\nkey exchange extensions (e.g. DH groups)
+
+S -> C: **ServerHello**\nchosen TLS version, cipher suite,\ncompression, random
+
+S -> C: **Certificate**\nserver chain (leaf to intermediates)
+
+S -> C: **ServerHelloDone**\n(server awaits client)
+
+note over C
+  Verify cert chain to a **trusted root**.\n  Check hostname vs **SAN**.\n  Run key agreement (RSA or DH/ECDH).\n  Derive session keys from\n  premaster / shared secret + randoms.
+end note
+
+C -> S: **ClientKeyExchange**\n(premaster secret or DH public)
+
+C -> S: **ChangeCipherSpec**\n1-byte record: switch to negotiated cipher
+
+C -> S: **Finished**\n(HMAC / PRF over handshake transcript)
+
+S -> C: **ChangeCipherSpec**
+
+S -> C: **Finished**
+
+== Handshake complete ==
+
+C -> S: **Application data** (e.g. HTTP)\nencrypted with negotiated AEAD
+
+note right of S
+  After both **Finished** messages match,\n  records use **application traffic keys**.\n  **Alert** records signal errors mid-session.
+end note
+
+@enduml
+```
+
+**If the diagram still does not show:** the default **Markdown** preview does **not** render ` ```plantuml ` blocks. Use the **PlantUML** extension command **PlantUML: Preview Current Diagram** (place the cursor inside the fenced block, then **Ctrl+Shift+P** → type the command). You need **Java** on your `PATH` (the extension runs `plantuml.jar`). **Markdown Preview Enhanced** is a separate preview window that can embed diagrams—again not the stock preview.
 
 ## 3. Certificates and trust
 

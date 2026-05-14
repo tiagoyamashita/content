@@ -7,7 +7,9 @@ order: 1
 Array (static)
 Contiguous indexed storage in the RAM model.
 
-An **array** stores elements in consecutive memory words. Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the address is `base + i × wordSize`.
+An **array** stores elements in consecutive memory words. In Java, when you declare an array, you must always specify its size explicitly (for example, `int[] arr = new int[5];`). There is **no default size** for arrays in Java—if you simply write `int[] arr;`, the variable `arr` just points to null and no array is actually allocated. You must use `new` and provide the exact length. Once created, a Java array's length cannot change.
+
+Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the address is `base + i × wordSize`.
 
 - **Strengths:** random access, cache-friendly scans, simple layout.
 - **Limits:** fixed length (static array); inserting in the middle requires shifting **O(n)** elements to keep indices dense.
