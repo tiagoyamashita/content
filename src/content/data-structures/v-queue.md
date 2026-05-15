@@ -7,6 +7,8 @@ order: 5
 Queue — FIFO linear ADT
 A **queue** is a **linear abstract data type**, like a **stack**, but it follows **first-in, first-out (FIFO)**: the **first** element **enqueued** is the **first** **dequeued**. Stacks use **last-in, first-out (LIFO)** — the newest leaves first.
 
+**Java baseline:** snippets assume **Java SE 22** (`javac --release 22`). They also run on **JDK 21 LTS**. In the JDK, use **`Queue<E>`** / **`Deque<E>`** with **`ArrayDeque<E>`** for a typical FIFO queue (see examples below).
+
 ## 1. Queue as an ADT
 The queue is defined by **operations**, not by whether you use a linked list or an array underneath.
 
@@ -48,6 +50,62 @@ A **pipe** carries fluid in order: enter one end, exit the other. **Lines** and 
   <text x="300" y="96" fill="#a1a1aa" font-size="9">enqueue ← new at back</text>
   <text x="12" y="128" fill="#71717a" font-size="10">Arrow at front illustrates one dequeue — FIFO decides it is the front cell, not a parameter.</text>
 </svg></figure>
+
+### Example usage (Java)
+
+**`ArrayDeque`** implements **`Deque`**, which extends **`Queue`**. For FIFO, enqueue at the **back** and dequeue from the **front**:
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+Queue<String> queue = new ArrayDeque<>();
+queue.offer("first");   // enqueue at back
+queue.offer("second");
+queue.peek();           // "first" — front unchanged
+queue.poll();           // "first" — dequeue from front
+queue.poll();           // "second"
+queue.isEmpty();        // true
+```
+
+**BFS** (breadth-first search) is the classic queue algorithm: visit a node, then enqueue all unvisited neighbors; **`poll`** always takes the **oldest** frontier cell.
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+public final class BfsExamples {
+
+  private BfsExamples() {}
+
+  /** Returns visit order for an undirected graph given as adjacency lists. */
+  public static List<Integer> bfsOrder(List<List<Integer>> adj, int start) {
+    int n = adj.size();
+    boolean[] seen = new boolean[n];
+    Queue<Integer> q = new ArrayDeque<>();
+    List<Integer> order = new ArrayList<>();
+
+    seen[start] = true;
+    q.offer(start);
+
+    while (!q.isEmpty()) {
+      int v = q.poll();
+      order.add(v);
+      for (int w : adj.get(v)) {
+        if (!seen[w]) {
+          seen[w] = true;
+          q.offer(w);
+        }
+      }
+    }
+    return order;
+  }
+}
+```
 
 
 ## 2. Singly linked list as backing (head + tail)
@@ -99,6 +157,78 @@ A **doubly** linked list can implement the same operations, but each node carrie
   <path d="M348 78 L320 78" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2"/>
   <text x="12" y="106" fill="#71717a" font-size="9">new enqueue attaches after tail; dequeue only rewires front</text>
 </svg></figure>
+
+### Java: singly linked FIFO queue (teaching class)
+
+**`enqueue`** at **`tail`**, **`dequeue`** at **`front`** — matches §2.
+
+```java
+// Compile: javac --release 22 …
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class LinkedQueue<E> {
+
+  private static final class Node<E> {
+    final E item;
+    Node<E> next;
+
+    Node(E item) {
+      this.item = item;
+    }
+  }
+
+  private Node<E> front;
+  private Node<E> tail;
+  private int size;
+
+  public void enqueue(E item) {
+    Objects.requireNonNull(item, "item");
+    Node<E> node = new Node<>(item);
+    if (tail == null) {
+      front = tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+    size++;
+  }
+
+  public E dequeue() {
+    if (front == null) {
+      throw new NoSuchElementException();
+    }
+    E out = front.item;
+    front = front.next;
+    if (front == null) {
+      tail = null;
+    }
+    size--;
+    return out;
+  }
+
+  public E peek() {
+    if (front == null) {
+      throw new NoSuchElementException();
+    }
+    return front.item;
+  }
+
+  public boolean isEmpty() {
+    return front == null;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public void clear() {
+    front = null;
+    tail = null;
+    size = 0;
+  }
+}
+```
 
 
 ## 3. Array-backed queue: circular (wrap-around) buffer
@@ -169,6 +299,112 @@ Linked list backing: **no resize** in the array sense — “growth” is **Θ(1
 
 See **Level I — Foundations** (`i-foundations.md`) for another circular-buffer diagram with head/tail labels.
 
+### Java: ring-buffer queue with grow
+
+**`back`** is the **next write index**; **`front`** is the next dequeue index; both wrap with **`% capacity`**. On **`dequeue`**, **`back` does not move** (this lesson’s model).
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class ArrayRingQueue<E> {
+
+  private Object[] data;
+  private int front;
+  private int back;
+  private int size;
+
+  public ArrayRingQueue() {
+    this.data = new Object[8];
+  }
+
+  private int capacity() {
+    return data.length;
+  }
+
+  public void enqueue(E item) {
+    Objects.requireNonNull(item, "item");
+    if (size == capacity()) {
+      grow();
+    }
+    data[back] = item;
+    back = (back + 1) % capacity();
+    size++;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E dequeue() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    E out = (E) data[front];
+    data[front] = null;
+    front = (front + 1) % capacity();
+    size--;
+    return out;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E peek() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    return (E) data[front];
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public void clear() {
+    Arrays.fill(data, null);
+    front = 0;
+    back = 0;
+    size = 0;
+  }
+
+  /** Copy logical order into a larger ring; reset indices to 0..size-1. */
+  private void grow() {
+    Object[] next = new Object[capacity() * 2];
+    for (int i = 0; i < size; i++) {
+      next[i] = data[(front + i) % capacity()];
+    }
+    data = next;
+    front = 0;
+    back = size;
+  }
+}
+```
+
+### Java: `Queue` vs `ArrayDeque` vs `LinkedList`
+
+| API | FIFO queue use | Notes |
+|-----|----------------|-------|
+| **`Queue.offer` / `poll` / `peek`** | **`ArrayDeque`** as implementation | **`offer`** = enqueue back, **`poll`** = dequeue front |
+| **`Deque.addLast` / `removeFirst`** | Same ends as above | Explicit names for back/front |
+| **`LinkedList`** | Implements **`Deque`** | **Θ(1)** at both ends, but **more memory** per element than **`ArrayDeque`** |
+
+**Do not** use **`ArrayList`** as a queue if you **`remove(0)`** on every dequeue — that shifts the whole array (**Θ(n)** per dequeue). **`ArrayDeque`** is the usual JDK choice.
+
+**Empty-safe dequeue:** **`poll()`** returns **`null`** when empty; **`remove()`** throws **`NoSuchElementException`**.
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+Queue<Integer> q = new ArrayDeque<>();
+q.offer(1);
+Integer x = q.poll();  // 1
+Integer y = q.poll();  // null — queue empty
+```
+
 ## 4. Summary
 
 | Topic | Detail |
@@ -178,3 +414,4 @@ See **Level I — Foundations** (`i-foundations.md`) for another circular-buffer
 | **Ring buffer array** | **`capacity`**, **`size`**, **`front`**, **`back`**; wrap with **`% capacity`**; enqueue/dequeue/peek/empty/size/clear (index reset) **Θ(1)**; **enqueue amortized Θ(1)**; **resize copy Θ(n)** |
 | **Doubly linked** | Works, but extra `prev` per node — usually skipped for a plain queue |
 | **Not supported** | Random index, search, interior insert/remove — use another ADT |
+| **Java default** | **`Queue<E>`** with **`ArrayDeque<E>`** — **`offer` / `poll` / `peek`** |

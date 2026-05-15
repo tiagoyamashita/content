@@ -13,6 +13,19 @@ The **`cargo`** workflow, crates vs binaries, core syntax, ownership at a high l
 - **`cargo new scratch --bin`** → binary crate with `src/main.rs`; **`cargo new libname --lib`** → library with `src/lib.rs`.
 - **`cargo build`** / **`cargo run`** / **`cargo test`** are the everyday commands; **`cargo check`** type-checks without linking (fast iteration).
 
+### Windows: Visual Studio Build Tools (C++)
+
+On **Windows**, the default Rust toolchain targets the **MSVC** ABI. **`rustc`** and **`cargo`** need a C++ linker and Windows SDK libraries that ship with **Microsoft’s C++ build tools** — not the Rust compiler itself.
+
+Install **one** of these before (or when) **`rustup`** asks for prerequisites:
+
+- **[Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)** — workload **“Desktop development with C++”** (enough for most Rust work), or  
+- A full **Visual Studio** edition with the same C++ workload.
+
+Without them, **`cargo build`** often fails with errors about **`link.exe`**, **`msvcrt`**, or **“linker not found”**. After installing, open a **new** terminal and run **`cargo build`** again.
+
+**`rustup`** on Windows may offer to install the MSVC prerequisites automatically; accepting that is fine. If you use the **GNU** toolchain (`x86_64-pc-windows-gnu`) instead, you need **MinGW** — most tutorials and crates assume **MSVC** on Windows.
+
 ```text
 cargo new hello --bin
 cd hello
