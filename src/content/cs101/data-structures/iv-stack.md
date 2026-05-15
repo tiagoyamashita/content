@@ -134,7 +134,61 @@ Capacity large enough; start `size = 0`.
 </svg></figure>
 
 
-## 4. Summary
+## 4. Java: `Deque`, `ArrayDeque`, and the legacy `Stack` class
+
+The **collections framework** models a stack as a **`Deque<E>`** (double-ended queue) used at **one end only**. Prefer **`Deque`** implementations over the old **`java.util.Stack`** type.
+
+### Prefer `Deque` + `ArrayDeque` for a stack
+
+**`ArrayDeque<E>`** is a **resizable ring buffer** (like the circular queue in these notes): **`push` / `pop` / `peek`** are **amortized O(1)** with **no per-element boxing** of nodes (unlike a linked `Deque` built from `LinkedList` entries). It is the usual default for a **single-threaded** stack or work queue.
+
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+Deque<String> stack = new ArrayDeque<>();
+stack.push("a");       // same contract as addFirst
+stack.push("b");
+String top = stack.peek();   // "b" — empty deque ⇒ null (not an exception)
+String out = stack.pop();    // "b" — empty ⇒ NoSuchElementException
+```
+
+On **`Deque`**, the **stack** naming maps like this (see `Deque` Javadoc): **`push(e)`** ≡ **`addFirst(e)`**, **`pop()`** ≡ **`removeFirst()`**, **`peek()`** ≡ **`peekFirst()`**. So the **top** of the stack is the **front** of the deque — the same “newest at one end” idea as a **head-based** singly linked stack in §2, not the “back at `size−1`” picture in §3 (both are valid ADT realizations; Java’s API just picked the **front** for `push`).
+
+### Why avoid `java.util.Stack`?
+
+**`Stack`** extends **`Vector`** (a growable array from Java 1.0). Problems in modern code:
+
+- **Synchronized on every public method** — you pay locking even when only one thread uses it.
+- **`Stack` is not an interface** — harder to swap implementations or mock in tests.
+- Design is **legacy**; the library and **Effective Java**–style guidance say: **use `Deque`**.
+
+If you truly need a **thread-safe** stack, use **`ConcurrentLinkedDeque`** (lock-free, unbounded) or wrap a **`Deque`** with **`Collections.synchronizedDeque`**, or a **`BlockingDeque`** when producers/consumers must block — not `Stack`.
+
+### `peek` vs `element`, `remove` vs `poll`
+
+**`Deque`** inherits **`Queue`** methods with slightly different **empty** behavior:
+
+| Intent | Typical stack use | On empty `Deque` |
+|--------|-------------------|-------------------|
+| Read top without removing | **`peek()`** / **`peekFirst()`** | returns **`null`** |
+| Read top (stricter) | **`element()`** | throws **`NoSuchElementException`** |
+| Pop | **`pop()`** / **`removeFirst()`** | throws **`NoSuchElementException`** |
+| Pop tolerant | **`pollFirst()`** | returns **`null`** |
+
+Choose **`peek` / `poll`** when emptiness is normal; use **`element` / `remove`** when empty means a bug.
+
+### `ArrayDeque` rules and limits
+
+- **`null` is not allowed** — `push(null)` throws **`NullPointerException`**. A **`LinkedList`** used as a **`Deque`** may still accept **`null`** in older patterns, but mixing **`null`** elements with **`peek()`** is a bad idea — **`peek()`** already returns **`null`** when the deque is **empty**.
+- **No random access** — `ArrayDeque` is not a **`List`**; do not treat it like an array with indices.
+- **Iterator order** is **front → back** (same as left-to-right in the `Deque` contract), **not** “pop order until you drain it” as a special mode — for a pure stack you only **`push` / `pop` / `peek`** from one end.
+
+### JVM `StackOverflowError` (name collision)
+
+**`StackOverflowError`** is thrown when a **thread’s call stack** (activation frames for nested method calls) grows too deep — recursion with no base case, or very deep chains. It is **unrelated** to the **`java.util.Stack`** collection type; only the word “stack” is shared.
+
+## 5. Summary
 
 | | **Singly linked (head = top)** | **Array (back = top)** |
 |--|-------------------------------|-------------------------|
@@ -144,4 +198,4 @@ Capacity large enough; start `size = 0`.
 | **clear** | Θ(1) `head=null` (+ GC / free) | Θ(1) drop ref to new empty array, or Θ(n) null slots |
 | **Extra** | no tail needed | index discipline; sensitive data ⇒ mind stale slots |
 
-Both realize the **same stack ADT**; choose based on **allocation tolerance**, **cache behavior**, and **language/runtime** details (e.g. reference clearing).
+Both realize the **same stack ADT**; choose based on **allocation tolerance**, **cache behavior**, and **language/runtime** details (e.g. reference clearing). In **Java**, prefer **`Deque<E>`** with **`ArrayDeque<E>`** for a default stack (§4); avoid **`java.util.Stack`**.

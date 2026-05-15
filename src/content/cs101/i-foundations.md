@@ -5,7 +5,7 @@ group: "Data structures & algorithms"
 order: 1
 ---
 Level I — Foundations
-Complexity, RAM model, ADTs, arrays, linked lists, stacks, queues.
+Complexity, RAM model, arrays, linked lists, stacks, queues.
 
 ## 1. What we measure
 - n = input size (e.g. array length, number of nodes).
@@ -139,37 +139,11 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 6. Abstract data types (ADTs)
-An **abstract data type** names a set of **operations** and their **meaning** (what each call does and what invariants hold afterward). It does **not** prescribe memory layout. A **concrete data structure** is a particular way to meet that contract with real storage and pointer arithmetic. The same ADT can have several implementations with different **time**, **space**, and **cache** tradeoffs.
-- **Interface vs implementation:** calling code should depend only on documented operations (e.g. stack `push` / `pop`), not on whether the backing store is contiguous. That boundary lets you swap implementations after profiling without rewriting graph search or parsing logic.
-- **Sequence vs restricted access:** an ordered **sequence** (array-like) emphasizes **random access by index**. **Stack**, **queue**, and **deque** are **access-restricted** ADTs: they deliberately limit *where* you may insert or remove so local reasoning stays easy and many workloads stay **O(1)** per operation.
-
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 172" role="img" aria-label="Stack ADT contract implemented by array or linked list">
-  <defs>
-    <marker id="dsa-i-adt-a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#71717a"/></marker>
-  </defs>
-  <text x="118" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Stack ADT — LIFO contract only</text>
-  <rect x="120" y="32" width="200" height="52" rx="8" fill="rgba(34,197,94,0.1)" stroke="#86efac" stroke-width="2"/>
-  <text x="132" y="52" fill="#e4e4e7" font-size="11">push(x) · pop() · peek() · isEmpty()</text>
-  <text x="132" y="68" fill="#a1a1aa" font-size="10">pop always removes the most recently pushed item</text>
-  <path d="M180 88 L132 112" stroke="#71717a" stroke-width="1.5" marker-end="url(#dsa-i-adt-a)"/>
-  <path d="M260 88 L308 112" stroke="#71717a" stroke-width="1.5" marker-end="url(#dsa-i-adt-a)"/>
-  <rect x="24" y="116" width="176" height="48" rx="6" fill="rgba(24,24,27,0.95)" stroke="#52525b" stroke-width="2"/>
-  <text x="36" y="134" fill="#e4e4e7" font-size="11">Concrete: dynamic array</text>
-  <text x="36" y="150" fill="#a1a1aa" font-size="10">contiguous cells + top index</text>
-  <rect x="240" y="116" width="176" height="48" rx="6" fill="rgba(24,24,27,0.95)" stroke="#52525b" stroke-width="2"/>
-  <text x="252" y="134" fill="#e4e4e7" font-size="11">Concrete: singly linked list</text>
-  <text x="252" y="150" fill="#a1a1aa" font-size="10">head pointer = stack top</text>
-</svg></figure>
-
-
-## 7. Arrays & dynamic arrays
-- **Sequence ADT (indexed):** an ordered collection with positions `0 … n−1`. Arrays are the natural RAM-model implementation: **O(1)** read/write at index `i` given the base address.
+## 6. Arrays & dynamic arrays
 - Static array: fixed length; index i access A[i] in O(1).
 - Dynamic array (e.g. vector): keeps capacity; doubles when full.
 - Append amortized O(1): occasional O(n) resize, spread over many inserts.
 - Insert/delete at end: O(1) amortized append; at middle: O(n) to shift.
-- **ADT note:** middle insert/delete must move all elements on one side to keep indices contiguous — that is why linked structures win some splice-heavy APIs even though a single `A[i]` remains faster on arrays.
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 112" role="img" aria-label="Dynamic array doubling capacity">
@@ -185,13 +159,12 @@ An **abstract data type** names a set of **operations** and their **meaning** (w
 </svg></figure>
 
 
-## 8. Linked lists
-- **Sequence ADT (linked view):** still an ordered sequence, but you typically walk it by **following `next` pointers** instead of arithmetic on an index. Random access “give me element k” is **O(k)** or **O(n)** unless you keep extra structure.
+## 7. Linked lists
 - Singly linked: each node { value, next }; head pointer.
   — Insert after a known node: O(1). Search by value: O(n).
   — No backward links; delete needs previous → often traverse O(n).
-- Doubly linked: { prev, next } — delete node with pointer in O(1); walk backward without scanning from head.
-- **vs array:** lists excel at **O(1) splice** when you already hold a pointer to a node (e.g. LRU cache eviction); arrays excel at **O(1) index** and sequential cache use.
+- Doubly linked: { prev, next } — delete node with pointer in O(1).
+- vs array: lists excel at insert/delete at iterator; arrays at index.
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" role="img" aria-label="Singly linked list nodes">
@@ -211,30 +184,8 @@ An **abstract data type** names a set of **operations** and their **meaning** (w
   <text x="368" y="64" fill="#71717a" font-size="11">null</text>
 </svg></figure>
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" role="img" aria-label="Doubly linked list with prev and next links">
-  <defs>
-    <marker id="dsa-i-dll-f" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#60a5fa"/></marker>
-    <marker id="dsa-i-dll-b" markerWidth="8" markerHeight="8" refX="0" refY="4" orient="auto"><path d="M8 0 L0 4 L8 8 Z" fill="#fbbf24"/></marker>
-  </defs>
-  <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif">Doubly linked list (two-way links)</text>
-  <text x="12" y="38" fill="#71717a" font-size="10">delete node q in O(1) when you hold q: relink prev(q) and next(q)</text>
-  <rect x="24" y="48" width="88" height="40" rx="6" fill="rgba(34,197,94,0.15)" stroke="#86efac" stroke-width="2"/>
-  <text x="38" y="72" fill="#e4e4e7" font-size="11">prev · data · next</text>
-  <path d="M114 68 H128" stroke="#60a5fa" stroke-width="2" marker-end="url(#dsa-i-dll-f)"/>
-  <path d="M128 62 H114" stroke="#fbbf24" stroke-width="2" marker-end="url(#dsa-i-dll-b)"/>
-  <rect x="132" y="48" width="88" height="40" rx="6" fill="rgba(24,24,27,0.95)" stroke="#52525b" stroke-width="2"/>
-  <text x="146" y="72" fill="#e4e4e7" font-size="11">prev · data · next</text>
-  <path d="M222 68 H236" stroke="#60a5fa" stroke-width="2" marker-end="url(#dsa-i-dll-f)"/>
-  <path d="M236 62 H222" stroke="#fbbf24" stroke-width="2" marker-end="url(#dsa-i-dll-b)"/>
-  <rect x="240" y="48" width="88" height="40" rx="6" fill="rgba(24,24,27,0.95)" stroke="#52525b" stroke-width="2"/>
-  <text x="254" y="72" fill="#e4e4e7" font-size="11">prev · data · next</text>
-  <text x="340" y="72" fill="#71717a" font-size="10">null / head</text>
-  <text x="12" y="94" fill="#a1a1aa" font-size="9">→ forward (blue) · ← backward (amber)</text>
-</svg></figure>
 
-
-## 9. Stack (LIFO)
-- **ADT:** only the **top** is exposed for removal; **LIFO** = last in, first out. Invariants: `pop` after `push(x)` yields `x` unless another `push` intervened.
+## 8. Stack (LIFO)
 - ops: push(x), pop(), peek/top(), isEmpty().
 - Array + top index or linked list head as top — all O(1) per op.
 - Uses: DFS, undo, bracket matching, postfix evaluation, call stack idea.
@@ -249,30 +200,11 @@ An **abstract data type** names a set of **operations** and their **meaning** (w
   <text x="108" y="124" fill="#71717a" font-size="10">push / pop at top</text>
 </svg></figure>
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 168" role="img" aria-label="Stack state after push and pop operations">
-  <text x="72" y="18" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif">Same ADT, evolving contents</text>
-  <text x="12" y="40" fill="#a1a1aa" font-size="10">push(3)</text>
-  <rect x="120" y="28" width="56" height="22" rx="3" fill="rgba(34,197,94,0.25)" stroke="#86efac"/>
-  <text x="136" y="44" fill="#e4e4e7" font-size="11">3</text>
-  <text x="12" y="72" fill="#a1a1aa" font-size="10">push(5)</text>
-  <rect x="120" y="56" width="56" height="22" rx="3" fill="rgba(34,197,94,0.25)" stroke="#86efac"/>
-  <rect x="120" y="82" width="56" height="22" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
-  <text x="136" y="72" fill="#e4e4e7" font-size="11">5</text>
-  <text x="136" y="98" fill="#e4e4e7" font-size="11">3</text>
-  <text x="188" y="70" fill="#86efac" font-size="9" font-weight="600">top</text>
-  <text x="12" y="118" fill="#a1a1aa" font-size="10">pop() → 5</text>
-  <rect x="120" y="106" width="56" height="22" rx="3" fill="rgba(34,197,94,0.25)" stroke="#86efac"/>
-  <text x="136" y="122" fill="#e4e4e7" font-size="11">3</text>
-  <text x="188" y="118" fill="#86efac" font-size="9" font-weight="600">top</text>
-  <text x="12" y="152" fill="#71717a" font-size="10">LIFO: last pushed (5) leaves first</text>
-</svg></figure>
 
-
-## 10. Queue & deque
-- **Queue ADT:** **FIFO** — enqueue at the **back**, dequeue at the **front**; the oldest waiting element leaves next. Unlike a stack, you cannot “pop the newest” without breaking the contract.
+## 9. Queue & deque
 - Queue FIFO: enqueue back, dequeue front — O(1) with circular buffer
 or linked list with head/tail pointers.
-- **Deque ADT:** double-ended queue — **O(1)** insert/remove at **both** ends (deque generalizes stack + queue). Typical implementations: doubly linked list or **circular buffer** with two indices.
+- Deque: insert/remove at both ends — doubly linked or circular array.
 - BFS uses a queue; sliding-window problems often use deque.
 
 
@@ -288,41 +220,8 @@ or linked list with head/tail pointers.
   <text x="172" y="78" fill="#71717a" font-size="10">← enqueue at back</text>
 </svg></figure>
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 124" role="img" aria-label="Circular buffer queue with head tail indices wrapping">
-  <defs>
-    <marker id="dsa-i-circ-ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#a1a1aa"/></marker>
-  </defs>
-  <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif">Queue implementation: circular buffer (ring)</text>
-  <text x="12" y="38" fill="#a1a1aa" font-size="10">fixed array; head/front and tail/back advance with modulo capacity — no per-element allocation</text>
-  <rect x="20" y="52" width="48" height="28" rx="4" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
-  <rect x="72" y="52" width="48" height="28" rx="4" fill="rgba(34,197,94,0.22)" stroke="#86efac"/>
-  <rect x="124" y="52" width="48" height="28" rx="4" fill="rgba(34,197,94,0.22)" stroke="#86efac"/>
-  <rect x="176" y="52" width="48" height="28" rx="4" fill="rgba(34,197,94,0.22)" stroke="#86efac"/>
-  <rect x="228" y="52" width="48" height="28" rx="4" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
-  <rect x="280" y="52" width="48" height="28" rx="4" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
-  <rect x="332" y="52" width="48" height="28" rx="4" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
-  <text x="32" y="70" fill="#71717a" font-size="10">0</text>
-  <text x="88" y="70" fill="#e4e4e7" font-size="10">a</text>
-  <text x="140" y="70" fill="#e4e4e7" font-size="10">b</text>
-  <text x="192" y="70" fill="#e4e4e7" font-size="10">c</text>
-  <text x="88" y="46" fill="#86efac" font-size="9" font-weight="600">head</text>
-  <text x="192" y="46" fill="#60a5fa" font-size="9" font-weight="600">tail</text>
-  <path d="M340 66 H372" stroke="#71717a" stroke-width="1.5"/>
-  <path d="M372 66 Q388 66 388 52 Q388 38 372 38 Q356 38 356 52" stroke="#71717a" stroke-width="1.5" fill="none"/>
-  <path d="M356 52 H44" stroke="#71717a" stroke-width="1.5" marker-end="url(#dsa-i-circ-ar)"/>
-  <text x="12" y="108" fill="#71717a" font-size="10">advance indices with (i + 1) mod capacity — “wrap” from last slot back toward 0</text>
-</svg></figure>
 
-
-## 11. Remember & rehearse
+## 10. Remember & rehearse
 - Rederive one recurrence on paper (e.g. mergesort) without notes.
-
-  **UT answer:** Mergesort splits into two halves of size n/2 and merges in linear time, so T(n) = 2T(n/2) + Θ(n). Each recursion level does Θ(n) work across all subproblems; the recursion tree has Θ(log n) levels, so T(n) = Θ(n log n). (Binary search style T(n) = T(n/2) + Θ(1) gives Θ(log n).)
-
 - Given an API, pick array vs list and justify cache vs flexibility.
-
-  **UT answer:** Prefer a **contiguous array / dynamic array** when the workload is mostly index access, scanning in order, or appending at the end — O(1) indexed reads and good cache locality. Prefer a **linked list** when you already hold a node reference and need O(1) insert/delete next to that node without shifting successors, at the cost of no O(1) random access and worse sequential cache behavior.
-
 - Trace push/pop on a small stack for matching parentheses.
-
-  **UT answer:** Scan left to right: on `(`, **push**; on `)`, **pop** if the stack is non-empty and the popped symbol matches (here, you only push `(`, so pop only when top is `(`). If you see `)` with an empty stack, or the top is not `(`, the string is invalid. After the scan, the string is valid iff the stack is **empty**. Example: `"(())"` → push, push, pop, pop → empty ✓; `"())"` → second `)` empties stack early ✗.
