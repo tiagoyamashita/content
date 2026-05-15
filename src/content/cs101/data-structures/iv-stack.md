@@ -160,7 +160,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
 
 ### Example usage (Java)
 
-The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (see §4). Here is the same ADT vocabulary in a few lines:
+The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (covered later in this note under Java). Here is the same ADT vocabulary in a few lines:
 
 ```java
 import java.util.ArrayDeque;
@@ -183,29 +183,34 @@ stack.isEmpty();  // true
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public static boolean bracketsBalanced(String s) {
-  Deque<Character> stack = new ArrayDeque<>();
-  for (int i = 0; i < s.length(); i++) {
-    char c = s.charAt(i);
-    if (c == '(' || c == '[' || c == '{') {
-      stack.push(c);
-    } else if (c == ')' || c == ']' || c == '}') {
-      if (stack.isEmpty()) {
-        return false;
-      }
-      char o = stack.pop();
-      if (!pairs(o, c)) {
-        return false;
+public final class BracketExamples {
+
+  private BracketExamples() {}
+
+  public static boolean bracketsBalanced(String s) {
+    Deque<Character> stack = new ArrayDeque<>();
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (c == '(' || c == '[' || c == '{') {
+        stack.push(c);
+      } else if (c == ')' || c == ']' || c == '}') {
+        if (stack.isEmpty()) {
+          return false;
+        }
+        char o = stack.pop();
+        if (!pairs(o, c)) {
+          return false;
+        }
       }
     }
+    return stack.isEmpty();
   }
-  return stack.isEmpty();
-}
 
-private static boolean pairs(char open, char close) {
-  return (open == '(' && close == ')')
-      || (open == '[' && close == ']')
-      || (open == '{' && close == '}');
+  private static boolean pairs(char open, char close) {
+    return (open == '(' && close == ')')
+        || (open == '[' && close == ']')
+        || (open == '{' && close == '}');
+  }
 }
 ```
 
@@ -469,6 +474,67 @@ Capacity large enough; start `size = 0`.
   <text x="360" y="68" fill="#71717a" font-size="9">stale / optional clear</text>
 </svg></figure>
 
+### Java: array-backed stack with grow
+
+**Top** at **`size - 1`**; next **`push`** writes **`data[size]`** then **`size++`**. On **`pop`**, return **`data[size - 1]`**, **`size--`**, and **`null`** out the slot you left so references are not retained (matches the “sensitive data / GC” discussion below).
+
+```java
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class ArrayStack<E> {
+
+  private Object[] data;
+  private int size;
+
+  public ArrayStack() {
+    this.data = new Object[8];
+  }
+
+  public void push(E item) {
+    Objects.requireNonNull(item, "item");
+    if (size == data.length) {
+      data = Arrays.copyOf(data, data.length * 2);
+    }
+    data[size++] = item;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E pop() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    int i = --size;
+    E out = (E) data[i];
+    data[i] = null;
+    return out;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E peek() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    return (E) data[size - 1];
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  /** Θ(n): null used slots so references are dropped (see clearing notes for array-backed stacks below). */
+  public void clear() {
+    Arrays.fill(data, 0, size, null);
+    size = 0;
+  }
+}
+```
+
 ### Clearing an array-backed stack
 - **Only `size = 0`:** fast, but old references may still sit in unused slots; in **Java** and similar runtimes, objects may **not** become collectable until references are dropped — problematic for **sensitive** data.  
 - **Set every old slot to `null`:** secure for references, but **Θ(n)** to clear.  
@@ -567,6 +633,13 @@ If you truly need a **thread-safe** stack, use **`ConcurrentLinkedDeque`** (lock
 | Pop tolerant | **`pollFirst()`** | returns **`null`** |
 
 Choose **`peek` / `poll`** when emptiness is normal; use **`element` / `remove`** when empty means a bug.
+
+**Empty-safe pop** (no exception when the stack might already be drained):
+
+```java
+Deque<String> stack = new ArrayDeque<>();
+String topOrNull = stack.pollFirst(); // null if empty — same end as pop()
+```
 
 ### `ArrayDeque` rules and limits
 
