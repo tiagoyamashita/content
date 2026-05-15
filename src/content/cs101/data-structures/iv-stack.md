@@ -158,6 +158,57 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="268" y="74" fill="#86efac" font-size="10" font-weight="600">size = 0</text>
 </svg></figure>
 
+### Example usage (Java)
+
+The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (see §4). Here is the same ADT vocabulary in a few lines:
+
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+Deque<Integer> stack = new ArrayDeque<>();
+stack.push(10);
+stack.push(20);
+stack.peek();     // 20 — top unchanged
+stack.pop();      // 20
+stack.isEmpty();  // false (10 still inside)
+stack.size();     // 1
+stack.clear();
+stack.isEmpty();  // true
+```
+
+**Balanced brackets** is a classic stack exercise: on an opening symbol, **`push`**; on a closing symbol, **`pop`** and check it pairs with what you popped; at end of string, **`isEmpty()`** must be **true**.
+
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public static boolean bracketsBalanced(String s) {
+  Deque<Character> stack = new ArrayDeque<>();
+  for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    if (c == '(' || c == '[' || c == '{') {
+      stack.push(c);
+    } else if (c == ')' || c == ']' || c == '}') {
+      if (stack.isEmpty()) {
+        return false;
+      }
+      char o = stack.pop();
+      if (!pairs(o, c)) {
+        return false;
+      }
+    }
+  }
+  return stack.isEmpty();
+}
+
+private static boolean pairs(char open, char close) {
+  return (open == '(' && close == ')')
+      || (open == '[' && close == ']')
+      || (open == '{' && close == '}');
+}
+```
+
 
 ## 2. Singly linked list as backing
 Treat the **head pointer as the top**. An **empty** stack is an empty list: `head == null`.
@@ -229,6 +280,67 @@ You **do not need a tail pointer**: every stack operation touches only the head.
   <text x="466" y="64" fill="#71717a" font-size="11">null</text>
   <text x="8" y="98" fill="#71717a" font-size="9">Old top becomes unreachable (GC) unless you keep a reference elsewhere.</text>
 </svg></figure>
+
+### Java: head-as-top stack (teaching class)
+
+This mirrors the **prepend / delete-first** list operations from the linked-list note: **`head`** is the **top**; no tail pointer.
+
+```java
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class LinkedStack<E> {
+
+  private static final class Node<E> {
+    final E item;
+    Node<E> next;
+
+    Node(E item, Node<E> next) {
+      this.item = item;
+      this.next = next;
+    }
+  }
+
+  private Node<E> head;
+  private int size;
+
+  public void push(E item) {
+    head = new Node<>(Objects.requireNonNull(item), head);
+    size++;
+  }
+
+  public E pop() {
+    if (head == null) {
+      throw new NoSuchElementException();
+    }
+    E out = head.item;
+    head = head.next;
+    size--;
+    return out;
+  }
+
+  public E peek() {
+    if (head == null) {
+      throw new NoSuchElementException();
+    }
+    return head.item;
+  }
+
+  public boolean isEmpty() {
+    return head == null;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  /** O(1): drop the chain; nodes become unreachable for the GC. */
+  public void clear() {
+    head = null;
+    size = 0;
+  }
+}
+```
 
 ### Walkthrough (duplicate values)
 Push values in order **1**, then **3** (first occurrence), then **3** (second occurrence), then **2**. When two nodes hold the same display value, label them **3⁽¹⁾** and **3⁽²⁾** in reasoning:
