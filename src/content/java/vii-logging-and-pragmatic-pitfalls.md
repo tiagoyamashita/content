@@ -13,6 +13,7 @@ Structured logging with **SLF4J**, sensible defaults for development, and where 
 Spring Boot wires **SLF4J** + **Logback** by default. Declare a **static** logger per class:
 
 ```java
+// Compile: javac --release 22 …
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,7 @@ public class OrderController {
 **Preferred shape:**
 
 ```java
+// Compile: javac --release 22 …
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -65,6 +67,7 @@ public class OrderService {
 ```
 
 ```java
+// Compile: javac --release 22 …
 @RestController
 @RequiredArgsConstructor
 public class OrderController {

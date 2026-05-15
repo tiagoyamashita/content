@@ -19,6 +19,7 @@ Spring creates **one shared instance** per bean definition (default scope). Comm
 | **`@RestController` / `@Controller`** | Web adapters |
 
 ```java
+// Compile: javac --release 22 …
 @Service
 public class OrderService {
 
@@ -40,6 +41,7 @@ public class OrderService {
 If you cannot use constructor injection (rare), setter or field injection works:
 
 ```java
+// Compile: javac --release 22 …
 @Component
 public class LegacyClient {
 
@@ -58,6 +60,7 @@ Multiple constructors: mark one with **`@Autowired`** (otherwise Boot picks the 
 When you don’t own the class, expose it via a **`@Configuration`** class:
 
 ```java
+// Compile: javac --release 22 …
 @Configuration
 public class HttpClientConfig {
 
@@ -77,6 +80,7 @@ public class HttpClientConfig {
 Two **`PaymentGateway`** beans:
 
 ```java
+// Compile: javac --release 22 …
 import java.math.BigDecimal;
 
 public interface PaymentGateway {
@@ -93,6 +97,7 @@ public class PayPalGateway implements PaymentGateway { /* … */ }
 Consumer picks one explicitly:
 
 ```java
+// Compile: javac --release 22 …
 @Service
 public class CheckoutService {
 
@@ -107,6 +112,7 @@ public class CheckoutService {
 **`@Primary`** on one implementation avoids qualifiers when a default is OK:
 
 ```java
+// Compile: javac --release 22 …
 @Component
 @Primary
 public class StubPaymentGateway implements PaymentGateway { /* dev default */ }
@@ -116,6 +122,7 @@ public class StubPaymentGateway implements PaymentGateway { /* dev default */ }
 Load beans only when a profile or property holds:
 
 ```java
+// Compile: javac --release 22 …
 @Configuration
 @Profile("prod")
 public class ProdObservabilityConfig {
@@ -133,6 +140,7 @@ public class ProdObservabilityConfig {
 **`@PostConstruct`** runs after injection; **`DisposableBean`** / **`@PreDestroy`** for cleanup:
 
 ```java
+// Compile: javac --release 22 …
 @Component
 public class WarmCacheRunner {
 

@@ -10,6 +10,7 @@ Map tables with JPA entities, reduce boilerplate via **`JpaRepository`**, and pl
 
 ## 1. Entity basics (Jakarta Persistence)
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
@@ -63,6 +64,7 @@ enum OrderStatus {
 Spring Data JPA implements the interface at runtime:
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.persistence;
 
 import com.example.demo.domain.OrderEntity;
@@ -83,6 +85,7 @@ Derived query methods (`findBy…`) translate to JPQL — keep them readable; co
 Put **`@Transactional`** on **use-case** methods so one call ≡ one business transaction:
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.service;
 
 import com.example.demo.domain.OrderEntity;
@@ -125,6 +128,7 @@ public class OrderService {
 - **Checked** exceptions → **commit** unless you set **`rollbackFor`**:
 
 ```java
+// Compile: javac --release 22 …
 @Transactional(rollbackFor = Exception.class)
 public void importOrders(InputStream csv) throws IOException {
   // IOException now triggers rollback
@@ -139,6 +143,7 @@ public void importOrders(InputStream csv) throws IOException {
 | **`NOT_SUPPORTED`** | Suspend tx — rare, for integrations that misbehave inside a tx |
 
 ```java
+// Compile: javac --release 22 …
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public void saveAuditEntry(String action) {
   // commits even if outer business tx rolls back (when exceptions handled carefully)

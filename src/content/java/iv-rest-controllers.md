@@ -12,6 +12,7 @@ Expose HTTP APIs with **`@RestController`**, map paths and payloads, return **`R
 **`@RestController`** combines **`@Controller`** + **`@ResponseBody`** — return values serialize via Jackson by default.
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.web;
 
 import jakarta.validation.Valid;
@@ -63,6 +64,7 @@ public class CustomerController {
 Keep entities out of the wire format — use dedicated records:
 
 ```java
+// Compile: javac --release 22 …
 public record CreateCustomerRequest(
     @NotBlank String name,
     @NotBlank String email
@@ -86,6 +88,7 @@ Enable **`jakarta.validation`** on incoming bodies with **`@Valid`** on the para
 **`ResponseEntity`** wraps body + status + headers:
 
 ```java
+// Compile: javac --release 22 …
 @DeleteMapping("/{id}")
 public ResponseEntity<Void> delete(@PathVariable UUID id) {
   boolean removed = customers.deleteIfExists(id);
@@ -97,6 +100,7 @@ public ResponseEntity<Void> delete(@PathVariable UUID id) {
 Return Problem Details–style payloads consistently:
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.web.error;
 
 import java.time.Instant;
@@ -142,6 +146,7 @@ public class ApiExceptionHandler {
 For simple demos only — tighten origins in production:
 
 ```java
+// Compile: javac --release 22 …
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/public")

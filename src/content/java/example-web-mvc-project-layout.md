@@ -48,6 +48,7 @@ Use **`spring-boot-starter-parent`** (or the BOM) so versions stay aligned.
 ### `DemoApplication.java` — entrypoint
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
@@ -65,6 +66,7 @@ public class DemoApplication {
 ### `GreetingService.java` — injected bean
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.app;
 
 import org.springframework.stereotype.Service;
@@ -81,6 +83,7 @@ public class GreetingService {
 ### `HelloController.java` — MVC mapping + model
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.web;
 
 import com.example.demo.app.GreetingService;

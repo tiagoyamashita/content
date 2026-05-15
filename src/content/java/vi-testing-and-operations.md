@@ -12,6 +12,7 @@ Slice tests with **`@WebMvcTest`** / **`@DataJpaTest`**, bootstrap integration t
 Loads MVC infrastructure **without** full JPA — collaborators are **`@MockBean`**:
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.web;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -59,6 +60,7 @@ Fast feedback: validates mapping, validation, and JSON serialization — not SQL
 Uses an embedded or test database (configure **`spring.datasource`** under **`test`** resources):
 
 ```java
+// Compile: javac --release 22 …
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.demo.domain.OrderEntity;
@@ -85,6 +87,7 @@ class OrderRepositoryTest {
 Heavier; use for critical paths crossing layers:
 
 ```java
+// Compile: javac --release 22 …
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;

@@ -71,6 +71,7 @@ Activate via **`spring.profiles.active=prod`**, **`SPRING_PROFILES_ACTIVE`**, or
 Good for a handful of scalars; defaults avoid crashes when a key is missing:
 
 ```java
+// Compile: javac --release 22 …
 @Component
 public class FeatureToggle {
 
@@ -101,6 +102,7 @@ app:
 ```
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo.config;
 
 import jakarta.validation.constraints.Email;
@@ -122,6 +124,7 @@ public record NotificationProperties(
 Register the bean:
 
 ```java
+// Compile: javac --release 22 …
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -135,6 +138,7 @@ Or place **`@ConfigurationPropertiesScan`** next to **`@SpringBootApplication`**
 Inject like any bean:
 
 ```java
+// Compile: javac --release 22 …
 @Service
 public class MailNotificationService {
 

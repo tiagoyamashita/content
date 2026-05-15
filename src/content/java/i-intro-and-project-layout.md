@@ -8,6 +8,8 @@ order: 1
 Spring Boot — Part I
 What Boot adds on top of Spring, how the entrypoint bootstraps the container, and how to lay out packages so scanning and auto-configuration behave predictably.
 
+**JDK / Java language level:** examples in this **Spring Boot** track assume **Java SE 22** — use **`javac --release 22`** or set language level **22** in your build (`pom.xml` / `build.gradle`). The same snippets compile on **JDK 21 LTS** unless a file calls out a newer feature. For services in production, prefer a supported **LTS** JDK unless your organization standardizes on a newer release.
+
 ## 1. Problems Boot solves
 - **Classpath hell**: starters (e.g. `spring-boot-starter-web`) pin compatible versions of servlet API, Jackson, Tomcat.
 - **Embedded server**: run `java -jar app.jar` without installing Tomcat separately.
@@ -17,6 +19,7 @@ What Boot adds on top of Spring, how the entrypoint bootstraps the container, an
 `@SpringBootApplication` is shorthand for **`@SpringBootConfiguration`** (specialized `@Configuration`), **`@EnableAutoConfiguration`**, and **`@ComponentScan`** on the declaring class’s package.
 
 ```java
+// Compile: javac --release 22 …
 package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
@@ -38,6 +41,7 @@ public class DemoApplication {
 - If you put **`@SpringBootApplication`** in **`com.example.demo`** but controllers live in **`com.example.api`**, they **won’t** be beans unless you add **`@ComponentScan("com.example.api")`** or move code under **`demo`**.
 
 ```java
+// Compile: javac --release 22 …
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example")
 public class DemoApplication { /* ... */ }
@@ -78,6 +82,7 @@ Controllers depend on services; services depend on repositories or ports — **a
 When auto-config gets in the way during migration or tests:
 
 ```java
+// Compile: javac --release 22 …
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class DemoApplication { /* ... */ }
 ```
