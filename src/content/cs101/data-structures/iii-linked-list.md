@@ -7,6 +7,8 @@ order: 3
 Linked list
 Pointer-based sequence: singly and doubly linked. In **Java**, “pointers” are **object references**: a field like `Node next` holds the address of another node on the **heap**; you never do manual `free` — unreachable nodes are **garbage-collected**.
 
+**Java baseline:** snippets assume **Java SE 22** (`javac --release 22`); they remain valid on **JDK 21 LTS**.
+
 **Singly linked:** each node holds `value` and `next`. The list is reached from a **head** reference. Insert after a node you already hold: **O(1)**. Find the k-th element by walking: **O(k)**; search by value without index: **O(n)**.
 
 **Doubly linked:** nodes add `prev`, so you can remove a node in **O(1)** when you hold its reference, and walk backward without scanning from the head.
@@ -19,6 +21,7 @@ Pointer-based sequence: singly and doubly linked. In **Java**, “pointers” ar
 Typical pattern: a **static nested class** `Node<E>`. Libraries often keep it **`private`**; here **`Node` is `public static`** so examples can call **`addAfter`** with a node reference without awkward accessors. **`head`** is `null` when the list is empty.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -102,6 +105,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 **Usage sketch:** prepend `3`, then insert `9` after the head.
 
 ```java
+// Compile: javac --release 22 …
 SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
 list.addFirst(3);
 SinglyLinkedList.Node<Integer> h = list.getHeadNode();
@@ -115,6 +119,7 @@ list.addAfter(h, 9); // 3 -> 9
 The standard library’s **`LinkedList`** is a **doubly linked** list that also implements **`Deque<E>`** (double-ended queue): efficient **`addFirst` / `addLast` / `removeFirst` / `removeLast`**.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.LinkedList;
 import java.util.ListIterator;
 

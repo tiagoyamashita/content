@@ -7,6 +7,8 @@ order: 4
 Stack — two backing implementations
 The **stack ADT** is defined by its **operations**, not by whether you use a list or an array underneath. This note compares two standard backings: a **singly linked list** (head = top) and a **dynamic array** (top at the logical back).
 
+**Java baseline:** snippets assume **Java SE 22** — set the language level to **22** in your IDE or compile with **`javac --release 22`**. The features used here (generics, `var` only if added, `Deque`, etc.) also run on **JDK 21 LTS**; treat **22** as the minimum this material is checked against, and use an **LTS** JDK in production if your team requires it.
+
 ## 1. Stack as an ADT (recap)
 **Operations** usually include `push(x)`, `pop()`, `peek()` / `top()`, `isEmpty()`, and often `size()` / `clear()`. **Invariant:** `pop` removes the **most recently pushed** item (LIFO).
 
@@ -163,6 +165,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
 The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (covered later in this note under Java). Here is the same ADT vocabulary in a few lines:
 
 ```java
+// Compile: javac --release 22 …
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -180,6 +183,7 @@ stack.isEmpty();  // true
 **Balanced brackets** is a classic stack exercise: on an opening symbol, **`push`**; on a closing symbol, **`pop`** and check it pairs with what you popped; at end of string, **`isEmpty()`** must be **true**.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -207,9 +211,12 @@ public final class BracketExamples {
   }
 
   private static boolean pairs(char open, char close) {
-    return (open == '(' && close == ')')
-        || (open == '[' && close == ']')
-        || (open == '{' && close == '}');
+    return switch (open) {
+      case '(' -> close == ')';
+      case '[' -> close == ']';
+      case '{' -> close == '}';
+      default -> false;
+    };
   }
 }
 ```
@@ -291,6 +298,7 @@ You **do not need a tail pointer**: every stack operation touches only the head.
 This mirrors the **prepend / delete-first** list operations from the linked-list note: **`head`** is the **top**; no tail pointer.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -479,6 +487,7 @@ Capacity large enough; start `size = 0`.
 **Top** at **`size - 1`**; next **`push`** writes **`data[size]`** then **`size++`**. On **`pop`**, return **`data[size - 1]`**, **`size--`**, and **`null`** out the slot you left so references are not retained (matches the “sensitive data / GC” discussion below).
 
 ```java
+// Compile: javac --release 22 …
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -571,6 +580,7 @@ The **collections framework** models a stack as a **`Deque<E>`** (double-ended q
 **`ArrayDeque<E>`** is a **resizable ring buffer** (like the circular queue in these notes): **`push` / `pop` / `peek`** are **amortized O(1)** with **no per-element boxing** of nodes (unlike a linked `Deque` built from `LinkedList` entries). It is the usual default for a **single-threaded** stack or work queue.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -637,6 +647,10 @@ Choose **`peek` / `poll`** when emptiness is normal; use **`element` / `remove`*
 **Empty-safe pop** (no exception when the stack might already be drained):
 
 ```java
+// Compile: javac --release 22 …
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 Deque<String> stack = new ArrayDeque<>();
 String topOrNull = stack.pollFirst(); // null if empty — same end as pop()
 ```

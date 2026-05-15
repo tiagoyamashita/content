@@ -7,6 +7,8 @@ order: 9
 Priority queue — “who goes next?” by importance, not arrival time
 A **priority queue** is an **abstract data type** for a collection where each item has a **priority** (often just a number or anything **comparable**). The defining behavior: you can **insert** in any order, but **extract** always removes the item with the **highest** or **lowest** priority among those still inside — **not** the oldest (that would be a **FIFO queue**) and **not** the newest (that would be a **stack**).
 
+**Java baseline:** `PriorityQueue` snippets assume **Java SE 22** (`javac --release 22`). They use **`record`** and other features available since **Java 16**; they also run on **JDK 21 LTS**.
+
 If you picture a **hospital triage** desk: arrivals are not served strictly first-come-first-served; the **most urgent** case jumps ahead. A normal **queue** is a single orderly line; a **priority queue** is “always serve whoever is currently most important.”
 
 
@@ -129,6 +131,7 @@ The usual sweet spot for a general mutable priority queue is a **binary heap** (
 **Min-heap of integers** (smallest `poll` first):
 
 ```java
+// Compile: javac --release 22 …
 import java.util.PriorityQueue;
 
 PriorityQueue<Integer> pq = new PriorityQueue<>();
@@ -143,6 +146,7 @@ pq.poll();  // 20
 **Max-heap** (largest first): reverse the comparison.
 
 ```java
+// Compile: javac --release 22 …
 import java.util.Collections;
 import java.util.PriorityQueue;
 
@@ -155,30 +159,18 @@ maxPq.peek();  // 30
 **Custom type** (e.g. jobs with deadlines — **earlier deadline = higher priority** here as smaller integer wins):
 
 ```java
-import java.util.Comparator;
+// Compile: javac --release 22 …
 import java.util.Objects;
 import java.util.PriorityQueue;
 
-public final class Job implements Comparable<Job> {
-  private final String name;
-  private final int deadline;
-
-  public Job(String name, int deadline) {
-    this.name = Objects.requireNonNull(name);
-    this.deadline = deadline;
-  }
-
-  public String name() {
-    return name;
-  }
-
-  public int deadline() {
-    return deadline;
+record Job(String name, int deadline) implements Comparable<Job> {
+  Job {
+    Objects.requireNonNull(name, "name");
   }
 
   @Override
   public int compareTo(Job o) {
-    return Integer.compare(this.deadline, o.deadline);
+    return Integer.compare(deadline, o.deadline);
   }
 }
 
@@ -188,7 +180,7 @@ jobs.offer(new Job("patch", 2));
 jobs.poll();  // patch — deadline 2 first
 ```
 
-(You can instead keep `Job` plain and pass `Comparator.comparingInt(Job::deadline)` to the `PriorityQueue` constructor — same ordering.)
+(You can instead use a `class` with **`Comparable`** or pass **`Comparator.comparingInt(Job::deadline)`** to the **`PriorityQueue`** constructor — same ordering.)
 
 **Empty-safe:** **`poll()`** and **`peek()`** return **`null`** when empty; **`remove()`** throws **`NoSuchElementException`**.
 
