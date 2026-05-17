@@ -89,3 +89,42 @@ If you cannot process all vertices, the graph has a **cycle**.
 
 ## 5. Connected components
 Run BFS or DFS from each unvisited vertex; each run labels one **component** (undirected) or **reachable set** (directed).
+
+## 6. Solving with the JDK (already implemented)
+
+There is **no** `Graph.bfs()` in the standard library. You keep an **adjacency list** (`List<List<Integer>>` or `Map`) and use JDK **queues** / **sets**:
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+
+// BFS — Queue from ArrayDeque (FIFO)
+Queue<Integer> q = new ArrayDeque<>();
+Set<Integer> seen = new HashSet<>();
+seen.add(start);
+q.offer(start);
+
+// DFS iterative — Deque as stack
+ArrayDeque<Integer> stack = new ArrayDeque<>();
+stack.push(start);
+
+// Track visited / in-degree for topo
+int[] indegree = new int[n];
+List<Integer> topo = new ArrayList<>();
+```
+
+| Role | JDK type |
+|------|----------|
+| FIFO frontier (BFS) | `Queue` + `ArrayDeque` |
+| Stack (DFS) | `ArrayDeque` `push` / `pop` |
+| Visited set | `HashSet`, `boolean[]` |
+| Neighbor list | `List<List<Integer>>`, `Map<Integer, List<Integer>>` |
+
+**Topological sort:** Kahn’s algorithm = **`Queue`** + indegree array; no single `Collections.topologicalSort`.
+
+See **`v-queue.md`**, **`iv-stack.md`**, and **`xi-solving-with-the-jdk.md`**.

@@ -72,3 +72,34 @@ Both are **greedy**; correctness proofs use **cut property** / **exchange argume
 - **Maps / routing (non-negative):** Dijkstra.
 - **Currency arbitrage (negative cycle detection):** Bellman–Ford.
 - **Network design (connect all sites cheaply):** MST (Kruskal or Prim).
+
+## 5. Solving with the JDK (already implemented)
+
+**Dijkstra** and **Prim** use **`PriorityQueue`** (binary heap in the JDK). **Kruskal** uses **`Arrays.sort`** on edges + **union–find** (you still implement UF, or use a small helper class).
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+// Min-heap for Dijkstra / Prim — already in §1
+PriorityQueue<int[]> pq = new PriorityQueue<>(
+    Comparator.comparingInt(e -> e[1]));
+
+// Kruskal: sort edges by weight, then union–find scan
+record Edge(int u, int v, int w) {}
+Edge[] edges = { /* … */ };
+Arrays.sort(edges, Comparator.comparingInt(Edge::w));
+
+// Multi-source BFS (unweighted) — one Queue per wave or one BFS with Queue
+```
+
+| Algorithm | JDK building blocks |
+|-----------|---------------------|
+| BFS (unweighted shortest) | `ArrayDeque`, `Queue` |
+| Dijkstra / Prim | `PriorityQueue`, `Comparator` |
+| Kruskal | `Arrays.sort`, union–find (custom ~20 lines) |
+| Non-negative edge relax | `Math.min` on `int[] dist` |
+
+Third-party libraries (e.g. JGraphT) add full graph algorithms; **CS101** and interviews expect you to write the **short loop** using **`PriorityQueue`**.

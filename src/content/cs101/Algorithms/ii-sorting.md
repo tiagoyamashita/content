@@ -107,3 +107,39 @@ Uses the **binary heap** ADT (`viii-binary-heap.md`); **in-place** if you heapif
 - **Need stability on objects:** `Arrays.sort(Object[])` or explicit merge sort.
 - **External sort (data on disk):** merge sort — sequential passes.
 - **Top-k / partial order:** heap or `PriorityQueue`, not full sort.
+
+## 6. Solving with the JDK (already implemented)
+
+You rarely write merge/quick sort in application code — call the library after choosing **primitive vs object** and **stable vs unstable**.
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+int[] a = { 5, 2, 8, 2 };
+Arrays.sort(a); // dual-pivot quicksort for primitives
+
+Integer[] boxed = { 5, 2, 8 };
+Arrays.sort(boxed, Comparator.reverseOrder()); // TimSort, stable
+
+// Top-k largest without sorting entire array — O(n log k)
+int k = 3;
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+for (int x : a) {
+  minHeap.offer(x);
+  if (minHeap.size() > k) {
+    minHeap.poll();
+  }
+}
+```
+
+| Need | API |
+|------|-----|
+| Sort `int[]` / `double[]` | `Arrays.sort` |
+| Sort `Object[]` or `List` | `Arrays.sort`, `list.sort(Comparator)`, `Collections.sort` |
+| Custom order | `Comparator.comparing`, `comparingInt`, `reverseOrder` |
+| Only k largest / smallest | `PriorityQueue` size **k** |
+
+More examples: **`xi-solving-with-the-jdk.md`**.

@@ -54,3 +54,29 @@ If subproblems **overlap** (same subproblem solved many times), pure recursion w
 |------------------------|------------------|
 | No | Divide & conquer |
 | Yes | Dynamic programming |
+
+## 5. Solving with the JDK (already implemented)
+
+Divide & conquer in the wild is mostly **library calls** plus your **combine** logic:
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+
+// "Conquer" half — binary search on sorted half
+int[] sorted = { 1, 4, 9, 16 };
+int i = Arrays.binarySearch(sorted, 9);
+
+// "Combine" step often needs sorted halves
+Arrays.sort(leftHalf);
+Arrays.sort(rightHalf);
+// then merge with a loop, or System.arraycopy + merge
+
+// Max subarray — Kadane is O(n); no JDK one-liner, but simple loop (see §3)
+```
+
+| D&C idea | JDK helper |
+|----------|------------|
+| Search sorted range | `Arrays.binarySearch` |
+| Sort subranges before merge | `Arrays.sort(from, to)` |
+| Copy block | `System.arraycopy`, `Arrays.copyOfRange` |

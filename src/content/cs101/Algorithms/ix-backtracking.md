@@ -76,3 +76,34 @@ Worst case is often **exponential** in branching factor × depth — backtrackin
 ## 5. Backtracking vs DP
 - **Backtracking:** enumerate **all** valid configurations (or count them).
 - **DP:** when subproblems **overlap** and you need **optimal value**, not every solution listing.
+
+## 6. Solving with the JDK (already implemented)
+
+Backtracking is **custom recursion**; the JDK helps with **containers** and **bookkeeping**:
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+List<Integer> path = new ArrayList<>();
+List<List<Integer>> answers = new ArrayList<>();
+
+path.add(choice);
+backtrack(/* … */);
+path.remove(path.size() - 1); // unchoose
+
+// Try candidates in different order (heuristic)
+List<Integer> candidates = new ArrayList<>(List.of(1, 2, 3));
+Collections.shuffle(candidates); // needs Random seed for reproducibility
+```
+
+| Backtracking need | JDK |
+|-------------------|-----|
+| Current path | `ArrayList` |
+| All solutions | `List<List<T>>` |
+| Used flags | `boolean[]`, `HashSet` |
+| Copy state | `new ArrayList<>(path)`, `Arrays.copyOf` |
+
+**Permutations / combinations** for tiny **n** only: libraries exist, but interviews expect the **recursive** template in §1.

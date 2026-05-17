@@ -59,3 +59,36 @@ If step 1 fails, try **DP** or **branch and bound**.
 | Subproblems | Usually non-overlapping | Overlapping |
 | Time | Often sort + linear scan | Often pseudo-polynomial or O(n²) |
 | Example win | MST, Huffman | 0/1 knapsack, LCS |
+
+## 5. Solving with the JDK (already implemented)
+
+Greedy code is usually **sort** + **one pass** + sometimes a **heap**:
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+// Activity selection — sort then scan (see §2)
+Activity[] acts = { /* … */ };
+Arrays.sort(acts, Comparator.comparingInt(Activity::finish));
+
+// Huffman-style "always take two smallest" — min-heap
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+pq.offer(3);
+pq.offer(1);
+int a = pq.poll();
+int b = pq.poll();
+
+// Fractional knapsack — sort by ratio
+record Item(int w, int v) {}
+Item[] items = { /* … */ };
+Arrays.sort(items, Comparator.comparingDouble(it -> -(double) it.v / it.w));
+```
+
+| Greedy step | JDK |
+|-------------|-----|
+| Order candidates | `Arrays.sort`, `Comparator` |
+| Repeatedly take smallest | `PriorityQueue` |
+| Take current max | `Collections.max`, `stream().max` |

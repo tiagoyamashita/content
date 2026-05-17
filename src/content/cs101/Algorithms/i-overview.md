@@ -40,7 +40,14 @@ An **algorithm** is a finite, step-by-step procedure that takes **input** and pr
 - **O(n)** BFS/DFS on a graph stored as adjacency lists when **n = |V|**, **m = |E|** — often written **O(n + m)**.
 - **Space** counts **extra** memory beyond the input (output not always counted).
 
-## 4. Pseudocode → Java habit
+## 4. Learn the algorithm, solve with the JDK
+1. **Study** the hand-rolled version in each note (merge sort, BFS loop, knapsack table).
+2. **Ship** with **`java.util`** / **`Arrays`**: `Arrays.sort`, `Arrays.binarySearch`, `HashMap`, `ArrayDeque`, `PriorityQueue`.
+3. The JDK gives you **O(1) amortized** map ops, **O(log n)** heap ops, and **O(n log n)** sort — you write the **problem-specific loop**, not another heap from scratch.
+
+Full **problem → API** tables and copy-paste examples: **`xi-solving-with-the-jdk.md`**.
+
+## 5. Pseudocode → Java habit
 1. State **input size** **n** (or **n, m** for graphs).
 2. Name the **loop invariant** or **recurrence**.
 3. Implement with clear types; prefer library structures when teaching ADTs (`Queue`, `PriorityQueue`, `Arrays.sort`).
@@ -66,7 +73,8 @@ public static int binarySearch(int[] arr, int target) {
 }
 ```
 
-## 5. Related notes
+## 6. Related notes
+- **Solving with the JDK** (`xi-solving-with-the-jdk.md`) — cheat sheet for production Java.
 - **Data structures** submenu — stacks, queues, heaps, graphs.
 - **Level IV — Paradigms & limits** (`iv-paradigms-and-limits.md`) — theory: greedy proofs, DP vs divide & conquer, NP-hardness.
 - **Level III — Graphs** (`iii-graphs.md`) — graph modeling at course level.

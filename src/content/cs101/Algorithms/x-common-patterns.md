@@ -97,3 +97,40 @@ Sort intervals, merge overlapping; sort pairs by one coordinate for greedy inter
 | "Count ways" / optimal on sequences | DP |
 | All combinations / permutations | Backtracking |
 | Graph reachability | BFS / DFS |
+
+## 7. Solving with the JDK (already implemented)
+
+```java
+// Compile: javac --release 22 …
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+// Two pointers — often manual indices on int[] or List.get(i)
+
+// Sliding window + last index of char
+Map<Character, Integer> last = new HashMap<>();
+
+// Prefix sums — int[] or long[] (use long if sums overflow)
+long[] prefix = new long[a.length + 1];
+
+// Sort then scan (intervals, pair problems)
+Arrays.sort(intervals, (x, y) -> Integer.compare(x[0], y[0]));
+
+// Frequency
+Map<String, Long> freq = new HashMap<>();
+freq.merge(token, 1L, Long::sum);
+
+// Stream shorthand (know the cost: sort is O(n log n))
+int[] sorted = Arrays.stream(nums).sorted().toArray();
+```
+
+| Pattern | JDK helpers |
+|---------|-------------|
+| Two pointers | indices on array / `List` |
+| Sliding window | `HashMap`, `HashSet` |
+| Prefix sum | `long[]`, `Arrays` |
+| Sort + scan | `Arrays.sort`, `Comparator` |
+| Count | `Map.merge`, `getOrDefault` |
+
+See **`xi-solving-with-the-jdk.md`** for a full cheat sheet.
