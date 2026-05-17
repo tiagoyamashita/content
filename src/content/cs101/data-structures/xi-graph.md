@@ -11,7 +11,7 @@ Graph
 
 **Adjacency list:** per-vertex list of neighbors; space **Θ(n + m)** for `n = |V|`, `m = |E|`; iterate outgoing edges in time proportional to degree.
 
-**Algorithms:** BFS (**queue**), DFS (**stack** or recursion), topological sort, SCCs, shortest paths — see **Level III — Graphs** (`iii-graphs.md`).
+**Algorithms:** BFS (**queue**), DFS (**stack** or recursion), topological sort, SCCs, shortest paths — see **Algorithms** submenu (`algorithms/v-graph-traversal.md`, `algorithms/vi-shortest-paths-and-mst.md`) and **Level III — Graphs** (`iii-graphs.md`).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 236" role="img" aria-label="Graph vertices with adjacency list versus adjacency matrix">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Same graph, two storages</text>
