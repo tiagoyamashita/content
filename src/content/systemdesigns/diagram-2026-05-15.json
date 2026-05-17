@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "name": "diagram-2026-05-15",
+  "diagram": {
+    "nodes": [
+      {
+        "id": "ms-client",
+        "kind": "client",
+        "x": 40,
+        "y": 24,
+        "title": "Clients"
+      },
+      {
+        "id": "ms-dns",
+        "kind": "dns",
+        "x": 40,
+        "y": 96,
+        "title": "DNS"
+      },
+      {
+        "id": "ms-cdn",
+        "kind": "cdn",
+        "x": 40,
+        "y": 168,
+        "title": "CDN / edge"
+      },
+      {
+        "id": "ms-lb",
+        "kind": "lb",
+        "x": 40,
+        "y": 240,
+        "title": "Ingress / LB"
+      },
+      {
+        "id": "ms-gw",
+        "kind": "gateway",
+        "x": 40,
+        "y": 312,
+        "title": "API gateway"
+      },
+      {
+        "id": "ms-queue",
+        "kind": "queue",
+        "x": 40,
+        "y": 384,
+        "title": "Kafka (events)"
+      },
+      {
+        "id": "ms-orders",
+        "kind": "service",
+        "x": 240,
+        "y": 200,
+        "title": "Orders service"
+      },
+      {
+        "id": "ms-users",
+        "kind": "service",
+        "x": 240,
+        "y": 288,
+        "title": "Users service"
+      },
+      {
+        "id": "ms-pay",
+        "kind": "service",
+        "x": 240,
+        "y": 376,
+        "title": "Payments service"
+      },
+      {
+        "id": "ms-redis",
+        "kind": "cache",
+        "x": 400,
+        "y": 288,
+        "title": "Redis (sessions)"
+      },
+      {
+        "id": "ms-db",
+        "kind": "database",
+        "x": 240,
+        "y": 480,
+        "title": "Database (sharded)"
+      },
+      {
+        "id": "ms-s3",
+        "kind": "storage",
+        "x": 40,
+        "y": 456,
+        "title": "Object storage"
+      },
+      {
+        "id": "ms-stripe",
+        "kind": "external",
+        "x": 400,
+        "y": 376,
+        "title": "Stripe"
+      },
+      {
+        "id": "child_ms_orders_list",
+        "kind": "service",
+        "x": 560,
+        "y": 160,
+        "title": "GET /orders"
+      },
+      {
+        "id": "child_ms_orders_create",
+        "kind": "service",
+        "x": 560,
+        "y": 208,
+        "title": "POST /orders"
+      },
+      {
+        "id": "child_ms_users_me",
+        "kind": "service",
+        "x": 560,
+        "y": 256,
+        "title": "GET /users/me"
+      },
+      {
+        "id": "child_ms_users_update",
+        "kind": "service",
+        "x": 560,
+        "y": 304,
+        "title": "PATCH /users/me"
+      },
+      {
+        "id": "child_ms_pay_intent",
+        "kind": "service",
+        "x": 560,
+        "y": 424,
+        "title": "POST /pay/intent"
+      },
+      {
+        "id": "child_ms_pay_confirm",
+        "kind": "service",
+        "x": 560,
+        "y": 472,
+        "title": "POST /pay/confirm"
+      }
+    ],
+    "edges": [
+      {
+        "id": "ms-edge-1",
+        "from": "ms-client",
+        "to": "ms-dns"
+      },
+      {
+        "id": "ms-edge-2",
+        "from": "ms-client",
+        "to": "ms-cdn"
+      },
+      {
+        "id": "ms-edge-3",
+        "from": "ms-dns",
+        "to": "ms-lb"
+      },
+      {
+        "id": "ms-edge-4",
+        "from": "ms-cdn",
+        "to": "ms-lb"
+      },
+      {
+        "id": "ms-edge-5",
+        "from": "ms-lb",
+        "to": "ms-gw"
+      },
+      {
+        "id": "ms-edge-6",
+        "from": "ms-gw",
+        "to": "ms-orders"
+      },
+      {
+        "id": "ms-edge-7",
+        "from": "ms-gw",
+        "to": "ms-users"
+      },
+      {
+        "id": "ms-edge-8",
+        "from": "ms-gw",
+        "to": "ms-pay"
+      },
+      {
+        "id": "ms-edge-9",
+        "from": "ms-orders",
+        "to": "ms-db"
+      },
+      {
+        "id": "ms-edge-10",
+        "from": "ms-users",
+        "to": "ms-db"
+      },
+      {
+        "id": "ms-edge-11",
+        "from": "ms-pay",
+        "to": "ms-db"
+      },
+      {
+        "id": "ms-edge-12",
+        "from": "ms-users",
+        "to": "ms-redis"
+      },
+      {
+        "id": "ms-edge-13",
+        "from": "ms-orders",
+        "to": "ms-queue"
+      },
+      {
+        "id": "ms-edge-14",
+        "from": "ms-pay",
+        "to": "ms-queue"
+      },
+      {
+        "id": "ms-edge-15",
+        "from": "ms-orders",
+        "to": "ms-s3"
+      },
+      {
+        "id": "ms-edge-16",
+        "from": "ms-pay",
+        "to": "ms-stripe"
+      },
+      {
+        "id": "ms-edge-17",
+        "from": "ms-orders",
+        "to": "child_ms_orders_list"
+      },
+      {
+        "id": "ms-edge-18",
+        "from": "ms-orders",
+        "to": "child_ms_orders_create"
+      },
+      {
+        "id": "ms-edge-19",
+        "from": "ms-users",
+        "to": "child_ms_users_me"
+      },
+      {
+        "id": "ms-edge-20",
+        "from": "ms-users",
+        "to": "child_ms_users_update"
+      },
+      {
+        "id": "ms-edge-21",
+        "from": "ms-pay",
+        "to": "child_ms_pay_intent"
+      },
+      {
+        "id": "ms-edge-22",
+        "from": "ms-pay",
+        "to": "child_ms_pay_confirm"
+      }
+    ],
+    "bizFolders": [
+      {
+        "id": "biz-ms-root",
+        "parentId": null,
+        "title": "Microservices (sample root)",
+        "linkedNodeId": null
+      },
+      {
+        "id": "biz-ms-ingress",
+        "parentId": "biz-ms-root",
+        "title": "Ingress",
+        "linkedNodeId": "ms-lb"
+      },
+      {
+        "id": "biz-ms-egress",
+        "parentId": "biz-ms-root",
+        "title": "Egress",
+        "linkedNodeId": "ms-stripe"
+      },
+      {
+        "id": "biz-ms-io-both",
+        "parentId": "biz-ms-root",
+        "title": "Ingress / egress",
+        "linkedNodeId": "ms-gw"
+      },
+      {
+        "id": "biz-ms-clients",
+        "parentId": "biz-ms-root",
+        "title": "Clients",
+        "linkedNodeId": "ms-client"
+      },
+      {
+        "id": "biz-ms-dns",
+        "parentId": "biz-ms-root",
+        "title": "DNS",
+        "linkedNodeId": "ms-dns"
+      },
+      {
+        "id": "biz-ms-edge",
+        "parentId": "biz-ms-root",
+        "title": "CDN / edge",
+        "linkedNodeId": "ms-cdn"
+      },
+      {
+        "id": "biz-ms-orders",
+        "parentId": "biz-ms-root",
+        "title": "Orders API",
+        "linkedNodeId": "ms-orders"
+      },
+      {
+        "id": "biz-ms-users",
+        "parentId": "biz-ms-root",
+        "title": "Users API",
+        "linkedNodeId": "ms-users"
+      },
+      {
+        "id": "biz-ms-payments",
+        "parentId": "biz-ms-root",
+        "title": "Payments API",
+        "linkedNodeId": "ms-pay"
+      },
+      {
+        "id": "biz-ms-data",
+        "parentId": "biz-ms-root",
+        "title": "Data store",
+        "linkedNodeId": "ms-db"
+      },
+      {
+        "id": "biz-ms-cache",
+        "parentId": "biz-ms-root",
+        "title": "Cache (sessions)",
+        "linkedNodeId": "ms-redis"
+      },
+      {
+        "id": "biz-ms-async",
+        "parentId": "biz-ms-root",
+        "title": "Async / events",
+        "linkedNodeId": "ms-queue"
+      },
+      {
+        "id": "biz-ms-storage",
+        "parentId": "biz-ms-root",
+        "title": "Object storage",
+        "linkedNodeId": "ms-s3"
+      }
+    ]
+  },
+  "viewport": {
+    "pan": {
+      "x": 0,
+      "y": 0
+    },
+    "zoom": 1
+  }
+}
