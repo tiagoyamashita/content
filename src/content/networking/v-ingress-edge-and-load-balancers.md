@@ -52,6 +52,62 @@ Ingress must support **HTTP/2** for **gRPC**, and **Upgrade** / long-lived conne
 2. **Ingress** rules match **Host** to route to the right **Service**.
 3. **TLS** cert must cover that **Host** (SAN on certificate).
 
+### Example — REST API on Kubernetes (production)
+
+Assume:
+
+- Public REST API: **`https://api.example.com`**
+- Staging API: **`https://api.staging.example.com`**
+- Cloud load balancer hostname from the ingress controller: **`k8s-prod-abc123.eu-west-1.elb.amazonaws.com`** (AWS-style; GCP/Azure use their own LB hostnames or static IPs)
+- In-cluster **Services**: `rest-api-prod` (port **8080**), `rest-api-staging` (port **8080**)
+
+**Step 1 — DNS records** (create at your DNS provider for zone **`example.com`**):
+
+| Record name (hostname) | Type | Value / points to | TTL | Purpose |
+|------------------------|------|-------------------|-----|---------|
+| **`api.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 | Production REST API — name resolves to the **ingress load balancer** |
+| **`api.staging.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 | Staging API — same LB; **Ingress Host** header picks the backend |
+| **`_acme-challenge.api.example.com`** | **TXT** | (value from cert-manager / Let’s Encrypt) | 60 | Proves domain control for TLS certificate issuance |
+| **`api.example.com`** (optional apex alias) | **A** | `203.0.113.50` | 300 | Use **A** only if the cloud gives a **stable IPv4** instead of a CNAME target |
+
+Notes on record names:
+
+- In many UIs the **Name** column is relative to the zone: enter **`api`** not the full FQDN for `api.example.com`; enter **`api.staging`** for `api.staging.example.com`.
+- **Do not** CNAME the zone apex (`example.com` itself) on most providers — use **A/AAAA** or **ALIAS/ANAME** if the root must hit the LB.
+- **PTR** is not something you create for your API; reverse DNS is owned by the IP allocator (cloud provider).
+
+**Step 2 — Ingress rules** (what happens after DNS resolves to the LB):
+
+| `Host` header (must match DNS name) | Path | Backend Service | Service port | TLS cert SAN |
+|-------------------------------------|------|-----------------|--------------|--------------|
+| **`api.example.com`** | `/` (prefix) | `rest-api-prod` | 8080 | `api.example.com` |
+| **`api.staging.example.com`** | `/` | `rest-api-staging` | 8080 | `api.staging.example.com` |
+| **`api.example.com`** | `/health` | `rest-api-prod` | 8080 | same cert |
+
+The client always connects to the **same LB IP/hostname**; the **Host** header (from the URL) tells the ingress controller which **Service** receives the HTTP request.
+
+**Step 3 — End-to-end path for one REST call**
+
+```text
+GET https://api.example.com/v1/users/42
+
+1. DNS     api.example.com  CNAME → k8s-prod-abc123…elb.amazonaws.com → 203.0.113.50
+2. TCP     client → 203.0.113.50:443
+3. TLS     SNI = api.example.com  (cert must list this name)
+4. HTTP    Host: api.example.com  Path: /v1/users/42
+5. Ingress rule matches host api.example.com → Service rest-api-prod:8080
+6. Pod     Spring Boot / Express / etc. handles GET /v1/users/42
+```
+
+**Common mistakes**
+
+| Mistake | Symptom |
+|---------|---------|
+| DNS **A** points to a **pod** IP | Breaks when pods restart; always point to **LB / ingress** |
+| **Host** in Ingress ≠ DNS name | 404 or default backend; cert mismatch |
+| Cert SAN missing **`api.staging.example.com`** | Browser TLS error on staging URL only |
+| Low TTL forgotten during migration | Clients hit old IP for hours |
+
 ## 7. Study order recap
 
 **TCP/UDP** → **HTTP** → **TLS** → **DNS** (name → address) → **Ingress/LB** (HTTP routing and TLS at the edge). Together they describe how a browser request reaches a pod.
