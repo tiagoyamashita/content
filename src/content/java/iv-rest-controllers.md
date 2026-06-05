@@ -154,3 +154,8 @@ public class PublicFeedController { /* … */ }
 ```
 
 Prefer **`WebMvcConfigurer.addCorsMappings`** or gateway-level CORS for multiple controllers.
+
+## 7. Related notes
+
+- **Security basics & filter chain** — `security-basics-and-filter-chain.md` (JWT, HTTP Basic for dev, method security)
+- **Global errors with Problem Details** — pair **`@ControllerAdvice`** with **`ProblemDetail`** (Spring 6+) for RFC 7807 responses in new APIs

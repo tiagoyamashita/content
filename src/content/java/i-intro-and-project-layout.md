@@ -8,6 +8,8 @@ order: 1
 Spring Boot — Part I
 What Boot adds on top of Spring, how the entrypoint bootstraps the container, and how to lay out packages so scanning and auto-configuration behave predictably.
 
+**How this section is organized:** finish the **Java** intro track (`intro/`, Parts I–VI) first, then work through these **Spring Boot** pages in order. The **Example (Web MVC)** page is a copy-paste layout; **Security basics** follows REST before operations topics.
+
 **JDK / Java language level:** examples in this **Spring Boot** track assume **Java SE 22** — use **`javac --release 22`** or set language level **22** in your build (`pom.xml` / `build.gradle`). The same snippets compile on **JDK 21 LTS** unless a file calls out a newer feature. For services in production, prefer a supported **LTS** JDK unless your organization standardizes on a newer release.
 
 ## 1. Problems Boot solves
@@ -61,7 +63,23 @@ Your `pom.xml` usually declares **`spring-boot-starter-parent`** (or the BOM via
 </dependency>
 ```
 
-Gradle uses the same artifact IDs with **`implementation`** lines.
+**Gradle (`build.gradle.kts`):**
+
+```kotlin
+plugins {
+  id("org.springframework.boot") version "3.4.0"
+  id("io.spring.dependency-management") version "1.1.6"
+  kotlin("jvm") version "2.0.21" // optional; Java-only projects omit
+  java
+}
+
+dependencies {
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+}
+```
+
+Use the same artifact IDs as Maven; the Spring Boot Gradle plugin applies the BOM for aligned versions.
 
 ## 5. Layered packages (recommended shape)
 A common layout keeps **web**, **application/service**, and **persistence** concerns apart:

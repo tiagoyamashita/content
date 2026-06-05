@@ -8,10 +8,19 @@ order: 4
 Java — Part IV
 Build basics, automated testing with JUnit, and effective debugging.
 
+**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
+
 ## 1. Build tools and layout
 - **Maven** (`pom.xml`) and **Gradle** (`build.gradle.kts`) resolve dependencies, compile, test, package — pick one per repo and stay consistent.
 - Standard Maven paths: `src/main/java`, `src/test/java`; resources under `src/main/resources`.
 - **Classpath**: JVM loads bytecode and resources from directories and JARs — tools assemble this for you.
+
+```text
+my-app/
+  src/main/java/com/example/App.java
+  src/test/java/com/example/AppTest.java
+  pom.xml              # or build.gradle.kts
+```
 
 
 ## 2. Why automate tests
@@ -25,6 +34,35 @@ Build basics, automated testing with JUnit, and effective debugging.
 - **Assertions** (`assertEquals`, `assertTrue`, `assertThrows`) express expectations; prefer messages that explain intent on failure.
 - **`@BeforeEach` / `@AfterEach`** for setup/teardown per test; **`@BeforeAll` / `@AfterAll`** for expensive shared setup (often `static`).
 - **Parameterized tests** (`@ParameterizedTest` + sources) cover many inputs without copy-paste.
+
+```java
+// Compile: javac --release 22 … (JUnit on test classpath via Maven/Gradle)
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+class CalculatorTest {
+
+  @Test
+  void divideByZeroThrows() {
+    var calc = new Calculator();
+    assertThrows(ArithmeticException.class, () -> calc.divide(1, 0));
+  }
+
+  @ParameterizedTest
+  @CsvSource({"2,3,5", "0,0,0", "-1,1,0"})
+  void add(int a, int b, int expected) {
+    assertEquals(expected, new Calculator().add(a, b));
+  }
+}
+
+class Calculator {
+  int add(int a, int b) { return a + b; }
+  int divide(int a, int b) { return a / b; }
+}
+```
 
 
 ## 4. Passed / failed / skipped every run (Maven / Gradle)
@@ -67,3 +105,8 @@ Those numbers refresh **on every run** in the terminal; they are not written int
 - Use **`java.lang.System.Logger`** or SLF4J + backend — levels (`ERROR`, `WARN`, `INFO`, `DEBUG`) filter noise in prod.
 - Log **context** (correlation id, user-less identifiers), never secrets or full PII without policy.
 - Pair logging with tests: when fixing a bug, add a failing test first when feasible (**test-driven debugging**).
+
+
+## 8. Next: Spring Boot track
+
+When you understand classes, collections, exceptions, and JUnit, continue with **Spring Boot — Part I (Intro & project layout)** in the same **`java/`** topic folder. That track covers embedded servers, dependency injection, REST, JPA, security, testing slices, and production operations — building on the language foundations here and **Part VI (Lambdas & modern Java)**.

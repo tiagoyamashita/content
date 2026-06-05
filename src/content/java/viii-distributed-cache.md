@@ -3,7 +3,7 @@ label: "VIII"
 subtitle: "Distributed cache"
 group: "Spring Boot"
 groupOrder: 2
-order: 9
+order: 10
 ---
 Spring Boot — Part VIII: Distributed cache
 A **distributed cache** stores entries on **shared infrastructure** (usually **Redis**) so **every instance** of your app sees the same data. A **local** cache (**Caffeine** in one JVM) is faster per read but **not** shared across pods or servers.
@@ -239,6 +239,7 @@ For **`app.cache.enabled=false`**, use **`spring.cache.type=none`** or a **`NoOp
 
 ## 10. Related notes
 
-- **YAML & config** — `ii-yaml-and-external-config.md`
-- **Beans & profiles** — `iii-beans-and-dependency-injection.md`
-- **JPA & transactions** — `v-jpa-and-transactional.md` (cache sits **outside** the DB transaction; evict **after** successful commit when consistency matters)
+- **YAML & config** — Part II (`ii-yaml-and-external-config.md`)
+- **Beans & profiles** — Part III (`iii-beans-and-dependency-injection.md`)
+- **JPA & transactions** — Part V (`v-jpa-and-transactional.md`) — cache sits **outside** the DB transaction; evict **after** successful commit when consistency matters
+- **Security** — `security-basics-and-filter-chain.md` (Redis passwords, TLS, network exposure)

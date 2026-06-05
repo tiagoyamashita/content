@@ -8,11 +8,31 @@ order: 1
 Java — Part I
 JDK, program shape, types, control flow, methods, and arrays.
 
+**How this section is organized:** **`intro/`** (this group) covers core language through Part VI. Sibling pages at **`java/`** root with **`group: "Spring Boot"`** pick up web services after you are comfortable with classes, collections, and tests.
+
+**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
+
 ## 1. JDK, JVM, and your first program
 - **JDK** = compiler (`javac`), standard libraries, tooling; **JVM** = runtime that executes bytecode.
 - Source `.java` → `javac` → bytecode `.class` → `java` launches JVM and loads the entry class.
 - Every runnable program needs `public static void main(String[] args)` as an entry point.
 - Packages (`package com.example.app;`) map to folder paths; avoid default package for real projects.
+
+```java
+// Compile: javac --release 22 App.java && java App
+package com.example.app;
+
+public class App {
+  public static void main(String[] args) {
+    System.out.println("Hello, " + (args.length > 0 ? args[0] : "world"));
+  }
+}
+```
+
+```text
+javac --release 22 com/example/app/App.java
+java com.example.app.App Ada
+```
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="From Java source to JVM execution">
@@ -37,6 +57,14 @@ JDK, program shape, types, control flow, methods, and arrays.
 - Wrapper types (`Integer`, `Double`, …) box primitives for collections and nullable APIs; prefer primitives where hot and non-null.
 - `var` (Java 10+) infers local type from the initializer — still statically typed.
 
+```java
+// Compile: javac --release 22 …
+int count = 42;
+var name = "Ada";              // inferred String
+Integer boxed = count;         // autoboxing
+int again = boxed;             // unboxing
+```
+
 
 ## 3. Operators and control flow
 - Arithmetic (`+`, `-`, `*`, `/`, `%`), comparisons, logical `&&`, `||`, `!`, short-circuit behavior.
@@ -44,11 +72,46 @@ JDK, program shape, types, control flow, methods, and arrays.
 - Loops: `while`, `do-while`, `for`, **enhanced for** (`for (String s : items)`).
 - `break` / `continue` with optional labels for nested loops.
 
+```java
+// Compile: javac --release 22 …
+enum Status { OPEN, CLOSED }
+
+static String describe(Status s) {
+  return switch (s) {
+    case OPEN -> "accepting requests";
+    case CLOSED -> "maintenance";
+  };
+}
+
+static int sum(int[] values) {
+  int total = 0;
+  for (int v : values) {
+    total += v;
+  }
+  return total;
+}
+```
+
 
 ## 4. Methods and parameters
 - Signature: modifiers, return type, name, parameter list, optional `throws`; **overloading** by parameter types/count.
 - **Pass-by-value**: primitives copy bits; references copy the pointer — mutating the object is visible to caller, reassigning the parameter is not.
 - `final` parameters prevent reassignment inside the method (still mutable object state).
+
+```java
+// Compile: javac --release 22 …
+import java.util.ArrayList;
+import java.util.List;
+
+static void addTag(List<String> tags, final String tag) {
+  tags.add(tag);   // mutates caller's list
+  // tag = "x";    // compile error — final parameter
+}
+
+static int max(int a, int b) {
+  return a >= b ? a : b;
+}
+```
 
 
 ## 5. Arrays and `String`
@@ -56,6 +119,25 @@ JDK, program shape, types, control flow, methods, and arrays.
 - `java.util.Arrays` provides sort, binary search, fill, copy helpers.
 - `String` is immutable; use `StringBuilder` / `StringBuffer` for repeated concatenation in loops.
 - Text blocks (`""" ... """`) simplify multiline literals.
+
+See **Part V (Arrays, varargs & lists)** for varargs, `ArrayList`, and CS101 cross-links.
+
+```java
+// Compile: javac --release 22 …
+String json = """
+    {
+      "name": "Ada"
+    }
+    """;
+
+StringBuilder buf = new StringBuilder();
+for (char c : json.toCharArray()) {
+  if (!Character.isWhitespace(c)) {
+    buf.append(c);
+  }
+}
+```
+
 
 ## 6. Style and readability
 - Naming: `camelCase` methods/locals, `PascalCase` types, `SCREAMING_SNAKE` constants.

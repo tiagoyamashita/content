@@ -122,7 +122,7 @@ management:
       show-details: when_authorized
 ```
 
-Secure **`/actuator/**`** with Spring Security in real deployments — never leave **`prometheus`** or **`env`** open on the public internet.
+Secure **`/actuator/**`** with Spring Security in real deployments — never leave **`prometheus`** or **`env`** open on the public internet. See **Security basics & filter chain** (`security-basics-and-filter-chain.md`).
 
 ## 5. Logging tune-up
 ```yaml

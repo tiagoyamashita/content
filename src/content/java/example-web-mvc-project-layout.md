@@ -3,12 +3,12 @@ label: "Example"
 subtitle: "Web MVC project layout"
 group: "Spring Boot"
 groupOrder: 2
-order: 7
+order: 8
 ---
 Example project — Spring Web MVC
-Browse the **Explorer** on the left: open folders and click a file to view its source. The layout matches a typical **`spring-boot-starter-web`** + **Thymeleaf** app: entrypoint, **`@Controller`** + **`@GetMapping`**, a small **`@Service`**, and a view under **`templates/`**.
+Copy the layout and snippets below into a new project (or your IDE’s Spring Initializr output). This page is **not** a bundled repo sample — it documents a typical **`spring-boot-starter-web`** + **Thymeleaf** app: entrypoint, **`@Controller`** + **`@GetMapping`**, a small **`@Service`**, and a view under **`templates/`**.
 
-**Run locally:** from the project root, `./mvnw spring-boot:run` (or your IDE’s Run on `DemoApplication`), then open `http://localhost:8080/hello?name=Ada`.
+**Run locally:** from the project root, `./mvnw spring-boot:run` (or **`gradle bootRun`**), then open `http://localhost:8080/hello?name=Ada`.
 
 ## 1. Package layout (typical)
 
@@ -44,6 +44,15 @@ pom.xml
 ```
 
 Use **`spring-boot-starter-parent`** (or the BOM) so versions stay aligned.
+
+**Gradle equivalent:**
+
+```kotlin
+dependencies {
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+}
+```
 
 ### `DemoApplication.java` — entrypoint
 
