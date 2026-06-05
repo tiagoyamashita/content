@@ -108,6 +108,97 @@ GET https://api.example.com/v1/users/42
 | Cert SAN missing **`api.staging.example.com`** | Browser TLS error on staging URL only |
 | Low TTL forgotten during migration | Clients hit old IP for hours |
 
+### Example — zoning a REST API by region (global deploy)
+
+When you run **multiple regional clusters** (EU, US, APAC), you need clients to reach the **nearest** ingress and, for compliance, sometimes **only** data in that **jurisdiction**. Two common DNS patterns:
+
+| Pattern | Public URL | How routing works | Best when |
+|---------|------------|-------------------|-----------|
+| **Geo DNS on one name** | `api.example.com` | Resolver returns **different A/CNAME** by client geography | Mobile/web apps use a **single** API hostname |
+| **Regional subdomains** | `api.eu.example.com`, `api.us.example.com` | Client (or config) picks the zone explicitly | B2B integrations, **data residency** contracts, debugging |
+| **Both** | `api.example.com` + regional aliases | Geo DNS for default; subdomains for override / failover | Large products with compliance + convenience |
+
+Assume three production clusters:
+
+| Region | Kubernetes cluster | Ingress LB hostname | Primary data store |
+|--------|-------------------|---------------------|-------------------|
+| **EU** | `prod-eu-west-1` | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | RDS / DB in **eu-west-1** |
+| **US** | `prod-us-east-1` | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | RDS in **us-east-1** |
+| **APAC** | `prod-ap-southeast-1` | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | RDS in **ap-southeast-1** |
+
+**Option A — Geo DNS on `api.example.com`** (Route 53 Geolocation, Cloudflare Load Balancing, Azure Traffic Manager, etc.):
+
+| Record name | Type | Routing policy | Value / points to | Purpose |
+|-------------|------|----------------|-------------------|---------|
+| **`api.example.com`** | **CNAME** | Geolocation: **Europe** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU users → EU ingress |
+| **`api.example.com`** | **CNAME** | Geolocation: **North America** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | US/Canada → US ingress |
+| **`api.example.com`** | **CNAME** | Geolocation: **Asia Pacific** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | APAC → AP ingress |
+| **`api.example.com`** | **CNAME** | Geolocation: **Default** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | Fallback if geo unknown |
+
+Each regional **Ingress** uses the **same** `Host: api.example.com` rule — only the **backend cluster** differs:
+
+| Region | `Host` | Path | Backend Service | Notes |
+|--------|--------|------|-----------------|-------|
+| EU | `api.example.com` | `/v1/` | `rest-api` | Reads/writes **EU** database only |
+| US | `api.example.com` | `/v1/` | `rest-api` | **US** database replica or primary |
+| APAC | `api.example.com` | `/v1/` | `rest-api` | **APAC** database |
+
+TLS: one certificate with SAN **`api.example.com`** (same name everywhere); terminate at **each regional** ingress with the same cert (or regional cert-manager issuers).
+
+**Option B — explicit regional subdomains** (clearer for compliance and partner docs):
+
+| Record name | Type | Value / points to | Purpose |
+|-------------|------|-------------------|---------|
+| **`api.eu.example.com`** | **CNAME** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU REST API — GDPR / EU data residency |
+| **`api.us.example.com`** | **CNAME** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | Americas API |
+| **`api.ap.example.com`** | **CNAME** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | Asia-Pacific API |
+| **`api.example.com`** | **CNAME** | Geo policy or **CNAME** → `api.us.example.com` | Global marketing URL; or geo-routed as in Option A |
+
+| Region | `Host` (Ingress) | TLS cert SAN | Client config |
+|--------|------------------|--------------|---------------|
+| EU | `api.eu.example.com` | `api.eu.example.com` | EU mobile app build points here |
+| US | `api.us.example.com` | `api.us.example.com` | US app / default SDK base URL |
+| APAC | `api.ap.example.com` | `api.ap.example.com` | APAC tenant onboarding |
+
+**Request flow (EU user, Option A)**
+
+```text
+GET https://api.example.com/v1/orders
+
+1. DNS (geo)   resolver in Germany → api.example.com → EU LB IP
+2. TLS         SNI api.example.com
+3. Ingress EU  Host api.example.com → rest-api:8080 (EU cluster)
+4. App         uses EU DB connection string; no cross-region DB hop on hot path
+```
+
+**Request flow (partner pins EU subdomain, Option B)**
+
+```text
+GET https://api.eu.example.com/v1/orders
+
+1. DNS         api.eu.example.com → EU LB only (no geo guesswork)
+2. Ingress EU  Host api.eu.example.com → rest-api:8080
+```
+
+**Global deploy checklist**
+
+| Concern | Practice |
+|---------|----------|
+| **Latency** | Geo DNS or regional subdomain so RTT stays low; avoid EU user → US cluster by default |
+| **Data residency** | Prefer **Option B** or shard IDs in tokens; document which hostname stores PII where |
+| **Sessions / JWT** | Region-specific issuers or `region` claim; don’t share sticky sessions across oceans |
+| **Writes across regions** | Async replication or **single write region** per entity; REST API docs state consistency model |
+| **Health checks** | Per-region LB health; geo DNS **failover** record to next region if EU LB unhealthy |
+| **Observability** | Tag metrics/logs with `region=eu-west-1`; one global dashboard, regional alerts |
+
+**Anti-patterns**
+
+| Anti-pattern | Why it hurts |
+|--------------|--------------|
+| One global cluster, one DB, geo DNS only | DNS sends user to nearby edge but **DB is still far** — geo DNS without **regional backends** |
+| Same `Host` rule, shared DB across regions | Compliance failure; cross-region latency on every query |
+| CNAME all regions to **one** LB | Defeats zoning — all traffic hits a single region |
+
 ## 7. Study order recap
 
 **TCP/UDP** → **HTTP** → **TLS** → **DNS** (name → address) → **Ingress/LB** (HTTP routing and TLS at the edge). Together they describe how a browser request reaches a pod.
