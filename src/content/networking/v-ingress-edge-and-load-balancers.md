@@ -195,9 +195,45 @@ GET https://api.eu.example.com/v1/orders
 
 | Anti-pattern | Why it hurts |
 |--------------|--------------|
-| One global cluster, one DB, geo DNS only | DNS sends user to nearby edge but **DB is still far** — geo DNS without **regional backends** |
+| One global cluster, one DB, geo DNS only | DNS sends user to a **nearby edge** but **app + DB** may still be one region — see fixes below |
 | Same `Host` rule, shared DB across regions | Compliance failure; cross-region latency on every query |
 | CNAME all regions to **one** LB | Defeats zoning — all traffic hits a single region |
+
+#### Can replication or sharding fix “geo DNS only”?
+
+**Partly — but only if data and compute move with the user**, not DNS alone.
+
+| Fix | What you add | What it solves | What it does **not** solve |
+|-----|--------------|----------------|----------------------------|
+| **Regional app tier** | Ingress + API pods in **EU, US, APAC** (Option A/B above) | TLS/HTTP handled locally; app code runs near the client | Nothing about data by itself |
+| **Read replication** | **Primary** in one region + **read replicas** in others; regional API uses **local replica** for reads | **Read latency** for `GET /v1/orders`, dashboards, caches | **Writes** still hit primary (cross-ocean RTT) unless you accept async replication lag |
+| **Multi-primary / active-active** | CockroachDB, Spanner, Aurora Global, Cassandra, etc. | Writes closer to some users; built-in conflict handling | Complexity, cost, **eventual consistency** trade-offs; not all SQL apps migrate easily |
+| **DB sharding by region** | Shard key = `region` or `tenant_region`; EU rows live on **EU-primary** shard | **Reads and writes** stay in-region when routing is correct | Cross-region queries/joins; re-sharding pain; wrong shard key sends EU user to US data |
+| **Geo DNS only + CDN** | Cache `GET` at edge | Static assets and **cacheable** API responses | Personalized or `POST`/`PUT` still reach origin + DB far away |
+
+**Minimal viable fix (common REST pattern)**
+
+```text
+Geo DNS → regional ingress → regional API pods → local read replica (reads)
+                                              → primary or regional writer (writes)
+```
+
+1. Deploy **regional clusters** (not just geo DNS to one global LB).
+2. Add **read replicas** per region; configure connection pools: **read** → `replica.eu.internal`, **write** → `primary` or region-local writer.
+3. Document **replication lag** on reads (`GET` may be stale for N seconds) or use **read-your-writes** routing for the session.
+4. For **strict residency**, shard or pin **primary** data in that jurisdiction (`api.eu` → EU-primary only) — replication for DR, not as the only copy abroad.
+
+**Sharding example (region in the key)**
+
+| Shard | Primary location | Serves |
+|-------|------------------|--------|
+| `region=eu` | `eu-west-1` RDS | `api.eu.example.com` and EU geo-DNS traffic |
+| `region=us` | `us-east-1` RDS | `api.us.example.com` and Americas traffic |
+| `region=ap` | `ap-southeast-1` RDS | APAC traffic |
+
+Ingress sends traffic to the regional API; the API resolves tenant/user → **shard** and opens a DB connection **in that region**. Geo DNS without this stack only optimizes the **first network hop**.
+
+**Rule of thumb:** replication fixes **read distance**; sharding (or regional primaries) fixes **write distance and residency**; geo DNS fixes **which front door** the client knocks on — you need all three aligned for a global REST API.
 
 ## 7. Study order recap
 
