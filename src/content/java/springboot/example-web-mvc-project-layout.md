@@ -3,7 +3,7 @@ label: "Example"
 subtitle: "Web MVC project layout"
 group: "Spring Boot"
 groupOrder: 2
-order: 8
+order: 1
 ---
 Example project — Spring Web MVC
 Copy the layout and snippets below into a new project (or your IDE’s Spring Initializr output). This page is **not** a bundled repo sample — it documents a typical **`spring-boot-starter-web`** + **Thymeleaf** app: entrypoint, **`@Controller`** + **`@GetMapping`**, a small **`@Service`**, and a view under **`templates/`**.
@@ -150,4 +150,4 @@ Try **`http://localhost:8080/hello?name=Ada`** — the **`message`** attribute c
 - **`Model`** — server-side attributes passed into the Thymeleaf view (`th:text`).
 
 ## 4. Compared to REST
-For JSON APIs you would use **`@RestController`** and return DTOs or **`ResponseEntity`** instead of view names; the package and **`pom.xml`** layout stay the same.
+For JSON APIs you would use **`@RestController`** and return DTOs or **`ResponseEntity`** instead of view names; the package and **`pom.xml`** layout stay the same. See **REST controllers** in the parent **`java/`** folder (Part IV).

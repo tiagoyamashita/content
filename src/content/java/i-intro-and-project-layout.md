@@ -8,7 +8,7 @@ order: 1
 Spring Boot — Part I
 What Boot adds on top of Spring, how the entrypoint bootstraps the container, and how to lay out packages so scanning and auto-configuration behave predictably.
 
-**How this section is organized:** finish the **Java** intro track (`intro/`, Parts I–VI) first, then work through these **Spring Boot** pages in order. The **Example (Web MVC)** page is a copy-paste layout; **Security basics** follows REST before operations topics.
+**How this section is organized:** finish the **Java** intro track (`intro/`, Parts I–VI) first, then work through these **Spring Boot** pages in order. The **Example (Web MVC)** copy-paste layout lives under **`springboot/`**; **Security basics** follows REST before operations topics.
 
 **JDK / Java language level:** examples in this **Spring Boot** track assume **Java SE 22** — use **`javac --release 22`** or set language level **22** in your build (`pom.xml` / `build.gradle`). The same snippets compile on **JDK 21 LTS** unless a file calls out a newer feature. For services in production, prefer a supported **LTS** JDK unless your organization standardizes on a newer release.
 

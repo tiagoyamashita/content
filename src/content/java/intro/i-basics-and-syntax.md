@@ -8,7 +8,7 @@ order: 1
 Java — Part I
 JDK, program shape, types, control flow, methods, and arrays.
 
-**How this section is organized:** **`intro/`** (this group) covers core language through Part VI. Sibling pages at **`java/`** root with **`group: "Spring Boot"`** pick up web services after you are comfortable with classes, collections, and tests.
+**How this section is organized:** **`intro/`** (this group) covers core language through Part VI. The **`springboot/`** submenu holds hands-on examples; sibling pages at **`java/`** root with **`group: "Spring Boot"`** cover the main track after you are comfortable with classes, collections, and tests.
 
 **Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
