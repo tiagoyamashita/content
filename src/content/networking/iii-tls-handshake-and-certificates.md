@@ -32,49 +32,55 @@ Modern TLS 1.2/1.3 differ in detail; a simplified story:
 
 Diagram below: **TCP is already up**; then the **TLS record layer** exchanges handshake messages. Cipher names and optional messages (**ServerKeyExchange**, **client auth**) are omitted for clarity. **TLS 1.3** encrypts most of the server’s first flight and usually completes in fewer round trips—same goals (agree keys, authenticate server, **Finished** proves transcript integrity).
 
-```plantuml
-@startuml tls-handshake-overview
-skinparam sequenceMessageAlign center
-
-actor "Client\n(browser, curl, ...)" as C
-participant "Server\n(TLS stack)" as S
-
-== TCP established (SYN / SYN-ACK / ACK done) ==
-
-C -> S: **ClientHello**\nTLS version offer, cipher suites,\nrandom, session id,\n**SNI** (desired hostname),\nkey exchange extensions (e.g. DH groups)
-
-S -> C: **ServerHello**\nchosen TLS version, cipher suite,\ncompression, random
-
-S -> C: **Certificate**\nserver chain (leaf to intermediates)
-
-S -> C: **ServerHelloDone**\n(server awaits client)
-
-note over C
-  Verify cert chain to a **trusted root**.\n  Check hostname vs **SAN**.\n  Run key agreement (RSA or DH/ECDH).\n  Derive session keys from\n  premaster / shared secret + randoms.
-end note
-
-C -> S: **ClientKeyExchange**\n(premaster secret or DH public)
-
-C -> S: **ChangeCipherSpec**\n1-byte record: switch to negotiated cipher
-
-C -> S: **Finished**\n(HMAC / PRF over handshake transcript)
-
-S -> C: **ChangeCipherSpec**
-
-S -> C: **Finished**
-
-== Handshake complete ==
-
-C -> S: **Application data** (e.g. HTTP)\nencrypted with negotiated AEAD
-
-note right of S
-  After both **Finished** messages match,\n  records use **application traffic keys**.\n  **Alert** records signal errors mid-session.
-end note
-
-@enduml
-```
-
-**If the diagram still does not show:** the default **Markdown** preview does **not** render ` ```plantuml ` blocks. Use the **PlantUML** extension command **PlantUML: Preview Current Diagram** (place the cursor inside the fenced block, then **Ctrl+Shift+P** → type the command). You need **Java** on your `PATH` (the extension runs `plantuml.jar`). **Markdown Preview Enhanced** is a separate preview window that can embed diagrams—again not the stock preview.
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 520" role="img" aria-label="TLS 1.2 simplified handshake sequence after TCP is established">
+  <defs>
+    <marker id="net-iii-tls-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#86efac"/></marker>
+    <marker id="net-iii-tls-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7 0 L0 3.5 L7 7 Z" fill="#60a5fa"/></marker>
+  </defs>
+  <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">TLS handshake (after TCP established)</text>
+  <rect x="12" y="28" width="456" height="22" rx="3" fill="rgba(113,113,122,0.15)" stroke="#71717a"/>
+  <text x="24" y="43" fill="#a1a1aa" font-size="9">TCP already up — SYN / SYN-ACK / ACK complete</text>
+  <text x="72" y="68" fill="#86efac" font-size="10" font-weight="600">Client</text>
+  <line x1="96" y1="74" x2="96" y2="500" stroke="#52525b" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="312" y="68" fill="#60a5fa" font-size="10" font-weight="600">Server (TLS stack)</text>
+  <line x1="336" y1="74" x2="336" y2="500" stroke="#52525b" stroke-width="2" stroke-dasharray="4 3"/>
+  <path d="M96 92 H330" stroke="#86efac" stroke-width="2" marker-end="url(#net-iii-tls-r)"/>
+  <text x="128" y="86" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ClientHello</text>
+  <text x="128" y="98" fill="#a1a1aa" font-size="8">versions, cipher suites, random, SNI, key-share</text>
+  <path d="M330 118 H102" stroke="#60a5fa" stroke-width="2" marker-end="url(#net-iii-tls-l)"/>
+  <text x="148" y="112" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ServerHello</text>
+  <text x="148" y="124" fill="#a1a1aa" font-size="8">chosen version, cipher suite, random</text>
+  <path d="M330 144 H102" stroke="#60a5fa" stroke-width="2" marker-end="url(#net-iii-tls-l)"/>
+  <text x="148" y="138" fill="#e4e4e7" font-size="9" font-family="ui-monospace">Certificate</text>
+  <text x="148" y="150" fill="#a1a1aa" font-size="8">server chain (leaf → intermediates)</text>
+  <path d="M330 168 H102" stroke="#60a5fa" stroke-width="2" marker-end="url(#net-iii-tls-l)"/>
+  <text x="148" y="168" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ServerHelloDone</text>
+  <rect x="108" y="182" width="216" height="58" rx="4" fill="rgba(251,191,36,0.1)" stroke="#fbbf24"/>
+  <text x="118" y="198" fill="#fbbf24" font-size="8" font-weight="600">Client verifies</text>
+  <text x="118" y="212" fill="#a1a1aa" font-size="8">chain to trusted root · hostname vs SAN</text>
+  <text x="118" y="224" fill="#a1a1aa" font-size="8">key agreement (RSA / DH / ECDH) → session keys</text>
+  <path d="M96 254 H330" stroke="#86efac" stroke-width="2" marker-end="url(#net-iii-tls-r)"/>
+  <text x="128" y="250" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ClientKeyExchange</text>
+  <path d="M96 274 H330" stroke="#86efac" stroke-width="1.5" marker-end="url(#net-iii-tls-r)"/>
+  <text x="128" y="270" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ChangeCipherSpec</text>
+  <path d="M96 294 H330" stroke="#86efac" stroke-width="2" marker-end="url(#net-iii-tls-r)"/>
+  <text x="128" y="290" fill="#e4e4e7" font-size="9" font-family="ui-monospace">Finished</text>
+  <text x="128" y="302" fill="#a1a1aa" font-size="8">HMAC / PRF over handshake transcript</text>
+  <path d="M330 322 H102" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#net-iii-tls-l)"/>
+  <text x="148" y="318" fill="#e4e4e7" font-size="9" font-family="ui-monospace">ChangeCipherSpec</text>
+  <path d="M330 342 H102" stroke="#60a5fa" stroke-width="2" marker-end="url(#net-iii-tls-l)"/>
+  <text x="148" y="338" fill="#e4e4e7" font-size="9" font-family="ui-monospace">Finished</text>
+  <rect x="120" y="352" width="192" height="20" rx="3" fill="rgba(34,197,94,0.12)" stroke="#86efac"/>
+  <text x="148" y="366" fill="#86efac" font-size="9" font-weight="600">Handshake complete</text>
+  <path d="M96 388 H330" stroke="#86efac" stroke-width="2" marker-end="url(#net-iii-tls-r)"/>
+  <text x="128" y="384" fill="#e4e4e7" font-size="9" font-family="ui-monospace">Application data</text>
+  <text x="128" y="396" fill="#a1a1aa" font-size="8">e.g. HTTP — encrypted with negotiated AEAD</text>
+  <rect x="348" y="412" width="120" height="52" rx="4" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
+  <text x="356" y="428" fill="#71717a" font-size="8">After both Finished</text>
+  <text x="356" y="440" fill="#71717a" font-size="8">match, traffic keys</text>
+  <text x="356" y="452" fill="#71717a" font-size="8">protect all records</text>
+  <text x="12" y="508" fill="#71717a" font-size="10">Alert records signal errors; TLS 1.3 shortens this flight — same authentication and key goals.</text>
+</svg></figure>
 
 ## 3. Certificates and trust
 
