@@ -19,13 +19,31 @@ To open **TCP** to `api.example.com:443`, the resolver must obtain an **IP addre
 
 ## 3. Record types (practical subset)
 
-| Type | Role |
-|------|------|
-| **A** | IPv4 address |
-| **AAAA** | IPv6 address |
-| **CNAME** | Canonical name — another hostname (often restricted at zone apex) |
-| **TXT** | Arbitrary text — ACME challenges, SPF, DKIM |
-| **NS** | Delegates a zone to authoritative servers |
+| Type | Role | Name | Value |
+|------|------|------|-------|
+| **A** | IPv4 address | `api` | `203.0.113.50` |
+| **AAAA** | IPv6 address | `api` | `2001:db8::1` |
+| **CNAME** | Canonical name — alias to another hostname | `api` | `k8s-lb.eu-west-1.elb.amazonaws.com` |
+| **TXT** | Arbitrary text | `_acme-challenge.api` | `xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cB2aE` |
+| **TXT** | Arbitrary text | `@` | `v=spf1 include:_spf.google.com ~all` |
+| **NS** | Delegates zone to authoritative servers | `@` | `ns1.cloudflare.com` |
+| **NS** | Delegates zone to authoritative servers | `@` | `ns2.cloudflare.com` |
+
+### Hostinger hPanel — DNS zone list (zone `myrestapp.com`)
+
+Same records as they appear under **Websites → myrestapp.com → DNS / DNS records** (columns **Type**, **Name**, **Points to**, **TTL**):
+
+| Type | Name | Points to | TTL |
+|------|------|-----------|-----|
+| A | @ | 185.248.155.42 | 14400 |
+| A | ftp | 185.248.155.42 | 14400 |
+| CNAME | www | myrestapp.com | 14400 |
+| CNAME | api | lb-1847293021.eu-west-1.elb.amazonaws.com | 300 |
+| AAAA | api | 2001:db8:5ca8:1::42 | 300 |
+| TXT | _acme-challenge.api | xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cB2aE | 300 |
+| TXT | @ | v=spf1 include:_spf.google.com ~all | 14400 |
+| NS | @ | ns1.dns-parking.com | 14400 |
+| NS | @ | ns2.dns-parking.com | 14400 |
 
 ## 4. TTL and caching
 
