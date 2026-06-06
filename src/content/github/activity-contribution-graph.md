@@ -2,8 +2,7 @@
 label: "Activity"
 subtitle: "Contribution graph"
 group: "GitHub"
-groupOrder: 1
-order: 1
+order: 4
 ---
 GitHub activity
 The grid below mirrors the **public contribution calendar** on your GitHub profile (daily activity levels 0–4). Squares **appear gradually** after the data loads. Hover a cell for the date and count.
