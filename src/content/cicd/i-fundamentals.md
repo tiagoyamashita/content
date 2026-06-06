@@ -72,6 +72,9 @@ Best practices:
 long-lived API keys — no secret to leak.
 
 ## 6. Remember & rehearse
+
+**Next:** **Tools & platforms** submenu — GitHub Actions, GitLab CI, Jenkins, Docker in CI, CircleCI, Tekton, and a platform decision guide. **Security & best practices** submenu — supply chain, OIDC, runners, testing, DORA, release gates. **Ansible & Jenkins** submenu — configuration management, Vault, deploy pipelines. **Terraform** submenu — IaC, state, modules, CI plan/apply.
+
 - Sketch a three-stage pipeline (build → test → deploy) with a fan-out test job.
 - Explain the difference between Continuous Delivery and Continuous Deployment.
 - Name two trigger types and when you would use each.
