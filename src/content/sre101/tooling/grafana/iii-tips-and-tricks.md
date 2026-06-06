@@ -1,33 +1,34 @@
 ---
 label: "III"
-subtitle: "Tips and tricks"
+subtitle: "ヒントとコツ"
 group: "SRE"
 order: 3
 ---
-SRE tooling — Grafana: Tips and tricks
-Operator-focused habits that keep dashboards and alerts usable.
+SRE ツール — Grafana: ヒントとコツ
 
-## 1. Golden signals
+ダッシュボードとアラートを使いやすく保つ、オペレーターを中心とした習慣。
 
-Per critical user-facing service, aim for panels covering **latency**, **traffic**, **errors**, and **saturation** (or your agreed RED/USE slice)—same layout across services speeds on-call muscle memory.
+## 1. ゴールデンシグナル
 
-## 2. Runbooks and drill-ins
+ユーザー向けの重要なサービスごとに、**遅延**、**トラフィック**、**エラー**、**飽和度** (または合意された RED/USE スライス) をカバーするパネルを目指します。サービス全体で同じレイアウトを使用することで、オンコールの筋肉記憶が高速化されます。
 
-- Put **`runbook_url`** (or dashboard links) in alert annotations so fires open context in one click.
-- Use **dashboard links** and consistent **tags** (`team-payments`, `slo-checkout`) for discovery.
+## 2. ランブックとドリルイン
 
-## 3. Performance
+- アラートの注釈に **`runbook_url`** (またはダッシュボード リンク) を入力すると、ワンクリックでコンテキストが開きます。
+- 発見には **ダッシュボード リンク** と一貫した **タグ** (`team-payments`、`slo-checkout`) を使用します。
 
-- Prefer **recording rules** in Prometheus for heavy PromQL used on every refresh.
-- Raise dashboard **refresh interval** during steady state; avoid 5s everywhere.
-- Limit **high-cardinality** template variables that explode query fan-out.
+## 3. パフォーマンス
 
-## 4. Alerting hygiene
+- 更新のたびに使用される大量の PromQL については、Prometheus の **記録ルール** を優先します。
+- 定常状態の間、ダッシュボードの**更新間隔**を上げます。どこでも5秒を避けてください。
+- クエリのファンアウトを爆発させる **高カーディナリティ** テンプレート変数を制限します。
 
-- Avoid duplicating the same condition in **Prometheus** and **Grafana** unified alerting unless intentionally layered.
-- Route noisy exploratory charts out of **production home** dashboards; keep exec summaries sparse.
+## 4. 衛生上の注意喚起
 
-## 5. Access and drift
+- 意図的に階層化しない限り、**Prometheus** と **Grafana** の統合アラートで同じ条件が重複することを避けます。
+- ノイズの多い探索チャートを **運用ホーム** ダッシュボードからルーティングします。実行サマリーをまばらに保ちます。
 
-- Restrict **Editor** vs **Viewer** roles; use **Git-synced** provisioning for dashboards and datasources where compliance matters.
-- Periodically diff exported JSON against Git to catch silent UI edits.
+## 5. アクセスとドリフト
+
+- **編集者**と**閲覧者**の役割を制限します。コンプライアンスが重要なダッシュボードとデータソースには **Git 同期** プロビジョニングを使用します。
+- エクスポートされた JSON を Git と定期的に比較して、サイレント UI 編集を捕捉します。
