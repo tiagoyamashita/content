@@ -1,32 +1,33 @@
 ---
 label: "II"
-subtitle: "Sorting"
-group: "Data structures & algorithms"
+subtitle: "仕分け"
+group: "データ構造とアルゴリズム"
 order: 2
 ---
-Sorting
-Arrange elements in **non-decreasing** order (or by a **`Comparator`**). **Comparison sorts** only use **compare** — no special key structure.
+仕分け
 
-## 1. Comparison sorts (summary)
+要素を**非減少**の順序で(または**`Comparator`**によって)配置します。 **比較ソート**では**compare**のみが使用され、特別なキー構造は使用されません。
 
-| Algorithm | Best | Average | Worst | Extra space | Stable? |
-|-----------|------|---------|-------|-------------|---------|
-| Bubble / insertion | O(n) | O(n²) | O(n²) | O(1) | Yes |
-| Selection | O(n²) | O(n²) | O(n²) | O(1) | No |
-| Merge sort | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
-| Quicksort | O(n log n) | O(n log n) | O(n²) | O(log n) stack | No |
-| Heapsort | O(n log n) | O(n log n) | O(n log n) | O(1) | No |
+## 1. 比較ソート（概要）
 
-**Stable:** equal keys keep their relative input order. **In-place:** O(1) extra aside from recursion stack.
+|アルゴリズム |ベスト |平均 |最悪 |余分なスペース |安定した？ |
+|----------|------|----------|-------|-------------|----------|
+|バブル / 挿入 | O(n) | O(n²) | O(n²) |お(1) |はい |
+|選択 | O(n²) | O(n²) | O(n²) |お(1) |いいえ |
+|マージソート | O(n log n) | O(n log n) | O(n log n) | O(n) |はい |
+|クイックソート | O(n log n) | O(n log n) | O(n²) | O(log n) スタック |いいえ |
+|ヒープソート | O(n log n) | O(n log n) | O(n log n) |お(1) |いいえ |
 
-**Java:** `Arrays.sort(int[])` uses **dual-pivot quicksort**; `Arrays.sort(Object[])` uses **TimSort** (merge + insertion, stable).
+**安定:** 等しいキーは相対的な入力順序を維持します。 **インプレース:** 再帰スタック以外に O(1) の追加。
 
-## 2. Merge sort (divide & conquer)
-1. **Divide** array into halves until size 1.
-2. **Conquer** — singletons are sorted.
-3. **Combine** — merge two sorted halves in **O(n)** time.
+**Java:** `Arrays.sort(int[])` は **デュアルピボット クイックソート** を使用します。 `Arrays.sort(Object[])` は **TimSort** (マージ + 挿入、安定) を使用します。
 
-**Time Θ(n log n)**; **space Θ(n)** for a typical auxiliary buffer.
+## 2. マージソート（分割統治）
+1. **配列をサイズ 1 になるまで半分に分割します**。
+2. **征服** — シングルトンがソートされます。
+3. **結合** — ソートされた 2 つの半分を **O(n)** 時間で結合します。
+
+**時間 Θ(n log n)**; **典型的な補助バッファのスペース Θ(n)**。
 
 ```java
 // Compile: javac --release 22 …
@@ -61,11 +62,11 @@ private static void merge(int[] a, int[] buf, int lo, int mid, int hi) {
 }
 ```
 
-## 3. Quicksort
-Pick a **pivot**, **partition** so elements ≤ pivot are left, > pivot right, recurse on both sides.
+## 3. クイックソート
+**ピボット**、*パーティション**を選択して、要素 ≤ ピボットが左になり、> 右にピボットされ、両側で再帰されます。
 
-- **Average Θ(n log n)**; **worst Θ(n²)** if pivot is always min/max (sorted input with bad pivot rule).
-- **Mitigation:** random pivot, median-of-three, or switch to insertion sort on small ranges.
+- **平均Θ(n log n)**; **ピボットが常に最小/最大の場合 (不適切なピボット ルールでソートされた入力)、最悪の Θ(n²)**。
+- **軽減策:** ランダム ピボット、3 の中央値、または狭い範囲での挿入ソートに切り替えます。
 
 ```java
 // Compile: javac --release 22 …
@@ -96,21 +97,21 @@ private static int partition(int[] a, int lo, int hi) {
 }
 ```
 
-## 4. Heapsort
-1. **Build** a max-heap in the array (**O(n)** bottom-up).
-2. Repeatedly swap root with last unsorted position and **sink** root — **O(log n)** per step → **O(n log n)** total.
+## 4. ヒープソート
+1. 配列内に最大ヒープを **構築**します (**O(n)** ボトムアップ)。
+2. ルートをソートされていない最後の位置とルートを**シンク** に繰り返し交換します — ステップあたり **O(log n)** → 合計 **O(n log n)**。
 
-Uses the **binary heap** ADT [Binary heap](../data-structures/viii-binary-heap.md); **in-place** if you heapify the array itself.
+**バイナリ ヒープ** ADT [バイナリ ヒープ](../data-structures/viii-binary-heap.md); を使用します。 **インプレース** 配列自体をヒープ化する場合。
 
-## 5. When to use which
-- **General purpose in Java:** `Arrays.sort`.
-- **Need stability on objects:** `Arrays.sort(Object[])` or explicit merge sort.
-- **External sort (data on disk):** merge sort — sequential passes.
-- **Top-k / partial order:** heap or `PriorityQueue`, not full sort.
+## 5. いつどれを使用するか
+- **Java の汎用:** `Arrays.sort`。
+- **オブジェクトの安定性が必要:** `Arrays.sort(Object[])` または明示的なマージ ソート。
+- **外部ソート (ディスク上のデータ):** マージ ソート — 順次パス。
+- **Top-k / 部分順序:** ヒープまたは `PriorityQueue`、フルソートではありません。
 
-## 6. Solving with the JDK (already implemented)
+## 6. JDK による解決 (実装済み)
 
-You rarely write merge/quick sort in application code — call the library after choosing **primitive vs object** and **stable vs unstable**.
+アプリケーション コードでマージ/クイック ソートを記述することはほとんどありません。**プリミティブかオブジェクト**、**安定か不安定**を選択した後、ライブラリを呼び出します。
 
 ```java
 // Compile: javac --release 22 …
@@ -135,11 +136,11 @@ for (int x : a) {
 }
 ```
 
-| Need | API |
+|必要 | API |
 |------|-----|
-| Sort `int[]` / `double[]` | `Arrays.sort` |
-| Sort `Object[]` or `List` | `Arrays.sort`, `list.sort(Comparator)`, `Collections.sort` |
-| Custom order | `Comparator.comparing`, `comparingInt`, `reverseOrder` |
-| Only k largest / smallest | `PriorityQueue` size **k** |
+| `int[]` / `double[]` | 並べ替え`Arrays.sort` |
+| `Object[]` または `List` を並べ替える | `Arrays.sort`、`list.sort(Comparator)`、`Collections.sort` |
+|カスタムオーダー | `Comparator.comparing`、`comparingInt`、`reverseOrder` |
+| k のみ最大/最小 | `PriorityQueue` サイズ **k** |
 
-More examples: **[Solving with the JDK](xi-solving-with-the-jdk.md)**.
+その他の例: **[JDK を使用した解決](xi-solving-with-the-jdk.md)**。

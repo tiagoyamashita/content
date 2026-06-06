@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Cloud architecture"
+subtitle: "概要"
+group: "クラウドアーキテクチャ"
 order: 1
 ---
-Patterns & design — overview
-**Foundations** submenu covers **what cloud gives you** (compute, storage, VPC). This submenu covers **how to architect** for scale, resilience, observability, and cost at application and platform level.
+パターンとデザイン — 概要
 
-## Map of this submenu
+**基礎** サブメニューでは、**クラウドが提供するもの** (コンピューティング、ストレージ、VPC) について説明します。このサブメニューでは、アプリケーションおよびプラットフォーム レベルでの規模、復元力、可観測性、コストを**設計する方法**について説明します。
+
+## このサブメニューのマップ
 
 | Note | Focus |
 |------|--------|
@@ -18,9 +19,9 @@ Patterns & design — overview
 | [Observability, SLI & SLO](vi-observability-slo-and-slis.md) | Logs, metrics, traces, SLI/SLO/SLA |
 | [Cost & governance](vii-cost-and-governance.md) | Pricing models, FinOps, IAM, guardrails |
 
-**Related:** **Foundations** submenu (Well-Architected pillars), system design **scalable-patterns**, networking ingress/CDN notes.
+**関連:** **Foundations** サブメニュー (Well-Architected の柱)、システム設計 **スケーラブル パターン**、ネットワークイングレス/CDN のメモ。
 
-## Architecture layers (mental model)
+## アーキテクチャ層 (メンタルモデル)
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="Cloud architecture layers client gateway services data">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Request path — patterns apply at each hop</text>
@@ -41,18 +42,18 @@ Patterns & design — overview
   <text x="12" y="92" fill="#71717a" font-size="9">Scale services horizontally · cache reads · async where possible · observe everything</text>
 </svg></figure>
 
-## Well-Architected connection
+## 適切に設計された接続
 
-| Pillar | Patterns in this submenu |
-|--------|--------------------------|
-| **Reliability** | Auto scaling, circuit breakers, multi-AZ (Foundations) |
-| **Performance** | Caching, CDN, right-sizing |
-| **Security** | Gateway auth, IAM least privilege, governance |
-| **Cost** | Spot, reserved, FinOps tagging |
-| **Operational excellence** | Observability, SLOs |
+|柱 |このサブメニューのパターン |
+|----------|--------------------------|
+| **信頼性** |オート スケーリング、サーキット ブレーカー、マルチ AZ (基礎) |
+| **パフォーマンス** |キャッシュ、CDN、適切なサイジング |
+| **セキュリティ** |ゲートウェイ認証、IAM 最小権限、ガバナンス |
+| **コスト** |スポット、予約済み、FinOps タグ付け |
+| **優れた運用能力** |可観測性、SLO |
 
-## Rehearsal
+## リハーサル
 
-- Stateless vs stateful — impact on auto scaling?
-- Queue vs pub/sub — one consumer or many?
-- SLI vs SLO vs SLA — which is contractual?
+- ステートレスとステートフル — 自動スケーリングへの影響?
+- キューとパブ/サブスクライブ — 1 人のコンシューマーか、それとも複数のコンシューマーか?
+- SLI vs SLO vs SLA — どちらが契約上ですか?

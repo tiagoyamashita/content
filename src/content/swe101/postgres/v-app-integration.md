@@ -1,13 +1,15 @@
 ---
 label: "V"
-subtitle: "App integration"
+subtitle: "アプリの統合"
 group: "Postgres"
 order: 5
 ---
-Postgres — app integration
+Postgres — アプリの統合
+
+
 Applications talk to Postgres through a **driver**, usually via a **connection pool**. This note covers JDBC/Spring patterns that match the [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) track.
 
-## 1. Layers
+## 1. レイヤー
 
 ```text
 Controller  →  Service  →  Repository  →  JDBC / JPA  →  Pool  →  Postgres
@@ -19,7 +21,7 @@ Controller  →  Service  →  Repository  →  JDBC / JPA  →  Pool  →  Post
 | **Pool** | Reuse TCP connections; cap concurrent DB usage |
 | **Transaction** | `@Transactional` boundary — commit or rollback |
 
-## 2. JDBC (minimal example)
+## 2. JDBC (最小限の例)
 
 ```java
 // Java SE 22 — try-with-resources
@@ -38,9 +40,9 @@ try (var conn = DriverManager.getConnection(url, "myapp", "secret");
 
 Always use **`PreparedStatement`** — parameter binding prevents SQL injection and enables plan cache reuse.
 
-## 3. Connection pooling (HikariCP)
+## 3. コネクションプーリング(HikariCP)
 
-Spring Boot defaults to **HikariCP**. Configure pool size from **expected concurrent requests**, not “as high as possible”:
+Spring Boot のデフォルトは **HikariCP** です。 「可能な限り大きく」ではなく、**予想される同時リクエスト**に基づいてプール サイズを構成します。
 
 ```yaml
 # application.yml
@@ -54,15 +56,15 @@ spring:
       connection-timeout: 5000
 ```
 
-| Guideline | Rule of thumb |
-|-----------|---------------|
-| **Pool size** | Often tens, not hundreds — Postgres has limited connections |
-| **Timeout** | Fail fast when pool exhausted instead of hanging threads |
-| **One pool per service** | Do not open a new connection per request without pooling |
+|ガイドライン |経験則 |
+|----------|------|
+| **プールのサイズ** |多くの場合、数百ではなく数十 — Postgres の接続は限られています。
+| **タイムアウト** |スレッドをハングさせるのではなく、プールが使い果たされたときに高速に失敗します。
+| **サービスごとに 1 つのプール** |プールせずにリクエストごとに新しい接続を開かないでください。
 
 Postgres **`max_connections`** (default ~100) is shared — count app instances × pool size + admin overhead.
 
-## 4. Spring Data JPA entity sketch
+## 4. Spring Data JPA エンティティのスケッチ
 
 ```java
 @Entity
@@ -96,9 +98,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
 See [JPA & transactional](../java/springboot/v-jpa-and-transactional.md) for transaction boundaries and lazy-loading pitfalls.
 
-## 5. Migrations in Spring Boot
+## 5. Spring Boot での移行
 
-Typical setup: **Flyway** runs before JPA starts:
+一般的なセットアップ: **Flyway** は JPA が開始される前に実行されます。
 
 ```yaml
 spring:
@@ -112,19 +114,19 @@ spring:
 
 **`ddl-auto: validate`** — Hibernate checks entities match DB; Flyway owns schema changes.
 
-## 6. Read vs write splitting (preview)
+## 6. 読み取りと書き込みの分割 (プレビュー)
 
-At scale, route **read-only** queries to replicas:
+大規模な場合は、**読み取り専用** クエリをレプリカにルーティングします。
 
 ```text
 Primary (writes)  ──replication──►  Replica (reads)
 ```
 
-ORM and connection routing need explicit read-replica datasource config — not automatic from a single JDBC URL.
+ORM と接続ルーティングには、明示的なリードレプリカ データソース構成が必要です。単一の JDBC URL から自動的には構成されません。
 
-## 7. Local dev with Testcontainers
+## 7. Testcontainers を使用したローカル開発
 
-Integration tests spin up real Postgres in Docker:
+統合テストは、実際の Postgres を Docker でスピンアップします。
 
 ```java
 @Container
@@ -140,6 +142,6 @@ static void dbProps(DynamicPropertyRegistry registry) {
 
 Same SQL dialect as production — preferable to H2 for Postgres-specific features (`JSONB`, constraints).
 
-## Next
+＃＃ 次
 
 Continue with [Operations & backups](vi-operations-and-backups.md) for roles, dumps, and recovery basics.

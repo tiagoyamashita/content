@@ -1,22 +1,23 @@
 ---
 label: "VIII"
-subtitle: "Well-Architected Framework"
-group: "Cloud architecture"
+subtitle: "適切に設計されたフレームワーク"
+group: "クラウドアーキテクチャ"
 order: 8
 ---
-Well-Architected Framework
-AWS **Well-Architected Framework** (applies conceptually to Azure/GCP too) defines **six pillars** for reviewing workloads. Use it in design reviews and post-incident retrospectives.
+適切に設計されたフレームワーク
 
-## 1. Pillars overview
+AWS **Well-Architected フレームワーク** (概念的には Azure/GCP にも適用されます) は、ワークロードをレビューするための **6 つの柱**を定義します。設計レビューや事件後の回顧に使用してください。
 
-| # | Pillar | Question it answers |
-|---|--------|---------------------|
-| 1 | **Operational Excellence** | Can we run and improve the system? |
-| 2 | **Security** | Is data and infrastructure protected? |
-| 3 | **Reliability** | Does it recover from failure and meet demand? |
-| 4 | **Performance Efficiency** | Are we using resources well? |
-| 5 | **Cost Optimization** | Are we avoiding waste? |
-| 6 | **Sustainability** | Are we minimizing environmental impact? |
+## 1. 柱の概要
+
+| # |柱 |質問に答える |
+|---|--------|----------|
+| 1 | **オペレーショナルエクセレンス** |システムを実行して改善することはできるでしょうか? |
+| 2 | **セキュリティ** |データとインフラストラクチャは保護されていますか? |
+| 3 | **信頼性** |障害から回復して需要に応えられるか? |
+| 4 | **パフォーマンス効率** |私たちは資源をうまく活用できていますか? |
+| 5 | **コストの最適化** |私たちは無駄を避けていますか？ |
+| 6 | **持続可能性** |私たちは環境への影響を最小限に抑えていますか? |
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" role="img" aria-label="Six Well-Architected pillars">
   <text x="12" y="18" fill="#d4d4d8" font-size="11" font-weight="600">Six pillars — no single pillar wins alone</text>
@@ -35,113 +36,113 @@ AWS **Well-Architected Framework** (applies conceptually to Azure/GCP too) defin
   <text x="12" y="78" fill="#71717a" font-size="9">Trade-offs: stricter security may add latency; higher availability adds cost</text>
 </svg></figure>
 
-## 2. Operational Excellence
+## 2. 優れた運用性
 
-Run and monitor systems; continuously improve.
+システムを実行および監視します。継続的に改善します。
 
-| Practice | Cloud example |
-|----------|---------------|
-| **Infrastructure as Code** | Terraform, CloudFormation |
-| **Small reversible changes** | Feature flags, blue/green deploy |
-| **Runbooks** | DR failover steps documented |
-| **Observability** | Logs, metrics, traces, alarms |
+|練習 |クラウドの例 |
+|----------|--------------|
+| **コードとしてのインフラストラクチャ** | Terraform、クラウドフォーメーション |
+| **可逆的な小さな変化** |機能フラグ、青/緑の展開 |
+| **ランブック** | DR フェイルオーバー手順を文書化 |
+| **可観測性** |ログ、メトリクス、トレース、アラーム |
 
 ```text
 Change → CI/CD → automated test → staged deploy → monitor → rollback if SLO burn
 ```
 
-**Anti-pattern:** Manual console changes with no audit trail.
+**アンチパターン:** 監査証跡を伴わない手動のコンソール変更。
 
-## 3. Security
+## 3. セキュリティ
 
-Protect information, systems, and assets.
+情報、システム、資産を保護します。
 
-| Practice | Cloud example |
-|----------|---------------|
-| **Least privilege IAM** | Role per workload, no wildcards |
-| **Encryption** | TLS in transit, KMS at rest |
-| **Audit** | CloudTrail, Config, GuardDuty |
-| **Network isolation** | Private subnets, security groups |
+|練習 |クラウドの例 |
+|----------|--------------|
+| **最低特権 IAM** |ワークロードごとのロール、ワイルドカードなし |
+| **暗号化** | TLS は転送中、KMS は静止中 |
+| **監査** | CloudTrail、構成、GuardDuty |
+| **ネットワーク分離** |プライベートサブネット、セキュリティグループ |
 
 See patterns [Cost & governance](../patterns-and-design/vii-cost-and-governance.md) for IAM/SCP detail.
 
-## 4. Reliability
+## 4. 信頼性
 
-Recover from failures and meet demand.
+障害から回復し、需要に応えます。
 
-| Practice | Cloud example |
-|----------|---------------|
-| **Multi-AZ** | ASG + ALB across AZs |
-| **Auto scaling** | Target tracking on CPU/RPS |
-| **Health checks** | LB + Route 53 |
-| **Graceful degradation** | Circuit breakers, cached fallbacks |
+|練習 |クラウドの例 |
+|----------|--------------|
+| **マルチ AZ** | AZ 全体の ASG + ALB |
+| **自動スケーリング** | CPU/RPS でのターゲット追跡 |
+| **健康診断** | LB + ルート 53 |
+| **グレースフルデグラデーション** |サーキット ブレーカー、キャッシュされたフォールバック |
 
 Foundations: [HA & disaster recovery](vii-ha-and-disaster-recovery.md). Patterns: event-driven, circuit breakers.
 
-## 5. Performance Efficiency
+## 5. パフォーマンス効率
 
-Use computing resources efficiently as demand changes.
+需要の変化に応じてコンピューティング リソースを効率的に使用します。
 
-| Practice | Cloud example |
-|----------|---------------|
-| **Right-sizing** | Compute Optimizer recommendations |
-| **Managed services** | RDS vs self-managed Postgres on EC2 |
-| **Caching** | CloudFront, Redis |
-| **Benchmark** | Load test before launch |
+|練習 |クラウドの例 |
+|----------|--------------|
+| **適切なサイジング** | Compute Optimizer の推奨事項 |
+| **マネージド サービス** | RDS と EC2 上の自己管理型 Postgres の比較 |
+| **キャッシング** | CloudFront、Redis |
+| **ベンチマーク** |起動前の負荷テスト |
 
-| Review | Question |
-|--------|----------|
-| Wrong instance family | CPU-bound on memory-optimized? |
-| Missing CDN | Static assets hitting origin? |
-| Sync where async fits | Queue decoupling |
+|レビュー |質問 |
+|----------|----------|
+|間違ったインスタンス ファミリ | CPU はメモリ最適化に依存していますか? |
+| CDN が見つかりません |静的アセットがオリジンにヒットしますか? |
+|非同期が適した場所で同期 |キューの分離 |
 
-## 6. Cost Optimization
+## 6. コストの最適化
 
-Avoid unnecessary spend while meeting requirements.
+要件を満たしながら不必要な支出を回避します。
 
-| Practice | Cloud example |
-|----------|---------------|
-| **Reserved / Savings Plans** | Steady baseline capacity |
-| **Spot** | Batch, fault-tolerant workers |
-| **Auto scaling in** | Remove idle capacity |
-| **Tagging & budgets** | Cost allocation by team |
+|練習 |クラウドの例 |
+|----------|--------------|
+| **予約/節約プラン** |安定したベースライン容量 |
+| **スポット** |バッチ、フォールト トレラント ワーカー |
+| **自動スケールイン** |アイドル容量を削除 |
+| **タグ付けと予算** |チームごとのコスト配分 |
 
 Full detail: patterns [Cost & governance](../patterns-and-design/vii-cost-and-governance.md).
 
-## 7. Sustainability
+## 7. 持続可能性
 
-Minimize environmental impact of cloud workloads.
+クラウド ワークロードによる環境への影響を最小限に抑えます。
 
-| Practice | Effect |
-|----------|--------|
-| **Right-size** | Less wasted CPU cycles |
-| **Higher utilization** | Fewer physical servers overall |
-| **Managed services** | Provider optimizes hardware efficiency |
-| **Graviton / ARM instances** | Better perf/watt for compatible apps |
-| **Delete idle resources** | No ghost EC2 or unattached EBS |
+|練習 |効果 |
+|----------|----------|
+| **適切なサイズ** |無駄な CPU サイクルが減少 |
+| **使用率の向上** |全体的な物理サーバーの数が少ない |
+| **マネージド サービス** |プロバイダーはハードウェア効率を最適化します |
+| **Graviton / ARM インスタンス** |互換性のあるアプリのパフォーマンス/ワットの向上 |
+| **アイドル状態のリソースを削除します** |ゴースト EC2 または接続されていない EBS はありません。
 
-Often aligns with **cost** optimization — efficient usually means greener.
+多くの場合、**コスト** の最適化と連携します。効率的であるということは、通常、より環境に優しいということを意味します。
 
-## 8. Well-Architected Review (WAR)
+## 8. 適切に設計されたレビュー (WAR)
 
-Structured questionnaire per pillar — run:
+柱ごとに構造化されたアンケート — 実行:
 
-- Before major launch
-- After serious incident
-- Annually for critical workloads
+- メジャーリリース前
+- 重大な事件の後
+- 重要なワークロードについては毎年
 
-Output: **HRIs** (high-risk issues) prioritized for remediation.
+出力: **HRI** (高リスクの問題) を優先して修復します。
 
-## 9. Pillar trade-offs
+## 9. 柱のトレードオフ
 
-| Tension | Balance |
-|---------|---------|
-| Security vs performance | mTLS adds latency — worth it for east-west |
-| Reliability vs cost | Multi-region doubles infra — need business case |
-| Speed vs ops excellence | Automate even under deadline pressure |
-| Cost vs reliability | Spot for batch, on-demand for critical path |
+|テンション |バランス |
+|----------|----------|
+|セキュリティとパフォーマンス | mTLS はレイテンシを追加します - 東西を問わず価値があります |
+|信頼性とコスト |マルチリージョンのインフラが 2 倍になる — ビジネスケースが必要 |
+|スピードと運用の卓越性 |締め切りのプレッシャー下でも自動化 |
+|コストと信頼性 |バッチにはスポット、クリティカル パスにはオンデマンド |
 
-## 10. Map pillars to this track
+## 10. 柱をこのトラックにマップします
 
 | Pillar | Foundations note | Patterns note |
 |--------|------------------|---------------|
@@ -152,10 +153,10 @@ Output: **HRIs** (high-risk issues) prioritized for remediation.
 | Cost | — | FinOps |
 | Sustainability | right-size compute | utilization |
 
-## 11. Rehearsal answers
+## 11. リハーサルの答え
 
-- **Six pillars** — Ops, Security, Reliability, Performance, Cost, Sustainability.
-- **Reliability vs HA** — reliability is pillar; HA is multi-AZ technique.
-- **IaC** — supports Ops + Security (reviewable changes).
+- **6 つの柱** — 運用、セキュリティ、信頼性、パフォーマンス、コスト、持続可能性。
+- **信頼性と HA** — 信頼性が柱です。 HA は複数の AZ テクニックです。
+- **IaC** — Ops + Security (レビュー可能な変更) をサポートします。
 
 **Related:** [Overview](i-overview.md), **Patterns & design** submenu, CI/CD Terraform submenu.

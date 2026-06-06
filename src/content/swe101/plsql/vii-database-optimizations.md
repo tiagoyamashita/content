@@ -1,13 +1,15 @@
 ---
 label: "VII"
-subtitle: "Database optimizations"
+subtitle: "データベースの最適化"
 group: "PL/SQL"
 order: 7
 ---
-PL/SQL — database optimizations
+PL/SQL — データベースの最適化
+
+
 How to optimize **Oracle** workloads that use PL/SQL: prefer set-based SQL, reduce round trips, read execution plans, and avoid hidden row-by-row cost. Bulk primitives are in [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md); Postgres equivalents in [Database optimizations (Postgres)](../postgres/vii-database-optimizations.md).
 
-## 1. Optimization workflow
+## 1. 最適化ワークフロー
 
 ```text
 1. Find slow SQL / jobs     (AWR, ASH, V$SQL, app traces)
@@ -25,11 +27,11 @@ How to optimize **Oracle** workloads that use PL/SQL: prefer set-based SQL, redu
 | **SQL Developer** | Explain plan, trace, profiler |
 | **`DBMS_PROFILER` / PL/Scope** | Line-level PL/SQL time (dev) |
 
-Always optimize against **production-scale** row counts — 100-row dev schemas hide full table scans.
+常に **本番規模** の行数に対して最適化します。100 行の開発スキーマはテーブル全体のスキャンを隠します。
 
-## 2. Golden rule: set-based SQL first
+## 2. 黄金律: 最初にセットベースの SQL
 
-Before tuning a cursor loop, ask whether one SQL statement suffices:
+カーソル ループを調整する前に、1 つの SQL ステートメントで十分かどうかを確認してください。
 
 ```sql
 -- Slow: row-by-row in PL/SQL
@@ -50,9 +52,9 @@ UPDATE employees SET salary = salary * 1.05 WHERE department_id = 50;
 | Loop + `SELECT INTO` | Join or subquery in one statement |
 | Manual aggregation | **`GROUP BY`**, analytic functions |
 
-Use PL/SQL loops when **each row needs different procedural logic** that SQL cannot express — not as default CRUD.
+**各行に異なる手続きロジックが必要**で、SQL では表現できない場合 (デフォルトの CRUD としてではなく) PL/SQL ループを使用します。
 
-## 3. Bulk operations in PL/SQL
+## 3. PL/SQL での一括操作
 
 When you must loop, batch fetches and DML — see [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md).
 
@@ -85,7 +87,7 @@ END;
 
 Tune **`LIMIT`** (500–5000) — balance memory vs round trips.
 
-## 4. Bind variables and shared SQL
+## 4. バインド変数と共有 SQL
 
 Literal values in dynamic SQL cause **hard parses** and fill **`V$SQL`**:
 
@@ -100,7 +102,7 @@ EXECUTE IMMEDIATE 'SELECT salary FROM employees WHERE employee_id = :id'
 
 Apps using JDBC **`PreparedStatement`** get binds automatically; dynamic PL/SQL must use **`USING`** or native binding.
 
-Check for churn:
+チャーンをチェックします。
 
 ```sql
 SELECT sql_text, executions, parse_calls
@@ -111,7 +113,7 @@ ORDER BY parse_calls DESC;
 
 High **`parse_calls`** relative to **`executions`** → binding or cursor reuse problem.
 
-## 5. Execution plans
+## 5. 実行計画
 
 ```sql
 EXPLAIN PLAN FOR
@@ -123,16 +125,16 @@ EXPLAIN PLAN FOR
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 ```
 
-| Operation | Concern |
-|-----------|---------|
-| **TABLE ACCESS FULL** | Large table, no useful index |
-| **NESTED LOOPS** | OK if inner index lookup; bad if inner is full scan |
-| **HASH JOIN** | Large sets without index on join key |
-| **CARTESIAN** | Missing join condition |
+|操作 |懸念事項 |
+|----------|----------|
+| **TABLE ACCESS FULL** |大きなテーブル、有用なインデックスがない |
+| **NESTED LOOPS** | OK 内部インデックス検索の場合。内部がフルスキャンの場合は悪い |
+| **HASH JOIN** |結合キーにインデックスのない大きなセット |
+| **CARTESIAN** |結合条件がありません |
 
-Compare **estimated vs actual rows** (12c+ adaptive plans, SQL Monitor) — stale stats → wrong join order.
+**推定行と実際の行**を比較します (12c+ 適応プラン、SQL モニター) - 統計が古い → 結合順序が間違っています。
 
-Refresh stats after bulk load:
+一括ロード後に統計を更新します。
 
 ```sql
 BEGIN
@@ -141,7 +143,7 @@ END;
 /
 ```
 
-## 6. Indexes (SQL layer)
+## 6. インデックス (SQL 層)
 
 Same ideas as Postgres — match **`WHERE`**, **`JOIN`**, and **`ORDER BY`**:
 
@@ -155,11 +157,11 @@ CREATE INDEX emp_dept_sal_idx ON employees (department_id, salary DESC);
 | **Function-based index** | `CREATE INDEX … ON employees (UPPER(email))` for case-insensitive search |
 | **Invisible / partial** | Test index before exposing to all sessions |
 
-Avoid indexing every column “just in case” — DML in bulk jobs slows down.
+「念のため」すべての列にインデックスを付けることは避けてください。一括ジョブの DML の速度が低下します。
 
-## 7. Reduce PL/SQL ↔ SQL context switches
+## 7. __​​IT0__ ↔ SQL コンテキスト スイッチを減らす
 
-Each standalone SQL from PL/SQL has overhead. Batch work:
+PL/SQL からの各スタンドアロン SQL にはオーバーヘッドがあります。バッチ作業:
 
 | Anti-pattern | Better |
 |--------------|--------|
@@ -170,9 +172,9 @@ Each standalone SQL from PL/SQL has overhead. Batch work:
 
 **`PRAGMA UDF`** (12c+) can inline small functions in SQL — use for pure computation, not DML.
 
-## 8. Parallelism and partitioning (awareness)
+## 8. 並列処理と分割 (認識)
 
-**Partition pruning** — queries with partition key skip irrelevant segments:
+**パーティション プルーニング** — パーティション キーを使用したクエリは無関係なセグメントをスキップします。
 
 ```sql
 SELECT COUNT(*) FROM sales
@@ -182,9 +184,9 @@ WHERE sale_date >= DATE '2026-05-01'
 
 **Parallel DML/query** (`PARALLEL` hint or table degree) — DBA territory; can saturate I/O; test off-peak.
 
-For nightly PL/SQL jobs, schedule during low contention; watch **enqueue waits** and **undo** usage.
+夜間の PL/SQL ジョブの場合は、競合が少ない時間帯にスケジュールを設定します。 **エンキュー待機**と**元に戻す**の使用状況を監視します。
 
-## 9. Triggers and packages
+## 9. トリガーとパッケージ
 
 | Risk | Mitigation |
 |------|------------|
@@ -192,9 +194,9 @@ For nightly PL/SQL jobs, schedule during low contention; watch **enqueue waits**
 | **`AUTHID DEFINER`** + hidden DML | Audit; keep triggers thin |
 | Package state assumptions | Pool-friendly apps may not share session state |
 
-Profile before adding triggers for “optimization” — they often add latency to every DML.
+「最適化」のためのトリガーを追加する前にプロファイルを作成します。多くの場合、各 DML に遅延が追加されます。
 
-## 10. Checklist
+## 10. チェックリスト
 
 - [ ] Hottest SQL identified (`V$SQL`, AWR, or app trace)
 - [ ] **`EXPLAIN PLAN`** reviewed for full scans and bad joins
@@ -204,7 +206,7 @@ Profile before adding triggers for “optimization” — they often add latency
 - [ ] Indexes align with predicates (not redundant copies)
 - [ ] Commits scoped to business batches, not per row
 
-## Related notes
+## 関連メモ
 
 - [Control flow & cursors](iii-control-flow-and-cursors.md) — when loops are justified
 - [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md) — `BULK COLLECT`, `FORALL`, errors

@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "Scalability & caching"
-group: "Cloud architecture"
+subtitle: "スケーラビリティとキャッシュ"
+group: "クラウドアーキテクチャ"
 order: 2
 ---
-Scalability & caching
-Handle growth by **scaling** compute and **offloading** repeated reads. Cloud auto scaling assumes **stateless** application tiers.
+スケーラビリティとキャッシュ
 
-## 1. Vertical vs horizontal scaling
+コンピューティングの**スケーリング**と繰り返しの読み取りの**オフロード**により、増大に対処します。クラウドの自動スケーリングは、**ステートレス** アプリケーション層を前提としています。
+
+## 1. 垂直スケーリングと水平スケーリング
 
 | | Vertical (scale up) | Horizontal (scale out) |
 |---|---------------------|------------------------|
@@ -22,15 +23,15 @@ Horizontal: [==] [==]     →  [==] [==] [==] [==] [==]
             load balancer distributes requests
 ```
 
-## 2. Stateless services
+## 2. ステートレス サービス
 
-Each request must carry enough context for **any** instance to handle it:
+各リクエストには、**任意**のインスタンスが処理できる十分なコンテキストが含まれている必要があります。
 
-| Stateful (bad for scale-out) | Stateless (good) |
-|------------------------------|------------------|
-| Session in JVM memory | JWT or session in Redis |
-| Local file upload cache | S3 pre-signed upload |
-| In-memory shopping cart | Cart in DB/Redis |
+|ステートフル (スケールアウトには悪い) |無国籍 (良い) |
+|----------------------------|---------------|
+| JVM メモリ内のセッション | JWT または Redis のセッション |
+|ローカル ファイル アップロード キャッシュ | S3 署名済みアップロード |
+|インメモリショッピングカート | DB/Redis のカート |
 
 ```http
 GET /api/orders HTTP/1.1
@@ -38,17 +39,17 @@ Authorization: Bearer eyJhbG...
 X-Request-Id: 7f3a9c2e-...
 ```
 
-Any pod behind the load balancer can serve the request.
+ロード バランサーの背後にある任意のポッドがリクエストを処理できます。
 
-## 3. Auto Scaling
+## 3. オートスケーリング
 
-**AWS Auto Scaling Group** (similar: Azure VMSS, GKE HPA):
+**AWS Auto Scaling グループ** (類似: Azure VMSS、GKE HPA):
 
-| Policy type | Behavior |
-|-------------|----------|
-| **Target tracking** | Keep metric at target (e.g. CPU 60%) — simplest |
-| **Step scaling** | Add N instances when CPU > 80% |
-| **Scheduled** | Scale up before known peak (Black Friday) |
+|ポリシーの種類 |行動 |
+|---------------|----------|
+| **ターゲット追跡** |指標を目標値に維持する (例: CPU 60%) — 最も単純 |
+| **ステップスケーリング** | CPU > 80% の場合、N 個のインスタンスを追加します。
+| **予定** |既知のピークの前にスケールアップ (ブラック フライデー) |
 
 ```yaml
 # Conceptual ASG target tracking
@@ -58,13 +59,13 @@ ScaleOutCooldown: 300   # seconds — prevent thrashing
 ScaleInCooldown: 300
 ```
 
-| Setting | Why |
-|---------|-----|
-| **Cooldown** | Avoid add/remove loop on noisy metrics |
-| **Min / max / desired** | Floor for HA, ceiling for cost |
-| **Health checks** | LB deregisters unhealthy instances before scale-in |
+|設定 |なぜ |
+|----------|-----|
+| **クールダウン** |ノイズの多いメトリクスでの追加/削除ループを回避する |
+| **最小/最大/希望** | HA の下限、コストの上限 |
+| **健康診断** | LB は、スケールインの前に異常なインスタンスの登録を解除します。
 
-## 4. Caching layers
+## 4. レイヤーのキャッシュ
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" role="img" aria-label="Cache tiers CDN Redis read replica">
   <rect x="12" y="36" width="72" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
@@ -81,14 +82,14 @@ ScaleInCooldown: 300
   <text x="12" y="24" fill="#d4d4d8" font-size="11" font-weight="600">Closer to user = lower latency</text>
 </svg></figure>
 
-| Layer | Stores | TTL / invalidation |
-|-------|--------|-------------------|
-| **CDN** (CloudFront, Cloudflare) | Static assets, cacheable GET APIs | Cache-Control headers |
-| **In-memory** (Redis, Memcached) | Hot rows, sessions, rate limits | Key TTL, pub/sub invalidation |
-| **Read replica** | Full DB copy | Async replication lag |
-| **Application** | Computed aggregates | Local Caffeine — watch staleness |
+|レイヤー |店舗 | TTL / 無効化 |
+|------|--------|--------|
+| **CDN** (CloudFront、Cloudflare) |静的アセット、キャッシュ可能な GET APIs |キャッシュ制御ヘッダー |
+| **インメモリ** (Redis、Memcached) |ホット行、セッション、レート制限 |キー TTL、パブリッシュ/サブスクライブの無効化 |
+| **リードレプリカ** | DB の完全なコピー |非同期レプリケーションの遅延 |
+| **アプリケーション** |計算された集計 |ローカルカフェイン — 古くなったものに注意 |
 
-## 5. Cache-aside pattern
+## 5. キャッシュアサイドパターン
 
 ```text
 1. GET key from Redis
@@ -96,21 +97,21 @@ ScaleInCooldown: 300
 3. Write → update DB → DELETE Redis key (or update)
 ```
 
-| Pitfall | Mitigation |
-|---------|------------|
-| **Cache stampede** | Single-flight lock, request coalescing |
-| **Stale reads** | Short TTL + invalidation on write |
-| **Hot key** | Shard key, local L1 cache |
+|落とし穴 |緩和 |
+|-----------|-----------|
+| **キャッシュスタンピード** |シングルフライト ロック、合体要求 |
+| **古い記事** |短い TTL + 書き込み時の無効化 |
+| **ホットキー** |シャード キー、ローカル L1 キャッシュ |
 
-## 6. Read vs write scaling
+## 6. 読み取りと書き込みのスケーリング
 
-| Bottleneck | Pattern |
-|------------|---------|
-| Read-heavy | Replicas + Redis + CDN |
-| Write-heavy | Sharding, queue-backed writes, partition keys |
-| Mixed | CQRS — separate read and write models |
+|ボトルネック |パターン |
+|-----------|-----------|
+|読み取りが多い |レプリカ + Redis + CDN |
+|書き込みが多い |シャーディング、キューバック書き込み、パーティションキー |
+|混合 | CQRS — 個別の読み取りモデルと書き込みモデル |
 
-## 7. Example: e-commerce product page
+## 7. 例: 電子商取引の商品ページ
 
 ```text
 User → CloudFront (product image, static JS)
@@ -119,15 +120,15 @@ User → CloudFront (product image, static JS)
      → RDS primary (orders) + read replica (browse catalog)
 ```
 
-Scale API pods on request rate; warm Redis on deploy; CDN for 90% of bytes transferred.
+要求レートに応じて API ポッドをスケールします。デプロイ時に Redis をウォームします。転送されたバイトの 90% が CDN です。
 
-## 8. Anti-patterns
+## 8. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| Sticky sessions on LB | Externalize session |
-| Scale DB vertically forever | Read replicas, cache, shard |
-| Cache everything with no TTL | Define freshness requirements |
-| Scale out during incident without root cause | Fix leak/OOM first |
+| LB のスティッキー セッション |セッションを外部化 |
+| DB を垂直方向に永遠に拡大縮小する |リードレプリカ、キャッシュ、シャード |
+| TTL を使用せずにすべてをキャッシュする |鮮度要件を定義する |
+|根本原因のないインシデント中のスケールアウト |まずリーク/OOM を修正してください |
 
 **Related:** [Microservices vs monolith](iii-microservices-vs-monolith.md), system design scalable-patterns CDN note.

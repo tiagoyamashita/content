@@ -1,57 +1,58 @@
 ---
 label: "I"
-subtitle: "Databases overview"
-group: "Databases"
+subtitle: "データベースの概要"
+group: "データベース"
 order: 1
 ---
-Databases — overview
-A **database** is organized storage plus **operations** to create, read, update, and delete data (**CRUD**), often with **concurrency**, **durability**, and **query** support. Applications rarely keep everything in flat files — they use a **database management system (DBMS)** chosen for the shape of the data and the access patterns.
+データベース — 概要
 
-**Java baseline:** JDBC and Spring Data examples assume **Java SE 22** (`javac --release 22`); they also run on **JDK 21 LTS**.
+**データベース**は、組織化されたストレージに、データの作成、読み取り、更新、削除 (**CRUD**) を行うための **操作** を加えたもので、多くの場合、**同時実行性**、**耐久性**、**クエリ**がサポートされています。アプリケーションがすべてをフラット ファイルに保存することはほとんどありません。アプリケーションは、データの形式とアクセス パターンに合わせて選択された **データベース管理システム (DBMS)** を使用します。
 
-## 1. Why not just files?
+**Java ベースライン:** JDBC および Spring Data の例は **Java SE 22** (`javac --release 22`) を前提としています。これらは **JDK 21 LTS** でも実行されます。
 
-| Files alone | Database |
-|-------------|----------|
-| You parse and lock manually | Engine handles indexing, caching, locking |
-| Whole-file rewrite for small updates | Update one row or document |
-| Hard to query across many users | **Query language** or API (SQL, aggregation pipeline) |
-| Crash mid-write → corruption | **Transactions**, **WAL**, replication |
+## 1. ファイルだけではだめなのでしょうか?
 
-## 2. Core vocabulary
+|ファイル単体 |データベース |
+|---------------|----------|
+|解析とロックは手動で行う |エンジンはインデックス作成、キャッシュ、ロックを処理します。
+|小規模な更新のためのファイル全体の書き換え | 1 つの行またはドキュメントを更新 |
+|多くのユーザーにまたがるクエリは困難 | **クエリ言語** または API (SQL、集計パイプライン) |
+|書き込み中のクラッシュ → 破損 | **トランザクション**、**WAL**、レプリケーション |
 
-| Term | Meaning |
-|------|---------|
-| **Schema** | Structure: columns, types, constraints, or document shape |
-| **Primary key** | Unique identifier for a row/document |
-| **Index** | Extra structure (often B-tree or hash) for faster lookups |
-| **Transaction** | Group of changes that succeed **all together** or **none** (**ACID** in SQL systems) |
-| **Replication** | Copies of data on multiple machines (read scale, failover) |
-| **Sharding** | Split data across machines by key range or hash |
+## 2. 基本的な語彙
 
-## 3. Types of databases (short map)
+|用語 |意味 |
+|-----|----------|
+| **スキーマ** |構造: 列、タイプ、制約、または文書の形状 |
+| **主キー** |行/ドキュメントの一意の識別子 |
+| **インデックス** |検索を高速化するための追加の構造 (多くの場合、B-tree またはハッシュ) |
+| **トランザクション** |成功する変更のグループ **すべて一緒** または **なし** (SQL システムの **ACID**) |
+| **レプリケーション** |複数のマシン上のデータのコピー (読み取りスケール、フェイルオーバー) |
+| **シャーディング** |キー範囲またはハッシュによってデータをマシン間で分割する |
 
-Real systems often use **more than one** store (**polyglot persistence**): PostgreSQL for orders, Redis for sessions, Elasticsearch for search.
+## 3. データベースの種類 (短いマップ)
 
-| Type | Data model | Best for | Examples | Deep dive |
-|------|------------|----------|----------|-----------|
-| **Relational (SQL)** | Tables, rows, typed columns, **JOINs** | Structured data, relationships, strong transactions | PostgreSQL, MySQL, SQLite | [Relational (SQL)](ii-relational.md) |
-| **Key-value** | Opaque key → value | Cache, sessions, feature flags, simple lookups | Redis, DynamoDB (single-key), etcd | [Key-value](iii-key-value.md) |
-| **Document** | JSON/BSON documents, optional schema | Flexible records, content, catalogs | MongoDB, CouchDB, Firestore | [Document](iv-document.md) |
-| **Wide-column** | Row key + many columns; partition by key | Huge write throughput, time-ordered rows at scale | Cassandra, HBase, ScyllaDB | [Wide-column](v-wide-column.md) |
-| **Graph** | Vertices + edges + properties | Relationship traversal, recommendations, fraud rings | Neo4j, Amazon Neptune | [Graph](vi-graph.md) |
-| **Time-series** | Timestamp + measurements (tags + fields) | Metrics, IoT, monitoring, finance ticks | InfluxDB, TimescaleDB, Prometheus TSDB | [Time-series](vii-time-series.md) |
+実際のシステムでは、**複数** ストア (**ポリグロット永続性**) を使用することがよくあります。注文には PostgreSQL、セッションには Redis、検索には Elasticsearch です。
 
-### Where older models fit
+|タイプ |データモデル |こんな方に最適 |例 |詳細 |
+|-----||----------|----------|----------|----------|
+| **リレーショナル (SQL)** |テーブル、行、型付き列、**JOIN** |構造化データ、関係性、強力なトランザクション | PostgreSQL、MySQL、SQLite | [リレーショナル (SQL)](ii-relational.md) |
+| **キーと値** |不透明なキー → 値 |キャッシュ、セッション、機能フラグ、単純なルックアップ | Redis、DynamoDB (単一キー)、etcd | [キーと値](iii-key-value.md) |
+| **ドキュメント** | JSON/BSON ドキュメント、オプションのスキーマ |柔軟なレコード、コンテンツ、カタログ | MongoDB、CouchDB、Firestore | [ドキュメント](iv-document.md) |
+| **ワイドカラム** |行キー + 多数の列。キーによるパーティション |巨大な書き込みスループット、大規模な時間順の行 | Cassandra、HBase、ScyllaDB | [ワイドカラム](v-wide-column.md) |
+| **グラフ** |頂点 + エッジ + プロパティ |人間関係の横断、推奨、詐欺グループ | Neo4j、Amazon Neptune | [グラフ](vi-graph.md) |
+| **時系列** |タイムスタンプ + 測定値 (タグ + フィールド) |メトリクス、IoT、モニタリング、財務ティック | InfluxDB、TimescaleDB、Prometheus TSDB | [時系列](vii-time-series.md) |
 
-- **Hierarchical / network** (1960s–70s): tree or graph-like models before relational won — mostly historical; ideas survive inside **document** and **graph** stores.
-- **Object-oriented DBs**: store language objects directly — niche today; **ORMs** map objects to **relational** tables instead.
+### 古いモデルが適している場所
 
-### “NewSQL” and distributed SQL (one line)
+- **階層/ネットワーク** (1960 年代～70 年代): リレーショナルが普及する前のツリーまたはグラフのようなモデル - ほとんどが歴史的。アイデアは **ドキュメント** ストアや **グラフ** ストア内で存続します。
+- **オブジェクト指向 DB**: 言語オブジェクトを直接保存します。今日のニッチな分野です。 **ORM** は、代わりにオブジェクトを **リレーショナル** テーブルにマップします。
 
-**CockroachDB**, **Spanner**, **TiDB**: **SQL** interface with **horizontal scaling** — relational semantics across clusters. Start with **[Relational (SQL)](ii-relational.md)**, then read vendor docs when you need global scale.
+### 「NewSQL」と配布された SQL (1 行)
 
-## 4. SQL vs NoSQL (decision sketch)
+**CockroachDB**、**Spanner**、**TiDB**: **水平スケーリング**を備えた **SQL** インターフェイス — クラスター間のリレーショナル セマンティクス。 **[リレーショナル (SQL)](ii-relational.md)** から始めて、グローバル スケールが必要な場合はベンダーのドキュメントを読んでください。
+
+## 4. SQL 対 NoSQL (意思決定スケッチ)
 
 ```text
 Need ad-hoc JOINs across many entities + ACID transactions?
@@ -73,31 +74,31 @@ Queries are “avg CPU last hour by host”, append-only metrics?
   → Time-series
 ```
 
-**NoSQL** is not “no SQL ever” — it means **not only relational tables**. Many teams run **PostgreSQL** plus **Redis** plus one specialized store.
+**NoSQL** は「SQL は存在しない」というわけではありません。**リレーショナル テーブルだけではありません**。多くのチームは **PostgreSQL** と **Redis** に加えて 1 つの専門ストアを運営しています。
 
-## 5. CAP and consistency (preview)
+## 5. CAP と一貫性 (プレビュー)
 
-Distributed databases trade **consistency**, **availability**, and **partition tolerance**. SQL primaries with sync replicas lean **CP**; some wide-column stores default to **eventual consistency** for **AP** under partition. Details per type in the linked notes; full distributed story appears in system-design material.
+分散データベースは、**一貫性**、**可用性**、**パーティション耐性**を犠牲にします。 SQL プライマリと同期レプリカはリーン **CP**;一部のワイドカラム ストアでは、パーティション内の **AP** に対して **最終整合性** がデフォルトで設定されています。タイプごとの詳細はリンク先のメモに記載されています。完全な分散ストーリーはシステム設計資料に記載されています。
 
-## 6. How data gets on disk (shared idea)
+## 6. データがディスクに保存される仕組み (共通のアイデア)
 
-Most stores use:
+ほとんどの店舗では次のものが使用されます。
 
-- **B-tree** (or **B+ tree**) indexes for range scans and point lookups — same family as balanced BSTs in CS101.
-- **Write-ahead log (WAL)** — append changes before applying to pages (durability after crash).
-- **Buffer pool** — cache hot pages in RAM.
+- **B-tree** (または **B+ ツリー**) レンジ スキャンおよびポイント ルックアップ用のインデックス — CS101 のバランスのとれた BST と同じファミリー。
+- **先行書き込みログ (WAL)** — ページに適用する前に変更を追加します (クラッシュ後の耐久性)。
+- **バッファ プール** — ホット ページを RAM にキャッシュします。
 
-Hash indexes appear in key-value and hash-table-backed stores for **O(1)** point reads.
+ハッシュ インデックスは、**O(1)** ポイント読み取りのキー値ストアとハッシュ テーブルに基づくストアに表示されます。
 
-## 7. Related notes
+## 7. 関連メモ
 
-| Note | Topic |
-|------|--------|
-| [Relational (SQL)](ii-relational.md) | Tables, SQL, ACID, normalization |
-| [Key-value](iii-key-value.md) | Redis, TTL, cache patterns |
-| [Document](iv-document.md) | Embedded docs, aggregation |
-| [Wide-column](v-wide-column.md) | Partition keys, Cassandra-style modeling |
-| [Graph](vi-graph.md) | Cypher/Gremlin, traversal vs JOINs |
-| [Time-series](vii-time-series.md) | Retention, downsampling, PromQL-style queries |
-| **Hash table** (Data structures submenu) | how hash maps relate to key-value stores |
-| **B-tree / BST** (Data structures submenu) | index structure under SQL |
+|注 |トピック |
+|------|----------|
+| [リレーショナル (SQL)](ii-relational.md) |テーブル、SQL、ACID、正規化 |
+| [キーと値](iii-key-value.md) | Redis、TTL、キャッシュ パターン |
+| [ドキュメント](iv-document.md) |埋め込みドキュメント、集約 |
+| [ワイドカラム](v-wide-column.md) |パーティション キー、Cassandra スタイルのモデリング |
+| [グラフ](vi-graph.md) | Cypher/Gremlin、トラバーサル vs JOIN |
+| [時系列](vii-time-series.md) |保持、ダウンサンプリング、PromQL スタイルのクエリ |
+| **ハッシュ テーブル** (データ構造サブメニュー) |ハッシュ マップと Key-Value ストアの関係 |
+| **B ツリー / BST** (データ構造サブメニュー) | SQL でのインデックス構造 |

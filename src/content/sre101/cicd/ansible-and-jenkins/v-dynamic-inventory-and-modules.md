@@ -1,15 +1,16 @@
 ---
 label: "V"
-subtitle: "Dynamic inventory & modules"
+subtitle: "動的なインベントリとモジュール"
 group: "CI/CD"
 order: 5
 ---
-Dynamic inventory & modules
-Static INI files work for fixed fleets. **Dynamic inventory** pulls live host lists from **AWS, Azure, GCP**, or custom scripts.
+動的なインベントリとモジュール
 
-## 1. AWS EC2 dynamic inventory
+静的 INI ファイルは固定フリートで機能します。 **動的インベントリ**は、**AWS、Azure、GCP**、またはカスタム スクリプトからライブ ホスト リストを取得します。
 
-Install collection:
+## 1. AWS EC2 動的インベントリ
+
+コレクションをインストールします。
 
 ```bash
 ansible-galaxy collection install amazon.aws
@@ -34,19 +35,19 @@ compose:
   ansible_host: private_ip_address
 ```
 
-Run:
+走る：
 
 ```bash
 ansible-playbook -i inventory/aws_ec2.yml playbooks/site.yml
 ```
 
-| Benefit | Detail |
-|---------|--------|
-| Auto-discovery | New EC2 instance tagged `Role=web` joins group |
-| No manual edits | Terminated instances drop from inventory |
-| CI friendly | Jenkins agent with IAM role queries AWS API |
+|メリット |詳細 |
+|----------|----------|
+|自動検出 | `Role=web` タグが付いた新しい EC2 インスタンスがグループに参加 |
+|手動編集なし |終了したインスタンスがインベントリから削除される |
+| CI フレンドリー | IAM ロールを持つ Jenkins エージェントが AWS API をクエリする |
 
-## 2. Azure / GCP plugins (sketch)
+## 2. Azure / GCP プラグイン (スケッチ)
 
 ```yaml
 # Azure — azure.azcollection.azure_rm
@@ -65,23 +66,23 @@ filters:
   - labels.env = staging
 ```
 
-Use **service account** or **OIDC** credentials on the control node — same least-privilege ideas as CI [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).
+制御ノードで **サービス アカウント** または **OIDC** 資格情報を使用します。これは、CI [シークレットと OIDC](../security-and-best-practices/iii-secrets-and-oidc.md) と同じ最小特権の考え方です。
 
-## 3. Common modules reference
+## 3. 共通モジュールのリファレンス
 
-| Module | Purpose | Example |
-|--------|---------|---------|
-| `apt` / `yum` | Packages | `name: nginx state: present` |
-| `copy` | Push file from control node | JAR artifact to server |
-| `template` | Jinja2 render → file | nginx.conf |
-| `service` / `systemd` | Service state | `state: restarted` |
-| `user` / `group` | Accounts | app service user |
-| `file` | Dirs, symlinks, permissions | `/opt/myapp` |
-| `get_url` | Download remote file | Fetch release tarball |
-| `uri` | HTTP check | Health probe after deploy |
-| `wait_for` | Wait for port open | App listening on 8080 |
+|モジュール |目的 |例 |
+|----------|-----------|----------|
+| `apt` / `yum` |パッケージ | `name: nginx state: present` |
+| `copy` |制御ノードからファイルをプッシュ | JAR アーティファクトをサーバーへ |
+| `template` | Jinja2 レンダリング → ファイル | nginx.conf |
+| `service` / `systemd` |サービス状態 | `state: restarted` |
+| `user` / `group` |アカウント |アプリサービスユーザー |
+| `file` |ディレクトリ、シンボリックリンク、権限 | `/opt/myapp` |
+| `get_url` |リモート ファイルをダウンロード |リリース tarball を取得する |
+| `uri` | HTTP チェック |導入後の健全性プローブ |
+| `wait_for` |ポートが開くのを待ちます | 8080 でリッスンするアプリ |
 
-## 4. Deploy health check example
+## 4. ヘルスチェックの例をデプロイする
 
 ```yaml
 - name: Restart application
@@ -106,11 +107,11 @@ Use **service account** or **OIDC** credentials on the control node — same lea
   until: health.status == 200
 ```
 
-Fail the playbook if health never passes — Jenkins stage fails, no silent bad deploy.
+健全性が決して合格しない場合、プレイブックは失敗します。Jenkins ステージは失敗し、サイレント不良デプロイは行われません。
 
-## 5. ansible-lint in CI
+## 5. CI の ansible-lint
 
-Catch style errors and risky patterns before deploy:
+デプロイ前にスタイルエラーと危険なパターンをキャッチします。
 
 ```bash
 pip install ansible-lint
@@ -124,7 +125,7 @@ skip_list:
   - yaml[line-length]
 ```
 
-Jenkins stage:
+Jenkins ステージ:
 
 ```groovy
 stage('Ansible Lint') {
@@ -134,30 +135,30 @@ stage('Ansible Lint') {
 }
 ```
 
-| Rule class | Catches |
-|------------|---------|
-| `risky-shell-pipe` | Unsafe shell |
-| `no-changed-when` | Misleading change reporting |
-| `command-instead-of-module` | Non-idempotent commands |
+|ルールクラス |キャッチ |
+|-----------|-----------|
+| `risky-shell-pipe` |安全でないシェル |
+| `no-changed-when` |誤解を招く変更レポート |
+| `command-instead-of-module` |非冪等コマンド |
 
-## 6. Molecule (optional role testing)
+## 6. 分子 (オプションの役割テスト)
 
-Test roles in Docker without real servers:
+実サーバーを使用せずに Docker でロールをテストします。
 
 ```bash
 cd roles/myapp
 molecule test
 ```
 
-Runs create → converge → verify → destroy — good for role authors, heavier for simple deploy repos.
+作成→収束→検証→破棄を実行します。ロール作成者には適していますが、単純なデプロイ リポジトリには重くなります。
 
-## 7. Performance tips
+## 7. パフォーマンスのヒント
 
-| Tip | Why |
+|ヒント |なぜ |
 |-----|-----|
-| `strategy: free` | Faster on large fleets (unordered) |
-| `--forks 20` | Parallel SSH (default 5) |
-| `pipelining = True` in ansible.cfg | Fewer SSH round trips |
-| Fact caching | Skip repeated `setup` |
+| `strategy: free` |大規模なフリートで高速化 (順序なし) |
+| `--forks 20` |パラレル SSH (デフォルト 5) |
+| ansible.cfg の `pipelining = True` | SSH 往復の削減 |
+|ファクトキャッシュ |繰り返しのスキップ `setup` |
 
-**Related:** [Ansible fundamentals](ii-ansible-fundamentals.md), [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).
+**関連:** [Ansible の基礎](ii-ansible-fundamentals.md)、[Jenkins + Ansible パイプライン](vi-jenkins-ansible-pipelines.md)。

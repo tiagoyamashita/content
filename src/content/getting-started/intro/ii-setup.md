@@ -1,45 +1,46 @@
 ---
 label: "II"
-subtitle: "Setup"
-group: "Getting started"
+subtitle: "設定"
+group: "はじめに"
 order: 2
 ---
-Getting started — Intro: Setup
-Connect Cursor Notes (or your viewer) to this repo so the sidebar loads **`src/content`**.
+はじめに — はじめに: セットアップ
 
-## 1. Branch
+Cursor Notes (またはビューア) をこのリポジトリに接続し、サイドバーが **`src/content`** をロードするようにします。
 
-This repo tracks **`main`**. If your default branch differs, use that branch in settings instead.
+## 1. ブランチ
 
-## 2. Content path
+このリポジトリは **`main`** を追跡します。デフォルトのブランチが異なる場合は、代わりに設定でそのブランチを使用してください。
 
-Set the content root to:
+## 2. コンテンツのパス
+
+コンテンツルートを次のように設定します。
 
 ```text
 src/content
 ```
 
-So the app loads **`src/content/_meta.json`** and every topic folder under it (including nested folders such as **`getting-started/intro/`**).
+したがって、アプリは **`src/content/_meta.json`** とその下のすべてのトピック フォルダー (**`getting-started/intro/`** などのネストされたフォルダーを含む) を読み込みます。
 
-## 3. GitHub settings in Cursor
+## 3. Cursor の GitHub 設定
 
-1. Open **GitHub** settings from the Notes menu.
-2. Set **owner** / **repository** to match **`origin`**.
-3. Set **branch** to **`main`** (try **`master`** only if your repo still uses it).
-4. Paste a **personal access token** with repo read access if the repository is private.
+1. [メモ] メニューから **GitHub** 設定を開きます。
+2. **所有者** / **リポジトリ** を **`origin`** と一致するように設定します。
+3. **ブランチ** を **`main`** に設定します (リポジトリでまだ使用している場合にのみ **`master`** を試してください)。
+4. リポジトリがプライベートの場合は、リポジトリ読み取りアクセス権を持つ **個人アクセス トークン**を貼り付けます。
 
-### Private and public repos
+### プライベートおよびパブリック リポジトリ
 
-If notes live in a **private** repository (or you switch between private and public repos), whatever loads files from GitHub needs **repository access**, not just profile/email.
+メモが **プライベート** リポジトリに存在する場合 (またはプライベート リポジトリとパブリック リポジトリを切り替える場合)、GitHub からファイルをロードするものはすべて、プロフィール/電子メールだけでなく **リポジトリ アクセス**が必要です。
 
-- **Consent screen** (“private and public repositories”) for **Sign in with GitHub** is expected when the integration uses OAuth **`repo`** scope so it can call the GitHub API for repo contents.
-- **Least privilege alternative:** keep login scopes minimal and use a **fine-grained PAT** with **Contents: Read-only** on selected repos—narrower than classic **`repo`** OAuth scope.
+- **GitHub でサインイン** の **同意画面** (「プライベートおよびパブリック リポジトリ」) は、統合で OAuth **`repo`** スコープを使用する場合に予期され、リポジトリのコンテンツに対して GitHub API を呼び出すことができます。
+- **最小権限の代替:** ログイン スコープを最小限に抑え、選択したリポジトリで **コンテンツ: 読み取り専用** の **きめ細かい PAT** を使用します。これは、従来の **`repo`** OAuth スコープよりも狭いです。
 
-### OAuth scopes (if you build your own GitHub login)
+### OAuth スコープ (独自の GitHub ログインを構築する場合)
 
-When the server must read **private** repo files via OAuth (classic scopes), request **`repo`** in addition to identity fields, for example **`read:user user:email repo`**.
+サーバーが OAuth (クラシック スコープ) 経由で **プライベート** リポジトリ ファイルを読み取る必要がある場合は、ID フィールドに加えて **`repo`** (**`read:user user:email repo`** など) をリクエストします。
 
-Auth.js / NextAuth-style provider snippet:
+Auth.js / NextAuth スタイルのプロバイダー スニペット:
 
 ```ts
 GitHub({
@@ -51,8 +52,8 @@ GitHub({
 }),
 ```
 
-Classic **`repo`** is broad (effectively full repo access for that account). Prefer **fine-grained PATs** or a **GitHub App** with **Contents: Read-only** when you control token issuance.
+クラシック **`repo`** は広範囲にわたります (そのアカウントに対する事実上完全なリポジトリ アクセス)。トークンの発行を制御する場合は、**きめ細かい PAT** または **コンテンツ: 読み取り専用** の **GitHub アプリ** を優先します。
 
-## 4. Refresh
+## 4. リフレッシュ
 
-After you push new folders or files, refresh or resync notes so the tree updates.
+新しいフォルダーまたはファイルをプッシュした後、ノートを更新または再同期して、ツリーを更新します。

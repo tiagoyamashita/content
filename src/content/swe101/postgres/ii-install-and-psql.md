@@ -1,13 +1,15 @@
 ---
 label: "II"
-subtitle: "Install & psql"
+subtitle: "インストールと psql"
 group: "Postgres"
 order: 2
 ---
-Postgres — install & psql
+Postgres — インストールと psql
+
+
 Run Postgres locally, connect with **`psql`**, and inspect databases before wiring an application.
 
-## 1. Install options
+## 1. オプションのインストール
 
 | Method | When to use |
 |--------|-------------|
@@ -15,27 +17,27 @@ Run Postgres locally, connect with **`psql`**, and inspect databases before wiri
 | **Native package** | macOS (`brew`), Linux (`apt`/`dnf`), Windows installer |
 | **Managed cloud** | Neon, Supabase, RDS — no local daemon |
 
-### Docker (recommended for learning)
+### Docker (学習用に推奨)
 
 ```bash
 docker run --name pg-dev -e POSTGRES_PASSWORD=dev -p 5432:5432 -d postgres:16
 docker exec -it pg-dev psql -U postgres
 ```
 
-Data persists in the container until removed. For a named volume:
+データは削除されるまでコンテナ内に保持されます。名前付きボリュームの場合:
 
 ```bash
 docker run --name pg-dev -e POSTGRES_PASSWORD=dev -p 5432:5432 \
   -v pgdata:/var/lib/postgresql/data -d postgres:16
 ```
 
-## 2. Connection string
+## 2. 接続文字列
 
 ```text
 postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 
-Example for local Docker:
+ローカル Docker の例:
 
 ```text
 postgresql://postgres:dev@localhost:5432/postgres
@@ -51,7 +53,7 @@ postgresql://postgres:dev@localhost:5432/postgres
 
 ## 3. `psql` essentials
 
-Connect:
+接続する：
 
 ```bash
 psql "postgresql://postgres:dev@localhost:5432/postgres"
@@ -69,13 +71,13 @@ psql -h localhost -U postgres -d postgres
 | `\timing` | Show query execution time |
 | `\q` | Quit |
 
-Run SQL from a file:
+ファイルから SQL を実行します。
 
 ```bash
 psql -U postgres -d myapp -f schema.sql
 ```
 
-## 4. Create a dev database and role
+## 4. 開発データベースとロールを作成する
 
 ```sql
 CREATE DATABASE myapp_dev;
@@ -88,7 +90,7 @@ GRANT ALL ON SCHEMA public TO myapp;
 
 **Principle of least privilege in production:** app role gets `SELECT/INSERT/UPDATE/DELETE` on needed tables — not `SUPERUSER`.
 
-## 5. First table (smoke test)
+## 5. 最初のテーブル (煙テスト)
 
 ```sql
 CREATE TABLE todos (
@@ -102,25 +104,25 @@ INSERT INTO todos (title) VALUES ('Learn psql'), ('Read migrations note');
 SELECT * FROM todos WHERE NOT done;
 ```
 
-## 6. Configuration files (know they exist)
+## 6. 設定ファイル (存在することを確認)
 
 | File | Purpose |
 |------|---------|
 | **`postgresql.conf`** | Memory, connections, logging |
 | **`pg_hba.conf`** | Who can connect from which host (auth rules) |
 
-In Docker, config is inside the container unless you mount overrides. For local tuning you rarely need to change defaults until you load-test.
+Docker では、オーバーライドをマウントしない限り、構成はコンテナー内にあります。ローカルチューニングの場合、ロードテストを行うまでデフォルトを変更する必要はほとんどありません。
 
-## 7. GUI clients (optional)
+## 7. __​​IT0__ クライアント (オプション)
 
-| Tool | Notes |
-|------|-------|
-| **pgAdmin** | Full-featured, ships with many installers |
-| **DBeaver** | Cross-DB, good ER diagrams |
-| **TablePlus / DataGrip** | Paid, polished UX |
+|ツール |メモ |
+|------|------|
+| **pgAdmin** |フル機能を備え、多くのインストーラーが付属 |
+| **Dビーバー** |クロス DB、優れた ER 図 |
+| **TablePlus / DataGrip** |有料、洗練された UX |
 
 `psql` stays worth learning — scripts, CI, and production debugging often happen in the shell.
 
-## Next
+＃＃ 次
 
 Continue with [Schema & migrations](iii-schema-and-migrations.md) for versioned DDL and safe schema evolution.

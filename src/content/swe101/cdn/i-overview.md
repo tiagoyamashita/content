@@ -1,15 +1,16 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "CDN"
 order: 1
 ---
-CDN — overview
-A **CDN (Content Delivery Network)** serves copies of your content from **edge locations** close to users — lower latency, less load on origin, and better resilience under traffic spikes. Most production web apps put **static assets** (JS, CSS, images, video segments) behind a CDN; many also cache **selected GET APIs**.
+CDN — 概要
+
+**CDN (コンテンツ配信ネットワーク)** は、ユーザーに近い **エッジ ロケーション** からコンテンツのコピーを提供します。これにより、遅延が短縮され、オリジンの負荷が軽減され、トラフィックの急増に対する復元力が向上します。ほとんどの実稼働 Web アプリは、**静的アセット** (JS、CSS、画像、ビデオ セグメント) を CDN の背後に置きます。多くは **選択された GET APIs** もキャッシュします。
 
 For system-design framing (pull vs push, invalidation), see [CDN & edge caching](../sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md). For regions and edge vs cloud regions, see [Regions, AZs & edge](../../sre101/cloud-architecture/foundations/iii-regions-azs-and-edge.md).
 
-## Map of this track
+## このトラックの地図
 
 | Part | Focus |
 |------|--------|
@@ -22,7 +23,7 @@ For system-design framing (pull vs push, invalidation), see [CDN & edge caching]
 | **VII — Operations & troubleshooting** | Purge, monitoring, common failures |
 | **VIII — CDN & API gateway together** | How CDN and gateway split work at the edge |
 
-## Where CDN fits
+## CDN が当てはまる場所
 
 ```text
 User  →  DNS  →  CDN edge (PoP)  →  [cache HIT → response]
@@ -36,9 +37,9 @@ User  →  DNS  →  CDN edge (PoP)  →  [cache HIT → response]
 | **App cache ([Redis](../redis/i-overview.md))** | Session, DB query cache — different layer, often together |
 | **Database** | Not behind CDN — origin only |
 
-CDN caches **HTTP responses** (files, JSON). Redis caches **application objects** inside your stack. Use both.
+CDN は **HTTP 応答** (ファイル、JSON) をキャッシュします。 Redis は **アプリケーション オブジェクト**をスタック内にキャッシュします。両方を使用してください。
 
-## What to put on a CDN
+## CDN に何を付けるか
 
 | Content | CDN? | Notes |
 |---------|------|-------|
@@ -49,27 +50,27 @@ CDN caches **HTTP responses** (files, JSON). Redis caches **application objects*
 | Authenticated/private API | Usually no | `private`, `no-store` |
 | POST/PUT/DELETE | No | Always to origin |
 
-## Why engineers care
+## エンジニアが気にする理由
 
-| Benefit | Explanation |
-|---------|-------------|
-| **Latency** | Edge in hundreds of cities vs one origin region |
-| **Scale** | Edge absorbs flash traffic; origin sees fewer requests |
-| **Cost** | Cheaper egress at edge; smaller origin fleet |
-| **Security** | DDoS absorption, WAF at edge (provider-dependent) |
+|メリット |説明 |
+|----------|---------------|
+| **レイテンシ** |数百の都市のエッジと 1 つの発信地域のエッジ |
+| **スケール** |エッジはフラッシュ トラフィックを吸収します。オリジンで受信されるリクエストが少なくなります。
+| **コスト** |エッジでの下り料金が安くなる。より小規模な出発地フリート |
+| **セキュリティ** | DDoS 吸収、エッジでの WAF (プロバイダー依存) |
 
-## Common providers
+## 一般的なプロバイダー
 
-| Provider | Typical use |
-|----------|-------------|
-| **Cloudflare** | DNS + CDN + TLS; free tier for small sites |
-| **Amazon CloudFront** | AWS origins (S3, ALB, API Gateway) |
-| **Fastly** | Fine-grained purge, edge compute |
-| **Azure CDN / Front Door** | Azure and multi-cloud |
-| **Google Cloud CDN** | GCS / LB backends |
+|プロバイダー |一般的な使用法 |
+|----------|---------------|
+| **クラウドフレア** | DNS + CDN + TLS;小規模サイトの無料枠 |
+| **Amazon CloudFront** | AWS の起源 (S3、ALB、API Gateway) |
+| **すぐに** |きめ細かいパージ、エッジ コンピューティング |
+| **Azure CDN / フロント ドア** | Azure とマルチクラウド |
+| **Google Cloud CDN** | GCS / LB バックエンド |
 
 Managed platforms (**Vercel**, **Netlify**, **Cloudflare Pages**) include CDN automatically — see [Hosting, domains & CDN](../../startups/free-services/iii-hosting-domains-and-cdn.md) for MVP options.
 
-## Next
+＃＃ 次
 
 Continue with [How CDNs work](ii-how-cdns-work.md) for DNS routing, PoPs, and cache hit/miss flow.

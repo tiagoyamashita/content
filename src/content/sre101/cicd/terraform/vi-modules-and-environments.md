@@ -1,20 +1,21 @@
 ---
 label: "VI"
-subtitle: "Modules & environments"
+subtitle: "モジュールと環境"
 group: "CI/CD"
 order: 6
 ---
-Modules & environments
-**Modules** package reusable infrastructure. **Workspaces** or **directory-per-env** patterns separate dev, staging, and prod without copy-paste.
+モジュールと環境
 
-## 1. Module basics
+**モジュール** は、再利用可能なインフラストラクチャをパッケージ化します。 **ワークスペース** または **ディレクトリごとの環境** パターンは、コピーアンドペーストすることなく開発、ステージング、本番環境を分離します。
+
+## 1. モジュールの基本
 
 | Term | Meaning |
 |------|---------|
 | **Root module** | Directory where you run `terraform` |
 | **Child module** | Called via `module "name" { ... }` |
 
-Local module:
+ローカルモジュール:
 
 ```text
 modules/
@@ -44,7 +45,7 @@ output "vpc_id" {
 }
 ```
 
-## 2. Public registry module
+## 2. パブリックレジストリモジュール
 
 ```hcl
 module "vpc" {
@@ -73,7 +74,7 @@ Browse: [registry.terraform.io](https://registry.terraform.io).
 
 Pin **`version`** or **`ref`** — floating tags break reproducibility.
 
-## 3. Writing a module
+## 3. モジュールの作成
 
 ```hcl
 # modules/vpc/variables.tf
@@ -92,11 +93,11 @@ output "vpc_id" {
 }
 ```
 
-Modules expose **inputs** (variables) and **outputs** — hide internal resource names.
+モジュールは **入力** (変数) と **出力** を公開し、内部リソース名を非表示にします。
 
-## 4. Environment strategies
+## 4. 環境戦略
 
-### A. Directory per environment (recommended)
+### A. 環境ごとのディレクトリ (推奨)
 
 ```text
 infra/
@@ -112,9 +113,9 @@ infra/
       terraform.tfvars
 ```
 
-Clear separation; different backends, vars, and approval paths.
+明確な分離。さまざまなバックエンド、変数、承認パス。
 
-### B. Terraform workspaces
+### B. Terraform ワークスペース
 
 ```bash
 terraform workspace new staging
@@ -122,7 +123,7 @@ terraform workspace select prod
 terraform workspace list
 ```
 
-Same code, different state namespaces. Works for small teams; can get confusing at scale.
+コードは同じですが、状態の名前空間は異なります。小規模なチームに適しています。大規模になると混乱する可能性があります。
 
 ### C. Single root + `-var-file`
 
@@ -130,9 +131,9 @@ Same code, different state namespaces. Works for small teams; can get confusing 
 terraform apply -var-file=environments/prod.tfvars
 ```
 
-One state unless combined with workspace or separate backend keys.
+ワークスペースまたは個別のバックエンド キーと組み合わせない限り、1 つの状態。
 
-## 5. tfvars per environment
+## 5. 環境ごとの tfvars
 
 ```hcl
 # environments/prod.tfvars
@@ -146,13 +147,13 @@ instance_type = "t3.micro"
 vpc_cidr      = "10.10.0.0/16"
 ```
 
-Never put secrets in tfvars in Git — use env vars, Vault, or CI secrets:
+Git の tfvars にはシークレットを決して置かないでください。環境変数、Vault、または CI シークレットを使用してください。
 
 ```bash
 export TF_VAR_db_password="$(vault read -field=password secret/db)"
 ```
 
-## 6. Module composition example
+## 6. モジュール構成例
 
 ```hcl
 module "vpc" {
@@ -171,9 +172,9 @@ module "eks" {
 }
 ```
 
-Outputs from one module feed inputs to another — Terraform builds the graph.
+1 つのモジュールからの出力が別のモジュールに入力を供給します。Terraform はグラフを構築します。
 
-## 7. Anti-patterns
+## 7. アンチパターン
 
 | Anti-pattern | Fix |
 |--------------|-----|

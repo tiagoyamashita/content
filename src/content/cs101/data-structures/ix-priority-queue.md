@@ -1,31 +1,32 @@
 ---
 label: "IX"
-subtitle: "Priority queue"
-group: "Data structures & algorithms"
+subtitle: "優先キュー"
+group: "データ構造とアルゴリズム"
 order: 9
 ---
-Priority queue — “who goes next?” by importance, not arrival time
-A **priority queue** is an **abstract data type** for a collection where each item has a **priority** (often just a number or anything **comparable**). The defining behavior: you can **insert** in any order, but **extract** always removes the item with the **highest** or **lowest** priority among those still inside — **not** the oldest (that would be a **FIFO queue**) and **not** the newest (that would be a **stack**).
+優先キュー — 「次に誰が行く？」到着時間ではなく重要性によって
+
+**プライオリティ キュー**は、各項目に**優先度** (多くの場合、単なる数値または**比較可能なもの**) を持つコレクションの**抽象データ型**です。動作の定義: **挿入**は任意の順序で行うことができますが、**抽出**は、まだ内部にある項目の中で**最も高い**または*最も低い**優先度を持つ項目を常に削除します。**最も古いものではなく** (**FIFO キュー**)、**最も新しいものではありません** (**スタック**)。
 
 **Java baseline:** `PriorityQueue` snippets assume **Java SE 22** (`javac --release 22`). They use **`record`** and other features available since **Java 16**; they also run on **JDK 21 LTS**.
 
-If you picture a **hospital triage** desk: arrivals are not served strictly first-come-first-served; the **most urgent** case jumps ahead. A normal **queue** is a single orderly line; a **priority queue** is “always serve whoever is currently most important.”
+**病院のトリアージ** デスクを思い浮かべると: 到着は厳密に先着順ではありません。 **最も緊急**なケースが優先されます。通常の**キュー**は、整然とした単一の行です。 **優先キュー** は、「現在最も重要な人に常にサービスを提供する」ものです。
 
 
-## 1. Queue vs stack vs priority queue (one minute)
+## 1. キュー、スタック、優先キュー (1 分)
 
-| ADT | Who leaves on “remove best” or dequeue/pop? | Typical mental model |
-|-----|-----------------------------------------------|----------------------|
-| **Queue** | The **oldest** still waiting (**FIFO**) | Line at a shop |
-| **Stack** | The **newest** still there (**LIFO**) | Pile of plates |
-| **Priority queue** | The **smallest** or **largest** key still there (by your ordering rule) | Triage, CPU scheduling |
+| ADT | 「ベストの削除」またはデキュー/ポップで去るのは誰ですか? |典型的なメンタルモデル |
+|-----|----------------------------------------------|---------------------|
+| **キュー** | **最古**はまだ待っています (**FIFO**) |お店の行列 | 写真
+| **スタック** | **最新**はまだあります (**LIFO**) |皿の山 | 写真 皿の山
+| **優先キュー** | **最小** または **最大** キーがまだ存在します (順序付けルールによる) |トリアージ、CPU スケジューリング |
 
-**Peek** (or **find-min** / **find-max**) reads that same “best” element **without** removing it. **Insert** adds something with its own priority; it does **not** have to sit at the “front” of anything — the structure keeps the invariant internally.
+**Peek** (または **find-min** / **find-max**) は、同じ「最適な」要素を **削除せずに** 読み取ります。 **挿入** は、独自の優先順位を持つ何かを追加します。何かの「前」に置く必要は**ありません**。構造は内部的に不変条件を保持します。
 
 
-## 2. Operations (what APIs usually expose)
+## 2. 操作 (API が通常公開するもの)
 
-Names vary by language and textbook; mentally map them like this:
+名前は言語や教科書によって異なります。それらを次のように頭の中でマッピングします。
 
 - **`insert(x)`** / **`add(x)`** / **`offer(x)`** — put `x` in the collection.
 - **`extract-min()`** or **`extract-max()`** — remove and return the best element under the queue’s ordering. On an **empty** structure, behavior is either **error** or a **sentinel** value (Java’s `poll()` returns **`null`** for empty).
@@ -35,42 +36,42 @@ Names vary by language and textbook; mentally map them like this:
 
 **Optional (advanced):** **`decrease-key`** / **`increase-key`** when you already have a **handle** to an item inside the structure and its priority changes — needed for a fast **Dijkstra** shortest-path implementation with a **binary heap** that can update priorities. The standard **`java.util.PriorityQueue`** does **not** support efficient decrease-key on arbitrary elements; for that you either use a **indexed heap** pattern, a **Fibonacci heap** in theory-heavy settings, or another graph library.
 
-**Merge** (combine two priority queues) appears in some theoretic APIs; practical code often just inserts from one heap into another.
+**マージ** (2 つの優先キューを結合する) は、理論上の API に登場します。実際のコードは、多くの場合、あるヒープから別のヒープに挿入するだけです。
 
 
-## 3. Min-heap vs max-heap (same idea, flipped order)
+## 3. 最小ヒープと最大ヒープ (同じ考え方、順序を入れ替えたもの)
 
-- **Min-priority queue:** “best” = **smallest** key. **Extract** = **extract-min**. Used for **Dijkstra** (smallest tentative distance first), **Prim** on graphs, **merging sorted streams** with a small heap of “current heads.”
-- **Max-priority queue:** “best” = **largest** key. Used for “top **k**” style problems, **heapsort** descending, **Huffman**-style constructions where you repeatedly take the two **largest** (depending on formulation).
+- **最小優先度キュー:** 「最良」 = **最小** キー。 **抽出** = **抽出分**。 **ダイクストラ** (最小の暫定距離が最初)、グラフの**プリム**、**ソートされたストリームを小さなヒープの「現在のヘッド」とマージ**するために使用されます。
+- **最大優先キュー:** 「最良」 = **最大** キー。 「トップ **k**」スタイルの問題、**ヒープソート** 降順、**最大の 2 つ** を繰り返し取得する **ハフマン** スタイルの構造 (定式化に応じて) に使用されます。
 
-Implementation-wise, a **min-heap** is a complete binary tree where each parent is **≤** its children; a **max-heap** flips to **≥**. One implementation can do both by swapping the comparison or using a **reversed comparator** in Java.
+実装に関して言えば、**最小ヒープ**は完全なバイナリ ツリーであり、各親はその子**≤**です。 **max-heap** は **≥** に切り替わります。 1 つの実装では、比較を交換するか、Java で **逆コンパレータ**を使用することで両方を行うことができます。
 
 
-## 4. Tie-breaking and “duplicate priorities”
+## 4. タイブレークと「優先順位の重複」
 
-If two items have the **same** numeric priority, the ADT often does **not** guarantee which one comes out first unless the implementation documents **FIFO stability** within equal keys (many heaps are **not** stable). If order among equals matters, common fixes:
+2 つの項目が **同じ**数値優先度を持つ場合、実装が等しいキー内で **FIFO の安定性**を文書化しない限り、ADT は多くの場合、どちらが最初に出力されるか**保証しません (ヒープの多くは**安定していません**)。同等の順序が重要な場合は、次のような一般的な修正が行われます。
 
 - Pack a **secondary key** (e.g. `(priority, sequenceNumber)` with lexicographic comparison so older entries sort first among ties), or
 - Store **unique ids** and break ties explicitly in a **`Comparator`**.
 
 
-## 5. Implementations and time bounds
+## 5. 実装と期限
 
-Naive ideas:
+素朴な考え:
 
-- **Unsorted array or list:** **insert** **O(1)** (append), but **extract-min** scans everything — **O(n)**.
-- **Sorted array:** **extract-min** from one end **O(1)**, but **insert** may shift — **O(n)** in the worst case.
+- **ソートされていない配列またはリスト:** **insert** **O(1)** (追加) ですが、**extract-min** はすべてをスキャンします — **O(n)**。
+- **ソートされた配列:** **extract-min** を一方の端から **O(1)** しますが、**insert** はシフトする可能性があります — 最悪の場合は **O(n)**。
 
 The usual sweet spot for a general mutable priority queue is a **binary heap** (see **Binary heap** in this submenu, [Binary heap](viii-binary-heap.md)): store a **complete binary tree** in an array, restore **heap order** after each insert (**bubble up** / **swim**) and after each extract (**sink down** / **sift**). Height is **O(log n)**, so:
 
-| Operation | Binary heap (typical) |
-|-----------|------------------------|
-| **insert** | **O(log n)** |
-| **peek** best | **O(1)** |
-| **extract** best | **O(log n)** |
-| **build** from **n** keys (bottom-up) | **O(n)** — better than **n** separate inserts |
+|操作 |バイナリ ヒープ (通常) |
+|----------|--------------------------|
+| **挿入** | **O(log n)** |
+| **ピーク** ベスト | **O(1)** |
+| **抜粋** ベスト | **O(log n)** |
+| **n** キーから **ビルド** (ボトムアップ) | **O(n)** — **n** の個別の挿入よりも優れています |
 
-**Fibonacci heaps** and friends improve some **amortized** bounds for specialized graph algorithms in theory; in day-to-day libraries you still see **binary heaps** first.
+**フィボナッチ ヒープ**とその仲間は、理論上、特殊なグラフ アルゴリズムの**償却**境界を改善します。日常のライブラリでは、依然として **バイナリ ヒープ**が最初に表示されます。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 212" role="img" aria-label="Min heap before extract min and after moving last leaf to root and sinking down">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">extract-min restores heap in O(log n)</text>
@@ -143,7 +144,7 @@ pq.poll();  // 10
 pq.poll();  // 20
 ```
 
-**Max-heap** (largest first): reverse the comparison.
+**最大ヒープ** (最大が最初): 比較を逆にします。
 
 ```java
 // Compile: javac --release 22 …
@@ -156,7 +157,7 @@ maxPq.offer(30);
 maxPq.peek();  // 30
 ```
 
-**Custom type** (e.g. jobs with deadlines — **earlier deadline = higher priority** here as smaller integer wins):
+**カスタム タイプ** (例: 締め切りのあるジョブ — **ここでは、小さい整数が優先されるため、**締め切りが早い = 優先度が高くなります**):
 
 ```java
 // Compile: javac --release 22 …
@@ -184,14 +185,14 @@ jobs.poll();  // patch — deadline 2 first
 
 **Empty-safe:** **`poll()`** and **`peek()`** return **`null`** when empty; **`remove()`** throws **`NoSuchElementException`**.
 
-**Gotchas**
+**注意事項**
 
 - **`null`** elements are **not** allowed.
 - If you change a field that participates in ordering **after** inserting an object, the heap **does not** automatically reorder — you must **remove and re-insert**, or use a structure designed for **decrease-key**.
 - Initial capacity is a **hint** only; the heap grows as needed.
 
 
-## 7. Where priority queues appear
+## 7. 優先キューが表示される場所
 
 - **Graph algorithms:** **Dijkstra** (closest unvisited vertex first), **Prim** (cheapest edge to the growing tree), **A-star** (`A*`) search with a heuristic.
 - **CPU / OS scheduling:** pick the next runnable process by priority (real schedulers add fairness, aging, etc.).
@@ -200,10 +201,10 @@ jobs.poll();  // patch — deadline 2 first
 - **Merge k sorted lists / files:** one heap entry per list holding `(nextValue, listId)`; repeatedly **poll** smallest and advance that list.
 
 
-## 8. Related notes
+## 8. 関連メモ
 
 - **Binary heap** in this submenu [Binary heap](viii-binary-heap.md) — array layout, index formulas, **buildHeap**, **heapsort**.
 - **Queue** [Queue](v-queue.md) — strict **FIFO**; no per-item priority unless you simulate it badly.
 - **Level II** overview: `ii-trees-heaps-hashing.md` (if present in your curriculum track).
 
-Once you are comfortable with “insert anywhere, always take best,” the heap note is the natural next step: it is the standard **machinery** behind this ADT.
+「どこにでも挿入し、常に最良のものを使用する」ことに慣れたら、自然な次のステップはヒープ ノートです。ヒープ ノートは、この ADT の背後にある標準 **機械**です。

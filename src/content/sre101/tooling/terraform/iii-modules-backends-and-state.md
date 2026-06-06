@@ -1,13 +1,14 @@
 ---
 label: "III"
-subtitle: "Modules backends & state"
+subtitle: "モジュールのバックエンドと状態"
 group: "SRE"
 order: 3
 ---
-SRE tooling — Terraform: Modules, backends & state
-Modules reuse patterns; remote **state** needs locking and backup discipline.
+SRE ツール — Terraform: モジュール、バックエンド、状態
 
-## 1. Modules
+モジュールはパターンを再利用します。リモート **状態** にはロックとバックアップの規律が必要です。
+
+## 1. モジュール
 
 ```hcl
 module "vpc" {
@@ -26,9 +27,9 @@ module "vpc" {
 - Pin **`version`** for registry modules or Git refs (`?ref=v1.2.3`).
 - Publish internal modules via **Git/Terraform Registry** with semver tags—document inputs/outputs (`README`, tests).
 
-## 2. Remote backends & locking
+## 2. リモート バックエンドとロック
 
-Example **AWS S3 + DynamoDB locking**:
+例 **AWS S3 + DynamoDB ロック**:
 
 ```hcl
 terraform {
@@ -42,9 +43,9 @@ terraform {
 }
 ```
 
-**Terraform Cloud / Enterprise** adds RBAC, speculative plans, policy sets (**Sentinel** / **OPA** integration varies)—often replaces bespoke S3+Dynamo setups.
+**Terraform クラウド / エンタープライズ** は、RBAC、投機的プラン、ポリシー セットを追加します (**Sentinel** / **OPA** 統合はさまざまです)。多くの場合、特注の S3+Dynamo セットアップが置き換えられます。
 
-## 3. Remote state consumers
+## 3. リモート状態のコンシューマ
 
 ```hcl
 data "terraform_remote_state" "network" {
@@ -61,14 +62,14 @@ resource "aws_db_subnet_group" "app" {
 }
 ```
 
-Explicit contracts (**outputs**) beat implicit coupling across stacks.
+明示的なコントラクト (**出力**) は、スタック間の暗黙的な結合に勝ります。
 
-## 4. State hygiene
+## 4. 州の衛生状態
 
 - Treat corruption / contention as **severity-1**—maintain **versioned backups** (S3 versioning, Terraform Cloud state history).
 - Restrict IAM who may **`terraform state`** operations (`mv`, `rm`).
 - Never edit **`terraform.tfstate`** manually unless disaster recovery runbooks demand it.
 
-## 5. Observability resources as code
+## 5. コードとしての可観測性リソース
 
 Use vendor providers (**Grafana**, **Datadog**) alongside **`kubernetes_manifest`** / **Helm** resources so dashboards/alerts travel with cluster revisions—pair with **Prometheus**/**Alertmanager** folders in Git.

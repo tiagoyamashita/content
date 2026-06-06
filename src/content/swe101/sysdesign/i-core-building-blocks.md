@@ -1,174 +1,175 @@
 ---
 label: "I"
-subtitle: "Core Building Blocks"
-group: "System design"
+subtitle: "コア構成要素"
+group: "システム設計"
 order: 1
 ---
-System Design — Part I: Core Building Blocks
-Estimation, caching, databases, replication, consistency.
+システム設計 — パート I: コア構成要素
 
-## 1. How to approach any design question
-A repeatable framework for interviews and real projects:
+推定、キャッシュ、データベース、レプリケーション、一貫性。
 
-Step 1 — Clarify requirements (5 min):
-- Functional: what does the system do? (core features, non-goals)
-- Non-functional: scale, latency SLA, availability, consistency.
-- Constraints: budget, team size, timeline.
+## 1. 設計に関する質問へのアプローチ方法
+インタビューと実際のプロジェクトのための反復可能なフレームワーク:
 
-Step 2 — Estimate scale (3 min):
-- DAU (daily active users), read/write ratio, data size/year.
-- Derive QPS (queries per second) and storage needs.
+ステップ 1 — 要件を明確にする (5 分):
+- 機能: システムは何をするのか? (コア機能、非目標)
+- 非機能: スケール、レイテンシ SLA、可用性、一貫性。
+- 制約: 予算、チームの規模、スケジュール。
 
-Step 3 — High-level design (10 min):
-- Sketch the major components: client, API gateway, services, DB, cache, CDN.
-- Show request flow for the most important use cases.
+ステップ 2 — スケールの見積もり (3 分):
+- DAU (毎日のアクティブ ユーザー)、読み取り/書き込み比率、データ サイズ/年。
+- QPS (1 秒あたりのクエリ数) とストレージのニーズを導き出します。
 
-Step 4 — Deep dive (15 min):
-- Pick the hardest or most interesting components.
-- Discuss data models, API contracts, failure modes.
+ステップ 3 — 大まかな設計 (10 分):
+- 主要コンポーネントのスケッチ: クライアント、API ゲートウェイ、サービス、DB、キャッシュ、CDN。
+- 最も重要なユースケースのリクエスト フローを表示します。
 
-Step 5 — Identify bottlenecks & trade-offs:
-- Single points of failure, hot spots, consistency vs availability choices.
-- What would break at 10× scale? How would you fix it?
+ステップ 4 — 詳細 (15 分):
+- 最も難しいコンポーネントまたは最も興味深いコンポーネントを選択します。
+- データ モデル、API 契約、障害モードについて話し合います。
 
-## 2. Capacity estimation
-Back-of-envelope numbers every engineer should know:
+ステップ 5 — ボトルネックとトレードオフを特定する:
+- 単一障害点、ホットスポット、一貫性と可用性の選択。
+- 10 倍スケールでは何が壊れますか?どのように修正しますか?
 
-Latency (approximate):
-- L1 cache hit:          ~1 ns
-- RAM access:            ~100 ns
-- SSD random read:       ~100 µs
-- Network round-trip (same DC): ~500 µs
-- Network round-trip (cross-continent): ~150 ms
-- HDD seek:              ~10 ms
+## 2. 容量の見積もり
+すべてのエンジニアが知っておくべき裏の数字:
 
-Storage units:
-- 1 KB = 10³ B, 1 MB = 10⁶ B, 1 GB = 10⁹ B, 1 TB = 10¹² B.
+レイテンシー (概算):
+- L1 キャッシュ ヒット: ~1 ns
+- RAM アクセス: ~100 ns
+- SSD ランダム読み取り: ~100 μs
+- ネットワーク往復 (同じ DC): ~500 μs
+- ネットワーク往復 (大陸間): ~150 ミリ秒
+- HDD シーク: ~10 ミリ秒
 
-Traffic estimation example (Twitter-like):
-- 300 M DAU, 10% post per day → 30 M writes/day
-= 30 M / 86 400 s ≈ 350 writes/s
-- Read:write ratio = 100:1 → 35 000 reads/s
-- Tweet ~280 chars = ~500 B → 30 M × 500 B = 15 GB/day writes
+ストレージユニット:
+- 1 KB = 103 B、1 MB = 10⁶ B、1 GB = 10⁹ B、1 TB = 10¹² B。
 
-Rule of thumb: always sanity-check by converting DAU → QPS.
+トラフィック推定の例 (Twitter のようなもの):
+- 3 億 DAU、1 日あたり 10% の投稿 → 1 日あたり 3,000 万の書き込み
+= 30 M / 86 400 秒 ≈ 350 書き込み/秒
+- 読み取り:書き込み比 = 100:1 → 35,000 読み取り/秒
+- ツイート ~280 文字 = ~500 B → 30M × 500 B = GB/day で 15 回の書き込み
 
-## 3. DNS & load balancing
-DNS resolves domain → IP. TTL controls caching in resolvers.
-- Low TTL (30–60 s) enables fast failover.
-- GeoDNS routes users to the nearest data centre.
+経験則: DAU → QPS を変換することで常に健全性をチェックします。
 
-Load balancer strategies:
-- Round-robin:        simple; ignores server load.
-- Least connections:  route to server with fewest active connections.
-- IP hash:            sticky sessions — same client always hits same server.
-- Weighted:           send more traffic to beefier servers.
+## 3. DNS と負荷分散
+DNS はドメイン → IP を解決します。 TTL は、リゾルバーのキャッシュを制御します。
+- 低い TTL (30 ～ 60 秒) により、高速フェイルオーバーが可能になります。
+- GeoDNS はユーザーを最寄りのデータ センターにルーティングします。
 
-Layer 4 vs Layer 7 (recap from Networking):
-- L4 (TCP): fast, blind to content. AWS NLB.
-- L7 (HTTP): path/header routing, SSL termination, WAF. AWS ALB.
+ロードバランサー戦略:
+- ラウンドロビン: シンプル。サーバーの負荷を無視します。
+- 最小接続数: アクティブな接続数が最も少ないサーバーにルーティングします。
+- IP ハッシュ: スティッキー セッション — 同じクライアントが常に同じサーバーにアクセスします。
+- 重み付け: より強力なサーバーにより多くのトラフィックを送信します。
 
-Health checks: LB polls each backend; removes unhealthy instances automatically.
-Horizontal scaling: add more backend instances behind the LB — scale out freely.
+レイヤ 4 とレイヤ 7 (ネットワーキングの要約):
+- L4 (TCP): 高速で、内容がわかりません。 AWS NLB。
+- L7 (HTTP): パス/ヘッダー ルーティング、SSL 終端、WAF。 AWS ALB。
 
-## 4. Caching strategies
-Cache = fast in-memory store to avoid expensive repeated computation or DB reads.
+ヘルスチェック: LB は各バックエンドをポーリングします。異常なインスタンスを自動的に削除します。
+水平スケーリング: LB の背後にバックエンド インスタンスを追加します。自由にスケールアウトします。
 
-Where to cache:
-- Client-side:   browser cache, service worker.
-- CDN edge:      static assets, cacheable API responses.
-- Application:   in-process (dict/LRU) for per-instance hot data.
-- Distributed:   Redis / Memcached — shared across all app instances.
-- Database:      query result cache, buffer pool.
+## 4. キャッシュ戦略
+キャッシュ = コストのかかる繰り返し計算や DB 読み取りを回避するための高速なメモリ内ストア。
 
-Cache-aside (lazy loading) — most common pattern:
-1. App checks cache → hit: return. Miss: read from DB.
-2. Write result to cache with TTL. Return to caller.
-+ Cache only contains actually-requested data.
-− First request after miss is slow; thundering herd on cold start.
+キャッシュする場所:
+- クライアント側: ブラウザー キャッシュ、Service Worker。
+- CDN エッジ: 静的アセット、キャッシュ可能な API 応答。
+- アプリケーション: インスタンスごとのホット データのインプロセス (dict/LRU)。
+- 分散: Redis / Memcached — すべてのアプリ インスタンス間で共有されます。
+- データベース: クエリ結果キャッシュ、バッファ プール。
 
-Write-through:
-Write to cache AND DB synchronously.
-+ Cache always consistent. − Write latency doubles; cache polluted by cold data.
+キャッシュアサイド (遅延読み込み) — 最も一般的なパターン:
+1.アプリがキャッシュをチェック→ヒット:リターン。さん: DB から読みました。
+2. TTL を使用して結果をキャッシュに書き込みます。発信者に戻ります。
++ キャッシュには実際に要求されたデータのみが含まれます。
+− ミス後の最初のリクエストは遅い。コールドスタートで雷鳴をあげる群れ。
 
-Write-behind (write-back):
-Write to cache immediately; flush to DB asynchronously.
-+ Low write latency. − Risk of data loss on crash.
+ライトスルー:
+キャッシュ AND DB に同期的に書き込みます。
++ キャッシュは常に一貫しています。 − 書き込みレイテンシーが 2 倍になります。コールドデータによってキャッシュが汚染されています。
 
-Cache eviction policies:
-- LRU (Least Recently Used):  evict the item unused for the longest time.
-- LFU (Least Frequently Used): evict the item with the fewest accesses.
-- TTL-based: evict after fixed time regardless of access pattern.
+ライトビハインド (ライトバック):
+すぐにキャッシュに書き込みます。 DB に非同期的にフラッシュします。
++ 書き込みレイテンシが低い。 − クラッシュ時のデータ損失のリスク。
 
-## 5. Databases: SQL vs NoSQL
-Relational (SQL):
-- Tables, rows, foreign keys, ACID transactions.
-- Flexible queries via JOINs; schema enforced.
-- Use when: complex relationships, strong consistency, ad-hoc queries.
-- PostgreSQL, MySQL, CockroachDB.
+キャッシュエビクションポリシー:
+- LRU (最近使用されていないもの): 長期間使用されていないアイテムを削除します。
+- LFU (最も頻繁に使用されない): アクセスが最も少ないアイテムを削除します。
+- TTL-ベース: アクセスパターンに関係なく、一定時間後に削除します。
 
-NoSQL — four main families:
-- Key-value:    Redis, DynamoDB — O(1) get/set; simple queries only.
-- Document:     MongoDB, Firestore — JSON docs; flexible schema.
-- Wide-column:  Cassandra, HBase — row key + columns; huge write throughput.
-- Graph:        Neo4j — vertices + edges; social graphs, recommendations.
+## 5. データベース: SQL と NoSQL
+リレーショナル (SQL):
+- テーブル、行、外部キー、ACID トランザクション。
+- JOIN による柔軟なクエリ。スキーマが適用されました。
+- 複雑な関係、強整合性、アドホック クエリの場合に使用します。
+- PostgreSQL、MySQL、CockroachDB。
 
-Choosing the right store:
-- Need JOINs & transactions?          → SQL.
-- Sub-millisecond key lookups?         → Redis.
-- Flexible schema, document-oriented?  → MongoDB.
-- Time-series / append-heavy at scale? → Cassandra.
-- Relationship traversal?              → Graph DB.
-- Most real systems use multiple stores (polyglot persistence).
+NoSQL — 4 つの主要なファミリー:
+- キー値: Redis、DynamoDB — O(1) get/set;単純なクエリのみ。
+- ドキュメント: MongoDB、Firestore — JSON ドキュメント;柔軟なスキーマ。
+- ワイドカラム: Cassandra、HBase — 行キー + 列。巨大な書き込みスループット。
+- グラフ: Neo4j — 頂点 + エッジ。ソーシャル グラフ、推奨事項。
 
-## 6. Replication & sharding
-Replication — copy data to multiple nodes:
-- Primary-replica: primary handles writes; replicas serve reads.
-– Read scale-out; replica lag can cause stale reads.
-- Multi-primary: multiple nodes accept writes → conflict resolution needed.
-- Synchronous replication: write ack only after replica confirms → no data loss, higher latency.
-- Asynchronous replication: write ack immediately → lower latency, possible data loss on crash.
+適切なストアの選択:
+- JOIN とトランザクションが必要ですか?          → SQL。
+- ミリ秒未満のキー検索?         → Redis。
+- 柔軟なスキーマ、ドキュメント指向?  → MongoDB。
+- 時系列/大規模な追加が多いですか? →カサンドラ。
+- 関係の横断?              → グラフDB。
+- ほとんどの実際のシステムは複数のストアを使用します (ポリグロット永続性)。
 
-Sharding (horizontal partitioning) — split data across nodes:
-- Range-based:  shard by key range (e.g. user_id 0–1M on shard 1).
-− Hot shards if data isn't evenly distributed.
-- Hash-based:   shard = hash(key) % N → even distribution.
-− Range queries span all shards.
-- Directory-based: lookup table maps key → shard.
-− Flexible re-sharding; lookup table is a bottleneck.
+## 6. レプリケーションとシャーディング
+レプリケーション — データを複数のノードにコピーします。
+- プライマリ レプリカ: プライマリは書き込みを処理します。レプリカは読み取りを処理します。
+– 読み取りスケールアウト。レプリカのラグにより​​、読み取りが失われる可能性があります。
+- マルチプライマリ: 複数のノードが書き込みを受け入れる → 競合解決が必要。
+- 同期レプリケーション: レプリカの確認後にのみ書き込み ACK → データ損失がなく、待ち時間が長くなります。
+- 非同期レプリケーション: ACK をすぐに書き込みます → 待ち時間が短くなり、クラッシュ時にデータが失われる可能性があります。
 
-Consistent hashing:
-- Place nodes and keys on a hash ring.
-- Key routed to the nearest node clockwise.
-- Adding/removing a node only remaps keys from one neighbour — minimal reshuffling.
-- Used in: DynamoDB, Cassandra, Memcached clusters.
+シャーディング (水平パーティショニング) — データをノード間で分割します。
+- 範囲ベース: キー範囲によるシャード (例: シャード 1 の user_id 0–1M)。
+− データが均等に分散されていない場合、ホットシャードが発生します。
+- ハッシュベース: シャード = ハッシュ(キー) % N → 均等分散。
+− 範囲クエリはすべてのシャードにまたがります。
+- ディレクトリベース: ルックアップテーブルはキー→シャードをマップします。
+− 柔軟な再シャーディング。ルックアップテーブルがボトルネックになっています。
 
-## 7. CAP theorem & consistency
-CAP theorem: a distributed system can guarantee at most two of:
-- Consistency (C):  every read returns the most recent write.
-- Availability (A): every request receives a (non-error) response.
-- Partition tolerance (P): system works despite network splits.
+一貫したハッシュ:
+- ノードとキーをハッシュ リング上に配置します。
+- キーは最も近いノードに時計回りにルーティングされます。
+- ノードの追加/削除では、1 つの隣接ノードからのキーのみが再マッピングされます。つまり、再シャッフルは最小限です。
+- 使用場所: DynamoDB、Cassandra、Memcached クラスター。
 
-In practice: network partitions happen → choose CP or AP:
-- CP: reject requests when partitioned rather than serve stale data.
-Examples: HBase, Zookeeper, etcd.
-- AP: serve possibly stale data; reconcile after partition heals.
-Examples: Cassandra, CouchDB, DynamoDB (eventual consistency default).
+## 7. CAP の定理と一貫性
+CAP 定理: 分散システムは次のうち最大 2 つを保証できます。
+- 一貫性 (C): すべての読み取りは最新の書き込みを返します。
+- 可用性 (A): すべてのリクエストは (エラーではない) 応答を受け取ります。
+- パーティショントレランス (P): ネットワークが分割されていてもシステムは動作します。
 
-Consistency models (weakest → strongest):
-- Eventual: all replicas converge given no new writes. (DNS, shopping cart)
-- Read-your-writes: a client always sees its own writes.
-- Monotonic read: once you read a value, you never see an older one.
-- Strong (linearisability): reads always reflect the latest write globally.
+実際: ネットワーク分割が発生する → CP または AP を選択します。
+- CP: パーティション化された場合、古いデータを提供するのではなくリクエストを拒否します。
+例: HBase、Zookeeper など。
+- AP: 古い可能性のあるデータを提供します。パーティションが修復された後に調整します。
+例: Cassandra、CouchDB、DynamoDB (結果整合性のデフォルト)。
 
-PACELC extension: even without partitions, there is a latency vs consistency
-trade-off — low latency requires async replication → weaker consistency.
+一貫性モデル (最弱→最強):
+- 最終的: 新しい書き込みがない場合、すべてのレプリカが収束します。 (DNS、ショッピングカート)
+- Read-your-write: クライアントは常に自身の書き込みを確認します。
+- 単調読み取り: 一度値を読み取ると、古い値が表示されることはありません。
+- 強力 (線形化可能性): 読み取りは常に最新の書き込みをグローバルに反映します。
 
-## 8. Remember & rehearse
-- Walk through the 5-step approach for designing a URL shortener.
-- Estimate QPS for a service with 100 M DAU and 5 actions/user/day.
-- What is the difference between cache-aside and write-through?
-- When would you choose NoSQL over SQL? Name a specific example.
-- Explain consistent hashing. Why is it preferred over hash(key) % N?
-- What does CAP theorem say? Which guarantee do you drop in practice?
-- What is replication lag and how can it affect user experience?
+PACELC 拡張機能: パーティションがなくても、待ち時間と一貫性が存在します。
+トレードオフ — 低レイテンシには非同期レプリケーションが必要 → 一貫性が弱くなる。
+
+## 8. 覚えてリハーサルする
+- URL 短縮ツールを設計するための 5 ステップのアプローチを順を追って説明します。
+- 100M DAU および 5 アクション/ユーザー/日のサービスの QPS を見積もります。
+- キャッシュアサイドとライトスルーの違いは何ですか?
+- SQL ではなく NoSQL を選択するのはどのような場合ですか?具体的な例を挙げてください。
+- コンシステントハッシュについて説明します。 hash(key) % N よりも優先されるのはなぜですか?
+- CAP 定理は何を示していますか?実際にどの保証を落としますか?
+- レプリケーション ラグとは何ですか? それはユーザー エクスペリエンスにどのように影響しますか?

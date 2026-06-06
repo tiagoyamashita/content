@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "Operations & backups"
+subtitle: "操作とバックアップ"
 group: "Postgres"
 order: 6
 ---
-Postgres — operations & backups
-Production Postgres needs **role separation**, **regular backups**, and a plan for **restore** and **failover**. You do not need to be a DBA on day one — but you should know these defaults.
+Postgres — 操作とバックアップ
 
-## 1. Roles and permissions
+本番環境 Postgres には、**役割の分離**、**定期的なバックアップ**、および**リストア**と**フェイルオーバー**の計画が必要です。初日から DBA である必要はありませんが、これらのデフォルトを知っておく必要があります。
+
+## 1. 役割と権限
 
 | Role type | Typical permissions |
 |-----------|---------------------|
@@ -29,7 +30,7 @@ Rotate passwords via managed-console or **`ALTER ROLE … PASSWORD`**.
 
 ## 2. Backup with `pg_dump`
 
-Logical backup — portable SQL or custom format:
+論理バックアップ — ポータブル SQL またはカスタム形式:
 
 ```bash
 # Plain SQL (human-readable, slower restore)
@@ -39,7 +40,7 @@ pg_dump -h localhost -U postgres -d myapp -F p -f myapp-$(date +%F).sql
 pg_dump -h localhost -U postgres -d myapp -F c -f myapp.dump
 ```
 
-Restore:
+復元する：
 
 ```bash
 pg_restore -h localhost -U postgres -d myapp_restored -F c myapp.dump
@@ -51,9 +52,9 @@ pg_restore -h localhost -U postgres -d myapp_restored -F c myapp.dump
 | **Volume snapshot** | Fast for huge DBs | Must be crash-consistent or use PG APIs |
 | **Managed auto-backup** | PITR, retention policies | Vendor lock-in, cost |
 
-**Test restores** quarterly — an untested backup is a guess.
+**四半期ごとにリストアをテストします** - テストされていないバックアップは推測です。
 
-## 3. Point-in-time recovery (concept)
+## 3. ポイントインタイムリカバリ (概念)
 
 ```text
 Base backup (pg_dump or physical)  +  continuous WAL archive  →  restore to any second
@@ -61,16 +62,16 @@ Base backup (pg_dump or physical)  +  continuous WAL archive  →  restore to an
 
 Managed Postgres (RDS, Cloud SQL, Neon) exposes PITR in the console. Self-hosted needs **`archive_mode`** and WAL shipping configured.
 
-## 4. Replication basics
+## 4. レプリケーションの基本
 
-| Mode | Purpose |
-|------|---------|
-| **Streaming replication** | Hot standby for failover and read scale |
-| **Logical replication** | Selective tables, cross-version upgrades |
+|モード |目的 |
+|-----|----------|
+| **ストリーミング レプリケーション** |フェイルオーバーと読み取りスケールのためのホット スタンバイ |
+| **論理レプリケーション** |選択テーブル、クロスバージョンアップグレード |
 
-Application sees one **primary** for writes; replicas may lag by milliseconds to seconds — design UI accordingly after writes.
+アプリケーションは書き込み用に 1 つの **プライマリ** を認識します。レプリカはミリ秒から数秒まで遅れる可能性があります。書き込み後にそれに応じて UI を設計します。
 
-## 5. Vacuum and bloat
+## 5.真空と膨満感
 
 Postgres uses **MVCC** — `UPDATE`/`DELETE` leave dead rows until **VACUUM** reclaims space.
 
@@ -82,7 +83,7 @@ Postgres uses **MVCC** — `UPDATE`/`DELETE` leave dead rows until **VACUUM** re
 
 Watch **`pg_stat_user_tables`** (`n_dead_tup`, last autovacuum) if tables grow without reason.
 
-## 6. Health checks
+## 6. ヘルスチェック
 
 ```sql
 SELECT count(*) FROM pg_stat_activity WHERE state = 'active';
@@ -100,26 +101,26 @@ LIMIT 10;
 | Disk growth | Bloat, WAL, logs — investigate per directory |
 | Replication lag | Scale replica, fix slow queries on primary |
 
-## 7. PgBouncer (connection multiplexing)
+## 7. PgBouncer (接続多重化)
 
-When many app instances each hold a pool:
+多くのアプリ インスタンスがそれぞれプールを保持する場合:
 
 ```text
 Apps (many pools)  →  PgBouncer  →  Postgres (fewer real connections)
 ```
 
-Use **transaction pooling** mode carefully — session features (prepared statements, temp tables) may break unless configured.
+**トランザクション プーリング** モードは慎重に使用してください。構成されていない場合、セッション機能 (準備されたステートメント、一時テーブル) が機能しなくなる可能性があります。
 
-## 8. Checklist before production
+## 8. 生産前のチェックリスト
 
-- [ ] App uses least-privilege DB role
-- [ ] Migrations automated in deploy pipeline
-- [ ] Backups scheduled + restore tested
-- [ ] Connection limits sized (app × pool + admin)
-- [ ] Slow query logging or APM enabled
-- [ ] Secrets in env / vault — not in git
+- [ ] アプリは最小権限の DB ロールを使用します
+- [ ] デプロイパイプラインで自動化された移行
+- [ ] スケジュールされたバックアップ + テスト済みの復元
+- [ ] 接続制限のサイズ (アプリ × プール + 管理者)
+- [ ] 低速クエリ ログまたは APM が有効になっています
+- [ ] env / vault のシークレット — git にはありません
 
-## Related notes
+## 関連メモ
 
 - [Relational (SQL)](../../CS101/databases/ii-relational.md) — SQL and transaction theory
 - [Database optimizations](vii-database-optimizations.md) — full tuning workflow and checklist

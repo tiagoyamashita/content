@@ -1,15 +1,16 @@
 ---
 label: "VII"
-subtitle: "Binary search tree"
-group: "Data structures & algorithms"
+subtitle: "二分探索木"
+group: "データ構造とアルゴリズム"
 order: 7
 ---
-Binary search tree (BST)
-Ordered binary tree: all keys in the left subtree are strictly smaller than the node’s key; all keys in the right subtree are strictly larger (for a strict total order).
+二分探索木 (BST)
 
-**Ops:** search, insert, delete follow a root-to-leaf path — time **O(h)** where **h** is height. Balanced: **h = O(log n)**; skewed chain from sorted inserts: **h = Θ(n)**.
+順序付きバイナリ ツリー: 左側のサブツリー内のすべてのキーはノードのキーよりも厳密に小さくなります。右側のサブツリー内のすべてのキーは厳密に大きくなります (厳密な合計順序の場合)。
 
-**Balancing (overview):** **AVL** trees enforce a tight height balance with rotations; **red-black** trees use color rules to keep **h = O(log n)** with slightly looser balance and fewer rotations on average. Both restore **O(log n)** worst-case search/insert/delete.
+**操作:** 検索、挿入、削除はルートからリーフのパスに従います。時間は **O(h)** で、**h** は高さです。バランス: **h = O(log n)**;ソートされたインサートからのスキューチェーン: **h = Θ(n)**。
+
+**バランス調整 (概要):** **AVL** ツリーは、回転によって高さの厳密なバランスを強制します。 **赤黒**の木は、カラー ルールを使用して **h = O(log n)** を維持し、バランスをわずかに緩め、平均して回転を少なくします。どちらも **O(log n)** の最悪の場合の検索/挿入/削除を復元します。
 
 **Related:** **Level II — Trees, heaps, hashing** (`ii-trees-heaps-hashing.md`).
 

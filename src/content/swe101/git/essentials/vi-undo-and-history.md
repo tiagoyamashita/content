@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "Undo & history"
+subtitle: "元に戻すと履歴"
 group: "Git"
 order: 6
 ---
-Undo & history
-Git rarely deletes work immediately — but **reset**, **restore**, and **revert** behave differently. Know which to use before sharing commits.
+元に戻すと履歴
 
-## 1. Unstage and discard (safe)
+Git が作業をすぐに削除することはほとんどありません。ただし、**リセット**、**復元**、**元に戻す**の動作は異なります。コミットを共有する前に、どちらを使用するかを確認してください。
+
+## 1. アンステージして破棄する (安全)
 
 ```bash
 git restore --staged file.js     # unstage (keep file changes)
@@ -17,16 +18,16 @@ git clean -fd                    # remove untracked files/dirs — destructive
 
 Modern Git uses **`restore`**; older docs use **`checkout -- file`**.
 
-## 2. Amend last commit (not pushed)
+## 2. 最後のコミットを修正します (プッシュされません)
 
 ```bash
 git add forgotten-file.js
 git commit --amend -m "feat: complete login flow"
 ```
 
-Only amend commits **you have not pushed** (or team agrees) — rewrites history.
+**プッシュしていない** (またはチームが同意した) コミットのみを修正し、履歴を書き換えます。
 
-## 3. reset — move branch pointer
+## 3. リセット — 分岐ポインタを移動する
 
 ```bash
 git reset --soft HEAD~1    # undo commit, keep staged
@@ -42,9 +43,9 @@ git reset --hard HEAD~1    # undo commit AND discard changes — dangerous
 
 **Never `--hard`** on shared branches without team coordination.
 
-## 4. revert — new commit that undoes
+## 4. revert — 元に戻す新しいコミット
 
-Safe for **published** history:
+**公開済み**の履歴に対して安全:
 
 ```bash
 git revert abc1234           # one commit
@@ -52,9 +53,9 @@ git revert HEAD              # last commit
 git revert -m 1 merge_commit # merge revert — pick mainline parent
 ```
 
-Creates a forward commit — no history rewrite.
+フォワードコミットを作成します - 履歴の書き換えはありません。
 
-## 5. stash — shelf work in progress
+## 5. 隠し場所 — 棚の作業が進行中
 
 ```bash
 git stash push -m "wip login form"
@@ -64,9 +65,9 @@ git stash apply stash@{0}    # apply, keep stash
 git stash drop
 ```
 
-Switch branches without committing half-done work.
+中途半端な作業をコミットせずにブランチを切り替えます。
 
-## 6. Recover "lost" commits
+## 6.「失われた」コミットを回復する
 
 ```bash
 git reflog                     # every HEAD movement ~90 days
@@ -75,9 +76,9 @@ git switch -c recover abc1234  # branch at lost commit
 
 Reflog saves you after wrong **`reset --hard`** (locally).
 
-## 7. Remove file from history (secrets)
+## 7. 履歴 (シークレット) からファイルを削除します。
 
-If you committed a **password**:
+**パスワード**をコミットした場合:
 
 1. Rotate the secret immediately
 2. Remove from history: `git filter-repo` or BFG Repo-Cleaner
@@ -85,7 +86,7 @@ If you committed a **password**:
 
 Prevention: `.gitignore`, pre-commit hooks, secret scanning on GitHub.
 
-## 8. Decision guide
+## 8. 意思決定ガイド
 
 | Situation | Command |
 |-----------|---------|

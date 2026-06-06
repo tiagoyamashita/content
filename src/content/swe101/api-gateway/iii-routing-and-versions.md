@@ -1,13 +1,14 @@
 ---
 label: "III"
-subtitle: "Routing & versions"
+subtitle: "ルーティングとバージョン"
 group: "API Gateway"
 order: 3
 ---
-API gateway — routing & versions
-Route by **path**, **method**, **host**, and **headers** — map public URLs to internal services and API **versions** without exposing every microservice hostname.
+API ゲートウェイ — ルーティングとバージョン
 
-## 1. Path-based routing
+**パス**、**メソッド**、**ホスト**、**ヘッダー**によるルート - すべてのマイクロサービスのホスト名を公開せずに、パブリック URL を内部サービスおよび API **バージョン**にマップします。
+
+## 1. パスベースのルーティング
 
 ```text
 GET  /api/v1/orders/*     → orders-service:8080
@@ -15,7 +16,7 @@ GET  /api/v1/users/*      → users-service:8080
 POST /api/v1/webhooks/*   → webhook-handler
 ```
 
-Kong-style conceptual config:
+Kong スタイルの概念的な構成:
 
 ```yaml
 routes:
@@ -34,7 +35,7 @@ routes:
 | **`strip_path: false`** | Upstream sees full path — service mounts `/api/v1/orders` |
 | **Method match** | `GET` vs `POST` on same path → different routes |
 
-## 2. API versioning strategies
+## 2. API バージョン管理戦略
 
 | Strategy | Example | Pros / cons |
 |----------|---------|-------------|
@@ -44,7 +45,7 @@ routes:
 
 Gateway often routes **`/api/v1/*`** and **`/api/v2/*`** to different upstreams during migration.
 
-## 3. Host-based routing
+## 3. ホストベースのルーティング
 
 ```text
 api.example.com      → public REST gateway
@@ -52,26 +53,26 @@ partner.example.com  → partner routes + stricter limits
 internal.example.com → VPN-only (network policy + gateway)
 ```
 
-Same gateway cluster, different **route tables** per hostname.
+同じゲートウェイ クラスタ、ホスト名ごとに異なる **ルート テーブル**。
 
-## 4. Canary and traffic split
+## 4. カナリアとトラフィックの分割
 
-Send small % of traffic to new version:
+トラフィックのわずかな割合を新しいバージョンに送信します。
 
 ```text
 95% /api/v1/orders → orders-v1
  5% /api/v1/orders → orders-v2-canary
 ```
 
-Implemented via:
+以下を介して実装されます:
 
-- Gateway **weighted upstream** (Kong, Envoy, AWS weighted targets)
-- **Service mesh** traffic split (internal)
-- **Feature flag** in app (not gateway — different concern)
+- ゲートウェイ **重み付けされたアップストリーム** (Kong、Envoy、AWS 重み付けされたターゲット)
+- **サービス メッシュ** トラフィック分割 (内部)
+- アプリ内の **機能フラグ** (ゲートウェイではありません - 別の懸念事項)
 
-Watch error rate on canary — automated rollback via CI.
+Canary のエラー率を監視します — CI による自動ロールバック。
 
-## 5. Rewrites and redirects
+## 5. リライトとリダイレクト
 
 | Action | Use |
 |--------|-----|
@@ -79,24 +80,24 @@ Watch error rate on canary — automated rollback via CI.
 | **301/302 redirect** | Deprecate old hostname |
 | **Header injection** | `X-Api-Version: 1` for upstream logging |
 
-Avoid complex rewrite chains — hard to debug.
+デバッグが困難な複雑な書き換えチェーンを避けてください。
 
-## 6. OpenAPI / schema (optional)
+## 6. OpenAPI / スキーマ (オプション)
 
-Some gateways import **OpenAPI** spec to define routes and validate requests (**Cloudflare API Shield**, **Azure APIM**, **Kong request validator**).
+一部のゲートウェイは、**OpenAPI** 仕様をインポートしてルートを定義し、リクエストを検証します (**Cloudflare API Shield**、**Azure APIM**、**Kong request validator**)。
 
-Benefits: reject malformed requests at edge; document contract.
+利点: 不正なリクエストをエッジで拒否します。文書による契約書。
 
-## 7. gRPC and WebSocket
+## 7. gRPC と WebSocket
 
-| Protocol | Gateway support |
-|----------|-----------------|
-| **HTTP/JSON** | Universal |
-| **gRPC** | Envoy, Kong gRPC, AWS HTTP API (limited) — often gRPC-gateway translate |
-| **WebSocket** | Provider-specific routes; sticky sessions may matter |
+|プロトコル |ゲートウェイのサポート |
+|----------|------|
+| **HTTP/JSON** |ユニバーサル |
+| **gRPC** | Envoy、Kong gRPC、AWS HTTP API (限定) — 多くの場合、gRPC ゲートウェイ変換 |
+| **WebSocket** |プロバイダー固有のルート。スティッキーセッションが重要になる可能性があります |
 
-Pick gateway product matching your protocol — not all support gRPC natively.
+プロトコルに一致するゲートウェイ製品を選択してください。すべてが gRPC をネイティブにサポートしているわけではありません。
 
-## Next
+＃＃ 次
 
 Continue with [Authentication](iv-authentication.md) for JWT, API keys, and OAuth at the gateway.

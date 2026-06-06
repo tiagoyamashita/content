@@ -1,13 +1,15 @@
 ---
 label: "VII"
-subtitle: "Database optimizations"
+subtitle: "データベースの最適化"
 group: "MongoDB"
 order: 7
 ---
-MongoDB — database optimizations
+MongoDB — データベースの最適化
+
+
 How to make MongoDB faster: **measure**, fix **query shape and indexes**, then scale. Index and explain basics are in [Queries & indexes](iv-queries-and-indexes.md); cross-store patterns in [Database optimizations (Postgres)](../postgres/vii-database-optimizations.md).
 
-## 1. Optimization workflow
+## 1. 最適化ワークフロー
 
 ```text
 1. Find slow ops        (profiler, Atlas Performance Advisor, APM)
@@ -23,16 +25,16 @@ How to make MongoDB faster: **measure**, fix **query shape and indexes**, then s
 | **One change at a time** | Index + rewrite together obscures cause |
 | **Production read preference** | `secondary` reads show stale/laggy behavior |
 
-Enable slow query profiling (dev/staging):
+低速クエリ プロファイリングを有効にする (開発/ステージング):
 
 ```javascript
 db.setProfilingLevel(1, { slowms: 100 })  // log ops > 100ms
 db.system.profile.find().sort({ ts: -1 }).limit(10)
 ```
 
-Atlas: **Performance Advisor** suggests indexes from workload samples.
+Atlas: **パフォーマンス アドバイザー** は、ワークロード サンプルからのインデックスを提案します。
 
-## 2. Fix order (cheapest wins first)
+## 2. 順序を修正します (最も安いものが最初に勝ちます)
 
 | Priority | Lever | Example |
 |----------|-------|---------|
@@ -43,9 +45,9 @@ Atlas: **Performance Advisor** suggests indexes from workload samples.
 | 5 | **Read path** | Primary for read-your-writes; cache hot keys |
 | 6 | **Scale** | Bigger instance, shard, separate analytics |
 
-## 3. Query rewrites
+## 3. クエリのリライト
 
-**Projection** reduces wire size and decode work:
+**投影**により、ワイヤ サイズとデコード作業が削減されます。
 
 ```javascript
 db.products.find(
@@ -78,7 +80,7 @@ db.products.find(
 )
 ```
 
-## 4. Index strategy
+## 4. インデックス戦略
 
 | Rule | Detail |
 |------|--------|
@@ -92,9 +94,9 @@ db.products.find(
 db.products.aggregate([{ $indexStats: {} }])
 ```
 
-Duplicate or redundant indexes waste RAM — Atlas Advisor flags some cases.
+重複または冗長なインデックスは RAM を無駄にします — Atlas Advisor はいくつかのケースにフラグを立てます。
 
-## 5. Write performance
+## 5. 書き込みパフォーマンス
 
 | Pattern | Prefer |
 |---------|--------|
@@ -105,33 +107,33 @@ Duplicate or redundant indexes waste RAM — Atlas Advisor flags some cases.
 
 **Write concern:** `w: "majority"` for durability on replica set; tune only with understanding of rollback risk.
 
-## 6. Read preference and consistency
+## 6. 読み取り設定と一貫性
 
 ```javascript
 collection.find(filter).readPref("secondaryPreferred")
 ```
 
-| Mode | Trade-off |
+|モード |トレードオフ |
 |------|-----------|
-| **Primary** | Read-your-writes default |
-| **Secondary** | Scale reads; replication lag |
-| **Causal consistency** | Session token — ordered reads after writes |
+| **プライマリ** |読み取り書き込みのデフォルト |
+| **セカンダリ** |スケールの読み取り値。レプリケーションの遅延 |
+| **因果的一貫性** |セッション トークン - 書き込み後の順序付き読み取り |
 
-After a write, user-facing reads should hit **primary** unless lag is acceptable.
+書き込み後、ラグが許容できない限り、ユーザー側の読み取りは **プライマリ** に達する必要があります。
 
-## 7. Caching and hybrid stacks
+## 7. キャッシュとハイブリッド スタック
 
-MongoDB is not a cache:
+MongoDB はキャッシュではありません:
 
-| Layer | Role |
-|-------|------|
-| **Redis** | Sessions, rate limits, hot keys |
-| **MongoDB** | Durable document store |
-| **Warehouse / SQL** | Analytics, reporting JOINs |
+|レイヤー |役割 |
+|------|------|
+| **Redis** |セッション、レート制限、ホットキー |
+| **MongoDB** |耐久性のある文書保管庫 |
+| **倉庫 / SQL** |分析、JOIN のレポート |
 
 See [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md).
 
-## 8. When to move workload to SQL
+## 8. ワークロードを SQL に移動するタイミング
 
 | Signal | Consider Postgres |
 |--------|-------------------|
@@ -140,9 +142,9 @@ See [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md).
 | Many `$lookup` in hot path | Normalized schema |
 | Ad-hoc JOINs by analysts | SQL BI tools |
 
-Polyglot persistence is normal — optimize each store for its job.
+ポリグロットの永続性は正常です。各ストアをそのジョブに合わせて最適化します。
 
-## 9. Checklist
+## 9. チェックリスト
 
 - [ ] Slow ops identified (profiler / Atlas / APM)
 - [ ] **`explain("executionStats")`** on top queries — no surprise COLLSCAN at scale
@@ -152,7 +154,7 @@ Polyglot persistence is normal — optimize each store for its job.
 - [ ] Document sizes bounded (no unbounded arrays)
 - [ ] Backups and restore tested ([Operations & backups](vi-operations-and-backups.md))
 
-## Related notes
+## 関連メモ
 
 - [Queries & indexes](iv-queries-and-indexes.md) — find, aggregation, index types
 - [Schema & modeling](iii-schema-and-modeling.md) — embed vs reference

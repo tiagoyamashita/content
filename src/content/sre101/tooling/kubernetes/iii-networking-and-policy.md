@@ -1,13 +1,14 @@
 ---
 label: "III"
-subtitle: "Networking & policy"
+subtitle: "ネットワーキングとポリシー"
 group: "SRE"
 order: 3
 ---
-SRE tooling — Kubernetes: Networking & policy
-Clusters default **allow-all** Pod-to-Pod traffic until you tighten **NetworkPolicy**.
+SRE ツール — Kubernetes: ネットワーキングとポリシー
 
-## 1. Services & DNS
+**NetworkPolicy** を強化するまで、クラスターはデフォルトで **allow-all** ポッド間のトラフィックを許可します。
+
+## 1. サービスと DNS
 
 - **ClusterIP** — virtual IP inside cluster; **`kube-proxy`** (iptables/IPVS) or eBPF datapaths route traffic to healthy endpoints (Pods passing readiness).
 - **NodePort** — publishes port on every Node—handy for labs; prod usually fronts with LB/Ingress.
@@ -16,16 +17,16 @@ Clusters default **allow-all** Pod-to-Pod traffic until you tighten **NetworkPol
 
 Cluster DNS (**CoreDNS**) resolves **`my-svc.my-ns.svc.cluster.local`**.
 
-## 2. Ingress vs Gateway API
+## 2. Ingress とゲートウェイ API
 
 - **Ingress** — HTTP routing via controller (nginx, contour, etc.); **`IngressClass`** selects implementation.
 - **Gateway API** — richer routing/TLS models with **`Gateway`** / **`HTTPRoute`** CRDs—preferred greenfield when supported.
 
-TLS termination may live at Ingress/LB or mesh—pick one story per environment.
+TLS 終端は Ingress/LB またはメッシュに存在する可能性があります。環境ごとに 1 つのストーリーを選択してください。
 
-## 3. NetworkPolicy
+## 3. ネットワークポリシー
 
-Without policies, any Pod can reach any Pod/CIDR allowed by CNI defaults. Example deny-by-default baseline (illustrative—adapt labels/CIDRs):
+ポリシーがなければ、どの Pod も CNI デフォルトで許可されている任意の Pod/CIDR に到達できます。デフォルト拒否ベースラインの例 (例示 - ラベル/CIDR の適応):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -42,10 +43,10 @@ spec:
 
 Then add **allow** policies per app (`podSelector` + `namespaceSelector` + **`ports`**). Verify with **`kubectl exec`** + **`nc`** / **`curl`** from representative Pods.
 
-## 4. Multitenancy knobs
+## 4. マルチテナンシーノブ
 
-Combine **namespaces**, **ResourceQuota** / **LimitRange**, **RBAC**, **NetworkPolicy**, and optionally **PodSecurity** / admission (OPA/Kyverno) for safer shared clusters.
+**名前空間**、**ResourceQuota** / **LimitRange**、**RBAC**、**NetworkPolicy**、およびオプションで **PodSecurity** / アドミッション (OPA/Kyverno) を組み合わせて、より安全な共有クラスターを実現します。
 
-## 5. Pairing with observability
+## 5. 可観測性とのペアリング
 
 Service meshes / CNIs emit metrics—Prometheus targets often scrape **`kube-state-metrics`**, **cAdvisor/node-exporter**, and app **`ServiceMonitor`** objects (see **Prometheus → Kubernetes** in Tooling).

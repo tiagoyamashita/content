@@ -1,13 +1,19 @@
 ---
 label: "IV"
-subtitle: "Queries & indexes"
+subtitle: "自作とインデックス"
 group: "MongoDB"
 order: 4
 ---
-MongoDB — queries & indexes
-Filter with **`find`**, reshape with **aggregation**, and speed hot paths with **indexes**. Always confirm with **`explain()`**.
+MongoDB — 投稿とインデックス
 
-## 1. Find basics
+
+
+
+
+
+**でフィルタリングする`find`**、**集約**で再形成し、**インデックス**でホットパスを高速化します。必ず**で確認してください`explain()`**。
+
+## 1.基本を見つける
 
 ```javascript
 // Equality + range + array membership
@@ -29,15 +35,15 @@ db.products.find({ tags: "hardware" })
   .limit(20)
 ```
 
-| Operator | Meaning |
-|----------|---------|
-| **`$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte`** | Comparisons |
-| **`$in`, `$nin`** | Membership |
-| **`$and`, `$or`, `$not`** | Logic |
-| **`$exists`** | Field presence |
-| **`$regex`** | Pattern match — use with care (index-friendly only if anchored) |
+|オペレーター |意味 |
+|----------|----------|
+| **`$eq`、`$ne`、`$gt`、`$gte`、`$lt`、`$lte`** |比較 |
+| **`$in`、`$nin`** |メンバーシップ |
+| **`$and`、`$or`、`$not`** |ロジック |
+| **`$exists`** |フィールドの存在 |
+| **`$regex`** |パターン マッチ — 慎重に使用してください (アンカーされている場合のみインデックスに適しています)。
 
-## 2. Updates
+## 2.アップデート
 
 ```javascript
 db.products.updateOne(
@@ -51,7 +57,7 @@ db.products.updateMany(
 )
 ```
 
-Atomic on **one document** by default. Multi-document transactions:
+デフォルトでは **1 つのドキュメント**に対してアトミックです。複数文書のトランザクション:
 
 ```javascript
 session = db.getMongo().startSession()
@@ -61,9 +67,9 @@ session.withTransaction(() => {
 })
 ```
 
-Requires **replica set** — not standalone for production txs.
+**レプリカ セット**が必要です。実稼働 TXS にはスタンドアロンではありません。
 
-## 3. Aggregation pipeline
+## 3. 訓練パイプライン
 
 ```javascript
 db.orders.aggregate([
@@ -79,17 +85,17 @@ db.orders.aggregate([
 ])
 ```
 
-| Stage | Role |
-|-------|------|
-| **`$match`** | Filter early — uses indexes like `find` |
-| **`$group`** | Aggregate (like SQL `GROUP BY`) |
-| **`$lookup`** | Left-outer join another collection |
-| **`$project`** | Shape output |
-| **`$unwind`** | Flatten arrays |
+|ステージ |役割 |
+|------|------|
+| **`$match`** |早期にフィルタリング — 次のようなインデックスを使用します`find`|
+| **`$group`** |集計 (SQL など)`GROUP BY`) |
+| **`$lookup`** |左外側で別のコレクションに参加 |
+| **`$project`** |形状出力 |
+| **`$unwind`** |配列を平坦化する |
 
-Put **`$match`** and **`$sort`/`$limit`** as early as possible to reduce documents flowing downstream.
+置く **`$match`** そして **`$sort`/`$limit`** 文書が下流に流れるのを減らすために、できるだけ早く。
 
-## 4. Indexes
+## 4. インデックス
 
 ```javascript
 // Single field
@@ -111,39 +117,39 @@ db.products.createIndex(
 )
 ```
 
-| Index type | Use |
-|------------|-----|
-| **Single / compound** | Most queries |
-| **Multikey** | Automatic on array fields |
-| **Text** | Full-text search |
-| **2dsphere** | Geo queries |
-| **Wildcard** | Dynamic field names (`"$**"`) — use sparingly |
+|インデックスの種類 |使用 |
+|-----------|-----|
+| **単一 / 複合** |ほとんどのクエリ |
+| **マルチキー** |配列フィールドで自動 |
+| **テキスト** |全文検索 |
+| **2dsphere** |地理クエリ |
+| **ワイルドカード** |動的フィールド名 (`"$**"`) — 使用は控えめに |
 
-## 5. Explain plans
+## 5. 計画について説明する
 
 ```javascript
 db.products.find({ tags: "hardware", price: { $lt: 150 } }).explain("executionStats")
 ```
 
-| Metric | Watch |
-|--------|-------|
-| **`totalDocsExamined` vs `nReturned`** | Large gap → missing/wrong index |
-| **`COLLSCAN`** | Full collection scan — OK for tiny collections only |
-| **`IXSCAN`** | Index used |
-| **`executionTimeMillis`** | Latency under load |
+|メトリック |見る |
+|------|------|
+| **`totalDocsExamined`対`nReturned`** |大きなギャップ → インデックスが見つからない/間違っている |
+| **`COLLSCAN`** |コレクション全体のスキャン - 小さなコレクションのみの OK |
+| **`IXSCAN`** |使用されるインデックス |
+| **`executionTimeMillis`** |負荷時のレイテンシ |
 
-Same ideas as [Postgres Indexes & EXPLAIN](../postgres/iv-indexes-and-explain.md) — different syntax.
+[Postgres インデックスと EXPLAIN]( と同じ考え方)../postgres/iv-indexes-and-explain.md) — 異なる構文。
 
-## 6. Pagination
+## 6. ページ国家
 
-**Offset** (`skip`) slows down at large offsets:
+**オフセット** (`skip`) オフセットが大きい場合は速度が低下します。
 
 ```javascript
 // Slow at high page numbers
 db.products.find().sort({ _id: 1 }).skip(100000).limit(20)
 ```
 
-**Keyset (seek)** pagination:
+**キーセット (シーク)** ページネーション:
 
 ```javascript
 db.products.find({ _id: { $gt: ObjectId("…lastSeen…") } })
@@ -151,8 +157,8 @@ db.products.find({ _id: { $gt: ObjectId("…lastSeen…") } })
   .limit(20)
 ```
 
-Use a sort field that matches your index (often **`_id`** or **`createdAt` + `_id`**).
+インデックスと一致する並べ替えフィールドを使用します (通常は **`_id`** または **`createdAt`+`_id`**)。
 
-## Next
+＃＃次
 
-Continue with [App integration](v-app-integration.md) for Spring Data MongoDB and PyMongo.
+[アプリの統合] に進みます(v-app-integration.md) Spring Data MongoDB および PyMongo の場合。

@@ -1,23 +1,24 @@
 ---
 label: "VII"
-subtitle: "Tekton"
+subtitle: "テクトン"
 group: "CI/CD"
 order: 7
 ---
-Tekton
-**Kubernetes-native** CI/CD — pipelines as **CRDs** (`Pipeline`, `PipelineRun`, `Task`). Composable, GitOps-friendly; no built-in UI (use OpenShift Pipelines, Argo, or custom dashboards).
+テクトン
 
-## 1. Core resources
+**Kubernetes ネイティブ** CI/CD — **CRD** としてのパイプライン (`Pipeline`、`PipelineRun`、`Task`)。コンポーザブルで GitOps フレンドリー。組み込みの UI はありません (OpenShift Pipelines、Argo、またはカスタム ダッシュボードを使用します)。
 
-| Resource | Role |
+## 1. コアリソース
+
+|リソース |役割 |
 |----------|------|
-| **Task** | Unit of work (build, test, deploy) |
-| **Pipeline** | Ordered / parallel graph of Tasks |
-| **PipelineRun** | One execution instance |
-| **Workspace** | Shared volume between Tasks |
-| **Trigger** | EventListener + Binding — webhook → PipelineRun |
+| **タスク** |作業単位 (ビルド、テスト、デプロイ) |
+| **パイプライン** |タスクの順序付き/並列グラフ |
+| **パイプライン実行** | 1 つの実行インスタンス |
+| **ワークスペース** |タスク間の共有ボリューム |
+| **トリガー** | EventListener + バインディング — Webhook → PipelineRun |
 
-## 2. Simple Task (run tests)
+## 2. 単純なタスク (テストの実行)
 
 ```yaml
 apiVersion: tekton.dev/v1
@@ -41,7 +42,7 @@ spec:
         npm test
 ```
 
-## 3. Pipeline chaining Tasks
+## 3. パイプラインチェーンタスク
 
 ```yaml
 apiVersion: tekton.dev/v1
@@ -82,7 +83,7 @@ spec:
           workspace: shared-data
 ```
 
-## 4. PipelineRun (manual trigger)
+## 4. PipelineRun (手動トリガー)
 
 ```yaml
 apiVersion: tekton.dev/v1
@@ -110,7 +111,7 @@ kubectl create -f pipelinerun.yaml
 tkn pipelinerun logs -f
 ```
 
-## 5. Triggers (GitHub webhook)
+## 5. トリガー (GitHub Webhook)
 
 ```yaml
 apiVersion: triggers.tekton.dev/v1beta1
@@ -132,28 +133,28 @@ spec:
         # bind params from webhook body...
 ```
 
-Install **EventListener** + Ingress for `POST /hook`.
+**EventListener** + Ingress を `POST /hook` にインストールします。
 
-## 6. Tekton vs SaaS CI
+## 6. Tekton 対 SaaS CI
 
-| | Tekton | GitHub Actions |
+| |テクトン | GitHub アクション |
 |---|--------|----------------|
-| Runs on | Your K8s cluster | Managed runners |
-| Config | YAML CRDs in cluster | Workflow in repo |
-| UI | Bring your own | Built-in |
-| Multi-tenant | Namespace isolation | Org/repo scoped |
+|実行日 | K8s クラスター |管理ランナー |
+|構成 | YAML クラスター内の CRD |リポジトリ内のワークフロー |
+| UI |自分のものを持参してください |内蔵 |
+|マルチテナント |名前空間の分離 |組織/リポジトリのスコープ |
 
-## 7. When to choose Tekton
+## 7. テクトンを選択する場合
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Same cluster as apps — no outbound runner fleet | Steeper setup |
-| GitOps: apply Pipeline YAML from repo | Debugging requires `tkn` / kubectl |
-| Reusable **Catalog** Tasks | No batteries-included registry |
+|アプリと同じクラスター - アウトバウンド ランナー フリートなし |より急峻なセットアップ |
+| GitOps: リポジトリからパイプライン YAML を適用する |デバッグには `tkn` / kubectl | が必要です。
+|再利用可能な **カタログ** タスク |電池を含むレジストリはありません |
 
-| Good fit | Less ideal |
-|----------|------------|
-| Platform team on Kubernetes | Small team, GitHub-only |
-| OpenShift Pipelines already licensed | No K8s in org |
+|良いフィット感 |あまり理想的ではない |
+|----------|-----------|
+| Kubernetes のプラットフォーム チーム |小規模チーム、GitHub のみ |
+| OpenShift Pipelines はすでにライセンスを取得済み |組織に K8 がありません |
 
-**Related:** **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (cluster infra), [Docker in CI](v-docker-in-ci.md) (Kaniko builds).
+**関連:** **Terraform** サブメニュー → [CI/CD の Terraform](../terraform/vii-terraform-in-cicd.md) (クラスター インフラ)、[CI の Docker](v-docker-in-ci.md) (Kaniko ビルド)。

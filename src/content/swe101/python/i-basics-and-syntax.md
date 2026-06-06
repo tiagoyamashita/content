@@ -1,17 +1,18 @@
 ---
 label: "I"
-subtitle: "Basics & syntax"
+subtitle: "基本と構文"
 group: "Python"
 groupOrder: 1
 order: 1
 ---
-Python — Part I
-How code runs, core syntax, built-in types, control flow, functions, and organizing small programs.
+Python — パート I
 
-## 1. Interpreter model & tooling
-- Python executes **source → bytecode → VM** (similar idea to Java’s JVM, but typically interpreted per process unless using specialized JITs).
-- **`python script.py`** runs a file; **`python -m module`** executes a package/module as **`__main__`**.
-- **REPL** (`python`, **`ipython`**) is ideal for quick experiments — paste multi-line blocks carefully or use files for anything non-trivial.
+コードの実行方法、コア構文、組み込み型、制御フロー、関数、小さなプログラムの構成。
+
+## 1. インタプリタのモデルとツール
+- Python は **source → bytecode → VM** を実行します (Java の JVM と同様の考え方ですが、特殊な JIT を使用しない限り、通常はプロセスごとに解釈されます)。
+- **`python script.py`** ファイルを実行します。 **`python -m module`** パッケージ/モジュールを ** として実行します`__main__`**。
+- **REPL** (`python`、**`ipython`**) は、簡単な実験に最適です。複数行のブロックを慎重に貼り付けるか、重要な作業にはファイルを使用します。
 
 ```text
 # Terminal examples (same folder as greet.py)
@@ -35,9 +36,9 @@ python -c "print(2 ** 10)"         # one-liner without a file
 </svg></figure>
 
 
-## 2. Indentation & blocks
-- **Indentation defines suites** after `if`, `for`, `def`, `class`, etc. — mix tabs and spaces only at your own risk (**PEP 8**: 4 spaces).
-- **`pass`** is a no-op placeholder where syntax demands a body.
+## 2. インデントとブロック
+- **インデントはスイートを定義します**`if`、`for`、`def`、`class`など — タブとスペースを混在させる場合は、自己責任で行ってください (**PEP 8**: スペース 4 つ)。
+- **`pass`** は、構文が本体を要求する no-op プレースホルダーです。
 
 ```python
 def toggle(enabled: bool) -> str:
@@ -54,10 +55,10 @@ class Placeholder:
 ```
 
 
-## 3. Names, assignment, and mutability
-- **Names** bind to objects; assignment **`a = b`** rebinds **`a`** — it never copies objects unless you ask (`copy.copy`, `copy.deepcopy`, slicing where applicable).
-- **`id()`** / **`is`** expose object identity; **`==`** compares **value** via **`__eq__`**.
-- **Numbers**: arbitrary-precision integers; **`float`** is IEEE binary — use **`decimal.Decimal`** for money-style rules.
+## 3. 名前、割り当て、変更可能性
+- **名前**はオブジェクトにバインドされます。割り当て **`a = b`** リバインド **`a`** — 要求しない限り、オブジェクトをコピーすることはありません (`copy.copy`、`copy.deepcopy`、該当する場合はスライス）。
+- **`id()`** / **`is`** オブジェクトのアイデンティティを公開します。 **`==`** は ** を介して ** 値** を比較します`__eq__`**。
+- **数値**: 任意精度の整数。 **`float`** は IEEE バイナリです — ** を使用してください`decimal.Decimal`** マネースタイルのルールの場合。
 
 ```python
 import copy
@@ -79,10 +80,10 @@ price = Decimal("19.99") * 3   # exact decimal arithmetic vs float rounding surp
 ```
 
 
-## 4. Core built-in types
-- **`str`** (immutable Unicode), **`bytes`** / **`bytearray`** for raw octets.
-- **`None`**, **`bool`**, **`int`**, **`float`**, **`complex`**.
-- **Truthiness**: empty containers and **`None`** / **`0`** / **`""`** are falsy unless customized.
+## 4. コアの組み込み型
+- **`str`** (不変 Unicode)、**`bytes`** / **`bytearray`** 生のオクテットの場合。
+- **`None`**、**`bool`**、**`int`**、**`float`**、**`complex`**。
+- **真実性**: 空のコンテナと **`None`** / **`0`** / **`""`** はカスタマイズしない限り偽です。
 
 ```python
 label: str = "hello"
@@ -95,10 +96,10 @@ print([bool(v) for v in values])   # [False, True, False, False]
 ```
 
 
-## 5. Control flow
-- **`if / elif / else`**, **`match / case`** (structural pattern matching, 3.10+).
-- **`for x in iterable:`** drives loops — never manually manage indices unless needed; **`enumerate`** pairs index + value.
-- **`while`**, **`break`**, **`continue`**, **`else`** on loops (runs if loop completed without **`break`**).
+## 5. 制御フロー
+- **`if / elif / else`**、**`match / case`** (構造パターンマッチング、3.10+)。
+- **`for x in iterable:`** ループを駆動します — 必要な場合を除き、インデックスを手動で管理しないでください。 **`enumerate`** インデックス + 値のペア。
+- **`while`**、**`break`**、**`continue`**、**`else`** ループ上 (** なしでループが完了した場合に実行されます)`break`**)。
 
 ```python
 users = ["ada", "linus", "grace"]
@@ -125,11 +126,11 @@ def http_status_label(code: int) -> str:
 ```
 
 
-## 6. Functions
-- **`def`** defines functions; **`return`** ends execution; omitting **`return`** ⇒ **`None`**.
-- **Parameters**: positional, keyword-only (`*` separator), variadic **`*args`**, keyword dict **`**kwargs`**.
-- **Default arguments** are evaluated **once** at definition time — avoid mutable defaults (`def f(x=[])` bug pattern); use **`None`** + inner initialization instead.
-- **Inner functions** close over enclosing scopes — late-binding gotchas appear with loops creating lambdas unless default args capture values.
+## 6. 機能
+- **`def`** 関数を定義します。 **`return`** 実行を終了します。 **を省略`return`** ⇒ **`None`**。
+- **パラメータ**: 位置、キーワードのみ (`*`区切り文字)、可変長 **`*args`**、キーワード辞書 **`**kwargs`**。
+- **デフォルト引数**は定義時に**1回**評価されます。変更可能なデフォルトは避けてください(`def f(x=[])`バグパターン);使用 **`None`** + 代わりに内部初期化。
+- **内部関数**は、外側のスコープを超えて閉じます。デフォルトの引数が値を取得しない限り、ラムダを作成するループで遅延バインディングの問題が発生します。
 
 ```python
 def greet(title: str, name: str, *, shout: bool = False) -> str:
@@ -167,9 +168,8 @@ print([f(10) for f in funcs])   # [10, 11, 12] not [12, 12, 12]
 ```
 
 
-## 7. Imports & `__name__`
-- **`import math`** vs **`from math import sqrt`** — prefer qualified imports for larger modules to avoid name clashes.
-- **`if __name__ == "__main__":`** guards runnable scripts when imported as libraries.
+## 7. 輸入と`__name__`- **`import math`** 対 **`from math import sqrt`** — 名前の衝突を避けるために、大きなモジュールの場合は修飾されたインポートを優先します。
+- **`if __name__ == "__main__":`** ライブラリとしてインポートされるときに実行可能なスクリプトを保護します。
 
 ```python
 # stats.py — safe to import AND runnable as a script
@@ -189,16 +189,16 @@ if __name__ == "__main__":
 ```
 
 
-## 8. Docstrings & style
-- Module/class/function **docstrings** (`""" ... """`) power **`help()`** and Sphinx/MkDoc — first line summary, blank line, details.
-- **`python -m pip`** installs packages into the active interpreter — pair with virtual environments (Part IV).
+## 8. ドキュメント文字列とスタイル
+- モジュール/クラス/関数 **docstrings** (`""" ... """`） 力 **`help()`** および Sphinx/MkDoc — 最初の行の概要、空行、詳細。
+- **`python -m pip`** パッケージをアクティブなインタープリターにインストールします — 仮想環境とペアリングします (パート IV)。
 
-```python
-def clamp(value: float, low: float, high: float) -> float:
-    """Restrict value to the inclusive range [low, high].
+「」パイソン
+def クランプ(値: 浮動小数点、低値: 浮動小数点、高値: 浮動小数点) -> 浮動小数点:
+    """値を包括的な範囲 [低、高] に制限します。
 
-    Examples:
-        >>> clamp(1.5, 0.0, 1.0)
+例:
+        >>> クランプ(1.5、0.0、1.0)
         1.0
-    """
-    return max(low, min(high, value))
+    「」
+    最大(低値, 最小(高値, 値))を返します

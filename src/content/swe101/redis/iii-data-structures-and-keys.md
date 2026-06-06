@@ -1,15 +1,17 @@
 ---
 label: "III"
-subtitle: "Data structures & keys"
+subtitle: "データ構造とキー"
 group: "Redis"
 order: 3
 ---
-Redis — data structures & keys
+Redis — データ構造とキー
+
+
 Redis values are not only strings — pick the **type** that matches your access pattern. **Key design** and **TTL** matter as much as in [Key-value stores](../../CS101/databases/iii-key-value.md).
 
-## 1. Key naming
+## 1. キーの命名
 
-Use a **namespace** prefix — readable, grep-friendly in logs:
+**名前空間** プレフィックスを使用します。ログ内で読みやすく、grep に適しています。
 
 ```text
 cache:product:8812
@@ -26,9 +28,9 @@ user:42:profile
 
 Avoid one giant keyspace with ambiguous names (`data`, `temp`, `x`).
 
-## 2. Strings
+## 2. 文字列
 
-Default type — JSON blobs, counters, flags:
+デフォルトのタイプ — JSON BLOB、カウンター、フラグ:
 
 ```text
 SET feature:dark_mode "on"
@@ -51,9 +53,9 @@ INCRBY stats:bytes:served 4096
 SET lock:job:import worker-1 NX EX 30
 ```
 
-## 3. Hashes
+## 3. ハッシュ
 
-Field map under one key — compact user/session objects:
+1 つのキーの下のフィールド マップ — コンパクトなユーザー/セッション オブジェクト:
 
 ```text
 HSET user:42 name Ada email ada@example.com plan pro
@@ -63,11 +65,11 @@ HMGET user:42 name email
 HINCRBY cart:42 item_count 1
 ```
 
-Prefer **hash** over JSON string when you update individual fields without parsing whole blob.
+BLOB 全体を解析せずに個々のフィールドを更新する場合は、JSON 文字列よりも **ハッシュ** を優先します。
 
-## 4. Lists
+## 4. リスト
 
-Linked list — queues, recent items (bounded):
+リンクされたリスト — キュー、最近のアイテム (境界付き):
 
 ```text
 LPUSH events:recent "login" "purchase"
@@ -77,9 +79,9 @@ LTRIM events:recent 0 99    # keep last 100
 
 **`BLPOP`** — blocking pop for simple worker queues (consider **Streams** for consumer groups).
 
-## 5. Sets and sorted sets
+## 5. セットとソートされたセット
 
-**Set** — unique members, tags, presence:
+**セット** — 一意のメンバー、タグ、プレゼンス:
 
 ```text
 SADD online:users 42 99 101
@@ -87,7 +89,7 @@ SISMEMBER online:users 42
 SMEMBERS online:users
 ```
 
-**Sorted set (ZSET)** — score + member — leaderboards, time-ordered ranks:
+**ソートされたセット (ZSET)** — スコア + メンバー — リーダーボード、時間順のランク:
 
 ```text
 ZADD leaderboard 9850 "player:ada"
@@ -96,12 +98,12 @@ ZREVRANGE leaderboard 0 9 WITHSCORES
 ZRANK leaderboard "player:ada"
 ```
 
-| Type | Use |
+|タイプ |使用 |
 |------|-----|
-| **Set** | Unique tags, mutual followers (with care) |
-| **ZSET** | Rankings, delayed jobs by timestamp score |
+| **設定** |独自タグ、相互フォロー（注意） |
+| **ZSET** |タイムスタンプ スコア別の遅延ジョブのランキング |
 
-## 6. TTL and expiry
+## 6. TTL と有効期限
 
 ```text
 SET session:tok EX 3600
@@ -110,9 +112,9 @@ PERSIST session:tok          # remove TTL
 TTL session:tok              # seconds remaining; -1 no TTL; -2 missing
 ```
 
-**Lazy + periodic** expiry — do not rely on exact second of deletion for correctness; design keys to be safe if they linger briefly.
+**遅延 + 定期的** 有効期限 — 削除の正確な秒数に依存しないでください。キーが短時間残っても安全になるようにキーを設計します。
 
-## 7. Other types (awareness)
+## 7. その他のタイプ (認識)
 
 | Type | Use |
 |------|-----|
@@ -121,16 +123,16 @@ TTL session:tok              # seconds remaining; -1 no TTL; -2 missing
 | **Bitmap** | Feature flags per user id, daily active bits |
 | **GEO** | Location radius queries |
 
-## 8. Serialization
+## 8. シリアル化
 
-Store **JSON** in strings when the app already speaks JSON:
+アプリがすでに JSON を話している場合は、**JSON** を文字列に保存します。
 
 ```text
 SET cache:product:8812 "{\"title\":\"Keyboard\",\"price\":129.99}"
 ```
 
-Use **hash** for partial updates; **MessagePack** if size matters — always document encoding in your service layer.
+部分的な更新には **ハッシュ** を使用します。サイズが重要な場合は **MessagePack** を使用してください。サービス レイヤーでエンコーディングを必ず文書化してください。
 
-## Next
+＃＃ 次
 
 Continue with [Patterns & use cases](iv-patterns-and-use-cases.md) for cache-aside, sessions, and rate limiting.

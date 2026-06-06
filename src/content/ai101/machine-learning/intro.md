@@ -1,19 +1,20 @@
 ---
 label: "I"
-subtitle: "Introduction"
-group: "Machine learning"
+subtitle: "導入"
+group: "機械学習"
 order: 1
 ---
-Machine learning — introduction
-**Machine learning (ML)** builds systems that **improve from data** instead of relying only on hand-written rules. You provide **examples**; an algorithm adjusts internal **parameters** so predictions or decisions get better on **new, unseen** inputs.
+機械学習 — はじめに
 
-## 1. Rules vs learning
+**機械学習 (ML)** は、手書きのルールだけに依存するのではなく、**データから改善する** システムを構築します。 **例**を提供します。アルゴリズムが内部 **パラメータ**を調整するため、**新しいまだ見たことのない**入力に対する予測や決定がより適切になります。
 
-| Traditional programming | Machine learning |
-|-------------------------|------------------|
-| Engineer writes `if` / `else` logic | Model learns patterns from data |
-| Behavior changes when **code** changes | Behavior changes when **data** or **training** changes |
-| Works when rules are simple and known | Works when rules are too complex to specify (vision, language, fraud) |
+## 1. ルールと学習
+
+|従来のプログラミング |機械学習 |
+|-----------------------|------|
+|エンジニアが `if` / `else` ロジックを作成する |モデルはデータからパターンを学習します |
+| **コード**が変更されると動作が変わる | **データ** または **トレーニング** が変更されると動作が変化する |
+|ルールが単純で既知の場合に機能します。ルールが複雑すぎて指定できない場合に機能します (ビジョン、言語、不正)。
 
 ```text
 Traditional:  input  +  program (rules)  →  output
@@ -22,45 +23,45 @@ ML:           input  +  model (learned)  →  prediction
                      └── trained on (input, label) examples
 ```
 
-ML is not magic — it needs **representative data**, a **clear objective**, and **evaluation** so you know whether the model generalises or merely memorises.
+ML は魔法ではありません。モデルが一般化しているのか、単に記憶しているのかを知るためには、**代表的なデータ**、**明確な目的**、**評価**が必要です。
 
-## 2. Core vocabulary
+## 2. 基本的な語彙
 
-| Term | Meaning |
-|------|---------|
-| **Feature** | Measurable input (column, pixel, token, sensor reading) |
-| **Label / target** | What you want to predict (class, price, next word) |
-| **Model** | Function with learnable parameters: **features → prediction** |
-| **Training** | Fit parameters to minimise **loss** on training data |
-| **Inference** | Run the trained model on new data |
-| **Hyperparameter** | Setting chosen *before* training (learning rate, tree depth) — not learned from one gradient step |
+|用語 |意味 |
+|-----|----------|
+| **機能** |測定可能な入力 (列、ピクセル、トークン、センサー読み取り値) |
+| **ラベル/ターゲット** |予測したいもの (クラス、価格、次の単語) |
+| **モデル** |学習可能なパラメータを持つ関数: **特徴 → 予測** |
+| **トレーニング** |トレーニング データの **損失**を最小限に抑えるためにパラメータを適合する |
+| **推論** |新しいデータでトレーニング済みモデルを実行する |
+| **ハイパーパラメータ** |トレーニング *前* に選択された設定 (学習率、ツリーの深さ) — 1 つの勾配ステップから学習されません |
 
-## 3. Three paradigms
+## 3. 3つのパラダイム
 
-| Paradigm | Data | Goal | Examples |
+|パラダイム |データ |目標 |例 |
 |----------|------|------|----------|
-| **Supervised** | Inputs **with** labels | Predict label for new inputs | Spam filter, house prices, image classes |
-| **Unsupervised** | Inputs **without** labels | Find structure | Customer segments (clustering), anomaly detection |
-| **Reinforcement** | Agent + environment | Maximise **reward** over time | Game playing, robotics, ad bidding |
+| **監修** | **ラベル付き**の入力 |新しい入力のラベルを予測する |スパムフィルター、住宅価格、画像クラス |
+| **監督なし** | **ラベルなし**の入力 |構造を見つける |顧客セグメント (クラスタリング)、異常検出 |
+| **補強** |エージェント + 環境 |時間の経過とともに **報酬**を最大化する |ゲームプレイ、ロボット工学、広告入札 |
 
-Most production ML today is **supervised** or **self-supervised** (labels derived from the data itself, common in language and vision pre-training).
+現在のプロダクション ML のほとんどは、**教師あり** または **自己教師あり** (データ自体から派生したラベル、言語と視覚の事前トレーニングで一般的) です。
 
-## 4. Supervised learning at a glance
+## 4. 教師あり学習の概要
 
-**Classification** — discrete output (spam / not spam, digit 0–9):
+**分類** — 個別出力 (スパム/非スパム、数字 0 ～ 9):
 
-- Algorithms: logistic regression, decision trees, random forests, gradient boosting, k-NN, neural networks.
+- アルゴリズム: ロジスティック回帰、デシジョン ツリー、ランダム フォレスト、勾配ブースティング、k-NN、ニューラル ネットワーク。
 
-**Regression** — continuous output (temperature, revenue):
+**回帰** — 連続生産量 (温度、収益):
 
-- Algorithms: linear regression, ridge/lasso, gradient boosting, neural networks.
+- アルゴリズム: 線形回帰、リッジ/投げ縄、勾配ブースティング、ニューラル ネットワーク。
 
-Training minimises a **loss** (error) function:
+トレーニングにより **損失** (エラー) 関数が最小限に抑えられます。
 
-- Regression: **MSE** — average squared difference between prediction and truth.
-- Classification: **cross-entropy** — penalises confident wrong answers.
+- 回帰: **MSE** — 予測と真実の間の平均二乗差。
+- 分類: **クロスエントロピー** — 自信を持って間違った回答にペナルティを与えます。
 
-## 5. The ML workflow
+## 5. ML ワークフロー
 
 ```text
 1. Problem     Define metric and failure cost (precision vs recall, latency, fairness)
@@ -71,42 +72,42 @@ Training minimises a **loss** (error) function:
 6. Deploy      Serve predictions; monitor drift and retrain
 ```
 
-**Data leakage** — information from the future or from the test set sneaks into training — is the fastest way to build a model that looks brilliant offline and fails in production.
+**データ漏洩** (将来またはテスト セットからの情報がトレーニングに忍び込みます) は、オフラインでは素晴らしく見えても実稼働環境では失敗するモデルを構築する最速の方法です。
 
-## 6. Train, validation, and test
+## 6. トレーニング、検証、テスト
 
-| Split | Purpose |
-|-------|---------|
-| **Train** | Learn model parameters |
-| **Validation** | Compare models and hyperparameters |
-| **Test** | **Once**, at the end — unbiased estimate of real performance |
+|分割 |目的 |
+|------|-----------|
+| **電車** |モデルパラメータを学ぶ |
+| **検証** |モデルとハイパーパラメータを比較する |
+| **テスト** | **1 回**、最後に — 実際のパフォーマンスの不偏推定値 |
 
-Use **k-fold cross-validation** when data is scarce: rotate which fold is validation, average the score.
+データが不足している場合は、**k 分割相互検証** を使用します。どの分割が検証であるかをローテーションし、スコアを平均します。
 
-Common pitfalls:
+よくある落とし穴:
 
-- **Overfitting** — model memorises training noise; high train accuracy, poor test accuracy.
-- **Underfitting** — model too simple to capture the pattern.
-- **Imbalanced classes** — accuracy alone misleads; use precision, recall, F1, or AUC.
+- **過学習** — モデルはトレーニング ノイズを記憶します。トレーニングの精度は高いが、テストの精度は低い。
+- **アンダーフィッティング** — モデルが単純すぎてパターンを捉えることができません。
+- **不均衡なクラス** — 精度だけでは誤解を招きます。精度、リコール、F1、または AUC を使用します。
 
-## 7. Unsupervised and beyond (short)
+## 7. 教師なしとその先へ (短い)
 
-- **Clustering** (k-means, DBSCAN) — group similar points without labels.
-- **Dimensionality reduction** (PCA, UMAP) — compress many features for visualisation or speed.
-- **Anomaly detection** — flag rare behaviour (fraud, defects).
+- **クラスタリング** (k-means、DBSCAN) — ラベルを付けずに類似した点をグループ化します。
+- **次元削減** (PCA、UMAP) — 視覚化や速度向上のために多くの機能を圧縮します。
+- **異常検出** — まれな動作 (詐欺、欠陥) にフラグを立てます。
 
-**Deep learning** — neural networks with many layers — excels at images, audio, and language. It is a **subset** of ML, not a separate field; same train/evaluate/deploy loop, different models and compute needs.
+**ディープ ラーニング** — 多くの層を持つニューラル ネットワーク — は、画像、音声、言語に優れています。これは ML の **サブセット** であり、別個のフィールドではありません。同じトレーニング/評価/デプロイのループ、異なるモデルとコンピューティングのニーズ。
 
-## 8. What you need to get started
+## 8. 始めるために必要なもの
 
-| Piece | Notes |
-|-------|--------|
-| **Math** | Basic linear algebra, probability, calculus for gradients (build intuition first) |
-| **Python** | De facto language: pandas, scikit-learn, PyTorch / TensorFlow |
-| **Statistics** | Distributions, variance, confidence in metrics |
-| **Domain** | Best models fail without understanding the problem and data |
+|ピース |メモ |
+|------|----------|
+| **数学** |基本的な線形代数、確率、勾配の微積分 (最初に直感を構築) |
+| **Python** |事実上の言語: pandas、scikit-learn、PyTorch / TensorFlow |
+| **統計** |メトリクスの分布、分散、信頼度 |
+| **ドメイン** |最良のモデルは問題とデータを理解せずに失敗します。
 
-A minimal supervised experiment (conceptual):
+最小限の教師あり実験 (概念的):
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -119,17 +120,17 @@ model.fit(X_train, y_train)
 print(classification_report(y_test, model.predict(X_test)))
 ```
 
-## 9. ML vs adjacent topics
+## 9. ML と隣接するトピックの比較
 
-| Topic | Focus |
-|-------|--------|
-| **Machine learning** (this track) | Algorithms, data, training, evaluation |
-| **MLOps** | Pipelines, versioning, deployment, monitoring |
-| **AI / deep learning** | Larger models, LLMs, generative AI — see **AI** submenu ([ML Foundations](../ai/i-ml-foundations.md), [Deep Learning & LLMs](../ai/ii-deep-learning-and-llms.md)) |
-| **Data science** | Exploration, storytelling, experiments — overlaps heavily with ML |
+|トピック |フォーカス |
+|------|----------|
+| **機械学習** (このトラック) |アルゴリズム、データ、トレーニング、評価 |
+| **MLOps** |パイプライン、バージョニング、デプロイメント、モニタリング |
+| **AI / ディープラーニング** |より大規模なモデル、LLM、生成 AI — **AI** サブメニュー ([ML Foundations](../ai/i-ml-foundations.md)、[Deep Learning & LLM](../ai/ii-deep-learning-and-llms.md)) を参照してください。
+| **データ サイエンス** |探索、ストーリーテリング、実験 - ML と大きく重複します |
 
-## 10. How to use this track
+## 10. このトラックの使用方法
 
-Start here for vocabulary and workflow. Add follow-up notes on specific algorithms, feature engineering, and frameworks as you build projects. Always tie theory to a **dataset** and a **metric** — ML is learned by doing, not only by reading.
+語彙とワークフローについてはここから始めてください。プロジェクトを構築するときに、特定のアルゴリズム、機能エンジニアリング、およびフレームワークに関するフォローアップ メモを追加します。理論を常に **データセット** および **メトリック**に結び付けてください。ML は読むだけではなく、実際に行うことで学習されます。
 
-**Related:** **AI → ML Foundations** for deeper coverage of supervised/unsupervised methods and evaluation metrics.
+**関連:** **AI → ML 基礎**: 教師あり/教師なし手法および評価指標について詳しく説明します。

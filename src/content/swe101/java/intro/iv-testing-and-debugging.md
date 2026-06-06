@@ -1,12 +1,13 @@
 ---
 label: "IV"
-subtitle: "Testing & debugging"
+subtitle: "テストとデバッグ"
 group: "Java"
 groupOrder: 1
 order: 4
 ---
-Java — Part IV
-Build basics, automated testing with JUnit, and effective debugging.
+Java — パート IV
+
+基本的なビルド、JUnit による自動テスト、効果的なデバッグ。
 
 **Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
@@ -23,10 +24,10 @@ my-app/
 ```
 
 
-## 2. Why automate tests
-- **Regression safety**: changes that break behavior fail fast in CI instead of production.
-- **Specification**: tests document expected behavior more precisely than prose alone.
-- **Refactoring courage**: green tests increase confidence when restructuring internals.
+## 2. テストを自動化する理由
+- **回帰安全性**: 動作を壊す変更は、運用環境ではなく CI ですぐに失敗します。
+- **仕様**: テストは、散文だけよりも予期される動作をより正確に文書化します。
+- **勇気をリファクタリング**: グリーン テストにより、内部を再構築する際の自信が高まります。
 
 
 ## 3. JUnit 5 essentials
@@ -65,9 +66,9 @@ class Calculator {
 ```
 
 
-## 4. Passed / failed / skipped every run (Maven / Gradle)
+## 4. 実行ごとに成功 / 失敗 / スキップ (Maven / Gradle)
 
-**Maven Surefire** prints a one-line tally when the suite finishes, for example:
+**Maven Surefire** は、スイートが終了すると 1 行の集計を出力します。次に例を示します。
 
 ```text
 Tests run: 14, Failures: 0, Errors: 0, Skipped: 2
@@ -85,13 +86,13 @@ mvn -q test
 
 **Gradle**: **`gradle test`** ends with something like **`14 tests completed, 2 skipped`** (wording varies by version).
 
-Those numbers refresh **on every run** in the terminal; they are not written into your Markdown notes unless you add CI or a script that captures output.
+これらの数値は、ターミナルで**実行するたびに**更新されます。 CI または出力をキャプチャするスクリプトを追加しない限り、Markdown ノートには書き込まれません。
 
 
-## 5. Test doubles and scope
-- **Unit tests**: isolate one class or function — collaborators replaced with fakes/mocks/stubs when I/O or complexity distracts.
-- **Integration tests**: real wiring — DB, HTTP, filesystem — slower but catch composition bugs.
-- Avoid testing trivial getters unless they encode rules; focus on behavior and edge cases.
+## 5. ダブルとスコープをテストする
+- **単体テスト**: 1 つのクラスまたは関数を分離します。I/O や複雑さが気を散らす場合、共同作業者はフェイク/モック/スタブに置き換えられます。
+- **統合テスト**: 実際の配線 - DB、HTTP、ファイルシステム - 速度は遅くなりますが、構成バグを捕捉します。
+- ルールをエンコードしない限り、簡単なゲッターのテストは避けてください。行動とエッジケースに焦点を当てます。
 
 
 ## 6. Debugging workflow
@@ -107,6 +108,6 @@ Those numbers refresh **on every run** in the terminal; they are not written int
 - Pair logging with tests: when fixing a bug, add a failing test first when feasible (**test-driven debugging**).
 
 
-## 8. Next: Spring Boot track
+## 8. 次へ: Spring Boot トラック
 
 When you understand classes, collections, exceptions, and JUnit, continue with **Spring Boot — Part I (Intro & project layout)** in the same **`java/`** topic folder. That track covers embedded servers, dependency injection, REST, JPA, security, testing slices, and production operations — building on the language foundations here and **Part VI (Lambdas & modern Java)**.

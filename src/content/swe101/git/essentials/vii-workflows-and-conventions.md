@@ -1,13 +1,14 @@
 ---
 label: "VII"
-subtitle: "Workflows & conventions"
+subtitle: "ワークフローと規約"
 group: "Git"
 order: 7
 ---
-Workflows & conventions
-Team agreement on **branch names**, **commit messages**, and **merge strategy** prevents Git from becoming a source of conflict.
+ワークフローと規約
 
-## 1. GitHub Flow (common for startups)
+**ブランチ名**、**コミット メッセージ**、**マージ戦略**に関するチームの合意により、Git が競合の原因になるのを防ぎます。
+
+## 1. GitHub フロー (スタートアップに共通)
 
 ```text
 main ── always deployable
@@ -21,9 +22,9 @@ main ── always deployable
 | **Short-lived branches** | Days, not months |
 | **Small PRs** | Easier review |
 
-Alternatives: **Gitflow** (release branches) — heavier; **trunk-based** (feature flags) — for mature CI.
+代替案: **Gitflow** (リリースブランチ) — より重い。 **トランクベース** (機能フラグ) — 成熟した CI 向け。
 
-## 2. Branch naming
+## 2. ブランチの命名
 
 ```text
 feature/add-oauth-login
@@ -34,7 +35,7 @@ chore/deps-bump
 
 Include ticket ID if using Jira/Linear: `feature/PROJ-123-oauth`.
 
-## 3. Conventional Commits
+## 3. 従来のコミット
 
 ```text
 feat: add password reset email
@@ -47,9 +48,9 @@ test: cover auth controller
 
 Format: **`type(scope): description`**
 
-Benefits: readable log, auto-changelog tools, semantic release.
+利点: 読み取り可能なログ、自動変更ログ ツール、セマンティック リリース。
 
-## 4. Pull request checklist
+## 4. プルリクエストのチェックリスト
 
 - [ ] Branch up to date with `main` (rebase or merge)
 - [ ] CI green
@@ -65,9 +66,9 @@ Benefits: readable log, auto-changelog tools, semantic release.
 *.bat text eol=crlf
 ```
 
-Normalizes line endings on Windows/macOS/Linux teams.
+Windows/macOS/Linux チームの行末を正規化します。
 
-## 6. Hooks (local quality gates)
+## 6. フック (現地品質のゲート)
 
 ```bash
 # .git/hooks/pre-commit — or use husky / pre-commit framework
@@ -75,7 +76,7 @@ Normalizes line endings on Windows/macOS/Linux teams.
 npm test
 ```
 
-**pre-commit** (Python tool) — shared hooks in repo:
+**pre-commit** (Python ツール) — リポジトリ内の共有フック:
 
 ```yaml
 # .pre-commit-config.yaml
@@ -87,7 +88,7 @@ repos:
       - id: end-of-file-fixer
 ```
 
-## 7. Monorepo vs polyrepo
+## 7. モノリポジトリとポリリポジトリ
 
 | | Monorepo | Polyrepo |
 |---|----------|----------|
@@ -95,9 +96,9 @@ repos:
 | CI | Path filters (`paths:` in Actions) | Per-repo pipelines |
 | Git | Shared history, large clone | Smaller clones |
 
-Git works the same — org choice, not Git feature.
+Git も同様に機能します。Git 機能ではなく組織の選択です。
 
-## 8. What not to commit
+## 8. コミットしてはいけないこと
 
 | Never | Instead |
 |-------|---------|
@@ -106,10 +107,10 @@ Git works the same — org choice, not Git feature.
 | Large binaries | Git LFS or object storage |
 | Generated build output | CI builds artifacts |
 
-## 9. Rehearsal answers
+## 9. リハーサルの答え
 
 - **GitHub Flow** — PRs into deployable `main`.
 - **Revert vs reset** — revert for shared/pushed; reset for local cleanup.
 - **Conventional Commits** — structured `type: message` for clarity and tooling.
 
-**Related:** **GitHub** (branch protection, PRs), CI/CD fundamentals.
+**関連:** **GitHub** (ブランチ保護、PR)、CI/CD の基本。

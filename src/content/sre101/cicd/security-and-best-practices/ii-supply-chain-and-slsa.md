@@ -1,50 +1,51 @@
 ---
 label: "II"
-subtitle: "Supply chain & SLSA"
+subtitle: "サプライチェーンとSLSA"
 group: "CI/CD"
 order: 2
 ---
-Supply chain & SLSA
-**Supply chain attacks** target dependencies, build tools, and registries — not just your application code. **SLSA** (Supply-chain Levels for Software Artifacts) defines maturity levels for trustworthy builds.
+サプライチェーンとSLSA
 
-## 1. Common risks
+**サプライ チェーン攻撃**は、アプリケーション コードだけでなく、依存関係、ビルド ツール、レジストリもターゲットにします。 **SLSA** (ソフトウェア アーティファクトのサプライ チェーン レベル) は、信頼できるビルドの成熟度レベルを定義します。
 
-| Risk | Example |
-|------|---------|
-| **Typosquatting** | `reqeusts` instead of `requests` on PyPI |
-| **Dependency confusion** | Private package name published publicly |
-| **Compromised action/plugin** | Malicious update to a CI action |
-| **Registry takeover** | Unsigned image replaced in registry |
-| **Build script injection** | Untrusted PR modifies workflow YAML |
+## 1. 一般的なリスク
 
-## 2. SLSA levels
+|リスク |例 |
+|-----|----------|
+| **タイポスクワッティング** | PyPI の `requests` の代わりに `reqeusts` |
+| **依存関係の混乱** |プライベートパッケージ名が公開される |
+| **侵害されたアクション/プラグイン** | CI アクションへの悪意のある更新 |
+| **レジストリの乗っ取り** |レジストリ内の署名のないイメージが置き換えられました。
+| **ビルド スクリプト インジェクション** |信頼できない PR がワークフロー YAML を変更する |
 
-| Level | Requirement | Typical CI capability |
-|-------|-------------|------------------------|
-| **L1** | Build process documented and logged | Any CI with history |
-| **L2** | Hosted build service + signed provenance | GitHub/GitLab attestations |
-| **L3** | Hardened, isolated, reproducible build | Dedicated build cluster, hermetic deps |
-| **L4** | Two-person review + hermetic, reproducible | Highest assurance (rare in practice) |
+## 2. SLSA レベル
 
-Most teams target **L2** with signed provenance and pinned dependencies; **L3** for security-sensitive releases.
+|レベル |要件 |典型的な CI 機能 |
+|----------|---------------|--------------------------|
+| **L1** |ビルドプロセスを文書化して記録 |履歴のある任意の CI |
+| **L2** |ホストされたビルド サービス + 署名された来歴 | GitHub/GitLab 証明書 |
+| **L3** |強化され、分離された、再現可能なビルド |専用ビルドクラスター、ハーメチックdeps |
+| **L4** | 2 人によるレビュー + 密閉性、再現性 |最高の保証 (実際にはまれです) |
 
-## 3. Pin actions and dependencies
+ほとんどのチームは、署名された来歴と固定された依存関係を持つ **L2** をターゲットとしています。 **L3** セキュリティが重要なリリースの場合。
 
-**Bad** — tag can move:
+## 3. ピンのアクションと依存関係
+
+**悪い** — タグは移動する可能性があります:
 
 ```yaml
 - uses: actions/checkout@v4
 ```
 
-**Better** — immutable commit SHA:
+**より良い** — 不変コミット SHA:
 
 ```yaml
 - uses: actions/checkout@b4ffde65f46336ab88eb625be47e5b2ead783297 # v4.1.1
 ```
 
-Use **Renovate** or **Dependabot** to open PRs when SHAs/tags update — you still review before merge.
+**Renovate** または **Dependabot** を使用して、SHA/タグが更新されたときに PR を開きます。マージ前に確認します。
 
-**Maven / npm** — commit lock files (`package-lock.json`, `pom.xml` with BOM):
+**Maven / npm** — ロック ファイルをコミットします (`package-lock.json`、`pom.xml` (BOM 付き)):
 
 ```xml
 <!-- pom.xml — pin dependency versions explicitly -->
@@ -55,9 +56,9 @@ Use **Renovate** or **Dependabot** to open PRs when SHAs/tags update — you sti
 </dependency>
 ```
 
-## 4. SBOM generation
+## 4. SBOM 世代
 
-**SBOM** (Software Bill of Materials) lists every component in a build.
+**SBOM** (ソフトウェア部品表) には、ビルド内のすべてのコンポーネントがリストされます。
 
 ```yaml
 # GitHub Actions — Syft SBOM
@@ -74,17 +75,17 @@ Use **Renovate** or **Dependabot** to open PRs when SHAs/tags update — you sti
     path: sbom.spdx.json
 ```
 
-| Tool | Output | Use |
-|------|--------|-----|
-| **Syft** | SPDX, CycloneDX | General SBOM |
-| **Trivy** | CVE + SBOM | Scan + inventory |
-| **Gradle SBOM plugin** | CycloneDX | JVM builds |
+|ツール |出力 |使用 |
+|------|----------|-----|
+| **シフト** | SPDX、サイクロンDX |一般 SBOM |
+| **トリビー** | CVE + SBOM |スキャン + インベントリ |
+| **Gradle SBOM プラグイン** |サイクロンDX | JVM ビルド |
 
-Store SBOMs with release artifacts for audit and incident response.
+監査およびインシデント対応のために、リリース アーティファクトを含む SBOM を保存します。
 
-## 5. Sign and verify artifacts
+## 5. アーティファクトに署名して検証する
 
-**Cosign** (sigstore) signs container images:
+**Cosign** (sigstore) コンテナ イメージに署名します。
 
 ```bash
 # Sign after push
@@ -96,9 +97,9 @@ cosign verify registry.example.com/myapp:1.2.3 \
   --certificate-oidc-issuer=...
 ```
 
-GitHub **artifact attestations** tie a build to a commit and workflow — consumers verify provenance before promotion.
+GitHub **アーティファクト証明書** ビルドをコミットおよびワークフローに結び付ける - 消費者はプロモーションの前に来歴を検証します。
 
-## 6. Scan in CI
+## 6. CI でスキャンします
 
 ```yaml
 # Trivy — filesystem + image
@@ -117,16 +118,16 @@ GitHub **artifact attestations** tie a build to a commit and workflow — consum
     exit-code: 1
 ```
 
-| Scan type | Catches |
-|-----------|---------|
-| **Dependency (SCA)** | Known CVEs in libraries |
-| **SAST** | Code patterns (Semgrep, CodeQL) |
-| **Container** | OS packages in image layers |
-| **IaC** | Misconfig in Terraform/K8s manifests |
+|スキャンの種類 |キャッチ |
+|----------|----------|
+| **依存関係 (SCA)** |ライブラリ内の既知の CVE |
+| **SAST** |コードパターン (Semgrep、CodeQL) |
+| **コンテナ** |イメージ レイヤーの OS パッケージ |
+| **IaC** | Terraform/K8s マニフェストの構成ミス |
 
-Gate merges on **CRITICAL/HIGH**; track MEDIUM in backlog.
+**CRITICAL/HIGH** でゲートがマージします。バックログで MEDIUM を追跡します。
 
-## 7. Renovate / Dependabot example
+## 7. 改修/依存ボットの例
 
 ```json
 // renovate.json
@@ -146,13 +147,13 @@ Gate merges on **CRITICAL/HIGH**; track MEDIUM in backlog.
 }
 ```
 
-## 8. Anti-patterns
+## 8. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| `curl \| bash` in Dockerfile without checksum | Pin version + verify hash |
-| Private registry creds in image layers | BuildKit secrets, multi-stage |
-| Ignoring scan failures | `exit-code: 1` on HIGH+ |
-| No lock file in repo | Commit lockfile; fail CI if out of sync |
+|チェックサムなしの Dockerfile の `curl \| bash` |ピンのバージョン + ハッシュの検証 |
+|イメージ レイヤーのプライベート レジストリ認証 | BuildKit の秘密、マルチステージ |
+|スキャン失敗を無視する | HIGH+ の `exit-code: 1` |
+|リポジトリにロック ファイルがありません |ロックファイルをコミットします。同期していない場合は CI が失敗します |
 
-**Related:** [Docker in CI](../tools-and-platforms/v-docker-in-ci.md), [Secrets & OIDC](iii-secrets-and-oidc.md).
+**関連:** [CI の Docker](../tools-and-platforms/v-docker-in-ci.md)、[秘密と OIDC](iii-secrets-and-oidc.md)。

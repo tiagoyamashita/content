@@ -1,53 +1,54 @@
 ---
 label: "VII"
-subtitle: "Time-series"
-group: "Databases"
+subtitle: "時系列"
+group: "データベース"
 order: 7
 ---
-Time-series databases
-**Time-series** databases optimize **append-heavy** streams of **(timestamp, measurement)** data: server metrics, sensor readings, stock ticks, application traces. Queries ask **what happened over a time range**, **rates**, **aggregates by bucket**, not “fetch row 8812 by primary key” alone.
+時系列データベース
 
-## 1. Data model
+**時系列** データベースは、**(タイムスタンプ、測定値)** データの **追加の多い** ストリームを最適化します: サーバー メトリクス、センサー読み取り値、株価ティック、アプリケーション トレース。クエリでは、「主キーによる行 8812 のフェッチ」だけではなく、**時間範囲で何が起こったか**、**レート**、**バケットによる集計**が尋ねられます。
 
-Typical **line protocol** shape (InfluxDB / Prometheus concepts):
+## 1. データモデル
+
+典型的な **回線プロトコル** の形状 (InfluxDB / Prometheus の概念):
 
 ```text
 measurement,tag1=v1,tag2=v2 field1=1.2,field2=42i 1716120000000000000
 └─ name ─┘ └── labels (indexed) ──┘ └── values ──┘ └──── timestamp ────┘
 ```
 
-Example — CPU metric:
+例 - CPU メトリクス:
 
 ```text
 cpu,host=web-01,region=us-east usage=0.73,idle=0.27 1716120000
 ```
 
-| Part | Role |
+|パート |役割 |
 |------|------|
-| **Measurement** | Metric name (`cpu`, `http_requests`) |
-| **Tags / labels** | Low-cardinality dimensions for filter/group (`host`, `region`) |
-| **Fields** | Actual numbers (usage, bytes, count) |
-| **Timestamp** | When the sample was taken (often nanosecond precision) |
+| **測定** |メトリック名 (`cpu`、`http_requests`) |
+| **タグ/ラベル** |フィルター/グループの低カーディナリティ ディメンション (`host`、`region`) |
+| **フィールド** |実際の数値 (使用量、バイト数、カウント) |
+| **タイムスタンプ** |サンプルが採取されたとき (多くの場合、ナノ秒の精度) |
 
-**Tags** are indexed; **high-cardinality tags** (user id on every request) explode storage and slow queries — design carefully.
+**タグ**にはインデックスが付けられます。 **カーディナリティの高いタグ** (すべてのリクエストのユーザー ID) はストレージを爆発させ、クエリを遅くします。慎重に設計してください。
 
-## 2. Access patterns
+## 2. アクセスパターン
 
-| Query type | Example |
-|------------|---------|
-| **Range scan** | CPU for `host=web-01` last 24 h |
-| **Downsample** | Average per 5-minute bucket |
-| **Rate / derivative** | Requests per second from counter |
-| **Alert** | `avg(cpu) > 0.9` for 5 minutes |
+|クエリの種類 |例 |
+|-----------|-----------|
+| **範囲スキャン** |過去 24 時間の `host=web-01` の CPU |
+| **ダウンサンプル** | 5 分間のバケットごとの平均 |
+| **レート/デリバティブ** |カウンタからの 1 秒あたりのリクエスト |
+| **警告** | `avg(cpu) > 0.9` 5 分間 |
 
 ```text
 Writes:  ──► append only (mostly immutable past)
 Reads:   ──► recent window hot; old data cold or aggregated
 ```
 
-## 3. Retention and compaction
+## 3. 保持と圧縮
 
-TSDBs **drop or roll up** old data automatically:
+TSDB は古いデータを自動的に**ドロップまたはロールアップ**します。
 
 ```text
 Raw 10s resolution  → keep 7 days
@@ -55,29 +56,29 @@ Raw 10s resolution  → keep 7 days
 1h averages         → keep 2 years
 ```
 
-**Compaction** merges small files into larger blocks; **WAL** ensures durability on ingest.
+**圧縮** は、小さなファイルを大きなブロックにマージします。 **WAL** は取り込み時の耐久性を保証します。
 
-## 4. Prometheus-style example
+## 4. Prometheus スタイルの例
 
-Metric exposition (text format):
+メトリックの説明 (テキスト形式):
 
 ```text
 http_requests_total{method="GET", status="200"} 1027
 http_requests_total{method="POST", status="500"} 3
 ```
 
-**PromQL** query:
+**PromQL** クエリ:
 
 ```promql
 rate(http_requests_total{status="500"}[5m])
 sum by (method) (rate(http_requests_total[1h]))
 ```
 
-Prometheus is **pull-based** (scrape targets) with a local **TSDB** — common in Kubernetes monitoring.
+Prometheus はローカル **TSDB** を備えた **プルベース** (ターゲットをスクレイピング) であり、Kubernetes 監視では一般的です。
 
-## 5. SQL time-series extensions
+## 5. SQL 時系列拡張
 
-**TimescaleDB** (PostgreSQL extension) and **InfluxDB 3** blur the line with SQL:
+**TimescaleDB** (PostgreSQL 拡張機能) と **InfluxDB 3** は、SQL との境界線を曖昧にしています。
 
 ```sql
 SELECT time_bucket('5 minutes', ts) AS bucket,
@@ -89,55 +90,55 @@ GROUP BY bucket
 ORDER BY bucket;
 ```
 
-Use when teams already run PostgreSQL and want **hybrid** relational + metrics.
+チームがすでに PostgreSQL を実行していて、**ハイブリッド** リレーショナル + メトリクスが必要な場合に使用します。
 
-## 6. Strengths and limits
+## 6. 強みと限界
 
-**Strengths**
+**強み**
 
-- **Optimized ingest** — millions of points per second
-- **Built-in downsampling** and retention policies
-- **Efficient compression** (similar timestamps, delta encoding)
-- **Alerting** integrated (Prometheus Alertmanager, Influx tasks)
+- **最適化された取り込み** — 毎秒数百万ポイント
+- **組み込みのダウンサンプリング** および保持ポリシー
+- **効率的な圧縮** (同様のタイムスタンプ、デルタ エンコーディング)
+- **アラート** 統合 (Prometheus Alertmanager、流入タスク)
 
-**Limits**
+**制限**
 
-- **Bad for general OLTP** — don’t store user profiles here
-- **Cardinality bombs** — unbounded tag values hurt every TSDB
-- **Updates/deletes** of single past points are awkward (immutable log mindset)
-- **Long-range ad-hoc JOINs** across business entities — use **warehouse** / SQL
+- **一般的な OLTP** には悪い - ユーザー プロファイルをここに保存しないでください
+- **カーディナリティ爆弾** — 無制限のタグ値は、TSDB ごとに害を及ぼします
+- 過去の単一ポイントの **更新/削除** は厄介です (不変ログの考え方)
+- ビジネス エンティティ全体にわたる **長距離アドホック JOIN** — **ウェアハウス** / SQL を使用します
 
-## 7. Time-series vs wide-column
+## 7. 時系列とワイド列
 
-Both handle high write volume. **TSDBs** add **time semantics** (retention, rollups, rate functions). **Cassandra** can store time-ordered rows but you build rollup jobs yourself. Pick **TSDB** when monitoring is the product; **wide-column** when events are generic rows with many attributes [Wide-column](v-wide-column.md).
+どちらも大量の書き込みを処理します。 **TSDB** は **時間セマンティクス** (保持、ロールアップ、レート関数) を追加します。 **Cassandra** は時間順の行を保存できますが、ロールアップ ジョブは自分で作成します。監視が製品の場合は **TSDB** を選択します。 **ワイド列** イベントが多くの属性を持つ汎用行である場合 [ワイド列](v-wide-column.md)。
 
-## 8. When to choose time-series
+## 8. 時系列を選択する場合
 
-- **Observability** — metrics, logs-derived counters, SLO dashboards
-- **IoT** — sensor streams
-- **Finance** — ticks (often specialized systems + TSDB for analytics)
-- **Energy / industrial** — SCADA history
+- **可観測性** — メトリクス、ログ由来のカウンター、SLO ダッシュボード
+- **IoT** — センサー ストリーム
+- **財務** — ティック (多くの場合、分析用に特化したシステム + TSDB)
+- **エネルギー / 産業** — SCADA の歴史
 
-## 9. Examples
+## 9. 例
 
-| Product | Notes |
-|---------|--------|
-| **Prometheus** | Cloud-native metrics, PromQL |
-| **InfluxDB** | Line protocol, Flux / SQL |
-| **TimescaleDB** | PostgreSQL extension |
-| **OpenTelemetry → backend** | Vendor-neutral ingest to TSDB or SaaS |
+|製品 |メモ |
+|----------|----------|
+| **Prometheus** |クラウドネイティブのメトリクス、PromQL |
+| **InfluxDB** |ラインプロトコル、Flux / SQL |
+| **タイムスケールDB** | PostgreSQL 拡張子 |
+| **OpenTelemetry → バックエンド** | TSDB または SaaS へのベンダー中立の取り込み |
 
-## 10. Cardinality rule of thumb
+## 10. カーディナリティの経験則
 
 ```text
 Good tags:   host, service, region, status_class  (bounded sets)
 Risky tags:  user_id, request_id, url_path        (millions of values)
 ```
 
-Prefer **aggregating at the client** or **sampling** high-cardinality dimensions.
+**クライアントでの集計** または **サンプリング** の高カーディナリティ ディメンションを優先します。
 
-## 11. Related
+## 11. 関連
 
-- **Overview** — [Databases overview](i-overview.md)
-- **Wide-column** — event logs at scale without TS-specific rollups [Wide-column](v-wide-column.md)
-- **Key-value** — short-lived counters before export [Key-value](iii-key-value.md)
+- **概要** — [データベースの概要](i-overview.md)
+- **ワイドカラム** — TS 固有のロールアップを使用しない大規模なイベント ログ [ワイドカラム](v-wide-column.md)
+- **Key-value** — エクスポート前の短期間のカウンター [Key-value](iii-key-value.md)

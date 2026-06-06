@@ -1,15 +1,16 @@
 ---
 label: "I"
-subtitle: "Intro"
+subtitle: "イントロ"
 group: "SRE"
 order: 1
 ---
-SRE tooling — Alertmanager: Intro
-Dedupe, group, and route Prometheus alerts to humans and systems.
+SRE ツール — Alertmanager: はじめに
 
-## 1. Role
+Prometheus アラートを人間とシステムに重複排除、グループ化、およびルーティングします。
 
-**Alertmanager** receives alerts from **Prometheus** (or compatible sources), **suppresses** duplicates, **groups** related fires into single notifications, and **routes** them by labels (team, severity, region).
+## 1. 役割
+
+**Alertmanager** は **Prometheus** (または互換性のあるソース) からアラートを受信し、**重複を抑制**し、関連する通知を **グループ** して 1 つの通知にし、ラベル (チーム、重大度、地域) ごとに**ルーティング**します。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 148" role="img" aria-label="Prometheus evaluates alerting rules and sends firing alerts to Alertmanager; Alertmanager dedupes groups routes then notifies Slack PagerDuty email webhook">
@@ -40,17 +41,17 @@ Dedupe, group, and route Prometheus alerts to humans and systems.
   <text x="280" y="118" fill="#71717a" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle">Firing alerts are grouped then delivered — escalation apps live behind receivers.</text>
 </svg></figure>
 
-## 2. Core concepts
+## 2. 中心となる概念
 
-- **Route tree** — matchers decide which **receiver** (Slack, PagerDuty, email, webhook) gets which alerts.
-- **Inhibit rules** — e.g. suppress warnings when the critical alert for the same cluster already fired.
-- **Silences** — temporary mute during maintenance (with audit trail).
-- **Grouping / repeat_interval** — batch noisy alerts; control how often reminders repeat.
+- **ルート ツリー** — マッチャーは、どの **受信者** (Slack、PagerDuty、電子メール、Webhook) がどのアラートを取得するかを決定します。
+- **禁止ルール** — 例:同じクラスターに対する重大なアラートがすでに発生している場合、警告を抑制します。
+- **Silences** — メンテナンス中の一時的なミュート (監査証跡あり)。
+- **グループ化 /repeat_interval** — ノイズの多いアラートをバッチ処理します。リマインダーを繰り返す頻度を制御します。
 
-## 3. Alertmanager vs PagerDuty (and similar)
+## 3. Alertmanager と PagerDuty (および同様のもの)
 
-**Alertmanager** is open-source **routing** software in the Prometheus ecosystem—it decides **how** alerts are grouped and **where** they are sent.
+**Alertmanager** は、Prometheus エコシステムのオープンソース **ルーティング** ソフトウェアです。アラートを**どのようにグループ化するか**、アラートを**どこに送信するかを決定します。
 
 **PagerDuty**, Opsgenie, VictorOps, etc. are **destinations**: you configure them under **`receivers`** (e.g. **`pagerduty_configs`**). They handle **on-call schedules**, escalations, and mobile push—not the same thing as Alertmanager; they **consume** notifications **from** Alertmanager (or from other tools).
 
-Continue with **Deployment**, **Configuration & receivers**, and **Integration & practices** in this folder.
+このフォルダーで **展開**、**構成と受信機**、**統合と実践**に進みます。

@@ -1,13 +1,14 @@
 ---
 label: "IV"
-subtitle: "Database, auth & storage"
-group: "Startups"
+subtitle: "データベース、認証、ストレージ"
+group: "スタートアップ"
 order: 4
 ---
-Database, auth & storage
-Skip installing Postgres on a VM. **Managed free tiers** give you database, authentication, and file storage with backups and TLS.
+データベース、認証、ストレージ
 
-## 1. Database + backend-as-a-service
+VM への Postgres のインストールはスキップします。 **管理された無料利用枠** により、データベース、認証、バックアップと TLS を備えたファイル ストレージが提供されます。
+
+## 1. データベース + サービスとしてのバックエンド
 
 | Provider | Free tier (typical) | Includes |
 |----------|---------------------|----------|
@@ -24,7 +25,7 @@ Supabase quick mental model:
   Storage   ←  S3-like buckets with policies
 ```
 
-## 2. Authentication
+## 2. 認証
 
 | Option | When |
 |--------|------|
@@ -33,30 +34,30 @@ Supabase quick mental model:
 | **[Auth0](https://auth0.com)** | Free tier for dev; enterprise later |
 | **NextAuth / Auth.js** | Self-hosted OAuth in your app |
 
-Use **OAuth** (Sign in with Google/GitHub) to avoid password storage early.
+**OAuth** (Google でサインイン/GitHub) を使用して、早期にパスワードを保存しないようにします。
 
-## 3. File & object storage
+## 3. ファイルとオブジェクトのストレージ
 
-| Service | Free notes |
-|---------|------------|
-| **Supabase Storage** | Bundled with project |
-| **Cloudflare R2** | Free storage; no egress fee to Cloudflare |
-| **AWS S3** | 5 GB free tier (12 months for new accounts) |
-| **Firebase Storage** | Spark limits |
+|サービス |無料ノート |
+|-----------|-----------|
+| **スーパーベース ストレージ** |プロジェクトにバンドルされています |
+| **Cloudflare R2** |無料のストレージ。 Cloudflare への下り料金なし |
+| **AWS S3** | 5 GB 無料枠 (新規アカウントの場合は 12 か月) |
+| **Firebase ストレージ** |スパーク制限 |
 
-Never store uploads on serverless **ephemeral disk** — use object storage with signed URLs.
+アップロードをサーバーレス **一時ディスク**に保存しないでください。署名された URL を持つオブジェクト ストレージを使用してください。
 
-## 4. Secrets
+## 4. 秘密
 
-| Approach | MVP |
+|アプローチ | MVP |
 |----------|-----|
-| Platform env vars | Vercel / Render dashboard |
-| **GitHub Secrets** | CI only |
-| **Doppler / Infisical** | Free team tiers for sync |
+|プラットフォーム環境変数 | Vercel / レンダリング ダッシュボード |
+| **GitHub の秘密** | CI のみ |
+| **ドップラー / 非フィジカル** |同期用の無料チーム層 |
 
 Do not commit `.env` with production keys.
 
-## 5. Example env layout
+## 5. 環境レイアウトの例
 
 ```bash
 DATABASE_URL=postgresql://...
@@ -66,12 +67,12 @@ SUPABASE_SERVICE_ROLE_KEY=...     # server only — never expose to browser
 RESEND_API_KEY=re_...
 ```
 
-## 6. When to leave free BaaS
+## 6. 無料の BaaS をやめるべき場合
 
-| Signal | Consider |
-|--------|----------|
-| Connection pool limits | Dedicated Postgres (RDS, Neon paid) |
-| Complex queries / RLS pain | Own backend + ORM |
-| Vendor lock-in concern | Export data; standard Postgres helps |
+|信号 |検討してください |
+|----------|----------|
+|接続プールの制限 |専用 Postgres (RDS、Neon 有料) |
+|複雑なクエリ / RLS の痛み |独自のバックエンド + ORM |
+|ベンダーロックインの懸念 |データをエクスポートします。標準 Postgres が役に立ちます。
 
-**Related:** CS101 **databases** submenu, Supabase skill for RLS/auth depth.
+**関連:** CS101 **データベース** サブメニュー、RLS/auth 深さの Supabase スキル。

@@ -1,13 +1,14 @@
 ---
 label: "III"
-subtitle: "Inventory & playbooks"
+subtitle: "インベントリとプレイブック"
 group: "CI/CD"
 order: 3
 ---
-Inventory & playbooks
-**Inventory** defines **which hosts** Ansible manages. **Playbooks** define **what** to configure on them.
+インベントリとプレイブック
 
-## 1. Static inventory (INI)
+**インベントリ**は、Ansible が管理する**ホスト**を定義します。 **プレイブック**は、**何を**構成するかを定義します。
+
+## 1. 静的在庫 (INI)
 
 ```ini
 # inventory/staging.ini
@@ -27,14 +28,14 @@ webservers
 dbservers
 ```
 
-| Pattern | Use |
-|---------|-----|
-| `[group]` | Logical tier (web, db, cache) |
-| `[group:vars]` | Variables for all hosts in group |
-| `[parent:children]` | Nest groups (`staging` includes web + db) |
-| `ansible_host` | DNS alias vs actual IP |
+|パターン |使用 |
+|----------|-----|
+| `[group]` |論理層 (Web、DB、キャッシュ) |
+| `[group:vars]` |グループ内のすべてのホストの変数 |
+| `[parent:children]` |ネスト グループ (`staging` には Web + DB が含まれます) |
+| `ansible_host` | DNS エイリアスと実際の IP |
 
-## 2. YAML inventory (alternative)
+## 2. YAML インベントリ (代替)
 
 ```yaml
 # inventory/staging.yml
@@ -51,7 +52,7 @@ all:
         db1.staging.example.com:
 ```
 
-## 3. Full playbook example
+## 3. 完全なプレイブックの例
 
 ```yaml
 ---
@@ -89,21 +90,21 @@ all:
         state: restarted
 ```
 
-Run:
+走る：
 
 ```bash
 ansible-playbook -i inventory/staging.ini playbooks/site.yml
 ```
 
-Limit to one host during debugging:
+デバッグ中は 1 つのホストに制限します。
 
 ```bash
 ansible-playbook -i inventory/staging.ini playbooks/site.yml --limit web1.staging.example.com
 ```
 
-## 4. Handlers
+## 4. ハンドラー
 
-Handlers run **once at end of play**, only if a task **notifies** them and reported **changed**:
+ハンドラーは、タスクが **通知**し、**変更が報告された**場合にのみ、**プレイ終了時に 1 回**実行されます。
 
 ```yaml
 tasks:
@@ -120,13 +121,13 @@ handlers:
       state: restarted
 ```
 
-| Concept | Behavior |
-|---------|----------|
-| **notify** | Queue handler if task changed |
-| **listen** | Multiple notifies can trigger one handler name |
-| **flush_handlers** | Meta task to run handlers mid-play |
+|コンセプト |行動 |
+|----------|----------|
+| **通知** |タスクが変更された場合のキュー ハンドラー |
+| **聞いてください** |複数の通知で 1 つのハンドラー名をトリガーできます。
+| **flush_handlers** |プレイ中にハンドラーを実行するメタタスク |
 
-## 5. Jinja2 templates
+## 5. Jinja2 テンプレート
 
 ```jinja2
 {# roles/nginx/templates/default.conf.j2 #}
@@ -140,9 +141,9 @@ server {
 }
 ```
 
-Built-in facts like **`ansible_hostname`**, **`ansible_default_ipv4`** come from setup module.
+**`ansible_hostname`**、**`ansible_default_ipv4`** などの組み込みファクトは、セットアップ モジュールから取得されます。
 
-## 6. Conditionals and loops
+## 6. 条件文とループ
 
 ```yaml
 - name: Install packages on Debian
@@ -161,7 +162,7 @@ Built-in facts like **`ansible_hostname`**, **`ansible_default_ipv4`** come from
   loop: "{{ app_users }}"
 ```
 
-## 7. Tags — run subset of tasks
+## 7. タグ — タスクのサブセットを実行する
 
 ```yaml
 - name: Copy application JAR
@@ -182,9 +183,9 @@ Built-in facts like **`ansible_hostname`**, **`ansible_default_ipv4`** come from
 ansible-playbook playbooks/site.yml --tags deploy
 ```
 
-Jenkins uses `--tags deploy` for fast redeploys [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).
+Jenkins は、高速再デプロイに `--tags deploy` を使用します [Jenkins + Ansible パイプライン](vi-jenkins-ansible-pipelines.md)。
 
-## 8. Ad-hoc commands
+## 8. アドホックコマンド
 
 ```bash
 # Restart service on all webservers
@@ -194,4 +195,4 @@ ansible webservers -i inventory/staging.ini -b -m service -a "name=nginx state=r
 ansible webservers -i inventory/staging.ini -m setup
 ```
 
-**Related:** [Roles, variables & Vault](iv-roles-variables-and-vault.md), [Deploy patterns & operations](vii-deploy-patterns-and-operations.md).
+**関連:** [ロール、変数、Vault](iv-roles-variables-and-vault.md)、[デプロイ パターンと操作](vii-deploy-patterns-and-operations.md)。

@@ -1,13 +1,15 @@
 ---
 label: "VII"
-subtitle: "Database optimizations"
+subtitle: "データベースの最適化"
 group: "Postgres"
 order: 7
 ---
-Postgres — database optimizations
+Postgres — データベースの最適化
+
+
 A practical **how-to** for making Postgres faster: measure first, fix the highest-impact layer, verify with the same workload. Deep index and plan reading lives in [Indexes & EXPLAIN](iv-indexes-and-explain.md); system-design scaling patterns in [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md).
 
-## 1. Optimization workflow
+## 1. 最適化ワークフロー
 
 ```text
 1. Find slow queries     (logs, pg_stat_statements, APM)
@@ -17,11 +19,11 @@ A practical **how-to** for making Postgres faster: measure first, fix the highes
 5. Ship + monitor        (regression alerts)
 ```
 
-| Step | Do not skip |
-|------|-------------|
-| **Baseline** | Record p50/p95 latency and rows examined |
-| **One change at a time** | Index + rewrite together hides what helped |
-| **Production-like data** | Empty dev DB lies about seq scans |
+|ステップ |スキップしないでください |
+|------|---------------|
+| **ベースライン** |レコード p50/p95 レイテンシーと検査された行 |
+| **一度に 1 つの変更** |インデックスとリライトを一緒に行うと、何が役に立ったかが隠されます。
+| **本番環境に近いデータ** |空の開発 DB はシーケンス スキャンについて嘘をつきます。
 
 Enable **`pg_stat_statements`** (extension) for “top queries by total time”:
 
@@ -38,7 +40,7 @@ LIMIT 15;
 
 Reset stats after a deploy window if you need a clean slice: **`SELECT pg_stat_statements_reset();`**
 
-## 2. Fix order (cheapest wins first)
+## 2. 順序を修正します (最も安いものが最初に勝ちます)
 
 | Priority | Lever | Example |
 |----------|-------|---------|
@@ -49,9 +51,9 @@ Reset stats after a deploy window if you need a clean slice: **`SELECT pg_stat_s
 | 5 | **Schema** | Normalize hot wide rows; archive cold history |
 | 6 | **Hardware / scale** | Read replica, bigger instance, PgBouncer |
 
-Adding RAM before fixing a missing index rarely fixes a seq scan on a 50M-row table.
+欠落しているインデックスを修正する前に RAM を追加すると、5,000 万行のテーブルの Seq スキャンが修正されることはほとんどありません。
 
-## 3. Query rewrites that matter
+## 3. 重要なクエリのリライト
 
 **Avoid `SELECT *`** on wide tables — less I/O, better index-only scans:
 
@@ -78,13 +80,13 @@ LIMIT 20;
 
 Requires an index on **`(created_at DESC, id DESC)`**.
 
-**Exists vs count** when you only need yes/no:
+**はい/いいえだけが必要な場合は**存在するかどうか**:
 
 ```sql
 SELECT EXISTS (SELECT 1 FROM orders WHERE user_id = $1 AND status = 'open');
 ```
 
-## 4. Index strategy (summary)
+## 4. インデックス戦略（概要）
 
 See [Indexes & EXPLAIN](iv-indexes-and-explain.md) for full detail. Quick rules:
 
@@ -102,9 +104,9 @@ FROM pg_stat_user_indexes
 ORDER BY idx_scan ASC;
 ```
 
-## 5. Vacuum, bloat, and planner stats
+## 5. バキューム、膨張、プランナーの統計
 
-Stale stats → wrong row estimates → bad joins.
+統計が古い → 行の推定値が間違っている → 結合が間違っている。
 
 ```sql
 ANALYZE posts;
@@ -119,9 +121,9 @@ VACUUM (ANALYZE) posts;   -- after large DELETE/UPDATE
 
 Monitor **`n_dead_tup`** in **`pg_stat_user_tables`**.
 
-## 6. Transactions and connections
+## 6. トランザクションと接続
 
-Short transactions release locks and reduce bloat:
+短いトランザクションによりロックが解放され、肥大化が軽減されます。
 
 ```sql
 BEGIN;
@@ -138,13 +140,13 @@ COMMIT;
 | **PgBouncer** | When connection count explodes |
 | **Idle in transaction** | Kill long idle txs; fix app leak |
 
-## 7. Read scaling without wrong answers
+## 7. 間違った答えを出さずにスケーリングを読む
 
-| Pattern | Use when |
-|---------|----------|
-| **Read replica** | Reports, dashboards tolerate seconds of lag |
-| **Primary for writes + critical reads** | “Pay then see receipt” flows |
-| **Materialized view** | Expensive aggregates refreshed on schedule |
+|パターン | | の場合に使用します。
+|----------|----------|
+| **リードレプリカ** |レポート、ダッシュボードは数秒の遅延を許容します |
+| **書き込み + クリティカル読み取り用のプライマリ** | 「支払ってレシートを見る」フロー |
+| **具体化されたビュー** |高価なアグリゲートがスケジュールどおりに更新される |
 
 ```sql
 CREATE MATERIALIZED VIEW daily_revenue AS
@@ -158,9 +160,9 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
 
 **Cache (Redis)** in front of Postgres for hot keys — see [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md). Invalidate on write, not TTL-only for money.
 
-## 8. Partitioning (large tables)
+## 8. パーティショニング (大きなテーブル)
 
-When a single table exceeds comfortable vacuum/backup size (often 100M+ rows or time-series):
+単一テーブルが快適なバキューム/バックアップ サイズ (多くの場合、1 億行以上または時系列) を超える場合:
 
 ```sql
 CREATE TABLE events (
@@ -175,7 +177,7 @@ CREATE TABLE events_2026_05 PARTITION OF events
 
 Queries that filter on **`created_at`** prune old partitions — less data scanned per query.
 
-## 9. Checklist before you “scale the DB”
+## 9. 「DB をスケールする」前のチェックリスト
 
 - [ ] Top 5 queries by **`pg_stat_statements`** reviewed
 - [ ] **`EXPLAIN (ANALYZE, BUFFERS)`** on each slow path
@@ -185,7 +187,7 @@ Queries that filter on **`created_at`** prune old partitions — less data scann
 - [ ] Connection pool sized; no idle-in-transaction leaks
 - [ ] Backups and restore tested ([Operations & backups](vi-operations-and-backups.md))
 
-## Related notes
+## 関連メモ
 
 - [Indexes & EXPLAIN](iv-indexes-and-explain.md) — plans, index types, `CONCURRENTLY`
 - [Database optimizations (PL/SQL)](../plsql/vii-database-optimizations.md) — Oracle-side tuning parallels

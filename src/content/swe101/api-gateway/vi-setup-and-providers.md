@@ -1,10 +1,12 @@
 ---
 label: "VI"
-subtitle: "Setup & providers"
+subtitle: "セットアップとプロバイダー"
 group: "API Gateway"
 order: 6
 ---
-API gateway — setup & providers
+API ゲートウェイ — セットアップとプロバイダー
+
+
 Concrete patterns for **AWS API Gateway**, **Kong**, and **NGINX** — plus how they pair with [CDN](../cdn/i-overview.md) origins.
 
 ## 1. AWS: CloudFront + API Gateway + Lambda
@@ -15,7 +17,7 @@ CloudFront
   /api/*     → API Gateway (HTTP API) → Lambda
 ```
 
-HTTP API (v2) — lower latency/cost than REST API for Lambda proxy:
+HTTP API (v2) — Lambda プロキシの REST API よりもレイテンシー/コストが低い:
 
 ```yaml
 # Conceptual SAM / CloudFormation idea
@@ -39,9 +41,9 @@ Custom domain: **ACM cert** + **`api.example.com`** → API Gateway stage → Cl
 API Gateway (VPC Link) → ALB → target group → pods
 ```
 
-Use when services are long-lived containers, not Lambda.
+サービスが Lambda ではなく、存続期間の長いコンテナである場合に使用します。
 
-## 3. Kong on Kubernetes
+## 3. Kubernetes のコング
 
 ```text
 Internet → LoadBalancer → Kong → Ingress → services
@@ -69,9 +71,9 @@ spec:
                   number: 80
 ```
 
-Kong **Admin API** manages routes; or **Ingress Controller** CRDs.
+Kong **管理者 API** がルートを管理します。または **Ingress コントローラー** CRD。
 
-## 4. NGINX as reverse proxy / gateway
+## 4. リバース プロキシ/ゲートウェイとしての NGINX
 
 ```nginx
 upstream orders {
@@ -92,19 +94,19 @@ server {
 }
 ```
 
-Add **lua** or **OpenResty** for JWT validation, or terminate auth at separate OIDC proxy (oauth2-proxy).
+JWT 検証用に **lua** または **OpenResty** を追加するか、別の OIDC プロキシ (oauth2-proxy) で認証を終了します。
 
-## 5. Managed API management
+## 5. API 管理の管理
 
-| Product | Best for |
-|---------|----------|
-| **Azure API Management** | Policies in XML, developer portal |
-| **Google Apigee** | Enterprise API products |
-| **AWS REST API** | API keys, usage plans, SDK generation |
+|製品 |こんな方に最適 |
+|----------|----------|
+| **Azure API 管理** | XML のポリシー、開発者ポータル |
+| **Google Apigee** |エンタープライズ API 製品 |
+| **AWS REST API** | API キー、使用計画、SDK 生成 |
 
-Developer portal, monetization, and lifecycle — beyond simple routing.
+単純なルーティングを超えた、開発者ポータル、収益化、ライフサイクル。
 
-## 6. Local development
+## 6. 地域開発
 
 | Approach | Notes |
 |----------|-------|
@@ -112,16 +114,16 @@ Developer portal, monetization, and lifecycle — beyond simple routing.
 | **Docker Compose Kong** | Parity with prod routes |
 | **Tilt / Skaffold** | K8s gateway in dev cluster |
 
-Maintain **route config in git** — same repo as OpenAPI spec when possible.
+**ルート設定を git** で維持します。可能な場合は、OpenAPI 仕様と同じリポジトリを維持します。
 
-## 7. Observability hooks
+## 7. 可観測性フック
 
-Enable at gateway:
+ゲートウェイで有効にする:
 
 - **Access logs** (path, status, latency, client IP)
 - **Metrics** (4xx/5xx rate, p99 latency)
 - **Trace propagation** — W3C `traceparent` header ([Observability at scale](../sysdesign/scalable-patterns/viii-observability-at-scale.md))
 
-## Next
+＃＃ 次
 
 Continue with [Operations & troubleshooting](vii-operations-and-troubleshooting.md) for logs, 502 debug, and runbooks.

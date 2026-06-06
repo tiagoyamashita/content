@@ -1,18 +1,19 @@
 ---
 label: "Security"
-subtitle: "Basics & filter chain"
+subtitle: "基本とフィルターチェーン"
 group: "Spring Boot"
 groupOrder: 2
 order: 7
 ---
-Spring Boot — Security basics
-Add **Spring Security** to protect HTTP endpoints, expose a minimal login or JWT flow, and lock down Actuator in production.
+Spring Boot — セキ​​ュリティの基本
 
-**Java baseline:** **Java SE 22** (`javac --release 22`); examples target **Spring Boot 3.x**.
+**Spring Security** を追加して、HTTP エンドポイントを保護し、最小限のログインまたは JWT フローを公開し、運用環境で Actuator をロックダウンします。
 
-## 1. Dependency
+**Java ベースライン:** **Java SE 22** (`javac --release 22`);例は **Spring Boot 3.x** をターゲットとしています。
 
-**Maven:**
+## 1. 依存関係
+
+**メイビン:**
 
 ```xml
 <dependency>
@@ -21,7 +22,7 @@ Add **Spring Security** to protect HTTP endpoints, expose a minimal login or JWT
 </dependency>
 ```
 
-**Gradle (`build.gradle.kts`):**
+**グラドル(`build.gradle.kts`):**
 
 ```kotlin
 dependencies {
@@ -29,11 +30,11 @@ dependencies {
 }
 ```
 
-Boot auto-configures a **filter chain** when this starter is on the classpath — every request passes through it before your controller runs.
+このスターターがクラスパス上にある場合、ブートは **フィルター チェーン** を自動構成します。すべてのリクエストはコントローラーが実行される前にそれを通過します。
 
-## 2. Stateless API with JWT (sketch)
+## 2. ステートレス API と JWT (スケッチ)
 
-For REST APIs, prefer **stateless** sessions: validate a bearer token on each request.
+REST API の場合は、**ステートレス** セッションを優先します。リクエストごとにベアラー トークンを検証します。
 
 ```java
 // Compile: javac --release 22 …
@@ -64,12 +65,12 @@ public class SecurityConfig {
 }
 ```
 
-- **`oauth2ResourceServer().jwt()`** validates JWTs when **`spring-boot-starter-oauth2-resource-server`** is present and **`spring.security.oauth2.resourceserver.jwt.issuer-uri`** (or JWK set) is configured.
-- Issue tokens with your IdP (Auth0, Keycloak, Cognito) or a dedicated auth service — Boot focuses on **validation**, not minting tokens, in this pattern.
+- **`oauth2ResourceServer().jwt()`** JWTs を検証するのは **`spring-boot-starter-oauth2-resource-server`** が存在し、**`spring.security.oauth2.resourceserver.jwt.issuer-uri`** (または JWK セット) が構成されています。
+- IdP (Auth0、Keycloak、Cognito) または専用の認証サービスを使用してトークンを発行します。このパターンでは、ブートはトークンの作成ではなく **検証** に重点を置きます。
 
-## 3. Development-only HTTP Basic
+## 3. 開発専用 HTTP 基本
 
-For local demos without an IdP, an in-memory user is enough — **never** ship hard-coded passwords:
+IdP を使用しないローカル デモの場合は、メモリ内ユーザーで十分です。ハードコードされたパスワードを**決して**配布しないでください。
 
 ```java
 // Compile: javac --release 22 …
@@ -103,11 +104,11 @@ class DevSecurityConfig {
 }
 ```
 
-**`{noop}`** is a password prefix for the delegating encoder — acceptable only in **`dev`** profiles.
+**`{noop}`** は委任エンコーダのパスワード プレフィックスです。** でのみ使用できます。`dev`** プロフィール。
 
-## 4. Method-level authorization
+## 4. メソッドレベルの認可
 
-After authentication, restrict by role on service methods:
+認証後、サービスメソッドをロールごとに制限します。
 
 ```java
 // Compile: javac --release 22 …
@@ -124,19 +125,19 @@ public class AdminService {
 }
 ```
 
-Enable with **`@EnableMethodSecurity`** on a **`@Configuration`** class.
+**で有効にする`@EnableMethodSecurity`** の **`@Configuration`** クラス。
 
-## 5. Production checklist
+## 5. 製造チェックリスト
 
-| Risk | Mitigation |
-|------|------------|
-| Open **`/actuator/env`** or **`prometheus`** | Restrict with Security + network policy — see **Part VI (Testing & operations)** |
-| CSRF on cookie sessions | Keep CSRF enabled for browser forms; disable only for token APIs by design |
-| Secrets in **`application.yml`** | Env vars / secret manager — see **Part II (YAML & external config)** |
-| Missing HTTPS | Terminate TLS at ingress or embedded connector in prod |
+|リスク |緩和 |
+|------|-----------|
+|開ける **`/actuator/env`** または **`prometheus`** |セキュリティ + ネットワーク ポリシーによる制限 — **パート VI (テストと運用)** を参照してください。
+| CSRF Cookie セッション |ブラウザ フォームに対して CSRF を有効にしておきます。仕様によりトークン APIs に対してのみ無効になります。
+| **の秘密`application.yml`** |環境変数 / シークレット マネージャー — **パート II (YAML および外部構成)** を参照してください。
+| HTTPS が見つかりません |入口または本番環境の埋め込みコネクタで TLS を終了します。
 
-## 6. Related notes
+## 6. 関連メモ
 
-- **REST controllers** — [REST controllers](iv-rest-controllers.md) (validation, Problem Details)
-- **YAML & profiles** — [YAML & external config](ii-yaml-and-external-config.md)
-- **Testing** — use **`@SpringBootTest`** + **`@AutoConfigureMockMvc`** with **`@WithMockUser`** or test JWT fixtures; **`@WebMvcTest`** alone does not load the full security chain unless configured
+- **REST コントローラー** — [REST コントローラー](iv-rest-controllers.md) (検証、問題の詳細)
+- **YAML とプロファイル** — [YAML と外部構成](ii-yaml-and-external-config.md)
+- **テスト** — **を使用します`@SpringBootTest`** + **`@AutoConfigureMockMvc`** と **`@WithMockUser`** または JWT フィクスチャをテストします。 **`@WebMvcTest`** 単独では、設定されていない限り完全なセキュリティ チェーンをロードしません。

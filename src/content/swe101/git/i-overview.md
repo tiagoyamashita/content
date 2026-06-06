@@ -1,23 +1,24 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "Git"
 order: 1
 ---
-Git — overview
-**Git** is a **distributed version control system (DVCS)**. You keep a full copy of project history on your machine; you **commit** snapshots, **branch** for parallel work, and **merge** (or rebase) to integrate changes.
+Git — 概要
 
-## Map of this track
+**Git** は **分散バージョン管理システム (DVCS)** です。プロジェクト履歴の完全なコピーをマシンに保存します。スナップショットを**コミット**し、並行作業のために**ブランチ**し、変更を統合するために**マージ** (またはリベース) を行います。
 
-| Submenu | Focus |
-|---------|--------|
-| **Essentials** | Install, daily commands, branches, remotes, undo, workflows |
+## このトラックの地図
+
+|サブメニュー |フォーカス |
+|----------|----------|
+| **必需品** |インストール、毎日のコマンド、ブランチ、リモート、元に戻す、ワークフロー |
 
 Start: **Essentials** → [Overview](essentials/i-overview.md).
 
-Hosting platforms (**GitHub**, GitLab, Bitbucket) sit on top of Git — see the **GitHub** topic for PRs, Actions, and this site's contribution graph.
+ホスティング プラットフォーム (**GitHub**、GitLab、Bitbucket) は Git の上に位置します。PR、アクション、およびこのサイトの貢献グラフについては、**GitHub** トピックを参照してください。
 
-## Why Git
+## なぜ Git なのか
 
 | Benefit | Explanation |
 |---------|-------------|
@@ -26,7 +27,7 @@ Hosting platforms (**GitHub**, GitLab, Bitbucket) sit on top of Git — see the 
 | **Collaboration** | Push/pull between machines and teammates |
 | **Audit** | Who changed what, when, and why (messages) |
 
-## Core objects (mental model)
+## コアオブジェクト (メンタルモデル)
 
 ```text
 Working tree  →  staging (index)  →  commit  →  branch pointer
@@ -41,7 +42,7 @@ Working tree  →  staging (index)  →  commit  →  branch pointer
 | **Tag** | Fixed pointer (often for releases) |
 | **Remote** | Named link to another repo (`origin`) |
 
-## Distributed vs centralized
+## 分散型と集中型
 
 ```text
 Centralized (SVN):     one server holds history; checkout is a slice
@@ -53,16 +54,16 @@ Distributed (Git):   every clone is a full repo
 
 You can commit offline; sync with **`git push`** / **`git pull`** when connected.
 
-## Git vs GitHub
+## Git 対 GitHub
 
 | | Git | GitHub |
 |---|-----|--------|
-| What | Tool (CLI) | Hosting + UI + PRs + Actions |
-| Runs | Locally | Cloud |
-| Required | Yes, for version control | No — alternatives: GitLab, self-host |
+|何を |ツール (CLI) |ホスティング + UI + PR + アクション |
+|走る |ローカル |クラウド |
+|必須 |はい、バージョン管理のため |いいえ — 代替案: GitLab、セルフホスト |
 
-## Rehearsal
+## リハーサル
 
-- What is the difference between **working tree**, **staging**, and **commit**?
-- What does a **branch** point to?
-- Why is Git **distributed**?
+- **作業ツリー**、**ステージング**、**コミット**の違いは何ですか?
+- **支店**は何を指しますか?
+- Git はなぜ **配布**されているのですか?

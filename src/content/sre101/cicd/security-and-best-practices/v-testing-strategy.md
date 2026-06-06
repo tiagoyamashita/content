@@ -1,13 +1,14 @@
 ---
 label: "V"
-subtitle: "Testing strategy"
+subtitle: "テスト戦略"
 group: "CI/CD"
 order: 5
 ---
-Testing strategy
-**Shift left:** run the **fastest, cheapest** tests on every commit; reserve slow, expensive tests for merge or nightly schedules.
+テスト戦略
 
-## 1. Test pyramid
+**左にシフト:** すべてのコミットで **最速かつ低コスト** のテストを実行します。遅くて高価なテストをマージまたは夜間のスケジュールに予約します。
+
+## 1. テストピラミッド
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 140" role="img" aria-label="Test pyramid unit integration e2e">
   <polygon points="160,20 280,120 40,120" fill="rgba(24,24,27,0.6)" stroke="#52525b"/>
@@ -19,15 +20,15 @@ Testing strategy
   <text x="12" y="136" fill="#71717a" font-size="9">Width = count · Height = cost &amp; duration</text>
 </svg></figure>
 
-| Layer | Scope | Speed | When to run |
-|-------|-------|-------|-------------|
-| **Unit** | One class/function, mocks | ms | Every commit / PR |
-| **Integration** | DB, queue, HTTP with Testcontainers | sec–min | Every PR |
-| **Contract** | API schema between services | sec | PR + on consumer change |
-| **E2E / smoke** | Full stack, browser | min | Merge to main, staging |
-| **Load / chaos** | Production-like stress | min–hr | Nightly or pre-release |
+|レイヤー |範囲 |スピード |いつ実行するか |
+|----------|----------|----------|---------------|
+| **ユニット** | 1 つのクラス/関数、モック |ミリ秒 |すべてのコミット / PR |
+| **統合** | DB、キュー、HTTP と Testcontainers |秒–分 | PR ごと |
+| **契約** | API サービス間のスキーマ |秒 | PR + 消費者の変化について |
+| **E2E / 煙** |フルスタック、ブラウザ |分 |メイン、ステージングにマージ |
+| **ロード/カオス** |生産的なストレス |分–時間 |夜間またはプレリリース |
 
-## 2. CI stage mapping
+## 2. CI ステージのマッピング
 
 ```yaml
 # GitHub Actions — parallel test jobs
@@ -58,17 +59,17 @@ jobs:
       - run: npm run test:e2e
 ```
 
-| Gate | Block merge? |
+|ゲート |ブロック結合？ |
 |------|--------------|
-| Unit + lint | Yes |
-| Integration | Yes |
-| E2E on PR | Optional (slow) |
-| E2E on main | Yes before deploy |
-| Load test | No — alert on regression |
+|ユニット + 糸くず |はい |
+|統合 |はい |
+| PR の E2E |オプション (遅い) |
+|メインの E2E |導入前にはい |
+|負荷テスト |いいえ — リグレッションに関するアラート |
 
-## 3. Parallel sharding
+## 3. 並列シャーディング
 
-Split test suite across runners:
+ランナー間でテスト スイートを分割します。
 
 ```bash
 # Jest — 4 shards
@@ -89,7 +90,7 @@ steps:
 pytest -n auto --dist loadscope
 ```
 
-## 4. Testcontainers (Java example)
+## 4. テストコンテナ (Java の例)
 
 ```java
 @Testcontainers
@@ -104,9 +105,9 @@ class OrderRepositoryIT {
 }
 ```
 
-Runs real Postgres in Docker during CI — catches SQL dialect and migration bugs mocks miss.
+CI 中に Docker で実際の Postgres を実行します。SQL の方言と移行バグのモックをキャッチします。
 
-## 5. Reports and PR feedback
+## 5. レポートと PR フィードバック
 
 ```yaml
 - name: Test
@@ -121,9 +122,9 @@ Runs real Postgres in Docker during CI — catches SQL dialect and migration bug
     reporter: java-junit
 ```
 
-JUnit XML → PR annotations; developers see failures without opening CI logs.
+JUnit XML → PR アノテーション。開発者は CI ログを開かなくても障害を確認できます。
 
-## 6. Flaky tests
+## 6.不安定なテスト
 
 | Symptom | Action |
 |---------|--------|
@@ -139,22 +140,22 @@ JUnit XML → PR annotations; developers see failures without opening CI logs.
 - run: mvn test || mvn -Dtest=FailedTest surefire:test
 ```
 
-Fix root cause; retries are a band-aid.
+根本原因を修正します。再試行は応急処置です。
 
-## 7. Coverage — use wisely
+## 7. 適用範囲 — 賢明に使用する
 
 ```yaml
 - run: mvn -B verify jacoco:report
 - uses: codecov/codecov-action@v4
 ```
 
-| Good | Bad |
+|良い |悪い |
 |------|-----|
-| Coverage trend on PR | 100% line coverage mandate |
-| Uncovered critical paths flagged | Testing getters for numbers |
-| Diff coverage on changed files | Blocking on global % drop of 0.1 |
+| PR の報道傾向 | 100% のライン カバレッジの義務 |
+|発見されたクリティカル パスにフラグが付けられました |数値のゲッターをテストする |
+|変更されたファイルの差分カバレッジ | 0.1 のグローバル % ドロップでブロック |
 
-## 8. Anti-patterns
+## 8. アンチパターン
 
 | Anti-pattern | Fix |
 |--------------|-----|

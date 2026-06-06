@@ -1,29 +1,31 @@
 ---
 label: "IV"
-subtitle: "Indexes & EXPLAIN"
+subtitle: "インデックスと EXPLAIN"
 group: "Postgres"
 order: 4
 ---
-Postgres — indexes & EXPLAIN
+Postgres — インデックスと EXPLAIN
+
+
 Slow queries are normal until you **measure**. Use **`EXPLAIN (ANALYZE, BUFFERS)`** to read plans, add the right **indexes**, and avoid common foot-guns.
 
-## 1. How indexes help
+## 1. インデックスがどのように役立つか
 
-Postgres default **B-tree** index supports:
+Postgres デフォルト **B-tree** インデックスは以下をサポートします。
 
 - `WHERE id = 42`
 - `WHERE email = 'a@example.com'`
 - `WHERE created_at > '2026-01-01'` (range scans)
 - `ORDER BY created_at DESC` (when compatible with index order)
 
-Without a matching index, Postgres may **Seq Scan** — read every row in the table. Fine for small tables; costly at millions of rows.
+一致するインデックスがないと、Postgres は **Seq Scan** — テーブル内のすべての行を読み取る可能性があります。小さなテーブルには最適です。数百万行になるとコストがかかります。
 
 ```sql
 CREATE INDEX posts_account_created_idx
   ON posts (account_id, created_at DESC);
 ```
 
-Supports:
+サポート:
 
 ```sql
 SELECT * FROM posts
@@ -39,21 +41,21 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM posts WHERE account_id = 7 ORDER BY created_at DESC LIMIT 20;
 ```
 
-| Node | Meaning |
-|------|---------|
-| **Seq Scan** | Full table read — check row count and filters |
-| **Index Scan / Index Only Scan** | Uses index; "only scan" skips heap if visibility map allows |
-| **Bitmap Index Scan** | Combines multiple index conditions |
-| **Nested Loop** | For each row in A, lookup in B — good with index on B |
-| **Hash Join / Merge Join** | Join strategies for larger sets |
+|ノード |意味 |
+|-----|----------|
+| **シーケンススキャン** |テーブル全体の読み取り — 行数とフィルターを確認する |
+| **インデックス スキャン / インデックスのみのスキャン** |インデックスを使用します。可視性マップが許可する場合、「スキャンのみ」はヒープをスキップします。
+| **ビットマップ インデックス スキャン** |複数のインデックス条件を組み合わせる |
+| **入れ子になったループ** | A の各行について、B を検索します。B のインデックスがあれば問題ありません。
+| **ハッシュ結合 / マージ結合** |大規模なセットの結合戦略 |
 
-Focus on:
+焦点を当てる：
 
 - **Actual time** (ms) vs **Planning time**
 - **Rows** estimate vs **actual** — large mismatch → run **`ANALYZE table`**
 - **Buffers: shared hit/read** — high `read` → cache cold or table bigger than memory
 
-## 3. Index types (when B-tree is not enough)
+## 3. インデックスの種類 (B-tree だけでは不十分な場合)
 
 | Index | Use case |
 |-------|----------|
@@ -62,14 +64,14 @@ Focus on:
 | **GiST** | Geometry (PostGIS), nearest-neighbor |
 | **Hash** | Rare; equality only, not WAL-safe for all ops |
 
-Partial index — index a subset:
+部分インデックス — サブセットのインデックスを作成します。
 
 ```sql
 CREATE INDEX posts_unpublished_idx ON posts (account_id)
   WHERE NOT published;
 ```
 
-## 4. Create indexes without blocking writes
+## 4. 書き込みをブロックせずにインデックスを作成する
 
 ```sql
 CREATE INDEX CONCURRENTLY posts_body_trgm_idx ON posts USING GIN (body gin_trgm_ops);
@@ -77,10 +79,10 @@ CREATE INDEX CONCURRENTLY posts_body_trgm_idx ON posts USING GIN (body gin_trgm_
 
 **`CONCURRENTLY`** avoids long write locks but:
 
-- Cannot run inside a transaction block
-- Fails leave an **INVALID** index — drop and retry
+- トランザクションブロック内では実行できません
+- 失敗した場合は **INVALID** インデックスを残します - 削除して再試行します
 
-## 5. Common problems
+## 5. よくある問題
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
@@ -90,9 +92,9 @@ CREATE INDEX CONCURRENTLY posts_body_trgm_idx ON posts USING GIN (body gin_trgm_
 | Index unused | Low selectivity, small table | Seq scan may be correct — measure |
 | Too many indexes | Slow writes | Drop unused; composite instead of many singles |
 
-## 6. N+1 queries (application layer)
+## 6. N+1 クエリ (アプリケーション層)
 
-ORM loops that query one row at a time:
+ORM ループは一度に 1 行ずつクエリを実行します。
 
 ```text
 Bad:  SELECT * FROM posts WHERE account_id = $1  (×1000 accounts)
@@ -101,7 +103,7 @@ Good: SELECT * FROM posts WHERE account_id = ANY($1)  or JOIN in one query
 
 Fix in app code or with **`JOIN FETCH`** (JPA) — indexes alone do not fix N+1.
 
-## 7. Monitoring slow queries
+## 7. 遅いクエリの監視
 
 Enable **`log_min_duration_statement`** in dev/staging:
 
@@ -111,6 +113,6 @@ log_min_duration_statement = 200ms
 
 Managed services (RDS, etc.) expose **Performance Insights** or **`pg_stat_statements`** for top queries by total time. For the full tuning workflow, see [Database optimizations](vii-database-optimizations.md).
 
-## Next
+＃＃ 次
 
 Continue with [App integration](v-app-integration.md) for JDBC, pools, and Spring Data JPA against Postgres.

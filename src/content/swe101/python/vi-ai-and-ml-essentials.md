@@ -1,12 +1,13 @@
 ---
 label: "VI"
-subtitle: "AI & ML essentials"
+subtitle: "AI と ML の必需品"
 group: "Python"
 groupOrder: 1
 order: 6
 ---
-Python — Part VI
-How Python is used for **machine learning** and **applied AI**: numerical computing, classical ML, deep-learning stacks, notebooks, and reproducibility.
+Python — パート VI
+
+Python が **機械学習** および **応用 AI** にどのように使用されるか: 数値計算、古典的な ML、深層学習スタック、ノートブック、再現性。
 
 ## 1. Where Python fits
 - **Research & production glue**: same language from notebook experiments → packaged services (often behind FastAPI, batch jobs, or Spark).
@@ -31,7 +32,7 @@ rng = np.random.default_rng(42)
 sample = rng.normal(size=(1000, 2))
 ```
 
-Broadcasting rules let differently shaped arrays combine without explicit loops — read error messages carefully when shapes disagree.
+ブロードキャスト ルールにより、明示的なループを使用せずに、異なる形状の配列を組み合わせることができます。形状が一致しない場合は、エラー メッセージを注意深く読んでください。
 
 
 ## 3. `pandas`: labeled tables
@@ -88,7 +89,7 @@ print(classification_report(y_test, pred))
 | **TensorFlow / Keras** | Deployment tooling, TF Serving history |
 | **JAX** | Functional transforms (`jit`, `grad`, `vmap`) — rising in research |
 
-Minimal **PyTorch** training loop shape (conceptual — real projects add dataloaders, AMP, checkpoints):
+最小限の **PyTorch** トレーニング ループ形状 (概念的 - 実際のプロジェクトではデータローダー、AMP、チェックポイントが追加されます):
 
 ```python
 import torch
@@ -137,11 +138,11 @@ print(cls("Shipping new AI notes today!"))
 - Version **datasets** (DVC, lakeFS, or immutable buckets) — “latest CSV” is not reproducible.
 
 
-## 9. Evaluation hygiene (short list)
-- Hold out a **validation** set for tuning and a **test** set touched once for honest scores.
-- Watch **class imbalance**, **covariate shift**, and **temporal leakage** (future columns sneaking into features).
-- Prefer domain-appropriate metrics (**ROC-AUC**, **F1**, calibration) over accuracy alone on skewed problems.
+## 9. 評価衛生 (短いリスト)
+- チューニングには **検証** セットを使用し、正直なスコアを得るには **テスト** セットを一度使用します。
+- **クラスの不均衡**、**共変量シフト**、**時間的漏洩** (特徴に忍び込む将来の列) を監視します。
+- 偏った問題では、精度だけよりもドメインに適したメトリクス (**ROC-AUC**、**F1**、キャリブレーション) を優先します。
 
 
-## 10. When Python is not enough
-Heavy online inference often moves to **C++/Rust runtimes**, **ONNX Runtime**, **TensorRT**, or managed endpoints — Python stays orchestration + experimentation while latency-critical paths compile down.
+## 10. Python だけでは不十分な場合
+大量のオンライン推論は、**C++/Rust ランタイム**、**ONNX ランタイム**、**TensorRT**、またはマネージド エンドポイントに移動することがよくあります。Python は、レイテンシー クリティカルなパスがコンパイル ダウンされる間、オーケストレーションと実験を維持します。

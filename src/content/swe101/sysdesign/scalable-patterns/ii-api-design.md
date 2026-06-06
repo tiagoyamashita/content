@@ -1,15 +1,16 @@
 ---
 label: "II"
-subtitle: "API design"
-group: "System design"
+subtitle: "API デザイン"
+group: "システム設計"
 order: 2
 ---
-API design — REST, gRPC, GraphQL
-How clients and services exchange data at scale: **resource-oriented HTTP**, **binary RPC**, and **flexible queries**.
+API 設計 — REST、gRPC、GraphQL
 
-## 1. REST (Representational State Transfer)
+クライアントとサービスが大規模にデータを交換する方法: **リソース指向 HTTP**、**バイナリ RPC**、**柔軟なクエリ**。
 
-**REST** models resources as URLs; HTTP verbs express intent. Servers stay **stateless** — session state lives in tokens or client storage, not server memory per connection.
+## 1. REST (表現状態の転送)
+
+**REST** はリソースを URL としてモデル化します。 HTTP 動詞は意図を表現します。サーバーは **ステートレス**のままです。セッション状態は、接続ごとのサーバー メモリではなく、トークンまたはクライアント ストレージ内に存在します。
 
 | Method | Path | Semantics | Idempotent? |
 |--------|------|-----------|-------------|
@@ -19,23 +20,23 @@ How clients and services exchange data at scale: **resource-oriented HTTP**, **b
 | **PATCH** | `/users/{id}` | Partial update | No* |
 | **DELETE** | `/users/{id}` | Remove | Yes |
 
-\*PATCH idempotency depends on patch document design.
+\*PATCH 冪等性はパッチ ドキュメントの設計によって異なります。
 
-**Status codes (subset)**
+**ステータス コード (サブセット)**
 
-| Code | Meaning | When |
-|------|---------|------|
-| 200 | OK | GET/PUT/PATCH success with body |
-| 201 | Created | POST created resource |
-| 204 | No content | DELETE success |
-| 400 | Bad request | Validation failed |
-| 401 / 403 | Auth / forbidden | Missing or insufficient credentials |
-| 404 | Not found | Unknown resource id |
-| 409 | Conflict | Duplicate create, version clash |
-| 429 | Too many requests | Rate limited |
-| 500 | Server error | Unhandled failure |
+|コード |意味 |いつ |
+|------|------|------|
+| 200 | OK | GET/PUT/PATCH 本体で成功 |
+| 201 |作成された | POST がリソースを作成しました |
+| 204 |コンテンツなし | DELETE 成功 |
+| 400 |間違ったリクエスト |検証に失敗しました |
+| 401 / 403 |認証/禁止 |資格情報が欠落しているか不十分です |
+| 404 |見つかりません |不明なリソース ID |
+| 409 |紛争 |重複作成、バージョンの衝突 |
+| 429 |リクエストが多すぎます |レート制限 |
+| 500 |サーバーエラー |処理できない障害 |
 
-### Versioning
+### バージョン管理
 
 | Strategy | Example | Trade-off |
 |----------|---------|-----------|
@@ -43,9 +44,9 @@ How clients and services exchange data at scale: **resource-oriented HTTP**, **b
 | Header | `Accept-Version: 1` | Clean URLs; harder to cache |
 | Query | `/users?api-version=1` | Rare in public APIs |
 
-**Rule:** never break existing clients on a version — add fields, deprecate, then sunset.
+**ルール:** バージョン上の既存のクライアントを決して壊さないでください。フィールドを追加し、非推奨にし、その後廃止します。
 
-### Pagination
+### ページネーション
 
 | Style | Query | Pros | Cons |
 |-------|-------|------|------|
@@ -67,9 +68,9 @@ Cursor pattern: `WHERE (created_at, id) > (:last_ts, :last_id) ORDER BY created_
   <text x="180" y="78" fill="#fbbf24" font-size="9">← cursor "after 102"</text>
 </svg></figure>
 
-## 2. gRPC
+## 2.gRPC
 
-**gRPC** uses **Protocol Buffers** over **HTTP/2**: binary, typed contracts, streaming.
+**gRPC** は、**HTTP/2** 上で **プロトコル バッファ** を使用します: バイナリ、型指定されたコントラクト、ストリーミング。
 
 | Feature | REST/JSON | gRPC |
 |---------|-----------|------|
@@ -79,14 +80,14 @@ Cursor pattern: `WHERE (created_at, id) > (:last_ts, :last_id) ORDER BY created_
 | Browser | Native | Needs grpc-web proxy |
 | Best for | Public HTTP APIs | Internal service mesh |
 
-**Streaming modes**
+**ストリーミング モード**
 
-| Mode | Use case |
+|モード |使用例 |
 |------|----------|
-| Unary | Single request → single response |
-| Server streaming | Large download, live updates |
-| Client streaming | Upload batch |
-| Bidirectional | Chat, collaborative editing |
+|単項 |単一のリクエスト → 単一の応答 |
+|サーバーストリーミング |大量のダウンロード、ライブアップデート |
+|クライアントストリーミング |バッチをアップロード |
+|双方向 |チャット、共同編集 |
 
 ```protobuf
 service UserService {
@@ -97,29 +98,29 @@ service UserService {
 
 ## 3. GraphQL
 
-Client sends one **query** describing the exact response shape.
+クライアントは、正確な応答形状を記述する 1 つの **クエリ**を送信します。
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| No over-fetching fields | **N+1** queries if resolvers naïve |
-| One round trip for related data | Caching harder than REST URLs |
-| Strong typing via schema | Complexity limits, depth attacks |
+|フィールドのオーバーフェッチはありません | **N+1** リゾルバーがナイーブかどうかをクエリします。
+|関連データ1往復 | REST URL よりもキャッシュが難しい |
+|スキーマによる強力な型指定 |複雑さの制限、深層攻撃 |
 
 **N+1 fix:** **DataLoader** batches `userIds` → one `SELECT WHERE id IN (…)`.
 
-## 4. Choosing an API style
+## 4. API スタイルの選択
 
-| Scenario | Prefer |
-|----------|--------|
-| Public mobile/web REST ecosystem | **REST** + OpenAPI |
-| Internal microservices, low latency | **gRPC** |
-| Multiple clients, different field needs | **GraphQL** |
-| File upload, simple CRUD | **REST** |
+|シナリオ |優先する |
+|----------|----------|
+|パブリックモバイル/Web REST エコシステム | **REST** + オープンAPI |
+|内部マイクロサービス、低遅延 | **gRPC** |
+|複数のクライアント、さまざまな分野のニーズ | **GraphQL** |
+|ファイルのアップロード、簡単な CRUD | **REST** |
 
-## 5. Cross-cutting API concerns
+## 5. 横断的な API の懸念事項
 
-- **Idempotency-Key** header on POST (payments) — safe retries.
-- **Correlation-Id** / trace headers — observability across services.
-- **HATEOAS** — optional; hypermedia links in responses for discoverability.
+- POST (支払い) の **Idempotency-Key** ヘッダー - 安全な再試行。
+- **Correlation-Id** / トレース ヘッダー — サービス全体での可観測性。
+- **HATEOAS** — オプション。発見可能性への応答におけるハイパーメディア リンク。
 
 **Related:** [Rate limiting](iv-rate-limiting.md) (429), [Distributed transactions](vii-distributed-transactions.md) (idempotency).

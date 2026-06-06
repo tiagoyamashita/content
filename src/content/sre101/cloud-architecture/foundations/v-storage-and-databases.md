@@ -1,19 +1,20 @@
 ---
 label: "V"
-subtitle: "Storage & databases"
-group: "Cloud architecture"
+subtitle: "ストレージとデータベース"
+group: "クラウドアーキテクチャ"
 order: 5
 ---
-Storage & databases
-Cloud storage splits into **object**, **block**, and **file** — each with different latency, durability, and access patterns. **Managed databases** offload patching and backups.
+ストレージとデータベース
 
-## 1. Storage types compared
+クラウド ストレージは **オブジェクト**、**ブロック**、**ファイル**に分割されており、それぞれに異なる遅延、耐久性、アクセス パターンがあります。 **管理されたデータベース** は、パッチ適用とバックアップの負荷を軽減します。
 
-| Type | Access | Latency | Use case |
-|------|--------|---------|----------|
-| **Object** | HTTP GET/PUT, flat keys | Higher | Static assets, backups, data lakes |
-| **Block** | Attached disk to VM | Low random I/O | DB volumes, boot disks |
-| **File (NFS)** | Shared mount | Moderate | Legacy apps, shared content |
+## 1. ストレージタイプの比較
+
+|タイプ |アクセス |レイテンシ |使用例 |
+|------|----------|----------|----------|
+| **オブジェクト** | HTTP GET/PUT、フラット キー |より高い |静的資産、バックアップ、データレイク |
+| **ブロック** |ディスクを VM に接続しました |低ランダム I/O | DB ボリューム、ブート ディスク |
+| **ファイル (NFS)** |共有マウント |中程度 |従来のアプリ、共有コンテンツ |
 
 ```text
 Object:  s3://bucket/path/file.json     (whole object)
@@ -21,13 +22,13 @@ Block:   /dev/xvdf on EC2               (sector read/write)
 File:    mount nfs.example.com:/share   (POSIX files)
 ```
 
-## 2. Object storage
+## 2. オブジェクトストレージ
 
-| Cloud | Service | Durability (typical) |
-|-------|---------|----------------------|
-| AWS | S3 | 11 nines (Standard) |
-| Azure | Blob Storage | 11+ nines (LRS) |
-| GCP | Cloud Storage | 11 nines (Standard) |
+|クラウド |サービス |耐久性 (標準) |
+|------|-----------|-----------|
+| AWS | S3 | 11 ナイン (スタンダード) |
+|アズール | BLOB ストレージ | 11+ ナイン (LRS) |
+| GCP |クラウドストレージ | 11 ナイン (スタンダード) |
 
 ```bash
 # Upload static asset
@@ -35,46 +36,46 @@ aws s3 cp dist/app.js s3://myapp-assets-prod/v1/app.js \
   --cache-control "public, max-age=31536000"
 ```
 
-| Feature | Benefit |
-|---------|---------|
-| Versioning | Roll back accidental deletes |
-| Lifecycle rules | Standard → IA → Glacier |
-| Event notifications | Trigger Lambda on new upload |
-| Presigned URLs | Direct client upload without proxy |
+|特集 |メリット |
+|----------|----------|
+|バージョン管理 |誤った削除をロールバックする |
+|ライフサイクル ルール |標準 → IA → 氷河 |
+|イベントのお知らせ |新しいアップロード時に Lambda をトリガーする |
+|署名付き URL |プロキシを使用しないクライアントによる直接アップロード |
 
-**Default choice** for static web, logs archive, ML datasets, Terraform state (with locking).
+静的 Web、ログ アーカイブ、ML データセット、Terraform 状態 (ロックあり) の **デフォルトの選択**。
 
-## 3. Block storage
+## 3. ブロックストレージ
 
-| Cloud | Service |
-|-------|---------|
+|クラウド |サービス |
+|------|-----------|
 | AWS | EBS |
-| Azure | Managed Disks |
-| GCP | Persistent Disk |
+|アズール |管理対象ディスク |
+| GCP |永続ディスク |
 
-- Attached to **one** VM at a time (except multi-attach types for clustered DBs).
-- Snapshot to object storage for backup.
-- Choose **gp3/ssd** for general DB; **io2** for sustained IOPS.
+- 一度に **1 つ** VM にアタッチされます (クラスター化された DB のマルチアタッチ タイプを除く)。
+- バックアップ用のオブジェクト ストレージへのスナップショット。
+- 一般的な DB には **gp3/ssd** を選択します。 **io2** IOPS を継続します。
 
-**Use when:** PostgreSQL/MySQL on EC2, high-IOPS database, boot volumes.
+**次の場合に使用します。** EC2、高 IOPS データベース、ブート ボリューム上の PostgreSQL/MySQL。
 
-## 4. File storage
+## 4. ファイルストレージ
 
-| Cloud | Service |
-|-------|---------|
+|クラウド |サービス |
+|------|-----------|
 | AWS | EFS |
-| Azure | Azure Files |
-| GCP | Filestore |
+|アズール | Azure ファイル |
+| GCP |ファイルストア |
 
-Multiple VMs mount same NFS share — content management, shared config (prefer object/config service for new apps).
+複数の VM が同じ NFS 共有 - コンテンツ管理、共有構成 (新しいアプリにはオブジェクト/構成サービスを優先) をマウントします。
 
-## 5. Managed relational databases
+## 5. マネージド リレーショナル データベース
 
-| Cloud | Service | Engines |
-|-------|---------|---------|
-| AWS | RDS / Aurora | PostgreSQL, MySQL, SQL Server, Oracle |
-| Azure | Azure SQL / PostgreSQL Flexible | |
-| GCP | Cloud SQL / AlloyDB | |
+|クラウド |サービス |エンジン |
+|----------|-----------|----------|
+| AWS | RDS / オーロラ | PostgreSQL、MySQL、SQL サーバー、Oracle |
+|アズール | Azure SQL / PostgreSQL 柔軟 | |
+| GCP |クラウド SQL / AlloyDB | |
 
 ```text
 RDS Multi-AZ
@@ -82,23 +83,23 @@ RDS Multi-AZ
   Failover: DNS/connection endpoint switches (~60–120 s)
 ```
 
-| Feature | Purpose |
-|---------|---------|
-| **Multi-AZ** | HA failover |
-| **Read replica** | Offload read traffic (async lag) |
-| **Automated backups** | Point-in-time recovery |
-| **Parameter groups** | Tune DB settings as code |
+|特集 |目的 |
+|----------|----------|
+| **マルチAZ** | HA フェイルオーバー |
+| **リードレプリカ** |読み取りトラフィックのオフロード (非同期ラグ) |
+| **自動バックアップ** |ポイントインタイムリカバリ |
+| **パラメータグループ** | DB 設定をコードとして調整する |
 
-**Use when:** ACID transactions, joins, mature ORM apps (Spring + JPA).
+**次の場合に使用します:** ACID トランザクション、結合、成熟した ORM アプリ (Spring + JPA)。
 
-## 6. NoSQL options
+## 6. NoSQL オプション
 
-| Category | Examples | Access pattern |
-|----------|----------|----------------|
-| **Key-value** | DynamoDB, Redis (ElastiCache) | O(1) by key, single-digit ms |
-| **Document** | MongoDB Atlas, Firestore | Flexible JSON documents |
-| **Wide-column** | Cassandra, Bigtable | Time-series, IoT at scale |
-| **Graph** | Neptune, Neo4j | Relationships |
+|カテゴリー |例 |アクセスパターン |
+|----------|----------|-----|
+| **キーと値** | DynamoDB、Redis (ElastiCache) | O(1) キー、1 桁の ms |
+| **ドキュメント** | MongoDB アトラス、Firestore |柔軟な JSON ドキュメント |
+| **ワイドカラム** |カサンドラ、ビッグテーブル |時系列、大規模な IoT |
+| **グラフ** |ネプチューン、Neo4j |人間関係 |
 
 ```text
 DynamoDB partition key: userId
@@ -106,39 +107,39 @@ Sort key: orderTimestamp
 → Query all orders for user, sorted by time
 ```
 
-| Choose SQL | Choose NoSQL |
-|------------|--------------|
-| Complex joins | Massive scale simple access |
-| Strong schema | Flexible/evolving schema |
-| Transactions across rows | Partition-key access sufficient |
+| SQL | を選択してくださいNoSQL | を選択してください
+|-----------|--------------|
+|複雑な結合 |大規模なシンプルなアクセス |
+|強力なスキーマ |柔軟で進化するスキーマ |
+|行間のトランザクション |パーティション キーへのアクセスは十分 |
 
-## 7. Caching layer
+## 7. キャッシュ層
 
-| Service | Type |
-|---------|------|
-| ElastiCache Redis | In-memory, sub-ms |
-| Memorystore | GCP Redis/Memcached |
-| Azure Cache for Redis | |
+|サービス |タイプ |
+|-------|------|
+| ElastiCache Redis |インメモリ、サブミリ秒 |
+|メモリーストア | GCP Redis/Memcached |
+| Redis の Azure キャッシュ | |
 
-Not durable primary storage — session cache, rate limits, hot keys [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md).
+耐久性のないプライマリ ストレージ - セッション キャッシュ、レート制限、ホット キー [スケーラビリティとキャッシュ](../patterns-and-design/ii-scalability-and-caching.md)。
 
-## 8. Example stack
+## 8. スタックの例
 
-| Data | Service |
-|------|---------|
-| User uploads | S3 |
-| Transactional data | RDS PostgreSQL Multi-AZ |
-| Product catalog cache | Redis |
-| Analytics events | S3 data lake + Athena |
-| Search index | OpenSearch |
+|データ |サービス |
+|-----|----------|
+|ユーザーのアップロード | S3 |
+|トランザクションデータ | RDS PostgreSQL マルチ AZ |
+|製品カタログのキャッシュ | Redis |
+|分析イベント | S3 データレイク + Athena |
+|検索インデックス |オープンサーチ |
 
-## 9. Anti-patterns
+## 9. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| Database files on object storage | Block storage or managed DB |
-| Public S3 bucket for secrets | Private + IAM, block public access |
-| One giant RDS for everything | Split by bounded context or read replicas |
-| No backup retention tested | Restore drill quarterly |
+|オブジェクト ストレージ上のデータベース ファイル |ブロック ストレージまたはマネージド DB |
+|シークレット用のパブリック S3 バケット |プライベート + IAM、パブリック アクセスをブロック |
+| 1 つの巨大な RDS ですべてを対応 |境界付きコンテキストまたはリードレプリカによる分割 |
+|バックアップ保持テストは行われていません |四半期ごとの復元訓練 |
 
-**Related:** [Regions, AZs & edge](iii-regions-azs-and-edge.md), CS101 databases submenu.
+**関連:** [リージョン、AZ、エッジ](iii-regions-azs-and-edge.md)、CS101 データベースのサブメニュー。

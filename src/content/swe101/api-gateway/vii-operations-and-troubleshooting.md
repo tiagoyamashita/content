@@ -1,25 +1,26 @@
 ---
 label: "VII"
-subtitle: "Operations & troubleshooting"
+subtitle: "操作とトラブルシューティング"
 group: "API Gateway"
 order: 7
 ---
-API gateway — operations & troubleshooting
-Operate gateways with **access logs**, **upstream health**, and clear **timeout** alignment across CDN, gateway, and services.
+API ゲートウェイ — 操作とトラブルシューティング
 
-## 1. Metrics to watch
+**アクセス ログ**、**アップストリームの健全性**を使用してゲートウェイを操作し、CDN、ゲートウェイ、サービス全体にわたる**タイムアウト**の調整をクリアします。
 
-| Metric | Signal |
-|--------|--------|
-| **4xx rate** | Auth misconfig, bad clients |
-| **5xx rate** | Upstream or gateway overload |
-| **Latency p50/p99** | Gateway overhead vs service slowness |
-| **429 rate** | Rate limits working — tune thresholds |
-| **Integration errors** | Lambda/ALB unreachable |
+## 1. 注目すべき指標
 
-Split dashboards by **route** and **API version**.
+|メトリック |信号 |
+|----------|----------|
+| **4xx レート** |認証の設定ミス、不正なクライアント |
+| **5xx レート** |アップストリームまたはゲートウェイの過負荷 |
+| **レイテンシ p50/p99** |ゲートウェイのオーバーヘッドとサービスの遅さ |
+| **429 レート** |レート制限の機能 - しきい値の調整 |
+| **統合エラー** | Lambda/ALB に到達できません |
 
-## 2. Debug a failed request
+**ルート**と**APIバージョン**ごとにダッシュボードを分割します。
+
+## 2. 失敗したリクエストをデバッグする
 
 ```text
 1. Reproduce with curl -v (include Authorization if needed)
@@ -35,7 +36,7 @@ curl -v https://api.example.com/api/v1/health \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 3. Common failures
+## 3. よくある失敗
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
@@ -46,7 +47,7 @@ curl -v https://api.example.com/api/v1/health \
 | **Double slash / 404** | `strip_path` mismatch | Align gateway rewrite with service mount |
 | **Works in Postman, fails in prod** | Different host, missing WAF rule | Compare headers and path |
 
-## 4. CDN + gateway incidents
+## 4. CDN + ゲートウェイ インシデント
 
 | Symptom | Check |
 |---------|-------|
@@ -56,21 +57,21 @@ curl -v https://api.example.com/api/v1/health \
 
 Full topology: [CDN & API gateway together](../cdn/viii-cdn-and-api-gateway-together.md).
 
-## 5. Deployment and rollback
+## 5. デプロイメントとロールバック
 
-- **Blue/green upstream** — switch gateway target weights
-- **Route config in CI** — lint OpenAPI, dry-run apply
-- **Feature flags** in services — gateway routes stable; canary via weights
+- **青/緑のアップストリーム** — スイッチ ゲートウェイ ターゲットの重み
+- **CI のルート構成** — lint OpenAPI、ドライラン適用
+- サービスの **機能フラグ** — ゲートウェイ ルートは安定しています。重みを介したカナリア
 
 Keep **backward-compatible** `/api/v1` during `/api/v2` rollout.
 
-## 6. Security operations
+## 6. セキュリティ運用
 
-- Rotate API keys on schedule; audit unused consumers
-- Review WAF blocks — false positives vs real attacks
-- Pen-test public gateway surface — not just app server
+- API キーをスケジュールに従ってローテーションします。未使用のコンシューマを監査する
+- WAF ブロックを確認する — 誤検知と実際の攻撃
+- アプリサーバーだけでなく、パブリックゲートウェイ表面の侵入テスト
 
-## 7. Checklist
+## 7. チェックリスト
 
 - [ ] Routes match OpenAPI / contract tests
 - [ ] Auth enforced on all non-public paths
@@ -81,7 +82,7 @@ Keep **backward-compatible** `/api/v1` during `/api/v2` rollout.
 - [ ] `/health` and `/ready` excluded from heavy plugins
 - [ ] CDN bypass or `no-store` on authenticated API
 
-## Related notes
+## 関連メモ
 
 - [CDN & API gateway together](../cdn/viii-cdn-and-api-gateway-together.md) — combined edge architecture
 - [CDN operations](../cdn/vii-operations-and-troubleshooting.md) — cache-side debug

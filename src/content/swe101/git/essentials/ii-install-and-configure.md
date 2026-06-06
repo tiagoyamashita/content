@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "Install & configure"
+subtitle: "インストールと設定"
 group: "Git"
 order: 2
 ---
-Install & configure
-Install Git once per machine, set identity, and prefer **SSH** (or HTTPS with credential helper) for GitHub/GitLab.
+インストールと設定
 
-## 1. Install
+マシンごとに Git を 1 回インストールし、ID を設定し、GitHub/GitLab には **SSH** (または資格情報ヘルパーを備えた HTTPS) を優先します。
+
+## 1. インストール
 
 | OS | Command / source |
 |----|------------------|
@@ -15,22 +16,22 @@ Install Git once per machine, set identity, and prefer **SSH** (or HTTPS with cr
 | **macOS** | Xcode CLT or `brew install git` |
 | **Linux** | `sudo apt install git` / `dnf install git` |
 
-Verify:
+確認する：
 
 ```bash
 git --version
 ```
 
-## 2. Identity (required for commits)
+## 2. ID (コミットに必要)
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-Use the **same email** as your GitHub account if you want commits linked on your profile.
+プロファイルにコミットをリンクしたい場合は、GitHub アカウントと **同じメールアドレス** を使用してください。
 
-View settings:
+設定を表示:
 
 ```bash
 git config --global --list
@@ -42,13 +43,13 @@ git config --global --list
 | Global | `--global` | Your user (`~/.gitconfig`) |
 | Local | `--local` | Current repo only (overrides global) |
 
-## 3. Default branch name
+## 3. デフォルトのブランチ名
 
 ```bash
 git config --global init.defaultBranch main
 ```
 
-## 4. SSH key for GitHub
+## 4. GitHub の SSH キー
 
 ```bash
 ssh-keygen -t ed25519 -C "you@example.com"
@@ -58,21 +59,21 @@ cat ~/.ssh/id_ed25519.pub   # paste into GitHub → Settings → SSH keys
 ssh -T git@github.com
 ```
 
-Clone with SSH:
+SSH を使用してクローンを作成します。
 
 ```bash
 git clone git@github.com:owner/repo.git
 ```
 
-## 5. HTTPS alternative
+## 5. HTTPS の代替案
 
 ```bash
 git clone https://github.com/owner/repo.git
 ```
 
-Use **credential manager** (Git for Windows includes one) or **fine-grained PAT** — avoid embedding passwords in URLs.
+**資格情報マネージャー** (Windows の Git には資格情報マネージャーが含まれます) または **きめ細かい PAT** を使用します。URL にパスワードを埋め込むのは避けてください。
 
-## 6. Useful global defaults
+## 6. 便利なグローバルデフォルト
 
 ```bash
 git config --global pull.rebase false    # merge on pull (default); see v-remotes
@@ -81,7 +82,7 @@ git config --global color.ui auto
 git config --global core.editor "code --wait"   # VS Code / Cursor
 ```
 
-## 7. First repo
+## 7. 最初のリポジトリ
 
 ```bash
 mkdir myproject && cd myproject
@@ -91,7 +92,7 @@ git add README.md
 git commit -m "Initial commit"
 ```
 
-Link to GitHub (after creating empty repo on site):
+GitHub へのリンク (サイトで空のリポジトリを作成した後):
 
 ```bash
 git remote add origin git@github.com:you/myproject.git

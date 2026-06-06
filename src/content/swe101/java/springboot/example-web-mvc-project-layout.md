@@ -1,16 +1,22 @@
 ---
 label: "Example"
-subtitle: "Web MVC project layout"
+subtitle: "Web MVC プロジェクトのレイアウト"
 group: "Spring Boot"
 groupOrder: 2
 order: 1
 ---
-Example project — Spring Web MVC
-Copy the layout and snippets below into a new project (or your IDE’s Spring Initializr output). This page is **not** a bundled repo sample — it documents a typical **`spring-boot-starter-web`** + **Thymeleaf** app: entrypoint, **`@Controller`** + **`@GetMapping`**, a small **`@Service`**, and a view under **`templates/`**.
+サンプルプロジェクト — Spring Web MVC
 
-**Run locally:** from the project root, `./mvnw spring-boot:run` (or **`gradle bootRun`**), then open `http://localhost:8080/hello?name=Ada`.
 
-## 1. Package layout (typical)
+
+
+
+
+以下のレイアウトとスニペットを新しいプロジェクト (または IDE の Spring Initializr 出力) にコピーします。このページは、バンドルされたリポジトリ サンプルではありません**。典型的な ** を文書化しています。`spring-boot-starter-web`** + **Thymeleaf** アプリ: エントリポイント、**`@Controller`** + **`@GetMapping`**、小さい**`@Service`**、および ** の下のビュー`templates/`**。
+
+**ローカルで実行:** プロジェクト ルートから、`./mvnw spring-boot:run`（または **`gradle bootRun`**)、次に開きます`http://localhost:8080/hello?name=Ada`。
+
+## 1. パッケージレイアウト (代表例)
 
 ```text
 src/main/java/com/example/demo/
@@ -26,9 +32,9 @@ src/main/resources/
 pom.xml
 ```
 
-## 2. Code examples
+## 2.コード例
 
-### `pom.xml` — Web + Thymeleaf starters
+###`pom.xml`— Web + Thymeleaf スターター
 
 ```xml
 <dependencies>
@@ -43,9 +49,9 @@ pom.xml
 </dependencies>
 ```
 
-Use **`spring-boot-starter-parent`** (or the BOM) so versions stay aligned.
+使用 **`spring-boot-starter-parent`** (または BOM) なので、バージョンは一致したままになります。
 
-**Gradle equivalent:**
+**グラドルと同等：**
 
 ```kotlin
 dependencies {
@@ -54,7 +60,7 @@ dependencies {
 }
 ```
 
-### `DemoApplication.java` — entrypoint
+###`DemoApplication.java`— エントリポイント
 
 ```java
 // Compile: javac --release 22 …
@@ -72,7 +78,7 @@ public class DemoApplication {
 }
 ```
 
-### `GreetingService.java` — injected bean
+###`GreetingService.java`— 注入された Bean
 
 ```java
 // Compile: javac --release 22 …
@@ -89,7 +95,7 @@ public class GreetingService {
 }
 ```
 
-### `HelloController.java` — MVC mapping + model
+###`HelloController.java`— MVC マッピング + モデル
 
 ```java
 // Compile: javac --release 22 …
@@ -120,7 +126,7 @@ public class HelloController {
 }
 ```
 
-### `templates/hello.html` — Thymeleaf view
+###`templates/hello.html`— Thymeleaf ビュー
 
 ```html
 <!DOCTYPE html>
@@ -135,19 +141,19 @@ public class HelloController {
 </html>
 ```
 
-### Optional `application.properties`
+### オプション`application.properties`
 
 ```properties
 spring.application.name=demo
 ```
 
-Try **`http://localhost:8080/hello?name=Ada`** — the **`message`** attribute comes from **`GreetingService`** and is bound by **`th:text`**.
+試す **`http://localhost:8080/hello?name=Ada`** — **`message`** 属性は ** から来ています`GreetingService`** と ** によって拘束されます`th:text`**。
 
-## 3. Annotations to notice
-- **`@SpringBootApplication`** — component scanning + auto-configuration for this package and below.
-- **`@Controller`** / **`@GetMapping`** — MVC mapping; return value is a **view name** (`"hello"` → `templates/hello.html`).
-- **`@Service`** — stereotype bean; constructor injection into the controller.
-- **`Model`** — server-side attributes passed into the Thymeleaf view (`th:text`).
+## 3. 注意すべき注釈
+- **`@SpringBootApplication`** — このパッケージ以下のコンポーネント スキャン + 自動構成。
+- **`@Controller`** / **`@GetMapping`** — MVC マッピング;戻り値は **ビュー名** (`"hello"`→`templates/hello.html`）。
+- **`@Service`** — ステレオタイプ Bean。コントローラーへのコンストラクターの注入。
+- **`Model`** — Thymeleaf ビューに渡されるサーバー側属性 (`th:text`）。
 
-## 4. Compared to REST
-For JSON APIs you would use **`@RestController`** and return DTOs or **`ResponseEntity`** instead of view names; the package and **`pom.xml`** layout stay the same. See **REST controllers** in the parent **`java/`** folder (Part IV).
+## 4. REST との比較
+JSON API の場合は ** を使用します`@RestController`** と DTO または ** を返します`ResponseEntity`** ビュー名の代わりに。パッケージと**`pom.xml`** レイアウトは変わりません。親 ** の **REST コントローラ** を参照してください。`java/`** フォルダー (パート IV)。

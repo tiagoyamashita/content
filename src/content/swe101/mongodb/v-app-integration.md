@@ -1,27 +1,29 @@
 ---
 label: "V"
-subtitle: "App integration"
+subtitle: "アプリの統合"
 group: "MongoDB"
 order: 5
 ---
-MongoDB — app integration
+MongoDB — アプリの統合
+
+
 Connect from applications via **official drivers** or ODMs. Examples align with the [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) and [Python](../python/i-basics-and-syntax.md) tracks.
 
-## 1. Layers
+## 1. レイヤー
 
 ```text
 Controller  →  Service  →  Repository  →  Driver / ODM  →  MongoDB
 ```
 
-| Layer | Responsibility |
-|-------|----------------|
-| **Repository** | Queries, indexes assumed; no HTTP |
-| **Service** | Business rules, transactions spanning collections |
-| **DTO / document** | Map BSON ↔ app types |
+|レイヤー |責任 |
+|------|----------------|
+| **リポジトリ** |クエリ、インデックスが想定されます。いいえ HTTP |
+| **サービス** |ビジネス ルール、コレクションにまたがるトランザクション |
+| **DTO / ドキュメント** | BSON ↔ アプリの種類をマップする |
 
-## 2. Spring Boot + Spring Data MongoDB
+## 2. Spring Boot + Spring データ MongoDB
 
-**Dependency** (conceptual):
+**依存関係** (概念):
 
 ```xml
 <dependency>
@@ -30,7 +32,7 @@ Controller  →  Service  →  Repository  →  Driver / ODM  →  MongoDB
 </dependency>
 ```
 
-**Configuration:**
+**構成：**
 
 ```yaml
 spring:
@@ -40,7 +42,7 @@ spring:
       # or mongodb+srv://... for Atlas
 ```
 
-**Document entity:**
+**ドキュメントエンティティ:**
 
 ```java
 @Document(collection = "products")
@@ -55,7 +57,7 @@ public class Product {
 }
 ```
 
-**Repository:**
+**リポジトリ:**
 
 ```java
 public interface ProductRepository extends MongoRepository<Product, String> {
@@ -70,7 +72,7 @@ Custom queries with **`@Query`**:
 List<Product> cheapByTag(String tag, double maxPrice);
 ```
 
-**Transactions** (replica set required):
+**トランザクション** (レプリカ セットが必要):
 
 ```java
 @Transactional
@@ -106,11 +108,11 @@ for doc in cursor:
     print(doc["title"], doc["price"])
 ```
 
-Use **Motor** for async FastAPI apps.
+非同期 FastAPI アプリには **Motor** を使用します。
 
-## 4. Connection pooling
+## 4. 接続プーリング
 
-Drivers pool connections by default. Tune when many app instances connect to Atlas:
+ドライバーはデフォルトで接続をプールします。多くのアプリ インスタンスが Atlas に接続するときに調整します。
 
 | Knob | Guidance |
 |------|----------|
@@ -120,17 +122,17 @@ Drivers pool connections by default. Tune when many app instances connect to Atl
 
 One **`MongoClient`** (or Spring singleton) per process — not per request.
 
-## 5. ODM vs raw driver
+## 5. ODM と raw ドライバーの比較
 
-| | **Raw driver** | **Spring Data / Mongoose (Node)** |
-|---|----------------|-----------------------------------|
-| **Control** | Full BSON control | Convention, less boilerplate |
-| **Queries** | Explicit JSON | Method names / schemas |
-| **Migrations** | Your scripts | Your scripts |
+| | **生のドライバー** | **Spring データ / Mongoose (ノード)** |
+|---|----------------|-------------------------------------|
+| **コントロール** |完全な BSON コントロール |従来の定型文を削減 |
+| **クエリ** |明示的な JSON |メソッド名/スキーマ |
+| **移行** |あなたのスクリプト |あなたのスクリプト |
 
 Avoid N+1: fetch related data with **`$lookup`** in aggregation, **`@DocumentReference`**, or embed when modeled that way — same class of bug as SQL ORMs.
 
-## 6. Testing
+## 6. テスト
 
 | Approach | Notes |
 |----------|-------|
@@ -148,15 +150,15 @@ static void mongoProps(DynamicPropertyRegistry registry) {
 }
 ```
 
-Use replica-set URL when testing **transactions**.
+**トランザクション**をテストする場合は、レプリカセット URL を使用します。
 
-## 7. Security basics
+## 7. セキュリティの基本
 
 - Never commit Atlas credentials — use env vars / secrets manager.
 - App user: **`readWrite`** on one DB only.
 - Enable **TLS** (`mongodb+srv` on Atlas).
 - Field-level encryption or app-layer crypto for highly sensitive PII if required.
 
-## Next
+＃＃ 次
 
 Continue with [Operations & backups](vi-operations-and-backups.md) for replica sets and restore drills.

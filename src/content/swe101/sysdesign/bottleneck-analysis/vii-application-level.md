@@ -1,28 +1,29 @@
 ---
 label: "VII"
-subtitle: "Application-level"
-group: "System design"
+subtitle: "アプリケーションレベル"
+group: "システム設計"
 order: 7
 ---
-Application-level bottlenecks
-Logic and **dependency patterns** limit scale even when infra looks healthy.
+アプリケーションレベルのボトルネック
 
-## 1. Synchronous blocking
+インフラストラクチャが正常に見えても、ロジックと **依存関係パターン** によりスケールが制限されます。
+
+## 1. 同期ブロッキング
 
 | Pattern | Problem | Fix |
 |---------|---------|-----|
 | Thread blocked on DB/API | Pool exhaustion | async/await, reactive, virtual threads |
 | Serial calls in handler | Latency sums | Parallel `asyncio.gather`, fork-join |
 
-| Model | Examples |
-|-------|----------|
-| Event loop | Node.js, asyncio |
-| Thread pool | JVM servlet pool |
-| Goroutines + blocking IO | Go with limits |
+|モデル |例 |
+|------|----------|
+|イベントループ | Node.js、非同期 |
+|スレッドプール | JVM サーブレット プール |
+|ゴルーチン + ブロック IO |限界を守ってください |
 
-## 2. Thundering herd
+## 2. 雷鳴の群れ
 
-**Cache expires** → many concurrent **cache miss** → all hit DB.
+**キャッシュの有効期限が切れる** → 多数の同時 **キャッシュ ミス** → すべてが DB にヒットします。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 110" role="img" aria-label="Thundering herd on cache expiry">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Thundering herd</text>
@@ -38,14 +39,14 @@ Logic and **dependency patterns** limit scale even when infra looks healthy.
   <text x="276" y="64" fill="#e4e4e7" font-size="9">DB</text>
 </svg></figure>
 
-| Mitigation | How |
-|------------|-----|
-| **Lock on miss** | One refills cache; others wait |
-| **Probabilistic early expiry** | Refresh before hard TTL |
-| **Background refresh** | Serve stale; async warm |
-| **Request coalescing** | Singleflight pattern |
+|緩和 |どのように |
+|-----------|-----|
+| **ロックオンミス** | 1 つはキャッシュを補充します。他の人は待ってください |
+| **確率的に早い期限切れ** |ハード前にリフレッシュ TTL |
+| **バックグラウンド更新** |古くなったものを提供します。非同期ウォーム |
+| **合体をリクエスト** |シングルフライトパターン |
 
-## 3. Hot key / hot partition
+## 3. ホットキー/ホットパーティション
 
 | Example | Fix |
 |---------|-----|
@@ -53,21 +54,21 @@ Logic and **dependency patterns** limit scale even when infra looks healthy.
 | One Redis key | Shard key: `key#0`…`key#N` |
 | One DB shard | Re-shard; celebrity fan-out read model |
 
-## 4. Slow external dependency
+## 4. 遅い外部依存関係
 
-| Pattern | Purpose |
-|---------|---------|
-| **Timeout** | Fail fast |
-| **Retry + backoff + jitter** | Transient errors |
-| **Circuit breaker** | Stop calling failing dep |
-| **Bulkhead** | Isolate pool per dependency |
-| **Fallback** | Cached/default response |
+|パターン |目的 |
+|----------|----------|
+| **タイムアウト** |早く失敗してください |
+| **再試行 + バックオフ + ジッター** |一時的なエラー |
+| **サーキットブレーカー** |失敗した dep の呼び出しを停止する |
+| **バルクヘッド** |依存関係ごとにプールを分離する |
+| **フォールバック** |キャッシュされた/デフォルトの応答 |
 
 ```text
 Closed → failures ↑ → Open (fail fast) → Half-open probe → Closed
 ```
 
-## 5. Code-level hotspots
+## 5. コードレベルのホットスポット
 
 | Smell | Fix |
 |-------|-----|
@@ -76,6 +77,6 @@ Closed → failures ↑ → Open (fail fast) → Half-open probe → Closed
 | String `+` in loop | `StringBuilder` / `join` |
 | Unbounded cache map | TTL + max size |
 
-**Always profile** — never optimise without measurement.
+**常にプロファイルを作成します** — 測定なしに最適化を行わないでください。
 
-**Related:** scalable patterns rate limiting, distributed transactions (idempotency).
+**関連:** スケーラブルなパターンのレート制限、分散トランザクション (冪等性)。

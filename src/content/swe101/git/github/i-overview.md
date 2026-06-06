@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "GitHub"
 order: 1
 ---
-GitHub — overview
-**GitHub** hosts Git repositories and adds **pull requests**, **reviews**, **Actions**, **Issues**, and **project** tooling. Git itself runs locally — GitHub is the social and automation layer.
+GitHub — 概要
 
-## Map of this topic
+**GitHub** は Git リポジトリをホストし、**プル リクエスト**、**レビュー**、**アクション**、**問題**、**プロジェクト** ツールを追加します。 Git 自体はローカルで実行されます。GitHub はソーシャル層と自動化層です。
+
+## このトピックのマップ
 
 | Note | Focus |
 |------|--------|
@@ -16,14 +17,14 @@ GitHub — overview
 | [Actions, issues & settings](iii-actions-issues-and-settings.md) | CI, issues, branch protection, tokens |
 | [Contribution graph](activity-contribution-graph.md) | This site's contribution grid demo |
 
-## Git + GitHub flow
+## Git + GitHub フロー
 
 ```text
 local:  branch → commit → push
 GitHub: Pull Request → review → merge → Actions CI
 ```
 
-## Account essentials
+## アカウントの必需品
 
 | Task | Where |
 |------|--------|
@@ -32,9 +33,9 @@ GitHub: Pull Request → review → merge → Actions CI
 | Email for commits | Settings → Emails (match `git config user.email`) |
 | 2FA | Settings → Password and authentication |
 
-## Rehearsal
+## リハーサル
 
-- Difference between **Git** and **GitHub**?
-- What happens on **merge** of a PR?
+- **Git** と **GitHub** の違いは何ですか?
+- PR の **マージ** では何が起こりますか?
 
-**Related:** **Git** track, CI/CD **GitHub Actions**, Getting started setup (OAuth for notes app).
+**関連:** **Git** トラック、CI/CD **GitHub アクション**、セットアップの開始 (メモ アプリの場合は OAuth)。

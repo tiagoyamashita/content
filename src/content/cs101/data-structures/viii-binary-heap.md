@@ -1,19 +1,20 @@
 ---
 label: "VIII"
-subtitle: "Binary heap"
-group: "Data structures & algorithms"
+subtitle: "バイナリヒープ"
+group: "データ構造とアルゴリズム"
 order: 8
 ---
-Binary heap
-Complete binary tree stored in an array: heap order + compact indices.
+バイナリヒープ
 
-**Max-heap:** parent key ≥ both children; **min-heap:** parent ≤ both children. For 0-based index `i`: children at **`2i+1`**, **`2i+2`**; parent at **`⌊(i−1)/2⌋`**.
+配列に格納された完全なバイナリ ツリー: ヒープ順序 + コンパクトなインデックス。
 
-**Ops:** `insert` / `bubble-up` and `extract-min` or `extract-max` / `sink-down` run along tree height — **O(log n)**. **Peek** min/max: **O(1)**.
+**最大ヒープ:** 親キー ≥ 両方の子。 **min-heap:** 親 ≤ 両方の子。 0から始まるインデックスの場合`i`: **の子供たち`2i+1`**、**`2i+2`**; **の親`⌊(i−1)/2⌋`**。
 
-**buildHeap** on `n` items bottom-up: **O(n)** (not `n` separate inserts).
+**作戦:**`insert`/`bubble-up`そして`extract-min`または`extract-max`/`sink-down`木の高さ — **O(log n)** に沿って実行します。 **ピーク** 最小/最大: **O(1)**。
 
-**Related:** **Heapsort** and **priority queues**; see **Level II** (`ii-trees-heaps-hashing.md`).
+**ビルドヒープ**`n`アイテムのボトムアップ: **O(n)** (今日はありません)`n`別のインサート)。
+
+**関連:** **ヒープソート** および **優先キュー**; **レベル II** を参照 (`ii-trees-heaps-hashing.md`）。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 248" role="img" aria-label="Max heap as tree and same keys in array level order">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Max-heap: parent ≥ children</text>

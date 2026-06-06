@@ -1,13 +1,20 @@
 ---
 label: "III"
-subtitle: "HCL, resources & variables"
+subtitle: "HCL、リソースと変数"
 group: "CI/CD"
 order: 3
 ---
-HCL, resources & variables
-**HCL** (HashiCorp Configuration Language) is human-readable and JSON-compatible. Most Terraform lives in `.tf` files: providers, resources, variables, outputs.
+HCL、リソースと変数
 
-## 1. Project file layout
+
+
+
+
+
+
+**HCL** (HashiCorp 構成言語) は人間が判読可能で、JSON 互換です。ほとんどの Terraform は、プロバイダー、リソース、変数、出力などの`.tf`ファイル内に存在します。
+
+## 1. プロジェクトファイルのレイアウト
 
 ```text
 infra/
@@ -19,7 +26,7 @@ infra/
   versions.tf       # provider version constraints
 ```
 
-## 2. terraform and provider blocks
+## 2. terraform ブロックとブロックプロバイダー
 
 ```hcl
 terraform {
@@ -46,12 +53,12 @@ provider "aws" {
 }
 ```
 
-| Constraint | Meaning |
-|------------|---------|
-| `~> 5.0` | Allow 5.x, not 6.0 |
-| `>= 1.6.0` | Minimum Terraform CLI version |
+| 問題 | 意味 |
+|----------|----------|
+|`~> 5.0`| 6.0 ではなく 5.x を許可する |
+|`>= 1.6.0`| Terraform CLI の最小バージョン |
 
-## 3. Resource block
+## 3. リソースブロック
 
 ```hcl
 resource "aws_instance" "web" {
@@ -66,12 +73,12 @@ resource "aws_instance" "web" {
 }
 ```
 
-**Reference syntax:** `resource_type.logical_name.attribute`
+** 参照構文:**`resource_type.logical_name.attribute`
 
-- `aws_instance.web.id` — instance ID
-- `aws_subnet.public.id` — subnet ID
+-`aws_instance.web.id`— インスタンス ID
+-`aws_subnet.public.id`— サブネット ID
 
-## 4. Variables
+## 4. 変数
 
 ```hcl
 # variables.tf
@@ -97,7 +104,7 @@ variable "allowed_cidrs" {
 }
 ```
 
-Assign values:
+値を与えます。
 
 ```hcl
 # terraform.tfvars
@@ -111,7 +118,7 @@ terraform plan -var="environment=prod"
 terraform plan -var-file="prod.tfvars"
 ```
 
-## 5. Outputs
+## 5.出力
 
 ```hcl
 output "web_public_ip" {
@@ -129,9 +136,9 @@ terraform output web_public_ip
 terraform output -json
 ```
 
-Use outputs to wire modules together or pass values to Ansible/CI.
+出力を使用してモジュールを接続するか、値を Ansible/CI に渡します。
 
-## 6. Data sources — read without managing
+## 6. データソース — 管理せずに注意する
 
 ```hcl
 data "aws_ami" "amazon_linux" {
@@ -150,13 +157,13 @@ resource "aws_instance" "web" {
 }
 ```
 
-| | Resource | Data source |
-|---|----------|-------------|
-| Manages lifecycle | Yes | No |
-| Can create/destroy | Yes | No |
-| Use case | New infra | Look up existing AMI, VPC, subnet |
+| |リソース |データソース |
+|---|----------|---------------|
+|ライフサイクルを管理する |はい |いいえ |
+|作成/破壊できる |はい |いいえ |
+|使用例 |新しいインフラ |既存の AMI、VPC、サブネットを検索します。
 
-## 7. Locals and expressions
+## 7. ローカルと式
 
 ```hcl
 locals {
@@ -173,9 +180,9 @@ resource "aws_s3_bucket" "logs" {
 }
 ```
 
-String interpolation: `"${var.project}-web"`. Terraform 0.12+ also allows `"${var.project}-web"` or plain references where types match.
+文字列補間:`"${var.project}-web"`Terraform 0.12以降では、型が一致します`"${var.project}-web"`またはプレーン参照も許可されます。
 
-## 8. count and for_each
+## 8. count と for_each
 
 ```hcl
 # count — index-based
@@ -196,9 +203,9 @@ resource "aws_instance" "app" {
 }
 ```
 
-Reference: `aws_subnet.private[0].id`, `aws_instance.app["web-a"].id`.
+参照:`aws_subnet.private[0].id`、`aws_instance.app["web-a"].id`。
 
-## 9. lifecycle meta-argument
+## 9. ライフサイクルのメタ引数
 
 ```hcl
 resource "aws_instance" "web" {
@@ -212,4 +219,4 @@ resource "aws_instance" "web" {
 }
 ```
 
-**Related:** [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md), [Modules & environments](vi-modules-and-environments.md).
+**関連:** [AWS の例 — VPC と EC2](iv-aws-example-vpc-and-ec2.md)、[モジュールと環境](vi-modules-and-environments.md)。

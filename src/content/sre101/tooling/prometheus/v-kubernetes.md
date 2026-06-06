@@ -4,16 +4,22 @@ subtitle: "Kubernetes"
 group: "SRE"
 order: 5
 ---
-SRE tooling — Prometheus: Kubernetes
-Use **Prometheus Operator** **`ServiceMonitor`** / **`PodMonitor`** instead of hand-maintaining huge **`scrape_configs`** when possible.
+SRE ツール — Prometheus: Kubernetes
 
-## 1. Prerequisites
 
-Your workload exposes **`/actuator/prometheus`** or **`/metrics`** on a container port (example **8080**). The **`Prometheus`** CR must **select** **`ServiceMonitor`** objects via **`serviceMonitorSelector`** / **`serviceMonitorNamespaceSelector`** (Helm charts such as **kube-prometheus-stack** often require labels like **`release: kube-prometheus-stack`**—match your cluster).
 
-## 2. Service with a named port
 
-**`ServiceMonitor`** references **`port: http`** by **name**:
+
+
+**Prometheus 演算子** ** を使用します`ServiceMonitor`** / **`PodMonitor`** 手作業で巨大なメンテナンスを行う代わりに **`scrape_configs`** 可能な場合。
+
+## 1. 前提条件
+
+ワークロードにより **`/actuator/prometheus`** または **`/metrics`** コンテナポート上 (例 **8080**)。 **`Prometheus`** CR は **選択してください** **`ServiceMonitor`** 経由の ** オブジェクト`serviceMonitorSelector`** / **`serviceMonitorNamespaceSelector`** (**kube-prometheus-stack** などの Helm チャートでは、** のようなラベルが必要になることがよくあります)`release: kube-prometheus-stack`** - クラスターと一致します)。
+
+## 2. 名前付きポートを利用したサービス
+
+**`ServiceMonitor`** 参考文献 **`port: http`** 名前** さん:
 
 ```yaml
 apiVersion: v1
@@ -31,9 +37,9 @@ spec:
       targetPort: 8080
 ```
 
-## 3. ServiceMonitor
+## 3. サービスモニター
 
-Scrape all Pods selected by the Service:
+サービスによって選択されたすべてのポッドをスクレイピングします。
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -54,9 +60,9 @@ spec:
       scheme: http
 ```
 
-## 4. PodMonitor
+## 4. ポッドモニター
 
-Use when you scrape Pods directly (no stable Service, or single-container focus):
+Pod を直接スクレイピングする場合 (安定したサービスがない場合、または単一コンテナーに焦点を当てた場合) に使用します。
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -75,9 +81,9 @@ spec:
       path: /actuator/prometheus
 ```
 
-The Pod template must declare **`ports`** with **`name: http`** (or align **`port`** to your name).
+Pod テンプレートは ** を宣言する必要があります`ports`** と **`name: http`** (または ** を揃える)`port`**あなたの名前に）。
 
-## 5. Pod annotations (legacy / installers)
+## 5. ポッドのアノテーション (レガシー/インスターラー)
 
 ```yaml
 metadata:
@@ -87,8 +93,8 @@ metadata:
     prometheus.io/path: "/actuator/prometheus"
 ```
 
-Prefer **`ServiceMonitor`** for rolling updates and stable DNS.
+好む **`ServiceMonitor`** ローリング アップデートと安定した DNS 用。
 
-## 6. Multi-namespace
+## 6. マルチネームスペース
 
-Place **`ServiceMonitor`** beside the app Service, or widen **`serviceMonitorNamespaceSelector`** on the **`Prometheus`** CR so one Prometheus discovers monitors across namespaces (with RBAC).
+場所 **`ServiceMonitor`** アプリサービスの横、または ** を広げます`serviceMonitorNamespaceSelector`** の **`Prometheus`** CR なので、1 つの Prometheus が名前空間全体でモニターを検出します (RBAC を使用)。

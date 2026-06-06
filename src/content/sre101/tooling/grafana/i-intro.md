@@ -1,25 +1,26 @@
 ---
 label: "I"
-subtitle: "Intro"
+subtitle: "イントロ"
 group: "SRE"
 order: 1
 ---
-SRE tooling — Grafana: Intro
-What Grafana is for in an observability stack.
+SRE ツール — Grafana: はじめに
 
-## 1. Role
+可観測性スタックにおける Grafana の目的。
 
-**Grafana** connects to **datasources** (Prometheus, Loki, Tempo/Jaeger, cloud vendors), renders **dashboards** and **panels**, and can evaluate **alert rules** (UI-managed or provisioned as code) routed to **Alertmanager**, Slack, PagerDuty, webhooks, etc.
+## 1. 役割
 
-## 2. Core concepts
+**Grafana** は **データソース** (Prometheus、Loki、Tempo/Jaeger、クラウド ベンダー) に接続し、**ダッシュボード** と **パネル**をレンダリングし、**Alertmanager**、Slack、PagerDuty、Webhook などにルーティングされた **アラート ルール** (UI- 管理またはコードとしてプロビジョニング) を評価できます。
+
+## 2. 中心となる概念
 
 - **Datasource** — configured endpoint plus credentials; use **organizations** and **folders** so teams do not overwrite each other.
 - **Dashboard JSON** — treat dashboards as code: export or provision from Git instead of only clicking in prod.
 - **Variables** — `$cluster`, `$namespace`, `$job` templating keeps one dashboard reusable across environments.
 - **Unified alerting** — Grafana-managed rules vs Prometheus-native rules; pick **one** primary model per signal path so you do not double-notify.
 
-## 3. Typical stack
+## 3. 一般的なスタック
 
-**Prometheus** → metrics; **Loki** → logs; **Tempo** (or Jaeger) → traces—**Grafana** is usually where engineers pivot during incidents.
+**Prometheus** → メトリクス; **ロキ** → 丸太; **テンポ** (またはイェーガー) → トレース—**Grafana** は通常、インシデント中にエンジニアが中心となる場所です。
 
-Continue with **Installation** and **Tips and tricks** in this folder.
+このフォルダー内の **インストール** と **ヒントとテクニック** に進みます。

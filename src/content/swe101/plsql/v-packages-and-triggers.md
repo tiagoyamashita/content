@@ -1,20 +1,21 @@
 ---
 label: "V"
-subtitle: "Packages & triggers"
+subtitle: "パッケージとトリガー"
 group: "PL/SQL"
 order: 5
 ---
-PL/SQL — packages & triggers
-**Packages** group related procedures, functions, types, and **package-level variables**. **Triggers** run PL/SQL automatically on table events or session actions.
+PL/SQL — パッケージとトリガー
 
-## 1. Package structure
+**パッケージ**は、関連するプロシージャ、関数、型、**パッケージ レベルの変数**をグループ化します。 **トリガー** は、テーブル イベントまたはセッション アクションで PL/SQL を自動的に実行します。
+
+## 1. パッケージ構造
 
 ```text
 PACKAGE spec     — public interface (what callers see)
 PACKAGE body     — implementation + private helpers
 ```
 
-**Specification:**
+**仕様：**
 
 ```sql
 CREATE OR REPLACE PACKAGE emp_mgmt AS
@@ -28,7 +29,7 @@ END emp_mgmt;
 /
 ```
 
-**Body:**
+**体：**
 
 ```sql
 CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
@@ -58,7 +59,7 @@ END emp_mgmt;
 /
 ```
 
-Call:
+電話：
 
 ```sql
 BEGIN
@@ -67,7 +68,7 @@ END;
 /
 ```
 
-## 2. Why packages
+## 2. パッケージを使用する理由
 
 | Benefit | Explanation |
 |---------|-------------|
@@ -76,9 +77,9 @@ END;
 | **Session state** | Package variables persist for the session (use carefully) |
 | **Performance** | First call loads body; subsequent calls reuse parsed tree |
 
-Avoid abusing package globals for cross-request state in connection-pooled apps — each JDBC borrow may be a different session.
+接続プールされたアプリでクロスリクエスト状態のパッケージ グローバルを悪用しないでください。各 JDBC 借用は異なるセッションである可能性があります。
 
-## 3. Row-level triggers
+## 3. 行レベルのトリガー
 
 **`BEFORE INSERT OR UPDATE`** — validate or default columns:
 
@@ -113,7 +114,7 @@ END;
 /
 ```
 
-## 4. Statement-level vs row-level
+## 4. ステートメントレベルと行レベル
 
 | | **`FOR EACH ROW`** | No row clause (statement) |
 |---|-------------------|---------------------------|
@@ -122,7 +123,7 @@ END;
 
 **Mutating table:** a row trigger on `employees` cannot query `employees` in the same statement without workaround — design audit tables or use compound triggers for complex cases.
 
-## 5. Trigger timing
+## 5. トリガータイミング
 
 ```text
 BEFORE statement → BEFORE each row → DML → AFTER each row → AFTER statement
@@ -130,17 +131,17 @@ BEFORE statement → BEFORE each row → DML → AFTER each row → AFTER statem
 
 Prefer **`BEFORE`** for validation; **`AFTER`** for side effects that should not block the change itself.
 
-## 6. When not to use triggers
+## 6. トリガーを使用しない場合
 
-| Trigger-heavy | App-layer alternative |
+|トリガーヘビー |アプリ層の代替 |
 |---------------|----------------------|
-| Hidden business rules | Service methods, domain events |
-| Cross-table orchestration | Transactional outbox, job queue |
-| Logic that changes weekly | Versioned app deploys |
+|隠されたビジネスルール |サービスメソッド、ドメインイベント |
+|クロステーブル オーケストレーション |トランザクション送信ボックス、ジョブ キュー |
+|毎週変更されるロジック |バージョン管理されたアプリのデプロイ |
 
-Triggers are hard to test, invisible in stack traces, and surprise ORMs that expect simple DML.
+トリガーはテストが難しく、スタック トレースに表示されず、単純な DML を期待する ORM を驚かせます。
 
-## 7. Compile and dependencies
+## 7. コンパイルと依存関係
 
 ```sql
 SELECT object_name, object_type, status
@@ -151,7 +152,7 @@ ALTER PACKAGE emp_mgmt COMPILE;
 ALTER TRIGGER trg_employees_biur COMPILE;
 ```
 
-After table DDL, recompile invalid objects:
+テーブル DDL の後で、無効なオブジェクトを再コンパイルします。
 
 ```sql
 BEGIN
@@ -160,6 +161,6 @@ END;
 /
 ```
 
-## Next
+＃＃ 次
 
 Continue with [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md) for structured error handling and high-volume DML.

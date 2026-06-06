@@ -1,18 +1,19 @@
 ---
 label: "V"
-subtitle: "Video streaming"
-group: "System design"
+subtitle: "ビデオストリーミング"
+group: "システム設計"
 order: 5
 ---
-Video streaming
-**YouTube / Netflix-style** systems split **upload + transcoding** (write-heavy, batch) from **playback** (read-heavy, CDN).
+ビデオストリーミング
 
-## 1. Two paths
+**YouTube / Netflix スタイル** システムは、**アップロード + トランスコーディング** (書き込みが多い、バッチ) と **再生** (読み取りが多い、CDN) を分割します。
 
-| Path | Dominant concern | Components |
-|------|------------------|------------|
-| **Upload / transcode** | CPU, queue depth, storage | S3, SQS, workers |
-| **Playback** | Bandwidth, latency | CDN, HLS/DASH |
+## 1. 2 つのパス
+
+|パス |主要な懸念事項 |コンポーネント |
+|------|-------|-----------|
+| **アップロード/トランスコード** | CPU、キューの深さ、ストレージ | S3、SQS、労働者 |
+| **再生** |帯域幅、遅延 | CDN、HLS/DASH |
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 140" role="img" aria-label="Video upload pipeline and CDN playback">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Upload pipeline</text>
@@ -39,7 +40,7 @@ Video streaming
   <text x="188" y="106" fill="#a1a1aa" font-size="8">segments + manifest · ABR switches 360p–4K</text>
 </svg></figure>
 
-## 2. Upload pipeline (step by step)
+## 2. パイプラインのアップロード (ステップバイステップ)
 
 | Step | Action |
 |------|--------|
@@ -49,35 +50,35 @@ Video streaming
 | 4 | Output **HLS** segments + `master.m3u8` manifest to storage |
 | 5 | Metadata row: title, owner, duration, status=ready |
 
-**Renditions (example)**
+**レンディション（例）**
 
-| Tier | Resolution | Bitrate |
-|------|------------|---------|
-| 360p | 640×360 | ~800 kbps |
-| 720p | 1280×720 | ~2.5 Mbps |
-| 1080p | 1920×1080 | ~5 Mbps |
+|階層 |解像度 |ビットレート |
+|------|-----------|----------|
+| 360p | 640×360 | ～800kbps |
+| 720p | 1280×720 | ～2.5Mbps |
+| 1080p | 1920×1080 | ～5Mbps |
 
-## 3. Playback path
+## 3. 再生パス
 
-1. Client loads manifest from **CDN**.
-2. Player measures bandwidth → **ABR** (adaptive bitrate) picks segment quality.
-3. **99%+** requests served from edge; origin on miss only.
+1. クライアントは **CDN** からマニフェストを読み込みます。
+2. プレーヤーが帯域幅を測定 → **ABR** (適応ビットレート) がセグメントの品質を選択します。
+3. **99%+** リクエストはエッジから処理されます。ミス時のみの原点。
 
-## 4. Metadata store
+## 4. メタデータ ストア
 
-| Data | Store |
-|------|-------|
-| Video title, uploader, views | PostgreSQL or DynamoDB |
-| View counts (high QPS) | Counter cache + async flush |
-| Comments | Sharded SQL or NoSQL |
+|データ |ストア |
+|------|------|
+|動画のタイトル、アップローダー、再生回数 | PostgreSQL または DynamoDB |
+|閲覧数 (高い QPS) |カウンターキャッシュ + 非同期フラッシュ |
+|コメント |シャード化された SQL または NoSQL |
 
-## 5. Scale and cost
+## 5. 規模とコスト
 
-| Lever | Why |
-|-------|-----|
-| CDN | Offloads bytes; global latency |
-| Segment caching | Small files cache well |
-| GPU transcode fleet | Parallelize; spot for cost |
-| Separate read/write paths | Don’t transcode on play request |
+|レバー |なぜ |
+|------|-----|
+| CDN |バイトをオフロードします。グローバルレイテンシ |
+|セグメントキャッシュ |小さなファイルは適切にキャッシュされます。
+| GPU トランスコード フリート |並列化します。費用のスポット |
+|個別の読み取り/書き込みパス |再生リクエスト時にトランスコードしない |
 
 **Related:** [CDN & edge caching](../scalable-patterns/vi-cdn-and-edge-caching.md), classic designs web crawler (object storage at scale).

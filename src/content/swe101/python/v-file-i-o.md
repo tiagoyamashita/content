@@ -1,20 +1,20 @@
 ---
 label: "V"
-subtitle: "File I/O"
+subtitle: "ファイルI/O"
 group: "Python"
 groupOrder: 1
 order: 5
 ---
-Python — Part V
-Reading and writing files safely: text vs binary, encodings, streaming lines, structured formats, and common failure modes.
+Python — パート V
 
-## 1. Two kinds of file content
-- **Text mode** (`"r"`, `"w"`, `"a"`, …): Python decodes bytes → **`str`** using an **encoding** (default is locale-dependent — **always pass `encoding="utf-8"`** for portable apps).
-- **Binary mode** (`"rb"`, `"wb"`): you read/write **`bytes`** — use for images, zip blobs, pickle (careful), or unknown encodings you’ll handle manually.
+ファイルの安全な読み取りと書き込み: テキストとバイナリ、エンコーディング、ストリーミング ライン、構造化フォーマット、一般的な障害モード。
+
+## 1. 2 種類のファイルの内容
+- **テキストモード** (`"r"`、`"w"`、`"a"`, …): Python はバイトをデコードします → **`str`** **エンコーディング**を使用します (デフォルトはロケールに依存します — **常にパスします)`encoding="utf-8"`** ポータブル アプリの場合)。
+- **バイナリモード** (`"rb"`、`"wb"`): あなたは読み取り/書き込み **`bytes`** — 画像、zip BLOB、pickle (注意)、または手動で処理する未知のエンコーディングに使用します。
 
 
-## 2. `pathlib` vs `open()`
-**`pathlib.Path`** is usually clearer for whole-file reads/writes; **`open()`** shines when you stream or need fine-grained control.
+＃＃２。`pathlib`対`open()`**`pathlib.Path`通常、ファイル全体の読み取り/書き込みの場合は ** の方が明確です。 **`open()`** ストリーミングしている場合や、きめ細かい制御が必要な場合に点灯します。
 
 ```python
 from pathlib import Path
@@ -30,7 +30,7 @@ blob = out.read_bytes()
 print(text.splitlines())
 ```
 
-Same operations with **`open`**:
+**と同じ操作`open`**:
 
 ```python
 path = Path("build/note.txt")
@@ -44,9 +44,9 @@ with path.open("r", encoding="utf-8") as fh:
 ```
 
 
-## 3. Always control newlines & encoding on text files
-- **`newline=""`** when using **`csv`** module — lets the reader/writer control `\r\n` vs `\n` translation (**CSV docs recommend this on Windows**).
-- **`errors="replace"` / `"strict"` / `"ignore"`** tunes decoder behavior when bytes are not valid UTF-8.
+## 3. テキスト ファイルの改行とエンコーディングを常に制御する
+- **`newline=""`**使用する場合**`csv`** モジュール — リーダー/ライターの制御を可能にします`\r\n`対`\n`翻訳 (**CSV ドキュメントでは、Windows ではこれを推奨しています**)。
+- **`errors="replace"`/`"strict"`/`"ignore"`** バイトが有効でない場合のデコーダの動作を調整します UTF-8。
 
 ```python
 from pathlib import Path
@@ -60,8 +60,8 @@ utf8_path.write_text(text, encoding="utf-8")
 ```
 
 
-## 4. Streaming instead of slurping
-Large logs or datasets: iterate lines without loading the whole file into RAM.
+## 4. 丸呑みする代わりにストリーミングする
+大きなログまたはデータセット: ファイル全体を RAM にロードせずに行を繰り返します。
 
 ```python
 from pathlib import Path
@@ -85,8 +85,8 @@ def tail_bytes(path: Path, max_bytes: int = 4096) -> bytes:
 ```
 
 
-## 5. CSV & delimited text
-Use the **`csv`** module — don’t split on commas by hand (quotes, embedded commas).
+## 5. CSV と区切り文字で区切られたテキスト
+**を使用してください`csv`** モジュール — カンマで手動で分割しないでください (引用符、埋め込みカンマ)。
 
 ```python
 import csv
@@ -105,8 +105,8 @@ with dst.open("w", encoding="utf-8", newline="") as fh:
 ```
 
 
-## 6. JSON lines & pretty JSON
-**`json.load`/`dump`** pairs with file objects; **`indent`** helps humans; **`default=str`** is a blunt fallback for non-JSON types.
+## 6. JSON 行と美しい JSON
+**`json.load`/`dump`** ファイル オブジェクトとペアになります。 **`indent`** 人間を助けます。 **`default=str`** は、非 JSON 型の単純なフォールバックです。
 
 ```python
 import json
@@ -128,8 +128,7 @@ with nd_path.open("r", encoding="utf-8") as fh:
 ```
 
 
-## 7. Binary layouts & `struct`
-When you must parse packed binary (network payloads, legacy files), **`struct.unpack`** maps bytes → numbers.
+## 7. バイナリ レイアウトと`struct`パックされたバイナリ (ネットワーク ペイロード、レガシー ファイル) を解析する必要がある場合、**`struct.unpack`** バイト → 数値をマッピングします。
 
 ```python
 import struct
@@ -139,9 +138,9 @@ full_word, short_word = struct.unpack(">IH", payload)
 ```
 
 
-## 8. Temporary & atomic patterns
-- **`tempfile.TemporaryDirectory`** / **`NamedTemporaryFile`** for scratch space auto-cleaned on **`with`** exit.
-- **Atomic replace**: write to **`path.tmp`** then **`Path.replace`** (POSIX rename semantics) — reduces torn files if the process crashes mid-write.
+## 8. 一時的および原子的パターン
+- **`tempfile.TemporaryDirectory`** / **`NamedTemporaryFile`** スクラッチ スペースの場合は ** で自動クリーニングされます`with`** 出口。
+- **アトミック置換**: ** に書き込みます`path.tmp`** それから **`Path.replace`** (POSIX 名前変更セマンティクス) — 書き込み中にプロセスがクラッシュした場合に破損したファイルを削減します。
 
 ```python
 import tempfile
@@ -162,13 +161,13 @@ def write_atomic(target: Path, data: str) -> None:
 ```
 
 
-## 9. Exceptions you should catch deliberately
-| Exception | Typical cause |
-|-----------|----------------|
-| **`FileNotFoundError`** | Missing path on read/open |
-| **`PermissionError`** | ACLs, read-only media, antivirus locks |
-| **`IsADirectoryError`** / **`NotADirectoryError`** | Wrong path kind |
-| **`UnicodeDecodeError`** | Bytes don’t match declared encoding |
+## 9. 意図的にキャッチする必要がある例外
+|例外 |典型的な原因 |
+|----------|----------------|
+| **`FileNotFoundError`** |読み取り/オープン時にパスがありません |
+| **`PermissionError`** | ACL、読み取り専用メディア、ウイルス対策ロック |
+| **`IsADirectoryError`** / **`NotADirectoryError`** |パスの種類が間違っています |
+| **`UnicodeDecodeError`** |バイトが宣言されたエンコーディングと一致しません |
 
 ```python
 from pathlib import Path
@@ -184,9 +183,9 @@ def safe_read(path: Path) -> str | None:
 ```
 
 
-## 10. Quick checklist
-- Prefer **`pathlib`** for path arithmetic; pair with **`encoding="utf-8"`** on every text open.
-- Wrap IO in **`with`** so handles close on exceptions.
-- For CSV: **`newline=""`** + **`csv`** module.
-- For huge files: iterate line-by-line; avoid **`read()` unless size-bounded**.
-- For concurrent writers: use locks, databases, or append-only logs — naive simultaneous **`write_text`** races corrupt data.
+## 10. 簡単なチェックリスト
+- 優先 **`pathlib`** パス算術の場合。 **とペアにする`encoding="utf-8"`** テキストを開くたびに。
+- IO を ** で囲む`with`** したがって、ハンドルは例外時に閉じます。
+- CSV の場合: **`newline=""`** + **`csv`**モジュール。
+- 巨大なファイルの場合: 行ごとに繰り返します。避ける **`read()`サイズ制限がある場合を除きます**。
+- 同時ライターの場合: ロック、データベース、または追加専用ログを使用します — 単純な同時 **`write_text`** レースによりデータが破損します。

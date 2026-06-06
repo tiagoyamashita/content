@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "Deployment"
+subtitle: "導入"
 group: "SRE"
 order: 2
 ---
-SRE tooling — Alertmanager: Deployment
-Run Alertmanager locally or on Kubernetes.
+SRE ツール — Alertmanager: 導入
 
-## 1. Docker (quickest lab)
+Alertmanager をローカルまたは Kubernetes 上で実行します。
+
+## 1. Docker (最も早いラボ)
 
 ```text
 docker run -d --name alertmanager -p 9093:9093 \
@@ -17,13 +18,13 @@ docker run -d --name alertmanager -p 9093:9093 \
   --web.external-url=http://localhost:9093
 ```
 
-UI: **`http://localhost:9093`**. Swap **`/absolute/path`** for your machine.
+UI: **`http://localhost:9093`**。スワップ**`/absolute/path`** お使いのマシンの場合。
 
-## 2. Kubernetes (kube-prometheus-stack / Prometheus Operator)
+## 2. Kubernetes (kube-prometheus-stack / Prometheus オペレーター)
 
-Helm usually ships an **`Alertmanager`** CR (**`monitoring.coreos.com/v1`**) managed by the Operator. You customize **`alertmanager.config`** (or **`AlertmanagerConfig`** CRDs if enabled)—values merge into the generated **`Secret`**. Scale HA with **`replicas`** on the **`Alertmanager`** CR.
+Helm は通常 ** を出荷します`Alertmanager`** CR (**`monitoring.coreos.com/v1`**) オペレーターによって管理されます。 **をカスタマイズします`alertmanager.config`** （または **`AlertmanagerConfig`** CRD が有効な場合) - 生成された ** に値がマージされます。`Secret`**。 ** を使用して HA をスケールします`replicas`** の **`Alertmanager`** CR。
 
-Rough Helm **`values.yaml`** sketch:
+ラフヘルム**`values.yaml`** スケッチ:
 
 ```yaml
 alertmanager:
@@ -46,10 +47,10 @@ alertmanager:
             channel: "#alerts"
 ```
 
-Treat **`api_url`** and tokens as secrets (**ExternalSecrets**, **SealedSecrets**, or CSI)—avoid committing real URLs.
+扱う **`api_url`** およびシークレットとしてのトークン (**ExternalSecrets**、**SealedSecrets**、または CSI) - 実際の URL のコミットを避けます。
 
-## 3. Binary / VM
+## 3. バイナリ / VM
 
-Download release from Prometheus projects; point **`--config.file`** at **`alertmanager.yml`**; run under **systemd** with **`Restart=always`** and **`User`** without root.
+Prometheus プロジェクトからリリースをダウンロードします。ポイント **`--config.file`** で **`alertmanager.yml`**; **systemd** で ** を使用して実行します`Restart=always`** そして **`User`** ルートなし。
 
-Next: **Configuration & receivers** for **`alertmanager.yml`** details.
+次へ: ** の **構成と受信機**`alertmanager.yml`** 詳細。

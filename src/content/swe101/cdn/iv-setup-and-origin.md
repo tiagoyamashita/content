@@ -1,13 +1,14 @@
 ---
 label: "IV"
-subtitle: "Setup & origin"
+subtitle: "セットアップと原点"
 group: "CDN"
 order: 4
 ---
-CDN — setup & origin
-Wire a CDN by choosing an **origin**, creating a **distribution**, pointing **DNS**, and locking origin access so only the CDN can fetch private buckets.
+CDN — セットアップと原点
 
-## 1. Typical architecture
+**オリジン**を選択し、**ディストリビューション**を作成し、**DNS**をポイントし、CDNのみがプライベート バケットをフェッチできるようにオリジン アクセスをロックすることにより、CDNを接続します。
+
+## 1. 一般的なアーキテクチャ
 
 ```text
                     ┌─────────────┐
@@ -20,14 +21,14 @@ Wire a CDN by choosing an **origin**, creating a **distribution**, pointing **DN
                     └─────────────┘
 ```
 
-| Origin type | Use |
-|-------------|-----|
-| **S3 / GCS / R2** | Static site, built SPA, downloads |
-| **Load balancer** | Dynamic app, mixed static + API |
-| **Custom domain** | nginx, origin server |
-| **Serverless URL** | API Gateway, Lambda function URL |
+|原点タイプ |使用 |
+|---------------|-----|
+| **S3 / GCS / R2** |静的サイト、構築された SPA、ダウンロード |
+| **ロードバランサ** |動的アプリ、混合静的 + API |
+| **カスタム ドメイン** | nginx、オリジンサーバー |
+| **サーバーレス URL** | API Gateway、ラムダ関数 URL |
 
-## 2. AWS CloudFront + S3 (pattern)
+## 2. AWS CloudFront + S3 (パターン)
 
 1. Create **private** S3 bucket with built assets.
 2. Create **CloudFront distribution** — origin = bucket.
@@ -35,44 +36,44 @@ Wire a CDN by choosing an **origin**, creating a **distribution**, pointing **DN
 4. Attach **ACM certificate** (us-east-1 for CloudFront) for `cdn.example.com`.
 5. CNAME **`cdn.example.com`** → `dxxxxx.cloudfront.net`.
 
-S3 object metadata:
+S3 オブジェクトのメタデータ:
 
 ```text
 Content-Type: application/javascript
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-Upload via CI:
+CI 経由でアップロード:
 
 ```bash
 aws s3 sync dist/ s3://myapp-assets-prod/ --cache-control "public,max-age=31536000,immutable"
 aws cloudfront create-invalidation --distribution-id E123456 --paths "/index.html"
 ```
 
-## 3. Cloudflare (pattern)
+## 3. クラウドフレア（パターン）
 
-1. Add site to Cloudflare — nameservers at registrar.
-2. **Orange cloud (proxy)** on DNS record → traffic through CDN.
-3. **SSL/TLS** → Full (strict) with origin cert.
-4. **Cache Rules** — path TTL overrides.
-5. **R2 + CDN** or origin = your server IP/hostname.
+1. サイトをCloudflareに追加します — レジストラーのネームサーバー。
+2. DNS レコード上の **オレンジ色のクラウド (プロキシ)** → CDN を経由するトラフィック。
+3. **SSL/TLS** → オリジン証明書付きの完全 (厳密)。
+4. **キャッシュ ルール** — パス TTL がオーバーライドされます。
+5. **R2 + CDN** または、origin = サーバーの IP/ホスト名。
 
 Free tier includes CDN + TLS — common for startups ([Hosting & CDN](../../startups/free-services/iii-hosting-domains-and-cdn.md)).
 
-## 4. Origin security
+## 4. オリジンのセキュリティ
 
-| Mechanism | Purpose |
-|-----------|---------|
-| **OAC / OAI (AWS)** | S3 not public internet |
-| **Signed URLs / cookies** | Time-limited access to private objects |
-| **Origin secret header** | CDN adds header; origin rejects others |
-| **IP allowlist** | Origin only accepts CDN egress IPs |
+|メカニズム |目的 |
+|----------|----------|
+| **OAC / OAI (AWS)** | S3 は公共のインターネットではありません |
+| **署名付き URL / Cookie** |プライベート オブジェクトへの時間制限付きアクセス |
+| **オリジンシークレットヘッダー** | CDN はヘッダーを追加します。オリジンが他のものを拒否する |
+| **IP 許可リスト** |オリジンは CDN 出力 IP のみを受け入れます。
 
-Never leave private assets in a **public** bucket without understanding the blast radius.
+爆発範囲を理解せずに、個人の資産を **パブリック** バケットに残さないでください。
 
-## 5. Multiple origins / behaviors
+## 5. 複数の起源/動作
 
-Split by path on one distribution:
+1 つのディストリビューションでパスごとに分割します。
 
 | Path | Origin | Cache |
 |------|--------|-------|
@@ -80,15 +81,15 @@ Split by path on one distribution:
 | `/api/*` | ALB | Short or no cache |
 | `/` | S3 `index.html` | Short TTL |
 
-CloudFront **behaviors**, Cloudflare **rules**, Fastly **conditions** — same idea.
+CloudFront **動作**、Cloudflare **ルール**、Fastly **条件** — 同じ考えです。
 
-## 6. HTTPS and HSTS
+## 6. HTTPS と HSTS
 
 - User → CDN: **TLS 1.2+**, modern ciphers.
 - Enable **HSTS** at CDN once HTTPS stable: `Strict-Transport-Security: max-age=31536000`.
 - Redirect HTTP → HTTPS at edge.
 
-## 7. Local dev vs production
+## 7. ローカル開発と本番環境の比較
 
 | Environment | CDN |
 |-------------|-----|
@@ -96,7 +97,7 @@ CloudFront **behaviors**, Cloudflare **rules**, Fastly **conditions** — same i
 | **Staging** | Separate distribution or prefix `staging-cdn.example.com` |
 | **Production** | Full CDN; stricter cache on hashed assets only |
 
-Test cache headers with curl:
+CURL を使用してキャッシュ ヘッダーをテストします。
 
 ```bash
 curl -I https://cdn.example.com/assets/main.js
@@ -105,6 +106,6 @@ curl -I -H "Accept-Encoding: gzip" https://cdn.example.com/assets/main.js
 
 Check **`Cache-Control`**, **`Age`** (time in CDN cache), **`X-Cache`** / **`CF-Cache-Status`** (provider-specific hit/miss).
 
-## Next
+＃＃ 次
 
 Continue with [Static assets & SPAs](v-static-assets-and-spas.md) for build output and deploy pipelines.

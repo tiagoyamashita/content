@@ -1,13 +1,14 @@
 ---
 label: "III"
-subtitle: "CPU & memory"
-group: "System design"
+subtitle: "CPU とメモリ"
+group: "システム設計"
 order: 3
 ---
-CPU and memory bottlenecks
-Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **GC pauses**.
+CPU とメモリのボトルネック
 
-## 1. CPU — signals
+コンピューティングおよび RAM の制限は、**負荷に応じたレイテンシのスケーリング**、**OOM**、および **GC の一時停止**として表示されます。
+
+## 1. CPU — シグナル
 
 | Signal | Tool / indicator |
 |--------|------------------|
@@ -15,15 +16,15 @@ Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **
 | Run queue **r > # CPUs** | `vmstat` |
 | Latency ∝ load (no headroom) | APM p99 vs QPS |
 
-## 2. CPU — causes and fixes
+## 2. CPU — 原因と解決策
 
-| Cause | Fix |
-|-------|-----|
-| O(n²) algorithm | Profile (pprof, perf, py-spy); better algorithm |
-| **GIL** / global lock (Python) | Multiprocess, async I/O, Rust/Go for hot path |
-| JSON encode/decode at high QPS | Protobuf, msgpack; cache parsed objects |
-| Thread/goroutine explosion | Bounded worker pool; async I/O vs thread-per-request |
-| Regex compile per request | Pre-compile; reuse |
+|原因 |修正 |
+|------|-----|
+| O(n²) アルゴリズム |プロファイル (pprof、perf、py-spy);より良いアルゴリズム |
+| **GIL** / グローバル ロック (Python) |マルチプロセス、非同期 I/O、Rust/ホット パス用の Go |
+| JSON は高い QPS でエンコード/デコードします | Protobuf、msgpack;解析されたオブジェクトをキャッシュする |
+|スレッド/ゴルーチンの爆発 |制限されたワーカー プール。非同期 I/O とリクエストごとのスレッド |
+|リクエストごとに正規表現をコンパイルする |プリコンパイル。再利用 |
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 80" role="img" aria-label="Profile before optimize CPU hot path">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Profiler-driven fixes only</text>
@@ -31,16 +32,16 @@ Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **
   <text x="12" y="58" fill="#f87171" font-size="9">avoid optimising cold paths</text>
 </svg></figure>
 
-## 3. Memory — signals
+## 3. メモリ — 信号
 
-| Signal | Meaning |
-|--------|---------|
-| **OOM kill** | Process exceeded cgroup limit |
-| **Swap > 0** | RAM exhausted — disk-speed RAM |
-| **GC pause spikes** | JVM / Go stop-the-world |
-| Redis **evicted_keys** ↑ | Cache too large for RAM |
+|信号 |意味 |
+|--------|--------|
+| **OOM を殺す** |プロセスが cgroup 制限を超えました |
+| **スワップ > 0** | RAM が使い果たされました — ディスク速度 RAM |
+| **GC 一時停止スパイク** | JVM / ストップ・ザ・ワールドに行きましょう |
+| Redis **evicted_keys** ↑ | RAM にはキャッシュが大きすぎます |
 
-## 4. Memory — causes and fixes
+## 4. メモリ — 原因と解決策
 
 | Cause | Fix |
 |-------|-----|
@@ -50,19 +51,19 @@ Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **
 | Allocation churn | Object pools; reduce short-lived allocations |
 | JVM heap too small/large | Tune `-Xmx`; G1/ZGC for latency |
 
-## 5. CPU vs memory interaction
+## 5. CPU とメモリの相互作用
 
-| Pattern | Symptom |
-|---------|---------|
-| CPU-bound + low memory | Scale out CPU instances |
-| Memory-bound + low CPU | Larger RAM; cache tier; leak fix |
-| GC thrashing | High CPU + high alloc rate — reduce allocations first |
+|パターン |症状 |
+|----------|----------|
+| CPU バウンド + メモリ不足 | CPU インスタンスをスケールアウトする |
+|メモリ制限 + 低 CPU |大きい RAM;キャッシュ層。漏れの修正 |
+| GC スラッシング |高い CPU + 高い割り当て率 - 最初に割り当てを減らす |
 
-## 6. Quick checklist
+## 6. 簡単なチェックリスト
 
-- [ ] Flame graph on hottest endpoint
-- [ ] Heap dump if RSS grows unbounded
-- [ ] Compare p99 before/after one change
-- [ ] Load test at 2× expected peak
+- [ ] 最もホットなエンドポイントのフレーム グラフ
+- [ ] RSS が無制限に増大する場合のヒープ ダンプ
+- [ ] 1 つの変更前と変更後の p99 を比較
+- [ ] 予想ピークの 2 倍での負荷テスト
 
 **Related:** [Identifying bottlenecks](ii-identifying-bottlenecks.md), application hot keys [Application-level](vii-application-level.md).

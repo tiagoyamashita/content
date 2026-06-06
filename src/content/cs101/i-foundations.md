@@ -1,17 +1,18 @@
 ---
 label: "I"
-subtitle: "Foundations"
-group: "Data structures & algorithms"
+subtitle: "基礎"
+group: "データ構造とアルゴリズム"
 order: 1
 ---
-Level I — Foundations
-Complexity, RAM model, arrays, linked lists, stacks, queues.
+レベル I — 基礎
 
-## 1. What we measure
-- n = input size (e.g. array length, number of nodes).
-- We care about growth as n → ∞, up to constant factors.
-- "Worst case" = bound that holds for every input of size n.
-- "Average case" needs a model of how inputs are distributed.
+複雑さ、RAM モデル、配列、リンクリスト、スタック、キュー。
+
+## 1. 私たちが測定するもの
+- n = 入力サイズ (配列の長さ、ノード数など)。
+- 一定係数までの n → ∞ としての成長を考慮します。
+- 「最悪の場合」 = サイズ n のすべての入力に適用される限界。
+- 「平均的なケース」には、入力がどのように分散されるかのモデルが必要です。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 96" role="img" aria-label="Input size n along an axis">
@@ -26,12 +27,12 @@ Complexity, RAM model, arrays, linked lists, stacks, queues.
 </svg></figure>
 
 
-## 2. Asymptotic notation (informal)
-- O(g): upper bound — grows at most like g (within constants).
-- Ω(g): lower bound — grows at least like g.
-- Θ(g): tight — same growth class as g (sandwich between O and Ω).
-Examples: linear scan O(n); binary search in sorted array O(log n);
-nested loops over all pairs often O(n²).
+## 2. 漸近表記 (非公式)
+- O(g): 上限 — (定数内で) 最大でも g のように増加します。
+- Ω(g): 下限 — 少なくとも g のように増加します。
+- Θ(g): タイト — g と同じ成長クラス (O と Ω の間に挟まれている)。
+例: リニアスキャン O(n);ソートされた配列 O(log n) での二分探索。
+すべてのペアにわたるネストされたループは、多くの場合 O(n²) です。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" role="img" aria-label="Upper bound O, lower bound Omega, tight Theta">
@@ -45,19 +46,19 @@ nested loops over all pairs often O(n²).
 </svg></figure>
 
 
-## 3. Common toolkit
+## 3. 共通ツールキット
 
-Shape ordering matches introductory **time‑complexity** cheatsheets such as [Big O notation & time complexity in JavaScript](https://frontendly.io/blog/big-o-notation-time-complexity-js). Our plot sketches **worst‑case primitive operations vs n**, not wall‑clock milliseconds. JS blogs often say “runtime” or “time complexity”; under a θ(1)‑per‑step RAM model that is exactly **operation counts**, so curve shapes coincide.
+形状の順序付けは、[JavaScript の Big O 記法と時間計算量]( など) の入門 **時間計算量** チートシートと一致します。https://frontendly.io/blog/big-o-notation-time-complexity-js）。私たちのプロットは、壁時計のミリ秒ではなく、**最悪の場合のプリミティブ演算対 n** を描いています。 JS ブログではよく「実行時間」または「時間の複雑さ」について言及します。 θ(1)-per-step RAM モデルでは、**操作数** が正確であるため、曲線の形状は一致します。
 
-Pick the dominant (fastest‑growing) term; multiply costs for nested phases; asymptotically constants and lower‑order junk disappear.
+最も有力な (最も急速に成長している) 用語を選択します。ネストされたフェーズのコストを乗算します。漸近的に定数と低次のジャンクは消えます。
 
-- **O(1)** — fixed steps: indexed read `arr[i]`, amortized keyed lookup on a hash map (`Map`).
-- **O(log n)** — discard half each move: binary search on sorted data (no random access shortcut on linked lists).
-- **O(n)** — one linear sweep: naive `.includes` / `.find`, single pass accumulate / max scan.
-- **O(n log n)** — divide and θ(n) recombine typical of efficient comparison sorts (merge sort / quicksort average intuition).
-- **O(n²)** — nested linear work: brute all pairs bubble‑ish patterns, naive double loops over indexes.
-- **O(n³)** — triple nested scans: naive cubic checks (e.g. some all‑triplets / dense three‑loop DP edges), brute 3‑tuples unless structure short‑circuits growth.
-- **O(2ⁿ)** — branching multiplies alternatives: brute subsets / careless exponential recursion absent memoization.
+- **O(1)** — 修正されたステップ: インデックス付き読み取り`arr[i]`、ハッシュ マップ上の償却キー付きルックアップ (`Map`）。
+- **O(log n)** — 各移動の半分を破棄します: ソートされたデータの二分探索 (リンクされたリストではランダム アクセスのショートカットはありません)。
+- **O(n)** — 1 つの線形スイープ: ナイーブ`.includes`/`.find`、シングルパス蓄積/最大スキャン。
+- **O(n log n)** — 効率的な比較ソートの典型的な除算と θ(n) の再結合 (マージ ソート / クイックソートの平均直感)。
+- **O(n²)** — ネストされた線形作業: すべてのペアのブルートなバブルのようなパターン、インデックスに対する単純な二重ループ。
+- **O(n³)** — トリプルネストスキャン: 単純な三次チェック (例: 一部のオールトリプレット / 密な 3 ループ DP エッジ)、構造が短絡しない限り、ブルート 3 タプル。
+- **O(2ⁿ)** — 分岐は代替手段を増やします: 総当たりのサブセット / メモ化のない不用意な指数再帰。
 
 <figure class="notes-diagram" style="display:block;max-width:460px;margin:auto;">
   <figcaption style="text-align:center; color:#a1a1aa; margin-bottom:6px; font-size:12px;line-height:1.35;">
@@ -90,15 +91,15 @@ Pick the dominant (fastest‑growing) term; multiply costs for nested phases; as
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 15px;padding-top:8px;font-size:11px;line-height:1.4;"><span style="color:#86efac;font-family:monospace;">O(1)</span><span style="color:#a1a1aa;">f=1</span><span style="color:#60a5fa;font-family:monospace;">O(log&#160;n)</span><span style="color:#a1a1aa;">f=log₂n</span><span style="color:#fbbf24;font-family:monospace;">O(n)</span><span style="color:#a1a1aa;">f=n</span><span style="color:#f472b6;font-family:monospace;">O(n&#160;log&#160;n)</span><span style="color:#a1a1aa;">f=n·log₂n</span><span style="color:#fb7185;font-family:monospace;">O(n²)</span><span style="color:#a1a1aa;">f=n²</span><span style="color:#fb923c;font-family:monospace;">O(n³)</span><span style="color:#a1a1aa;">f=n³</span><span style="color:#a78bfa;font-family:monospace;">O(2ⁿ)</span><span style="color:#a1a1aa;">f=2ⁿ</span></div>
 </figure>
 
-Asymptotic growth of **primitive operation counts** as n rises — same textbook curve ranks as above, read through a θ(1)‑per‑step ideal RAM lens. The figure uses **one** linear vertical scale (same **literal** workloads f(n) on n ∈ {1,…,30}, no separate “slow/fast” normalization): framing the axis near **920** foregrounds **n²** toward n = 30, so **constant / log / linear / n log n** occupy a thin coastal band near zero until they visually separate upward; **n³** and **2ⁿ** use the same rulers and simply **omit** strokes past the plotted range rather than railing. Actual milliseconds still differ from raw f(n) by constants and hardware.
+n が増加するにつれて **原始演算数**が漸近的に増加します。上記と同じ教科書の曲線がランク付けされ、ステップごとに θ(1) の理想的な RAM レンズを通して読み取られます。この図では、**1 つの** 線形垂直スケール (n ∈ {1,…,30} で同じ **リテラル** ワークロード f(n)、別個の「低速/高速」正規化なし) を使用しています。**920** 付近の軸を n = 30 に向かって前景 **n²** に配置するため、**定数 / 対数 / 線形 / nlogn** は、視覚的に上に分離するまで、ゼロに近い薄い沿岸バンドを占めます。 **n³** と **2ⁿ** は同じ定規を使用し、手すりではなくプロットされた範囲を超えるストロークを単純に**省略**します。実際のミリ秒は、定数とハードウェアによって生の f(n) とは異なります。
 
-## 4. Recurrences (pattern recognition)
-- T(n) = T(n/2) + O(1)        → O(log n)   (halve each step).
-- T(n) = T(n/2) + O(n)        → O(n)       (geometric series).
-- T(n) = 2T(n/2) + O(n)       → O(n log n) (balanced binary recursion).
-- T(n) = T(n-1) + O(n)        → O(n²)      (linear chain).
-- T(n) = 2T(n/2) + O(n²)      → O(n²)      (master theorem intuition).
-Master theorem: memorize forms; on exams, expand a few levels to see pattern.
+## 4. 再発 (パターン認識)
+- T(n) = T(n/2) + O(1) → O(log n) (各ステップを半分にします)。
+- T(n) = T(n/2) + O(n) → O(n) (幾何級数)。
+- T(n) = 2T(n/2) + O(n) → O(n log n) (バランスの取れたバイナリ再帰)。
+- T(n) = T(n-1) + O(n) → O(n²) (線形チェーン)。
+- T(n) = 2T(n/2) + O(n²) → O(n²) (マスター定理の直感)。
+マスター定理: 形式を記憶する。試験では、いくつかのレベルを展開してパターンを確認します。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" role="img" aria-label="Divide into halves recurrence tree">
@@ -115,10 +116,10 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 5. RAM model & memory
-- Random Access Machine: read/write any memory word in O(1).
-- Real CPUs: arrays are cache-friendly (contiguous); lists jump memory.
-- Space complexity: extra memory beyond input (auxiliary space).
+## 5. RAM モデルとメモリ
+- ランダム アクセス マシン: O(1) 内の任意のメモリ ワードの読み取り/書き込み。
+- 実 CPUs: 配列はキャッシュに適しています (連続的)。ジャンプメモリをリストします。
+- スペースの複雑さ: 入力を超える余分なメモリ (補助スペース)。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 88" role="img" aria-label="Random access memory words">
@@ -139,11 +140,11 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 6. Arrays & dynamic arrays
-- Static array: fixed length; index i access A[i] in O(1).
-- Dynamic array (e.g. vector): keeps capacity; doubles when full.
-- Append amortized O(1): occasional O(n) resize, spread over many inserts.
-- Insert/delete at end: O(1) amortized append; at middle: O(n) to shift.
+## 6. 配列と動的配列
+- 静的配列: 固定長。インデックス i は、O(1) の A[i] にアクセスします。
+- 動的配列 (ベクトルなど): 容量を維持します。満席になると2倍になります。
+- 償却された O(1) を追加: 時折 O(n) のサイズ変更が行われ、多くの挿入に分散されます。
+- 最後に挿入/削除: O(1) 償却された追加。中央: O(n) でシフトします。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 112" role="img" aria-label="Dynamic array doubling capacity">
@@ -159,12 +160,12 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 7. Linked lists
-- Singly linked: each node { value, next }; head pointer.
-  — Insert after a known node: O(1). Search by value: O(n).
-  — No backward links; delete needs previous → often traverse O(n).
-- Doubly linked: { prev, next } — delete node with pointer in O(1).
-- vs array: lists excel at insert/delete at iterator; arrays at index.
+## 7. リンクされたリスト
+- 単一リンク: 各ノード { value, next };ヘッドポインタ。
+  — 既知のノードの後に​​挿入します: O(1)。値による検索: O(n)。
+  — 逆方向リンクはありません。削除には前が必要です → 頻繁に O(n) をトラバースします。
+- 二重リンク: { prev, next } — O(1) のポインターを持つノードを削除します。
+- vs 配列: リストはイテレータでの挿入/削除に優れています。インデックスに配列。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" role="img" aria-label="Singly linked list nodes">
@@ -185,10 +186,10 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 8. Stack (LIFO)
-- ops: push(x), pop(), peek/top(), isEmpty().
-- Array + top index or linked list head as top — all O(1) per op.
-- Uses: DFS, undo, bracket matching, postfix evaluation, call stack idea.
+## 8. スタック (LIFO)
+- 操作: Push(x)、pop()、peek/top()、isEmpty()。
+- 配列 + 先頭インデックスまたはリンク リストの先頭を先頭として — 演算ごとにすべて O(1)。
+- 用途: DFS、元に戻す、ブラケット マッチング、後置評価、コール スタックのアイデア。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 130" role="img" aria-label="Stack last in first out">
@@ -201,11 +202,11 @@ Master theorem: memorize forms; on exams, expand a few levels to see pattern.
 </svg></figure>
 
 
-## 9. Queue & deque
-- Queue FIFO: enqueue back, dequeue front — O(1) with circular buffer
-or linked list with head/tail pointers.
-- Deque: insert/remove at both ends — doubly linked or circular array.
-- BFS uses a queue; sliding-window problems often use deque.
+## 9. キューとデク
+- キュー FIFO: エンキュー バック、デキュー フロント — 循環バッファーによる O(1)
+または先頭/末尾ポインタを含むリンクされたリスト。
+- Deque: 両端で挿入/削除 — 二重リンクまたは円形配列。
+- BFS はキューを使用します。スライディング ウィンドウの問題では、deque がよく使用されます。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 88" role="img" aria-label="Queue first in first out">
@@ -221,7 +222,7 @@ or linked list with head/tail pointers.
 </svg></figure>
 
 
-## 10. Remember & rehearse
-- Rederive one recurrence on paper (e.g. mergesort) without notes.
-- Given an API, pick array vs list and justify cache vs flexibility.
-- Trace push/pop on a small stack for matching parentheses.
+## 10. 覚えてリハーサルする
+- メモなしで 1 つの繰り返しを紙上で再作成します (例: マージソート)。
+- API を考慮して、配列とリストを選択し、キャッシュと柔軟性を正当化します。
+- 括弧に一致する小さなスタック上でプッシュ/ポップをトレースします。

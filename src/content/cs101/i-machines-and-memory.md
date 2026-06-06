@@ -1,17 +1,18 @@
 ---
 label: "I"
-subtitle: "Machines & memory"
-group: "Operating systems"
+subtitle: "マシンとメモリ"
+group: "オペレーティングシステム"
 order: 1
 ---
-Operating systems — Part I
-Kernel role, memory layout, execution models, hardware landscape.
+オペレーティング システム — パート I
 
-## 1. What operating systems do
-- Manage hardware (CPU, RAM, disk, devices) on behalf of programs.
-- Multiplex: many processes appear to run at once via scheduling.
-- Isolate: fault or malicious code in one process must not wipe others.
-- Abstract: files, sockets, threads — uniform APIs instead of raw hardware.
+カーネルの役割、メモリ レイアウト、実行モデル、ハードウェアの状況。
+
+## 1. オペレーティング システムの機能
+- プログラムに代わってハードウェア (CPU、RAM、ディスク、デバイス) を管理します。
+- マルチプレックス: スケジューリングにより、多くのプロセスが一度に実行されるように見えます。
+- 隔離: 1 つのプロセス内の障害または悪意のあるコードが他のプロセスを消去してはなりません。
+- 抽象: ファイル、ソケット、スレッド — 生のハードウェアではなく均一な API。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 156" role="img" aria-label="Programs sit above the OS, which manages hardware">
@@ -27,11 +28,11 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 2. Processes & virtual memory
-- Process ≈ running program: code + data + kernel bookkeeping (PCB).
-- Virtual memory: each process sees its own address space; OS maps to RAM/pages.
-- Pages & page tables: translation from virtual → physical; TLB caches lookups.
-- Demand paging & swapping when RAM pressure — slower but larger logical memory.
+## 2. プロセスと仮想メモリ
+- プロセス ≈ 実行中のプログラム: コード + データ + カーネル ブックキーピング (PCB)。
+- 仮想メモリ: 各プロセスは独自のアドレス空間を参照します。 OS は RAM/ ページにマップされます。
+- ページとページ テーブル: 仮想から物理への変換。 TLB はルックアップをキャッシュします。
+- RAM の負荷がかかると、ページングとスワップが要求されます。論理メモリは遅くなりますが、より大きくなります。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 118" role="img" aria-label="Each process has its own virtual address space mapped to physical frames">
@@ -49,11 +50,11 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 3. Stack, heap & address space
-- Typical layout: text (code), data/bss (globals), heap ↑, stack ↓, kernel reserved.
-- Stack: automatic locals, call/return — LIFO, fixed policy; overflow = crash risk.
-- Heap: malloc/new — explicit lifetime; allocator metadata + fragmentation concerns.
-- Same words "stack/heap" as in CS101 — here tied to the OS loader & libc/runtime.
+## 3. スタック、ヒープ、アドレス空間
+- 一般的なレイアウト: テキスト (コード)、データ/BSS (グローバル)、ヒープ ↑、スタック ↓、カーネル予約済み。
+- スタック: 自動ローカル、呼び出し/戻り — LIFO、固定ポリシー。オーバーフロー = クラッシュのリスク。
+- ヒープ: malloc/new — 明示的なライフタイム。アロケータのメタデータ + 断片化の問題。
+- CS101 と同じ「スタック/ヒープ」という単語 — ここでは OS ローダーと libc/runtime に関連付けられています。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" role="img" aria-label="Address space layout with stack and heap growing toward each other">
@@ -73,11 +74,11 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 4. Machine code, bytecode & VMs
-- Native: ISA machine instructions executed directly by CPU (x86-64, AArch64, …).
-- Bytecode: portable IR for a VM (JVM .class, CIL/.NET, Python .pyc-style caches).
-- JIT compiles hot bytecode to native at runtime (tiered optimization).
-- OS still schedules the process/thread; the VM is user-space code using memory & syscalls.
+## 4. マシンコード、バイトコード、VM
+- ネイティブ: CPU (x86-64、AArch64 など) によって直接実行される ISA マシン命令。
+- バイトコード: VM 用の移植可能な IR (JVM .class、CIL/.NET、Python .pyc スタイルのキャッシュ)。
+- JIT は、実行時にホット バイトコードをネイティブにコンパイルします (段階的最適化)。
+- OS は引き続きプロセス/スレッドをスケジュールします。 VM はメモリとシステムコールを使用するユーザー空間コードです。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" role="img" aria-label="Bytecode runs in a virtual machine, optionally JIT compiled to native code">
@@ -100,13 +101,13 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 5. CPUs, ISAs & vendors
-- ISA = instruction set architecture (what the software is allowed to assume).
-- Microarchitecture = how a vendor implements that ISA (pipelines, caches, cores).
-- x86-64: dominant on PCs — Intel & AMD as licensees/designers; backward compatibility legacy.
-- Arm: phones, tablets, many servers; Apple M-series — Arm-compatible, custom Apple Silicon.
-- RISC-V: open ISA — many vendors; growing in embedded & accelerators.
-- Learn one ISA’s manual skim + one OS chapter on context switch — enough orientation.
+## 5. CPU、ISA、ベンダー
+- ISA = 命令セット アーキテクチャ (ソフトウェアが想定できるもの)。
+- マイクロアーキテクチャ = ベンダーが ISA (パイプライン、キャッシュ、コア) を実装する方法。
+- x86-64: PC で優勢 - ライセンシー/設計者としてインテルと AMD。下位互換性のレガシー。
+- Arm: 電話、タブレット、多くのサーバー。 Apple M-シリーズ — Arm 互換のカスタム Apple Silicon。
+- RISC-V: オープン ISA — 多くのベンダー。組み込みおよびアクセラレータの分野で成長しています。
+- ISA のマニュアル スキムを 1 つと、コンテキスト スイッチに関する OS の章を 1 つ学習します。これで十分なオリエンテーションです。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 112" role="img" aria-label="Same ISA, different CPU vendors and microarchitectures">
@@ -125,11 +126,11 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 6. Kernel vs user & system calls
-- User mode: cannot touch devices or page tables directly — traps on privilege violation.
-- Kernel mode: full machine; handles interrupts, schedules, implements syscalls.
-- System call: controlled gateway (read, write, mmap, fork, …) — parameter validation matters.
-- Context switch: save registers + switch page tables + pick next runnable thread.
+## 6. カーネルとユーザーおよびシステムコールの比較
+- ユーザー モード: デバイスやページ テーブルに直接アクセスすることはできません。特権違反でトラップされます。
+- カーネルモード: フルマシン。割り込みの処理、スケジュール、syscall の実装。
+- システム コール: 制御されたゲートウェイ (読み取り、書き込み、mmap、fork など) — パラメーターの検証が重要です。
+- コンテキストスイッチ: レジスターの保存 + ページテーブルの切り替え + 次に実行可能なスレッドの選択。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 124" role="img" aria-label="User mode calls into the kernel via a system call trap">
@@ -148,7 +149,7 @@ Kernel role, memory layout, execution models, hardware landscape.
 </svg></figure>
 
 
-## 7. Remember & rehearse
-- Draw a process address space with stack/heap growth arrows.
-- Explain one difference: bytecode on JVM vs native ELF on Linux.
-- Name two CPU vendors and which ISA families they are known for (today).
+## 7. 覚えてリハーサルする
+- スタック/ヒープの増加矢印を使用してプロセスのアドレス空間を描画します。
+- 違いの 1 つを説明します。JVM のバイトコードと Linux のネイティブ ELF です。
+- 2 つの CPU ベンダーと、(現在) 知られている ISA ファミリを挙げてください。

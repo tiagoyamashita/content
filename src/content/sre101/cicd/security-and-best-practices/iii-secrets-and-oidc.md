@@ -1,26 +1,27 @@
 ---
 label: "III"
-subtitle: "Secrets & OIDC"
+subtitle: "秘密と OIDC"
 group: "CI/CD"
 order: 3
 ---
-Secrets & OIDC
-**Secrets** in CI must never live in source control. **OIDC** (OpenID Connect) lets pipelines exchange a short-lived identity token for cloud credentials — no long-lived API keys.
+秘密と OIDC
 
-## 1. Secret storage by platform
+CI の **シークレット** はソース管理内に存在してはなりません。 **OIDC** (OpenID Connect) を使用すると、パイプラインでクラウド資格情報の有効期間の短い ID トークンを交換できます。有効期間の長い API キーは必要ありません。
 
-| Platform | Store | Scope |
-|----------|-------|-------|
-| GitHub Actions | Settings → Secrets | org / repo / environment |
-| GitLab CI | Settings → CI/CD → Variables | project / group |
-| Jenkins | Credentials plugin | global / folder / job |
+## 1. プラットフォーム別の秘密ストレージ
 
-Rules:
+|プラットフォーム |ストア |範囲 |
+|----------|----------|----------|
+| GitHub アクション |設定 → 秘密 |組織/リポジトリ/環境 |
+| Gitラボ CI |設定 → CI/CD → 変数 |プロジェクト / グループ |
+| Jenkins |認証情報プラグイン |グローバル / フォルダー / ジョブ |
 
-- **Mask** secrets in logs (platform default).
-- **Narrow scope** — prod secrets only on `environment: production` jobs.
-- **Rotate** on schedule and after any leak suspicion.
-- **Never** echo secrets in `run:` scripts.
+ルール:
+
+- ログ内のシークレットを **マスク**します (プラットフォームのデフォルト)。
+- **範囲が狭い** — `environment: production` ジョブのみの prod シークレット。
+- **漏れの疑いがある場合は、予定通りに**ローテーション**します。
+- **決して** `run:` スクリプトでシークレットをエコーし​​ないでください。
 
 ```yaml
 # GitHub — reference secret
@@ -36,27 +37,27 @@ deploy:
     DEPLOY_TOKEN: $DEPLOY_TOKEN   # set in UI, masked + protected
 ```
 
-## 2. Fork PR safety
+## 2. フォーク PR の安全性
 
-| Platform | Default for fork PRs |
+|プラットフォーム |フォーク PR のデフォルト |
 |----------|----------------------|
-| GitHub Actions | No access to repo secrets |
-| GitLab | Protected variables hidden on MR from forks |
+| GitHub アクション |リポジトリのシークレットにアクセスできません |
+| Gitラボ |フォークから MR に隠された保護された変数 |
 
-Malicious PRs can exfiltrate secrets if workflows run with elevated access. Use **`pull_request`** (not `pull_request_target`) for untrusted code unless you understand the risk.
+ワークフローが昇格されたアクセスで実行されている場合、悪意のある PR によってシークレットが漏洩される可能性があります。リスクを理解していない限り、信頼できないコードには **`pull_request`** (`pull_request_target` ではない) を使用してください。
 
-## 3. OIDC — why it beats static keys
+## 3. OIDC — 静的キーに勝る理由
 
-| Static AWS key | OIDC |
-|----------------|------|
-| Lives months/years | Minutes TTL |
-| Stored as secret | No secret — trust relationship |
-| Same key every run | Scoped per workflow/repo/branch |
-| Hard to audit | Cloud audit log shows subject |
+|静的 AWS キー | OIDC |
+|--|------|
+|数か月/数年生きます |議事録 TTL |
+|シークレットとして保存 |秘密はありません - 信頼関係 |
+|実行ごとに同じキー |ワークフロー/リポジトリ/ブランチごとのスコープ |
+|監査が難しい |クラウド監査ログには件名 | が示されています
 
-## 4. GitHub Actions → AWS
+## 4. GitHub アクション → AWS
 
-**AWS IAM** — trust GitHub OIDC provider; role with least privilege.
+**AWS IAM** — GitHub OIDC プロバイダーを信頼します。最小限の権限を持つ役割。
 
 ```yaml
 permissions:
@@ -78,7 +79,7 @@ jobs:
       - run: aws ecs update-service --cluster prod --service api --force-new-deployment
 ```
 
-IAM trust policy (simplified):
+IAM 信頼ポリシー (簡略化):
 
 ```json
 {
@@ -96,9 +97,9 @@ IAM trust policy (simplified):
 }
 ```
 
-Restrict **`sub`** to specific repo and branch.
+**`sub`** を特定のリポジトリとブランチに制限します。
 
-## 5. GitHub Actions → GCP / Azure
+## 5. GitHub アクション → GCP / Azure
 
 **GCP** — Workload Identity Federation:
 
@@ -109,7 +110,7 @@ Restrict **`sub`** to specific repo and branch.
     service_account: deploy@myproject.iam.gserviceaccount.com
 ```
 
-**Azure** — federated credential on app registration:
+**Azure** — アプリ登録時のフェデレーション資格情報:
 
 ```yaml
 - uses: azure/login@v2
@@ -119,9 +120,9 @@ Restrict **`sub`** to specific repo and branch.
     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 ```
 
-Only the **client/tenant/subscription IDs** are stored — no client secret when using federation.
+**クライアント/テナント/サブスクリプション ID** のみが保存されます。フェデレーションを使用する場合、クライアント シークレットは保存されません。
 
-## 6. GitLab CI OIDC example
+## 6. GitLab CI OIDC の例
 
 ```yaml
 deploy:
@@ -140,7 +141,7 @@ deploy:
     - aws s3 sync ./dist s3://my-bucket/
 ```
 
-## 7. Jenkins credentials
+## 7. __​​IT0__ 認証情報
 
 ```groovy
 pipeline {
@@ -157,26 +158,26 @@ pipeline {
 }
 ```
 
-Prefer **HashiCorp Vault** or cloud OIDC plugins over long-lived Jenkins-stored keys for new setups.
+新しいセットアップでは、長期間有効な Jenkins に保存されたキーよりも **HashiCorp Vault** またはクラウド OIDC プラグインを優先します。
 
-## 8. Rotation checklist
+## 8. ローテーションチェックリスト
 
-| Step | Action |
-|------|--------|
-| 1 | Identify secret age and scope |
-| 2 | Create new credential in cloud |
-| 3 | Update CI secret / IAM role |
-| 4 | Run smoke deploy |
-| 5 | Revoke old credential |
-| 6 | Document in runbook |
+|ステップ |アクション |
+|------|----------|
+| 1 |秘密の年齢と範囲を特定する |
+| 2 |クラウドで新しい認証情報を作成する |
+| 3 | CI シークレット / IAM ロールを更新 |
+| 4 |スモークデプロイを実行する |
+| 5 |古い資格情報を取り消す |
+| 6 |ランブック内の文書 |
 
-## 9. Anti-patterns
+## 9. アンチパターン
 
-| Anti-pattern | Risk |
+|アンチパターン |リスク |
 |--------------|------|
-| `AWS_ACCESS_KEY_ID` in repo | Permanent blast radius |
-| Same prod secret in dev CI | Lateral movement |
-| Logging `env` in debug step | Secret in log archive |
-| OIDC role trusts `*` repos | Any repo can assume |
+|リポジトリ内の `AWS_ACCESS_KEY_ID` |永続的な爆発範囲 |
+|開発 CI の同じ prod シークレット |横方向の動き |
+|デバッグ ステップで `env` をログに記録する |ログアーカイブの秘密 |
+| OIDC ロールは `*` リポジトリを信頼します。どのリポジトリでも | を想定できます。
 
-**Related:** **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (OIDC in plan/apply), [Least-privilege runners](iv-least-privilege-runners.md).
+**関連:** **Terraform** サブメニュー → [CI/CD の Terraform](../terraform/vii-terraform-in-cicd.md) (計画/適用の OIDC)、[最小特権ランナー](iv-least-privilege-runners.md)。

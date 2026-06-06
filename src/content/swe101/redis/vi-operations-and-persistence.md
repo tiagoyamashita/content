@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "Operations & persistence"
+subtitle: "操作と永続性"
 group: "Redis"
 order: 6
 ---
-Redis — operations & persistence
-Redis is fast because data is **in memory** — plan **memory limits**, **persistence**, and **high availability** before production traffic.
+Redis — 操作と永続性
 
-## 1. Memory management
+データが **メモリ内**にあるため、Redis は高速です。運用トラフィックの前に、**メモリ制限**、**永続性**、**高可用性**を計画してください。
+
+## 1. メモリ管理
 
 ```text
 INFO memory
@@ -24,9 +25,9 @@ CONFIG GET maxmemory-policy
 
 Set **`maxmemory`** below host RAM — leave headroom for OS and replication buffers.
 
-## 2. RDB (snapshots)
+## 2. RDB (スナップショット)
 
-Point-in-time binary snapshot:
+ポイントインタイムのバイナリ スナップショット:
 
 ```conf
 # redis.conf
@@ -44,9 +45,9 @@ dir /data
 
 Copy **`dump.rdb`** for cold backup when traffic is low or after **`BGSAVE`**.
 
-## 3. AOF (append-only file)
+## 3. AOF (追加専用ファイル)
 
-Logs every write — more durable:
+すべての書き込みをログに記録します - より耐久性があります:
 
 ```conf
 appendonly yes
@@ -60,28 +61,28 @@ auto-aof-rewrite-percentage 100
 | **`everysec`** | At most ~1s loss on crash — common default |
 | **`no`** | OS buffer — faster, riskier |
 
-Many teams use **both RDB + AOF** on managed Redis (ElastiCache, Redis Cloud).
+多くのチームは、マネージド Redis (ElastiCache、Redis クラウド) で **RDB + AOF** の両方を使用しています。
 
-## 4. Replication
+## 4. レプリケーション
 
 ```text
 Primary (read/write)  ──stream──►  Replica (read, failover)
 ```
 
-Configure replica:
+レプリカを構成します。
 
 ```conf
 replicaof primary-host 6379
 ```
 
-| Use | Notes |
-|-----|-------|
-| **Read scaling** | Route read-only cache GETs to replica — watch replication lag |
-| **Failover** | Sentinel or managed failover promotes replica |
+|使用 |メモ |
+|-----|------|
+| **読み取りスケーリング** |読み取り専用キャッシュの GET をレプリカにルーティング — レプリケーションの遅延を監視する |
+| **フェイルオーバー** | Sentinel またはマネージド フェールオーバーはレプリカをプロモートします。
 
-**Cache on replica:** stale reads possible — usually acceptable for cache; not for locks without care.
+**レプリカ上のキャッシュ:** 古い読み取りの可能性があります。通常はキャッシュとして許容されます。不用意にロックしないでください。
 
-## 5. Sentinel and Cluster (awareness)
+## 5. センチネルとクラスター (認識)
 
 | Mode | When |
 |------|------|
@@ -89,16 +90,16 @@ replicaof primary-host 6379
 | **Primary + replicas + Sentinel** | HA failover for one shard |
 | **Redis Cluster** | Data sharded across nodes — key must hit same slot; multi-key ops need same hash tag `{user:42}:profile` |
 
-Most app caches fit **one primary + replicas** until memory exceeds one machine.
+ほとんどのアプリ キャッシュは、メモリが 1 台のマシンを超えるまで、**1 つのプライマリ + レプリカ**に適合します。
 
-## 6. Security
+## 6. セキュリティ
 
 - **`requirepass`** or **ACL users** — never expose Redis to public internet unauthenticated.
 - **TLS** (`rediss://`) on managed services and between AZs when required.
 - Disable **`FLUSHALL`**, **`CONFIG`** for app users via ACL.
 - Bind **`127.0.0.1`** in dev; VPC security groups in cloud.
 
-## 7. Backup and restore
+## 7. バックアップと復元
 
 | Method | Steps |
 |--------|--------|
@@ -106,9 +107,9 @@ Most app caches fit **one primary + replicas** until memory exceeds one machine.
 | **Managed snapshot** | ElastiCache/Redis Cloud automated backups + PITR where offered |
 | **Rebuild from DB** | Cache empty → warm from Postgres — valid DR for cache-only data |
 
-**Test restore** — especially if you store sessions in Redis (users logged out on loss).
+**復元のテスト** — 特にセッションを Redis に保存する場合 (ユーザーは損失時にログアウトします)。
 
-## 8. Monitoring checklist
+## 8. モニタリングチェックリスト
 
 - [ ] Memory usage vs **`maxmemory`**
 - [ ] Evicted keys per second (`INFO stats`)
@@ -117,7 +118,7 @@ Most app caches fit **one primary + replicas** until memory exceeds one machine.
 - [ ] Slow log (`SLOWLOG GET 10`)
 - [ ] Hit rate for cache (app metric: hits / (hits + misses))
 
-## Related notes
+## 関連メモ
 
 - [Performance & optimizations](vii-performance-and-optimizations.md) — pipelines, hot keys
 - [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md) — cache in system design

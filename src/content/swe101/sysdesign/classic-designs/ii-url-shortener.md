@@ -1,24 +1,25 @@
 ---
 label: "II"
-subtitle: "URL shortener"
-group: "System design"
+subtitle: "URL 短縮ツール"
+group: "システム設計"
 order: 2
 ---
-URL shortener
-**Bitly-style** service: create a short link, **redirect** to the long URL, optional **analytics**.
+URL 短縮ツール
 
-## 1. Requirements
+**Bitly スタイル** サービス: 短いリンクを作成し、長い URL への **リダイレクト**、オプションの **分析**。
 
-| Functional | Non-functional |
-|------------|----------------|
-| Create short URL from long URL | Low redirect latency (p99 < 50 ms) |
-| Redirect short → long | Highly **read-heavy** |
-| Optional expiry, custom alias | 99.9%+ availability |
-| Click analytics (async OK) | Scale: see below |
+## 1. 要件
 
-**Scale (example):** 100 M URLs created/day; 10 B redirects/day → ~**115 K reads/s** average (peaks higher).
+|機能性 |機能しない |
+|-----------|----------------|
+|長い URL から短い URL を作成する |低いリダイレクト遅延 (p99 < 50 ミリ秒) |
+|短い→長いへリダイレクト |非常に **読み取り負荷が高い** |
+|オプションの有効期限、カスタムエイリアス | 99.9% 以上の可用性 |
+|クリック分析 (非同期 OK) |スケール: 以下を参照 |
 
-## 2. API sketch
+**規模 (例):** 1 日あたり 1 億の URL が作成されます。 1 日あたり 10 億のリダイレクト → 平均 ~**115,000 読み取り/秒** (ピークはさらに高くなります)。
+
+## 2. API スケッチ
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -26,17 +27,17 @@ URL shortener
 | GET | `/{short_code}` | **302/301** redirect to long URL |
 | GET | `/v1/urls/{code}/stats` | Analytics (authenticated) |
 
-## 3. Short key generation
+## 3. 短い鍵の生成
 
-| Approach | How | Pros | Cons |
+|アプローチ |どのように |長所 |短所 |
 |----------|-----|------|------|
-| **Hash + truncate** | MD5/SHA of URL → base62 first 7 chars | Stateless | Collisions — must check DB |
-| **Counter + base62** | Global counter → encode | No collision | Single counter hotspot |
-| **KGS pool** | Key Generation Service pre-allocates batches | Fast insert, no collision at write | Extra service |
+| **ハッシュ + トランケート** | URL の MD5/SHA → Base62 の最初の 7 文字 |無国籍 |衝突 — DB を確認する必要があります |
+| **カウンター + Base62** |グローバルカウンター → エンコード |衝突なし |シングルカウンターホットスポット |
+| **KGS プール** |キー生成サービスはバッチを事前に割り当てます。高速挿入、書き込み時の衝突なし |追加サービス |
 
 Base62 charset: `[a-zA-Z0-9]` → 7 chars ≈ 62^7 ≈ 3.5 trillion keys.
 
-## 4. Data model
+## 4. データモデル
 
 | Column | Type | Notes |
 |--------|------|-------|
@@ -48,14 +49,14 @@ Base62 charset: `[a-zA-Z0-9]` → 7 chars ≈ 62^7 ≈ 3.5 trillion keys.
 
 **Shard key:** hash(`short_code`) → N DB shards.
 
-## 5. Redirect: 301 vs 302
+## 5. リダイレクト: 301 対 302
 
-| Code | Browser behavior | Analytics |
-|------|------------------|-----------|
-| **301** Permanent | May cache redirect — fewer origin hits | Under-counts clicks |
-| **302** Temporary | Hits server every click | Accurate counts |
+|コード |ブラウザの動作 |分析 |
+|------|-------|-----------|
+| **301** 常設 |リダイレクトをキャッシュする可能性があります - オリジン ヒットが少なくなります |クリック数を過少カウント |
+| **302** 一時的 |クリックするたびにサーバーにアクセスします |正確なカウント |
 
-Product choice: **302** for analytics; **301** + async click log if load dominates.
+製品の選択: **302** 分析用。 **301** + 負荷が優勢な場合の非同期クリック ログ。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="URL shortener read path with cache">
   <rect x="12" y="44" width="56" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
@@ -73,19 +74,19 @@ Product choice: **302** for analytics; **301** + async click log if load dominat
   <text x="12" y="24" fill="#d4d4d8" font-size="11" font-weight="600">Redirect hot path</text>
 </svg></figure>
 
-## 6. Scaling reads
+## 6. 読み取りのスケーリング
 
 1. **Redis** cache-aside: `GET short:{code}` → long URL; TTL + LRU eviction.
 2. **CDN** at edge for popular links (short TTL if analytics matter).
 3. **DB sharding** by `short_code` hash.
 4. **Analytics:** async — click event → Kafka → Flink → ClickHouse (don’t block redirect).
 
-## 7. Bottlenecks
+## 7. ボトルネック
 
-| Risk | Mitigation |
-|------|------------|
-| Hot short link | CDN + local cache |
-| KGS single point | Multiple KGS instances with partitioned ranges |
-| Shard imbalance | Consistent hashing; re-shard plan |
+|リスク |緩和 |
+|------|-----------|
+|ホットショートリンク | CDN + ローカル キャッシュ |
+| KGS シングルポイント |パーティション化された範囲を持つ複数の KGS インスタンス |
+|シャードの不均衡 |一貫したハッシュ。再シャード計画 |
 
 **Related:** Scalable patterns [CDN & edge caching](../scalable-patterns/vi-cdn-and-edge-caching.md), Part I caching/sharding.

@@ -1,17 +1,23 @@
 ---
 label: "XI"
-subtitle: "Graph"
-group: "Data structures & algorithms"
+subtitle: "グラフ"
+group: "データ構造とアルゴリズム"
 order: 11
 ---
-Graph
-`G = (V, E)`: vertices and edges; **directed** or **undirected**.
+グラフ
 
-**Adjacency matrix:** `n×n` table; edge `(u,v)` query **O(1)**; space **Θ(n²)** — suits dense graphs or weight lookups.
 
-**Adjacency list:** per-vertex list of neighbors; space **Θ(n + m)** for `n = |V|`, `m = |E|`; iterate outgoing edges in time proportional to degree.
 
-**Algorithms:** BFS (**queue**), DFS (**stack** or recursion), topological sort, SCCs, shortest paths — see **Algorithms** submenu ([Graph traversal](../Algorithms/v-graph-traversal.md), [Shortest paths & MST](../Algorithms/vi-shortest-paths-and-mst.md)) and **Level III — Graphs** (`iii-graphs.md`).
+
+
+
+`G = (V, E)`: 頂点とエッジ; **有向**または**無向**。
+
+**隣行列:**`n×n`テーブル;角`(u,v)`クエリ **O(1)**; space **Θ(n²)** — 密なグラフまたは重みの検索に適しています。
+
+**隣接リスト:** 隣接する頂点ごとのリスト。スペース **Θ(n + m)** 用`n = |V|`、`m = |E|`;出力エッジを度数に比例した時間で繰り返します。
+
+**アルゴリズム:** BFS (**キュー**)、DFS (**スタック** または再帰)、トポロジカルソート、SCC、最短パス — **アルゴリズム** サブメニューを参照 ([グラフトラバーサル](../Algorithms/v-graph-traversal.md)、[最短パス & MST](../Algorithms/vi-shortest-paths-and-mst.md)) および **レベル III — グラフ** (`iii-graphs.md`）。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 236" role="img" aria-label="Graph vertices with adjacency list versus adjacency matrix">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Same graph, two storages</text>

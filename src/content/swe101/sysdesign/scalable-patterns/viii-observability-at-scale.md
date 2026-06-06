@@ -1,31 +1,32 @@
 ---
 label: "VIII"
-subtitle: "Observability at scale"
-group: "System design"
+subtitle: "大規模な可観測性"
+group: "システム設計"
 order: 8
 ---
-Observability at scale
-At high scale, one slow dependency **cascades**. **Metrics**, **logs**, and **traces** — plus **SLOs** and controlled **chaos** — keep failures visible and bounded.
+大規模な可観測性
 
-## 1. Three pillars
+大規模な場合、1 つの遅い依存関係が **カスケード** します。 **メトリクス**、**ログ**、**トレース**に加え、**SLO**と制御された**カオス**により、障害を可視化し、制限を維持します。
 
-| Pillar | Answers | Tools (examples) |
-|--------|---------|------------------|
-| **Metrics** | How much? How fast? Error rate? | Prometheus, Datadog, CloudWatch |
-| **Logs** | What happened on this instance? | Loki, ELK, Cloud Logging |
-| **Traces** | Which hop was slow in this request? | Jaeger, Tempo, Zipkin, X-Ray |
+＃＃１．３つの柱
+
+|柱 |答え |ツール (例) |
+|----------|-----------|---------------------|
+| **メトリクス** |いくら？どのくらい速いですか？エラー率? | Prometheus、Datadog、CloudWatch |
+| **ログ** |この事例では何が起こったのでしょうか? |ロキ、ELK、クラウド ロギング |
+| **痕跡** |このリクエストではどのホップが遅かったですか? |イェーガー、テンポ、ジプキン、X-Ray |
 
 **Correlation:** same `trace_id` / `request_id` across all three.
 
-## 2. Alerting — symptoms not causes
+## 2. 警告 — 症状が原因ではない
 
-| Alert on (good) | Alert on (noisy) |
-|-----------------|------------------|
-| Error rate > 1% for 5 min | CPU > 80% |
-| p99 latency > 500 ms | Single pod restart |
-| SLO burn rate 14× budget | Disk 70% full |
+|アラートオン (良好) |アラートオン (騒音) |
+|-----------------|-----------------|
+| 5 分間のエラー率 > 1% | CPU > 80% |
+| p99 遅延 > 500 ミリ秒 |単一ポッドの再起動 |
+| SLO 燃焼率 14× 予算 |ディスクが 70% 使用されています |
 
-**SLO example:** 99.9% availability = ~43 min downtime/month **error budget**. Page when **burn rate** consumes budget too fast.
+**SLO の例:** 99.9% の可用性 = 月あたり最大 43 分のダウンタイム **エラー バジェット**。 **バーンレート**による予算の消費が速すぎる場合のページ。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Distributed trace waterfall across services">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Trace waterfall (one request)</text>
@@ -37,12 +38,12 @@ At high scale, one slow dependency **cascades**. **Metrics**, **logs**, and **tr
   <text x="64" y="83" fill="#e4e4e7" font-size="8">postgres query 240ms ← bottleneck</text>
 </svg></figure>
 
-## 3. Distributed tracing
+## 3. 分散トレーシング
 
-1. **API gateway** creates or accepts trace id (**W3C Trace Context** headers).
-2. Each service creates a **span** (name, start, duration, status).
-3. Propagate headers on outbound HTTP/gRPC/message metadata.
-4. Backend stores spans; UI shows **waterfall**.
+1. **API ゲートウェイ** は、トレース ID (**W3C トレース コンテキスト** ヘッダー) を作成または受け入れます。
+2. 各サービスは **スパン** (名前、開始、期間、ステータス) を作成します。
+3. 送信 HTTP/gRPC/message メタデータのヘッダーを伝播します。
+4. バックエンドストアのスパン。 UI は **ウォーターフォール** を示しています。
 
 | Header | Purpose |
 |--------|---------|
@@ -50,42 +51,42 @@ At high scale, one slow dependency **cascades**. **Metrics**, **logs**, and **tr
 | `tracestate` | Vendor-specific hints |
 | `X-Request-Id` | Support correlation (not a full trace) |
 
-## 4. Capacity planning
+## 4. キャパシティプランニング
 
-| Metric | Use |
+|メトリック |使用 |
 |--------|-----|
-| p50 / p95 / p99 latency | Tail latency drives UX |
-| QPS / throughput | Scale triggers |
-| Saturation (CPU, pool wait) | Headroom before failure |
+| p50 / p95 / p99 レイテンシー |テール レイテンシが UX を引き起こす |
+| QPS / スループット |スケールトリガー |
+|飽和 (CPU、プール待機) |障害が発生する前のヘッドルーム |
 
-**Model growth:** if DAU +20%/month, when does DB connection pool or shard limit break? **Load test** before launches (k6, Locust, Gatling).
+**モデルの成長:** DAU +20%/月の場合、DB 接続プールまたはシャードの制限はいつ破られますか? **打ち上げ前の負荷テスト** (k6、ローカスト、ガトリング)。
 
-## 5. Chaos engineering
+## 5. カオスエンジニアリング
 
-Deliberately inject failure in **staging** (or controlled prod):
+**ステージング** (または制御された本番環境) に意図的に障害を挿入します。
 
-| Experiment | Validates |
-|------------|-----------|
-| Kill random pod | K8s restart + LB health |
-| Add 500 ms latency to dependency | Timeouts + circuit breakers |
-| Partition AZ | Failover + replica promotion |
+|実験 |検証 |
+|-----------|----------|
+|ランダムポッドをキルする | K8s の再起動 + LB の健全性 |
+|依存関係に 500 ミリ秒の遅延を追加 |タイムアウト + サーキット ブレーカー |
+|パーティション AZ |フェイルオーバー + レプリカのプロモーション |
 
-Tools: Chaos Monkey, Litmus, AWS FIS. **Every alert** should link a **runbook**.
+ツール: Chaos Monkey、Litmus、AWS FIS。 **すべてのアラート**は**ランブック**にリンクする必要があります。
 
-## 6. Runbook template
+## 6. ランブックのテンプレート
 
-| Section | Content |
-|---------|---------|
-| Symptom | What users see |
-| Dashboards | Links to graphs |
-| Likely causes | Ordered checklist |
-| Mitigation | Scale, rollback, feature flag |
-| Escalation | Who to page next |
+|セクション |コンテンツ |
+|----------|----------|
+|症状 |ユーザーに表示されるもの |
+|ダッシュボード |グラフへのリンク |
+|考えられる原因 |順序付きチェックリスト |
+|緩和 |スケール、ロールバック、機能フラグ |
+|エスカレーション |次のページに行く人 |
 
-## 7. Rehearsal
+## 7. リハーサル
 
-- Define SLO for a hypothetical API (availability + latency).
-- Draw trace propagation through 4 services.
-- Why alert on error rate instead of CPU?
+- 仮想の API (可用性 + 遅延) に対して SLO を定義します。
+- 4 つのサービスを介したトレース伝播を描画します。
+- CPU ではなく、エラー率に基づいてアラートを発行する理由は何ですか?
 
 **Related:** SRE tooling notes (Prometheus, Alertmanager), **Bottleneck analysis** submenu (`bottleneck-analysis/`).

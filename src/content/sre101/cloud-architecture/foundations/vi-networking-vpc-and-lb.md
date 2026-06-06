@@ -1,21 +1,22 @@
 ---
 label: "VI"
-subtitle: "Networking, VPC & LB"
-group: "Cloud architecture"
+subtitle: "通信作業、VPC および LB"
+group: "クラウドアーキテクチャ"
 order: 6
 ---
-Networking, VPC & load balancing
-A **VPC** is your private network in the cloud. **Subnets**, **load balancers**, and **firewalls** control where traffic flows and who can reach what.
+インターネット作業、VPC、負荷分散
 
-## 1. VPC basics
+**VPC** は、クラウド内のプライベート ネットワークです。 **サブネット**、**ロード バランサー**、**ファイアウォール**は、トラフィックがどこに流れるか、誰が何に到達できるかを制御します。
 
-**Virtual Private Cloud** — logically isolated network you define.
+## 1. VPC の基本
 
-| Cloud | Name |
-|-------|------|
+**仮想プライベート クラウド** — ユーザーが定義する論理的に分離されたネットワーク。
+
+|クラウド |名前 |
+|------|------|
 | AWS | VPC |
-| Azure | Virtual Network (VNet) |
-| GCP | VPC Network |
+|アズール |仮想ネットワーク (VNet) |
+| GCP | VPC ネットワーク |
 
 ```text
 VPC CIDR: 10.0.0.0/16
@@ -25,13 +26,13 @@ VPC CIDR: 10.0.0.0/16
   └── private subnet 10.0.12.0/24 (AZ-b)  → app + DB tiers
 ```
 
-## 2. Public vs private subnet
+## 2. パブリックサブネットとプライベートサブネット
 
-| | Public subnet | Private subnet |
-|---|---------------|----------------|
-| **Route to internet** | Via Internet Gateway (IGW) | No direct inbound from internet |
-| **Typical resources** | ALB, bastion (if used) | App servers, databases |
-| **Inbound from web** | Through LB in public tier | LB forwards to private targets |
+| |パブリックサブネット |プライベートサブネット |
+|---|--------------|--------------|
+| **インターネットへのルート** |インターネット ゲートウェイ経由 (IGW) |インターネットからの直接受信はありません |
+| **典型的なリソース** | ALB、要塞 (使用されている場合) |アプリサーバー、データベース |
+| **ウェブからのインバウンド** |パブリック層の LB 経由 | LB はプライベート ターゲットに転送します。
 
 ```text
 Internet ──▶ IGW ──▶ ALB (public subnet)
@@ -41,16 +42,16 @@ Internet ──▶ IGW ──▶ ALB (public subnet)
 Private EC2 outbound: private subnet ──▶ NAT GW (public subnet) ──▶ IGW
 ```
 
-**NAT Gateway** cost note: hourly + data processing — use **VPC endpoints** for S3/DynamoDB to avoid NAT for AWS API traffic.
+**NAT ゲートウェイ** のコストに関するメモ: 時間 + データ処理 — S3/DynamoDB には **VPC エンドポイント** を使用し、AWS の NAT API トラフィックを回避します。
 
-## 3. Load balancers
+## 3. ロードバランサ
 
-Distribute traffic across targets in **multiple AZs**.
+**複数の AZ** 内のターゲット間でトラフィックを分散します。
 
-| Layer | Name | Routes on | AWS example |
-|-------|------|-----------|-------------|
-| **L4** | Transport | IP + port (TCP/UDP) | NLB |
-| **L7** | Application | HTTP path, host header | ALB |
+|レイヤー |名前 | | のルートAWS の例 |
+|----------|------|---------------|---------------|
+| **L4** |輸送 | IP + ポート (TCP/UDP) | NLB |
+| **L7** |アプリケーション | HTTP パス、ホスト ヘッダー | ALB |
 
 ```text
 Client HTTPS ──▶ ALB (SSL termination)
@@ -58,38 +59,38 @@ Client HTTPS ──▶ ALB (SSL termination)
                     └── /*      → target group B (static S3 via IP targets)
 ```
 
-| Feature | ALB (L7) | NLB (L4) |
-|---------|----------|----------|
-| Path routing | Yes | No |
-| WebSockets / HTTP/2 | Yes | TCP pass-through |
-| Static IP | Via NLB | Yes |
-| Latency | Slightly higher | Ultra-low |
+|特集 | ALB (L7) | NLB (L4) |
+|----------|----------|----------|
+|パスルーティング |はい |いいえ |
+| WebSocket / HTTP/2 |はい | TCP パススルー |
+|静的 IP | NLB経由 |はい |
+|レイテンシ |やや高め |超低価格 |
 
-**Health checks** — LB removes unhealthy targets; pairs with Auto Scaling.
+**ヘルスチェック** — LB は不健全なターゲットを削除します。 Auto Scaling とペアリングします。
 
 ## 4. DNS
 
-| Cloud | Service | Features |
-|-------|---------|----------|
-| AWS | Route 53 | Health checks, failover, geo routing |
-| Azure | Azure DNS | |
-| GCP | Cloud DNS | |
+|クラウド |サービス |特長 |
+|----------|-----------|----------|
+| AWS |ルート53 |ヘルスチェック、フェイルオーバー、地理的ルーティング |
+|アズール |アズール DNS | |
+| GCP |クラウド DNS | |
 
 ```text
 api.example.com  CNAME  →  myapp-alb-123.us-east-1.elb.amazonaws.com
                            (alias record in Route 53)
 ```
 
-| Routing policy | Use |
-|----------------|-----|
-| **Simple** | Single resource |
-| **Weighted** | Canary % traffic |
-| **Failover** | Primary + secondary health-checked |
-| **Geolocation** | EU users → EU endpoint |
+|ルーティングポリシー |使用 |
+|-----|-----|
+| **シンプル** |単一のリソース |
+| **加重** |カナリアのトラフィック % |
+| **フェイルオーバー** |プライマリ + セカンダリのヘルスチェック済み |
+| **地理位置情報** | EU ユーザー → EU エンドポイント |
 
-See networking DNS notes for global API zoning.
+グローバル API ゾーニングについては、ネットワーク DNS のメモを参照してください。
 
-## 5. CDN (edge)
+## 5. CDN (エッジ)
 
 **CloudFront**, **Azure CDN**, **Cloudflare** — cache at edge PoPs [Regions, AZs & edge](iii-regions-azs-and-edge.md).
 
@@ -98,14 +99,14 @@ User ──▶ CloudFront edge (cache HIT) → fast
 User ──▶ CloudFront edge (MISS) ──▶ origin (ALB or S3)
 ```
 
-## 6. Security groups vs NACLs
+## 6. セキュリティ グループと NACL の比較
 
-| | Security group | NACL |
-|---|----------------|------|
-| **Scope** | Instance / ENI | Subnet |
-| **State** | Stateful (return traffic auto-allowed) | Stateless |
-| **Rules** | Allow only | Allow + deny, ordered |
-| **Default** | Deny all inbound | Allow all (customize) |
+| |セキュリティグループ | NACL |
+|---|--|------|
+| **範囲** |インスタンス / ENI |サブネット |
+| **州** |ステートフル (戻りトラフィックは自動許可) |無国籍 |
+| **ルール** | | のみを許可します許可 + 拒否、順序付き |
+| **デフォルト** |すべての受信を拒否 |すべて許可 (カスタマイズ) |
 
 ```text
 Security group "web-tier"
@@ -114,20 +115,20 @@ Security group "web-tier"
   Outbound: all (or restrict to DB sg)
 ```
 
-**Best practice:** least privilege SGs; NACLs for subnet-level deny lists (e.g. block IP range).
+**ベスト プラクティス:** 最小権限の SG。サブネットレベルの拒否リストの NACL (ブロック IP 範囲など)。
 
-## 7. VPC endpoints (PrivateLink)
+## 7. __​​IT0__ エンドポイント (PrivateLink)
 
-Access AWS services **without** traversing public internet or NAT:
+公共のインターネットや NAT を経由せずに** AWS サービスにアクセスします。
 
-| Type | Example |
-|------|---------|
-| **Gateway** | S3, DynamoDB |
-| **Interface** | Secrets Manager, SQS, other APIs |
+|タイプ |例 |
+|-----|----------|
+| **ゲートウェイ** | S3、DynamoDB |
+| **インターフェース** | Secrets Manager、SQS、その他の API |
 
-Reduces NAT cost and keeps traffic on AWS backbone.
+NAT コストを削減し、AWS バックボーン上のトラフィックを維持します。
 
-## 8. Example three-tier VPC
+## 8. 3 層 VPC の例
 
 ```text
 ┌─────────────────────────────────────────────────┐
@@ -138,10 +139,10 @@ Reduces NAT cost and keeps traffic on AWS backbone.
 └─────────────────────────────────────────────────┘
 ```
 
-## 9. Kubernetes networking (brief)
+## 9. Kubernetes ネットワーキング (概要)
 
-- **Cluster** lives in VPC subnets (often private).
-- **Ingress** or cloud LB exposes HTTP services.
-- **Network policies** restrict pod-to-pod traffic.
+- **クラスター** は VPC サブネット (多くの場合プライベート) に存在します。
+- **Ingress** またはクラウド LB は HTTP サービスを公開します。
+- **ネットワーク ポリシー**はポッド間のトラフィックを制限します。
 
 **Related:** networking TCP/HTTP/DNS/Ingress notes, patterns [API Gateway & service mesh](../patterns-and-design/v-api-gateway-and-service-mesh.md).

@@ -1,18 +1,19 @@
 ---
 label: "III"
-subtitle: "Searching"
-group: "Data structures & algorithms"
+subtitle: "検索中"
+group: "データ構造とアルゴリズム"
 order: 3
 ---
-Searching
-Find whether a **target** exists (or where it sits) in a collection.
+検索中
 
-## 1. Linear search
-Scan from one end until you find the target or exhaust the structure.
+**ターゲット**がコレクション内に存在するかどうか (または、どこに存在するか) を調べます。
 
-- **Time O(n)** — **n** elements.
-- **Space O(1)** extra.
-- Works on **any** order; works on **linked** lists without random access.
+## 1. 線形探索
+ターゲットを見つけるか構造物を使い果たすまで、端からスキャンします。
+
+- **時間 O(n)** — **n** 要素。
+- **スペース O(1)** 追加。
+- **あらゆる**注文に対応します。ランダムアクセスなしで**リンクされた**リスト上で動作します。
 
 ```java
 // Compile: javac --release 22 …
@@ -26,13 +27,13 @@ public static int linearSearch(int[] a, int target) {
 }
 ```
 
-## 2. Binary search
-Requires a **sorted** array (or sorted order by `Comparator`).
+## 2. 二分探索
+**並べ替えられた**配列 (または `Comparator` による並べ替え順序) が必要です。
 
-- **Time O(log n)** — halve the search range each step.
-- **Space O(1)** iterative; **O(log n)** recursion stack if recursive.
+- **Time O(log n)** — ステップごとに検索範囲を半分にします。
+- **Space O(1)** 反復。 **O(log n)** 再帰的な場合は再帰スタック。
 
-**Invariant:** if target is present, its index lies in `[lo, hi]`.
+**不変:** ターゲットが存在する場合、そのインデックスは `[lo, hi]` にあります。
 
 ```java
 // Compile: javac --release 22 …
@@ -62,23 +63,23 @@ public static int binarySearchManual(int[] sorted, int target) {
 }
 ```
 
-**Common bug:** `mid = (lo + hi) / 2` can overflow in some languages; use **`lo + (hi - lo) / 2`**.
+**一般的なバグ:** `mid = (lo + hi) / 2` は一部の言語でオーバーフローする可能性があります。 **`lo + (hi - lo) / 2`** を使用してください。
 
-## 3. Binary search on answer (pattern)
-When the problem asks for the **minimum x** such that a predicate `P(x)` flips from false to true (monotone), binary search on **x** in a range — not on array indices.
+## 3. 答えの二分探索 (パターン)
+述語 `P(x)` が false から true (単調) に反転するような **最小 x** が問題で求められている場合は、配列インデックスではなく、範囲内の **x** に対して二分探索を行います。
 
-Examples: first bad version, capacity to ship packages in D days, minimum eating speed.
+例: 最初の不良バージョン、D 日で荷物を発送できる能力、最小の食事速度。
 
-## 4. Hash-based lookup
-With a **hash table** [Hash table](../data-structures/x-hash-table.md), average **O(1)** insert and lookup — no sorted order required; worst case **O(n)** without good hashing.
+## 4. ハッシュベースの検索
+**ハッシュ テーブル** [ハッシュ テーブル](../data-structures/x-hash-table.md) では、平均 **O(1)** の挿入と検索が行われます。並べ替え順序は必要ありません。最悪の場合、適切なハッシュがなければ **O(n)** になります。
 
-| Method | Preconditions | Time |
-|--------|---------------|------|
-| Linear | None | O(n) |
-| Binary | Sorted | O(log n) |
-| Hash | Hashable keys | O(1) average |
+|方法 |前提条件 |時間 |
+|------|------|------|
+|リニア |なし | O(n) |
+|バイナリ |並べ替え済み | O(log n) |
+|ハッシュ |ハッシュ可能なキー | O(1) 平均 |
 
-## 5. Solving with the JDK (already implemented)
+## 5. JDK による解決 (実装済み)
 
 ```java
 // Compile: javac --release 22 …
@@ -105,11 +106,11 @@ for (int x : data) {
 }
 ```
 
-| Task | JDK |
+|タスク | JDK |
 |------|-----|
-| Sorted array lookup | `Arrays.binarySearch` (sort first) |
-| List membership | `list.contains`, or `HashSet` for many queries |
-| Key → value | `HashMap.get`, `getOrDefault`, `containsKey` |
-| Count occurrences | `Collections.frequency` (list) or `Map.merge` |
+|ソートされた配列の検索 | `Arrays.binarySearch` (最初にソート) |
+|メンバーシップをリストする |多くのクエリには `list.contains` または `HashSet` |
+|キー → 値 | `HashMap.get`、`getOrDefault`、`containsKey` |
+|出現回数をカウントする | `Collections.frequency` (リスト) または `Map.merge` |
 
-**Interview vs production:** know the manual binary search loop; in projects call **`Arrays.binarySearch`** on sorted data.
+**インタビューと本番:** 手動二分探索ループを理解している。プロジェクトでは、ソートされたデータに対して **`Arrays.binarySearch`** を呼び出します。

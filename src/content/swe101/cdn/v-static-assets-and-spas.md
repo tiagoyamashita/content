@@ -1,13 +1,14 @@
 ---
 label: "V"
-subtitle: "Static assets & SPAs"
+subtitle: "静的資産と SPA"
 group: "CDN"
 order: 5
 ---
-CDN — static assets & SPAs
-Single-page apps (React, Vue, Svelte) ship **hashed static files** plus a small **HTML shell**. CDNs excel at serving the static layer globally.
+CDN — 静的資産と SPA
 
-## 1. Build output layout
+シングルページ アプリ (React、Vue、Svelte) には、**ハッシュされた静的ファイル** と小さな **HTML シェル**が同梱されています。 CDN は、静的レイヤーをグローバルに提供することに優れています。
+
+## 1. 出力レイアウトを構築する
 
 ```text
 dist/
@@ -20,7 +21,7 @@ dist/
 
 Vite/Webpack/Next static export emit **content hashes** in filenames — safe **`immutable`** caching.
 
-## 2. Deploy pipeline
+## 2. パイプラインをデプロイする
 
 ```text
 git push tag v1.2.0
@@ -42,7 +43,7 @@ aws s3 cp dist/index.html s3://bucket/index.html \
   --content-type "text/html"
 ```
 
-## 3. Why not purge everything on deploy
+## 3. デプロイ時にすべてをパージしないのはなぜですか
 
 | Approach | Downside |
 |----------|----------|
@@ -52,9 +53,9 @@ aws s3 cp dist/index.html s3://bucket/index.html \
 
 Only **`index.html`** (and service worker, if any) needs frequent invalidation.
 
-## 4. Service workers (PWA)
+## 4. サービスワーカー (PWA)
 
-Service workers cache aggressively — can **override CDN** in the browser.
+Service Worker は積極的にキャッシュします。**ブラウザーで CDN** をオーバーライドできます。
 
 | Practice | Why |
 |----------|-----|
@@ -62,9 +63,9 @@ Service workers cache aggressively — can **override CDN** in the browser.
 | `skipWaiting` + `clients.claim` | Careful — understand UX |
 | Cache bust on activate | Delete old caches |
 
-Misconfigured SW causes “deployed but users see old app” despite CDN purge.
+SW が正しく構成されていないと、CDN がパージされているにもかかわらず、「デプロイされているがユーザーに古いアプリが表示される」という問題が発生します。
 
-## 5. Images and media
+## 5. 画像とメディア
 
 | Type | CDN pattern |
 |------|-------------|
@@ -72,22 +73,22 @@ Misconfigured SW causes “deployed but users see old app” despite CDN purge.
 | **Video** | HLS/DASH segments — each `.ts` chunk long TTL |
 | **User uploads** | Separate origin/path; shorter TTL; auth via signed URLs |
 
-Use modern formats (**WebP**, **AVIF**) at build or via CDN **image optimization** (Cloudflare Polish, CloudFront image handler).
+ビルド時または CDN **イメージ最適化** (Cloudflare Polish、CloudFront イメージ ハンドラー) 経由で、最新の形式 (**WebP**、**AVIF**) を使用します。
 
-## 6. Compression
+## 6. 圧縮
 
-Enable **Brotli/gzip** at CDN or origin:
+CDN またはオリジンで **Brotli/gzip** を有効にします。
 
 ```http
 Content-Encoding: br
 Vary: Accept-Encoding
 ```
 
-Cache key must include **encoding** — otherwise gzip client gets br bytes.
+キャッシュ キーには **エンコーディング** が含まれている必要があります。そうでない場合、gzip クライアントは br バイトを取得します。
 
-## 7. Subresource integrity (optional)
+## 7. サブリソースの整合性 (オプション)
 
-For third-party scripts from CDN:
+CDN のサードパーティ スクリプトの場合:
 
 ```html
 <script src="https://cdn.example.com/lib.js"
@@ -95,17 +96,17 @@ For third-party scripts from CDN:
         crossorigin="anonymous"></script>
 ```
 
-SRI verifies file content — good for supply chain; your own hashed assets already pin by URL.
+SRI はファイルの内容を検証します。サプライ チェーンに適しています。独自のハッシュ化されたアセットはすでに URL によって固定されています。
 
-## 8. Platform-managed CDN
+## 8. プラットフォーム管理の CDN
 
-| Platform | You manage |
-|----------|------------|
-| **Vercel / Netlify / CF Pages** | Git push; platform sets headers |
-| **S3 + CloudFront** | Full control — headers, invalidation, OAC |
+|プラットフォーム |あなたが管理します |
+|----------|-----------|
+| **Vercel / Netlify / CF ページ** | Git プッシュ;プラットフォームはヘッダーを設定します。
+| **S3 + CloudFront** |フル コントロール — ヘッダー、無効化、OAC |
 
-Managed platforms encode best practices; custom S3+CDN teaches the underlying knobs.
+マネージド プラットフォームにはベスト プラクティスがコード化されています。カスタム S3+CDN は、基礎となるノブを教えます。
 
-## Next
+＃＃ 次
 
 Continue with [APIs & dynamic content](vi-apis-and-dynamic-content.md) for cacheable GET endpoints and edge logic.

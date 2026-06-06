@@ -1,13 +1,14 @@
 ---
 label: "IV"
-subtitle: "Least-privilege runners"
+subtitle: "最も権限のないランナー"
 group: "CI/CD"
 order: 4
 ---
-Least-privilege runners
-**Runners** execute pipeline steps with whatever credentials and network access you grant. Default to **minimum permissions** per job — not org-wide admin tokens.
+最も権限のないランナー
 
-## 1. Principle
+**ランナー**は、許可された資格情報とネットワーク アクセスを使用してパイプライン ステップを実行します。デフォルトは、組織全体の管理者トークンではなく、ジョブごとの **最小権限** です。
+
+## 1. 原則
 
 | Resource | Least privilege means |
 |----------|------------------------|
@@ -16,9 +17,9 @@ Least-privilege runners
 | **K8s service account** | One namespace, one deploy role |
 | **Network** | Build runners cannot reach prod DB |
 
-## 2. GitHub Actions permissions
+## 2. GitHub アクション権限
 
-Set at **workflow** or **job** level:
+**ワークフロー** または **ジョブ** レベルで設定します:
 
 ```yaml
 # Default deny — add only what you need
@@ -52,9 +53,9 @@ jobs:
 | `packages: write` | Push to GitHub Container Registry |
 | `pull-requests: write` | Comment bot, label PR |
 
-## 3. GitLab job tokens
+## 3. GitLab ジョブ トークン
 
-GitLab **CI_JOB_TOKEN** is scoped to the project and allowed downstream projects you configure.
+GitLab **CI_JOB_TOKEN** の範囲はプロジェクトに限定され、構成したダウンストリーム プロジェクトが許可されます。
 
 ```yaml
 # Limit who can trigger deploy
@@ -69,16 +70,16 @@ deploy:
 
 Use **protected branches** + **protected variables** so only maintainers merge to `main`.
 
-## 4. Self-hosted runners
+## 4. 自己ホスト型ランナー
 
-| Risk | Mitigation |
-|------|------------|
-| Workspace pollution between jobs | **Ephemeral** runner (new VM/container per job) |
-| Malicious PR code runs on your network | Do **not** run fork PRs on self-hosted with secrets |
-| Runner compromise = long-lived access | Separate runner pools per trust zone |
-| Docker socket access | Equivalent to root — isolate DinD |
+|リスク |緩和 |
+|------|-----------|
+|ジョブ間のワークスペース汚染 | **一時** ランナー (ジョブごとに新しい VM/ コンテナー) |
+|悪意のある PR コードがネットワーク上で実行されます。シークレットを使用してセルフホストでフォーク PR を実行しないでください。
+|ランナーの妥協 = 長期間のアクセス |トラストゾーンごとに個別のランナープール |
+| Docker ソケット アクセス |ルートと同等 — DinD を分離 |
 
-**GitHub** — use runner groups and labels:
+**GitHub** — ランナー グループとラベルを使用します。
 
 ```yaml
 jobs:
@@ -92,7 +93,7 @@ jobs:
 
 **Ephemeral pattern:** GitHub Actions scale-set, GitLab Runner with `docker+machine`, or K8s executor that deletes pod after job.
 
-## 5. Fork and untrusted code
+## 5. フォークと信頼できないコード
 
 ```yaml
 # Safe pattern — standard pull_request event
@@ -109,7 +110,7 @@ jobs:
 
 Avoid **`pull_request_target`** unless you need base-branch secrets and never checkout untrusted code from the PR head without review.
 
-## 6. Jenkins agent isolation
+## 6. Jenkins エージェントの分離
 
 ```groovy
 pipeline {
@@ -128,9 +129,9 @@ pipeline {
 }
 ```
 
-Store production credentials in **folder-scoped** credentials, not global.
+本番認証情報は、グローバルではなく **フォルダー スコープ** 認証情報に保存します。
 
-## 7. Network segmentation diagram
+## 7. ネットワークのセグメンテーション図
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Runner network zones">
   <rect x="12" y="32" width="100" height="48" rx="4" fill="rgba(59,130,246,0.1)" stroke="#60a5fa"/>
@@ -145,7 +146,7 @@ Store production credentials in **folder-scoped** credentials, not global.
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Separate runner pools by trust zone</text>
 </svg></figure>
 
-## 8. Checklist
+## 8. チェックリスト
 
 - [ ] Workflow `permissions` explicitly set (not default write-all)
 - [ ] Prod jobs use `environment` protection

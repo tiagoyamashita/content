@@ -1,18 +1,23 @@
 ---
 label: "V"
-subtitle: "Arrays, varargs & lists"
+subtitle: "配列、可変引数、リスト"
 group: "Java"
 groupOrder: 1
 order: 5
 ---
-Java — Part V
-Fixed-size arrays, varargs, `java.util.Arrays`, and when to prefer `ArrayList`.
+Java — パート V
 
-**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
-## 1. Declaring and indexing
 
-Arrays are **fixed length**, indexed from **`0`**, with a **`length`** field (not a method).
+
+
+固定サイズの配列、可変引数、`java.util.Arrays`、そしていつを好むか`ArrayList`。
+
+**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
+
+## 1. 宣言とインデックスの付与
+
+配列は **固定長**、** からインデックス付けされます`0`**、**付き`length`** フィールド (メソッドではありません)。
 
 ```java
 // Compile: javac --release 22 …
@@ -23,10 +28,10 @@ int n = scores.length;             // 3
 String[][] grid = {{"a", "b"}, {"c", "d"}}; // array of arrays
 ```
 
-- **`int[] a`** and **`int a[]`** are equivalent — prefer **`int[]`** for readability.
-- Multi-dimensional arrays are **jagged**: each row can have a different length.
+- **`int[] a`** そして **`int a[]`** は同等です - ** を優先します`int[]`** 読みやすさのため。
+- 多次元配列は**ギザギザ**です。各行は異なる長さを持つことができます。
 
-## 2. `java.util.Arrays` helpers
+＃＃２。`java.util.Arrays`ヘルパー
 
 ```java
 // Compile: javac --release 22 …
@@ -39,11 +44,11 @@ int[] copy = Arrays.copyOf(data, data.length);
 Arrays.fill(copy, 0);
 ```
 
-For algorithmic detail (complexity, when binary search applies), see **CS101 → Data structures → Array** and **Algorithms → Searching**.
+アルゴリズムの詳細 (二分探索が適用される場合の複雑さ) については、**CS101 → データ構造 → 配列** および **アルゴリズム → 検索** を参照してください。
 
-## 3. Varargs (`...`)
+## 3. 可変引数 (`...`)
 
-A method can accept zero or more trailing arguments of one type:
+メソッドは、0個以上の1つの型の末尾引数を受け取ることができます。
 
 ```java
 // Compile: javac --release 22 …
@@ -58,16 +63,16 @@ static int sum(int first, int... rest) {
 // calls: sum(1), sum(1, 2, 3)
 ```
 
-Inside the method, **`rest`** is a **`int[]`**. Only **one** varargs parameter per method, and it must be last.
+メソッド内では、**`rest`**は**です`int[]`**。可変引数パラメータはメソッドごとに **1 つ** のみであり、最後になければなりません。
 
-## 4. Array vs `List`
+## 4. 配列との比較`List`
 
-| | `int[]` / `T[]` | `ArrayList<T>` |
-|--|-----------------|----------------|
-| Size | Fixed at creation | Grows as needed |
-| Primitives | Native (`int[]`) | Boxes (`Integer`) unless specialized APIs |
-| API | `length`, `Arrays.*` | `add`, `remove`, `size()` |
-| When to use | Hot numeric buffers, interop | Most application collections |
+| |`int[]`/`T[]`|`ArrayList<T>`|
+|--|--|--|
+|サイズ |作成時に修正 |必要に応じて成長します |
+|プリミティブ |ネイティブ (`int[]`) |ボックス (`Integer`) 特殊な APIs を除く。
+| API |`length`、`Arrays.*`|`add`、`remove`、`size()`|
+|いつ使用するか |ホットな数値バッファー、相互運用性 |ほとんどのアプリケーション コレクション |
 
 ```java
 // Compile: javac --release 22 …
@@ -82,9 +87,9 @@ for (String name : names) {
 }
 ```
 
-Prefer **`List.of(...)`** or **`List.copyOf(...)`** for small immutable snapshots.
+好む **`List.of(...)`** または **`List.copyOf(...)`** 小さな不変スナップショットの場合。
 
-## 5. Enhanced for and bounds
+## 5. と境界のために拡張された
 
 ```java
 // Compile: javac --release 22 …
@@ -93,4 +98,4 @@ for (int score : scores) {
 }
 ```
 
-Out-of-range access throws **`ArrayIndexOutOfBoundsException`** — validate indices when they come from user input.
+範囲外アクセスによるスロー **`ArrayIndexOutOfBoundsException`** — ユーザー入力から取得されたインデックスを検証します。

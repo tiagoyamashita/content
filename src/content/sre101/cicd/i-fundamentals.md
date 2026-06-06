@@ -1,27 +1,28 @@
 ---
 label: "I"
-subtitle: "Fundamentals"
+subtitle: "基本"
 group: "CI/CD"
 order: 1
 ---
-CI/CD — Part I: Fundamentals
-Continuous Integration, Delivery, and Deployment.
+CI/CD — パート I: 基本
 
-## 1. What is CI/CD
-- CI (Continuous Integration): automatically build & test every commit.
-- CD (Continuous Delivery): keep the build always releasable to staging.
-- CD (Continuous Deployment): auto-deploy every green build to production.
-- Goal: shrink the feedback loop — catch bugs when they are still cheap to fix.
-- Key insight: integration pain scales with time between merges.
+継続的な統合、配信、展開。
 
-## 2. Pipeline anatomy
-A pipeline is a directed graph of stages → jobs → steps.
+## 1. CI/CD とは何ですか
+- CI (継続的インテグレーション): すべてのコミットを自動的にビルドしてテストします。
+- CD (継続的デリバリー): ビルドを常にステージングにリリースできるようにします。
+- CD (継続的デプロイメント): すべてのグリーン ビルドを実稼働環境に自動デプロイします。
+- 目標: フィードバック ループを縮小します。修正がまだ安価なときにバグを発見します。
+- 重要な洞察: 統合の痛みはマージ間の時間に応じて変化します。
 
-- Stage: logical group (build, test, deploy).
-- Job: unit of work that runs on one runner/agent.
-- Step: individual command or action inside a job.
+## 2. パイプラインの構造
+パイプラインは、ステージ→ジョブ→ステップの有向グラフです。
 
-Typical linear pipeline:
+- ステージ: 論理グループ (ビルド、テスト、デプロイ)。
+- ジョブ: 1 人のランナー/エージェント上で実行される作業単位。
+- ステップ: ジョブ内の個々のコマンドまたはアクション。
+
+典型的な線形パイプライン:
 
 ```
 ┌───────┐   ┌──────┐   ┌──────────┐   ┌────────┐
@@ -30,52 +31,52 @@ Typical linear pipeline:
 ```
 
 
-- Stages can run jobs in parallel (fan-out) and rejoin (fan-in).
-- A failing job stops the stage; downstream stages are skipped.
+- ステージはジョブを並列実行 (ファンアウト) したり、再結合 (ファンイン) したりできます。
+- ジョブが失敗するとステージが停止します。下流段階はスキップされます。
 
-## 3. Triggers & branches
-What kicks off a pipeline run:
-- Push to a branch (feature/*, main).
-- Pull / merge request opened or updated.
-- Schedule (cron — nightly test suites, dependency audits).
-- Manual dispatch (release buttons).
-- Webhook from another system (e.g., container registry push).
+## 3. トリガーとブランチ
+パイプラインの実行を開始するものは次のとおりです。
+- ブランチ (feature/*、main) にプッシュします。
+- プル/マージ リクエストがオープンまたは更新されました。
+- スケジュール (cron — 夜間のテスト スイート、依存関係の監査)。
+- 手動ディスパッチ (ボタンを放す)。
+- 別のシステムからの Webhook (コンテナー レジストリのプッシュなど)。
 
-Branch strategies:
-- Trunk-based: everyone merges to main frequently; feature flags hide WIP.
-- Gitflow: long-lived develop + release branches; heavier merge overhead.
-- GitHub flow: main is always deployable; PRs from short-lived branches.
+ブランチ戦略:
+- トランクベース: 全員が頻繁にメインにマージします。機能フラグは WIP を非表示にします。
+- Gitflow: 長期間存続する開発 + リリース ブランチ。マージのオーバーヘッドが大きくなります。
+- GitHub フロー: メインは常にデプロイ可能です。短命なブランチからの PR。
 
-## 4. Artifacts & caching
-Artifact: file output that survives the job (JAR, Docker image, test report).
+## 4. アーティファクトとキャッシュ
+アーティファクト: ジョブ後に残るファイル出力 (JAR、Docker 画像、テスト レポート)。
 
-- Upload from one job → download in a later job.
-- Retention policy: keep artifacts for N days or N runs.
+- 1 つのジョブからアップロード → 後のジョブでダウンロード。
+- 保持ポリシー: N 日間または N 回の実行のために成果物を保持します。
 
-Cache: re-use expensive inputs across runs (node_modules, .m2, pip).
-- Keyed by a hash (lock-file hash) → miss = fresh install, hit = fast restore.
-- Never cache build outputs (use artifacts for that).
-- Cache + artifact together: restore cache → build → upload artifact.
+キャッシュ: 実行全体で高価な入力を再利用します (node_modules、.m2、pip)。
+- ハッシュ (ロックファイル ハッシュ) によってキー設定される → ミス = 新規インストール、ヒット = 高速復元。
+- ビルド出力をキャッシュしないでください (そのためにアーティファクトを使用します)。
+- キャッシュとアーティファクトを一緒に: キャッシュを復元 → ビルド → アーティファクトをアップロード。
 
-## 5. Environments & secrets
-Environment: named deployment target with its own protection rules.
-- dev / staging / production — each can require a reviewer approval gate.
+## 5. 環境と秘密
+環境: 独自の保護ルールを持つ名前付き展開ターゲット。
+- 開発 / ステージング / プロダクション — それぞれにレビュー担当者の承認ゲートが必要になる場合があります。
 
-Secrets: sensitive values injected at runtime, never stored in code.
-- Stored in the CI platform's secret vault (GitHub Secrets, etc.).
-- Masked in logs — treated as opaque strings.
-- Scope: org → repo → environment (narrowest scope wins).
+シークレット: 実行時に挿入される機密値。コードには決して保存されません。
+- CI プラットフォームの秘密保管庫 (GitHub シークレットなど) に保管されます。
+- ログ内でマスクされる - 不透明な文字列として扱われます。
+- スコープ: 組織 → リポジトリ → 環境 (最も狭いスコープが優先されます)。
 
-Best practices:
-- Rotate secrets on a schedule.
-- Use OIDC (OpenID Connect) to get short-lived cloud credentials instead of
-long-lived API keys — no secret to leak.
+ベストプラクティス:
+- スケジュールに従ってシークレットをローテーションします。
+- 有効期間の短いクラウド認証情報を取得するには、代わりに OIDC (OpenID Connect) を使用します。
+有効期間の長い API キー — 秘密が漏洩することはありません。
 
-## 6. Remember & rehearse
+## 6. 覚えてリハーサルする
 
-**Next:** **Tools & platforms** submenu — GitHub Actions, GitLab CI, Jenkins, Docker in CI, CircleCI, Tekton, and a platform decision guide. **Security & best practices** submenu — supply chain, OIDC, runners, testing, DORA, release gates. **Ansible & Jenkins** submenu — configuration management, Vault, deploy pipelines. **Terraform** submenu — IaC, state, modules, CI plan/apply.
+**次へ:** **ツールとプラットフォーム** サブメニュー — GitHub アクション、GitLab CI、Jenkins、CI の Docker、CircleCI、Tekton、およびプラットフォーム決定ガイド。 **セキュリティとベスト プラクティス** サブメニュー — サプライ チェーン、OIDC、ランナー、テスト、DORA、リリース ゲート。 **Ansible および Jenkins** サブメニュー - 構成管理、Vault、パイプラインのデプロイ。 **Terraform** サブメニュー — IaC、状態、モジュール、CI 計画/適用。
 
-- Sketch a three-stage pipeline (build → test → deploy) with a fan-out test job.
-- Explain the difference between Continuous Delivery and Continuous Deployment.
-- Name two trigger types and when you would use each.
-- Why is OIDC preferred over static API keys in CI?
+- ファンアウト テスト ジョブを使用して 3 段階のパイプライン (ビルド → テスト → デプロイ) をスケッチします。
+- 継続的デリバリーと継続的デプロイメントの違いを説明します。
+- 2 つのトリガー タイプと、それぞれをいつ使用するかを挙げてください。
+- CI では、静的 API キーよりも OIDC が優先されるのはなぜですか?

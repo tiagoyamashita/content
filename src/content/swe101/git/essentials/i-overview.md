@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "Git"
 order: 1
 ---
-Git essentials — overview
-Day-to-day Git: configure once, then **add → commit → push**, branch for features, sync with **remotes**, recover from mistakes.
+Git の要点 — 概要
 
-## Map of this submenu
+日常の Git: 一度構成し、**追加 → コミット → プッシュ**、機能に分岐し、**リモート**と同期し、間違いから回復します。
+
+## このサブメニューのマップ
 
 | Note | Focus |
 |------|--------|
@@ -18,9 +19,9 @@ Day-to-day Git: configure once, then **add → commit → push**, branch for fea
 | [Undo & history](vi-undo-and-history.md) | restore, reset, revert, stash |
 | [Workflows & conventions](vii-workflows-and-conventions.md) | GitHub flow, commits, `.gitignore` |
 
-**Related:** **GitHub** topic (PRs, hosting), CI/CD fundamentals (triggers on push).
+**関連:** **GitHub** トピック (PR、ホスティング)、CI/CD の基礎 (プッシュ時のトリガー)。
 
-## Minimum daily loop
+## 毎日の最小ループ
 
 ```bash
 git status
@@ -30,7 +31,7 @@ git pull --rebase
 git push
 ```
 
-## Rehearsal
+## リハーサル
 
 - `git add` vs `git commit`?
 - Merge vs rebase — one sentence each?

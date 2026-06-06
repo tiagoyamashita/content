@@ -1,36 +1,36 @@
 ---
 label: "III"
-subtitle: "TLS handshake and certificates"
-group: "Networking"
+subtitle: "TLS ハンドシェイクと証明書"
+group: "ネットワーク"
 order: 3
 ---
-Networking — Part III: TLS handshake and certificates
+ネットワーキング — パート III: TLS ハンドシェイクと証明書
 
-**TLS** (successor to SSL) provides **confidentiality** (encryption), **integrity** (tamper detection), and usually **server authentication** (and optionally **client authentication**) using **public-key cryptography** and **X.509 certificates**.
+**TLS** (SSL の後継) は、**機密性** (暗号化)、**完全性** (改ざん検出)、そして通常は **公開キー暗号化** と **X.509 証明書**を使用した **サーバー認証** (およびオプションで **クライアント認証**) を提供します。
 
-## 1. What the handshake achieves
+## 1. ハンドシェイクによって達成されるもの
 
-Before application data (e.g. HTTP):
+アプリケーションデータの前 (例: HTTP):
 
-1. **Agree on TLS version and cipher suite** — algorithms for key exchange, encryption, and MAC/AEAD.
-2. **Authenticate the server** — client verifies the server’s certificate chain against trusted **CAs** (certificate authorities).
-3. **Establish shared secrets** — often via **Diffie–Hellman** (or ECDH) so **forward secrecy** is possible: compromise of the server’s long-term key does not decrypt old sessions if ephemeral keys were used.
-4. **Derive session keys** — symmetric keys used for bulk encryption of the rest of the connection.
+1. **TLS バージョンと暗号スイートについて同意します** — 鍵交換、暗号化、および MAC/AEAD のアルゴリズム。
+2. **サーバーを認証する** - クライアントは、信頼された **CA** (認証局) に対してサーバーの証明書チェーンを検証します。
+3. **共有秘密を確立します** - 多くの場合、**Diffie–Hellman** (または ECDH) を介して **前方秘匿** が可能です。一時的なキーが使用されている場合、サーバーの長期キーが侵害されても古いセッションが復号されません。
+4. **セッション キーの導出** — 残りの接続の一括暗号化に使用される対称キー。
 
-## 2. Classic full handshake (conceptual)
+## 2. 古典的なフル ハンドシェイク (概念的)
 
-Modern TLS 1.2/1.3 differ in detail; a simplified story:
+最新の TLS 1.2/1.3 は詳細が異なります。単純化した話:
 
-1. **ClientHello** — supported versions, cipher suites, random nonce, key share (TLS 1.3), **SNI** (Server Name Indication: which hostname the client wants — critical for shared IPs).
-2. **ServerHello** — chosen parameters, server **certificate chain**, optional **CertificateRequest** (for mutual TLS).
-3. **Client** verifies certificates, finishes key exchange, sends **Finished** (proof of handshake transcript).
-4. **Server Finished** — both sides now derive **traffic keys** and send **encrypted** application data (HTTP).
+1. **ClientHello** - サポートされているバージョン、暗号スイート、ランダムなノンス、キー共有 (TLS 1.3)、**SNI** (サーバー名表示: クライアントが希望するホスト名 - 共有 IP に重要)。
+2. **ServerHello** — 選択されたパラメータ、サーバー **証明書チェーン**、オプションの **CertificateRequest** (相互 TLS 用)。
+3. **クライアント**は証明書を検証し、鍵交換を完了し、**Finished** (ハンドシェイク記録の証明) を送信します。
+4. **サーバーが完了** — 双方が **トラフィック キー**を取得し、**暗号化された**アプリケーション データ (HTTP) を送信します。
 
-**TLS 1.3** reduces round trips (often **1-RTT** for first connection; **0-RTT** resumption exists but has replay trade-offs).
+**TLS 1.3** ではラウンドトリップが削減されます (多くの場合、最初の接続では **1-RTT**、**0-RTT** 再開は存在しますが、リプレイのトレードオフがあります)。
 
-### Sequence diagram (TLS 1.2–style, simplified)
+### シーケンス図 (TLS 1.2 スタイル、簡略化)
 
-Diagram below: **TCP is already up**; then the **TLS record layer** exchanges handshake messages. Cipher names and optional messages (**ServerKeyExchange**, **client auth**) are omitted for clarity. **TLS 1.3** encrypts most of the server’s first flight and usually completes in fewer round trips—same goals (agree keys, authenticate server, **Finished** proves transcript integrity).
+以下の図: **TCP はすでに起動しています**。その後、**TLS レコード層** がハンドシェイク メッセージを交換します。わかりやすくするために、暗号名とオプションのメッセージ (**ServerKeyExchange**、**クライアント認証**) は省略されています。 **TLS 1.3** はサーバーの最初のフライトの大部分を暗号化し、通常はより少ない往復で完了します。同じ目標 (キーの一致、サーバーの認証、**完了** でトランスクリプトの整合性の証明) です。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 520" role="img" aria-label="TLS 1.2 simplified handshake sequence after TCP is established">
   <defs>
@@ -82,23 +82,23 @@ Diagram below: **TCP is already up**; then the **TLS record layer** exchanges ha
   <text x="12" y="508" fill="#71717a" font-size="10">Alert records signal errors; TLS 1.3 shortens this flight — same authentication and key goals.</text>
 </svg></figure>
 
-## 3. Certificates and trust
+## 3. 証明書と信頼
 
 - A **leaf certificate** binds a **public key** to names (**CN** / **SAN**: DNS names like `api.example.com`).
 - The client chains to a **root CA** in its trust store (OS or browser).
 - **Validity period**, revocation (**OCSP** / **CRL**), and **pinning** (rare, brittle) affect real-world security.
 
-## 4. TLS termination
+## 4. TLS の終了
 
-**Edge termination:** load balancer or **ingress** decrypts TLS and may forward **plain HTTP** to pods (cluster-internal) or re-encrypt to backends (**mTLS**). Implications:
+**エッジ終端:** ロード バランサーまたは **ingress** は TLS を復号化し、**プレーン HTTP** をポッド (クラスター内部) に転送するか、バックエンド (**mTLS**) に再暗号化する場合があります。影響:
 
-- Backends see **X-Forwarded-Proto: https** or similar when the edge sets it.
-- **End-to-end TLS** to the app requires configuring the proxy to **pass-through** or **re-encrypt** with its own certs.
+- バックエンドは、エッジが設定するときに **X-Forwarded-Proto: https** または同様のものを参照します。
+- アプリへの **エンドツーエンド TLS** には、独自の証明書を使用して **パススルー** または **再暗号化**するようにプロキシを構成する必要があります。
 
-## 5. Common pitfalls
+## 5. よくある落とし穴
 
-- **Mixed content** — HTTPS page loading HTTP subresources (blocked or warned).
-- **SNI** missing or wrong — virtual hosting on one IP fails or serves the wrong cert.
-- **Expired or mis-issued certs** — monitoring and automation (**ACME** / Let’s Encrypt) reduce outages.
+- **混合コンテンツ** — HTTP サブリソースを読み込む HTTPS ページ (ブロックまたは警告)。
+- **SNI** が欠落しているか間違っています - 1 つの IP での仮想ホスティングが失敗するか、間違った証明書が提供されます。
+- **証明書の期限切れまたは誤発行** - 監視と自動化 (**ACME** / Let's Encrypt) により、停止が軽減されます。
 
-Next: **DNS** (how names become addresses before TCP/TLS), then **ingress** and edge routing.
+次: **DNS** (TCP/TLS の前に名前がアドレスになる方法)、次に **ingress** とエッジ ルーティング。

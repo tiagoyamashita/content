@@ -1,15 +1,16 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "PL/SQL"
 order: 1
 ---
-PL/SQL — overview
-**PL/SQL** (Procedural Language/SQL) is Oracle’s procedural extension to **SQL**. You run it inside the **Oracle Database** — anonymous blocks, stored **procedures**, **functions**, **packages**, and **triggers** — close to the data for batch jobs, legacy enterprise apps, and rules that must hold regardless of which client connects.
+PL/SQL — 概要
+
+**PL/SQL** (手続き型言語/SQL) は、**SQL** に対する Oracle の手続き型拡張機能です。これは、**Oracle Database** (匿名ブロック、ストアド **プロシージャ**、**関数**、**パッケージ**、**トリガー**) 内で実行されます。これらは、バッチ ジョブ、レガシー エンタープライズ アプリ、および接続するクライアントに関係なく保持する必要があるルールのデータに近いものです。
 
 This track assumes you know relational basics from [Relational (SQL)](../../CS101/databases/ii-relational.md). For open-source Postgres patterns, see the [Postgres](../postgres/i-overview.md) track — syntax differs, but procedural-in-the-DB tradeoffs are similar.
 
-## Map of this track
+## このトラックの地図
 
 | Part | Focus |
 |------|--------|
@@ -21,18 +22,18 @@ This track assumes you know relational basics from [Relational (SQL)](../../CS10
 | **VI — Exceptions & bulk SQL** | `EXCEPTION`, `BULK COLLECT`, `FORALL`, pragmas |
 | **VII — Database optimizations** | Set-based SQL, plans, binds, bulk tuning checklist |
 
-## When PL/SQL makes sense
+## PL/SQL が意味をなす場合
 
-| Use PL/SQL in the DB | Prefer application code |
-|----------------------|-------------------------|
-| Complex multi-step SQL on large sets (ETL, reporting) | HTTP APIs, UI, orchestration |
-| Rules that every client must obey (constraints + triggers) | Business logic that changes often |
-| Nightly batch close / ledger posting | Microservices with separate deploy cycles |
-| Legacy Oracle Forms, EBS, custom ERP modules | Greenfield cloud-native services |
+| DB で PL/SQL を使用する |アプリケーション コードを優先する |
+|----------------------|----------------------|
+|大規模なセットでの複雑なマルチステップ SQL (ETL、レポート) | HTTP APIs、UI、オーケストレーション |
+|すべてのクライアントが従わなければならないルール (制約 + トリガー) |頻繁に変更されるビジネス ロジック |
+|夜間のバッチクローズ/元帳転記 |個別のデプロイサイクルを持つマイクロサービス |
+|レガシー Oracle Forms、EBS、カスタム ERP モジュール |グリーンフィールドのクラウドネイティブ サービス |
 
-**Default for new services:** keep most logic in the app; use PL/SQL where Oracle is the system of record and teams already maintain packages.
+**新しいサービスのデフォルト:** ほとんどのロジックをアプリ内に保持します。 PL/SQL を使用します。Oracle が記録システムであり、チームがすでにパッケージを保守しています。
 
-## Where code runs
+## コードが実行される場所
 
 ```text
 Client (Java, Python, SQL*Plus, SQL Developer)
@@ -47,7 +48,7 @@ Client (Java, Python, SQL*Plus, SQL Developer)
 
 PL/SQL and SQL share **one transaction** in a session — `COMMIT`/`ROLLBACK` apply to both.
 
-## Tooling
+## ツーリング
 
 | Tool | Role |
 |------|------|
@@ -56,7 +57,7 @@ PL/SQL and SQL share **one transaction** in a session — `COMMIT`/`ROLLBACK` ap
 | **Oracle Live SQL** | Browser sandbox (oracle.com/livesql) |
 | **JDBC / OCI** | App calls: `{ call pkg.proc(?) }` |
 
-Example anonymous block in SQL Developer or SQLcl:
+SQL Developer または SQLcl の匿名ブロックの例:
 
 ```sql
 SET SERVEROUTPUT ON
@@ -66,9 +67,9 @@ END;
 /
 ```
 
-## Block anatomy (preview)
+## ブロックの解剖学 (プレビュー)
 
-Every PL/SQL unit follows:
+すべての PL/SQL ユニットは次のようになります。
 
 ```text
 [DECLARE   -- optional declarations]
@@ -82,7 +83,7 @@ END;
 
 The slash (`/`) tells SQL*Plus/SQLcl to execute the block; SQL Developer often uses **Run Script** (F5) vs **Run Statement** (Ctrl+Enter).
 
-## Oracle vs Postgres procedural SQL
+## Oracle と Postgres 手続き型 SQL
 
 | | Oracle PL/SQL | Postgres PL/pgSQL |
 |---|---------------|-------------------|
@@ -91,8 +92,8 @@ The slash (`/`) tells SQL*Plus/SQLcl to execute the block; SQL Developer often u
 | **Trigger syntax** | `:NEW` / `:OLD` row triggers | `NEW` / `OLD` record |
 | **Typical employer context** | Banking, ERP, government Oracle estates | Startups, cloud-native, Supabase/Neon |
 
-Knowing PL/SQL helps you maintain Oracle systems; it does not replace learning SQL and your app stack.
+PL/SQL を理解すると、Oracle システムの保守に役立ちます。 SQL とアプリ スタックの学習に代わるものではありません。
 
-## Next
+＃＃ 次
 
 Continue with [Blocks & variables](ii-blocks-and-variables.md) for declarations, anchors, and assignment.

@@ -1,31 +1,32 @@
 ---
 label: "V"
-subtitle: "Queue"
-group: "Data structures & algorithms"
+subtitle: "列"
+group: "データ構造とアルゴリズム"
 order: 5
 ---
-Queue — FIFO linear ADT
-A **queue** is a **linear abstract data type**, like a **stack**, but it follows **first-in, first-out (FIFO)**: the **first** element **enqueued** is the **first** **dequeued**. Stacks use **last-in, first-out (LIFO)** — the newest leaves first.
+キュー — FIFO リニア ADT
 
-**Java baseline:** snippets assume **Java SE 22** (`javac --release 22`). They also run on **JDK 21 LTS**. In the JDK, use **`Queue<E>`** / **`Deque<E>`** with **`ArrayDeque<E>`** for a typical FIFO queue (see examples below).
+**キュー**は**スタック**のような**線形抽象データ型**ですが、**先入れ先出し(FIFO)**に従います。**最初**の要素**エンキュー**は、**最初**の**デキュー**です。スタックでは **後入れ先出し (LIFO)**、つまり最新のリーフが最初に使用されます。
 
-## 1. Queue as an ADT
-The queue is defined by **operations**, not by whether you use a linked list or an array underneath.
+**Java ベースライン:** スニペットは **Java SE 22** (`javac --release 22`）。これらは **JDK 21 LTS** でも実行されます。 JDK では ** を使用します`Queue<E>`** / **`Deque<E>`** と **`ArrayDeque<E>`** 一般的な FIFO キューの場合 (以下の例を参照)。
 
-**Core operations** (like **stacks**, queues almost always expose **`size()`**: **Θ(1)** via a counter on enqueue/dequeue, or from head/tail indices on a ring buffer.)
+## 1. ADT としてキューに入れる
+キューは、リンク リストを使用するか、下位の配列を使用するかによって定義されるのではなく、**操作** によって定義されます。
 
-- **`enqueue(x)`** — typically **void**; accepts a data element and attaches it at the **back** of the queue.
-- **`dequeue()`** — takes **no argument** and **cannot** name *which* element to remove. The contract is always: remove and return the element at the **front** — i.e. whoever was **enqueued first** among those still present. (If `1` was the first value enqueued, the **first** `dequeue()` removes `1`; you still call **`dequeue()`**, not “dequeue 1”.)
-- **`peek()`** / **`front()`** — returns the front element **without** removing it (some APIs reuse “peek/top” wording from stacks).
-- **`isEmpty()`** — true if the queue has no elements (often `size == 0` or **`front == null`** on a linked backing).
-- **`clear()`** — empties the queue (with a linked list, dropping **`front`** may be enough in **GC** languages so unreachable nodes are reclaimed; some APIs also walk and null links explicitly).
-- **`size()`** — returns how many elements are stored (same role as on a stack ADT).
+**コア操作** (**スタック**など、キューはほとんどの場合**を公開します)`size()`**: **Θ(1)** エンキュー/デキューのカウンター経由、またはリング バッファーのヘッド/テール インデックスから。)
 
-**What queues are not for**  
-Queues are **not** designed for **random index access**, **search**, or **insert/remove in the middle**. For that, use another structure (list, deque, array as a sequence).
+- **`enqueue(x)`** - 通常は **無効**。データ要素を受け入れ、それをキューの**後ろ**に添付します。
+- **`dequeue()`** — **引数なし**、削除する*要素を指定することは**できません**。コントラクトは常に、**先頭**の要素を削除して返す、つまり、まだ存在する要素の中で**最初にキューに入れられた者**です。 （もし`1`キューに入れられた最初の値、**最初**`dequeue()`削除します`1`;あなたはまだ**に電話します`dequeue()`**、「デキュー 1」ではありません。)
+- **`peek()`** / **`front()`** — フロント要素を **削除せずに** 返します (一部の API はスタックからの「ピーク/トップ」文言を再利用します)。
+- **`isEmpty()`** — キューに要素がない場合は true (多くの場合、`size == 0`または **`front == null`** リンクされた台紙上)。
+- **`clear()`** — キューを空にします (リンク リストを使用し、** を削除します)`front`**GC** 言語では ** で十分な場合があるため、到達不能なノードは再利用されます。一部の API は明示的にウォークおよび null リンクも行います)。
+- **`size()`** — 格納されている要素の数を返します (スタック ADT と同じ役割)。
 
-**Real-life intuition**  
-A **pipe** carries fluid in order: enter one end, exit the other. **Lines** and **wait lists**: first customer to arrive is first served. **Software:** print **job queues**, **ticket-purchase** waiting rooms, **BFS** in graphs, stream buffers.
+**キューが使用できないもの**  
+キューは、**ランダム インデックス アクセス**、**検索**、または**途中での挿入/削除**用に設計されたものではありません**。そのためには、別の構造 (リスト、デキュー、シーケンスとしての配列) を使用します。
+
+**現実生活の直感**  
+**パイプ**は流体を順番に運びます。一方の端から入り、もう一方の端から出ます。 **列**と**待機リスト**: 最初に到着した顧客から順に対応されます。 **ソフトウェア:** **ジョブ キュー**、**チケット購入**待合室、**BFS** グラフ、ストリーム バッファーを印刷します。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" role="img" aria-label="Queue dequeue at front removes oldest enqueue at back adds newest">
@@ -51,9 +52,9 @@ A **pipe** carries fluid in order: enter one end, exit the other. **Lines** and 
   <text x="12" y="128" fill="#71717a" font-size="10">Arrow at front illustrates one dequeue — FIFO decides it is the front cell, not a parameter.</text>
 </svg></figure>
 
-### Example usage (Java)
+### 使用例 (Java)
 
-**`ArrayDeque`** implements **`Deque`**, which extends **`Queue`**. For FIFO, enqueue at the **back** and dequeue from the **front**:
+**`ArrayDeque`** 実装 **`Deque`**、** を拡張します`Queue`**。 FIFO の場合、**後方**でエンキューし、**前**からデキューします。
 
 ```java
 // Compile: javac --release 22 …
@@ -69,7 +70,7 @@ queue.poll();           // "second"
 queue.isEmpty();        // true
 ```
 
-**BFS** (breadth-first search) is the classic queue algorithm: visit a node, then enqueue all unvisited neighbors; **`poll`** always takes the **oldest** frontier cell.
+**BFS** (幅優先検索) は古典的なキュー アルゴリズムです。ノードを訪問し、未訪問の近隣ノードをすべてキューに入れます。 **`poll`** は常に **最も古い** フロンティア セルを使用します。
 
 ```java
 // Compile: javac --release 22 …
@@ -108,28 +109,28 @@ public final class BfsExamples {
 ```
 
 
-## 2. Singly linked list as backing (head + tail)
-Because work happens at **two different ends**, a singly linked queue almost always keeps **`front`** (head) **and** **`tail`** pointers.
+## 2. バッキングとしての単一リンクリスト (先頭 + 末尾)
+作業は **2 つの異なる端**で行われるため、単一リンクされたキューはほぼ常に **`front`**（頭）**と** **`tail`** ポインタ。
 
-**Which end for which operation?** (singly linked costs)
+**どの操作のどちらの目的ですか?** (単一リンクされたコスト)
 
-| add at | remove at | add cost | remove cost | queue-shaped? |
-|--------|-----------|----------|-------------|----------------|
-| head | head | Θ(1) | Θ(1) | both same end → **stack**, not FIFO between ends |
-| tail | tail | Θ(1) | **Θ(n)** | need predecessor to cut tail |
-| head | tail | Θ(1) | **Θ(n)** | tail delete without `prev` |
-| **tail** | **head** | **Θ(1)** | **Θ(1)** | **enqueue at tail, dequeue at head** ✓ |
+| | に追加| で削除しますコストを追加する |コストを削除 |行列状？ |
+|----------|-----------|----------|-------------|-----|
+|頭 |頭 | Θ(1) | Θ(1) |両方同じ端 → **スタック**、端間の FIFO ではない |
+|尻尾 |尻尾 | Θ(1) | **Θ(n)** |尻尾を切る前任者が必要 |
+|頭 |尻尾 | Θ(1) | **Θ(n)** |末尾削除なし`prev`|
+| **尾** | **頭** | **Θ(1)** | **Θ(1)** | **末尾でエンキュー、先頭でデキュー** ✓ |
 
-So: **`enqueue` at the `tail`**, **`dequeue` at the `front`**. Both **Θ(1)** with only a **singly** linked list.
+それで： **`enqueue`で`tail`**、**`dequeue`で`front`**。両方とも **Θ(1)** で、**単一** リンク リストのみを持ちます。
 
-**Enqueue (e.g. value 5):** allocate node, link old `tail.next` to the new node, advance **`tail`** to the new node; if the queue was empty, set **`front`** and **`tail`** to that node.
+**エンキュー (例: 値 5):** ノードを割り当て、リンクは古い`tail.next`新しいノードに進み、**`tail`** 新しいノードへ。キューが空の場合は ** を設定します`front`** そして **`tail`** そのノードに。
 
-**Dequeue:** copy data from `front`, set **`front = front.next`**; if the queue becomes empty, set **`tail = null`**; optionally clear the old node’s `next` to **null** so it is detached.
+**デキュー:** データのコピー元`front`、 セット **`front = front.next`**;キューが空になった場合は ** を設定します`tail = null`**;オプションで古いノードをクリアします`next`**null** に設定すると切り離されます。
 
-**Example queue content** `1 → 3 → 3 → 2` from front to back (FIFO order of service). **`enqueue(5)`:** append after `2` at the tail and move **`tail`** to `5`. After that, a single **`dequeue()`** removes **whatever is at the front** — still **`1`**, because it was the first enqueued; the operation is not written as “dequeue the 1.”
+**キューの内容の例**`1 → 3 → 3 → 2`前から後ろへ (FIFO サービスの順序)。 **`enqueue(5)`:** の後に追加`2`最後尾で移動**`tail`** に`5`。その後、単一の**`dequeue()`** 先頭にあるものは何でも** 削除しますが、** はそのままです`1`**、最初にキューに入れられたため。この操作は「1 をデキューする」とは書かれていません。
 
-### Why not doubly linked?
-A **doubly** linked list can implement the same operations, but each node carries an **extra pointer** (`prev`). A singly linked queue with **head + tail** already gives **Θ(1)** enqueue and dequeue, so the extra memory usually **is not worth it** unless you need **Θ(1)** deletes at the back as well (then consider a **deque**).
+### なぜ二重リンクしないのでしょうか?
+**二重**リンク リストでも同じ操作を実装できますが、各ノードは **追加のポインタ** (`prev`）。 **head + tail** を持つ単一リンクされたキューでは、**Θ(1)** のエンキューとデキューがすでに行われているため、後方で **Θ(1)** の削除も必要な場合を除き、追加のメモリは通常 **価値がありません** (その場合は **デキュー**を検討してください)。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 118" role="img" aria-label="Singly linked queue with front head and tail for enqueue and dequeue">
@@ -158,9 +159,9 @@ A **doubly** linked list can implement the same operations, but each node carrie
   <text x="12" y="106" fill="#71717a" font-size="9">new enqueue attaches after tail; dequeue only rewires front</text>
 </svg></figure>
 
-### Java: singly linked FIFO queue (teaching class)
+### Java: 単一リンクされた FIFO キュー (ティーチング クラス)
 
-**`enqueue`** at **`tail`**, **`dequeue`** at **`front`** — matches §2.
+**`enqueue`** で **`tail`**、**`dequeue`** で **`front`** — §2 に一致します。
 
 ```java
 // Compile: javac --release 22 …
@@ -231,43 +232,43 @@ public class LinkedQueue<E> {
 ```
 
 
-## 3. Array-backed queue: circular (wrap-around) buffer
-This is the **second** standard backing (after §2’s linked list). The goal is the same **FIFO** contract: **enqueue at the back**, **dequeue from the front** — but a **plain contiguous array** makes the **front** expensive if you always delete index `0` and **shift** everything left (**Θ(n)** per dequeue). To **avoid shifting entirely**, use a **fixed-capacity ring buffer** (also called a **circular** or **wrap-around** array): indices **reuse** after they reach the end of the physical array by taking indices **modulo `capacity`**.
+## 3. 配列ベースのキュー: 循環 (ラップアラウンド) バッファー
+これは **2 番目**の標準裏付けです (§2 のリンク リストの後)。目標は同じ **FIFO** コントラクトです。**後ろでエンキュー**、**前からデキュー**ですが、**単純な連続配列**では、常にインデックスを削除すると**前**のコストが高くなります。`0`そして、すべてを**シフト**します(デキューごとに**Θ(n)**)。 **完全なシフトを避ける**には、**固定容量のリング バッファ** (**循環** または **ラップアラウンド** 配列とも呼ばれます) を使用します。インデックスは、**モジュロを取得することで物理配列の最後に到達した後、**再利用します**。`capacity`**。
 
-This is **not** the same structure as a **circular linked list** (that is pointer topology); here nothing “cycles” in memory — only the **index arithmetic** wraps.
+これは、**循環リンク リスト** (ポインタ トポロジ) と同じ構造ではありません。ここではメモリ内で何も「循環」せず、**インデックス演算**のみがラップされます。
 
-**Why not a naive “array list at the front”?**  
-Some language library lists expose **O(n)** shifts when you repeatedly remove from index 0. A ring buffer queue keeps **logical** front/back in **Θ(1)** without moving stored elements.
+**素朴な「配列リストを前面に」ではどうでしょうか?**  
+一部の言語ライブラリ リストでは、インデックス 0 から繰り返し削除すると **O(n)** のシフトが発生します。リング バッファ キューは、格納された要素を移動せずに **Θ(1)** の **論理** 前/後を保持します。
 
-### State you must track
-- **`capacity`** — length of the backing array (slots `0 … capacity−1`).
-- **`size`** — how many elements are **currently** in the queue (`0 … capacity` depending on full policy).
-- **`front`** — index of the **first** element (next to dequeue).
-- **`back`** — index of the **next empty slot** where the next **enqueue** will write (common convention in this lesson). Then **`back == (front + size) % capacity`** whenever the queue is not in an ambiguous “full” edge case; **do not assume** `back == size` in general once **`front`** has moved.
+### 追跡する必要がある状態
+- **`capacity`** — バッキング配列の長さ (スロット)`0 … capacity−1`）。
+- **`size`** - **現在**キュー内にある要素の数 (`0 … capacity`完全なポリシーに応じて）。
+- **`front`** — **最初の**要素（デキューの次）のインデックス。
+- **`back`** — 次の **エンキュー**が書き込む**次の空のスロット**のインデックス (このレッスンの共通規則)。それから **`back == (front + size) % capacity`** キューが曖昧な「完全な」エッジ ケースにない場合。 **仮定しないでください**`back == size`通常 1 回 **`front`**は移転しました。
 
-**Enqueue:** write `data` at `arr[back]`; `back = (back + 1) % capacity`; `size++`.  
-**Dequeue:** read `arr[front]`; `front = (front + 1) % capacity`; `size--`; **`back` does not move** on dequeue in this model.
+**エンキュー:** 書き込み`data`で`arr[back]`;`back = (back + 1) % capacity`;`size++`。  
+**デキュー:** 読み取り`arr[front]`;`front = (front + 1) % capacity`;`size--`; **`back`このモデルではデキュー時に移動**しません。
 
-### Walkthrough: `RAMBLIN` then dequeues, then `WR` (capacity **7**, ignore resize)
-Start **empty:** `size = 0`, `front = 0`, `back = 0`.
+### チュートリアル:`RAMBLIN`次にデキューしてから、`WR`(容量 **7**、サイズ変更は無視)
+**空で開始:**`size = 0`、`front = 0`、`back = 0`。
 
-**Enqueues** `R, A, M, B, L, I, N` (the letters of **ramblin**, length **7**): after each enqueue, **`front` stays 0** while **`back`** advances `1, 2, …`. After seven inserts, `size = 7`. The naive next `back` would be `7` (out of range); **wrap:** `back = 7 % 7 = 0`. Indices always use **`% capacity`** when they step past the last slot.
+**エンキュー**`R, A, M, B, L, I, N`(**ramblin** の文字、長さ **7**): 各エンキュー後、**`front`** の間は 0** のままです`back`** 前進`1, 2, …`。 7 回挿入した後、`size = 7`。次はナイーブ`back`だろう`7`(範囲外); **包む：**`back = 7 % 7 = 0`。インデックスは常に ** を使用します`% capacity`** 最後のスロットを通過したとき。
 
-**Four `dequeue()` calls** remove `R`, `A`, `M`, `B` in order: each time **`size`** decrements and **`front`** advances (`1`, `2`, `3`, `4`) with **`back` unchanged** at `0` in this stretch.
+**4`dequeue()`呼び出し** 削除`R`、`A`、`M`、`B`順番: 毎回 **`size`** デクリメントと **`front`** 進みます (`1`、`2`、`3`、`4`） と **`back`変更なし**`0`このストレッチで。
 
-**Enqueue `W`:** the next free slot is index **`0`** again — **wrap-around** for **`back`**. Write `W` there, `size` becomes `4`, **`back`** becomes `1`, **`front`** still **`4`** (the logical queue lives in the middle of the ring).
+**エンキュー`W`:** 次の空きスロットはインデックスです **`0`** もう一度 — ** の **まとめ**`back`**。書く`W`そこには、`size`になる`4`、**`back`** になります`1`、**`front`** まだ **`4`** (論理キューはリングの中央に存在します)。
 
-**Enqueue `R`:** place at index `1`, `size = 5`, `back = 2`, `front = 4`.
+**エンキュー`R`:** インデックスに配置`1`、`size = 5`、`back = 2`、`front = 4`。
 
-When **`dequeue`** later walks **`front`** toward the end of the array, it also uses **`(front + 1) % capacity`** so **`front`** wraps the same way.
+いつ **`dequeue`**その後散歩**`front`** 配列の終わりに向かって、** も使用します`(front + 1) % capacity`** それで **`front`** も同じようにラップします。
 
-### Complexity (summary)
-| Operation | Time | Notes |
-|-----------|------|--------|
-| `enqueue` / `dequeue` / `peek` / `isEmpty` / `size` / `clear` (reset indices) | **Θ(1)** | no shifting; index wrap only |
-| Grow **capacity** (resize) | **Θ(n)** | copy all slots to a new array; **enqueue** stays **amortized Θ(1)** if you double like a dynamic array |
+### 複雑さ (概要)
+|操作 |時間 |メモ |
+|----------|------|----------|
+|`enqueue`/`dequeue`/`peek`/`isEmpty`/`size`/`clear`(インデックスをリセット) | **Θ(1)** |シフトはありません。インデックスラップのみ |
+| **容量**を増やす (サイズ変更) | **Θ(n)** |すべてのスロットを新しいアレイにコピーします。動的配列のように倍増すると、**エンキュー**は**償却されたΘ(1)**のままになります。
 
-Linked list backing: **no resize** in the array sense — “growth” is **Θ(1)** new nodes. Ring buffer: **resize** is the expensive rare step.
+リンク リストのバッキング: 配列の意味での **サイズ変更なし** — 「成長」とは **Θ(1)** 新しいノードです。リング バッファ: **サイズ変更** は、高価でまれなステップです。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 130" role="img" aria-label="Circular buffer indices wrap with modulo capacity">
@@ -297,11 +298,11 @@ Linked list backing: **no resize** in the array sense — “growth” is **Θ(1
 </svg></figure>
 
 
-See **Level I — Foundations** [Foundations](../i-foundations.md) for another circular-buffer diagram with head/tail labels.
+**レベル I — 基礎** [基礎](../i-foundations.md) 先頭/末尾のラベルが付いた別の循環バッファ図。
 
-### Java: ring-buffer queue with grow
+### Java: 拡張のあるリングバッファキュー
 
-**`back`** is the **next write index**; **`front`** is the next dequeue index; both wrap with **`% capacity`**. On **`dequeue`**, **`back` does not move** (this lesson’s model).
+**`back`** は **次の書き込みインデックス**です。 **`front`** は次のデキューインデックスです。どちらも ** で囲みます`% capacity`**。の上 **`dequeue`**、**`back`動きません** (このレッスンのモデル)。
 
 ```java
 // Compile: javac --release 22 …
@@ -382,17 +383,17 @@ public class ArrayRingQueue<E> {
 }
 ```
 
-### Java: `Queue` vs `ArrayDeque` vs `LinkedList`
+### Java:`Queue`対`ArrayDeque`対`LinkedList`
 
-| API | FIFO queue use | Notes |
-|-----|----------------|-------|
-| **`Queue.offer` / `poll` / `peek`** | **`ArrayDeque`** as implementation | **`offer`** = enqueue back, **`poll`** = dequeue front |
-| **`Deque.addLast` / `removeFirst`** | Same ends as above | Explicit names for back/front |
-| **`LinkedList`** | Implements **`Deque`** | **Θ(1)** at both ends, but **more memory** per element than **`ArrayDeque`** |
+| API | FIFO キューの使用 |メモ |
+|-----|----------------|----------|
+| **`Queue.offer`/`poll`/`peek`** | **`ArrayDeque`** 実装として | **`offer`** = エンキューバック、**`poll`** = デキューフロント |
+| **`Deque.addLast`/`removeFirst`** |上記と同じ終わり |背面/前面の明示的な名前 |
+| **`LinkedList`** |実装物 **`Deque`** | **Θ(1)** は両端にありますが、** よりも要素あたりの **より多くのメモリ**`ArrayDeque`** |
 
-**Do not** use **`ArrayList`** as a queue if you **`remove(0)`** on every dequeue — that shifts the whole array (**Θ(n)** per dequeue). **`ArrayDeque`** is the usual JDK choice.
+**使用しないでください**`ArrayList`** 場合はキューとして **`remove(0)`** デキューごとに — これにより、配列全体がシフトされます (デキューごとに **Θ(n)**)。 **`ArrayDeque`** は通常の JDK の選択です。
 
-**Empty-safe dequeue:** **`poll()`** returns **`null`** when empty; **`remove()`** throws **`NoSuchElementException`**.
+**空でも安全なデキュー:** **`poll()`** を返します **`null`** 空の場合。 **`remove()`** 投げる **`NoSuchElementException`**。
 
 ```java
 // Compile: javac --release 22 …
@@ -405,13 +406,13 @@ Integer x = q.poll();  // 1
 Integer y = q.poll();  // null — queue empty
 ```
 
-## 4. Summary
+## 4. まとめ
 
-| Topic | Detail |
-|--------|--------|
-| **Rule** | FIFO — first enqueued, first dequeued |
-| **Singly linked** | **`front`** (head) + **`tail`**; enqueue **tail**, dequeue **head** — Θ(1); **`size`**, **`isEmpty`**, **`clear`** Θ(1); “resize” = new node Θ(1) |
-| **Ring buffer array** | **`capacity`**, **`size`**, **`front`**, **`back`**; wrap with **`% capacity`**; enqueue/dequeue/peek/empty/size/clear (index reset) **Θ(1)**; **enqueue amortized Θ(1)**; **resize copy Θ(n)** |
-| **Doubly linked** | Works, but extra `prev` per node — usually skipped for a plain queue |
-| **Not supported** | Random index, search, interior insert/remove — use another ADT |
-| **Java default** | **`Queue<E>`** with **`ArrayDeque<E>`** — **`offer` / `poll` / `peek`** |
+|トピック |詳細 |
+|----------|----------|
+| **ルール** | FIFO — 最初にエンキューされ、最初にデキューされました。
+| **単一リンク** | **`front`** (頭) + **`tail`**; **テール**をエンキュー、**ヘッド**をデキュー — Θ(1); **`size`**、**`isEmpty`**、**`clear`** Θ(1); 「サイズ変更」 = 新しいノード Θ(1) |
+| **リングバッファ配列** | **`capacity`**、**`size`**、**`front`**、**`back`**; **で囲む`% capacity`**;エンキュー/デキュー/ピーク/空/サイズ/クリア (インデックスのリセット) **Θ(1)**; **償却済み Θ(1)** をエンキューします。 **コピーのサイズを変更 Θ(n)** |
+| **二重リンク** |動作しますが、追加です`prev`ノードごと — 通常、プレーン キューの場合はスキップされます。
+| **サポートされていません** |ランダムなインデックス、検索、内部挿入/削除 — 別の ADT を使用 |
+| **Java デフォルト** | **`Queue<E>`** と **`ArrayDeque<E>`** — **`offer`/`poll`/`peek`** |

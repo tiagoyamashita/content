@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "CI/CD"
 order: 1
 ---
-Ansible & Jenkins — overview
-**Jenkins** runs the CI pipeline (build, test, gate). **Ansible** applies **desired state** on servers (packages, config, deploy, restart). Splitting responsibilities keeps deploy logic reusable outside Jenkins.
+Ansible および Jenkins — 概要
 
-## Map of this submenu
+**Jenkins** は CI パイプライン (ビルド、テスト、ゲート) を実行します。 **Ansible** はサーバーに **望ましい状態** を適用します (パッケージ、構成、デプロイ、再起動)。責任を分割することで、展開ロジックを Jenkins の外部で再利用できるようになります。
+
+## このサブメニューのマップ
 
 | Note | Focus |
 |------|--------|
@@ -20,7 +21,7 @@ Ansible & Jenkins — overview
 
 **Related:** **Tools & platforms** → [Jenkins](../tools-and-platforms/iv-jenkins.md) (CI-focused Jenkins), Part I fundamentals, **Terraform** submenu.
 
-## CI build → Ansible deploy flow
+## CI ビルド → Ansible デプロイの流れ
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 110" role="img" aria-label="Jenkins CI then Ansible deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Jenkins owns CI · Ansible owns server state</text>
@@ -39,16 +40,16 @@ Ansible & Jenkins — overview
   <text x="12" y="92" fill="#71717a" font-size="9">Same playbook from Jenkins or laptop for hotfixes</text>
 </svg></figure>
 
-## When this pattern fits
+## このパターンが当てはまる場合
 
-| Good fit | Consider alternatives |
-|----------|------------------------|
-| VMs or bare metal fleet | Pure Kubernetes → Helm/GitOps |
-| Mixed Linux config + deploy | Serverless → CI deploy to cloud API |
-| On-prem with Jenkins already | Greenfield SaaS → GitHub Actions + Terraform |
+|良いフィット感 |代替案を検討する |
+|----------|--------------------------|
+| VM またはベアメタル フリート |純粋な Kubernetes → ヘルム/GitOps |
+|混合 Linux 構成 + デプロイ |サーバーレス → CI クラウドへのデプロイ API |
+|すでに Jenkins を備えたオンプレミス |グリーンフィールド SaaS → GitHub アクション + Terraform |
 
-## Rehearsal
+## リハーサル
 
-- What does **agentless** mean for Ansible?
-- Who owns **build** vs **server configuration** in this split?
-- Why keep inventory in the same repo as the Jenkinsfile?
+- **エージェントレス** は Ansible にとって何を意味しますか?
+- この分割では、**ビルド**と**サーバー構成**の所有者はどちらですか?
+- Jenkinsfile と同じリポジトリにインベントリを保持するのはなぜですか?

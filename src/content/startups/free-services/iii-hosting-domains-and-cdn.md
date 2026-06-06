@@ -1,23 +1,24 @@
 ---
 label: "III"
-subtitle: "Hosting, domains & CDN"
-group: "Startups"
+subtitle: "ホスティング、ドメイン、CDN"
+group: "スタートアップ"
 order: 3
 ---
-Hosting, domains & CDN
-Most MVPs need a **domain**, **HTTPS**, and a place to run the **frontend** or **API**. These free tiers cover early traffic without a dedicated server.
+ホスティング、ドメイン、CDN
 
-## 1. Domain names
+ほとんどの MVP には、**ドメイン**、**HTTPS**、および **フロントエンド** または **API** を実行する場所が必要です。これらの無料枠は、専用サーバーなしで初期のトラフィックをカバーします。
 
-| Registrar | Notes |
-|-----------|--------|
-| Cloudflare Registrar | At-cost pricing, pairs with free DNS |
-| Namecheap, Porkbun | Often cheap first year |
-| Google Domains → Squarespace | Check current product |
+## 1. ドメイン名
+
+|レジストラ |メモ |
+|----------|----------|
+| Cloudflareレジストラ |原価価格、無料の DNS との組み合わせ |
+|名前安い、豚まん |初年度は安いことが多い |
+| Google ドメイン → スクエアスペース |現在の製品を確認する |
 
 Budget **~$10–15/year** for `.com` — rarely free except promotions.
 
-## 2. DNS & TLS (free)
+## 2. DNS および TLS (無料)
 
 | Service | Free includes |
 |---------|---------------|
@@ -25,9 +26,9 @@ Budget **~$10–15/year** for `.com` — rarely free except promotions.
 | Route 53 | Not free — pay per hosted zone |
 | Registrar DNS | Often free with domain |
 
-Point nameservers to Cloudflare → manage A/CNAME/TXT (email records) in one place.
+ネームサーバーをCloudflareに向けて→ A/CNAME/TXT (電子メールレコード) を 1 か所で管理します。
 
-## 3. Static & frontend hosting
+## 3. 静的およびフロントエンドのホスティング
 
 | Platform | Free tier (typical) | Stack |
 |----------|---------------------|-------|
@@ -41,7 +42,7 @@ git push main → auto build → https://yourapp.vercel.app
 Custom domain: CNAME to provider + verify in dashboard
 ```
 
-## 4. Backend / API hosting
+## 4. バックエンド / API ホスティング
 
 | Platform | Free tier | Notes |
 |----------|-----------|-------|
@@ -51,13 +52,13 @@ Custom domain: CNAME to provider + verify in dashboard
 | **[Fly.io](https://fly.io)** | Small VM allowance | Global edge |
 | **AWS Lambda + API Gateway** | Always-free tier limits | More setup |
 
-Cold starts and **sleep on idle** are acceptable for demos; not for latency-sensitive prod without paid tier.
+コールド スタートと **アイドル状態でのスリープ**はデモでは許容されます。有料枠のないレイテンシーに敏感な製品には適していません。
 
 ## 5. CDN
 
 Included with Cloudflare, Vercel, Netlify. Cache static assets; set **`Cache-Control`** headers. See system design **CDN** note for patterns.
 
-## 6. Checklist
+## 6. チェックリスト
 
 - [ ] Domain purchased
 - [ ] DNS on Cloudflare (or provider)

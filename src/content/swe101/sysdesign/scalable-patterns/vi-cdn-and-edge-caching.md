@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "CDN & edge caching"
-group: "System design"
+subtitle: "CDN とエッジ キャッシュ"
+group: "システム設計"
 order: 6
 ---
-CDN and edge caching
-A **CDN (Content Delivery Network)** caches content at **edge PoPs** near users — lower latency and less load on origin.
+CDN とエッジ キャッシュ
 
-## 1. Request flow
+**CDN (コンテンツ配信ネットワーク)** は、ユーザーの近くの **エッジ PoP** にコンテンツをキャッシュします。これにより、オリジンの遅延と負荷が軽減されます。
+
+## 1. リクエストの流れ
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="CDN cache hit vs miss to origin">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">CDN pull model</text>
@@ -30,7 +31,7 @@ A **CDN (Content Delivery Network)** caches content at **edge PoPs** near users 
 | 3 | **Cache hit** → return from edge |
 | 4 | **Cache miss** → PoP GET from **origin** → store → respond |
 
-## 2. What belongs on a CDN
+## 2. CDN に属するもの
 
 | Asset type | Cacheability | Notes |
 |------------|--------------|-------|
@@ -40,7 +41,7 @@ A **CDN (Content Delivery Network)** caches content at **edge PoPs** near users 
 | Personalised HTML | Low | `Vary: Cookie` or bypass CDN |
 | POST/PUT/DELETE | No | Pass through to origin |
 
-## 3. Cache control
+## 3. キャッシュ制御
 
 | Mechanism | How | When |
 |-----------|-----|------|
@@ -49,15 +50,15 @@ A **CDN (Content Delivery Network)** caches content at **edge PoPs** near users 
 | **Purge API** | Invalidate URL on all PoPs | Urgent security fix |
 | **Stale-while-revalidate** | Serve stale while fetching fresh | Smooth traffic spikes |
 
-## 4. Pull vs push CDN
+## 4. プルとプッシュ CDN
 
-| | Pull | Push |
+| |プル |プッシュ |
 |---|------|------|
-| Setup | Origin URL; CDN fetches on miss | You upload to CDN storage |
-| Cold start | First user in region slower | Pre-warmed before launch |
-| Use | Web apps, APIs with cache headers | Large file distribution, live events |
+|セットアップ |起源 URL; CDN はミス時にフェッチします | CDN ストレージにアップロードします |
+|コールドスタート |リージョン内の最初のユーザーの速度が遅い |起動前に事前にウォームアップ |
+|使用 | Web アプリ、キャッシュ ヘッダーを備えた API |大容量ファイルの配布、ライブイベント |
 
-## 5. Invalidation strategies
+## 5. 無効化戦略
 
 ```text
 Immutable:  /assets/logo.a1b2c3.png     max-age=31536000, immutable
@@ -67,7 +68,7 @@ API:        /v1/public/config         max-age=300 + ETag
 
 **Cache key** includes URL + relevant headers (`Accept-Language`, `Authorization` usually **excluded** from public cache).
 
-## 6. Pitfalls
+## 6. 落とし穴
 
 | Pitfall | Fix |
 |---------|-----|
@@ -76,4 +77,4 @@ API:        /v1/public/config         max-age=300 + ETag
 | HTTPS cert at edge | CDN terminates TLS; origin cert can be private |
 | Dynamic geo content | Edge workers / short TTL |
 
-**Related:** Part I (caching layers), networking DNS/geo (Part IV–V).
+**関連:** パート I (キャッシュ層)、ネットワーク DNS/geo (パート IV–V)。

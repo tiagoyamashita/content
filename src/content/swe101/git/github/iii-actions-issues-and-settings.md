@@ -1,13 +1,15 @@
 ---
 label: "III"
-subtitle: "Actions, issues & settings"
+subtitle: "アクション、問題、設定"
 group: "GitHub"
 order: 3
 ---
-Actions, issues & settings
+アクション、問題、設定
+
+
 GitHub **Actions** run CI/CD on events. **Issues** track work. **Settings** lock down `main` and secrets.
 
-## 1. GitHub Actions (CI sketch)
+## 1. GitHub アクション (CI スケッチ)
 
 Workflow file: **`.github/workflows/ci.yml`**
 
@@ -38,11 +40,11 @@ jobs:
 | **Job** | Runs on one runner |
 | **Step** | Command or action |
 
-Deep dive: CI/CD **Tools & platforms → GitHub Actions**.
+詳細: CI/CD **ツールとプラットフォーム → GitHub アクション**。
 
-## 2. Secrets in Actions
+## 2. アクションの秘密
 
-**Settings → Secrets and variables → Actions**
+**設定 → シークレットと変数 → アクション**
 
 ```yaml
 env:
@@ -55,21 +57,21 @@ env:
 | Environment secret | `production` deploy only |
 | Organization secret | Shared across repos |
 
-Never log secrets; fork PRs do not receive repo secrets by default.
+秘密は決して記録しないでください。フォーク PR は、デフォルトではリポジトリ シークレットを受け取りません。
 
-## 3. Branch protection
+## 3. ブランチ保護
 
 **Settings → Branches → Add rule** for `main`:
 
-| Rule | Why |
+|ルール |なぜ |
 |------|-----|
-| Require pull request | No direct push |
-| Require status checks | CI must pass |
-| Require review | Human gate |
-| Require linear history | Optional — no merge commits |
-| Restrict who can push | Admins only bypass |
+|プルリクエストが必要 |直接プッシュはありません |
+|ステータスチェックが必要 | CI を渡す必要があります |
+|レビューが必要 |人間の門 |
+|線形履歴が必要 |オプション - マージコミットなし |
+|プッシュできる人を制限する |管理者のみがバイパス |
 
-## 4. Issues & projects
+## 4. 問題とプロジェクト
 
 | Feature | Use |
 |---------|-----|
@@ -80,17 +82,17 @@ Never log secrets; fork PRs do not receive repo secrets by default.
 
 Link PRs with `Fixes #N` to auto-close.
 
-## 5. GitHub Copilot & Codespaces (optional)
+## 5. GitHub コパイロットとコードスペース (オプション)
 
-| Product | Notes |
-|---------|-------|
-| **Copilot** | AI assist in IDE — subscription |
-| **Codespaces** | Cloud dev environment — usage billing |
-| **.devcontainer** | Reproducible Codespaces config |
+|製品 |メモ |
+|----------|----------|
+| **副操縦士** | AI は IDE をサポート — サブスクリプション |
+| **コードスペース** |クラウド開発環境 — 使用量の請求 |
+| **.devcontainer** |再現可能なコードスペース構成 |
 
-Not required for basic GitHub use.
+基本的な GitHub の使用には必要ありません。
 
-## 6. Tokens and security
+## 6. トークンとセキュリティ
 
 | Token type | When |
 |------------|------|
@@ -99,23 +101,23 @@ Not required for basic GitHub use.
 | **GitHub App** | Integrations, org-wide — preferred for tools |
 | **SSH key** | Git push/pull |
 
-Enable **2FA** on account; orgs can require it.
+アカウントで **2FA** を有効にします。組織がそれを要求する場合があります。
 
-Getting started **Setup** note covers OAuth scopes for this notes app.
+「**セットアップ** の開始」メモでは、このメモ アプリの OAuth スコープについて説明しています。
 
-## 7. Notifications
+## 7. 通知
 
-Watch repo → **Participating and @mentions** or **All activity**. Tune email vs web in **Settings → Notifications**.
+リポジトリを見る → **参加および @メンション** または **すべてのアクティビティ**。 **[設定] → [通知]** でメールとウェブを調整します。
 
-## 8. GitHub Pages
+## 8. GitHub ページ
 
-Free static hosting from repo:
+リポジトリからの無料の静的ホスティング:
 
 **Settings → Pages** → source branch `main` / `/docs` or Actions workflow.
 
-Alternative: Vercel/Netlify (startups free-services note).
+代替案: Vercel/Netlify (スタートアップの無料サービスに関する注記)。
 
-## 9. Checklist for new repo
+## 9. 新しいリポジトリのチェックリスト
 
 - [ ] README with setup
 - [ ] `.gitignore` appropriate to stack

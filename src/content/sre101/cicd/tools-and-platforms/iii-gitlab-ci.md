@@ -1,22 +1,23 @@
 ---
 label: "III"
-subtitle: "GitLab CI"
+subtitle: "Gitラボ CI"
 group: "CI/CD"
 order: 3
 ---
-GitLab CI/CD
-Pipelines defined in **`.gitlab-ci.yml`** at the repo root. Runners execute jobs on **GitLab.com shared** runners or **self-hosted** agents.
+Gitラボ CI/CD
 
-## 1. Core concepts
+リポジトリ ルートの **`.gitlab-ci.yml`** で定義されたパイプライン。ランナーは、**GitLab.com 共有** ランナーまたは **自己ホスト型** エージェントでジョブを実行します。
 
-| Term | Meaning |
-|------|---------|
-| **Pipeline** | Full run for a commit/tag |
-| **Stage** | Ordered group (`build` → `test` → `deploy`) |
-| **Job** | Script + image on a runner |
-| **Runner** | Executes jobs (shell or Docker executor) |
+## 1. 中心となる概念
 
-## 2. Minimal pipeline
+|用語 |意味 |
+|-----|----------|
+| **パイプライン** |コミット/タグの完全な実行 |
+| **ステージ** |順序付けされたグループ (`build` → `test` → `deploy`) |
+| **仕事** |ランナー上のスクリプト + 画像 |
+| **ランナー** |ジョブを実行します (シェルまたは Docker エグゼキューター) |
+
+## 2. 最小限のパイプライン
 
 ```yaml
 # .gitlab-ci.yml
@@ -46,7 +47,7 @@ test:
     - npm test
 ```
 
-## 3. Spring Boot / Maven example
+## 3. Spring Boot / Maven の例
 
 ```yaml
 stages:
@@ -75,7 +76,7 @@ package:
     - main
 ```
 
-## 4. DRY with `extends` and `include`
+## 4. `extends` および `include` を使用した DRY
 
 **`.gitlab/ci/test-template.yml`:**
 
@@ -96,7 +97,7 @@ unit-test:
     - npm run test:unit
 ```
 
-**Root file:**
+**ルートファイル:**
 
 ```yaml
 include:
@@ -106,9 +107,9 @@ stages:
   - test
 ```
 
-## 5. DAG with `needs:`
+## 5. `needs:` を使用した DAG
 
-Skip strict stage ordering — start deploy docs as soon as lint passes:
+ステージの厳密な順序付けをスキップします。lint が通過したらすぐにドキュメントのデプロイを開始します。
 
 ```yaml
 stages:
@@ -137,7 +138,7 @@ pages:
     - main
 ```
 
-## 6. Environments
+## 6. 環境
 
 ```yaml
 deploy_staging:
@@ -162,9 +163,9 @@ deploy_production:
     - main
 ```
 
-**Auto-stop** environments after inactivity — useful for review apps.
+非アクティブ状態になった後の **自動停止** 環境 - アプリのレビューに役立ちます。
 
-## 7. Built-in registry
+## 7. 組み込みレジストリ
 
 ```yaml
 variables:
@@ -183,21 +184,21 @@ publish:
     - if: $CI_COMMIT_TAG
 ```
 
-## 8. GitLab vs GitHub (quick)
+## 8. GitLab と GitHub (簡単)
 
-| Feature | GitLab CI | GitHub Actions |
-|---------|-----------|----------------|
-| Config | Single `.gitlab-ci.yml` | Multiple workflow files |
-| DAG | `needs:` | `needs:` on jobs |
-| Registry | Built-in | GHCR separate setup |
-| Self-host | Mature runner model | Self-hosted runners |
+|特集 | GitLab CI | GitHub アクション |
+|----------|----------|-----|
+|構成 |シングル `.gitlab-ci.yml` |複数のワークフロー ファイル |
+| DAG | `needs:` |求人に関する`needs:` |
+|レジストリ |内蔵 | GHCR 別セットアップ |
+|セルフホスト |成熟したランナーモデル |自己ホストランナー |
 
-## 9. When to choose GitLab CI
+## 9. GitLab CI を選択する場合
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| All-in-one DevOps platform | Heavier if you only need CI |
-| Strong self-managed option | YAML can grow large |
-| Review apps, security scanning built-in | |
+|オールインワンの DevOps プラットフォーム | CI だけが必要な場合はさらに重い |
+|強力な自己管理オプション | YAML は大きくなる可能性があります |
+|レビューアプリ、セキュリティスキャン内蔵 | |
 
-**Related:** [Docker in CI](v-docker-in-ci.md), [Overview](../security-and-best-practices/i-overview.md).
+**関連:** [CI の Docker](v-docker-in-ci.md)、[概要](../security-and-best-practices/i-overview.md)。

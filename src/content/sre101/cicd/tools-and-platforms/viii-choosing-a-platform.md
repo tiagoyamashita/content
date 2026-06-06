@@ -1,94 +1,95 @@
 ---
 label: "VIII"
-subtitle: "Choosing a platform"
+subtitle: "プラットフォームの選択"
 group: "CI/CD"
 order: 8
 ---
-Choosing a CI/CD platform
-No single “best” tool — match **hosting**, **compliance**, **team skills**, and **budget**.
+CI/CD プラットフォームの選択
 
-## 1. Decision checklist
+**ホスティング**、**コンプライアンス**、**チームスキル**、**予算**に適合する単一の「最適な」ツールはありません。
 
-| # | Question | Lean toward |
-|---|----------|-------------|
-| 1 | Where is Git hosted? | GitHub → Actions; GitLab → GitLab CI |
-| 2 | Cloud or **on-prem** runners only? | Jenkins, self-hosted GitLab/GitHub runners |
-| 3 | Budget for **managed minutes**? | Self-host or flat SaaS plan |
-| 4 | Need integrated registry, security, pages? | GitLab |
-| 5 | Already on **Kubernetes** for everything? | Tekton |
-| 6 | Maximum plugins / legacy Groovy? | Jenkins |
-| 7 | Fast cache, minimal ops? | CircleCI, GitHub Actions |
+## 1. 意思決定チェックリスト
 
-## 2. Comparison table
+| # |質問 | | に向かって傾ける
+|---|----------|---------------|
+| 1 | Git はどこでホストされていますか? | GitHub → アクション; Gitラボ → Gitラボ CI |
+| 2 |クラウドまたは **オンプレミス** ランナーのみですか? | Jenkins、自己ホスト型 GitLab/GitHub ランナー |
+| 3 | **管理された分**の予算は? |セルフホストまたはフラット SaaS プラン |
+| 4 |統合されたレジストリ、セキュリティ、ページが必要ですか? | Gitラボ |
+| 5 |すでに **Kubernetes** をすべて利用していますか? |テクトン |
+| 6 |最大のプラグイン/レガシー Groovy? | Jenkins |
+| 7 |高速キャッシュ、最小限の操作? | CircleCI、GitHub アクション |
 
-| Platform | Hosting | Config | Runners | Best for |
-|----------|---------|--------|---------|----------|
-| **GitHub Actions** | GitHub | `.github/workflows/` | GitHub + self-hosted | OSS & GitHub-centric teams |
-| **GitLab CI** | GitLab | `.gitlab-ci.yml` | Shared + self-hosted | Self-managed DevOps platform |
-| **Jenkins** | Self | `Jenkinsfile` | Your agents | On-prem, air-gap, plugins |
-| **CircleCI** | SaaS | `.circleci/config.yml` | Cloud | Cache-heavy polyrepos |
-| **Tekton** | K8s | CRDs | Pod per step | Platform eng on Kubernetes |
+##2. 比較表
 
-## 3. Scenario examples
+|プラットフォーム |ホスティング |構成 |ランナー |こんな方に最適 |
+|----------|----------|----------|----------|----------|
+| **GitHub アクション** |ギットハブ | `.github/workflows/` | GitHub + セルフホスト型 | OSS および GitHub 中心のチーム |
+| **GitLab CI** |ギットラボ | `.gitlab-ci.yml` |共有 + セルフホスト |セルフマネージド DevOps プラットフォーム |
+| **ジェンキンス** |自分 | `Jenkinsfile` |あなたのエージェント |オンプレミス、エアギャップ、プラグイン |
+| **CircleCI** | SaaS | `.circleci/config.yml` |クラウド |キャッシュの多いポリリポジトリ |
+| **テクトン** | K8s | CRD |ステップごとのポッド | Kubernetes のプラットフォーム技術 |
 
-### Startup on GitHub, deploy to AWS
+## 3. シナリオの例
+
+### GitHub で起動し、AWS にデプロイします
 
 ```text
 GitHub Actions → OIDC to AWS → ECR push → ECS/EKS deploy
 ```
 
-Minimal ops; use Marketplace actions; secrets in GitHub Environments.
+最小限の操作。マーケットプレイスのアクションを使用します。 GitHub 環境のシークレット。
 
-### Enterprise on-prem GitLab
+### エンタープライズ オンプレミス GitLab
 
 ```text
 GitLab CI → internal registry → Ansible/K8s deploy to private DC
 ```
 
-Single vendor; runners on your VMs; compliance data stays inside.
+単一ベンダー。 VM 上のランナー。コンプライアンスデータは内部に残ります。
 
-### Bank air-gapped
+### バンクエアギャップ
 
 ```text
 Jenkins controller + agents → Artifactory → manual promote to prod
 ```
 
-No SaaS; plugins for mainframe, legacy SCM; change windows with approval steps.
+SaaS はありません。メインフレーム用プラグイン、レガシー SCM;承認ステップを使用してウィンドウを変更します。
 
-### Internal developer platform team
+### 社内開発者プラットフォーム チーム
 
 ```text
 Tekton Pipelines + Triggers → Kaniko → Helm to shared K8s
 ```
 
-Golden paths as Templates; devs trigger via service catalog.
+テンプレートとしてのゴールデン パス。 devs はサービス カタログ経由でトリガーします。
 
-## 4. Migration path
+## 4. 移行パス
 
-| From | To | Tip |
+|から |へ |ヒント |
 |------|-----|-----|
-| Jenkins freestyle | Declarative Jenkinsfile | One repo at a time |
-| Jenkins | GitHub Actions | Map stages → jobs; replace plugins with actions |
-| CircleCI | GitLab | Orbs → `include` templates |
-| Ad-hoc shell | Any CI | Extract `scripts/ci.sh`; call from YAML |
+|ジェンキンスのフリースタイル |宣言的な Jenkinsfile |一度に 1 つのリポジトリ |
+|ジェンキンス | GitHub アクション |ステージ→ジョブをマップします。プラグインをアクションに置き換える |
+|サークルCI |ギットラボ |オーブ → `include` テンプレート |
+|アドホックシェル |任意の CI | `scripts/ci.sh` を抽出します。 YAML からの呼び出し |
 
-Run **parallel** pipelines during migration; compare artifacts and test results.
+移行中に **並列** パイプラインを実行します。成果物とテスト結果を比較します。
 
-## 5. Anti-patterns
+## 5. アンチパターン
 
-| Anti-pattern | Why |
+|アンチパターン |なぜ |
 |--------------|-----|
-| CI without cache | Slow feedback → devs skip CI |
-| `latest` only deploy tag | Can't roll back |
-| Secrets in repo | Rotate and incident |
-| One giant Jenkins job | No parallelisation, brittle |
-| Different CI locally vs cloud | Use same Dockerfile / compose |
+|キャッシュなしの CI |フィードバックが遅い → 開発者は CI をスキップ |
+| `latest` タグのみをデプロイ |ロールバックできません |
+|リポジトリの秘密 |回転と入射 |
+| 1 つの巨大な Jenkins ジョブ |並列化なし、脆弱 |
+|ローカルとクラウドの異なる CI |同じ Dockerfile / compose を使用する |
 
-## 6. Rehearsal answers
+## 6. リハーサルの答え
 
-- **GitHub Actions minimal workflow:** checkout → setup runtime → install deps → test [GitHub Actions](ii-github-actions.md).
-- **GitLab `needs:`:** DAG edges — job starts when dependencies finish, not entire previous stage.
-- **Jenkins over SaaS:** on-prem control, air-gap, plugin legacy, existing controller investment.
-- **Multi-stage Docker:** builder stage discarded — runtime image only has JAR/binary [Docker in CI](v-docker-in-ci.md).
+- **GitHub Actions の最小限のワークフロー:** チェックアウト→ランタイムのセットアップ→deps のインストール→[GitHub Actions](ii-github-actions.md) のテスト。
+- **GitLab `needs:`:** DAG エッジ — 前の段階全体ではなく、依存関係が終了するとジョブが開始されます。
+- **SaaS 上の Jenkins:** オンプレミス制御、エアギャップ、プラグインのレガシー、既存のコントローラーへの投資。
+- **マルチステージ Docker:** ビルダー ステージが破棄されました — ランタイム イメージには JAR/バイナリのみが含まれています [CI の Docker](v-docker-in-ci.md)。
 
-**Related:** Part I fundamentals, **Security & best practices** submenu, tools overview [Overview](i-overview.md).
+**関連:** パート I の基礎、**セキュリティとベスト プラクティス** サブメニュー、ツールの概要 [概要](i-overview.md)。

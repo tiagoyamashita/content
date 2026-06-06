@@ -1,17 +1,23 @@
 ---
 label: "IV"
-subtitle: "Types, testing & tooling"
+subtitle: "種類、テスト、ツール"
 group: "Python"
 groupOrder: 1
 order: 4
 ---
-Python — Part IV
-Static typing with **`typing`**, **`pathlib`**, virtual environments, **`pytest`**, and debugging habits.
+Python — パート IV
 
-## 1. Type hints & checking
-- Annotations document contracts (**`def f(x: int) -> str:`**) — **ignored at runtime** unless libraries inspect them.
-- **`list[str]`**, **`dict[str, Any]`**, **`Optional[T]`** (**`T | None`** in 3.10+), **`Protocol`**, **`TypedDict`**, **`Literal`** express structured shapes.
-- Run **`mypy`**, **`pyright`**, or **`basedpyright`** in CI — catches whole classes of bugs before runtime.
+
+
+
+
+
+** を使用した静的型付け`typing`**、**`pathlib`**、仮想環境、**`pytest`**、およびデバッグの習慣。
+
+## 1. 入力ヒントとチェック
+- 注釈文書契約 (**`def f(x: int) -> str:`**) — ライブラリが検査しない限り、**実行時に無視されます**。
+- **`list[str]`**、**`dict[str, Any]`**、**`Optional[T]`** (**`T | None`** 3.10 以降)、**`Protocol`**、**`TypedDict`**、**`Literal`** 構造化された形状を表現します。
+- 走る **`mypy`**、**`pyright`**、 または **`basedpyright`** CI 内 — 実行前にバグのクラス全体を捕捉します。
 
 ```python
 from typing import Any, Literal, Protocol, TypedDict
@@ -49,9 +55,8 @@ def parse_mode(raw: str) -> Mode | None:
 ```
 
 
-## 2. Files & `pathlib`
-- **`Path("data").joinpath("cfg.json").read_text(encoding="utf-8")`** replaces fragile **`open`** string juggling.
-- Prefer **`encoding="utf-8"`** explicitly on text I/O — platform defaults still bite on Windows.
+## 2. ファイルと`pathlib`- **`Path("data").joinpath("cfg.json").read_text(encoding="utf-8")`** 壊れやすいものを置き換えます **`open`** ストリングジャグリング。
+- 好む **`encoding="utf-8"`** テキスト I/O で明示的に — プラットフォームのデフォルトは依然として Windows に影響を及ぼします。
 
 ```python
 from pathlib import Path
@@ -71,10 +76,10 @@ for py_file in Path("src").rglob("*.py"):
 ```
 
 
-## 3. Virtual environments
-- **`python -m venv .venv`** then **`source .venv/bin/activate`** (POSIX) or **`.venv\Scripts\activate`** (Windows).
-- **`pip install -r requirements.txt`** or **`pyproject.toml`** + **`uv pip`** / **`pip-tools`** lock transitive deps for reproducible builds.
-- Never install project libs into the **global** interpreter — collisions guaranteed.
+## 3. 仮想環境
+- **`python -m venv .venv`** それから **`source .venv/bin/activate`** (POSIX) または **`.venv\Scripts\activate`** (Windows)。
+- **`pip install -r requirements.txt`** または **`pyproject.toml`** + **`uv pip`** / **`pip-tools`** 再現可能なビルドのために推移的なdepsをロックします。
+- プロジェクト ライブラリを **グローバル** インタプリタにインストールしないでください。衝突が保証されます。
 
 ```text
 # Create & activate (POSIX)
@@ -90,11 +95,11 @@ pip install -r requirements.txt
 ```
 
 
-## 4. `pytest` fundamentals
-- Discover **`test_*.py`** / **`Test*`** classes; assertions use plain **`assert`** with rewritten failure messages.
-- **Fixtures** (`@pytest.fixture`) inject temporary dirs, servers, DB URLs — scope=`module`/`session` trades speed vs isolation.
-- **`pytest.mark.parametrize`** replaces copy-paste tables of inputs.
-- **`monkeypatch`** / **`tmp_path`** builtins replace ad-hoc hacks for env vars and filesystem sandboxes.
+＃＃４。`pytest`基本的なこと
+- 発見**`test_*.py`** / **`Test*`** クラス;アサーションはプレーン ** を使用します`assert`** 書き換えられた失敗メッセージ付き。
+- **備品** (`@pytest.fixture`) 一時ディレクトリ、サーバー、DB URL を挿入します — スコープ=`module`/`session`スピードと分離性をトレードします。
+- **`pytest.mark.parametrize`** は入力のコピー＆ペーストテーブルを置き換えます。
+- **`monkeypatch`** / **`tmp_path`** 組み込みは、環境変数とファイルシステム サンドボックスのアドホック ハックを置き換えます。
 
 ```python
 # math_extra.py
@@ -136,9 +141,9 @@ def test_tmp_writes(tmp_path):
     assert p.read_text(encoding="utf-8") == "ok"
 ```
 
-### Passed / failed / skipped on every run
+### 実行ごとに成功/失敗/スキップ
 
-Default **`pytest -q`** hides **why** tests were skipped. Use **`pytest -ra`** so each run ends with a **summary**: skipped (`s`), xfailed (`x`), xpassed (`X`), deselected, etc.
+デフォルト **`pytest -q`** テストがスキップされた **理由** を非表示にします。使用 **`pytest -ra`** したがって、各実行は **概要** で終了します: スキップされました (`s`)、x 失敗 (`x`)、xpassed (`X`)、選択解除など。
 
 ```text
 pytest -ra
@@ -146,7 +151,7 @@ pytest -v          # every test name + PASSED/FAILED/SKIPPED as it runs
 pytest --tb=short  # shorter tracebacks; combine with -ra
 ```
 
-Persist that behavior so you do not have to type flags:
+部分を入力する必要がないように、その動作を維持します。
 
 ```ini
 # pytest.ini (repo root) or [tool.pytest.ini_options] in pyproject.toml
@@ -154,7 +159,7 @@ Persist that behavior so you do not have to type flags:
 addopts = -ra
 ```
 
-Example footer you should see after runs:
+実行後に表示されるフッターの例:
 
 ```text
 =========================== short test summary info ============================
@@ -163,13 +168,13 @@ FAILED test_math.py::test_bad - AssertionError: ...
 =========== 1 failed, 12 passed, 1 skipped, 1 warning in 0.42s ============
 ```
 
-The last line’s counts (**passed / failed / skipped**) update **every time** you run **`pytest`**; nothing in Markdown auto-syncs unless CI commits reports.
+** を実行するたびに**、最後の行のカウント (**成功/失敗/スキップ**) が更新されます。`pytest`**; CI がレポートをコミットしない限り、Markdown では何も自動同期されません。
 
 
-## 5. Debugging workflow
-- **`breakpoint()`** (**`pdb`**) drops into an interactive shell at a line — **`n`**, **`s`**, **`c`**, **`p expr`**.
-- Log with **`logging`** module — structured **`extra={}`** fields feed centralized observability stacks.
-- **`traceback.print_exc()`** / **`logging.exception`** capture stack traces after **`except`**.
+## 5. デバッグワークフロー
+- **`breakpoint()`** (**`pdb`**) 行でインタラクティブ シェルにドロップします — **`n`**、**`s`**、**`c`**、**`p expr`**。
+- ** を使用してログを記録します`logging`** モジュール — 構造化 **`extra={}`** フィールドは一元化された可観測性スタックにフィードを提供します。
+- **`traceback.print_exc()`** / **`logging.exception`** 後のスタック トレースをキャプチャします **`except`**。
 
 ```python
 import logging
@@ -193,10 +198,10 @@ except ZeroDivisionError:
 ```
 
 
-## 6. Packaging & quality gates (overview)
-- **`pyproject.toml`** centralizes build backend (**`hatchling`**, **`setuptools`**, **`poetry`**) and tool configs (**`ruff`**, **`black`**).
-- **Formatters** stabilize diffs; **linters** catch unused imports and suspicious patterns — wire into pre-commit or CI.
-- **`python -m compileall`** catches syntax errors cheaply before heavier suites.
+## 6. パッケージングと品質ゲート (概要)
+- **`pyproject.toml`** ビルド バックエンドを一元化します (**`hatchling`**、**`setuptools`**、**`poetry`**) およびツール構成 (**)`ruff`**、**`black`**)。
+- **フォーマッタ** は差分を安定させます。 **リンター** は、未使用のインポートと疑わしいパターンを捕捉します。コミット前または CI に接続します。
+- **`python -m compileall`** は、重いスイートよりも前に、構文エラーを安価にキャッチします。
 
 ```toml
 # pyproject.toml (minimal sketch — adjust to your build backend)
@@ -217,18 +222,18 @@ pytest -q -ra
 ```
 
 
-## 7. When to reach beyond stdlib
-- **HTTP clients**: **`httpx`** / **`requests`**; **async**: **`asyncio`** + **`aiohttp`** (complexity budget required).
-- **Numerics**: **`numpy`** / **`pandas`** — ownership semantics differ from pure Python lists; profile hot loops.
+## 7. stdlib を超える場合
+- **HTTP クライアント**: **`httpx`** / **`requests`**; **非同期**: **`asyncio`** + **`aiohttp`** (複雑さの予算が必要)。
+- **数値**: **`numpy`** / **`pandas`** — 所有権のセマンティクスは純粋な Python リストとは異なります。プロファイルホットループ。
 
-```python
-# urllib is stdlib-only GET (no extra pip dependency)
-from urllib.request import urlopen
+「」パイソン
+# urllib は stdlib のみの GET (余分な pip 依存関係はありません)
+urllib.request から urlopen をインポート
 
-with urlopen("https://httpbin.org/get", timeout=5) as resp:
+URLopen("を使用してhttps://httpbin.org/get",timeout=5) として、それぞれ:
     body = resp.read(200)
     print(resp.status, body[:60])
 
-# Typical pip workflow for richer clients:
-# pip install httpx
-# import httpx; httpx.get("https://example.com")
+# リッチクライアントの典型的な pip ワークフロー:
+# pip インストール httpx
+# httpx をインポートします。 httpx.get("https://example.com")

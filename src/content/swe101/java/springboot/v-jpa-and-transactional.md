@@ -1,15 +1,20 @@
 ---
 label: "V"
-subtitle: "JPA & @Transactional"
+subtitle: "JPA と @Transactional"
 group: "Spring Boot"
 groupOrder: 2
 order: 5
 ---
-Spring Boot — Part V
-Map tables with JPA entities, reduce boilerplate via **`JpaRepository`**, and place **`@Transactional`** where business boundaries belong.
+Spring Boot — パート V
 
-## 1. Entity basics (Jakarta Persistence)
-```java
+
+
+
+
+
+テーブルを JPA エンティティにマップし、** を介して定型文を削減します`JpaRepository`**と**を配置します`@Transactional`** ビジネスの境界が属する場所。
+
+## 1. エンティティの基本 (Jakarta Persistence)```java
 // Compile: javac --release 22 …
 package com.example.demo.domain;
 
@@ -58,10 +63,10 @@ enum OrderStatus {
 }
 ```
 
-**`ddl-auto`** (`validate`, `update`, `none`) belongs in YAML — **`none`** + migrations (Flyway/Liquibase) is typical in production.
+**`ddl-auto`** (`validate`、`update`、`none`) YAML に属します — **`none`** + 移行 (Flyway/Liquibase) は実稼働環境では一般的です。
 
-## 2. Repository interface
-Spring Data JPA implements the interface at runtime:
+## 2. リポジトリインターフェース
+Spring Data JPA は実行時にインターフェイスを実装します。
 
 ```java
 // Compile: javac --release 22 …
@@ -79,10 +84,10 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
 }
 ```
 
-Derived query methods (`findBy…`) translate to JPQL — keep them readable; complex reporting queries often belong in **`@Query`** or native SQL.
+派生クエリメソッド (`findBy…`) JPQL に変換します — 読み取り可能な状態に保ちます。複雑なレポート クエリは、** に属することがよくあります。`@Query`** またはネイティブ SQL。
 
-## 3. Service-layer transactions
-Put **`@Transactional`** on **use-case** methods so one call ≡ one business transaction:
+## 3. サービス層トランザクション
+**を入れてください`@Transactional`** **ユースケース** メソッドの場合、1 回の呼び出し ≡ 1 つのビジネス トランザクション:
 
 ```java
 // Compile: javac --release 22 …
@@ -123,9 +128,9 @@ public class OrderService {
 }
 ```
 
-## 4. Rollback behavior
-- **Unchecked** exceptions (`RuntimeException` subclasses) → rollback **by default**.
-- **Checked** exceptions → **commit** unless you set **`rollbackFor`**:
+## 4. ロールバック動作
+- **チェックされていない**例外 (`RuntimeException`サブクラス) → **デフォルトで**ロールバックします。
+- **チェック済み**例外 → **設定しない限り**コミット**`rollbackFor`**:
 
 ```java
 // Compile: javac --release 22 …
@@ -135,12 +140,12 @@ public void importOrders(InputStream csv) throws IOException {
 }
 ```
 
-## 5. Propagation patterns
-| Value | Typical use |
-|-------|-------------|
-| **`REQUIRED`** (default) | Join caller’s transaction or start a new one |
-| **`REQUIRES_NEW`** | Always new tx — audit logging independent of outer rollback |
-| **`NOT_SUPPORTED`** | Suspend tx — rare, for integrations that misbehave inside a tx |
+## 5. 伝播パターン
+|値 |一般的な使用法 |
+|------|-----------|
+| **`REQUIRED`** (デフォルト) |呼び出し元のトランザクションに参加するか、新しいトランザクションを開始します |
+| **`REQUIRES_NEW`** |常に新しい tx — 外部ロールバックに依存しない監査ログ |
+| **`NOT_SUPPORTED`** | tx を一時停止する — まれに、tx 内で誤動作する統合の場合 |
 
 ```java
 // Compile: javac --release 22 …
@@ -150,6 +155,6 @@ public void saveAuditEntry(String action) {
 }
 ```
 
-## 6. Pitfalls
-- **`@Transactional`** on **`private`** methods or self-invocations (`this.markPaid`) **does not** start AOP proxies — extract to another bean or call through the injected proxy if you truly need it (better: keep boundaries coarse).
-- **`readOnly = true`** hints Hibernate/JDBC drivers for optimizations — pair with **`@Transactional`** on query-heavy service methods.
+## 6. 落とし穴
+- **`@Transactional`** の上 **`private`** メソッドまたは自己呼び出し (`this.markPaid`) **AOP プロキシを開始しません** — 本当に必要な場合は、別の Bean に抽出するか、挿入されたプロキシを介して呼び出します (より良い: 境界を粗く保つ)。
+- **`readOnly = true`** 最適化のための Hibernate/JDBC ドライバーのヒント — ** と組み合わせます`@Transactional`** クエリの多いサービス メソッドについて。

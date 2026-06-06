@@ -1,17 +1,18 @@
 ---
 label: "III"
-subtitle: "OOP, modules & errors"
+subtitle: "OOP、モジュールとエラー"
 group: "Python"
 groupOrder: 1
 order: 3
 ---
-Python — Part III
-Classes, inheritance versus composition, protocols, packages, and structured exception handling.
+Python — パート III
 
-## 1. Classes & instances
-- **`class Name:`** introduces a type object; instances carry per-object **`__dict__`** (unless **`__slots__`**).
-- **`__init__`** initializes state — **not** a constructor in the C++ sense; **`__new__`** allocates (rare override).
-- **Instance attributes** bind via **`self`**; **class attributes** live on the type object and are shared unless shadowed.
+クラス、継承と合成、プロトコル、パッケージ、構造化例外処理。
+
+## 1. クラスとインスタンス
+- **`class Name:`** 型オブジェクトを導入します。インスタンスはオブジェクトごとに保持します **`__dict__`** （ない限り **`__slots__`**)。
+- **`__init__`** 状態を初期化します — **C++ の意味でのコンストラクターではありません**。 **`__new__`** を割り当てます (まれなオーバーライド)。
+- **インスタンス属性**は**を介してバインドされます`self`**; **クラス属性**は型オブジェクト上に存在し、シャドウされない限り共有されます。
 
 ```python
 class Greeter:
@@ -30,9 +31,9 @@ print(g.hello())                # [pt] hello Ada
 ```
 
 
-## 2. Methods & descriptors
-- **Instance methods** take **`self`**; **`@staticmethod`** ignores receiver; **`@classmethod`** takes **`cls`** for alternate constructors/factory hooks.
-- **Properties** (**`@property`**) wrap getters/setters without breaking attribute syntax.
+## 2. メソッドと記述子
+- **インスタンス メソッド**は**を必要とします`self`**; **`@staticmethod`** 受信者を無視します。 **`@classmethod`** かかります **`cls`** 代替コンストラクター/ファクトリーフック用。
+- **プロパティ** (**`@property`**) 属性構文を壊さずにゲッター/セッターをラップします。
 
 ```python
 class Temperature:
@@ -59,9 +60,8 @@ class Temperature:
 ```
 
 
-## 3. Inheritance & `super()`
-- **MRO** (method resolution order) linearizes bases — understand **`super()`** in cooperative hierarchies, especially multiple inheritance mix-ins.
-- Prefer **composition** (has-a) when behavior varies independently — inheritance encodes **is-a** taxonomies.
+## 3. 継承と`super()`- **MRO** (メソッド解決順序) は基底を線形化します — ** を理解してください`super()`** 協調階層、特に複数の継承ミックスインにおいて。
+- 動作が個別に異なる場合は **composition** (has-a) を優先します。継承は **is-a** 分類法をエンコードします。
 
 ```python
 class LoggerMixin:
@@ -102,9 +102,9 @@ class Car:
 ```
 
 
-## 4. Duck typing & protocols
-- **`typing.Protocol`** (structural subtyping) documents “supports **`read()`**” style interfaces without forcing inheritance.
-- **`collections.abc`** (**`Sequence`**, **`Mapping`**, **`Iterable`**) guides **`isinstance`** checks when you truly need them.
+## 4. アヒルタイピングとプロトコル
+- **`typing.Protocol`** (構造サブタイピング) ドキュメントは ** をサポートします`read()`**」スタイルのインターフェイスは、継承を強制する必要はありません。
+- **`collections.abc`** (**`Sequence`**、**`Mapping`**、**`Iterable`**) ガイド **`isinstance`** 本当に必要なときにチェックします。
 
 ```python
 from collections.abc import Mapping
@@ -131,9 +131,8 @@ print(isinstance(cfg, Mapping))  # True
 ```
 
 
-## 5. Dataclasses & `slots`
-- **`@dataclass`** reduces boilerplate for data carriers — **`frozen=True`** immutability, **`field(default_factory=list)`** dodges mutable-default pitfalls.
-- **`__slots__`** or **`dataclass(slots=True)`** trims memory and attribute creation — trade-offs vs flexibility.
+## 5. データクラスと`slots`- **`@dataclass`** データキャリアの定型文を削減 — **`frozen=True`** 不変性、**`field(default_factory=list)`** 可変デフォルトの落とし穴を回避します。
+- **`__slots__`** または **`dataclass(slots=True)`** メモリと属性の作成をトリミングします — 柔軟性とトレードオフの関係。
 
 ```python
 from dataclasses import dataclass, field
@@ -159,10 +158,10 @@ p = Point(1.0, 2.0)
 ```
 
 
-## 6. Modules & packages
-- **Modules** map to `.py` files (or extensions); **packages** are directories with **`__init__.py`** (namespace packages relax this).
-- **`from pkg import mod`** vs **`import pkg.mod`** affects spelling and reload semantics.
-- **`if typing.TYPE_CHECKING:`** avoids circular imports for type-only dependencies.
+## 6. モジュールとパッケージ
+- **モジュール** へのマッピング`.py`ファイル（または拡張子）。 **パッケージ**は**を含むディレクトリです`__init__.py`** (名前空間パッケージはこれを緩和します)。
+- **`from pkg import mod`** 対 **`import pkg.mod`** スペルとリロード セマンティクスに影響します。
+- **`if typing.TYPE_CHECKING:`** 型のみの依存関係の循環インポートを回避します。
 
 ```python
 # Two import styles for the same standard-library module
@@ -182,11 +181,11 @@ if TYPE_CHECKING:
 ```
 
 
-## 7. Exceptions
-- **`try / except SpecificError as e:`** — catch **narrow** types first; bare **`except:`** swallows **`KeyboardInterrupt`** — avoid.
-- **`raise NewError("ctx") from e`** chains exceptions preserving tracebacks (**`__cause__`**).
-- **`finally`** runs on all exits; **`else`** runs if **`try`** completed without exception.
-- **Custom exceptions** subclass **`Exception`** — domain-specific trees simplify **`except`** boundaries.
+## 7. 例外
+- **`try / except SpecificError as e:`** — 最初に **narrow** 型をキャッチします。裸**`except:`** ツバメ **`KeyboardInterrupt`** - 避ける。
+- **`raise NewError("ctx") from e`** トレースバックを保持しながら例外を連鎖させます (**`__cause__`**)。
+- **`finally`** すべての出口で実行されます。 **`else`** の場合に ** が実行されます`try`** 例外なく完了しました。
+- **カスタム例外** サブクラス **`Exception`** — ドメイン固有のツリーにより簡素化 **`except`** 境界。
 
 ```python
 class DomainError(Exception):
@@ -212,37 +211,37 @@ except NegativeBalance as err:
 ```
 
 
-## 8. Context managers
-- **`with open(path) as fh:`** guarantees **`close()`** — implement **`__enter__` / `__exit__`** or use **`contextlib.contextmanager`** decorator with **`yield`**.
-- Compose cleanup for locks, transactions, timers — fewer leaked resources than manual **`try/finally`**.
+## 8. コンテキストマネージャー
+- **`with open(path) as fh:`** 保証 **`close()`** - 埋め込む **`__enter__`/`__exit__`** または ** を使用してください`contextlib.contextmanager`** デコレータ **`yield`**。
+- ロック、トランザクション、タイマーのクリーンアップを作成します - 手動よりもリソースのリークが少なくなります **`try/finally`**。
 
-```python
-from contextlib import contextmanager
-
-
-class Timer:
-    def __enter__(self) -> "Timer":
-        print("start")
-        return self
-
-    def __exit__(self, exc_type, exc, tb) -> None:
-        print("end (runs even on exception)")
+「」パイソン
+contextlibからcontextmanagerをインポートします
 
 
-with Timer():
-    print("work")
+クラスタイマー:
+    def __enter__(self) -> "タイマー":
+        print("開始")
+        自分を返す
+
+def __exit__(self, exc_type, exc, tb) -> なし:
+        print("終了 (例外でも実行)")
+
+
+Timer() の使用:
+    print("仕事")
 
 
 @contextmanager
-def transactional():
+def トランザクション():
     print("BEGIN")
-    try:
-        yield
+    試してみてください:
+        収量
         print("COMMIT")
-    except Exception:
+    例外を除く:
         print("ROLLBACK")
-        raise
+        上げる
 
 
-with transactional():
-    print("insert rows")
+そこで()を使用:
+    print("行を挿入")

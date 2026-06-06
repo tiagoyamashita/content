@@ -1,21 +1,22 @@
 ---
 label: "III"
-subtitle: "Message queues & async"
-group: "System design"
+subtitle: "メッセージキューと非同期"
+group: "システム設計"
 order: 3
 ---
-Message queues and async flows
-**Async messaging** decouples producers from consumers in time and scale — critical when peak traffic exceeds synchronous capacity.
+メッセージキューと非同期フロー
 
-## 1. Sync vs async
+**非同期メッセージング** は、時間と規模の面でプロデューサーとコンシューマーを切り離します。これは、ピーク トラフィックが同期容量を超える場合に重要です。
 
-| | Synchronous HTTP/RPC | Async queue |
-|---|---------------------|-------------|
-| Coupling | Caller waits; callee must be up | Producer enqueues and continues |
-| Latency to caller | Includes full processing | Ack after persist to broker only |
-| Spike handling | Timeouts cascade | Queue absorbs backlog |
-| Debugging | Single trace | Need correlation ids across hops |
-| Consistency | Immediate read-your-writes | Eventual; design for delay |
+## 1. 同期と非同期
+
+| |同期 HTTP/RPC |非同期キュー |
+|---|---------------------|---------------|
+|カップリング |発信者は待機します。呼び出し先は起きている必要があります |プロデューサーがエンキューして続行します。
+|発信者までの待ち時間 |完全な処理を含む |ブローカーのみに永続化後の確認応答 |
+|スパイク処理 |タイムアウト カスケード |キューがバックログを吸収 |
+|デバッグ |単一トレース |ホップ間の相関 ID が必要 |
+|一貫性 |即時読み取り書き込み |最終的には;遅延を考慮した設計 |
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 140" role="img" aria-label="Sync call vs async queue decoupling">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Sync vs async</text>
@@ -35,30 +36,30 @@ Message queues and async flows
   <text x="208" y="120" fill="#e4e4e7" font-size="9">Worker</text>
 </svg></figure>
 
-## 2. Messaging patterns
+## 2. メッセージングのパターン
 
-| Pattern | Topology | Example products |
-|---------|----------|------------------|
-| **Task queue** | 1 producer → N competing consumers | SQS, RabbitMQ work queues, Celery |
-| **Pub/Sub** | 1 event → many subscribers | SNS, Kafka topics, Google Pub/Sub |
-| **Log / stream** | Ordered partition log; replay | Kafka, Kinesis, Pulsar |
-| **Dead-letter queue (DLQ)** | Failed messages after N retries | SQS DLQ, RabbitMQ DLX |
+|パターン |トポロジ |製品例 |
+|----------|----------|---------------------|
+| **タスクキュー** | 1 人のプロデューサー → N 人の競合するコンシューマー | SQS、RabbitMQ ワークキュー、Celery |
+| **パブ/サブ** | 1 つのイベント → 多くの登録者 | SNS、Kafka トピック、Google Pub/Sub |
+| **ログ/ストリーム** |順序付けされたパーティションのログ。リプレイ |カフカ、キネシス、パルサー |
+| **配信不能キュー (DLQ)** | N 回の再試行後に失敗したメッセージ | SQS DLQ、RabbitMQ DLX |
 
-## 3. Delivery guarantees
+## 3. 配送保証
 
-| Guarantee | Meaning | Your responsibility |
-|-----------|---------|---------------------|
-| **At-most-once** | May lose message | Rare for critical work |
-| **At-least-once** | May duplicate | **Idempotent** consumers |
-| **Exactly-once** | Hard end-to-end | Transactional outbox + idempotent sinks, or stream processing with EOS |
+|保証 |意味 |あなたの責任 |
+|----------|-----------|----------|
+| **最大 1 回** |メッセージが失われる可能性があります |重要な仕事には珍しい |
+| **少なくとも 1 回** |重複する可能性があります | **冪等** コンシューマ |
+| **1 回だけ** |ハードエンドツーエンド |トランザクション送信ボックス + 冪等シンク、または EOS によるストリーム処理 |
 
-Most production systems: **at-least-once** + **idempotency keys**.
+ほとんどの実稼働システム: **少なくとも 1 回** + **冪等キー**。
 
-## 4. Transactional outbox
+## 4. トランザクション送信ボックス
 
-**Problem:** DB commit succeeds but message publish fails (or reverse) → inconsistent state.
+**問題:** DB コミットは成功するが、メッセージのパブリッシュが失敗 (またはその逆) → 一貫性のない状態。
 
-**Solution:** write business row **and** outbox row in **one DB transaction**; separate **relay** publishes to broker and marks outbox sent.
+**解決策:** ビジネス行 ** と** 送信トレイ行を **1 つの DB トランザクション**で書き込みます。別の **リレー** がブローカーに公開し、送信トレイに送信済みのマークを付けます。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 130" role="img" aria-label="Transactional outbox pattern">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Transactional outbox</text>
@@ -81,18 +82,18 @@ Most production systems: **at-least-once** + **idempotency keys**.
 | 2 | Relay reads `outbox WHERE sent = false` |
 | 3 | Publish to broker; mark row sent (or delete) |
 
-## 5. Ordering and partitioning
+## 5. 順序付けと分割
 
 - **Kafka:** order guaranteed **per partition** — choose partition key (e.g. `user_id`) for related events.
 - **Global order:** single partition — limits throughput.
 - **Poison message:** after max retries → DLQ + alert; don’t block whole queue.
 
-## 6. When to use async
+## 6. 非同期を使用する場合
 
-| Use async | Stay sync |
-|-----------|-----------|
-| Email, notifications, search indexing | User waiting for immediate result |
-| Image/video processing | Strong read-your-writes on same request |
-| Fan-out to many subscribers | Simple CRUD with low latency SLA |
+|非同期を使用する |同期を保つ |
+|----------|----------|
+|電子メール、通知、検索インデックス作成 |即時結果を待っているユーザー |
+|画像・動画処理 |同じリクエストに対する強力な読み取り書き込み |
+|多くの加入者へのファンアウト |低遅延のシンプルな CRUD SLA |
 
 **Related:** [Distributed transactions](vii-distributed-transactions.md) (saga events), [Search systems](v-search-systems.md) (CDC to index).

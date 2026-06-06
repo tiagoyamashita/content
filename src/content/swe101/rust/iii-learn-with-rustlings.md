@@ -1,39 +1,40 @@
 ---
 label: "III"
-subtitle: "Learn with Rustlings"
+subtitle: "Rustリングと一緒に学ぶ"
 group: "Rust"
 groupOrder: 1
 order: 3
 ---
-Rust — Part III: Learn with Rustlings
-**[Rustlings](https://rustlings.rust-lang.org/)** is the official hands-on exercise track: small broken programs you fix until they compile and tests pass. Use it **alongside** these notes and [The Rust Programming Language](https://doc.rust-lang.org/book/) book — reading alone is slower than typing and breaking things on purpose.
+Rust — パート III: Rust リングで学ぶ
 
-## 1. What Rustlings is
+**[Rustリング](https://rustlings.rust-lang.org/)** は公式の実践的な演習トラックです。壊れた小さなプログラムをコンパイルしてテストに合格するまで修正します。これらのメモと [Rust プログラミング言語](**と併せて** 使用してください)https://doc.rust-lang.org/book/) 本 — 一人で読むのは、入力したり意図的に何かを壊したりするよりも時間がかかります。
+
+## 1. Rustリングとは
 
 | | |
 |---|---|
-| **Format** | Dozens of tiny exercises under `exercises/` grouped by topic |
-| **Your job** | Find **`TODO`** / **`todo!()`**, edit the file, make **`cargo`** happy |
-| **Tool** | The **`rustlings`** CLI walks you through exercises in a sensible order |
-| **Goal** | Muscle memory for **`struct`**, **`impl`**, **`match`**, ownership, iterators, and more |
+| **形式** |数十の小さなエクササイズ`exercises/`トピックごとにグループ化 |
+| **あなたの仕事** |探す **`TODO`** / **`todo!()`**、ファイルを編集して**を作成します`cargo`** 幸せ |
+| **ツール** | **`rustlings`** CLI は、適切な順序で演習を説明します。
+| **目標** | **のマッスルメモリー`struct`**、**`impl`**、**`match`**、所有権、イテレータなど |
 
-Rustlings does **not** replace Part I–II or the Book — it **reinforces** them. After Part I (organization + ownership) and Part II (**`cargo`**), you are ready to start.
+Rustlings は、パート I ～ II または書籍に代わるものではありません**。それらを**強化**します。パート I (組織 + 所有権) およびパート II (**`cargo`**)、開始する準備ができました。
 
-## 2. Prerequisites
+##2.前提条件
 
-1. **Rust toolchain** — [rust-lang.org/tools/install](https://www.rust-lang.org/tools/install) (`rustup`, `cargo`, `rustc`).
-2. **`cargo build` works** on your machine — on **Windows**, install **MSVC C++ Build Tools** first (see **Part I**, §1).
-3. **Editor** — [rust-analyzer](https://rust-analyzer.github.io/) in VS Code (or any editor that supports it) so errors show inline.
+1. **Rust ツールチェーン** — [rust-lang.org/tools/install](https://www.rust-lang.org/tools/install) (`rustup`、`cargo`、`rustc`）。
+2.**`cargo build`お使いのマシン上で動作します**。**Windows** では、最初に **MSVC C++ Build Tools** をインストールします (**パート I**、§1 を参照)。
+3. **エディタ** — [rust-analyzer](https://rust-analyzer.github.io/) VS コード (またはそれをサポートするエディター) 内にあるため、エラーがインラインで表示されます。
 
-Update before installing Rustlings:
+Rustlings をインストールする前に更新してください。
 
 ```text
 rustup update
 ```
 
-## 3. Install and initialize
+## 3. インストールと初期化
 
-From any directory where you want the exercise folder:
+実験を作成する任意のディレクトリから:
 
 ```text
 cargo install rustlings
@@ -42,56 +43,56 @@ cd rustlings
 rustlings
 ```
 
-If install fails, try:
+インストールが失敗した場合は、次のことを試してください。
 
 ```text
 cargo install rustlings --locked
 ```
 
-**`rustlings` not found?** Cargo puts binaries in **`~/.cargo/bin`** (Linux/macOS) or **`%USERPROFILE%\.cargo\bin`** (Windows). Add that directory to your **PATH**, then open a **new** terminal.
+**`rustlings`見つかりませんか?** Cargo はバイナリを ** に置きます`~/.cargo/bin`** (Linux/macOS) または **`%USERPROFILE%\.cargo\bin`** (Windows)。そのディレクトリを **PATH** に追加し、**新しい** ターミナルを開きます。
 
-On **Windows**, use **[Windows Terminal](https://aka.ms/terminal)** for the best watch-mode experience (including **WSL** if you use it).
+**Windows** では、**[Windows ターミナル](https://aka.ms/terminal)** 最高のウォッチ モード エクスペリエンスを実現します (**WSL** を使用している場合はこれを含みます)。
 
-## 4. How a session works
+## 4. セッションの仕組み
 
-1. **`rustlings`** starts **watch mode** — it runs the current exercise and re-runs when you save the file under **`exercises/`**.
-2. Read the compiler error, edit the exercise file, save again.
-3. When the exercise passes, Rustlings advances to the next one.
+1.**`rustlings`** は **監視モード** を開始します — 現在の演習を実行し、** の下にファイルを保存すると再実行します`exercises/`**。
+2. コンパイラ エラーを読み取り、演習ファイルを編集し、再度保存します。
+3. 演習が終了すると、Rustlings は次の演習に進みます。
 
-Useful keys in watch mode:
+視聴モードで便利なキー:
 
-| Key | Action |
-|-----|--------|
-| **`h`** | Hint for the current exercise |
-| **`l`** | Interactive **exercise list** (done vs pending, jump, reset) |
-| **`r`** | Re-run current exercise (also used when **`--manual-run`** is set) |
+|キー |アクション |
+|-----|----------|
+| **`h`** |現在の演習のヒント |
+| **`l`** |インタラクティブ **エクササイズ リスト** (完了 vs 保留、ジャンプ、リセット) |
+| **`r`** |現在のエクササイズを再実行します (** の場合にも使用されます)`--manual-run`**が設定されています） |
 
-If file watching fails (some VMs/containers), use:
+ファイルの監視が失敗した場合 (一部の VM/ コンテナー)、次を使用します。
 
 ```text
 rustlings --manual-run
 ```
 
-Then press **`r`** after each save.
+次に**を押します`r`** 各保存後。
 
-Each topic folder has a **`README.md`** with links — skim it before diving into that section’s exercises.
+各トピックフォルダーには**があります`README.md`** リンク付き - そのセクションの演習に入る前にざっと読んでください。
 
-## 5. What you’ll practice (and where we covered it)
+## 5. 練習する内容 (およびそれを取り上げた場所)
 
-| Rustlings area (typical) | Reinforces |
-|--------------------------|------------|
-| Variables, functions | Part I — program shape |
-| **`struct`**, **`enum`**, **`match`** | Part I — organization |
-| Ownership, borrowing, slices | Part I — ownership |
-| **`struct`/`enum` methods**, modules | Part I — **`impl`**, modules |
-| Collections, **`String`** | Book ch. 8 + exercises |
-| Error handling **`Result`** | Part I — **`Result`**, Book ch. 9 |
-| Generics, **`trait`**, lifetimes | Book ch. 10–11 (go deeper after basics) |
-| Tests, **`clippy`**, **`macro`s** | Part II — **`cargo test`**, quality habits |
+| Rustリング領域 (通常) |補強 |
+|--------------------------|---------------|
+|変数、関数 |パート I — プログラムの形状 |
+| **`struct`**、**`enum`**、**`match`** |パート I — 組織 |
+|所有権、借用、スライス |パート I — 所有権 |
+| **`struct`/`enum`メソッド**、モジュール |パート I — **`impl`**、モジュール |
+|コレクション、**`String`** |本ch. 8 + 演習 |
+|エラー処理 **`Result`** |パート I — **`Result`**、書籍ch. 9 |
+|ジェネリック医薬品、**`trait`**、寿命 |本ch. 10–11 (基本の後にさらに深く進みます) |
+|テスト、**`clippy`**、**`macro`s** |パート II — **`cargo test`**、品質習慣 |
 
-When an exercise mentions **crates** or **`Cargo.toml`**, cross-check **Part II** [Cargo & shareable crates](ii-cargo-and-shareable-crates.md).
+演習で **クレート** または ** について言及している場合`Cargo.toml`**、**パート II** [貨物と共有可能なクレート](ii-cargo-and-shareable-crates.md）。
 
-## 6. Suggested study order
+## 6. 推奨される学習順序
 
 ```text
 Part I (this track)     →  skim organization + ownership
@@ -105,33 +106,33 @@ Part II (Cargo)         →  when exercises touch modules / deps
 Your own `cargo new`    →  tiny bin + lib project from scratch
 ```
 
-**Offline docs** while practicing:
+練習中の **オフライン ドキュメント**:
 
 ```text
 rustup doc --book
 rustup doc --std
 ```
 
-## 7. When you’re stuck
+## 7. 行き詰まったとき
 
-1. Press **`h`** in watch mode for a built-in hint.
-2. Re-read the topic **`README.md`** inside that **`exercises/...`** folder.
-3. Search [Rustlings Q&A discussions](https://github.com/rust-lang/rustlings/discussions/categories/q-a).
-4. Compare with [Rust Book](https://doc.rust-lang.org/book/) chapter for that topic — Rustlings is designed to run **in parallel**, not instead of the Book.
+1. **を押します`h`** 組み込みヒントの監視モード。
+2. トピックを再読します **`README.md`**その中に**`exercises/...`**フォルダー。
+3. [Rustlings Q&A ディスカッション](https://github.com/rust-lang/rustlings/discussions/categories/q-a）。
+4. [Rust Book]( と比較します)https://doc.rust-lang.org/book/) そのトピックの章 — Rustlings は、書籍の代わりにではなく、**並列** で実行されるように設計されています。
 
-Do **not** skip exercises permanently because they feel hard — use **`l`** to jump ahead and come back; use **`r`** in the list to reset an exercise if you want a clean file.
+難しいと感じるからといってエクササイズを永久にスキップしないでください。** を使用してください。`l`** 先に進んで戻ってくること。使用 **`r`クリーンなファイルが必要な場合は、リスト内の ** を使用して演習をリセットします。
 
-## 8. After Rustlings
+## 8. Rustリングのその後
 
-- Build a small **`cargo new`** project (CLI tool, parser, game loop).
-- Read **Part II** again when publishing or splitting a **workspace**.
-- Contribute to an open-source Rust crate or add a [community exercise](https://rustlings.rust-lang.org/community-exercises/) if you want to teach others.
+- 小さな ** を構築する`cargo new`** プロジェクト (CLI ツール、パーサー、ゲーム ループ)。
+- **ワークスペース**を公開または分割するときに、**パート II** をもう一度お読みください。
+- オープンソース Rust クレートに貢献するか、[コミュニティ演習](https://rustlings.rust-lang.org/community-exercises/）他の人に教えたい場合。
 
-## 9. Related
+## 9. 関連
 
-- [rustlings.rust-lang.org](https://rustlings.rust-lang.org/) — setup, usage, demo
-- [github.com/rust-lang/rustlings](https://github.com/rust-lang/rustlings) — source and issues
-- **Part I** — [Basics & toolchain](i-basics-and-toolchain.md)
-- **Part II** — [Cargo & shareable crates](ii-cargo-and-shareable-crates.md)
-- **Part IV** — async, pitfalls, Tokio [Async Rust](iv-async.md)
-- [The Rust Book](https://doc.rust-lang.org/book/)
+- [rustlings.rust-lang.org](https://rustlings.rust-lang.org/) — セットアップ、使用法、デモ
+- [github.com/rust-lang/rustlings](https://github.com/rust-lang/rustlings) — 出典と問題点
+- **パート I** — [基本とツールチェーン](i-basics-and-toolchain.md)
+- **パート II** — [貨物と共有可能な箱](ii-cargo-and-shareable-crates.md)
+- **パート IV** — 非同期、落とし穴、Tokio [Async Rust](iv-async.md)
+- [Rust 本](https://doc.rust-lang.org/book/)

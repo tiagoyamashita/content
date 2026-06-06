@@ -1,48 +1,49 @@
 ---
 label: "II"
-subtitle: "Ansible fundamentals"
+subtitle: "Ansible の基本"
 group: "CI/CD"
 order: 2
 ---
-Ansible fundamentals
-**Ansible** is an agentless configuration management tool (Red Hat). You describe **desired state** in YAML; Ansible SSHs to hosts and applies modules until state matches.
+Ansible の基本
 
-## 1. Why Ansible in CI/CD
+**Ansible** は、エージェントレス構成管理ツール (Red Hat) です。 **望ましい状態**を YAML に記述します。 Ansible はホストに SSH 接続し、状態が一致するまでモジュールを適用します。
 
-| Benefit | Explanation |
-|---------|-------------|
-| **Agentless** | No daemon on targets — only SSH + Python |
-| **Idempotent** | Second run makes no spurious changes |
-| **Declarative** | "nginx present" not "apt install nginx" |
-| **Portable** | Same playbook from Jenkins, laptop, or AWX |
+## 1. CI/CD で Ansible を使用する理由
 
-## 2. Core terms
+|メリット |説明 |
+|----------|---------------|
+| **エージェントレス** |ターゲットにはデーモンはありません - SSH + Python のみ |
+| **冪等** | 2 回目の実行では偽の変更は行われません。
+| **宣言的** | 「nginx が存在します」は「apt install nginx」ではありません |
+| **ポータブル** | Jenkins、ラップトップ、または AWX からの同じプレイブック |
 
-| Term | Meaning |
-|------|---------|
-| **Control node** | Machine running `ansible` / `ansible-playbook` (laptop, CI agent) |
-| **Managed node** | Target host being configured |
-| **Inventory** | List of hosts and groups |
-| **Module** | Unit of work (`apt`, `copy`, `service`, `template`) |
-| **Task** | One module invocation with arguments |
-| **Play** | Hosts + ordered tasks (+ handlers) |
-| **Playbook** | YAML file with one or more plays |
+## 2. 基本的な用語
 
-## 3. Agentless connection
+|用語 |意味 |
+|-----|----------|
+| **制御ノード** | `ansible` / `ansible-playbook` を実行しているマシン (ラップトップ、CI エージェント) |
+| **管理対象ノード** |構成中のターゲット ホスト |
+| **在庫** |ホストとグループのリスト |
+| **モジュール** |作業単位 (`apt`、`copy`、`service`、`template`) |
+| **タスク** |引数を使用した 1 つのモジュール呼び出し |
+| **プレイ** |ホスト + 順序付けされたタスク (+ ハンドラー) |
+| **プレイブック** | 1 つ以上の再生を含む YAML ファイル |
+
+## 3. エージェントレス接続
 
 ```bash
 # Ad-hoc ping — verifies SSH + Python on targets
 ansible webservers -i inventory.ini -m ping
 ```
 
-| OS | Connection |
-|----|------------|
-| Linux | SSH (default), `become: true` for sudo |
-| Windows | WinRM (`ansible_connection=winrm`) |
+| OS |接続 |
+|----|-----------|
+|リナックス | SSH (デフォルト)、sudo の場合は `become: true` |
+|ウィンドウズ | WinRM (`ansible_connection=winrm`) |
 
-Managed nodes need **Python 3** (minimal install on fresh hosts via `raw` module bootstrap if needed).
+管理対象ノードには **Python 3** が必要です (必要に応じて `raw` モジュール ブートストラップを介して新しいホストに最小限インストールします)。
 
-## 4. Idempotency
+## 4.冪等性
 
 ```yaml
 - name: Ensure nginx installed
@@ -51,16 +52,16 @@ Managed nodes need **Python 3** (minimal install on fresh hosts via `raw` module
     state: present
 ```
 
-| Run | Result |
-|-----|--------|
-| First | Installs nginx → **changed** |
-| Second | Already present → **ok** (no change) |
+|実行 |結果 |
+|-----|----------|
+|最初 | nginx をインストール → **変更** |
+| 2番目 |すでに存在します → **ok** (変更なし) |
 
-Idempotency matters for CI/CD: re-running deploy after a partial failure is safe.
+CI/CD にとって冪等性は重要です。部分的な障害が発生した後にデプロイを再実行するのは安全です。
 
-## 5. Modules vs shell commands
+## 5. モジュールとシェルコマンドの比較
 
-**Prefer modules** — they report changed/ok/failed and handle edge cases:
+**モジュールを優先します** - 変更/OK/失敗を報告し、エッジケースを処理します。
 
 ```yaml
 # Good — idempotent
@@ -74,17 +75,17 @@ Idempotency matters for CI/CD: re-running deploy after a partial failure is safe
 - ansible.builtin.shell: mkdir -p /opt/myapp && chown myapp /opt/myapp
 ```
 
-Use **`command`/`shell`** with **`creates:`** or **`removes:`** guards when no module fits.
+適合するモジュールがない場合は、**`command`/`shell`** を **`creates:`** または **`removes:`** ガードとともに使用します。
 
-## 6. Check mode (dry run)
+## 6. チェックモード（ドライラン）
 
 ```bash
 ansible-playbook site.yml --check --diff
 ```
 
-Shows what **would** change without applying — useful in PR review stages.
+適用しないと**何が変わる**かを示します。PR のレビュー段階で役立ちます。
 
-## 7. Project layout (typical)
+## 7. プロジェクトのレイアウト (標準)
 
 ```text
 ansible/
@@ -104,7 +105,7 @@ ansible/
   ansible.cfg
 ```
 
-## 8. ansible.cfg essentials
+## 8. ansible.cfg の要点
 
 ```ini
 [defaults]
@@ -118,6 +119,6 @@ become = True
 become_method = sudo
 ```
 
-In Jenkins set `ANSIBLE_HOST_KEY_CHECKING=False` only when you trust inventory hosts; prefer known_hosts or SSH keys.
+Jenkins では、インベントリ ホストを信頼する場合にのみ `ANSIBLE_HOST_KEY_CHECKING=False` を設定します。 known_hosts または SSH キーを優先します。
 
-**Related:** [Inventory & playbooks](iii-inventory-and-playbooks.md), [Dynamic inventory & modules](v-dynamic-inventory-and-modules.md).
+**関連:** [インベントリとプレイブック](iii-inventory-and-playbooks.md)、[動的インベントリとモジュール](v-dynamic-inventory-and-modules.md)。

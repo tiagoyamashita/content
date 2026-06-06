@@ -1,15 +1,16 @@
 ---
 label: "VI"
-subtitle: "APIs & dynamic content"
+subtitle: "API と動的コンテンツ"
 group: "CDN"
 order: 6
 ---
-CDN — APIs & dynamic content
-Not every response belongs on a CDN — but **read-heavy public GETs** (config, product catalog snippets, OG images) can shave latency and origin load when cache rules are strict.
+CDN — API と動的コンテンツ
 
-## 1. Cacheable GET criteria
+すべての応答が CDN に属するわけではありませんが、**読み取り負荷の高いパブリック GET** (構成、製品カタログ スニペット、OG 画像) は、キャッシュ ルールが厳格な場合、レイテンシとオリジンの負荷を軽減できます。
 
-All must be true (or consciously accepted):
+## 1. キャッシュ可能な GET 基準
+
+すべてが真実である (または意識的に受け入れられている) 必要があります。
 
 - [ ] **No user-specific secrets** in body
 - [ ] **Same URL → same bytes** for all users (or `Vary` is correct)
@@ -26,7 +27,7 @@ Content-Type: application/json
 {"darkMode":true,"minVersion":"2.1.0"}
 ```
 
-## 2. Never cache (defaults)
+## 2. キャッシュを行わない (デフォルト)
 
 | Route | Header |
 |-------|--------|
@@ -38,13 +39,13 @@ Authenticate at origin; CDN passes **`Authorization`** through unless you design
 
 ## 3. `Vary` header
 
-When response differs by request header:
+リクエストヘッダごとにレスポンスが異なる場合：
 
 ```http
 Vary: Accept-Language
 ```
 
-CDN stores **separate cache entries** per language — hit rate drops; use only when needed.
+CDN は言語ごとに **個別のキャッシュ エントリ**を保存します。ヒット率は低下します。必要な場合にのみ使用してください。
 
 | Header | Common use |
 |--------|------------|
@@ -54,19 +55,19 @@ CDN stores **separate cache entries** per language — hit rate drops; use only 
 
 Avoid **`Vary: Cookie`** unless you fully understand cache fragmentation.
 
-## 4. GraphQL and POST
+## 4. GraphQL と POST
 
-Default: **do not CDN-cache GraphQL POST** — same path, different body.
+デフォルト: **CDN-cache GraphQL POST** — 同じパス、異なる本体。
 
-Options:
+オプション:
 
 - Public queries via **GET** with persisted query hash (niche)
 - **Separate REST** read endpoints for cacheable public data
 - Cache at **[Redis](../redis/iv-patterns-and-use-cases.md)** in app layer instead
 
-## 5. Purge and invalidation
+## 5. パージと無効化
 
-When you must remove cached content immediately:
+キャッシュされたコンテンツをすぐに削除する必要がある場合:
 
 | Method | Use |
 |--------|-----|
@@ -80,38 +81,38 @@ When you must remove cached content immediately:
 aws cloudfront create-invalidation --distribution-id E123 --paths "/v1/public/config"
 ```
 
-Propagation is **not instant globally** — plan seconds to minutes.
+伝播は **世界中で瞬時に行われるわけではありません**。数秒から数分を計画してください。
 
-## 6. Edge workers / compute at edge
+## 6. エッジ ワーカー / エッジでの計算
 
-Run lightweight logic at PoP:
+PoP で軽量ロジックを実行します。
 
-| Provider | Product |
-|----------|---------|
-| Cloudflare | Workers |
-| Fastly | Compute@Edge |
-| CloudFront | Lambda@Edge, CloudFront Functions |
+|プロバイダー |製品 |
+|----------|----------|
+|クラウドフレア |労働者 |
+|早く |コンピューティング@エッジ |
+|クラウドフロント | Lambda@Edge、CloudFront 関数 |
 
-Use cases: A/B headers, geo redirects, token validation at edge, HTML rewriting — **not** full database access.
+ユースケース: A/B ヘッダー、地域リダイレクト、エッジでのトークン検証、HTML 書き換え — **完全なデータベース アクセスではありません**。
 
-Keep edge functions **stateless** and fast (&lt; few ms CPU limits).
+エッジ機能を **ステートレス**かつ高速に保ちます (数ミリ秒未満 CPU 制限)。
 
-## 7. Dynamic site acceleration
+## 7. 動的なサイトの高速化
 
-Some CDNs **route dynamic HTML/API** through optimized paths to origin (TCP tuning, keep-alive) without caching body — latency help without cache risk.
+一部の CDN **は、本体をキャッシュせずに、オリジンへの最適化されたパス (TCP チューニング、キープアライブ) を介して動的 HTML/API** をルーティングします。これにより、キャッシュのリスクなしでレイテンシーが軽減されます。
 
-Distinct from **caching** — read provider docs (CloudFront “dynamic content”, Cloudflare “Argo”).
+**キャッシュ**とは異なります - プロバイダーのドキュメントを読んでください (CloudFront「動的コンテンツ」、Cloudflare「Argo」)。
 
-## 8. OG / social preview images
+## 8. OG / ソーシャル プレビュー画像
 
-Generated image URLs are good CDN candidates:
+生成された画像 URL は、適切な CDN 候補です。
 
 ```text
 GET /og/product/8812.png   →  max-age=3600, purge on product update
 ```
 
-Generate on miss at origin or pre-render in batch.
+オリジンでのミス時に生成するか、バッチで事前レンダリングします。
 
-## Next
+＃＃ 次
 
 Continue with [Operations & troubleshooting](vii-operations-and-troubleshooting.md) for monitoring and debug checklist.

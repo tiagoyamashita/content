@@ -1,38 +1,39 @@
 ---
 label: "I"
-subtitle: "Intro & architecture"
+subtitle: "イントロとアーキテクチャ"
 group: "SRE"
 order: 1
 ---
-SRE tooling — Terraform: Intro & architecture
-Describe infrastructure declaratively; Terraform computes dependency graphs and reconciles cloud APIs via providers.
+SRE ツール — Terraform: 概要とアーキテクチャ
 
-## 1. Role
+インフラストラクチャを宣言的に記述します。 Terraform は依存関係グラフを計算し、プロバイダーを介してクラウド API を調整します。
 
-**Terraform** (HashiCorp; ecosystem peers include **OpenTofu**) keeps **state** that maps logical addresses (`aws_instance.app`) to real IDs (`i-0abc…`). **`terraform plan`** diffs desired configuration vs state + remote APIs; **`apply`** executes creates/updates/deletes through **providers**.
+## 1.役割
 
-## 2. How a run works (mental model)
+**Terraform** (HashiCorp、エコシステム ピアには **OpenTofu** が含まれます) は、論理アドレスをマップする **状態** を保持します (`aws_instance.app`) から実際の ID (`i-0abc…`）。 **`terraform plan`** 必要な構成と状態 + リモート API を比較します。 **`apply`** は **プロバイダ** を通じて作成/更新/削除を実行します。
 
-1. Parse `.tf` → build DAG of resources + data sources.
-2. Refresh **state** / provider reads unless constrained (**`-refresh=false`**).
-3. Diff desired vs actual → execution plan.
-4. Mutate APIs in dependency-safe order; update **state**.
+## 2. ランニングの仕組み (メンタルモデル)
 
-Providers encapsulate vendor quirks—AWS/GCP/Azure/**Kubernetes**/Datadog/Grafana/etc.—via plugins pinned by **`required_providers`** blocks.
+1. 解析する`.tf`→ リソース + データ ソースの DAG を構築します。
+2. 制約されない限り、**状態** / プロバイダーの読み取りを更新します (**`-refresh=false`**)。
+3. 希望と実際の差 → 実行計画。
+4. 依存関係が安全な順序で API を変更します。 **状態**を更新します。
 
-## 3. Core vocabulary
+プロバイダーは、** によって固定されたプラグインを介して、ベンダーの癖 (AWS/GCP/Azure/**Kubernetes**/Datadog/Grafana/ など) をカプセル化します。`required_providers`** ブロック。
 
-| Idea | Meaning |
-|------|---------|
-| **Resource** | Creates/manages something (`resource "aws_s3_bucket" "logs"`). |
-| **Data source** | Read-only lookup (`data.aws_vpc.default`). |
-| **Provider** | Plugin configuring endpoints/credentials (`provider "aws" {}`). |
-| **Module** | Callable package of resources (`module "vpc" { … }`). |
-| **State** | Bindings + outputs persisted locally or remotely—must stay consistent. |
+## 3.基本的な生存
 
-## 4. Configuration snippets (`providers`)
+|アイデア |意味 |
+|-----|----------|
+| **リソース** |何かを作成/管理します (`resource "aws_s3_bucket" "logs"`）。 |
+| **データソース** |読み取り専用ルックアップ (`data.aws_vpc.default`）。 |
+| **プロバイダー** |エンドポイント/認証情報を構成するプラグイン (`provider "aws" {}`）。 |
+| **モジュール** |リソースの呼び出し可能なパッケージ (`module "vpc" { … }`）。 |
+| **州** |バインディングと出力はローカルまたはリモートで保持され、一貫性を保つ必要があります。 |
 
-Pin Terraform & providers:
+## 4. 構成スニペット (`providers`)
+
+ピン Terraform とプロバイダー:
 
 ```hcl
 terraform {
@@ -55,4 +56,4 @@ provider "aws" {
 }
 ```
 
-Continue with **CLI workflow**, **Modules / backends / state**, then **CI & practices**.
+**CLI ワークフロー**、**モジュール / バックエンド / 状態**、次に **CI と実践**に進みます。

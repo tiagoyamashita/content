@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Cloud architecture"
+subtitle: "概要"
+group: "クラウドアーキテクチャ"
 order: 1
 ---
-Foundations — overview
-Before patterns and scale, understand **what cloud providers offer**: service models, regions, compute, storage, networking, and how to design for **failure and recovery**.
+基礎 — 概要
 
-## Map of this submenu
+パターンとスケールの前に、**クラウド プロバイダーが提供するもの**: サービス モデル、リージョン、コンピューティング、ストレージ、ネットワーキング、**障害と復旧**に備えた設計方法を理解してください。
+
+## このサブメニューのマップ
 
 | Note | Focus |
 |------|--------|
@@ -19,9 +20,9 @@ Before patterns and scale, understand **what cloud providers offer**: service mo
 | [HA & disaster recovery](vii-ha-and-disaster-recovery.md) | RTO/RPO, multi-AZ, DR tiers |
 | [Well-Architected Framework](viii-well-architected-framework.md) | Six pillars with cloud examples |
 
-**Next:** **Patterns & design** submenu — scalability, microservices, events, observability, cost.
+**次へ:** **パターンとデザイン** サブメニュー - スケーラビリティ、マイクロサービス、イベント、可観測性、コスト。
 
-## Cloud stack at a glance
+## クラウドスタックの概要
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Cloud foundation layers compute storage network">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Build blocks every architecture uses</text>
@@ -36,9 +37,9 @@ Before patterns and scale, understand **what cloud providers offer**: service mo
   <text x="12" y="88" fill="#71717a" font-size="9">All run inside regions · spread across AZs for HA</text>
 </svg></figure>
 
-## Rehearsal
+## リハーサル
 
-- IaaS vs PaaS vs SaaS — one example each?
-- Why deploy across **≥ 2 AZs**?
-- Object vs block storage — when to use each?
-- RTO vs RPO — which is downtime vs data loss?
+- IaaS 対 PaaS 対 SaaS — それぞれ 1 つの例?
+- **≥ 2 AZ** に展開する理由は何ですか?
+- オブジェクト ストレージとブロック ストレージ — それぞれをいつ使用するか?
+- RTO と RPO — ダウンタイムとデータ損失はどちらですか?

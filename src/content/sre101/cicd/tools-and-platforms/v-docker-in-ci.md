@@ -1,13 +1,14 @@
 ---
 label: "V"
-subtitle: "Docker in CI"
+subtitle: "CI の Docker"
 group: "CI/CD"
 order: 5
 ---
-Docker in CI
-Standard pattern: **build image** → **push to registry** → **deploy by tag**. Same flow on GitHub Actions, GitLab, Jenkins, CircleCI.
+CI の Docker
 
-## 1. Pipeline flow
+標準パターン: **イメージのビルド** → **レジストリへのプッシュ** → **タグによるデプロイ**。 GitHub アクション、GitLab、Jenkins、CircleCI でも同じフロー。
+
+## 1. パイプラインの流れ
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Docker build push deploy in CI">
   <rect x="12" y="40" width="64" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
@@ -24,7 +25,7 @@ Standard pattern: **build image** → **push to registry** → **deploy by tag**
   <text x="12" y="24" fill="#d4d4d8" font-size="11" font-weight="600">Immutable artifact = image digest or semver tag</text>
 </svg></figure>
 
-## 2. Multi-stage Dockerfile (Spring Boot example)
+## 2. 多段階の Docker ファイル (Spring Boot の例)
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -45,12 +46,12 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
-| Stage | Size impact |
-|-------|-------------|
-| Builder | JDK + Maven cache — discarded |
-| Runtime | JRE + JAR only — **small** prod image |
+|ステージ |サイズへの影響 |
+|------|-----------|
+|ビルダー | JDK + Maven キャッシュ — 破棄 |
+|ランタイム | JRE + JAR のみ — **小さい** 製品イメージ |
 
-## 3. Layer caching in CI
+## 3. CI でのレイヤーキャッシュ
 
 ```bash
 docker pull myregistry/myapp:cache || true
@@ -63,20 +64,20 @@ docker push myregistry/myapp:$GIT_SHA
 docker push myregistry/myapp:cache
 ```
 
-GitHub **`docker/build-push-action`** and GitLab **BuildKit** support cache backends.
+GitHub **`docker/build-push-action`** および GitLab **BuildKit** はキャッシュ バックエンドをサポートしています。
 
-## 4. Tags and immutability
+## 4. タグと不変性
 
-| Tag | Use |
+|タグ |使用 |
 |-----|-----|
-| `$GIT_SHA` | Traceable to commit |
-| `$BRANCH-$SHA` | Human-readable |
-| `latest` | Convenience — **avoid** alone in prod |
-| Semver `v1.4.2` | Release from tag |
+|`$GIT_SHA`|コミットまで追跡可能 |
+|`$BRANCH-$SHA`|人間が読める |
+|`latest`|利便性 — 製品内で単独で使用することは避けてください |
+|センバー`v1.4.2`|タグからのリリース |
 
-Deploy **`digest@sha256:…`** for maximum immutability.
+展開する **`digest@sha256:…`** 最大限の不変性を実現します。
 
-## 5. buildx and multi-platform
+## 5. buildx とマルチプラットフォーム
 
 ```bash
 docker buildx build \
@@ -85,17 +86,17 @@ docker buildx build \
   --push .
 ```
 
-Needed for **Apple Silicon** dev + **AMD64** cloud, or **Graviton** ARM nodes.
+**Apple Silicon** 開発 + **AMD64** クラウド、または **Graviton** ARM ノードに必要です。
 
-## 6. Security in CI
+## 6. CIのセキュリティ
 
-| Practice | Tool |
+|練習 |ツール |
 |----------|------|
-| Scan image for CVEs | Trivy, Grype, Snyk |
-| Generate **SBOM** | syft, build attestations |
-| Sign image | cosign, Notation |
-| Non-root USER in Dockerfile | Reduce container escape impact |
-| `.dockerignore` | Exclude `.git`, secrets, `target/` |
+| CVE のスキャン画像 |トリビー、グライプ、スニック |
+| **SBOM** を生成 | syft、証明書を構築する |
+|サイン画像 |余符号、記法 |
+| Dockerfile 内の非ルート USER |コンテナ脱出の影響を軽減 |
+|`.dockerignore`|除外する`.git`、秘密、`target/`|
 
 ```yaml
 # GitHub Actions — Trivy scan after build
@@ -106,16 +107,16 @@ Needed for **Apple Silicon** dev + **AMD64** cloud, or **Graviton** ARM nodes.
     severity: 'CRITICAL,HIGH'
 ```
 
-## 7. Docker-in-Docker (DinD) notes
+## 7. __​​ IT0__-in-Docker (DinD) メモ
 
-GitLab `docker:dind` service and Jenkins Docker agents need **privileged** mode — security trade-off. Prefer **Kaniko** or **buildkit rootless** where policy requires.
+Gitラボ`docker:dind`サービスと Jenkins Docker エージェントには **特権** モードが必要です (セキュリティのトレードオフ)。ポリシーが必要な場合は、**Kaniko** または **buildkit rootless** を優先します。
 
-## 8. Local parity
+## 8. ローカルパリティ
 
 ```bash
 docker compose -f docker-compose.ci.yml run --rm test
 ```
 
-Same image CI uses → “works on my machine” shrinks.
+CI が使用しているのと同じイメージ → 「私のマシンで動作します」が縮小されます。
 
-**Related:** [GitHub Actions](ii-github-actions.md), [GitLab CI](iii-gitlab-ci.md), [Supply chain & SLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md).
+**関連:** [GitHub アクション](ii-github-actions.md)、[Gitラボ CI](iii-gitlab-ci.md)、[サプライ チェーンと SLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md）。

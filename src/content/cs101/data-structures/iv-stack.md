@@ -1,20 +1,21 @@
 ---
 label: "IV"
-subtitle: "Stack"
-group: "Data structures & algorithms"
+subtitle: "スタック"
+group: "データ構造とアルゴリズム"
 order: 4
 ---
-Stack — two backing implementations
-The **stack ADT** is defined by its **operations**, not by whether you use a list or an array underneath. This note compares two standard backings: a **singly linked list** (head = top) and a **dynamic array** (top at the logical back).
+スタック — 2つのバッキング実装
 
-**Java baseline:** snippets assume **Java SE 22** — set the language level to **22** in your IDE or compile with **`javac --release 22`**. The features used here (generics, `var` only if added, `Deque`, etc.) also run on **JDK 21 LTS**; treat **22** as the minimum this material is checked against, and use an **LTS** JDK in production if your team requires it.
+**スタック ADT** は、その下でリストを使用するか配列を使用するかによってではなく、**操作**によって定義されます。このノートでは、**単一リンク リスト** (先頭 = 先頭) と **動的配列** (論理先頭の先頭) という 2 つの標準的なバッキングを比較します。
 
-## 1. Stack as an ADT (recap)
-**Operations** usually include `push(x)`, `pop()`, `peek()` / `top()`, `isEmpty()`, and often `size()` / `clear()`. **Invariant:** `pop` removes the **most recently pushed** item (LIFO).
+**Java ベースライン:** スニペットは **Java SE 22** を想定しています — IDE で言語レベルを **22** に設定するか、** でコンパイルします`javac --release 22`**。 The features used here (generics,`var`追加された場合のみ、`Deque`、など）**JDK 21 LTS** でも実行されます。 **22** をこのマテリアルがチェックされる最小値として扱い、チームが必要に応じて運用環境で **LTS** JDK を使用します。
 
-A stack is **not** meant for arbitrary **index access**, **search**, or **insert/remove in the middle**. If you need those behaviors, model a **different** structure (e.g. deque, list, or array used as a sequence).
+## 1. ADT としてスタックする (要約)
+**操作**には通常、次のものが含まれます`push(x)`、`pop()`、`peek()`/`top()`、`isEmpty()`、そしてしばしば`size()`/`clear()`。 **不変:**`pop`**最近プッシュされた**項目 (LIFO) を削除します。
 
-**Uses:** DFS, undo, bracket matching, postfix evaluation, call-stack intuition.
+スタックは、任意の **インデックス アクセス**、**検索**、または **途中での挿入/削除**を目的としたものではありません**。これらの動作が必要な場合は、**異なる** 構造 (シーケンスとして使用される両端キュー、リスト、または配列など) をモデル化します。
+
+**用途:** DFS、元に戻す、括弧の一致、後置評価、コールスタックの直感。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 168" role="img" aria-label="Stack after three pushes then one pop removes newest item at top">
@@ -41,9 +42,9 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="12" y="154" fill="#71717a" font-size="10">Only the top changes on push/pop — both backings keep every op O(1) at the top.</text>
 </svg></figure>
 
-### Per-operation visuals (ADT)
+### 操作ごとのビジュアル (ADT)
 
-**`push(x)`** — new element becomes the **top**; everything already on the stack stays **below** it.
+**`push(x)`** — 新しい要素が **最上位** になります。スタック上にすでにあるものはすべてスタックの**下**に残ります。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" role="img" aria-label="push adds a new top element">
   <defs>
@@ -71,7 +72,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="230" y="32" fill="#71717a" font-size="10">the new value is always LIFO “first out” next.</text>
 </svg></figure>
 
-**`peek()`** / **`top()`** — inspect the top **without** removing it; the drawing is **unchanged** after a peek.
+**`peek()`** / **`top()`** — 上部を取り外さずに**検査します。描画はピーク後も**変更されていません**。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 126" role="img" aria-label="peek reads top without changing stack">
   <text x="10" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">peek() / top()</text>
@@ -88,7 +89,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="200" y="84" fill="#71717a" font-size="10">no pop, no size change.</text>
 </svg></figure>
 
-**`pop()`** — remove and return the **current** top (the same cell **`peek`** would read).
+**`pop()`** — **現在の**先頭（同じセル**）を削除して返します`peek`** と読みます)。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 126" role="img" aria-label="pop removes and returns top element">
   <defs>
@@ -113,7 +114,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="228" y="62" fill="#71717a" font-size="10">Top moves down; size drops by 1.</text>
 </svg></figure>
 
-**`isEmpty()`** — true when there is **no** top (nothing to `peek` or `pop`).
+**`isEmpty()`** — **no** の場合は true (何もない)`peek`または`pop`）。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="isEmpty true when stack has no elements">
   <text x="10" y="18" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">isEmpty()</text>
@@ -127,7 +128,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="290" y="64" fill="#86efac" font-size="11" font-weight="600">→ false</text>
 </svg></figure>
 
-**`size()`** — logical count of elements **including** the top; this stack has **three** values total.
+**`size()`** - 先頭を含む**要素の論理数。このスタックには合計 **3 つの**値があります。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 128" role="img" aria-label="size counts elements in stack">
   <text x="10" y="18" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">size()</text>
@@ -141,7 +142,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="100" y="78" fill="#60a5fa" font-size="12" font-family="ui-monospace" font-weight="600">size = 3</text>
 </svg></figure>
 
-**`clear()`** — drop every element; afterward **`isEmpty()`** is true and **`size()`** is **`0`**.
+**`clear()`** — すべての要素を削除します。その後**`isEmpty()`** は真実であり、**`size()`** は **`0`**。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" role="img" aria-label="clear removes all stack elements">
   <defs>
@@ -160,9 +161,9 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="268" y="74" fill="#86efac" font-size="10" font-weight="600">size = 0</text>
 </svg></figure>
 
-### Example usage (Java)
+### 使用例 (Java)
 
-The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (covered later in this note under Java). Here is the same ADT vocabulary in a few lines:
+通常必要な **ライブラリ** タイプは ** です`Deque<E>`** と **`ArrayDeque<E>`** (このノートの後半の Java で説明します)。以下に、同じ ADT 語彙を数行で示します。
 
 ```java
 // Compile: javac --release 22 …
@@ -180,7 +181,7 @@ stack.clear();
 stack.isEmpty();  // true
 ```
 
-**Balanced brackets** is a classic stack exercise: on an opening symbol, **`push`**; on a closing symbol, **`pop`** and check it pairs with what you popped; at end of string, **`isEmpty()`** must be **true**.
+**バランスの取れた括弧**は古典的なスタックの練習です: 開始シンボル上で、**`push`**;終了記号、**`pop`** そして、ポップしたものとペアになっているかどうかを確認します。文字列の末尾、**`isEmpty()`** は **true** である必要があります。
 
 ```java
 // Compile: javac --release 22 …
@@ -222,14 +223,14 @@ public final class BracketExamples {
 ```
 
 
-## 2. Singly linked list as backing
-Treat the **head pointer as the top**. An **empty** stack is an empty list: `head == null`.
+## 2. バッキングとしての単一リンクリスト
+**先頭ポインタを先頭**として扱います。 **空**スタックは空のリストです。`head == null`。
 
-**Push:** allocate a new node, point it at the old head, assign `head` to the new node — **Θ(1)**.  
-**Pop:** read `head`, advance `head` to `head.next`, return the old top’s value — **Θ(1)**.  
-You **do not need a tail pointer**: every stack operation touches only the head.
+**プッシュ:** 新しいノードを割り当て、古いノードをポイントし、割り当てます`head`新しいノード — **Θ(1)** に。  
+**ポップ:**読む`head`、 前進`head`に`head.next`、古いトップの値 — **Θ(1)** を返します。  
+**テール ポインタは必要ありません**。すべてのスタック操作はヘッドのみに影響します。
 
-**`push(x)`** (list backing) — new node’s **`next`** is the old head; **`head`** moves to the new node.
+**`push(x)`** (リストバッキング) — 新しいノードの **`next`** は古いヘッドです。 **`head`** 新しいノードに移動します。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 108" role="img" aria-label="Linked list push prepends new node at head">
   <defs>
@@ -261,7 +262,7 @@ You **do not need a tail pointer**: every stack operation touches only the head.
   <text x="8" y="98" fill="#71717a" font-size="9">One pointer write for the new node’s next, one for head — both O(1).</text>
 </svg></figure>
 
-**`pop()`** (list backing) — save the head’s value, set **`head = head.next`**, return the saved value.
+**`pop()`** (リストバッキング) — ヘッドの値を保存し、** を設定します`head = head.next`**、保存された値を返します。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 108" role="img" aria-label="Linked list pop advances head and returns old top">
   <defs>
@@ -293,9 +294,9 @@ You **do not need a tail pointer**: every stack operation touches only the head.
   <text x="8" y="98" fill="#71717a" font-size="9">Old top becomes unreachable (GC) unless you keep a reference elsewhere.</text>
 </svg></figure>
 
-### Java: head-as-top stack (teaching class)
+### Java: head-as-top スタック (指導クラス)
 
-This mirrors the **prepend / delete-first** list operations from the linked-list note: **`head`** is the **top**; no tail pointer.
+これは、リンク リストの注: ** の **prepend / delete-first** リスト操作を反映しています。`head`**は**トップ**です。テールポインタはありません。
 
 ```java
 // Compile: javac --release 22 …
@@ -355,22 +356,20 @@ public class LinkedStack<E> {
 }
 ```
 
-### Walkthrough (duplicate values)
-Push values in order **1**, then **3** (first occurrence), then **3** (second occurrence), then **2**. When two nodes hold the same display value, label them **3⁽¹⁾** and **3⁽²⁾** in reasoning:
+### ウォークスルー (重複した値)
+**1**、**3** (最初の出現)、**3** (2 番目の出現)、**2** の順に値をプッシュします。 2 つのノードが同じ表示値を保持する場合、推論ではそれらに **3⁽¹⁾** および **3⁽²⁾** というラベルを付けます。
 
-1. `push(1)` — head → `1`  
-2. `push(3⁽¹⁾)` — head → `3⁽¹⁾` → `1`  
-3. `push(3⁽²⁾)` — head → `3⁽²⁾` → `3⁽¹⁾` → `1` (head is the **second** three)  
-4. `push(2)` — head → `2` → `3⁽²⁾` → `3⁽¹⁾` → `1`
+1.`push(1)`— 頭 →`1`2.`push(3⁽¹⁾)`— 頭 →`3⁽¹⁾`→`1`3.`push(3⁽²⁾)`— 頭 →`3⁽²⁾`→`3⁽¹⁾`→`1`(先頭は**2番目**の3番目です)  
+4.`push(2)`— 頭 →`2`→`3⁽²⁾`→`3⁽¹⁾`→`1`
 
-In drawings, the **top** is often placed on the **left** and older nodes extend to the **right**; new pushes arrive at the head, so older elements appear “deeper” in the chain.
+図面では、**上**は**左**に配置され、古いノードは**右**に伸びていることがよくあります。新しいプッシュは先頭に到着するため、古い要素はチェーンの「より深く」表示されます。
 
-**Pop:** always detach the head (same as list delete-at-head). Example pops in order return **2**, then **3⁽²⁾**, then **3⁽¹⁾**, then **1**; after the fourth pop, `head` is **null** — stack empty.
+**ポップ:** 常に先頭を切り離します (list delete-at-head と同じ)。ポップの例は、**2**、**3⁽²⁾**、**3⁽¹⁾**、**1** の順に返されます。 4回目のポップの後、`head`**null** です — スタックは空です。
 
-**Clear:** set `head = null` — **Θ(1)** time; nodes become unreachable and a **GC** can reclaim them (in managed languages), or you free them explicitly in C/C++.
+**クリア:** セット`head = null`— **Θ(1)** 時間;ノードが到達不能になった場合は、**GC** がそれらのノードを (マネージ言語で) 再利用するか、C/C++ で明示的に解放することができます。
 
-### Why not doubly linked?
-A doubly linked list still supports stack ops, but each node stores an **extra pointer** (`prev`). Stacks never need backward traversal for correct behavior, so the **memory overhead** buys nothing you use.
+### なぜ二重リンクしないのでしょうか?
+二重リンクリストは引き続きスタック演算をサポートしますが、各ノードは **追加のポインター** (`prev`）。スタックは正しい動作のために逆方向のトラバースを必要としないため、**メモリ オーバーヘッド**によって使用されるものは何もありません。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Singly linked stack head on left as top nodes to the right">
@@ -396,26 +395,26 @@ A doubly linked list still supports stack ops, but each node stores an **extra p
 </svg></figure>
 
 
-## 3. Array (dynamic array) as backing
-Track a **`size`** (logical element count). **Empty** stack: `size == 0`.
+## 3. バッキングとしての配列 (動的配列)
+**を追跡する`size`** (論理要素数)。 **空の**スタック:`size == 0`。
 
-**Where is the top?** If you always **insert at index 0**, every push must **shift** all existing elements — **Θ(n)** per push. Instead, grow at the **back**: the **next push** writes at index **`size`**, then increment `size`. The **top** (for `peek` / `pop`) is at index **`size - 1`**.
+**先頭はどこですか?** 常に **インデックス 0** に挿入する場合、プッシュごとに既存のすべての要素を**シフト**する必要があります (プッシュごとに **Θ(n)**)。代わりに、**後方**で拡張します: **次のプッシュ**はインデックス**に書き込みます`size`**、その後インクリメントします`size`。 **トップ** (`peek`/`pop`) はインデックス ** にあります`size - 1`**。
 
-### Same sequence on the array
-Capacity large enough; start `size = 0`.
+### 配列上の同じシーケンス
+十分な容量。始める`size = 0`。
 
-| Step | Action | Array indices (conceptual) | size after |
-|------|--------|---------------------------|------------|
-| — | empty | `[ · · · · ]` | 0 |
-| 1 | push 1 | `[1, ·, ·, ·]` | 1 |
-| 2 | push 3⁽¹⁾ | `[1, 3, ·, ·]` | 2 |
-| 3 | push 3⁽²⁾ | `[1, 3, 3, ·]` | 3 |
-| 4 | push 2 | `[1, 3, 3, 2]` | 4 |
+|ステップ |アクション |配列インデックス (概念的) |後のサイズ |
+|-----|----------|--------------------|---------------|
+| — |空 |`[ · · · · ]`| 0 |
+| 1 | 1を押します |`[1, ·, ·, ·]`| 1 |
+| 2 | 3⁽¹⁾を押してください`[1, 3, ·, ·]`| 2 |
+| 3 | 3⁽²⁾を押してください。`[1, 3, 3, ·]`| 3 |
+| 4 |プッシュ2 |`[1, 3, 3, 2]`| 4 |
 
-**Pop:** read `arr[size - 1]`, then `size--` — **Θ(1)** (you may clear the slot for GC or security — see below).  
-**Push:** **amortized Θ(1)** on a **dynamic array** because the table occasionally **resizes** (copy all elements to a new larger block — that step is **Θ(n)**, but rare enough that the average over many pushes stays constant).
+**ポップ:**読む`arr[size - 1]`、 それから`size--`— **Θ(1)** (GC またはセキュリティ用のスロットをクリアできます。以下を参照)。  
+**プッシュ:** **動的配列**上で Θ(1)** が償却されます。これは、テーブルが時々 **サイズ変更**するためです (すべての要素を新しい大きなブロックにコピーします。そのステップは **Θ(n)** ですが、多くのプッシュにわたる平均が一定のままであることは十分にまれです)。
 
-**`push(x)`** (array backing) — write at index **`size`**, then **`size++`**. No shifting when the top stays at the back.
+**`push(x)`** (配列バッキング) — インデックスに書き込みます **`size`**、 それから **`size++`**。トップが後ろにあるときは移動しません。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 124" role="img" aria-label="Array push writes at index size then increments size">
   <defs>
@@ -450,7 +449,7 @@ Capacity large enough; start `size = 0`.
   <text x="10" y="108" fill="#71717a" font-size="9">Resize copies everything only when capacity is exceeded — usual push stays O(1) amortized.</text>
 </svg></figure>
 
-**`pop()`** (array backing) — read **`arr[size - 1]`**, then decrement **`size`**; the slot above the new top may still hold a stale value until overwritten or cleared.
+**`pop()`** (配列バッキング) — 読み取り **`arr[size - 1]`**、次に ** をデクリメントします`size`**;新しい上部の上のスロットは、上書きまたはクリアされるまで古い値を保持する可能性があります。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 118" role="img" aria-label="Array pop reads top index then decrements size">
   <defs>
@@ -482,9 +481,9 @@ Capacity large enough; start `size = 0`.
   <text x="360" y="68" fill="#71717a" font-size="9">stale / optional clear</text>
 </svg></figure>
 
-### Java: array-backed stack with grow
+### Java: 拡張機能を備えた配列ベースのスタック
 
-**Top** at **`size - 1`**; next **`push`** writes **`data[size]`** then **`size++`**. On **`pop`**, return **`data[size - 1]`**, **`size--`**, and **`null`** out the slot you left so references are not retained (matches the “sensitive data / GC” discussion below).
+**トップ**、**`size - 1`**;次 **`push`**は**を書きます`data[size]`** それから **`size++`**。の上 **`pop`**、 戻る **`data[size - 1]`**、**`size--`**、 そして **`null`** 残したスロットから削除されるため、参照は保持されません (以下の「機密データ / GC」の説明と一致します)。
 
 ```java
 // Compile: javac --release 22 …
@@ -544,10 +543,10 @@ public class ArrayStack<E> {
 }
 ```
 
-### Clearing an array-backed stack
-- **Only `size = 0`:** fast, but old references may still sit in unused slots; in **Java** and similar runtimes, objects may **not** become collectable until references are dropped — problematic for **sensitive** data.  
-- **Set every old slot to `null`:** secure for references, but **Θ(n)** to clear.  
-- **Common compromise:** `size = 0` **and** replace the backing array with a **fresh empty array** (or shrink) so the old block is droppable — **Θ(1)** assignment of a new array reference; GC reclaims the old storage when safe.
+### 配列ベースのスタックのクリア
+- **のみ`size = 0`:** 高速ですが、古い参照が未使用のスロットに残っている可能性があります。 **Java** および同様のランタイムでは、参照が削除されるまでオブジェクトは**収集可能にならない可能性があります。これは**機密**データにとって問題です。  
+- **すべての古いスロットを次のように設定します`null`:** 参照用に確保されていますが、**Θ(n)** はクリアされません。  
+- **よくある妥協策:**`size = 0`**そして**、バッキング配列を**新しい空の配列**に置き換える(または縮小する)ことで、古いブロックが削除可能になります。 — **Θ(1)** 新しい配列参照の代入。 GC は、安全な場合に古いストレージを再利用します。
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 108" role="img" aria-label="Array backed stack top at index size minus one">
@@ -571,13 +570,13 @@ public class ArrayStack<E> {
 </svg></figure>
 
 
-## 4. Java: `Deque`, `ArrayDeque`, and the legacy `Stack` class
+## 4. Java:`Deque`、`ArrayDeque`、そしてその遺産`Stack`クラス
 
-The **collections framework** models a stack as a **`Deque<E>`** (double-ended queue) used at **one end only**. Prefer **`Deque`** implementations over the old **`java.util.Stack`** type.
+**コレクション フレームワーク** は、スタックを ** としてモデル化します。`Deque<E>`** (両端キュー) **一方の端のみ**で使用されます。好む **`Deque`** 古い ** に対する実装`java.util.Stack`** タイプ。
 
-### Prefer `Deque` + `ArrayDeque` for a stack
+＃＃＃ 好む`Deque`+`ArrayDeque`スタック用
 
-**`ArrayDeque<E>`** is a **resizable ring buffer** (like the circular queue in these notes): **`push` / `pop` / `peek`** are **amortized O(1)** with **no per-element boxing** of nodes (unlike a linked `Deque` built from `LinkedList` entries). It is the usual default for a **single-threaded** stack or work queue.
+**`ArrayDeque<E>`** は **サイズ変更可能なリング バッファ** (これらのメモの循環キューのような): **`push`/`pop`/`peek`** は **O(1)** で償却され、ノードの **要素ごとのボックス化はありません** (リンクされたノードとは異なります)`Deque`から構築された`LinkedList`エントリ）。これは、**シングルスレッド** スタックまたはワーク キューの通常のデフォルトです。
 
 ```java
 // Compile: javac --release 22 …
@@ -619,32 +618,32 @@ String out = stack.pop();    // "b" — empty ⇒ NoSuchElementException
   <text x="320" y="144" fill="#71717a" font-size="10">the deque’s head, not index size−1.</text>
 </svg></figure>
 
-On **`Deque`**, the **stack** naming maps like this (see `Deque` Javadoc): **`push(e)`** ≡ **`addFirst(e)`**, **`pop()`** ≡ **`removeFirst()`**, **`peek()`** ≡ **`peekFirst()`**. So the **top** of the stack is the **front** of the deque — the same “newest at one end” idea as a **head-based** singly linked stack in §2, not the “back at `size−1`” picture in §3 (both are valid ADT realizations; Java’s API just picked the **front** for `push`).
+の上 **`Deque`**、**スタック**の名前付けマップは次のようになります (「`Deque`Javadoc): **`push(e)`** ≡ **`addFirst(e)`**、**`pop()`** ≡ **`removeFirst()`**、**`peek()`** ≡ **`peekFirst()`**。したがって、スタックの**先頭**は両端キューの**前**です。これは、§2の**ヘッドベース**の単一リンクスタックと同じ「一方の端で最新」の考え方であり、「後方」ではありません。`size−1`§3 の図 (どちらも有効な ADT 実現です。Java の API は、**前** を選択しただけです)`push`）。
 
-### Why avoid `java.util.Stack`?
+### なぜ避けるのか`java.util.Stack`?
 
-**`Stack`** extends **`Vector`** (a growable array from Java 1.0). Problems in modern code:
+**`Stack`** 延長 **`Vector`** (Java 1.0 からの拡張可能な配列)。最新のコードの問題:
 
-- **Synchronized on every public method** — you pay locking even when only one thread uses it.
-- **`Stack` is not an interface** — harder to swap implementations or mock in tests.
-- Design is **legacy**; the library and **Effective Java**–style guidance say: **use `Deque`**.
+- **すべてのパブリック メソッドで同期** — 1 つのスレッドのみが使用する場合でもロックの料金が発生します。
+- **`Stack`はインターフェイスではありません**。実装を交換したり、テストでモックしたりするのが困難です。
+- デザインは**レガシー**です。ライブラリと **効果的な Java** スタイルのガイダンスでは次のように述べられています: **使用してください`Deque`**。
 
-If you truly need a **thread-safe** stack, use **`ConcurrentLinkedDeque`** (lock-free, unbounded) or wrap a **`Deque`** with **`Collections.synchronizedDeque`**, or a **`BlockingDeque`** when producers/consumers must block — not `Stack`.
+**スレッドセーフ** スタックが本当に必要な場合は、** を使用してください`ConcurrentLinkedDeque`** (ロックなし、無制限) または ** をラップする`Deque`** と **`Collections.synchronizedDeque`**、または **`BlockingDeque`** 生産者/消費者がブロックする必要がある場合 — ではない`Stack`。
 
-### `peek` vs `element`, `remove` vs `poll`
+###`peek`対`element`、`remove`対`poll`
 
-**`Deque`** inherits **`Queue`** methods with slightly different **empty** behavior:
+**`Deque`** は ** を継承します`Queue`** 空** の動作がわずかに異なる ** メソッド:
 
-| Intent | Typical stack use | On empty `Deque` |
-|--------|-------------------|-------------------|
-| Read top without removing | **`peek()`** / **`peekFirst()`** | returns **`null`** |
-| Read top (stricter) | **`element()`** | throws **`NoSuchElementException`** |
-| Pop | **`pop()`** / **`removeFirst()`** | throws **`NoSuchElementException`** |
-| Pop tolerant | **`pollFirst()`** | returns **`null`** |
+|意図 |一般的なスタックの使用法 |空の場合`Deque`|
+|--------|-------------------|--------|
+| | を削除せずに先頭をお読みください。 **`peek()`** / **`peekFirst()`** | **を返します`null`** |
+|トップを読む (より厳密) | **`element()`** |投げる**`NoSuchElementException`** |
+|ポップ | **`pop()`** / **`removeFirst()`** |投げる**`NoSuchElementException`** |
+|ポップに寛容 | **`pollFirst()`** | **を返します`null`** |
 
-Choose **`peek` / `poll`** when emptiness is normal; use **`element` / `remove`** when empty means a bug.
+選ぶ **`peek`/`poll`** 空が正常な場合。使用 **`element`/`remove`** 空の場合はバグを意味します。
 
-**Empty-safe pop** (no exception when the stack might already be drained):
+**空でも安全なポップ** (スタックがすでに空になっている場合は例外なし):
 
 ```java
 // Compile: javac --release 22 …
@@ -655,24 +654,24 @@ Deque<String> stack = new ArrayDeque<>();
 String topOrNull = stack.pollFirst(); // null if empty — same end as pop()
 ```
 
-### `ArrayDeque` rules and limits
+###`ArrayDeque`ルールと制限
 
-- **`null` is not allowed** — `push(null)` throws **`NullPointerException`**. A **`LinkedList`** used as a **`Deque`** may still accept **`null`** in older patterns, but mixing **`null`** elements with **`peek()`** is a bad idea — **`peek()`** already returns **`null`** when the deque is **empty**.
-- **No random access** — `ArrayDeque` is not a **`List`**; do not treat it like an array with indices.
-- **Iterator order** is **front → back** (same as left-to-right in the `Deque` contract), **not** “pop order until you drain it” as a special mode — for a pure stack you only **`push` / `pop` / `peek`** from one end.
+- **`null`は許可されません** —`push(null)`投げる**`NullPointerException`**。 A**`LinkedList`** は ** として使用されます`Deque`** まだ受け入れられる可能性があります **`null`** 古いパターンですが、** が混在しています`null`** 要素に **`peek()`** は悪い考えです — **`peek()`** すでに返されています **`null`**両端キューが**空**の場合。
+- **ランダムアクセスなし** —`ArrayDeque`**ではありません`List`**;インデックスを持つ配列のように扱わないでください。
+- **イテレータの順序**は**前→後**です(左から右と同じ)`Deque`契約)、**「排出するまでポップ注文」を特別なモードとして使用することはできません**。純粋なスタックの場合のみ **`push`/`pop`/`peek`**片端から。
 
-### JVM `StackOverflowError` (name collision)
+### JVM`StackOverflowError`(名前の衝突)
 
-**`StackOverflowError`** is thrown when a **thread’s call stack** (activation frames for nested method calls) grows too deep — recursion with no base case, or very deep chains. It is **unrelated** to the **`java.util.Stack`** collection type; only the word “stack” is shared.
+**`StackOverflowError`** は、**スレッドの呼び出しスタック** (入れ子になったメソッド呼び出しのアクティブ化フレーム) が深くなりすぎる場合 (基本ケースのない再帰、または非常に深いチェーン) にスローされます。 **とは**無関係**です`java.util.Stack`** コレクションタイプ; 「スタック」という単語のみが共有されます。
 
-## 5. Summary
+## 5. まとめ
 
-| | **Singly linked (head = top)** | **Array (back = top)** |
-|--|-------------------------------|-------------------------|
-| **push** | Θ(1) prepend | amortized Θ(1); rare Θ(n) resize |
-| **pop** | Θ(1) detach head | Θ(1) at `size-1` |
-| **peek / empty / size** | Θ(1) | Θ(1) |
-| **clear** | Θ(1) `head=null` (+ GC / free) | Θ(1) drop ref to new empty array, or Θ(n) null slots |
-| **Extra** | no tail needed | index discipline; sensitive data ⇒ mind stale slots |
+| | **単一リンク (ヘッド = 上部)** | **配列 (後ろ = 上)** |
+|-|----------------------------|----------------------|
+| **プッシュ** | Θ(1) 先頭に追加 |償却されたΘ(1);レア Θ(n) サイズ変更 |
+| **ポップ** | Θ(1) ヘッドを切り離す | Θ(1) で`size-1`|
+| **ピーク/空/サイズ** | Θ(1) | Θ(1) |
+| **クリア** | Θ(1)`head=null`(+ GC / 無料) | Θ(1) 参照を新しい空の配列にドロップするか、Θ(n) 個の null スロット |
+| **おまけ** |尻尾は必要ありません |インデックス規律。機密データ ⇒ 古いスロットに注意 |
 
-Both realize the **same stack ADT**; choose based on **allocation tolerance**, **cache behavior**, and **language/runtime** details (e.g. reference clearing). In **Java**, prefer **`Deque<E>`** with **`ArrayDeque<E>`** for a default stack (§4); avoid **`java.util.Stack`**.
+どちらも **同じスタック ADT** を実現します。 **割り当て許容度**、**キャッシュ動作**、**言語/ランタイム**の詳細 (参照のクリアなど) に基づいて選択します。 **Java** では ** を優先します`Deque<E>`** と **`ArrayDeque<E>`** デフォルトのスタック (§4);避ける **`java.util.Stack`**。

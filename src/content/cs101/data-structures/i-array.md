@@ -1,19 +1,20 @@
 ---
 label: "I"
-subtitle: "Array"
-group: "Data structures & algorithms"
+subtitle: "配列"
+group: "データ構造とアルゴリズム"
 order: 1
 ---
-Array (static)
-Contiguous indexed storage in the RAM model.
+配列（静的）
 
-An **array** stores elements in consecutive memory words. In Java, when you declare an array, you must always specify its size explicitly (for example, `int[] arr = new int[5];`). There is **no default size** for arrays in Java—if you simply write `int[] arr;`, the variable `arr` just points to null and no array is actually allocated. You must use `new` and provide the exact length. Once created, a Java array's length cannot change.
+RAM モデルの連続インデックス付きストレージ。
 
-Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the address is `base + i × wordSize`.
+**配列** は、要素を連続したメモリ ワードに格納します。 Java では、配列を宣言するときは、常にそのサイズを明示的に指定する必要があります (たとえば、`int[] arr = new int[5];`）。 Java の配列には**デフォルトのサイズはありません**。単に次のように記述する場合`int[] arr;`、変数`arr`null を指すだけで、実際には配列は割り当てられません。必ず使用してください`new`そして正確な長さを提供します。 Java 配列の長さは、作成後に変更することはできません。
 
-- **Strengths:** random access, cache-friendly scans, simple layout.
-- **Limits:** fixed length (static array); inserting in the middle requires shifting **O(n)** elements to keep indices dense.
-- **Related:** see **Dynamic array** in this submenu for growable vectors; the full complexity and ADT context live in **Level I — Foundations** [Foundations](../i-foundations.md).
+索引`i`到達する`A[i]`標準 RAM モデルでは **O(1)** 時間です。アドレスは次のとおりです。`base + i × wordSize`。
+
+- **長所:** ランダム アクセス、キャッシュに優しいスキャン、シンプルなレイアウト。
+- **制限:** 固定長 (静的配列)。中央に挿入するには、インデックスの密度を保つために **O(n)** 要素をシフトする必要があります。
+- **関連:** 拡張可能なベクトルについては、このサブメニューの **動的配列** を参照してください。完全な複雑さと ADT コンテキストは **レベル I — 基礎** [基礎](../i-foundations.md）。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
   <defs>

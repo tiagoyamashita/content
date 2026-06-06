@@ -1,15 +1,17 @@
 ---
 label: "VIII"
-subtitle: "CDN & API gateway together"
+subtitle: "CDN と API ゲートウェイの統合"
 group: "CDN"
 order: 8
 ---
-CDN & API gateway — how they work together
+CDN および API ゲートウェイ — それらがどのように連携するか
+
+
 **CDN** and **API gateway** sit at the **edge** of your system but solve different problems. Production stacks often use **both**: CDN for cacheable bytes, gateway for **dynamic API traffic**. Full gateway detail is in the [API gateway](../api-gateway/i-overview.md) track.
 
 For cloud-architecture framing (north-south vs mesh), see [API Gateway & service mesh](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md).
 
-## 1. Two layers, one client request
+## 1. 2 つのレイヤー、1 つのクライアント リクエスト
 
 ```text
 Browser / mobile app
@@ -33,12 +35,12 @@ Browser / mobile app
 | **API gateway** | **Route + policy** on dynamic requests | `/api/v1/*`, partner webhooks |
 | **Origin / services** | Business logic, database | Behind gateway only |
 
-CDN answers: “Can I serve a **stored copy**?”  
-Gateway answers: “**Who** is this client, are they **allowed**, and **which service** handles it?”
+CDN は次のように答えます。「**保存されたコピー**を提供できますか?」  
+ゲートウェイは、「**このクライアントは誰**ですか、**許可されています**、**どのサービス**がそれを処理しますか?」と答えます。
 
-## 2. Common combined topologies
+## 2. 一般的な組み合わせトポロジ
 
-### Web app + REST API (AWS-style)
+### Web アプリ + REST API (AWS-スタイル)
 
 ```text
 CloudFront (CDN)
@@ -49,16 +51,16 @@ CloudFront (CDN)
 
 One hostname (`app.example.com`) or split (`cdn.` vs `api.`).
 
-### SPA + separate API domain
+### SPA + 別の API ドメイン
 
 ```text
 cdn.example.com   → CDN → S3 (static only)
 api.example.com   → API Gateway → services (no CDN cache on authenticated routes)
 ```
 
-Clear separation — fewer cache mistakes on private JSON.
+明確な分離 — プライベート JSON でのキャッシュミスが減少します。
 
-### Cloudflare proxy everything
+### Cloudflare はすべてをプロキシします
 
 ```text
 Orange-cloud DNS → CDN/WAF edge
@@ -66,9 +68,9 @@ Orange-cloud DNS → CDN/WAF edge
   └── /api/* → bypass cache → origin or Workers → upstream
 ```
 
-Gateway features may be **Cloudflare API shield**, **Workers**, or origin **Kong/NGINX**.
+ゲートウェイ機能は、**Cloudflare API シールド**、**Workers**、またはオリジン **Kong/NGINX** です。
 
-## 3. What each layer should do
+## 3. 各層が行うべきこと
 
 | Concern | CDN | API gateway |
 |---------|-----|-------------|
@@ -80,18 +82,18 @@ Gateway features may be **Cloudflare API shield**, **Workers**, or origin **Kong
 | **WAF / DDoS** | CDN edge | Gateway + CDN together |
 | **Request ID / tracing** | Optional at edge | Inject `X-Request-Id`, trace context |
 
-**Thin gateway:** validate, route, limit — not business rules in gateway config.
+**シン ゲートウェイ:** 検証、ルーティング、制限 — ゲートウェイ構成のビジネス ルールではありません。
 
-## 4. Request walkthrough
+## 4. リクエストのウォークスルー
 
-**Static asset (cache hit):**
+**静的アセット (キャッシュ ヒット):**
 
 ```text
 GET /assets/main.a1b2.js
   → CDN edge HIT → 200 (origin never touched)
 ```
 
-**Login API (no CDN cache):**
+**ログイン API (CDN キャッシュなし):**
 
 ```text
 POST /api/v1/auth/login
@@ -101,7 +103,7 @@ POST /api/v1/auth/login
   → Cache-Control: no-store on response
 ```
 
-**Public config GET (optional CDN cache):**
+**パブリック構成 GET (オプションの CDN キャッシュ):**
 
 ```text
 GET /api/v1/public/config
@@ -112,7 +114,7 @@ GET /api/v1/public/config
 
 Configure CDN **behaviors** so `/api/me` never caches — see [APIs & dynamic content](vi-apis-and-dynamic-content.md).
 
-## 5. TLS and hostname flow
+## 5. TLS とホスト名のフロー
 
 ```text
 Client ──HTTPS──► CDN (cert: app.example.com)
@@ -121,17 +123,17 @@ Client ──HTTPS──► CDN (cert: app.example.com)
                                       └── HTTPS → internal ALB
 ```
 
-Certificates at **CDN** and **gateway** must match hostnames clients use. Origin can use private CA inside VPC.
+**CDN** および **ゲートウェイ** の証明書は、クライアントが使用するホスト名と一致する必要があります。 Origin は VPC 内でプライベート CA を使用できます。
 
-## 6. When you need only one
+## 6. 1 つだけ必要な場合
 
-| Setup | Enough when |
-|-------|-------------|
-| **CDN only** | Static site, no public API |
-| **Gateway only** | Internal API, no global static assets |
-| **Both** | Typical SaaS — SPA + authenticated API + global users |
+|セットアップ | | いつでも十分です。
+|------|-----------|
+| **CDN のみ** |静的サイト、パブリックなし API |
+| **ゲートウェイのみ** |内部 API、グローバル静的資産なし |
+| **両方** |典型的な SaaS — SPA + 認証済み API + グローバル ユーザー |
 
-## 7. Pitfalls when combining
+## 7. 組み合わせる際の落とし穴
 
 | Pitfall | Fix |
 |---------|-----|
@@ -141,7 +143,7 @@ Certificates at **CDN** and **gateway** must match hostnames clients use. Origin
 | Rate limit only in app | Enforce at gateway first — app is last line |
 | Double gzip | Compress at one layer only |
 
-## 8. Where to go next
+## 8. 次にどこへ行くか
 
 | Topic | Note |
 |-------|------|

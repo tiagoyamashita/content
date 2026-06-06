@@ -1,15 +1,17 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "MongoDB"
 order: 1
 ---
-MongoDB — overview
+MongoDB — 概要
+
+
 **MongoDB** is a **document database**: records are **BSON/JSON documents** in **collections**, queried through drivers, **`mongosh`**, or ODMs like Spring Data MongoDB. This track covers what you need as a **software engineer** — modeling, queries, indexes, app integration, ops, and tuning.
 
 For document-store concepts (embedding vs referencing, when to choose documents), see [Document](../../CS101/databases/iv-document.md). For relational patterns and ACID tradeoffs, see [Postgres](../postgres/i-overview.md) and [Relational (SQL)](../../CS101/databases/ii-relational.md).
 
-## Map of this track
+## このトラックの地図
 
 | Part | Focus |
 |------|--------|
@@ -21,7 +23,7 @@ For document-store concepts (embedding vs referencing, when to choose documents)
 | **VI — Operations & backups** | Replica sets, `mongodump`, Atlas ops |
 | **VII — Database optimizations** | Triage, explain, schema/query checklist |
 
-## Why MongoDB (for apps)
+## MongoDB を使用する理由 (アプリの場合)
 
 | Strength | What it means in practice |
 |----------|---------------------------|
@@ -31,7 +33,7 @@ For document-store concepts (embedding vs referencing, when to choose documents)
 | **Rich queries** | Filters, aggregation pipeline, text/geo indexes |
 | **Managed Atlas** | Backups, monitoring, global clusters without running your own ops |
 
-## Core vocabulary
+## 主要な語彙
 
 ```text
 Cluster
@@ -48,22 +50,22 @@ Cluster
 | **Replica set** | Primary + secondaries — minimum for production transactions |
 | **Shard** | Horizontal partition when data/throughput exceeds one machine |
 
-## When MongoDB fits
+## MongoDB が適合する場合
 
-| Good fit | Poor default |
+|良いフィット感 |悪いデフォルト |
 |----------|--------------|
-| Catalogs with varying attributes | Strict multi-table ledger with heavy JOIN reporting |
-| Content, user profiles, IoT events | Everything in one store “because NoSQL” |
-| Prototypes with schema churn | Complex ad-hoc analytics (often warehouse + SQL) |
-| **Polyglot persistence** alongside Postgres | Replacing Postgres without modeling tradeoffs |
+|さまざまな属性を持つカタログ |大量の JOIN レポートを備えた厳密なマルチテーブル台帳 |
+|コンテンツ、ユーザー プロファイル、IoT イベント |すべてが 1 つの店舗にある「NoSQL だから」 |
+|スキーマ チャーンを伴うプロトタイプ |複雑なアドホック分析 (多くの場合、ウェアハウス + SQL) |
+| **多言語永続性** Postgres と並行 |モデリングのトレードオフなしで Postgres を置き換える |
 
-Use **Postgres for money + invariants**, **MongoDB for flexible documents** — many teams run both.
+お金と不変条件には **Postgres を使用します**、柔軟なドキュメントには **MongoDB を使用します** - 多くのチームが両方を実行しています。
 
-## Document size and writes
+## ドキュメントのサイズと書き込み
 
-- **16 MB** max document size — unbounded embedded arrays are an anti-pattern.
-- Prefer **single-document updates** when possible; multi-document **transactions** exist (4.0+) but cost more than one-doc atomicity.
+- **16 MB** 最大ドキュメント サイズ - 無制限の埋め込み配列はアンチパターンです。
+- 可能な場合は **単一ドキュメントの更新** を推奨します。マルチドキュメント **トランザクション** は存在します (4.0 以降) が、1 ドキュメントのアトミック性よりもコストがかかります。
 
-## Next
+＃＃ 次
 
 Continue with [Install & mongosh](ii-install-and-mongosh.md) to run MongoDB locally or on Atlas and connect from the shell.

@@ -1,13 +1,14 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "System design"
+subtitle: "概要"
+group: "システム設計"
 order: 1
 ---
-Classic designs — overview
-Canonical **interview and production** problems that combine **Part I** (caching, DBs, sharding) and **Scalable patterns** (APIs, queues, CDN, search).
+クラシックなデザイン - 概要
 
-## Map of this submenu
+**パート I** (キャッシュ、DB、シャーディング) と **スケーラブル パターン** (API、キュー、CDN、検索) を組み合わせた正規の **インタビューと本番**の問題。
+
+## このサブメニューのマップ
 
 | Note | System | Core tension |
 |------|--------|--------------|
@@ -18,7 +19,7 @@ Canonical **interview and production** problems that combine **Part I** (caching
 | [Ride-sharing & location](vi-ride-sharing-location.md) | Uber/Lyft-style matching | High-frequency GPS; geospatial index |
 | [Web crawler](vii-web-crawler.md) | Googlebot-style crawler | Politeness; frontier; deduplication |
 
-## How designs connect
+## デザインがどのように接続されるか
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="Classic design problems mapped to building blocks">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Shared building blocks across classic designs</text>
@@ -38,12 +39,12 @@ Canonical **interview and production** problems that combine **Part I** (caching
   <text x="12" y="148" fill="#71717a" font-size="9">Part I → Scalable patterns → Classic designs → Bottleneck analysis</text>
 </svg></figure>
 
-## Rehearsal questions
+## リハーサルの質問
 
-- URL shortener data model and read scaling?
-- Fan-out write vs read — hybrid for celebrities?
-- WebSocket vs long polling for chat?
-- Snowflake ID properties?
-- Video upload → transcode → HLS playback path?
-- Geohash vs S2 for ride matching?
-- Bloom filter role in crawlers?
+- URL 短縮データ モデルと読み取りスケーリング?
+- ファンアウト書き込みと読み取り — 有名人向けのハイブリッド?
+- チャットの WebSocket とロングポーリングは?
+- スノーフレーク ID プロパティ?
+- ビデオのアップロード → トランスコード → HLS 再生パス?
+- ライドマッチングには Geohash と S2 を組み合わせますか?
+- クローラーにおけるブルームフィルターの役割?

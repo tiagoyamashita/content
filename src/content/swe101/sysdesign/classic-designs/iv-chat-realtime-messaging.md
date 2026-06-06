@@ -1,22 +1,23 @@
 ---
 label: "IV"
-subtitle: "Chat & realtime messaging"
-group: "System design"
+subtitle: "チャットとリアルタイムメッセージング"
+group: "システム設計"
 order: 4
 ---
-Chat and real-time messaging
-Deliver messages to online recipients **instantly** with ordering, persistence, and **presence**.
+チャットとリアルタイムメッセージング
 
-## 1. Transport comparison
+順序付け、永続性、**プレゼンス**を使用して、メッセージをオンライン受信者に**即座に**配信します。
 
-| Method | Latency | Server load | Fit |
-|--------|---------|-------------|-----|
-| Short polling | High (N × interval) | Wasteful | Legacy |
-| Long polling | Better | Connection held | Fallback |
-| **WebSocket** | Low | Persistent conn | **Chat default** |
-| SSE | Server → client only | Simpler | Notifications, not full chat |
+## 1. 輸送の比較
 
-## 2. High-level architecture
+|方法 |レイテンシ |サーバー負荷 |フィット |
+|----------|----------|---------------|-----|
+|ショートポーリング |高 (N × 間隔) |無駄 |レガシー |
+|ロングポーリング |より良い |接続が保持されています |フォールバック |
+| **WebSocket** |低い |永続的な接続 | **チャットのデフォルト** |
+| SSE |サーバー → クライアントのみ |よりシンプル |完全なチャットではなく通知 |
+
+## 2. 高レベルのアーキテクチャ
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="Chat architecture WebSocket broker storage presence">
   <rect x="12" y="44" width="56" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
@@ -35,30 +36,30 @@ Deliver messages to online recipients **instantly** with ordering, persistence, 
   <text x="12" y="24" fill="#d4d4d8" font-size="11" font-weight="600">Message flow</text>
 </svg></figure>
 
-| Service | Role |
-|---------|------|
-| **Chat / connection** | WebSocket terminate; route to recipient’s server |
-| **Message broker** | Durability; fan-out to multiple chat nodes |
-| **Message store** | Historical messages |
-| **Presence** | Online / last seen |
-| **Push notifications** | APNS/FCM when recipient offline |
+|サービス |役割 |
+|-------|------|
+| **チャット / 接続** | WebSocket が終了します。受信者のサーバーへのルート |
+| **メッセージ ブローカー** |耐久性。複数のチャット ノードへのファンアウト |
+| **メッセージストア** |履歴メッセージ |
+| **プレゼンス** |オンライン / 最後に見た |
+| **プッシュ通知** | APNS/FCM 受信者がオフラインの場合 |
 
-## 3. Message storage
+## 3. メッセージの保存
 
-**Cassandra** (wide-column) — partition key design:
+**Cassandra** (ワイドカラム) — パーティション キーの設計:
 
 | Partition key | Clustering | Query |
 |---------------|------------|-------|
 | `conversation_id` | `message_id DESC` | Latest N messages in thread |
 
-**Snowflake ID:** timestamp + machine id + sequence → **sortable** without central DB sequence.
+**Snowflake ID:** タイムスタンプ + マシン ID + シーケンス → 中央の DB シーケンスなしで **ソート可能**。
 
-| Property | Benefit |
-|----------|---------|
-| Time-ordered | Range scans by id |
-| Unique cluster-wide | No coordination per insert |
+|プロパティ |メリット |
+|----------|----------|
+|時間順 | ID による範囲スキャン |
+|クラスター全体で一意 |インサートごとに調整なし |
 
-## 4. Presence
+## 4. 存在感
 
 | Event | Action |
 |-------|--------|
@@ -66,18 +67,18 @@ Deliver messages to online recipients **instantly** with ordering, persistence, 
 | Heartbeat every 5s | EXPIRE renew |
 | Disconnect / timeout | Key expires → offline |
 
-Store in **Redis**; subscribers notify friends via pub/sub or broker.
+**Redis** に保存します。購読者はパブ/サブまたはブローカー経由で友人に通知します。
 
-## 5. Delivery guarantees
+## 5. 配送保証
 
 - **At-least-once** over broker — client **dedupes** by `message_id`.
 - Offline user: persist + **push notification** on next sync.
 - Multi-device: fan-out to all active sessions for `user_id`.
 
-## 6. Scale notes
+## 6. スケールノート
 
 - **Sticky sessions** or **user → server** routing table for WebSocket affinity.
 - Shard conversations by `conversation_id`.
 - Media: object store + CDN; message holds URL only.
 
-**Related:** Networking Part I (WebSocket/TCP), scalable patterns messaging.
+**関連:** ネットワーキング パート I (WebSocket/TCP)、スケーラブルなパターン メッセージング。
