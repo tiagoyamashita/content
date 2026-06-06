@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "Operations & persistence"
-group: "Redis"
+subtitle: "操作と永続性"
+group: "レディス"
 order: 6
 ---
-Redis — operations & persistence
-Redis is fast because data is **in memory** — plan **memory limits**, **persistence**, and **high availability** before production traffic.
+Redis — 操作と永続化
 
-## 1. Memory management
+Redis が高速なのは、データが **メモリ内**にあるためです。運用トラフィックの前に **メモリ制限**、**永続性**、**高可用性**を計画してください。
+
+## 1. メモリ管理
 
 ```text
 INFO memory
@@ -15,18 +16,18 @@ CONFIG GET maxmemory
 CONFIG GET maxmemory-policy
 ```
 
-| Policy | Behavior when `maxmemory` reached |
+|ポリシー | `maxmemory`に達したときの動作 |
 |--------|-----------------------------------|
-| **`noeviction`** | Writes fail — safe if Redis is required store |
-| **`allkeys-lru`** | Evict any key — typical **cache** |
-| **`volatile-lru`** | Evict keys with TTL only |
-| **`allkeys-lfu`** | Evict least frequently used (Redis 4+) |
+| **`noeviction`** |書き込みは失敗します - Redis が必要な場合は安全です。
+| **`allkeys-lru`** |任意のキーを削除します - 典型的な **キャッシュ** |
+| **`volatile-lru`** | TTL のみを使用してキーを削除する |
+| **`allkeys-lfu`** |最も使用頻度の低い削除 (Redis 4+) |
 
-Set **`maxmemory`** below host RAM — leave headroom for OS and replication buffers.
+**`maxmemory`** をホスト RAM より低く設定します。OS とレプリケーション バッファ用の余裕を残しておきます。
 
-## 2. RDB (snapshots)
+## 2. RDB (スナップショット)
 
-Point-in-time binary snapshot:
+ポイントインタイムのバイナリ スナップショット:
 
 ```conf
 # redis.conf
@@ -37,16 +38,16 @@ dbfilename dump.rdb
 dir /data
 ```
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Compact backup file | Between snapshots, recent writes can be lost |
-| Fast restarts | `SAVE` blocks; `BGSAVE` forks (copy-on-write memory spike) |
+|コンパクトなバックアップ ファイル |スナップショット間では、最近の書き込みが失われる可能性があります。
+|高速再起動 | `SAVE` ブロック。 `BGSAVE` フォーク (コピーオンライト メモリ スパイク) |
 
-Copy **`dump.rdb`** for cold backup when traffic is low or after **`BGSAVE`**.
+トラフィックが少ないとき、または **`BGSAVE`** 以降に、コールド バックアップ用に **`dump.rdb`** をコピーします。
 
-## 3. AOF (append-only file)
+## 3. AOF (追加専用ファイル)
 
-Logs every write — more durable:
+すべての書き込みをログに記録します - より耐久性があります:
 
 ```conf
 appendonly yes
@@ -54,71 +55,71 @@ appendfsync everysec   # balance; always | everysec | no
 auto-aof-rewrite-percentage 100
 ```
 
-| `appendfsync` | Trade-off |
+| `appendfsync` |トレードオフ |
 |---------------|-----------|
-| **`always`** | Safest; slowest |
-| **`everysec`** | At most ~1s loss on crash — common default |
-| **`no`** | OS buffer — faster, riskier |
+| **`always`** |最も安全。最も遅い |
+| **`everysec`** |クラッシュ時の損失は最大で ~1 秒 — 一般的なデフォルト |
+| **`no`** | OS バッファ — より高速、よりリスク |
 
-Many teams use **both RDB + AOF** on managed Redis (ElastiCache, Redis Cloud).
+多くのチームはマネージド Redis (ElastiCache、Redis Cloud) で **RDB + AOF の両方**を使用しています。
 
-## 4. Replication
+## 4. レプリケーション
 
 ```text
 Primary (read/write)  ──stream──►  Replica (read, failover)
 ```
 
-Configure replica:
+レプリカを構成します。
 
 ```conf
 replicaof primary-host 6379
 ```
 
-| Use | Notes |
-|-----|-------|
-| **Read scaling** | Route read-only cache GETs to replica — watch replication lag |
-| **Failover** | Sentinel or managed failover promotes replica |
+|使用 |メモ |
+|-----|------|
+| **読み取りスケーリング** |読み取り専用キャッシュの GET をレプリカにルーティング — レプリケーションの遅延を監視する |
+| **フェイルオーバー** | Sentinel またはマネージド フェールオーバーはレプリカをプロモートします。
 
-**Cache on replica:** stale reads possible — usually acceptable for cache; not for locks without care.
+**レプリカ上のキャッシュ:** 古い読み取りの可能性があります。通常はキャッシュとして許容されます。不用意にロックしないでください。
 
-## 5. Sentinel and Cluster (awareness)
+## 5. センチネルとクラスター (認識)
 
-| Mode | When |
+|モード |いつ |
 |------|------|
-| **Single instance** | Dev only |
-| **Primary + replicas + Sentinel** | HA failover for one shard |
-| **Redis Cluster** | Data sharded across nodes — key must hit same slot; multi-key ops need same hash tag `{user:42}:profile` |
+| **単一インスタンス** |開発のみ |
+| **プライマリ + レプリカ + センチネル** | 1 つのシャードの HA フェイルオーバー |
+| **Redis クラスター** |ノード間でデータがシャーディングされる - キーは同じスロットにヒットする必要があります。マルチキー操作には同じハッシュタグ `{user:42}:profile` が必要です。
 
-Most app caches fit **one primary + replicas** until memory exceeds one machine.
+ほとんどのアプリ キャッシュは、メモリが 1 台のマシンを超えるまで、**1 つのプライマリ + レプリカ**に適合します。
 
-## 6. Security
+## 6. セキュリティ
 
-- **`requirepass`** or **ACL users** — never expose Redis to public internet unauthenticated.
-- **TLS** (`rediss://`) on managed services and between AZs when required.
-- Disable **`FLUSHALL`**, **`CONFIG`** for app users via ACL.
-- Bind **`127.0.0.1`** in dev; VPC security groups in cloud.
+- **`requirepass`** または **ACL ユーザー** — Redis を認証されていないパブリック インターネットに公開しないでください。
+- 必要に応じて、マネージド サービスおよび AZ 間の **TLS** (`rediss://`)。
+- ACL 経由でアプリ ユーザーの **`FLUSHALL`**、**`CONFIG`** を無効にします。
+- 開発環境で **`127.0.0.1`** をバインドします。クラウド内の VPC セキュリティ グループ。
 
-## 7. Backup and restore
+## 7. バックアップと復元
 
-| Method | Steps |
-|--------|--------|
-| **RDB file** | Stop or `BGSAVE` → copy `dump.rdb` → restore to new instance data dir |
-| **Managed snapshot** | ElastiCache/Redis Cloud automated backups + PITR where offered |
-| **Rebuild from DB** | Cache empty → warm from Postgres — valid DR for cache-only data |
+|方法 |ステップ |
+|----------|----------|
+| **RDB ファイル** |停止または `BGSAVE` → コピー `dump.rdb` → 新しいインスタンス データ ディレクトリに復元 |
+| **管理されたスナップショット** | ElastiCache/Redis クラウド自動バックアップ + PITR (提供されている場合) |
+| **DB から再構築** |キャッシュが空→Postgres からウォーム — キャッシュのみのデータに対して有効な DR |
 
-**Test restore** — especially if you store sessions in Redis (users logged out on loss).
+**復元のテスト** — 特にセッションを Redis に保存する場合 (ユーザーは損失時にログアウトします)。
 
-## 8. Monitoring checklist
+## 8. モニタリングチェックリスト
 
-- [ ] Memory usage vs **`maxmemory`**
-- [ ] Evicted keys per second (`INFO stats`)
-- [ ] Connected clients vs **`maxclients`**
-- [ ] Replication lag (`INFO replication`)
-- [ ] Slow log (`SLOWLOG GET 10`)
-- [ ] Hit rate for cache (app metric: hits / (hits + misses))
+- [ ] メモリ使用量 vs **`maxmemory`**
+- [ ] 1 秒あたりの削除されたキー (`INFO stats`)
+- [ ] 接続されたクライアント vs **`maxclients`**
+- [ ] レプリケーションラグ (`INFO replication`)
+- [ ] スローログ (`SLOWLOG GET 10`)
+- [ ] キャッシュのヒット率 (アプリのメトリクス: ヒット / (ヒット + ミス))
 
-## Related notes
+## 関連メモ
 
-- [Performance & optimizations](vii-performance-and-optimizations.md) — pipelines, hot keys
-- [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md) — cache in system design
-- [Postgres operations](../postgres/vi-operations-and-backups.md) — source-of-truth backup mindset
+- [パフォーマンスと最適化](vii-performance-and-optimizations.md) — パイプライン、ホットキー
+- [データベースのボトルネック](../sysdesign/bottleneck-analysis/vi-database.md) — システム設計におけるキャッシュ
+- [Postgres 運用](../postgres/vi-operations-and-backups.md) — 信頼できる情報源のバックアップの考え方

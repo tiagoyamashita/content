@@ -1,28 +1,29 @@
 ---
 label: "III"
-subtitle: "Schema & modeling"
-group: "MongoDB"
+subtitle: "スキーマとモデリング"
+group: "モンゴDB"
 order: 3
 ---
-MongoDB — schema & modeling
-MongoDB is **schema-flexible**, not **schema-free**. Good models match **read and write patterns** — same embed-vs-reference tradeoffs as in [Document databases](../../CS101/databases/iv-document.md).
+MongoDB — スキーマとモデリング
 
-## 1. Design from access patterns
+MongoDB は **スキーマフリー**ではなく、**スキーマ柔軟**です。優れたモデルは **読み取りパターンと書き込みパターン** に一致します。これは、[ドキュメント データベース](../../CS101/databases/iv-document.md) と同じ、埋め込みと参照のトレードオフです。
 
-Ask first:
+## 1. アクセスパターンから設計する
 
-1. What does the app **read** in one screen/API call?
-2. What must update **atomically**?
-3. How big can nested arrays grow?
+まず質問してください:
+
+1. アプリは 1 つの画面/API 呼び出しで何を**読み取り**しますか?
+2. **アトミック**に更新する必要があるものは何ですか?
+3. ネストされた配列はどれくらい大きくなりますか?
 
 ```text
 Read path drives layout  →  embed what you fetch together
 Write path drives splits →  reference what changes independently
 ```
 
-## 2. Embedding vs referencing
+## 2. 埋め込みと参照
 
-**Embed** (one document):
+**埋め込み** (1 つのドキュメント):
 
 ```json
 {
@@ -36,7 +37,7 @@ Write path drives splits →  reference what changes independently
 }
 ```
 
-**Reference** (two collections):
+**参考** (2 つのコレクション):
 
 ```json
 // orders
@@ -46,29 +47,29 @@ Write path drives splits →  reference what changes independently
 { "_id": "line_a", "orderId": "order_99", "sku": "KB-01", "qty": 1 }
 ```
 
-| Pattern | Use when |
-|---------|----------|
-| **Embed** | One-to-few; bounded size; always read together |
-| **Reference** | One-to-many huge; shared sub-documents; independent updates |
-| **`$lookup`** | Join at read time — OK for analytics, expensive at scale |
+|パターン | | の場合に使用します。
+|----------|----------|
+| **埋め込む** | 1 対数。制限されたサイズ。いつも一緒に読んでください |
+| **参考** | 1 対多の巨大な。共有サブドキュメント。独立したアップデート |
+| **`$lookup`** |読み取り時に参加 — 分析にはOK、大規模には高価 |
 
-**Rule of thumb:** if an array might exceed **hundreds** of elements or **MB** of data, reference or bucket (separate collection).
+**経験則:** 配列が **数百** の要素、または **MB** のデータ、参照、またはバケット (別個のコレクション) を超える可能性がある場合。
 
-## 3. `_id` and natural keys
+## 3. `_id` とナチュラルキー
 
-Default **`ObjectId`** is fine for most apps — time-sortable, unique across shards.
+ほとんどのアプリではデフォルトの **`ObjectId`** で問題ありません。時間順に並べ替え可能で、シャード間で一意です。
 
-Use **natural keys** when stable and unique:
+安定していて一意である場合は **自然キー** を使用します。
 
 ```json
 { "_id": "user:ada@example.com", "displayName": "Ada" }
 ```
 
-Custom string `_id` simplifies idempotent upserts from external systems.
+カスタム文字列 `_id` は、外部システムからの冪等 UPSERT を簡素化します。
 
-## 4. Schema validation
+## 4. スキーマの検証
 
-Enforce shape at the database (optional but recommended in production):
+データベースで形状を強制します (オプションですが、運用環境では推奨されます)。
 
 ```javascript
 db.createCollection("products", {
@@ -89,16 +90,16 @@ db.createCollection("products", {
 })
 ```
 
-| Level | Behavior |
-|-------|----------|
-| **`strict`** | Validates inserts and updates |
-| **`moderate`** | Validates inserts + updates that touch validated fields |
+|レベル |行動 |
+|------|----------|
+| **`strict`** |挿入と更新を検証します。
+| **`moderate`** |検証されたフィールドに影響を与える挿入と更新を検証します。
 
-App validation still required — DB validation is a safety net.
+アプリの検証は引き続き必要です — DB 検証はセーフティ ネットです。
 
-## 5. Migrations without `ALTER TABLE`
+## 5. `ALTER TABLE` を使用しない移行
 
-Schema changes are **data migrations**:
+スキーマの変更は **データ移行**です。
 
 ```javascript
 // Add default field to existing docs
@@ -111,30 +112,30 @@ db.products.updateMany(
 db.products.updateMany({}, { $rename: { "desc": "description" } })
 ```
 
-Track scripts in git (Flyway-style numbering or `migrations/20260519_add_archived.js`). Run in CI/staging before prod.
+git でスクリプトを追跡します (Flyway スタイルの番号付けまたは `migrations/20260519_add_archived.js`)。 prod の前に CI/ステージングで実行します。
 
-## 6. Duplication and consistency
+## 6. 重複と一貫性
 
-Embedding duplicates data — updating a product name in 10,000 order snapshots is painful.
+重複データの埋め込み - 10,000 個の注文スナップショットで製品名を更新するのは面倒です。
 
-| Strategy | When |
+|戦略 |いつ |
 |----------|------|
-| **Embed snapshot** | Historical truth (price at purchase time) |
-| **Reference + lookup** | Live catalog data |
-| **Change streams / events** | Propagate updates asynchronously |
+| **スナップショットを埋め込む** |歴史的真実（購入時の価格） |
+| **参照 + ルックアップ** |ライブカタログデータ |
+| **ストリーム/イベントの変更** |更新を非同期的に伝達する |
 
-For money-like flows, consider **Postgres** or **multi-document transactions** — see [Postgres overview](../postgres/i-overview.md).
+お金のような流れについては、**Postgres** または **複数ドキュメント トランザクション** を検討してください。[Postgres の概要](../postgres/i-overview.md) を参照してください。
 
-## 7. Time-series and TTL
+## 7. 時系列とTTL
 
-High-volume events:
+大規模なイベント:
 
 ```javascript
 db.events.createIndex({ createdAt: 1 }, { expireAfterSeconds: 604800 }) // 7 days TTL
 ```
 
-Or use **Time Series collections** (MongoDB 5+) for metrics/logs with automatic bucketing.
+または、自動バケット化を備えたメトリクス/ログには **時系列コレクション** (MongoDB 5+) を使用します。
 
-## Next
+＃＃ 次
 
-Continue with [Queries & indexes](iv-queries-and-indexes.md) for filters, aggregation, and index design.
+[クエリとインデックス](iv-queries-and-indexes.md) に進み、フィルタ、集計、インデックスの設計を行います。

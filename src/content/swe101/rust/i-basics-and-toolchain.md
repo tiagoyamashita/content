@@ -1,30 +1,31 @@
 ---
 label: "I"
-subtitle: "Basics & toolchain"
-group: "Rust"
+subtitle: "基本とツールチェーン"
+group: "さび"
 groupOrder: 1
 order: 1
 ---
-Rust — Part I
-How Rust **organizes** code (crates, modules, **`struct`**, **`impl`**, **`trait`**, **`enum`**), the **`cargo`** workflow, ownership at a high level, and **`match`** / **`Option`** so later notes share a baseline.
+Rust — パート I
 
-## 1. Toolchain & `cargo`
-- **`rustup`** installs stable/beta/nightly toolchains and targets; **`rustc`** compiles; **`cargo`** drives builds, tests, and dependencies.
-- **`cargo new scratch --bin`** → binary crate with `src/main.rs`; **`cargo new libname --lib`** → library with `src/lib.rs`.
-- **`cargo build`** / **`cargo run`** / **`cargo test`** are the everyday commands; **`cargo check`** type-checks without linking (fast iteration).
+Rust がコードを **整理**する方法 (クレート、モジュール、**`struct`**、**`impl`**、**`trait`**、**`enum`**)、**`cargo`** ワークフロー、高レベルでの所有権、**`match`** / **`Option`** を、後のノートで共有する方法について説明します。ベースライン。
 
-### Windows: Visual Studio Build Tools (C++)
+## 1. ツールチェーン & `cargo`
+- **`rustup`** 安定版/ベータ版/夜間ツールチェーンとターゲットをインストールします。 **`rustc`** コンパイルします。 **`cargo`** はビルド、テスト、依存関係を推進します。
+- **`cargo new scratch --bin`** → `src/main.rs` のバイナリ クレート; **`cargo new libname --lib`** → `src/lib.rs`の図書館。
+- **`cargo build`** / **`cargo run`** / **`cargo test`** は日常的なコマンドです。 **`cargo check`** リンクせずに型チェックを行います (高速反復)。
 
-On **Windows**, the default Rust toolchain targets the **MSVC** ABI. **`rustc`** and **`cargo`** need a C++ linker and Windows SDK libraries that ship with **Microsoft’s C++ build tools** — not the Rust compiler itself.
+### Windows: Visual Studio ビルド ツール (C++)
 
-Install **one** of these before (or when) **`rustup`** asks for prerequisites:
+**Windows** では、デフォルトの Rust ツールチェーンは **MSVC** ABI をターゲットとしています。 **`rustc`** および **`cargo`** には、Rust コンパイラ自体ではなく、**Microsoft の C++ ビルド ツール** に付属する C++ リンカーと Windows SDK ライブラリが必要です。
 
-- **[Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)** — workload **“Desktop development with C++”** (enough for most Rust work), or  
-- A full **Visual Studio** edition with the same C++ workload.
+**`rustup`** が前提条件を要求する前 (またはその時点) に、これらのうち **1 つ** をインストールします。
 
-Without them, **`cargo build`** often fails with errors about **`link.exe`**, **`msvcrt`**, or **“linker not found”**. After installing, open a **new** terminal and run **`cargo build`** again.
+- **[Visual Studio Build Tools](134)** — ワークロード **「C++ によるデスクトップ開発」** (ほとんどの Rust 作業には十分)、または  
+- 同じ C++ ワークロードを備えたフル **Visual Studio** エディション。
 
-**`rustup`** on Windows may offer to install the MSVC prerequisites automatically; accepting that is fine. If you use the **GNU** toolchain (`x86_64-pc-windows-gnu`) instead, you need **MinGW** — most tutorials and crates assume **MSVC** on Windows.
+これらがないと、**`cargo build`** は **`link.exe`**、**`msvcrt`**、または **「リンカーが見つかりません」** に関するエラーで失敗することがよくあります。インストール後、**新しい**ターミナルを開き、**`cargo build`**を再度実行します。
+
+Windows 上の **`rustup`** は、MSVC の前提条件を自動的にインストールすることを提案する場合があります。それを受け入れて大丈夫です。代わりに **GNU** ツールチェーン (`x86_64-pc-windows-gnu`) を使用する場合は、**MinGW** が必要です。ほとんどのチュートリアルとクレートは Windows 上の **MSVC** を前提としています。
 
 ```text
 cargo new hello --bin
@@ -32,11 +33,11 @@ cd hello
 cargo run
 ```
 
-## 2. How Rust code is organized
+## 2. Rust コードの構成方法
 
-If you know **Java** or **C#**, Rust feels familiar in places but splits responsibilities differently: **data**, **methods**, and **shared behavior (traits)** are separate pieces the compiler stitches together.
+**Java** または **C#** を知っている場合は、Rust に親しみを感じるところもありますが、責任の分割方法は異なります。**データ**、**メソッド**、**共有動作 (特性)** は、コンパイラーがつなぎ合わせた別個の部分です。
 
-### Big picture: crate → module → items
+### 全体像: クレート → モジュール → アイテム
 
 ```text
 my_project/                 ← one Cargo package
@@ -46,17 +47,17 @@ my_project/                 ← one Cargo package
     user.rs                 ← optional extra module file
 ```
 
-| Layer | What it is | Rough Java analogy |
-|-------|------------|-------------------|
-| **Crate** | One compiled unit (your app or library) | A **module** / JAR you ship |
-| **Module** | Namespace for types and functions (`mod`, `use`) | **`package`** |
-| **Item** | `struct`, `enum`, `fn`, `trait`, `const`, … | classes, interfaces, methods |
+|レイヤー |それは何ですか | Java の大まかな例え |
+|------|-----------|--------|
+| **木箱** | 1 つのコンパイル済みユニット (アプリまたはライブラリ) |出荷する **モジュール** / JAR |
+| **モジュール** |型と関数の名前空間 (`mod`、`use`) | **`package`** |
+| **アイテム** | `struct`、`enum`、`fn`、`trait`、`const`、… |クラス、インターフェイス、メソッド |
 
-**`main.rs`** (or **`lib.rs`**) is the **crate root**. Everything else is pulled in with **`mod`** and exposed with **`pub`**.
+**`main.rs`** (または **`lib.rs`**) は **クレート ルート**です。他のすべては **`mod`** で引き込まれ、**`pub`** で露出されます。
 
-### `struct` — data only (like a class *without* methods in the body)
+### `struct` — データのみ (本体にメソッドを *含まない* クラスなど)
 
-A **`struct`** holds **fields**. It is **not** a class with methods inside the type declaration.
+**`struct`** には **フィールド** が保持されます。これは、型宣言内にメソッドを持つクラスではありません**。
 
 ```rust
 struct User {
@@ -66,15 +67,15 @@ struct User {
 }
 ```
 
-- **No inheritance** — Rust does not subclass `struct`s.
-- **No `null`** on the struct itself — use **`Option<T>`** for “maybe missing” fields.
-- **`#[derive(Debug, Clone)]`** auto-generates common boilerplate (like IDE-generated `toString` / copy helpers).
+- **継承なし** — Rust は 58 をサブクラス化しません。
+- 構造体自体に **`null`** はありません。「欠落している可能性がある」フィールドには **`Option<T>`** を使用します。
+- **`#[derive(Debug, Clone)]`** は、一般的な定型文を自動生成します (IDE で生成された `toString` / コピー ヘルパーなど)。
 
-Think: **`struct` ≈ “a class that only declares fields”** (POJO / record-style data).
+**`struct` ≈ 「フィールドを宣言するだけのクラス」** (POJO / レコード スタイル データ) と考えてください。
 
-### `impl` — where methods live (like the method block of a class)
+### `impl` — メソッドが存在する場所 (クラスのメソッド ブロックなど)
 
-Methods are written in a separate **`impl TypeName { ... }`** block, not inside the `struct`.
+メソッドは、`struct` 内ではなく、別の **`impl TypeName { ... }`** ブロックに記述されます。
 
 ```rust
 impl User {
@@ -99,14 +100,14 @@ impl User {
 }
 ```
 
-| In `impl` | Meaning | Java-ish |
-|-----------|---------|----------|
-| **`fn foo(...)`** | Associated function | **`static void foo`** |
-| **`fn foo(&self)`** | Method, read-only | instance method, no mutation |
-| **`fn foo(&mut self)`** | Method, can mutate fields | instance method that changes state |
-| **`fn foo(self)`** | Consumes the value (move) | rare; like “take ownership and finish” |
+| `impl` |意味 |ジャワっぽい |
+|----------|-----------|----------|
+| **`fn foo(...)`** |関連機能 | **`static void foo`** |
+| **`fn foo(&self)`** |メソッド、読み取り専用 |インスタンス メソッド、突然変異なし |
+| **`fn foo(&mut self)`** |メソッド、フィールドを変更できる |状態を変更するインスタンス メソッド |
+| **`fn foo(self)`** |値を消費（移動） |レア; 「所有権を取得して終了」のように |
 
-Call site:
+サイトに電話をかける:
 
 ```rust
 let mut u = User::new(1, "Ada");
@@ -114,11 +115,11 @@ println!("{}", u.display_name());
 u.deactivate();
 ```
 
-**Free functions** — `fn` at module scope, not in any `impl` — are normal and idiomatic (helpers, parsers, `main`).
+**無料関数** — モジュールスコープでの `fn`、どの `impl` にも含まれていない — 通常かつ慣用的で​​す (ヘルパー、パーサー、`main`)。
 
-### `enum` — a type with fixed variants (better than “string constants”)
+### `enum` — 固定バリアントを持つ型 (「文字列定数」よりも優れています)
 
-An **`enum`** lists **named variants**. Each variant can carry data — Rust’s way to model “one of several shapes” without class hierarchies.
+**`enum`** には **名前付きバリアント**がリストされています。各バリアントはデータを運ぶことができます。これは、クラス階層を使用せずに「いくつかの形状のうちの 1 つ」をモデル化する Rust の方法です。
 
 ```rust
 enum OrderStatus {
@@ -129,7 +130,7 @@ enum OrderStatus {
 }
 ```
 
-**`Option<T>`** and **`Result<T, E>`** are enums from the standard library:
+**`Option<T>`** および **`Result<T, E>`** は、標準ライブラリの列挙型です。
 
 ```rust
 enum Option<T> {
@@ -143,11 +144,11 @@ enum Result<T, E> {
 }
 ```
 
-Java analogy: **`enum`** + **sealed interfaces** / tagged unions — but checked exhaustively with **`match`**.
+Java の類似点: **`enum`** + **シールされたインターフェイス** / タグ付きユニオン — ただし、**`match`** で徹底的にチェックされます。
 
-### `trait` — shared behavior (like an interface + sometimes default methods)
+### `trait` — 共有動作 (インターフェース + 場合によってはデフォルトのメソッドなど)
 
-A **`trait`** defines **capabilities** other types can **implement**. Generics and **`dyn Trait`** use traits for polymorphism.
+**`trait`** は、他のタイプが**実装できる**機能**を定義します。ジェネリックと **`dyn Trait`** はポリモーフィズムにトレイトを使用します。
 
 ```rust
 trait Describable {
@@ -166,15 +167,15 @@ impl Describable for User {
 }
 ```
 
-| Concept | Rust | Java |
-|---------|------|------|
-| Contract for behavior | **`trait`** | **`interface`** |
-| “implements interface” | **`impl Trait for Type`** | **`class X implements Y`** |
-| Built-in traits | **`Debug`**, **`Clone`**, **`Iterator`**, … | **`Comparable`**, **`Serializable`**, … |
+|コンセプト |さび |ジャワ |
+|-------|------|------|
+|行動に関する契約 | **`trait`** | **`interface`** |
+| 「インターフェイスの実装」 | **`impl Trait for Type`** | **`class X implements Y`** |
+|組み込みの特性 | **`Debug`**、**`Clone`**、**`Iterator`**、… | **`Comparable`**、**`Serializable`**、… |
 
-**`impl Trait for Type`** can live in the **same file** as the type or in another module (with visibility rules). Unlike Java, you generally **cannot** add a trait impl for a foreign type in a random crate (the **orphan rule** keeps coherence).
+**`impl Trait for Type`** は、タイプと **同じファイル** に存在することも、別のモジュール (可視性ルールを使用) に存在することもできます。 Java とは異なり、通常、ランダム クレート内の外部型に特性 impl を追加することは**できません** (**孤立ルール**により一貫性が保たれます)。
 
-Common pattern — implement a std trait:
+一般的なパターン — std 特性を実装します。
 
 ```rust
 use std::fmt;
@@ -186,12 +187,12 @@ impl fmt::Display for User {
 }
 ```
 
-### Visibility: `pub` and modules
+### 可視性: `pub` およびモジュール
 
-- Items are **private** to their parent module by default.
-- **`pub`** exposes them to parent modules and (when re-exported) to other crates.
-- **`mod billing;`** loads **`billing.rs`** or **`billing/mod.rs`**.
-- **`use crate::user::User;`** brings names into scope (like **`import`**).
+- 項目はデフォルトでは親モジュールに対して**プライベート**です。
+- **`pub`** は、それらを親モジュールに公開し、(再エクスポートする場合) 他のクレートに公開します。
+- **`mod billing;`** は **`billing.rs`** または **`billing/mod.rs`** をロードします。
+- **`use crate::user::User;`** は名前をスコープに含めます (**`import`** など)。
 
 ```text
 src/
@@ -199,7 +200,7 @@ src/
   user.rs         pub struct User { ... }  + impl blocks
 ```
 
-### Mental map: Java class vs Rust pieces
+### メンタルマップ: Java クラスと Rust の部分
 
 ```text
 Java (one class file)              Rust (split on purpose)
@@ -210,7 +211,7 @@ class User { fields }      →       struct User { fields }
   extends / implements     →       traits + composition (no extends)
 ```
 
-### One file tying it together
+### 1 つのファイルで結合する
 
 ```rust
 struct Rectangle {
@@ -241,8 +242,8 @@ fn main() {
 }
 ```
 
-## 3. Program shape
-- **`fn main()`** is the binary entry point. Statements often end with **`;`**; the last expression in a block can be returned without **`return`**.
+## 3. プログラムの形状
+- **`fn main()`** はバイナリ エントリ ポイントです。多くの場合、ステートメントは **`;`** で終わります。ブロック内の最後の式は **`return`** なしで返すことができます。
 
 ```rust
 fn main() {
@@ -255,10 +256,10 @@ fn double(x: i32) -> i32 {
 }
 ```
 
-## 4. Ownership (readonce mental model)
-- Every value has **one owner**. Assignment **moves** non-**`Copy`** values (e.g. **`String`**, **`Vec`**) — the old binding can’t be used afterward unless you **`clone()`** or borrow.
-- **`&T`** immutable borrow; **`&mut T`** exclusive mutable borrow — the compiler rejects overlapping uses that would alias mutable state.
-- Primitives like **`i32`**, **`bool`**, **`char`** implement **`Copy`**: they duplicate trivially instead of moving.
+## 4. 所有権 (リードオンスメンタルモデル)
+- すべての値には **1 人の所有者**がいます。割り当ては非**`Copy`**値を**移動します(例: **`String`**、**`Vec`**)。**`clone()`**または借用しない限り、古いバインディングは後で使用できません。
+- **`&T`** 不変借用。 **`&mut T`** 排他的可変借用 — コンパイラは、可変状態のエイリアスとなる重複した使用を拒否します。
+- **`i32`**、**`bool`**、**`char`** のようなプリミティブは **`Copy`** を実装します。これらは移動するのではなく単純に複製します。
 
 ```rust
 let s = String::from("hi");
@@ -272,9 +273,9 @@ let first = v[0];
 println!("first = {}, len = {}", first, v.len());
 ```
 
-## 5. Pattern matching & `Option`
-- **`match`** is exhaustive: **`Option<T>`** forces you to handle **`Some`** and **`None`** (or use **`if let`** / **`while let`** for a single case).
-- **`Result<T, E>`** is the error idiom; **`?`** in functions that return **`Result`** propagates errors.
+## 5. パターンマッチング & `Option`
+- **`match`** は完全です。**`Option<T>`** では **`Some`** および **`None`** を処理する必要があります (または、単一のケースの場合は **`if let`** / **`while let`** を使用します)。
+- **`Result<T, E>`** はエラー イディオムです。 **`Result`** を返す関数内の **`?`** はエラーを伝播します。
 
 ```rust
 fn loud(name: Option<&str>) -> String {
@@ -289,9 +290,9 @@ fn parse_u8(s: &str) -> Result<u8, std::num::ParseIntError> {
 }
 ```
 
-## 6. `match` on enums (why organization matters)
+## 6. 列挙型に関する `match` (組織が重要な理由)
 
-Once you have **`enum`** variants, **`match`** forces you to handle **every** case — the compiler catches missing branches.
+**`enum`** バリアントを取得すると、**`match`** は **すべて** のケースを処理することを強制します。コンパイラは欠落しているブランチを検出します。
 
 ```rust
 fn label(status: OrderStatus) -> &'static str {
@@ -304,9 +305,9 @@ fn label(status: OrderStatus) -> &'static str {
 }
 ```
 
-## 7. Modules & crates (recap)
+## 7. モジュールとクレート (要約)
 
-- **`mod foo;`** pulls in **`foo.rs`** or **`foo/mod.rs`**. Items are private to their parent by default; **`pub`** exposes them.
-- A **binary crate** runs **`main`**; a **library crate** exports **`pub`** items for other crates (see **Part II** — Cargo & shareable crates).
+- **`mod foo;`** は **`foo.rs`** または **`foo/mod.rs`** を引き込みます。デフォルトでは、アイテムはその親に対してプライベートです。 **`pub`** はそれらを公開します。
+- **バイナリ クレート**は **`main`** を実行します。 **ライブラリクレート**は**`pub`**アイテムを他のクレートにエクスポートします(**パートII** - カーゴおよび共有可能なクレートを参照)。
 
-Next: **Part II** — **Cargo**, library crates, workspaces [Cargo & shareable crates](ii-cargo-and-shareable-crates.md). **Part III** — practice with **[Rustlings](https://rustlings.rust-lang.org/)** [Learn with Rustlings](iii-learn-with-rustlings.md). Later notes can deepen **lifetimes**, **iterators**, and **error handling** on real crate boundaries.
+次: **パート II** — **カーゴ**、ライブラリクレート、ワークスペース [カーゴおよび共有可能なクレート](ii-cargo-and-shareable-crates.md)。 **パート III** — **[カサカサ音](135)** [カサカサ音で学ぶ](iii-learn-with-rustlings.md) で練習します。後のメモでは、実際のクレート境界での **ライフタイム**、**イテレータ**、**エラー処理**について詳しく説明することができます。

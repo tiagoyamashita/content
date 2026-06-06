@@ -1,24 +1,25 @@
 ---
 label: "VI"
-subtitle: "Ride-sharing & location"
-group: "System design"
+subtitle: "ライドシェアリングとロケーション"
+group: "システム設計"
 order: 6
 ---
-Ride-sharing and location services
-**Uber / Lyft-style** matching: ingest **high-frequency GPS**, find **nearby drivers**, assign **ETA-ranked** rides.
+ライドシェアリングと位置情報サービス
 
-## 1. Scale sketch
+**Uber / Lyft スタイル** マッチング: **高周波 GPS** を取り込み、**近くのドライバー**を見つけ、**ETA ランク**の配車を割り当てます。
 
-| Assumption | Rate |
-|------------|------|
-| 1 M active drivers | |
-| GPS every 4 s | **250 K location writes/s** |
+## 1. スケールスケッチ
 
-Writes dominate; reads are geospatial queries on hot regions.
+|仮定 |レート |
+|-----------|------|
+| 100 万人のアクティブドライバー | |
+| 4 秒ごとの GPS | **250,000 のロケーション書き込み/秒** |
 
-## 2. Location ingestion
+書き込みが優勢です。読み取りは、ホット リージョンに対する地理空間クエリです。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 110" role="img" aria-label="Driver GPS to Redis geo and Kafka analytics">
+## 2. 位置情報の取り込み
+
+<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 440 110" role="img" aria-label="Driver GPS to Redis geo and Kafka analytics">
   <rect x="12" y="40" width="56" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="24" y="58" fill="#e4e4e7" font-size="9">Driver app</text>
   <path d="M68 54 H108" stroke="#a1a1aa" stroke-width="1.5"/>
@@ -31,33 +32,33 @@ Writes dominate; reads are geospatial queries on hot regions.
   <text x="12" y="88" fill="#71717a" font-size="9">GEOADD driver_id lat lng · stream for history/replay</text>
 </svg></figure>
 
-| Store | Purpose |
-|-------|---------|
-| **Redis Geo** (`GEOADD`, `GEORADIUS`) | Live matching — O(log N) |
-| **Kafka** | History, surge pricing, ML features |
+|ストア |目的 |
+|------|-----------|
+| **Redis Geo** (`GEOADD`、`GEORADIUS`) |ライブマッチング — O(log N) |
+| **カフカ** |歴史、サージ価格、ML 機能 |
 
-## 3. Geospatial indexes
+## 3. 地理空間インデックス
 
-| Index | Idea | Used by |
-|-------|------|---------|
-| **Geohash** | Lat/lng → base32 string; prefix = nearby cells | Simple radius search |
-| **S2 cells** | Hierarchical sphere tiling | Google, Uber |
-| **Quadtree** | 2-D recursive split | Non-uniform density |
-| **PostGIS** | SQL extensions | Smaller scale / admin |
+|インデックス |アイデア |使用者 |
+|------|------|-----------|
+| **ジオハッシュ** |緯度/経度 → Base32 文字列;プレフィックス = 近くのセル |簡単な半径検索 |
+| **S2 セル** |階層的な球体タイリング |グーグル、ウーバー |
+| **四分木** | 2 次元再帰的分割 |不均一な密度 |
+| **PostGIS** | SQL 拡張機能 |小規模 / 管理者 |
 
-**Geohash caveat:** edge cells need **neighbor** lookup — one hash cell ≠ perfect circle.
+**Geohash に関する注意事項:** エッジ セルには **近隣** ルックアップが必要です。1 つのハッシュ セル ≠ 完全な円です。
 
-## 4. Matching flow
+## 4. マッチングの流れ
 
-| Step | Action |
-|------|--------|
-| 1 | Rider request with pickup lat/lng |
-| 2 | **GEORADIUS** (or S2 query) — drivers within R km, available status |
-| 3 | Rank by **ETA** from route graph (not straight-line distance) |
-| 4 | Offer to top driver; timeout → next candidate |
-| 5 | Accept → trip state machine; share live location |
+|ステップ |アクション |
+|------|----------|
+| 1 |送迎付きのライダーリクエスト（緯度/経度） |
+| 2 | **GEORADIUS** (または S2 クエリ) — R km 以内のドライバー、利用可能なステータス |
+| 3 |ルート グラフから **ETA** によるランク付け (直線距離ではない) |
+| 4 |トップドライバーへのオファータイムアウト → 次の候補 |
+| 5 |受け入れる→トリップ状態マシン。ライブ位置を共有する |
 
-## 5. Trip state (simplified)
+## 5. トリップ状態（簡略化）
 
 ```text
 REQUESTED → DRIVER_ASSIGNED → IN_PROGRESS → COMPLETED
@@ -65,14 +66,14 @@ REQUESTED → DRIVER_ASSIGNED → IN_PROGRESS → COMPLETED
               RE_OFFER
 ```
 
-Use **idempotency** on accept to prevent double assignment.
+二重代入を防ぐために、受け入れ時に **冪等性** を使用してください。
 
-## 6. Failure modes
+## 6. 故障モード
 
-| Issue | Mitigation |
-|-------|------------|
-| Stale driver location | Heartbeat; mark unavailable if no update |
-| Thundering herd at bar close | Surge + queue requests |
-| Split-brain assignment | Optimistic lock on driver status |
+|問題 |緩和 |
+|------|-----------|
+|古いドライバーの場所 |心拍数。更新がない場合は利用不可とマークする |
+|バーの近くで雷鳴の群れ | 写真 バーの近くで雷鳴の群れリクエストの急増 + キューリクエスト |
+|スプリットブレイン割り当て |ドライバーのステータスを楽観的にロック |
 
-**Related:** Part I replication, scalable patterns rate limiting per region.
+**関連:** パート I レプリケーション、スケーラブル パターンのリージョンごとのレート制限。

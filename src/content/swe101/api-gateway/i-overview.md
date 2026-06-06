@@ -1,76 +1,77 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "API Gateway"
+subtitle: "概要"
+group: "APIゲートウェイ"
 order: 1
 ---
-API gateway — overview
-An **API gateway** is the **single public entry** for client traffic to your backend — it **routes** requests to services and applies **cross-cutting policies**: TLS, authentication, rate limits, request transforms, and observability hooks.
+APIゲートウェイ — 概要
 
-**CDN** caches static and some GET responses at the edge; **gateway** handles **dynamic API** traffic. Most SaaS stacks use both — see [CDN & API gateway together](../cdn/viii-cdn-and-api-gateway-together.md).
+**API ゲートウェイ**は、バックエンドへのクライアント トラフィックの**単一のパブリック エントリ**です。リクエストをサービスに**ルーティング**し、TLS、認証、レート制限、リクエスト変換、可観測性フックなどの**横断的なポリシー**を適用します。
 
-For architecture patterns (north-south vs service mesh), see [API Gateway & service mesh](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md).
+**CDN** は静的応答と一部の GET 応答をエッジでキャッシュします。 **ゲートウェイ**は**動的API**トラフィックを処理します。ほとんどの SaaS スタックは両方を使用します。[CDN と API ゲートウェイの併用](../cdn/viii-cdn-and-api-gateway-together.md) を参照してください。
 
-## Map of this track
+アーキテクチャ パターン (ノースサウス vs サービス メッシュ) については、[API ゲートウェイとサービス メッシュ](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md) を参照してください。
 
-| Part | Focus |
-|------|--------|
-| **I — Overview** | Role, vs load balancer, vs CDN |
-| **II — How gateways work** | Request flow, north-south traffic |
-| **III — Routing & versions** | Paths, host rules, canary, rewrites |
-| **IV — Authentication** | JWT, API keys, OAuth at the edge |
-| **V — Rate limiting & resilience** | Throttling, timeouts, circuit breakers |
-| **VI — Setup & providers** | AWS, Kong, NGINX, cloud managed |
-| **VII — Operations & troubleshooting** | Logs, debug, common failures |
+## このトラックの地図
 
-## Gateway vs other edge pieces
+|パート |フォーカス |
+|------|----------|
+| **I — 概要** |役割、ロード バランサー、CDN との比較 |
+| **II — ゲートウェイの仕組み** |リクエスト フロー、南北トラフィック |
+| **III — ルーティングとバージョン** |パス、ホスト ルール、カナリア、リライト |
+| **IV — 認証** |エッジでの JWT、API キー、OAuth |
+| **V — レート制限と復元力** |スロットリング、タイムアウト、サーキット ブレーカー |
+| **VI — セットアップとプロバイダー** | AWS、Kong、NGINX、クラウドマネージド |
+| **VII — 操作とトラブルシューティング** |ログ、デバッグ、一般的なエラー |
 
-| Component | Primary question |
-|-----------|------------------|
-| **CDN** | “Can I serve a cached copy?” ([CDN track](../cdn/i-overview.md)) |
-| **API gateway** | “Who is allowed, and where does this request go?” |
-| **Load balancer (ALB/NLB)** | “Which healthy instance gets this TCP/HTTP connection?” |
-| **Reverse proxy (NGINX)** | Often **is** the gateway, or sits behind it |
-| **WAF** | “Is this request malicious?” — often bundled with CDN/gateway |
+## ゲートウェイと他のエッジ部分
+
+|コンポーネント |主な質問 |
+|----------|------|
+| **CDN** | 「キャッシュされたコピーを提供できますか?」 ([CDN トラック](../cdn/i-overview.md)) |
+| **API ゲートウェイ** | 「誰が許可されますか? このリクエストはどこに送信されますか?」 |
+| **ロードバランサー (ALB/NLB)** | 「この TCP/HTTP 接続を取得できる正常なインスタンスはどれですか?」 |
+| **リバース プロキシ (NGINX)** |多くの場合、**は** ゲートウェイであるか、その背後にあります。
+| **WAF** | 「このリクエストは悪意のあるものですか？」 — CDN/ゲートウェイにバンドルされることが多い |
 
 ```text
 Client → CDN (optional) → API Gateway → Load balancer → Service pods
 ```
 
-## What gateways typically do
+## ゲートウェイが通常行うこと
 
-| Capability | Example |
-|------------|---------|
-| **Routing** | `GET /api/v1/orders` → orders-service |
-| **TLS termination** | HTTPS for `api.example.com` |
-| **Authentication** | Validate JWT, API key, mTLS |
-| **Rate limiting** | 1000 req/min per API key |
-| **Request/response transform** | Strip path prefix, add headers |
-| **Observability** | Access logs, metrics, trace ID injection |
+|能力 |例 |
+|-----------|-----------|
+| **ルーティング** | `GET /api/v1/orders` → 注文サービス |
+| **TLS 終端** | `api.example.com` の HTTPS |
+| **認証** | JWT、API キー、mTLS を検証する |
+| **レート制限** | API キーごとに 1000 リクエスト/分 |
+| **リクエスト/レスポンス変換** |パスプレフィックスを削除し、ヘッダーを追加します。
+| **可観測性** |アクセス ログ、メトリクス、トレース ID インジェクション |
 
-Keep gateway **thin** — business rules stay in services.
+ゲートウェイを**薄く**保つ — ビジネス ルールはサービス内に残ります。
 
-## Common products
+## 一般的な製品
 
-| Product | Notes |
-|---------|-------|
-| **AWS API Gateway** | REST API, HTTP API, Lambda/HTTP integrations |
-| **Kong / Kong Gateway** | Open source, plugins, K8s-friendly |
-| **NGINX / NGINX Plus** | Reverse proxy + gateway patterns |
-| **Azure API Management** | Full API lifecycle |
-| **Google API Gateway / Apigee** | GCP and enterprise API management |
-| **Envoy + Gloo / Ambassador** | Kubernetes-native |
-| **Cloudflare API Shield** | Edge + schema validation |
+|製品 |メモ |
+|----------|----------|
+| **AWS API ゲートウェイ** | REST API、HTTP API、Lambda/HTTP 統合 |
+| **コング / コング ゲートウェイ** |オープンソース、プラグイン、K8s フレンドリー |
+| **NGINX / NGINX プラス** |リバース プロキシ + ゲートウェイ パターン |
+| **Azure API 管理** |完全な API ライフサイクル |
+| **Google API ゲートウェイ / Apigee** | GCP とエンタープライズ API 管理 |
+| **特使 + グルー / アンバサダー** | Kubernetes ネイティブ |
+| **Cloudflare API シールド** |エッジ + スキーマ検証 |
 
-## When you need a gateway
+## ゲートウェイが必要な場合
 
-| Need gateway | Skip for now |
+|ゲートウェイが必要 |今はスキップしてください |
 |--------------|--------------|
-| Multiple backend services behind one API host | Single monolith, one port |
-| Partner/public API with keys and quotas | Internal-only VPC calls |
-| Central auth and rate limits | Few clients, limits in app OK |
-| API versioning at edge | Version only in app routes |
+| 1 つの API ホストの背後にある複数のバックエンド サービス |単一モノリス、1 ポート |
+|キーとクォータを備えたパートナー/パブリック API |内部専用 VPC 呼び出し |
+|中央認証とレート制限 |クライアントが少ない、アプリの制限はOK |
+|エッジでの API のバージョン管理 |アプリルート内のみのバージョン |
 
-## Next
+＃＃ 次
 
-Continue with [How gateways work](ii-how-api-gateways-work.md) for request flow and north-south traffic.
+リクエストフローとNorth-Southトラフィックについては、[ゲートウェイの仕組み](ii-how-api-gateways-work.md)に進みます。

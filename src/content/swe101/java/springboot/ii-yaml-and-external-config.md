@@ -1,27 +1,28 @@
 ---
 label: "II"
-subtitle: "YAML & external config"
-group: "Spring Boot"
+subtitle: "YAML と外部構成"
+group: "スプリングブーツ"
 groupOrder: 2
 order: 2
 ---
-Spring Boot — Part II
-Bind typed configuration from **`application.yml`** / **`application.properties`**, switch behavior with **profiles**, and keep secrets out of source control.
+Spring Boot — パート II
 
-## 1. Resolution order (mental model)
-Later sources **override** earlier ones for the same property key. Typical precedence includes (simplified):
+**`application.yml`** / **`application.properties`** から型指定された構成をバインドし、**プロファイル**で動作を切り替え、秘密をソース管理外に保ちます。
 
-1. Command-line arguments (`--server.port=9090`)
-2. **`SPRING_APPLICATION_JSON`** inline JSON env var
-3. **`Java System` properties**
-4. **`OS environment variables`** (relaxed binding: `SPRING_DATASOURCE_URL` → `spring.datasource.url`)
-5. Profile-specific files: **`application-{profile}.yml`**
-6. **`application.yml`** at the root of the classpath
+## 1. 解決順序 (メンタルモデル)
+後のソースは、同じプロパティ キーの以前のソースを**オーバーライド**します。一般的な優先順位には次のものが含まれます (簡略化)。
 
-Exact ordering is documented per Boot version — rely on **one obvious source per environment** (env vars / secrets manager in prod).
+1. コマンドライン引数 (`--server.port=9090`)
+2. **`SPRING_APPLICATION_JSON`** インライン JSON 環境変数
+3. **`Java System` プロパティ**
+4. **`OS environment variables`** (リラックスバインディング: `SPRING_DATASOURCE_URL` → `spring.datasource.url`)
+5. プロファイル固有のファイル: **`application-{profile}.yml`**
+6. クラスパスのルートにある **`application.yml`**
 
-## 2. Nested YAML mapped to property keys
-YAML nests become dot-separated keys Spring already understands:
+正確な順序はブート バージョンごとに文書化されています。**環境ごとに 1 つの明らかなソース** (本番環境の環境変数 / シークレット マネージャー) に依存します。
+
+## 2. プロパティ キーにマップされたネストされた YAML
+YAML ネストはドット区切りのキーになります Spring はすでに以下を理解しています。
 
 ```yaml
 server:
@@ -43,8 +44,8 @@ logging:
 
 `spring.datasource.password` resolves **`${DB_PASSWORD}`** from the process environment at runtime.
 
-## 3. Profiles for environment-shaped defaults
-**`application-dev.yml`** loads when **`dev`** is active:
+## 3. 環境に合わせたデフォルトのプロファイル
+**`dev`** がアクティブな場合、**`application-dev.yml`** がロードされます。
 
 ```yaml
 # application.yml — shared defaults
@@ -63,12 +64,12 @@ logging:
     com.example: DEBUG
 ```
 
-The **`---`** document separator can split multiple logical documents inside one YAML file; separate files per profile are usually clearer.
+**`---`** ドキュメント セパレーターを使用すると、1 つの YAML ファイル内の複数の論理ドキュメントを分割できます。通常、プロファイルごとに個別のファイルを作成すると、より明確になります。
 
-Activate via **`spring.profiles.active=prod`**, **`SPRING_PROFILES_ACTIVE`**, or **`@ActiveProfiles("test")`** in tests.
+テストでは **`spring.profiles.active=prod`**、**`SPRING_PROFILES_ACTIVE`**、または **`@ActiveProfiles("test")`** を通じてアクティブ化します。
 
-## 4. `@Value` for individual keys
-Good for a handful of scalars; defaults avoid crashes when a key is missing:
+## 4. 個々のキーの場合は `@Value`
+少数のスカラーには適しています。デフォルトでは、キーが欠落している場合のクラッシュを回避します。
 
 ```java
 // Compile: javac --release 22 …
@@ -87,10 +88,10 @@ public class FeatureToggle {
 }
 ```
 
-**Limitation**: many unrelated **`@Value`** fields on one class become hard to test and document — prefer grouped **`@ConfigurationProperties`**.
+**制限事項**: 1 つのクラス上の無関係な **`@Value`** フィールドが多数あると、テストと文書化が難しくなります。グループ化された **`@ConfigurationProperties`** をお勧めします。
 
-## 5. `@ConfigurationProperties` (typed groups)
-Declare an immutable record (Boot 3+) and bind the **`app.notification`** subtree:
+## 5. `@ConfigurationProperties` (型付きグループ)
+不変レコード (ブート 3+) を宣言し、**`app.notification`** サブツリーをバインドします。
 
 ```yaml
 # application.yml
@@ -121,7 +122,7 @@ public record NotificationProperties(
 ) {}
 ```
 
-Register the bean:
+Bean を登録します。
 
 ```java
 // Compile: javac --release 22 …
@@ -133,9 +134,9 @@ import org.springframework.context.annotation.Configuration;
 public class NotificationConfig {}
 ```
 
-Or place **`@ConfigurationPropertiesScan`** next to **`@SpringBootApplication`** so Boot discovers **`@ConfigurationProperties`** types in scanned packages.
+または、**`@ConfigurationPropertiesScan`** を **`@SpringBootApplication`** の隣に配置して、ブートがスキャンされたパッケージ内の **`@ConfigurationProperties`** タイプを検出できるようにします。
 
-Inject like any bean:
+他の Bean と同様に注入します。
 
 ```java
 // Compile: javac --release 22 …
@@ -154,12 +155,12 @@ public class MailNotificationService {
 }
 ```
 
-## 6. Relaxed binding reminders
-`from-address` in YAML binds to **`fromAddress`** in Java; env vars use **`APP_NOTIFICATION_FROMADDRESS`** style upper snake case for prefix **`app.notification`**.
+## 6. 緩和された拘束力のリマインダー
+YAML の `from-address` は Java の **`fromAddress`** にバインドされます。環境変数は、接頭辞 **`app.notification`** に **`APP_NOTIFICATION_FROMADDRESS`** スタイルの大文字スネークケースを使用します。
 
-## 7. Type-safe config summary
-| Approach | Best for |
+## 7. タイプセーフな構成の概要
+|アプローチ |こんな方に最適 |
 |----------|----------|
-| **`@Value`** | One-off flags / legacy integration |
-| **`@ConfigurationProperties`** | Structured settings with validation |
-| **`Environment` / `@Environment`** | Dynamic lookups or framework code |
+| **`@Value`** |一回限りのフラグ / 従来の統合 |
+| **`@ConfigurationProperties`** |検証を伴う構造化された設定 |
+| **`Environment` / `@Environment`** |動的検索またはフレームワーク コード |

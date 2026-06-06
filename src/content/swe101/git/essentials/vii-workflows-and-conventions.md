@@ -1,13 +1,14 @@
 ---
 label: "VII"
-subtitle: "Workflows & conventions"
+subtitle: "ワークフローと規約"
 group: "Git"
 order: 7
 ---
-Workflows & conventions
-Team agreement on **branch names**, **commit messages**, and **merge strategy** prevents Git from becoming a source of conflict.
+ワークフローと規約
 
-## 1. GitHub Flow (common for startups)
+**ブランチ名**、**コミット メッセージ**、**マージ戦略**に関するチームの合意により、Git が競合の原因になるのを防ぎます。
+
+## 1. GitHub フロー (スタートアップに共通)
 
 ```text
 main ── always deployable
@@ -15,15 +16,15 @@ main ── always deployable
   └── feature/* ── PR ── review ── merge ── delete branch
 ```
 
-| Rule | Detail |
-|------|--------|
-| **`main` protected** | No direct push; require PR + CI |
-| **Short-lived branches** | Days, not months |
-| **Small PRs** | Easier review |
+|ルール |詳細 |
+|------|----------|
+| **`main` 保護されています** |直接的なプッシュはありません。 PR + CI が必要 |
+| **寿命の短いブランチ** |数か月ではなく数日 |
+| **小規模な PR** |より簡単なレビュー |
 
-Alternatives: **Gitflow** (release branches) — heavier; **trunk-based** (feature flags) — for mature CI.
+代替案: **Gitflow** (ブランチをリリース) — より重い。 **トランクベース** (機能フラグ) — 成熟した CI 用。
 
-## 2. Branch naming
+## 2. ブランチの命名
 
 ```text
 feature/add-oauth-login
@@ -32,9 +33,9 @@ docs/api-readme
 chore/deps-bump
 ```
 
-Include ticket ID if using Jira/Linear: `feature/PROJ-123-oauth`.
+Jira/Linear を使用する場合はチケット ID を含めます: `feature/PROJ-123-oauth`。
 
-## 3. Conventional Commits
+## 3. 従来のコミット
 
 ```text
 feat: add password reset email
@@ -45,29 +46,29 @@ refactor: extract mail service
 test: cover auth controller
 ```
 
-Format: **`type(scope): description`**
+形式: **`type(scope): description`**
 
-Benefits: readable log, auto-changelog tools, semantic release.
+利点: 読み取り可能なログ、自動変更ログ ツール、セマンティック リリース。
 
-## 4. Pull request checklist
+## 4. プルリクエストのチェックリスト
 
-- [ ] Branch up to date with `main` (rebase or merge)
-- [ ] CI green
-- [ ] Self-review diff
-- [ ] Description explains **why**, not only what
-- [ ] Screenshots for UI changes
-- [ ] Migration notes if DB/API breaking
+- [ ] `main` で最新のブランチ (リベースまたはマージ)
+- [ ] CI グリーン
+- [ ] セルフレビューの差分
+- [ ] 説明では、内容だけではなく **なぜ** も説明されています
+- [ ] UI変更のスクリーンショット
+- [ ] DB/API が壊れた場合の移行メモ
 
-## 5. `.gitattributes` (optional)
+## 5. `.gitattributes` (オプション)
 
 ```gitattributes
 * text=auto eol=lf
 *.bat text eol=crlf
 ```
 
-Normalizes line endings on Windows/macOS/Linux teams.
+Windows/macOS/Linux チームの行末を正規化します。
 
-## 6. Hooks (local quality gates)
+## 6. フック (現地品質のゲート)
 
 ```bash
 # .git/hooks/pre-commit — or use husky / pre-commit framework
@@ -75,7 +76,7 @@ Normalizes line endings on Windows/macOS/Linux teams.
 npm test
 ```
 
-**pre-commit** (Python tool) — shared hooks in repo:
+**pre-commit** (Python ツール) — リポジトリ内の共有フック:
 
 ```yaml
 # .pre-commit-config.yaml
@@ -87,29 +88,29 @@ repos:
       - id: end-of-file-fixer
 ```
 
-## 7. Monorepo vs polyrepo
+## 7. モノリポジトリとポリリポジトリ
 
-| | Monorepo | Polyrepo |
+| |モノレポ |ポリレポ |
 |---|----------|----------|
-| Structure | Many projects, one Git repo | One repo per service |
-| CI | Path filters (`paths:` in Actions) | Per-repo pipelines |
-| Git | Shared history, large clone | Smaller clones |
+|構造 |多くのプロジェクト、1 つの Git リポジトリ |サービスごとに 1 つのリポジトリ |
+| CI |パスフィルター (アクションの `paths:`) |リポジトリごとのパイプライン |
+|ギット |共有履歴、大規模なクローン |より小さいクローン |
 
-Git works the same — org choice, not Git feature.
+Git も同様に機能します。Git の機能ではなく、組織の選択です。
 
-## 8. What not to commit
+## 8. コミットしてはいけないこと
 
-| Never | Instead |
-|-------|---------|
-| `.env`, API keys | Env vars, secret manager |
-| `node_modules/`, `target/` | `.gitignore` + CI install |
-| Large binaries | Git LFS or object storage |
-| Generated build output | CI builds artifacts |
+|決して |代わりに |
+|------|-----------|
+| `.env`、API キー |環境変数、シークレットマネージャー |
+| `node_modules/`、`target/` | `.gitignore` + CI インストール |
+|大規模なバイナリ | Git LFS またはオブジェクト ストレージ |
+|生成されたビルド出力 | CI ビルドアーティファクト |
 
-## 9. Rehearsal answers
+## 9. リハーサルの答え
 
-- **GitHub Flow** — PRs into deployable `main`.
-- **Revert vs reset** — revert for shared/pushed; reset for local cleanup.
-- **Conventional Commits** — structured `type: message` for clarity and tooling.
+- **GitHub フロー** — デプロイ可能な `main` に PR を追加します。
+- **元に戻すとリセット** — 共有/プッシュの場合は元に戻します。ローカルクリーンアップのためにリセットします。
+- **従来のコミット** — 明確さとツールのために構造化された `type: message`。
 
-**Related:** **GitHub** (branch protection, PRs), CI/CD fundamentals.
+**関連:** **GitHub** (ブランチ保護、PR)、CI/CD の基礎。

@@ -1,66 +1,67 @@
 ---
 label: "V"
-subtitle: "Monitoring, analytics & devtools"
-group: "Startups"
+subtitle: "モニタリング、分析、開発ツール"
+group: "スタートアップ"
 order: 5
 ---
-Monitoring, analytics & devtools
-Free tiers for **knowing when things break** and **shipping code** — enough for MVP, upgrade when on-call becomes real.
+モニタリング、分析、開発ツール
 
-## 1. Error tracking
+**故障時期を知る**と**配送コード**のための無料枠 - MVP としては十分で、オンコールが現実になったらアップグレードします。
 
-| Service | Free tier | Notes |
-|---------|-----------|-------|
-| **[Sentry](https://sentry.io)** | Developer plan | Stack traces, releases, alerts |
-| **[GlitchTip](https://glitchtip.com)** | Self-host OSS | Sentry-compatible API |
-| **Highlight.io** | Session replay + errors | Frontend-heavy apps |
+## 1. エラーの追跡
+
+|サービス |無料枠 |メモ |
+|----------|-----------|----------|
+| **[セントリー](3)** |開発者向けプラン |スタック トレース、リリース、アラート |
+| **[グリッチヒント](4)** |セルフホスト OSS | Sentry 互換 API |
+| **ハイライト.io** |セッションのリプレイ + エラー |フロントエンドを多用するアプリ |
 
 ```javascript
 // Sentry (conceptual)
 Sentry.init({ dsn: process.env.SENTRY_DSN, environment: "production" });
 ```
 
-## 2. Uptime & status
+## 2. 稼働時間とステータス
 
-| Service | Free |
-|---------|------|
-| **[UptimeRobot](https://uptimerobot.com)** | ~50 monitors, 5-min interval |
-| **[Better Stack](https://betterstack.com)** | Uptime + incident basics |
-| **GitHub Actions cron** | DIY HTTP ping |
+|サービス |無料 |
+|-------|------|
+| **[アップタイムロボット](5)** |最大 50 台のモニター、5 分間隔 |
+| **[より良いスタック](6)** |稼働時間 + インシデントの基本 |
+| **GitHub アクション cron** | DIY HTTP ping |
 
-Monitor **`/health`** endpoint — not just homepage.
+ホームページだけでなく、**`/health`** エンドポイントを監視します。
 
-## 3. Analytics
+## 3. 分析
 
-| Service | Privacy / notes |
-|---------|-----------------|
-| **[Plausible](https://plausible.io)** | Paid but lightweight; trial |
-| **[Umami](https://umami.is)** | Self-host or cloud — OSS |
-| **Cloudflare Web Analytics** | Free, no cookie banner in many cases |
-| **Google Analytics** | Free; heavier, consent banners in EU |
+|サービス |プライバシー / 注意事項 |
+|-------|------|
+| **[もっともらしい](7)** |有料ですが軽量です。トライアル |
+| **[うまみ](8)** |セルフホストまたはクラウド — OSS |
+| **Cloudflare ウェブ分析** |多くの場合、無料、Cookie なしのバナー |
+| **Google アナリティクス** |無料; EU のより重い同意バナー |
 
-Product analytics (funnels): **PostHog** cloud free tier for small volume.
+製品分析 (ファネル): **PostHog** クラウド無料枠 (小規模向け)。
 
-## 4. CI/CD & code
+## 4. CI/CD とコード
 
-| Service | Free for startups |
-|---------|-------------------|
-| **GitHub** | Private repos, Actions minutes/month |
-| **GitLab** | Free tier CI |
-| **Dependabot / Renovate** | Dependency updates |
+|サービス |スタートアップには無料 |
+|----------|--------|
+| **GitHub** |プライベート リポジトリ、アクション分/月 |
+| **GitLab** |無料利用枠CI |
+| **依存ボット / 改修** |依存関係の更新 |
 
-See **CI/CD** track for pipeline patterns.
+パイプライン パターンについては、**CI/CD** トラックを参照してください。
 
-## 5. Design & collaboration
+## 5. デザインとコラボレーション
 
-| Tool | Free |
+|ツール |無料 |
 |------|------|
-| **Figma** | Starter files |
-| **Notion** | Personal/small team |
-| **Linear** | Free for small teams |
-| **Discord / Slack** | Free tiers |
+| **フィグマ** |スターター ファイル |
+| **概念** |個人/小規模チーム |
+| **線形** |小規模チームには無料 |
+| **Discord / Slack** |無料枠 |
 
-## 6. Minimal ops stack
+## 6. 最小限の運用スタック
 
 ```text
 Deploy (Vercel) → Sentry (errors) → UptimeRobot (ping)
@@ -68,12 +69,12 @@ Deploy (Vercel) → Sentry (errors) → UptimeRobot (ping)
                 → GitHub Actions (test on PR)
 ```
 
-## 7. When to pay
+## 7. 支払い時期
 
-| Need | Upgrade |
-|------|---------|
-| On-call paging 24/7 | PagerDuty, Better Stack paid |
-| Log retention > 7 days | Datadog, Axiom, CloudWatch paid |
-| SOC2 / audit | Enterprise plans |
+|必要 |アップグレード |
+|-----|----------|
+| 24 時間年中無休のオンコール ページング | PagerDuty、有料のベタースタック |
+|ログの保存期間 > 7 日 | Datadog、Axiom、CloudWatch 有料 |
+| SOC2 / 監査 |エンタープライズプラン |
 
-**Related:** CI/CD **security & observability**, cloud patterns **SLO** note.
+**関連:** CI/CD **セキュリティと可観測性**、クラウド パターン **SLO** に関するメモ。

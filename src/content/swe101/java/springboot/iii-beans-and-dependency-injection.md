@@ -1,22 +1,23 @@
 ---
 label: "III"
-subtitle: "Beans & dependency injection"
-group: "Spring Boot"
+subtitle: "Bean と依存関係の注入"
+group: "スプリングブーツ"
 groupOrder: 2
 order: 3
 ---
-Spring Boot — Part III
-How the IoC container wires beans: stereotypes, constructor injection, explicit **`@Bean`** factories, qualifiers, and profile-specific implementations.
+Spring Boot — パート III
 
-## 1. Stereotypes map to singleton beans
-Spring creates **one shared instance** per bean definition (default scope). Common stereotypes:
+IoC コンテナが Bean を結び付ける方法: ステレオタイプ、コンストラクター インジェクション、明示的な **`@Bean`** ファクトリ、修飾子、プロファイル固有の実装。
 
-| Annotation | Typical role |
-|------------|----------------|
-| **`@Component`** | Generic injectable |
-| **`@Service`** | Domain / application logic |
-| **`@Repository`** | Persistence (Spring adds exception translation) |
-| **`@RestController` / `@Controller`** | Web adapters |
+## 1. ステレオタイプはシングルトン Bean にマップされます
+Spring は Bean 定義ごとに **1 つの共有インスタンス**を作成します (デフォルトのスコープ)。一般的な固定観念:
+
+|注釈 |典型的な役割 |
+|-----------|----------------|
+| **`@Component`** |ジェネリック注射剤 |
+| **`@Service`** |ドメイン/アプリケーションロジック |
+| **`@Repository`** |永続性 (Spring は例外変換を追加します) |
+| **`@RestController` / `@Controller`** | Web アダプター |
 
 ```java
 // Compile: javac --release 22 …
@@ -35,10 +36,10 @@ public class OrderService {
 }
 ```
 
-**Constructor injection** makes dependencies **`final`** and guarantees the object is usable after construction — prefer it over field **`@Autowired`**.
+**コンストラクター インジェクション** は依存関係 **`final`** を作成し、構築後にオブジェクトが使用可能であることを保証します。フィールド **`@Autowired`** よりも優先されます。
 
-## 2. `@Autowired` when you need it
-If you cannot use constructor injection (rare), setter or field injection works:
+## 2. 必要なときは `@Autowired`
+コンストラクター インジェクションを使用できない場合 (まれに)、セッターまたはフィールド インジェクションが機能します。
 
 ```java
 // Compile: javac --release 22 …
@@ -54,10 +55,10 @@ public class LegacyClient {
 }
 ```
 
-Multiple constructors: mark one with **`@Autowired`** (otherwise Boot picks the single constructor automatically).
+複数のコンストラクター: 1 つを **`@Autowired`** でマークします (それ以外の場合、Boot は単一のコンストラクターを自動的に選択します)。
 
-## 3. `@Bean` factories for third-party types
-When you don’t own the class, expose it via a **`@Configuration`** class:
+## 3. サードパーティタイプの `@Bean` ファクトリ
+クラスを所有していない場合は、**`@Configuration`** クラスを通じて公開します。
 
 ```java
 // Compile: javac --release 22 …
@@ -74,10 +75,10 @@ public class HttpClientConfig {
 }
 ```
 
-**`RestTemplateBuilder`** is auto-configured — injecting it keeps timeouts consistent with other Boot defaults.
+**`RestTemplateBuilder`** は自動構成されます。これを挿入すると、タイムアウトが他のブートのデフォルトと一致します。
 
-## 4. Multiple implementations → `@Qualifier`
-Two **`PaymentGateway`** beans:
+## 4. 複数の実装 → `@Qualifier`
+**`PaymentGateway`** 豆 2 個:
 
 ```java
 // Compile: javac --release 22 …
@@ -94,7 +95,7 @@ public class StripeGateway implements PaymentGateway { /* … */ }
 public class PayPalGateway implements PaymentGateway { /* … */ }
 ```
 
-Consumer picks one explicitly:
+消費者は明示的に次のいずれかを選択します。
 
 ```java
 // Compile: javac --release 22 …
@@ -109,7 +110,7 @@ public class CheckoutService {
 }
 ```
 
-**`@Primary`** on one implementation avoids qualifiers when a default is OK:
+ある実装の **`@Primary`** は、デフォルトが OK の場合に修飾子を回避します。
 
 ```java
 // Compile: javac --release 22 …
@@ -118,8 +119,8 @@ public class CheckoutService {
 public class StubPaymentGateway implements PaymentGateway { /* dev default */ }
 ```
 
-## 5. `@ConditionalOn*` and `@Profile`
-Load beans only when a profile or property holds:
+## 5. `@ConditionalOn*` および `@Profile`
+プロファイルまたはプロパティが次の条件を満たしている場合にのみ Bean をロードします。
 
 ```java
 // Compile: javac --release 22 …
@@ -134,10 +135,10 @@ public class ProdObservabilityConfig {
 }
 ```
 
-**`@ConditionalOnProperty(name = "app.cache.enabled", havingValue = "true")`** gates beans on configuration flags without starting unused infrastructure.
+**`@ConditionalOnProperty(name = "app.cache.enabled", havingValue = "true")`** は、未使用のインフラストラクチャを起動せずに、構成フラグに基づいて Bean をゲートします。
 
-## 6. Lifecycle hooks
-**`@PostConstruct`** runs after injection; **`DisposableBean`** / **`@PreDestroy`** for cleanup:
+## 6. ライフサイクルフック
+**`@PostConstruct`** は注入後に実行されます。 **`DisposableBean`** / **`@PreDestroy`** クリーンアップ:
 
 ```java
 // Compile: javac --release 22 …
@@ -151,4 +152,4 @@ public class WarmCacheRunner {
 }
 ```
 
-For startup tasks that need the context fully ready, prefer **`ApplicationRunner`** or **`CommandLineRunner`** beans instead of abusing **`@PostConstruct`** for heavy work.
+コンテキストを完全に準備する必要がある起動タスクの場合は、負荷の高い作業に **`@PostConstruct`** を乱用するのではなく、**`ApplicationRunner`** または **`CommandLineRunner`** Bean を優先してください。

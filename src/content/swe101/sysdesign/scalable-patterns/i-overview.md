@@ -1,27 +1,28 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "System design"
+subtitle: "概要"
+group: "システム設計"
 order: 1
 ---
-Scalable patterns — overview
-Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN**, **distributed transactions**, and **observability** — the layer above core building blocks (caching, DBs, replication in **Part I**).
+スケーラブルなパターン — 概要
 
-## Map of this submenu
+**API**、**非同期メッセージング**、*レート制限**、**検索**、**CDN**、**分散トランザクション**、**可観測性**のパターン — コア構成要素 (**パート I** のキャッシュ、DB、レプリケーション) の上の層。
 
-| Note | Topic | Core question |
+## このサブメニューのマップ
+
+|注 |トピック |核心的な質問 |
 |------|--------|---------------|
-| [API design](ii-api-design.md) | REST, gRPC, GraphQL | How do clients talk to services at scale? |
-| [Message queues & async](iii-message-queues-and-async.md) | Queues, pub/sub, outbox | How do you decouple and absorb spikes? |
-| [Rate limiting](iv-rate-limiting.md) | Token bucket, sliding window | How do you protect backends from overload? |
-| [Search systems](v-search-systems.md) | Inverted index, CDC, vectors | How do you serve fast full-text and semantic search? |
-| [CDN & edge caching](vi-cdn-and-edge-caching.md) | CDN, cache invalidation | How do you serve static and cacheable content globally? |
-| [Distributed transactions](vii-distributed-transactions.md) | Saga, 2PC, idempotency | How do you coordinate writes across services? |
-| [Observability at scale](viii-observability-at-scale.md) | SLOs, tracing, chaos | How do you know when scale breaks something? |
+| [API設計](ii-api-design.md) | REST、gRPC、GraphQL |クライアントはどのようにして大規模なサービスと通信するのでしょうか? |
+| [メッセージキューと非同期](iii-message-queues-and-async.md) |キュー、パブリッシュ/サブスクライブ、送信トレイ |スパイクをどのように分離して吸収するのでしょうか? |
+| [レート制限](iv-rate-limiting.md) |トークンバケット、スライディングウィンドウ |バックエンドを過負荷から保護するにはどうすればよいでしょうか? |
+| [検索システム](v-search-systems.md) |逆インデックス、CDC、ベクトル |高速な全文検索とセマンティック検索をどのように提供しますか? |
+| [CDN とエッジ キャッシング](vi-cdn-and-edge-caching.md) | CDN、キャッシュの無効化 |静的コンテンツとキャッシュ可能なコンテンツをグローバルに提供するにはどうすればよいですか? |
+| [分散トランザクション](vii-distributed-transactions.md) |サーガ、2PC、冪等 |サービス間で書き込みをどのように調整しますか? |
+| [大規模な可観測性](viii-observability-at-scale.md) | SLO、トレース、カオス |スケールが何かを壊すとき、どうやってそれを知ることができますか? |
 
-## Where these sit in a typical architecture
+## これらが一般的なアーキテクチャのどこに配置されるか
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" role="img" aria-label="Client through CDN API gateway services queue search and databases">
+<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 520 200" role="img" aria-label="Client through CDN API gateway services queue search and databases">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Request path (simplified)</text>
   <rect x="12" y="36" width="64" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="28" y="56" fill="#e4e4e7" font-size="9">Client</text>
@@ -48,11 +49,11 @@ Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN
   <text x="12" y="138" fill="#a1a1aa" font-size="9">Part I → this submenu → Classic designs submenu → bottleneck analysis</text>
 </svg></figure>
 
-## Rehearsal questions
+## リハーサルの質問
 
-- Cursor vs offset pagination — when does each break?
-- Transactional outbox — why not dual-write to DB and broker?
-- Token bucket vs leaky bucket — burst behavior?
-- Inverted index vs relational table scan?
-- Saga choreography vs orchestration?
-- Alert on symptoms vs causes — example?
+- カーソルとオフセットのページネーション — それぞれがいつ中断されるか?
+- トランザクション送信ボックス — DB とブローカーへの二重書き込みを行わないのはなぜですか?
+- トークンバケットとリーキーバケット — バースト動作?
+- 逆インデックスとリレーショナル テーブル スキャンの違いは何ですか?
+- サーガの振り付けとオーケストレーションは？
+- 症状と原因に関する警告 – たとえば?

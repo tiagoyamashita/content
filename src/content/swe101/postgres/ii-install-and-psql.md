@@ -1,57 +1,58 @@
 ---
 label: "II"
-subtitle: "Install & psql"
-group: "Postgres"
+subtitle: "インストールと psql"
+group: "ポストグレ"
 order: 2
 ---
-Postgres — install & psql
-Run Postgres locally, connect with **`psql`**, and inspect databases before wiring an application.
+Postgres — インストールと psql
 
-## 1. Install options
+Postgres をローカルで実行し、**`psql`** に接続して、アプリケーションを接続する前にデータベースを検査します。
 
-| Method | When to use |
-|--------|-------------|
-| **Docker** | Reproducible version, easy reset, matches CI |
-| **Native package** | macOS (`brew`), Linux (`apt`/`dnf`), Windows installer |
-| **Managed cloud** | Neon, Supabase, RDS — no local daemon |
+## 1. オプションのインストール
 
-### Docker (recommended for learning)
+|方法 |いつ使用するか |
+|----------|---------------|
+| **ドッカー** |再現可能なバージョン、簡単なリセット、CI と一致 |
+| **ネイティブ パッケージ** | macOS (`brew`)、Linux (`apt`/`dnf`)、Windows インストーラー |
+| **マネージド クラウド** | Neon、Supabase、RDS — ローカル デーモンなし |
+
+### Docker (学習用に推奨)
 
 ```bash
 docker run --name pg-dev -e POSTGRES_PASSWORD=dev -p 5432:5432 -d postgres:16
 docker exec -it pg-dev psql -U postgres
 ```
 
-Data persists in the container until removed. For a named volume:
+データは削除されるまでコンテナ内に保持されます。名前付きボリュームの場合:
 
 ```bash
 docker run --name pg-dev -e POSTGRES_PASSWORD=dev -p 5432:5432 \
   -v pgdata:/var/lib/postgresql/data -d postgres:16
 ```
 
-## 2. Connection string
+## 2. 接続文字列
 
 ```text
 postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 
-Example for local Docker:
+ローカル Docker の例:
 
 ```text
 postgresql://postgres:dev@localhost:5432/postgres
 ```
 
-| Part | Typical local value |
+|パート |典型的なローカル値 |
 |------|---------------------|
-| **USER** | `postgres` |
-| **PASSWORD** | value from `POSTGRES_PASSWORD` |
-| **HOST** | `localhost` |
-| **PORT** | `5432` |
-| **DATABASE** | `postgres` (default DB) or one you create |
+| **ユーザー** | `postgres` |
+| **パスワード** | `POSTGRES_PASSWORD`からの値 |
+| **ホスト** | `localhost` |
+| **ポート** | `5432` |
+| **データベース** | `postgres` (デフォルト DB) または自分で作成したもの |
 
-## 3. `psql` essentials
+## 3. `psql` の必需品
 
-Connect:
+接続する：
 
 ```bash
 psql "postgresql://postgres:dev@localhost:5432/postgres"
@@ -59,23 +60,23 @@ psql "postgresql://postgres:dev@localhost:5432/postgres"
 psql -h localhost -U postgres -d postgres
 ```
 
-| Command | Action |
-|---------|--------|
-| `\l` | List databases |
-| `\c mydb` | Connect to database `mydb` |
-| `\dt` | List tables in current schema |
-| `\d users` | Describe table `users` |
-| `\du` | List roles |
-| `\timing` | Show query execution time |
-| `\q` | Quit |
+|コマンド |アクション |
+|----------|----------|
+| `\l` |データベースのリスト |
+| `\c mydb` |データベース `mydb` に接続します |
+| `\dt` |現在のスキーマ内のテーブルをリストする |
+| `\d users` |表 `users` について説明する |
+| `\du` |役割のリスト |
+| `\timing` |クエリの実行時間を表示 |
+| `\q` |やめる |
 
-Run SQL from a file:
+ファイルから SQL を実行します。
 
 ```bash
 psql -U postgres -d myapp -f schema.sql
 ```
 
-## 4. Create a dev database and role
+## 4. 開発データベースとロールを作成する
 
 ```sql
 CREATE DATABASE myapp_dev;
@@ -86,9 +87,9 @@ GRANT ALL PRIVILEGES ON DATABASE myapp_dev TO myapp;
 GRANT ALL ON SCHEMA public TO myapp;
 ```
 
-**Principle of least privilege in production:** app role gets `SELECT/INSERT/UPDATE/DELETE` on needed tables — not `SUPERUSER`.
+**運用環境における最小特権の原則:** アプリ ロールは、必要なテーブルに対して 28 ではなく 27 を取得します。
 
-## 5. First table (smoke test)
+## 5. 最初のテーブル (煙テスト)
 
 ```sql
 CREATE TABLE todos (
@@ -102,25 +103,25 @@ INSERT INTO todos (title) VALUES ('Learn psql'), ('Read migrations note');
 SELECT * FROM todos WHERE NOT done;
 ```
 
-## 6. Configuration files (know they exist)
+## 6. 設定ファイル (存在することを確認)
 
-| File | Purpose |
-|------|---------|
-| **`postgresql.conf`** | Memory, connections, logging |
-| **`pg_hba.conf`** | Who can connect from which host (auth rules) |
+|ファイル |目的 |
+|-----|----------|
+| **`postgresql.conf`** |メモリ、接続、ロギング |
+| **`pg_hba.conf`** |誰がどのホストから接続できるか (認証ルール) |
 
-In Docker, config is inside the container unless you mount overrides. For local tuning you rarely need to change defaults until you load-test.
+Docker では、オーバーライドをマウントしない限り、config はコンテナー内にあります。ローカルチューニングの場合、ロードテストを行うまでデフォルトを変更する必要はほとんどありません。
 
-## 7. GUI clients (optional)
+## 7. GUI クライアント (オプション)
 
-| Tool | Notes |
-|------|-------|
-| **pgAdmin** | Full-featured, ships with many installers |
-| **DBeaver** | Cross-DB, good ER diagrams |
-| **TablePlus / DataGrip** | Paid, polished UX |
+|ツール |メモ |
+|------|------|
+| **pgAdmin** |フル機能を備え、多くのインストーラーが付属 |
+| **Dビーバー** |クロス DB、優れた ER 図 |
+| **TablePlus / DataGrip** |有料の洗練された UX |
 
 `psql` stays worth learning — scripts, CI, and production debugging often happen in the shell.
 
-## Next
+＃＃ 次
 
-Continue with [Schema & migrations](iii-schema-and-migrations.md) for versioned DDL and safe schema evolution.
+バージョン管理された DDL と安全なスキーマの進化については、[スキーマと移行](iii-schema-and-migrations.md) に進みます。

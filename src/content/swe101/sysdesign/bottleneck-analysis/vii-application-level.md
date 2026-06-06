@@ -1,30 +1,31 @@
 ---
 label: "VII"
-subtitle: "Application-level"
-group: "System design"
+subtitle: "アプリケーションレベル"
+group: "システム設計"
 order: 7
 ---
-Application-level bottlenecks
-Logic and **dependency patterns** limit scale even when infra looks healthy.
+アプリケーションレベルのボトルネック
 
-## 1. Synchronous blocking
+インフラストラクチャが正常に見えても、ロジックと **依存関係パターン** によりスケールが制限されます。
 
-| Pattern | Problem | Fix |
-|---------|---------|-----|
-| Thread blocked on DB/API | Pool exhaustion | async/await, reactive, virtual threads |
-| Serial calls in handler | Latency sums | Parallel `asyncio.gather`, fork-join |
+## 1. 同期ブロッキング
 
-| Model | Examples |
-|-------|----------|
-| Event loop | Node.js, asyncio |
-| Thread pool | JVM servlet pool |
-| Goroutines + blocking IO | Go with limits |
+|パターン |問題 |修正 |
+|----------|----------|-----|
+| DB/API でスレッドがブロックされました |プールの枯渇 |非同期/待機、リアクティブ、仮想スレッド |
+|ハンドラーでのシリアル呼び出し |レイテンシの合計 |並列 `asyncio.gather`、フォーク結合 |
 
-## 2. Thundering herd
+|モデル |例 |
+|------|----------|
+|イベントループ | Node.js、非同期 |
+|スレッドプール | JVM サーブレット プール |
+|ゴルーチン + ブロッキング IO |限界を守ってください |
 
-**Cache expires** → many concurrent **cache miss** → all hit DB.
+## 2. 雷鳴の群れ
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 110" role="img" aria-label="Thundering herd on cache expiry">
+**キャッシュの有効期限が切れる** → 多数の同時 **キャッシュミス** → すべてが DB にヒットします。
+
+<figure class="notes-diagram"><svg xmlns="7 viewBox="0 0 440 110" role="img" aria-label="Thundering herd on cache expiry">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Thundering herd</text>
   <rect x="12" y="36" width="64" height="28" rx="3" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
   <text x="24" y="54" fill="#e4e4e7" font-size="9">TTL expires</text>
@@ -38,44 +39,44 @@ Logic and **dependency patterns** limit scale even when infra looks healthy.
   <text x="276" y="64" fill="#e4e4e7" font-size="9">DB</text>
 </svg></figure>
 
-| Mitigation | How |
-|------------|-----|
-| **Lock on miss** | One refills cache; others wait |
-| **Probabilistic early expiry** | Refresh before hard TTL |
-| **Background refresh** | Serve stale; async warm |
-| **Request coalescing** | Singleflight pattern |
+|緩和 |どのように |
+|-----------|-----|
+| **ロックオンミス** | 1 つはキャッシュを補充します。他の人は待ってください |
+| **確率的に早い期限切れ** |ハード TTL の前にリフレッシュ |
+| **バックグラウンド更新** |古くなったものを提供します。非同期ウォーム |
+| **合体をリクエスト** |シングルフライトパターン |
 
-## 3. Hot key / hot partition
+## 3. ホットキー/ホットパーティション
 
-| Example | Fix |
-|---------|-----|
-| Viral tweet id | Local in-process cache; read replicas |
-| One Redis key | Shard key: `key#0`…`key#N` |
-| One DB shard | Re-shard; celebrity fan-out read model |
+|例 |修正 |
+|----------|-----|
+|バイラルツイートID |ローカルのインプロセスキャッシュ。リードレプリカ |
+| 1 つの Redis キー |シャードキー: `key#0`…`key#N` |
+| 1 つの DB シャード |再シャード;有名人のファンアウトリードモデル |
 
-## 4. Slow external dependency
+## 4. 遅い外部依存関係
 
-| Pattern | Purpose |
-|---------|---------|
-| **Timeout** | Fail fast |
-| **Retry + backoff + jitter** | Transient errors |
-| **Circuit breaker** | Stop calling failing dep |
-| **Bulkhead** | Isolate pool per dependency |
-| **Fallback** | Cached/default response |
+|パターン |目的 |
+|----------|----------|
+| **タイムアウト** |早く失敗してください |
+| **再試行 + バックオフ + ジッター** |一時的なエラー |
+| **サーキットブレーカー** |失敗した dep の呼び出しを停止する |
+| **バルクヘッド** |依存関係ごとにプールを分離する |
+| **フォールバック** |キャッシュされた/デフォルトの応答 |
 
 ```text
 Closed → failures ↑ → Open (fail fast) → Half-open probe → Closed
 ```
 
-## 5. Code-level hotspots
+## 5. コードレベルのホットスポット
 
-| Smell | Fix |
-|-------|-----|
-| Serialize in tight loop | Batch; binary format |
-| Regex compile per request | Compile once |
-| String `+` in loop | `StringBuilder` / `join` |
-| Unbounded cache map | TTL + max size |
+|匂い |修正 |
+|------|-----|
+|タイトなループでシリアル化する |バッチ;バイナリ形式 |
+|リクエストごとに正規表現をコンパイルする |一度コンパイルする |
+|ループ内の文字列 `+` `StringBuilder` / `join` |
+|無制限のキャッシュ マップ | TTL + 最大サイズ |
 
-**Always profile** — never optimise without measurement.
+**常にプロファイルを作成します** — 測定なしに最適化を行わないでください。
 
-**Related:** scalable patterns rate limiting, distributed transactions (idempotency).
+**関連:** スケーラブルなパターンのレート制限、分散トランザクション (冪等性)。

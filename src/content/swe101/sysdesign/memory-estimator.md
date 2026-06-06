@@ -1,15 +1,15 @@
 ---
 label: "memory-estimator"
-group: "System Design"
+group: "システム設計"
 order: 99
 ---
-System Design — Memory Estimation (interactive)
+システム設計 — メモリ推定 (対話型)
 
-Use the **graph in Preview mode** to drag sliders for session size, node count, and RAM per node.
+**プレビュー モードのグラフ**を使用して、セッション サイズ、ノード数、ノードあたりの RAM のスライダーをドラッグします。
 
-**Full write-up** — formulas, concurrency tables, worked scenarios, and diagrams: **[Memory Estimator](mem-memory-estimator.md)**.
+**完全な書き込み** — 数式、同時実行テーブル、実行されたシナリオ、および図: **[メモリ推定ツール](mem-memory-estimator.md)**。
 
-## Quick reference
+## クイックリファレンス
 
 ```text
 concurrent_users = DAU × concurrency_factor
@@ -18,17 +18,17 @@ total_RAM        ≈ working_set × 2
 nodes            = ceil(total_RAM / usable_RAM_per_node)
 ```
 
-| App type | Peak concurrent |
-|----------|-----------------|
-| Web | 5–10% of DAU |
-| Real-time | 20–40% of DAU |
+|アプリの種類 |ピーク同時 |
+|----------|------|
+|ウェブ | DAU の 5 ～ 10% |
+|リアルタイム | DAU の 20 ～ 40% |
 
-## Interactive estimator
+## 対話型推定器
 
-Adjust sliders in Preview to explore:
+プレビューでスライダーを調整して次のことを確認します。
 
-- **Session / cache bytes** per active user
-- **Number of nodes** in the cluster
-- **RAM per node** (minus OS reserve)
+- アクティブ ユーザーごとの **セッション/キャッシュ バイト数**
+- クラスター内の **ノード数**
+- **ノードあたりのRAM** (OSの予約を除く)
 
-Watch how **headroom** and **sharding** change the safe capacity before OOM.
+**ヘッドルーム**と**シャーディング**が OOM の前に安全な容量をどのように変化させるかを見てください。

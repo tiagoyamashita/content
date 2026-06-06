@@ -1,15 +1,16 @@
 ---
 label: "III"
-subtitle: "Actions, issues & settings"
+subtitle: "アクション、問題、設定"
 group: "GitHub"
 order: 3
 ---
-Actions, issues & settings
-GitHub **Actions** run CI/CD on events. **Issues** track work. **Settings** lock down `main` and secrets.
+アクション、問題、設定
 
-## 1. GitHub Actions (CI sketch)
+GitHub **アクション** はイベントに対して CI/CD を実行します。 **問題** 作業を追跡します。 **設定** `main` とシークレットをロックダウンします。
 
-Workflow file: **`.github/workflows/ci.yml`**
+## 1. GitHub アクション (CI スケッチ)
+
+ワークフロー ファイル: **`.github/workflows/ci.yml`**
 
 ```yaml
 name: CI
@@ -31,98 +32,98 @@ jobs:
       - run: npm test
 ```
 
-| Concept | Meaning |
-|---------|---------|
-| **Workflow** | YAML file |
-| **Trigger** | `push`, `pull_request`, `schedule` |
-| **Job** | Runs on one runner |
-| **Step** | Command or action |
+|コンセプト |意味 |
+|----------|----------|
+| **ワークフロー** | YAML ファイル |
+| **トリガー** | `push`、`pull_request`、`schedule` |
+| **仕事** | 1 つのランナーで実行 |
+| **ステップ** |コマンドまたはアクション |
 
-Deep dive: CI/CD **Tools & platforms → GitHub Actions**.
+詳細: CI/CD **ツールとプラットフォーム → GitHub アクション**。
 
-## 2. Secrets in Actions
+## 2. アクションの秘密
 
-**Settings → Secrets and variables → Actions**
+**設定 → シークレットと変数 → アクション**
 
 ```yaml
 env:
   API_KEY: ${{ secrets.API_KEY }}
 ```
 
-| Scope | Use |
-|-------|-----|
-| Repository secret | One repo |
-| Environment secret | `production` deploy only |
-| Organization secret | Shared across repos |
-
-Never log secrets; fork PRs do not receive repo secrets by default.
-
-## 3. Branch protection
-
-**Settings → Branches → Add rule** for `main`:
-
-| Rule | Why |
+|範囲 |使用 |
 |------|-----|
-| Require pull request | No direct push |
-| Require status checks | CI must pass |
-| Require review | Human gate |
-| Require linear history | Optional — no merge commits |
-| Restrict who can push | Admins only bypass |
+|リポジトリの秘密 | 1 つのリポジトリ |
+|環境の秘密 | `production` デプロイのみ |
+|組織の秘密 |リポジトリ間で共有 |
 
-## 4. Issues & projects
+秘密は決して記録しないでください。フォーク PR は、デフォルトではリポジトリ シークレットを受け取りません。
 
-| Feature | Use |
-|---------|-----|
-| **Issues** | Bugs, features, tasks |
-| **Labels** | `bug`, `enhancement`, `good first issue` |
-| **Milestones** | Release grouping |
-| **Projects** | Kanban board across repos |
+## 3. ブランチ保護
 
-Link PRs with `Fixes #N` to auto-close.
+**設定 → ブランチ → ルールの追加** `main`:
 
-## 5. GitHub Copilot & Codespaces (optional)
+|ルール |なぜ |
+|------|-----|
+|プルリクエストが必要 |直接プッシュはありません |
+|ステータスチェックが必要 | CI を渡す必要があります |
+|レビューが必要 |人間の門 |
+|線形履歴が必要 |オプション - マージコミットなし |
+|プッシュできる人を制限する |管理者のみがバイパス |
 
-| Product | Notes |
-|---------|-------|
-| **Copilot** | AI assist in IDE — subscription |
-| **Codespaces** | Cloud dev environment — usage billing |
-| **.devcontainer** | Reproducible Codespaces config |
+## 4. 問題とプロジェクト
 
-Not required for basic GitHub use.
+|特集 |使用 |
+|----------|-----|
+| **問題** |バグ、機能、タスク |
+| **ラベル** | `bug`、`enhancement`、`good first issue` |
+| **マイルストーン** |リリースのグループ化 |
+| **プロジェクト** |リポジトリ全体のカンバン ボード |
 
-## 6. Tokens and security
+PR を `Fixes #N` にリンクして自動終了します。
 
-| Token type | When |
-|------------|------|
-| **Fine-grained PAT** | Scripts, Notes app — minimal repo scope |
-| **Classic PAT** | Legacy — broad `repo` scope |
-| **GitHub App** | Integrations, org-wide — preferred for tools |
-| **SSH key** | Git push/pull |
+## 5. GitHub コパイロットとコードスペース (オプション)
 
-Enable **2FA** on account; orgs can require it.
+|製品 |メモ |
+|----------|----------|
+| **副操縦士** | IDE の AI アシスト — サブスクリプション |
+| **コードスペース** |クラウド開発環境 — 使用量の請求 |
+| **.devcontainer** |再現可能なコードスペース構成 |
 
-Getting started **Setup** note covers OAuth scopes for this notes app.
+基本的な GitHub の使用には必要ありません。
 
-## 7. Notifications
+## 6. トークンとセキュリティ
 
-Watch repo → **Participating and @mentions** or **All activity**. Tune email vs web in **Settings → Notifications**.
+|トークンの種類 |いつ |
+|-----------|------|
+| **きめ細かい PAT** |スクリプト、メモ アプリ — 最小限のリポジトリ スコープ |
+| **クラシック PAT** |レガシー — 広範囲の `repo` 範囲 |
+| **GitHub アプリ** |組織全体の統合 — ツールに推奨 |
+| **SSH キー** | Git プッシュ/プル |
 
-## 8. GitHub Pages
+アカウントで **2FA** を有効にします。組織がそれを要求する場合があります。
 
-Free static hosting from repo:
+「**セットアップ** の開始」メモでは、このメモ アプリの OAuth スコープについて説明しています。
 
-**Settings → Pages** → source branch `main` / `/docs` or Actions workflow.
+## 7. 通知
 
-Alternative: Vercel/Netlify (startups free-services note).
+リポジトリを見る → **参加および @メンション** または **すべてのアクティビティ**。 **[設定] → [通知]** でメールとウェブを調整します。
 
-## 9. Checklist for new repo
+## 8. GitHub ページ
 
-- [ ] README with setup
-- [ ] `.gitignore` appropriate to stack
-- [ ] LICENSE file
-- [ ] Branch protection on `main`
-- [ ] CI workflow on PR
-- [ ] Dependabot or Renovate (optional)
-- [ ] Secret scanning enabled (public repos default)
+リポジトリからの無料の静的ホスティング:
 
-**Related:** CI/CD security (pin actions, OIDC), **Git** workflows note, [Contribution graph](activity-contribution-graph.md).
+**設定 → ページ** → ソース ブランチ `main` / `/docs` またはアクション ワークフロー。
+
+代替案: Vercel/Netlify (スタートアップの無料サービスに関する注記)。
+
+## 9. 新しいリポジトリのチェックリスト
+
+- [ ] セットアップに関する README
+- [ ] `.gitignore` はスタックに適しています
+- [ ] ライセンス ファイル
+- [ ] `main` の分岐保護
+- [ ] PR の CI ワークフロー
+- [ ] dependabot または Renovate (オプション)
+- [ ] シークレット スキャンが有効 (パブリック リポジトリのデフォルト)
+
+**関連:** CI/CD セキュリティ (ピン アクション、OIDC)、**Git** ワークフローのメモ、[貢献グラフ](activity-contribution-graph.md)。

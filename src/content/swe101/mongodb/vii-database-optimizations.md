@@ -1,13 +1,14 @@
 ---
 label: "VII"
-subtitle: "Database optimizations"
-group: "MongoDB"
+subtitle: "データベースの最適化"
+group: "モンゴDB"
 order: 7
 ---
-MongoDB — database optimizations
-How to make MongoDB faster: **measure**, fix **query shape and indexes**, then scale. Index and explain basics are in [Queries & indexes](iv-queries-and-indexes.md); cross-store patterns in [Database optimizations (Postgres)](../postgres/vii-database-optimizations.md).
+MongoDB — データベースの最適化
 
-## 1. Optimization workflow
+MongoDB を高速化する方法: **測定**、**クエリの形状とインデックス**を修正してから、スケーリングします。インデックスと説明の基本は [クエリとインデックス](iv-queries-and-indexes.md) にあります。 [データベース最適化 (Postgres)](../postgres/vii-database-optimizations.md) のクロスストア パターン。
+
+## 1. 最適化ワークフロー
 
 ```text
 1. Find slow ops        (profiler, Atlas Performance Advisor, APM)
@@ -17,35 +18,35 @@ How to make MongoDB faster: **measure**, fix **query shape and indexes**, then s
 5. Re-measure           (same data volume, same query)
 ```
 
-| Step | Do not skip |
-|------|-------------|
-| **Representative data** | Empty dev DB hides COLLSCAN |
-| **One change at a time** | Index + rewrite together obscures cause |
-| **Production read preference** | `secondary` reads show stale/laggy behavior |
+|ステップ |スキップしないでください |
+|------|---------------|
+| **代表的なデータ** |空の開発 DB は COLLSCAN を非表示にします。
+| **一度に 1 つの変更** |インデックスと書き換えを一緒に行うと、原因がわかりにくくなります。
+| **実稼働読み取り設定** | `secondary` 読み取りは古い/遅い動作を示します |
 
-Enable slow query profiling (dev/staging):
+低速クエリ プロファイリングを有効にする (開発/ステージング):
 
 ```javascript
 db.setProfilingLevel(1, { slowms: 100 })  // log ops > 100ms
 db.system.profile.find().sort({ ts: -1 }).limit(10)
 ```
 
-Atlas: **Performance Advisor** suggests indexes from workload samples.
+Atlas: **パフォーマンス アドバイザー** は、ワークロード サンプルからのインデックスを提案します。
 
-## 2. Fix order (cheapest wins first)
+## 2. 順序を修正します (最も安いものが最初に勝ちます)
 
-| Priority | Lever | Example |
-|----------|-------|---------|
-| 1 | **Schema** | Embed for single-read; split huge arrays |
-| 2 | **Query shape** | `$match` first in aggregation; project only needed fields |
-| 3 | **Index** | Compound index matches filter + sort |
-| 4 | **Pagination** | Keyset instead of large `skip` |
-| 5 | **Read path** | Primary for read-your-writes; cache hot keys |
-| 6 | **Scale** | Bigger instance, shard, separate analytics |
+|優先順位 |レバー |例 |
+|----------|----------|----------|
+| 1 | **スキーマ** |シングルリード用に埋め込みます。巨大な配列を分割する |
+| 2 | **クエリの形状** | `$match` 集計の最初。プロジェクトのみに必要なフィールド |
+| 3 | **インデックス** |複合インデックスはフィルター + ソート | と一致します。
+| 4 | **ページネーション** |大きな `skip` の代わりにキーセット |
+| 5 | **読み取りパス** |読み取り書き込み用のプライマリ。ホットキーをキャッシュする |
+| 6 | **スケール** |より大きなインスタンス、シャード、個別の分析 |
 
-## 3. Query rewrites
+## 3. クエリのリライト
 
-**Projection** reduces wire size and decode work:
+**投影**により、ワイヤ サイズとデコード作業が削減されます。
 
 ```javascript
 db.products.find(
@@ -54,7 +55,7 @@ db.products.find(
 )
 ```
 
-**Avoid unbounded `$lookup`** on large collections — pre-filter both sides:
+**大規模なコレクションでは無制限の `$lookup`** を避けてください — 両側を事前にフィルタリングします。
 
 ```javascript
 db.orders.aggregate([
@@ -68,7 +69,7 @@ db.orders.aggregate([
 ])
 ```
 
-**Covered queries** — index includes all returned fields (includes `_id` unless excluded):
+**対象となるクエリ** - インデックスには返されたすべてのフィールドが含まれます (除外されない限り `_id` を含みます)。
 
 ```javascript
 db.products.createIndex({ tags: 1, price: 1, title: 1 })
@@ -78,83 +79,83 @@ db.products.find(
 )
 ```
 
-## 4. Index strategy
+## 4. インデックス戦略
 
-| Rule | Detail |
-|------|--------|
-| **ESR rule** (compound) | **E**quality → **S**ort → **R**ange fields in index order |
-| **Avoid index explosion** | Too many indexes slow writes |
-| **Partial indexes** | Index active subset: `{ archived: false }` |
-| **Multikey caution** | Index on large arrays multiplies index entries |
-| **Review unused** | `$indexStats` — drop indexes with zero ops |
+|ルール |詳細 |
+|------|----------|
+| **ESR ルール** (複合) | **E**quality → **S**ort → **R**ange フィールドのインデックス順 |
+| **インデックスの爆発を避ける** |インデックスが多すぎると書き込みが遅くなります。
+| **部分インデックス** |インデックスアクティブサブセット: `{ archived: false }` |
+| **マルチキーに関する注意** |大きな配列のインデックスはインデックス エントリを倍増します。
+| **未使用レビュー** | `$indexStats` — ゼロ操作でインデックスを削除します。
 
 ```javascript
 db.products.aggregate([{ $indexStats: {} }])
 ```
 
-Duplicate or redundant indexes waste RAM — Atlas Advisor flags some cases.
+重複または冗長なインデックスは RAM を無駄にします — Atlas Advisor はいくつかのケースにフラグを立てます。
 
-## 5. Write performance
+## 5. 書き込みパフォーマンス
 
-| Pattern | Prefer |
-|---------|--------|
-| Many single inserts | **`insertMany`** batches |
-| Upserts in loop | **`bulkWrite`** |
-| Huge documents | Split collection; reference |
-| Frequent small updates on big doc | Restructure — whole doc rewrites |
+|パターン |優先する |
+|----------|----------|
+|多数の単一挿入 | **`insertMany`** バッチ |
+|ループ内の更新/挿入 | **`bulkWrite`** |
+|膨大な書類 |分割コレクション。参照 |
+|大きなドキュメントの小さな更新を頻繁に行う |再構成 — ドキュメント全体を書き直す |
 
-**Write concern:** `w: "majority"` for durability on replica set; tune only with understanding of rollback risk.
+**懸念事項を記入してください:** レプリカ セットの耐久性については `w: "majority"`。ロールバックのリスクを理解した上でのみ調整してください。
 
-## 6. Read preference and consistency
+## 6. 読み取り設定と一貫性
 
 ```javascript
 collection.find(filter).readPref("secondaryPreferred")
 ```
 
-| Mode | Trade-off |
+|モード |トレードオフ |
 |------|-----------|
-| **Primary** | Read-your-writes default |
-| **Secondary** | Scale reads; replication lag |
-| **Causal consistency** | Session token — ordered reads after writes |
+| **プライマリ** |読み取り書き込みのデフォルト |
+| **セカンダリ** |スケールの読み取り値。レプリケーションの遅延 |
+| **因果的一貫性** |セッション トークン - 書き込み後の順序付き読み取り |
 
-After a write, user-facing reads should hit **primary** unless lag is acceptable.
+書き込み後、ラグが許容できない限り、ユーザー側の読み取りは **プライマリ** に達する必要があります。
 
-## 7. Caching and hybrid stacks
+## 7. キャッシュとハイブリッド スタック
 
-MongoDB is not a cache:
+MongoDB はキャッシュではありません。
 
-| Layer | Role |
-|-------|------|
-| **Redis** | Sessions, rate limits, hot keys |
-| **MongoDB** | Durable document store |
-| **Warehouse / SQL** | Analytics, reporting JOINs |
+|レイヤー |役割 |
+|------|------|
+| **Redis** |セッション、レート制限、ホットキー |
+| **MongoDB** |耐久性のある文書保管庫 |
+| **ウェアハウス / SQL** |分析、JOIN のレポート |
 
-See [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md).
+[データベースのボトルネック](../sysdesign/bottleneck-analysis/vi-database.md)を参照してください。
 
-## 8. When to move workload to SQL
+## 8. ワークロードを SQL に移動する場合
 
-| Signal | Consider Postgres |
-|--------|-------------------|
-| Heavy cross-entity reporting | SQL + warehouse |
-| Complex multi-row invariants | Relational constraints |
-| Many `$lookup` in hot path | Normalized schema |
-| Ad-hoc JOINs by analysts | SQL BI tools |
+|信号 | Postgres を検討する |
+|--------|--------|
+|エンティティを越えた大量のレポート | SQL + ウェアハウス |
+|複雑な複数行の不変式 |関係制約 |
+|ホットパスに多数の`$lookup` |正規化されたスキーマ |
+|アナリストによるアドホック JOIN | SQL BI ツール |
 
-Polyglot persistence is normal — optimize each store for its job.
+ポリグロットの永続性は正常です。各ストアをそのジョブに合わせて最適化します。
 
-## 9. Checklist
+## 9. チェックリスト
 
-- [ ] Slow ops identified (profiler / Atlas / APM)
-- [ ] **`explain("executionStats")`** on top queries — no surprise COLLSCAN at scale
-- [ ] Compound indexes match filter + sort
-- [ ] Projections trim fields on list APIs
-- [ ] Pagination uses keyset, not large `skip`
-- [ ] Document sizes bounded (no unbounded arrays)
-- [ ] Backups and restore tested ([Operations & backups](vi-operations-and-backups.md))
+- [ ] 遅い操作が特定されました (プロファイラー/アトラス/APM)
+- [ ] **`explain("executionStats")`** 上位クエリ - 大規模な COLLSCAN も驚くべきことではありません
+- [ ] 複合インデックスはフィルター + ソートに一致します
+- [ ] プロジェクションはリスト API のフィールドをトリムします
+- [ ] ページネーションではキーセットが使用されますが、大きくはありません `skip`
+- [ ] ドキュメント サイズは制限されています (制限されていない配列はありません)
+- [ ] テスト済みのバックアップと復元 ([操作とバックアップ](vi-operations-and-backups.md))
 
-## Related notes
+## 関連メモ
 
-- [Queries & indexes](iv-queries-and-indexes.md) — find, aggregation, index types
-- [Schema & modeling](iii-schema-and-modeling.md) — embed vs reference
-- [Document databases](../../CS101/databases/iv-document.md) — conceptual foundation
-- [Database optimizations (Postgres)](../postgres/vii-database-optimizations.md) — shared tuning mindset
+- [クエリとインデックス](iv-queries-and-indexes.md) — 検索、集計、インデックスタイプ
+- [スキーマとモデリング](iii-schema-and-modeling.md) — 埋め込みと参照
+- [文書データベース](../../CS101/databases/iv-document.md) — 概念的な基礎
+- [データベースの最適化 (Postgres)](../postgres/vii-database-optimizations.md) — チューニングの考え方の共有

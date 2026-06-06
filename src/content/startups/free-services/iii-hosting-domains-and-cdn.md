@@ -1,68 +1,69 @@
 ---
 label: "III"
-subtitle: "Hosting, domains & CDN"
-group: "Startups"
+subtitle: "ホスティング、ドメイン、CDN"
+group: "スタートアップ"
 order: 3
 ---
-Hosting, domains & CDN
-Most MVPs need a **domain**, **HTTPS**, and a place to run the **frontend** or **API**. These free tiers cover early traffic without a dedicated server.
+ホスティング、ドメイン、CDN
 
-## 1. Domain names
+ほとんどの MVP には、**ドメイン**、**HTTPS**、および **フロントエンド** または **API** を実行する場所が必要です。これらの無料枠は、専用サーバーなしで初期のトラフィックをカバーします。
 
-| Registrar | Notes |
-|-----------|--------|
-| Cloudflare Registrar | At-cost pricing, pairs with free DNS |
-| Namecheap, Porkbun | Often cheap first year |
-| Google Domains → Squarespace | Check current product |
+## 1. ドメイン名
 
-Budget **~$10–15/year** for `.com` — rarely free except promotions.
+|レジストラ |メモ |
+|----------|----------|
+| Cloudflareレジストラ |無料の DNS と組み合わせた原価価格 |
+|名前安い、豚まん |初年度は安いことが多い |
+| Google ドメイン → スクエアスペース |現在の製品を確認する |
 
-## 2. DNS & TLS (free)
+`.com` の予算 **~$10–15/年** — プロモーションを除いて無料になることはほとんどありません。
 
-| Service | Free includes |
-|---------|---------------|
-| **[Cloudflare](https://www.cloudflare.com)** | DNS, CDN, TLS, DDoS basics, Email Routing |
-| Route 53 | Not free — pay per hosted zone |
-| Registrar DNS | Often free with domain |
+## 2. DNS と TLS (無料)
 
-Point nameservers to Cloudflare → manage A/CNAME/TXT (email records) in one place.
+|サービス |無料の内容 |
+|-------|---------------|
+| **[クラウドフレア](4)** | DNS、CDN、TLS、DDoS の基本、電子メール ルーティング |
+|ルート53 |無料ではありません - ホストゾーンごとに支払います |
+|レジストラDNS |多くの場合、ドメイン付きで無料 |
 
-## 3. Static & frontend hosting
+ネームサーバーをCloudflareにポイントし、A/CNAME/TXT（メールレコード）を1か所で管理します。
 
-| Platform | Free tier (typical) | Stack |
-|----------|---------------------|-------|
-| **[Vercel](https://vercel.com)** | Hobby projects | Next.js, static, serverless functions |
-| **[Netlify](https://www.netlify.com)** | Starter | Static, functions, forms |
-| **[Cloudflare Pages](https://pages.cloudflare.com)** | Generous | Static, Workers integration |
-| **[GitHub Pages](https://pages.github.com)** | Public repos | Static only |
+## 3. 静的およびフロントエンドのホスティング
+
+|プラットフォーム |無料利用枠 (通常) |スタック |
+|----------|---------------------|----------|
+| **[ヴェルセル](5)** |趣味のプロジェクト | Next.js、静的、サーバーレス関数 |
+| **[Netlify](6)** |スターター |静的、関数、フォーム |
+| **[Cloudflare ページ](7)** |寛大 |静的、ワーカー統合 |
+| **[GitHub ページ](8)** |パブリックリポジトリ |静的のみ |
 
 ```text
 git push main → auto build → https://yourapp.vercel.app
 Custom domain: CNAME to provider + verify in dashboard
 ```
 
-## 4. Backend / API hosting
+## 4. バックエンド/API ホスティング
 
-| Platform | Free tier | Notes |
-|----------|-----------|-------|
-| **Vercel / Netlify functions** | Limited invocations | Good for light APIs |
-| **[Railway](https://railway.app)** | Trial credit then usage | Full containers |
-| **[Render](https://render.com)** | Free web service (sleeps) | Docker or native |
-| **[Fly.io](https://fly.io)** | Small VM allowance | Global edge |
-| **AWS Lambda + API Gateway** | Always-free tier limits | More setup |
+|プラットフォーム |無料枠 |メモ |
+|----------|-----------|----------|
+| **Vercel / Netlify の機能** |呼び出しの制限 |軽い API に適しています |
+| **[鉄道](9)** |トライアルクレジットとその後の使用 |フルコンテナ |
+| **[レンダリング](10)** |無料Webサービス（スリープ） | Docker またはネイティブ |
+| **[Fly.io](11)** | VM 許容量が小さい |グローバルエッジ |
+| **AWS Lambda + API ゲートウェイ** | Always Free 利用枠の制限 |さらにセットアップ |
 
-Cold starts and **sleep on idle** are acceptable for demos; not for latency-sensitive prod without paid tier.
+コールド スタートと **アイドル状態でのスリープ**はデモでは許容されます。有料枠のないレイテンシーに敏感な製品には適していません。
 
-## 5. CDN
+## 5.CDN
 
-Included with Cloudflare, Vercel, Netlify. Cache static assets; set **`Cache-Control`** headers. See system design **CDN** note for patterns.
+Cloudflare、Vercel、Netlify に含まれています。静的資産をキャッシュします。 **`Cache-Control`** ヘッダーを設定します。パターンについては、システム設計 **CDN** のメモを参照してください。
 
-## 6. Checklist
+## 6. チェックリスト
 
-- [ ] Domain purchased
-- [ ] DNS on Cloudflare (or provider)
-- [ ] HTTPS working on custom domain
-- [ ] Deploy hook from GitHub
-- [ ] Staging subdomain (`staging.app.com`) optional
+- [ ] ドメインを購入しました
+- [ ] Cloudflare (またはプロバイダー) の DNS
+- [ ] カスタム ドメインで動作する HTTPS
+- [ ] GitHub からフックをデプロイします
+- [ ] ステージングサブドメイン (`staging.app.com`) オプション
 
-**Related:** [Email & mailing](ii-email-and-mailing.md) (DNS records), cloud foundations **edge**.
+**関連:** [電子メールとメーリング](ii-email-and-mailing.md) (DNS レコード)、クラウド基盤 **エッジ**。

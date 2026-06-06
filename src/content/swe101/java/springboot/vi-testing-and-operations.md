@@ -1,15 +1,16 @@
 ---
 label: "VI"
-subtitle: "Testing & operations"
-group: "Spring Boot"
+subtitle: "テストと運用"
+group: "スプリングブーツ"
 groupOrder: 2
 order: 6
 ---
-Spring Boot — Part VI
-Slice tests with **`@WebMvcTest`** / **`@DataJpaTest`**, bootstrap integration tests with **`@SpringBootTest`**, and tune Actuator plus logging for observable deployments.
+Spring Boot — パート VI
 
-## 1. `@WebMvcTest` — controller contract only
-Loads MVC infrastructure **without** full JPA — collaborators are **`@MockBean`**:
+**`@WebMvcTest`** / **`@DataJpaTest`** を使用してテストをスライスし、**`@SpringBootTest`** を使用して統合テストをブートストラップし、監視可能な展開用に Actuator とログを調整します。
+
+## 1. `@WebMvcTest` — コントローラー契約のみ
+完全な JPA なしで MVC インフラストラクチャをロードします — 協力者は **`@MockBean`** です:
 
 ```java
 // Compile: javac --release 22 …
@@ -54,10 +55,10 @@ class CustomerControllerTest {
 }
 ```
 
-Fast feedback: validates mapping, validation, and JSON serialization — not SQL correctness.
+高速フィードバック: SQL の正確さではなく、マッピング、検証、JSON シリアル化を検証します。
 
-## 2. `@DataJpaTest` — repositories + schema
-Uses an embedded or test database (configure **`spring.datasource`** under **`test`** resources):
+## 2. `@DataJpaTest` — リポジトリ + スキーマ
+埋め込みデータベースまたはテスト データベースを使用します (**`test`** リソースの下に **`spring.datasource`** を構成します)。
 
 ```java
 // Compile: javac --release 22 …
@@ -83,8 +84,8 @@ class OrderRepositoryTest {
 }
 ```
 
-## 3. `@SpringBootTest` — full context smoke
-Heavier; use for critical paths crossing layers:
+## 3. `@SpringBootTest` — フルコンテキスト スモーク
+より重い;レイヤーをまたぐクリティカル パスに使用します。
 
 ```java
 // Compile: javac --release 22 …
@@ -108,9 +109,9 @@ class BillingApplicationIT {
 }
 ```
 
-Add **`spring-boot-starter-actuator`** and expose **`health`** in **`application-test.yml`**.
+**`spring-boot-starter-actuator`** を追加し、**`application-test.yml`** で **`health`** を公開します。
 
-## 4. Actuator & production hygiene
+## 4. アクチュエーターと生産衛生
 ```yaml
 management:
   endpoints:
@@ -122,9 +123,9 @@ management:
       show-details: when_authorized
 ```
 
-Secure **`/actuator/**`** with Spring Security in real deployments — never leave **`prometheus`** or **`env`** open on the public internet. See **Security basics & filter chain** [Basics & filter chain](security-basics-and-filter-chain.md).
+実際のデプロイメントでは Spring Security を使用して **`/actuator/**`** を保護します。**`prometheus`** または **`env`** を公共のインターネット上で開いたままにしないでください。 **セキュリティの基本とフィルター チェーン** [基本とフィルター チェーン](security-basics-and-filter-chain.md) を参照してください。
 
-## 5. Logging tune-up
+## 5. ロギングの調整
 ```yaml
 logging:
   pattern:
@@ -134,12 +135,12 @@ logging:
     com.example.demo: DEBUG
 ```
 
-Prefer **structured logging** (JSON) via Logback appenders or your platform’s agent — correlate requests with a propagated trace ID in **`MDC`**.
+Logback アペンダまたはプラットフォームのエージェントを介した **構造化ログ** (JSON) を優先します。**`MDC`** で伝播されたトレース ID とリクエストを関連付けます。
 
-## 6. Choosing a test style
-| Goal | Annotation |
-|------|------------|
-| Single controller + JSON | **`@WebMvcTest`** |
-| JPA queries / mappings | **`@DataJpaTest`** |
-| Security filter chain | **`@WebMvcTest` + `@AutoConfigureMockMvc(addFilters = …)`** or **`@SpringBootTest`** |
-| End-to-end HTTP against running port | **`@SpringBootTest(webEnvironment = RANDOM_PORT)`** |
+## 6. テストスタイルの選択
+|目標 |注釈 |
+|------|-----------|
+|単一コントローラー + JSON | **`@WebMvcTest`** |
+| JPA クエリ/マッピング | **`@DataJpaTest`** |
+|セキュリティフィルターチェーン | **`@WebMvcTest` + `@AutoConfigureMockMvc(addFilters = …)`** または **`@SpringBootTest`** |
+|実行中のポートに対するエンドツーエンドの HTTP | **`@SpringBootTest(webEnvironment = RANDOM_PORT)`** |

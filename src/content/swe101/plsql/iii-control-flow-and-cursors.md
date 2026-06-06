@@ -1,11 +1,12 @@
 ---
 label: "III"
-subtitle: "Control flow & cursors"
+subtitle: "制御フローとカーソル"
 group: "PL/SQL"
 order: 3
 ---
-PL/SQL — control flow & cursors
-Branch with **`IF`**, iterate with **`LOOP`**, and process result sets with **cursors** — explicit or implicit.
+PL/SQL — 制御フローとカーソル
+
+**`IF`** で分岐し、**`LOOP`** で反復し、**カーソル** で結果セットを明示的または暗黙的に処理します。
 
 ## 1. IF / ELSIF / ELSE
 
@@ -27,9 +28,9 @@ END;
 /
 ```
 
-## 2. Loops
+## 2. ループ
 
-**Basic loop** (exit required):
+**基本ループ** (終了が必要):
 
 ```sql
 DECLARE
@@ -43,7 +44,7 @@ END;
 /
 ```
 
-**WHILE:**
+**その間：**
 
 ```sql
 DECLARE
@@ -56,7 +57,7 @@ END;
 /
 ```
 
-**FOR (integer):**
+**FOR (整数):**
 
 ```sql
 BEGIN
@@ -67,7 +68,7 @@ END;
 /
 ```
 
-**FOR (cursor)** — preferred for query loops:
+**FOR (カーソル)** — クエリ ループに推奨されます。
 
 ```sql
 BEGIN
@@ -78,11 +79,11 @@ END;
 /
 ```
 
-Oracle opens, fetches, and closes the cursor automatically.
+Oracle はカーソルを自動的に開き、フェッチし、閉じます。
 
-## 3. Implicit cursor (`SQL%`)
+## 3. 暗黙的カーソル (`SQL%`)
 
-After DML, **`SQL%ROWCOUNT`**, **`SQL%FOUND`**, **`SQL%NOTFOUND`** reflect the last statement:
+DML の後、**`SQL%ROWCOUNT`**、**`SQL%FOUND`**、**`SQL%NOTFOUND`** は最後のステートメントを反映します。
 
 ```sql
 BEGIN
@@ -92,11 +93,11 @@ END;
 /
 ```
 
-Do not assume `%ROWCOUNT` persists after `COMMIT` or unrelated SQL — read it immediately.
+`%ROWCOUNT` が `COMMIT` または無関係な SQL の後も存続するとは考えず、すぐに読んでください。
 
-## 4. Explicit cursor
+## 4. 明示的なカーソル
 
-When you need row-by-row control or parameters:
+行ごとのコントロールまたはパラメータが必要な場合:
 
 ```sql
 DECLARE
@@ -120,15 +121,15 @@ END;
 /
 ```
 
-| Attribute | Meaning |
-|-----------|---------|
-| **`%FOUND`** | Last fetch returned a row |
-| **`%NOTFOUND`** | Last fetch failed (end of set) |
-| **`%ROWCOUNT`** | Rows fetched so far |
+|属性 |意味 |
+|----------|----------|
+| **`%FOUND`** |最後のフェッチでは行が返されました。
+| **`%NOTFOUND`** |最後のフェッチに失敗しました (セットの終わり) |
+| **`%ROWCOUNT`** |これまでにフェッチされた行 |
 
-Always **`CLOSE`** cursors you **`OPEN`** (or use `FOR` loop).
+常に **`CLOSE`** カーソルを **`OPEN`** に設定します (または `FOR` ループを使用します)。
 
-## 5. Cursor FOR UPDATE (locking)
+## 5. カーソル FOR UPDATE (ロック)
 
 ```sql
 DECLARE
@@ -144,17 +145,17 @@ END;
 /
 ```
 
-Locks selected rows until commit/rollback — use sparingly; prefer set-based **`UPDATE … WHERE`** when possible.
+選択した行をコミット/ロールバックするまでロックします。使用は慎重に行ってください。可能であれば、セットベースの **`UPDATE … WHERE`** を推奨します。
 
-## 6. Set-based vs row-by-row
+## 6. セットベースと行ごとの比較
 
-| Approach | When |
+|アプローチ |いつ |
 |----------|------|
-| **Single SQL** (`UPDATE …`, `MERGE`, `INSERT … SELECT`) | Default — let optimizer work |
-| **Cursor loop** | Row-specific logic that SQL cannot express cleanly |
-| **Bulk** (see Part VI) | Large loops — reduce context switches |
+| **単一 SQL** (`UPDATE …`、`MERGE`、`INSERT … SELECT`) |デフォルト — オプティマイザを機能させます |
+| **カーソル ループ** | SQL ではきれいに表現できない行固有のロジック |
+| **バルク** (パート VI を参照) |大規模なループ - コンテキストの切り替えを減らす |
 
-Anti-pattern: cursor updating one row per iteration when one **`UPDATE`** suffices.
+アンチパターン: 1 **`UPDATE`** で十分な場合、カーソルは反復ごとに 1 行を更新します。
 
 ```sql
 -- Prefer
@@ -166,6 +167,6 @@ FOR r IN (SELECT …) LOOP
 END LOOP;
 ```
 
-## Next
+＃＃ 次
 
-Continue with [Procedures & functions](iv-procedures-and-functions.md) to persist logic as schema objects.
+[プロシージャと関数](iv-procedures-and-functions.md) に進み、ロジックをスキーマ オブジェクトとして永続化します。

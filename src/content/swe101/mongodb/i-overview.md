@@ -1,37 +1,38 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "MongoDB"
+subtitle: "概要"
+group: "モンゴDB"
 order: 1
 ---
-MongoDB — overview
-**MongoDB** is a **document database**: records are **BSON/JSON documents** in **collections**, queried through drivers, **`mongosh`**, or ODMs like Spring Data MongoDB. This track covers what you need as a **software engineer** — modeling, queries, indexes, app integration, ops, and tuning.
+MongoDB — 概要
 
-For document-store concepts (embedding vs referencing, when to choose documents), see [Document](../../CS101/databases/iv-document.md). For relational patterns and ACID tradeoffs, see [Postgres](../postgres/i-overview.md) and [Relational (SQL)](../../CS101/databases/ii-relational.md).
+**MongoDB** は **ドキュメント データベース**です。レコードは **コレクション** 内の **BSON/JSON ドキュメント**であり、ドライバー、**`mongosh`**、または Spring Data MongoDB などの ODM を通じてクエリされます。このトラックでは、**ソフトウェア エンジニア**として必要なこと、つまりモデリング、クエリ、インデックス、アプリの統合、運用、チューニングについて説明します。
 
-## Map of this track
+ドキュメントストアの概念 (埋め込みと参照、ドキュメントをいつ選択するか) については、[ドキュメント](../../CS101/databases/iv-document.md) を参照してください。リレーショナル パターンと ACID のトレードオフについては、[Postgres](../postgres/i-overview.md) および [リレーショナル (SQL)](../../CS101/databases/ii-relational.md) を参照してください。
 
-| Part | Focus |
-|------|--------|
-| **I — Overview** | Why MongoDB, core vocabulary, when to use it |
-| **II — Install & mongosh** | Local/Atlas setup, connection strings, shell basics |
-| **III — Schema & modeling** | Embed vs reference, validation, migrations |
-| **IV — Queries & indexes** | `find`, aggregation, index types |
-| **V — App integration** | Java Spring Data, Python PyMongo patterns |
-| **VI — Operations & backups** | Replica sets, `mongodump`, Atlas ops |
-| **VII — Database optimizations** | Triage, explain, schema/query checklist |
+## このトラックの地図
 
-## Why MongoDB (for apps)
+|パート |フォーカス |
+|------|----------|
+| **I — 概要** | MongoDB を使用する理由、主要な語彙、いつ使用するか |
+| **II — インストールと mongosh** |ローカル/アトラスのセットアップ、接続文字列、シェルの基本 |
+| **III — スキーマとモデリング** |埋め込みと参照、検証、移行 |
+| **IV — クエリとインデックス** | `find`、集計、インデックス タイプ |
+| **V — アプリの統合** | Java Spring データ、Python PyMongo パターン |
+| **VI — 操作とバックアップ** |レプリカセット、`mongodump`、アトラスオプス |
+| **VII — データベースの最適化** |トリアージ、説明、スキーマ/クエリのチェックリスト |
 
-| Strength | What it means in practice |
-|----------|---------------------------|
-| **Document model** | One read returns nested JSON — fits many REST/API shapes |
-| **Flexible schema** | New fields without `ALTER TABLE` — still plan migrations |
-| **Horizontal scale** | Sharded cluster by shard key (when you outgrow one node) |
-| **Rich queries** | Filters, aggregation pipeline, text/geo indexes |
-| **Managed Atlas** | Backups, monitoring, global clusters without running your own ops |
+## MongoDB を選ぶ理由 (アプリ用)
 
-## Core vocabulary
+|強さ |実際の意味 |
+|----------|--------------------------|
+| **ドキュメントモデル** | 1 回の読み取りでネストされた JSON が返されます。多くの REST/API 形状に適合します。
+| **柔軟なスキーマ** | `ALTER TABLE` のない新しいフィールド — まだ移行を計画中 |
+| **水平スケール** |シャード キーによるシャード クラスター (1 つのノードを超えた場合) |
+| **豊富なクエリ** |フィルター、集計パイプライン、テキスト/地理インデックス |
+| **マネージド アトラス** |独自の運用を実行せずにバックアップ、監視、グローバル クラスター |
+
+## 主要な語彙
 
 ```text
 Cluster
@@ -40,30 +41,30 @@ Cluster
               └── Document { _id, ... }  ← like a row, but nested
 ```
 
-| Term | Role |
+|用語 |役割 |
 |------|------|
-| **`_id`** | Primary key — `ObjectId` by default if omitted |
-| **Collection** | Named bag of documents |
-| **Database** | Namespace for collections + users/roles |
-| **Replica set** | Primary + secondaries — minimum for production transactions |
-| **Shard** | Horizontal partition when data/throughput exceeds one machine |
+| **`_id`** |主キー — 省略した場合はデフォルトで `ObjectId` |
+| **コレクション** |名前入りの書類バッグ |
+| **データベース** |コレクション + ユーザー/ロールの名前空間 |
+| **レプリカセット** |プライマリ + セカンダリ — 運用トランザクションの最小値 |
+| **シャード** |データ/スループットが 1 台のマシンを超える場合の水平分割 |
 
-## When MongoDB fits
+## MongoDB が適合する場合
 
-| Good fit | Poor default |
+|良いフィット感 |悪いデフォルト |
 |----------|--------------|
-| Catalogs with varying attributes | Strict multi-table ledger with heavy JOIN reporting |
-| Content, user profiles, IoT events | Everything in one store “because NoSQL” |
-| Prototypes with schema churn | Complex ad-hoc analytics (often warehouse + SQL) |
-| **Polyglot persistence** alongside Postgres | Replacing Postgres without modeling tradeoffs |
+|さまざまな属性を持つカタログ |大量の JOIN レポートを備えた厳密なマルチテーブル台帳 |
+|コンテンツ、ユーザー プロファイル、IoT イベント | 「NoSQL だから」すべてを 1 つのストアに |
+|スキーマ チャーンを伴うプロトタイプ |複雑なアドホック分析 (多くの場合、ウェアハウス + SQL) |
+| **多言語永続性** Postgres と並行 |モデリングのトレードオフなしで Postgres を置き換える |
 
-Use **Postgres for money + invariants**, **MongoDB for flexible documents** — many teams run both.
+**お金と不変条件には Postgres** を使用し、**柔軟なドキュメントには MongoDB** を使用します。多くのチームは両方を実行しています。
 
-## Document size and writes
+## ドキュメントのサイズと書き込み
 
-- **16 MB** max document size — unbounded embedded arrays are an anti-pattern.
-- Prefer **single-document updates** when possible; multi-document **transactions** exist (4.0+) but cost more than one-doc atomicity.
+- **16 MB** 最大ドキュメント サイズ - 無制限の埋め込み配列はアンチパターンです。
+- 可能な場合は **単一ドキュメントの更新** を推奨します。マルチドキュメント **トランザクション** は存在します (4.0 以降) が、1 ドキュメントのアトミック性よりもコストがかかります。
 
-## Next
+＃＃ 次
 
-Continue with [Install & mongosh](ii-install-and-mongosh.md) to run MongoDB locally or on Atlas and connect from the shell.
+[インストールと mongosh](ii-install-and-mongosh.md) に進み、ローカルまたは Atlas 上で MongoDB を実行し、シェルから接続します。
