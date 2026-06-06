@@ -1,15 +1,16 @@
 ---
 label: "V"
-subtitle: "App integration"
-group: "Redis"
+subtitle: "アプリの統合"
+group: "レディス"
 order: 5
 ---
-Redis — app integration
-Use **connection pooling**, **timeouts**, and **key conventions** from day one. Examples align with [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) and [Python](../python/i-basics-and-syntax.md).
+Redis — アプリの統合
 
-## 1. Java — Lettuce (recommended)
+**接続プーリング**、**タイムアウト**、**重要な規則**を初日から使用してください。例は [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) および [Python](../python/i-basics-and-syntax.md) に準拠しています。
 
-Lettuce is async-capable and default in Spring Boot 2+:
+## 1. Java — レタス (推奨)
+
+Lettuce は非同期対応であり、Spring Boot 2+ ではデフォルトです。
 
 ```java
 // Conceptual — io.lettuce:lettuce-core
@@ -24,11 +25,11 @@ cmd.setex("session:abc", 3600, "{\"userId\":42}");
 cmd.incr("counter:views");
 ```
 
-Use **`try-with-resources`** or Spring-managed beans — one client per app, not per request.
+**`try-with-resources`** または Spring マネージド Bean を使用します。リクエストごとではなく、アプリごとに 1 つのクライアントを使用します。
 
 ## 2. Spring Boot + Spring Data Redis
 
-**Dependency:**
+**依存：**
 
 ```xml
 <dependency>
@@ -37,7 +38,7 @@ Use **`try-with-resources`** or Spring-managed beans — one client per app, not
 </dependency>
 ```
 
-**Configuration:**
+**構成：**
 
 ```yaml
 spring:
@@ -74,7 +75,7 @@ public class ProductCache {
 }
 ```
 
-**Cache abstraction:**
+**キャッシュの抽象化:**
 
 ```java
 @Cacheable(value = "products", key = "#id")
@@ -88,9 +89,9 @@ public void update(Product product) {
 }
 ```
 
-Enable with **`@EnableCaching`** and Redis cache manager bean.
+**`@EnableCaching`** および Redis キャッシュ マネージャー Bean で有効にします。
 
-**Spring Session:**
+**春のセッション:**
 
 ```xml
 <dependency>
@@ -122,18 +123,18 @@ r.hget("user:42", "email")
 r.set("cache:product:8812", json.dumps({"title": "Keyboard", "price": 129.99}), ex=600)
 ```
 
-Use **connection pool**:
+**接続プール**を使用します:
 
 ```python
 pool = redis.ConnectionPool(host="localhost", port=6379, max_connections=20)
 r = redis.Redis(connection_pool=pool)
 ```
 
-**redis.asyncio** for FastAPI/async workers.
+FastAPI/非同期ワーカーの場合は **redis.asyncio**。
 
-## 4. Pipelines and transactions
+## 4. パイプラインとトランザクション
 
-Batch commands — one round trip:
+バッチ コマンド - 1 往復:
 
 ```java
 // Lettuce async pipeline
@@ -151,24 +152,24 @@ pipe.incr("counter")
 pipe.execute()
 ```
 
-**`MULTI`/`EXEC`** — atomic group (not same as SQL transaction across keys with rollback on failure — know Redis semantics).
+**`MULTI`/`EXEC`** — アトミック グループ (失敗時のロールバックを伴うキー間の SQL トランザクションとは異なります。Redis セマンティクスを理解しています)。
 
-## 5. Error handling
+## 5. エラー処理
 
-| Error | Action |
-|-------|--------|
-| **Connection refused** | Fail fast; circuit breaker to DB if cache optional |
-| **OOM / maxmemory** | Alert; review eviction policy and key sizes |
-| **Timeout** | Retry idempotent reads; avoid unbounded retries on writes |
+|エラー |アクション |
+|------|----------|
+| **接続が拒否されました** |早く失敗してください。キャッシュがオプションの場合は DB へのサーキット ブレーカー |
+| **OOM / 最大メモリ** |警告;エビクションポリシーとキーサイズを確認する |
+| **タイムアウト** |べき等読み取りを再試行します。書き込み時の無制限の再試行を回避します。
 
-**Cache optional pattern:** on Redis failure, fall back to database — slower but available.
+**キャッシュのオプション パターン:** Redis 障害が発生した場合、データベースにフォールバックします。速度は遅くなりますが、利用可能です。
 
-## 6. Testing
+## 6. テスト
 
-| Approach | Notes |
-|----------|-------|
-| **Testcontainers** (`redis:7`) | Integration tests with real server |
-| **Embedded Redis mock** | Unit tests only — behavior differs |
+|アプローチ |メモ |
+|----------|----------|
+| **テストコンテナ** (`redis:7`) |実サーバーとの統合テスト |
+| **埋め込み Redis モック** |単体テストのみ - 動作が異なります。
 
 ```java
 @Container
@@ -181,6 +182,6 @@ static void redisProps(DynamicPropertyRegistry registry) {
 }
 ```
 
-## Next
+＃＃ 次
 
-Continue with [Operations & persistence](vi-operations-and-persistence.md) for RDB, AOF, and replication.
+RDB、AOF、およびレプリケーションの[操作と永続性](vi-operations-and-persistence.md)に進みます。

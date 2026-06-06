@@ -1,13 +1,14 @@
 ---
 label: "V"
-subtitle: "Static assets & SPAs"
+subtitle: "静的資産と SPA"
 group: "CDN"
 order: 5
 ---
-CDN — static assets & SPAs
-Single-page apps (React, Vue, Svelte) ship **hashed static files** plus a small **HTML shell**. CDNs excel at serving the static layer globally.
+CDN — 静的資産と SPA
 
-## 1. Build output layout
+シングルページ アプリ (React、Vue、Svelte) には、**ハッシュされた静的ファイル** と小さな **HTML シェル**が同梱されています。 CDN は、静的レイヤーをグローバルに提供することに優れています。
+
+## 1. 出力レイアウトを構築する
 
 ```text
 dist/
@@ -18,9 +19,9 @@ dist/
     logo-3f2a1b.png
 ```
 
-Vite/Webpack/Next static export emit **content hashes** in filenames — safe **`immutable`** caching.
+Vite/Webpack/Next 静的エクスポートはファイル名に **コンテンツ ハッシュ**を生成します - 安全な **`immutable`** キャッシュ。
 
-## 2. Deploy pipeline
+## 2. パイプラインをデプロイする
 
 ```text
 git push tag v1.2.0
@@ -42,52 +43,52 @@ aws s3 cp dist/index.html s3://bucket/index.html \
   --content-type "text/html"
 ```
 
-## 3. Why not purge everything on deploy
+## 3. デプロイ時にすべてをパージしないのはなぜですか
 
-| Approach | Downside |
+|アプローチ |マイナス面 |
 |----------|----------|
-| Purge `/*` | Origin spike; slower global rollout |
-| Versioned filenames | Old JS stays cached but unused — **preferred** |
-| Same `/app.js` forever | Users on stale code until purge |
+|パージ `/*` |原点スパイク。世界的な展開が遅い |
+|バージョン管理されたファイル名 |古い JS はキャッシュされたままですが、使用されません — **推奨** |
+|永遠に同じ `/app.js` |パージされるまで古いコードを使用するユーザー |
 
-Only **`index.html`** (and service worker, if any) needs frequent invalidation.
+頻繁な無効化が必要なのは **`index.html`** (およびサービス ワーカー (存在する場合)) のみです。
 
-## 4. Service workers (PWA)
+## 4. サービスワーカー (PWA)
 
-Service workers cache aggressively — can **override CDN** in the browser.
+Service Worker は積極的にキャッシュします。ブラウザーで **CDN** をオーバーライドできます。
 
-| Practice | Why |
+|練習 |なぜ |
 |----------|-----|
-| Version SW file name or hash | Force update on deploy |
-| `skipWaiting` + `clients.claim` | Careful — understand UX |
-| Cache bust on activate | Delete old caches |
+|バージョン SW ファイル名またはハッシュ |デプロイ時に更新を強制する |
+| `skipWaiting` + `clients.claim` |注意 — UX を理解する |
+|アクティブ化時のキャッシュバスト |古いキャッシュを削除する |
 
-Misconfigured SW causes “deployed but users see old app” despite CDN purge.
+SW の構成が間違っていると、CDN のパージにもかかわらず「デプロイされているが、ユーザーには古いアプリが表示される」という問題が発生します。
 
-## 5. Images and media
+## 5. 画像とメディア
 
-| Type | CDN pattern |
-|------|-------------|
-| **Responsive images** | `srcset` same CDN; multiple widths in `/assets/` |
-| **Video** | HLS/DASH segments — each `.ts` chunk long TTL |
-| **User uploads** | Separate origin/path; shorter TTL; auth via signed URLs |
+|タイプ | CDN パターン |
+|------|---------------|
+| **レスポンシブ画像** | `srcset` 同じ CDN。 `/assets/` の複数の幅 |
+| **ビデオ** | HLS/DASH セグメント - 各 `.ts` チャンク長の TTL |
+| **ユーザーのアップロード** |起点とパスを分離します。 TTL が短い。署名付き URL による認証 |
 
-Use modern formats (**WebP**, **AVIF**) at build or via CDN **image optimization** (Cloudflare Polish, CloudFront image handler).
+ビルド時または CDN **画像最適化** (Cloudflare Polish、CloudFront 画像ハンドラー) 経由で最新の形式 (**WebP**、**AVIF**) を使用します。
 
-## 6. Compression
+## 6. 圧縮
 
-Enable **Brotli/gzip** at CDN or origin:
+CDN またはオリジンで **Brotli/gzip** を有効にします。
 
 ```http
 Content-Encoding: br
 Vary: Accept-Encoding
 ```
 
-Cache key must include **encoding** — otherwise gzip client gets br bytes.
+キャッシュ キーには **エンコーディング** が含まれている必要があります。そうでない場合、gzip クライアントは br バイトを取得します。
 
-## 7. Subresource integrity (optional)
+## 7. サブリソースの整合性 (オプション)
 
-For third-party scripts from CDN:
+CDN のサードパーティ スクリプトの場合:
 
 ```html
 <script src="https://cdn.example.com/lib.js"
@@ -95,17 +96,17 @@ For third-party scripts from CDN:
         crossorigin="anonymous"></script>
 ```
 
-SRI verifies file content — good for supply chain; your own hashed assets already pin by URL.
+SRI はファイルの内容を検証します。これはサプライ チェーンに適しています。独自のハッシュ化されたアセットは URL によってすでに固定されています。
 
-## 8. Platform-managed CDN
+## 8. プラットフォーム管理の CDN
 
-| Platform | You manage |
-|----------|------------|
-| **Vercel / Netlify / CF Pages** | Git push; platform sets headers |
-| **S3 + CloudFront** | Full control — headers, invalidation, OAC |
+|プラットフォーム |あなたが管理します |
+|----------|-----------|
+| **Vercel / Netlify / CF ページ** | Git プッシュ;プラットフォームはヘッダーを設定します。
+| **S3 + CloudFront** |フルコントロール — ヘッダー、無効化、OAC |
 
-Managed platforms encode best practices; custom S3+CDN teaches the underlying knobs.
+マネージド プラットフォームにはベスト プラクティスがコード化されています。カスタム S3+CDN は基礎となるノブを教えます。
 
-## Next
+＃＃ 次
 
-Continue with [APIs & dynamic content](vi-apis-and-dynamic-content.md) for cacheable GET endpoints and edge logic.
+キャッシュ可能な GET エンドポイントとエッジ ロジックについては、[API と動的コンテンツ](vi-apis-and-dynamic-content.md) に進みます。

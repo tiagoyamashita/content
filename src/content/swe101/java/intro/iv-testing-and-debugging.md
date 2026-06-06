@@ -1,19 +1,20 @@
 ---
 label: "IV"
-subtitle: "Testing & debugging"
-group: "Java"
+subtitle: "テストとデバッグ"
+group: "ジャワ"
 groupOrder: 1
 order: 4
 ---
-Java — Part IV
-Build basics, automated testing with JUnit, and effective debugging.
+Java — パート IV
 
-**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
+基本的なビルド、JUnit による自動テスト、効果的なデバッグ。
 
-## 1. Build tools and layout
-- **Maven** (`pom.xml`) and **Gradle** (`build.gradle.kts`) resolve dependencies, compile, test, package — pick one per repo and stay consistent.
-- Standard Maven paths: `src/main/java`, `src/test/java`; resources under `src/main/resources`.
-- **Classpath**: JVM loads bytecode and resources from directories and JARs — tools assemble this for you.
+**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
+
+## 1. ツールとレイアウトを構築する
+- **Maven** (`pom.xml`) および **Gradle** (`build.gradle.kts`) は依存関係を解決し、コンパイル、テスト、パッケージ化します。リポジトリごとに 1 つを選択し、一貫性を保ちます。
+- 標準 Maven パス: `src/main/java`、`src/test/java`; `src/main/resources` 未満のリソース。
+- **クラスパス**: JVM はディレクトリおよび JAR からバイトコードとリソースをロードします。ツールがこれを組み立てます。
 
 ```text
 my-app/
@@ -23,17 +24,17 @@ my-app/
 ```
 
 
-## 2. Why automate tests
-- **Regression safety**: changes that break behavior fail fast in CI instead of production.
-- **Specification**: tests document expected behavior more precisely than prose alone.
-- **Refactoring courage**: green tests increase confidence when restructuring internals.
+## 2. テストを自動化する理由
+- **回帰安全性**: 動作を壊す変更は、運用環境ではなく CI で迅速に失敗します。
+- **仕様**: テストは、散文だけよりも予期される動作をより正確に文書化します。
+- **勇気をリファクタリング**: グリーン テストにより、内部を再構築する際の自信が高まります。
 
 
-## 3. JUnit 5 essentials
-- Annotate test methods with **`@Test`** (JUnit Jupiter); class need not be `public` in modern JUnit.
-- **Assertions** (`assertEquals`, `assertTrue`, `assertThrows`) express expectations; prefer messages that explain intent on failure.
-- **`@BeforeEach` / `@AfterEach`** for setup/teardown per test; **`@BeforeAll` / `@AfterAll`** for expensive shared setup (often `static`).
-- **Parameterized tests** (`@ParameterizedTest` + sources) cover many inputs without copy-paste.
+## 3. JUnit 5 の必需品
+- **`@Test`** でテスト メソッドに注釈を付ける (JUnit Jupiter);最新の JUnit ではクラスは `public` である必要はありません。
+- **アサーション** (`assertEquals`、`assertTrue`、`assertThrows`) は期待を表明します。失敗の意図を説明するメッセージを好みます。
+- **`@BeforeEach` / `@AfterEach`** テストごとのセットアップ/ティアダウン。 **`@BeforeAll` / `@AfterAll`** 高価な共有セットアップ (多くの場合 `static`) の場合。
+- **パラメータ化されたテスト** (`@ParameterizedTest` + ソース) は、コピー＆ペーストすることなく多くの入力をカバーします。
 
 ```java
 // Compile: javac --release 22 … (JUnit on test classpath via Maven/Gradle)
@@ -65,48 +66,48 @@ class Calculator {
 ```
 
 
-## 4. Passed / failed / skipped every run (Maven / Gradle)
+## 4. 実行ごとに成功 / 失敗 / スキップ (Maven / Gradle)
 
-**Maven Surefire** prints a one-line tally when the suite finishes, for example:
+**Maven Surefire** は、スイートが終了すると 1 行の集計を出力します。次に例を示します。
 
 ```text
 Tests run: 14, Failures: 0, Errors: 0, Skipped: 2
 ```
 
-- **Failures** — assertion failed (`Assertions.*`, Hamcrest, etc.).
-- **Errors** — unexpected exception (setup blew up, NPE in test).
-- **Skipped** — JUnit **`@Disabled`**, Assumptions that abort, or Surefire excludes.
+- **失敗** — アサーションが失敗しました (`Assertions.*`、Hamcrest など)。
+- **エラー** — 予期しない例外 (セットアップが失敗した、テスト中の NPE)。
+- **スキップ** — JUnit **`@Disabled`**、中止される仮定、または Surefire は除外します。
 
-Use **`mvn test`** from the module root; failed tests repeat stack traces above that summary. For quieter logs keep the summary visible:
+モジュールルートから **`mvn test`** を使用します。失敗したテストは、その概要の上でスタック トレースを繰り返します。ログを静かに表示するには、概要を表示しておきます。
 
 ```text
 mvn -q test
 ```
 
-**Gradle**: **`gradle test`** ends with something like **`14 tests completed, 2 skipped`** (wording varies by version).
+**Gradle**: **`gradle test`** は **`14 tests completed, 2 skipped`** のようなもので終わります (文言はバージョンによって異なります)。
 
-Those numbers refresh **on every run** in the terminal; they are not written into your Markdown notes unless you add CI or a script that captures output.
-
-
-## 5. Test doubles and scope
-- **Unit tests**: isolate one class or function — collaborators replaced with fakes/mocks/stubs when I/O or complexity distracts.
-- **Integration tests**: real wiring — DB, HTTP, filesystem — slower but catch composition bugs.
-- Avoid testing trivial getters unless they encode rules; focus on behavior and edge cases.
+これらの数値は、ターミナルで**実行するたびに**更新されます。 CI または出力をキャプチャするスクリプトを追加しない限り、Markdown ノートには書き込まれません。
 
 
-## 6. Debugging workflow
-- **Reproduce** reliably — smallest failing input or deterministic seed for flaky cases.
-- **Breakpoints** stop execution; inspect stack frames, locals, and evaluate expressions.
-- **Step over / into / out** navigates call hierarchy; conditional breakpoints filter noise.
-- **`Thread` panes** show deadlocks and waits; **heap dumps** help memory leaks after reproduction.
+## 5. ダブルとスコープをテストする
+- **単体テスト**: 1 つのクラスまたは関数を分離します。I/O や複雑さが気を散らす場合、コラボレーターはフェイク/モック/スタブに置き換えられます。
+- **統合テスト**: 実際の配線 — DB、HTTP、ファイルシステム — 速度は遅くなりますが、構成バグを捕捉します。
+- ルールをエンコードしない限り、簡単なゲッターのテストは避けてください。行動とエッジケースに焦点を当てます。
 
 
-## 7. Logging and defensive habits
-- Use **`java.lang.System.Logger`** or SLF4J + backend — levels (`ERROR`, `WARN`, `INFO`, `DEBUG`) filter noise in prod.
-- Log **context** (correlation id, user-less identifiers), never secrets or full PII without policy.
-- Pair logging with tests: when fixing a bug, add a failing test first when feasible (**test-driven debugging**).
+## 6. デバッグワークフロー
+- **確実に再現** - 失敗した入力が最小になるか、不安定な場合の決定的なシードが得られます。
+- **ブレークポイント**は実行を停止します。スタック フレーム、ローカルを検査し、式を評価します。
+- **ステップオーバー / イン / アウト ** は通話階層をナビゲートします。条件付きブレークポイントはノイズをフィルターします。
+- **`Thread` ペイン** にはデッドロックと待機が表示されます。 **ヒープ ダンプ**は、再現後のメモリ リークに役立ちます。
 
 
-## 8. Next: Spring Boot track
+## 7. 伐採と防衛の習慣
+- **`java.lang.System.Logger`** または SLF4J + バックエンドを使用します。レベル (`ERROR`、`WARN`、`INFO`、`DEBUG`) で製品内のノイズをフィルタリングします。
+- **コンテキスト** (相関 ID、ユーザーレス識別子) をログに記録します。ポリシーのないシークレットや完全な PII は記録しません。
+- ログとテストをペアにする: バグを修正するとき、可能な場合は最初に失敗したテストを追加します (**テスト主導のデバッグ**)。
 
-When you understand classes, collections, exceptions, and JUnit, continue with **Spring Boot — Part I (Intro & project layout)** in the same **`java/`** topic folder. That track covers embedded servers, dependency injection, REST, JPA, security, testing slices, and production operations — building on the language foundations here and **Part VI (Lambdas & modern Java)**.
+
+## 8. 次へ: Spring Boot トラック
+
+クラス、コレクション、例外、および JUnit を理解したら、同じ **`java/`** トピック フォルダーにある **Spring Boot — パート I (イントロおよびプロジェクト レイアウト)** に進んでください。このトラックでは、組み込みサーバー、依存関係注入、REST、JPA、セキュリティ、スライスのテスト、運用操作がカバーされており、ここと**パート VI (ラムダとモダン Java)** の言語基盤に基づいて構築されています。

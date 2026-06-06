@@ -1,26 +1,27 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "System design"
+subtitle: "概要"
+group: "システム設計"
 order: 1
 ---
-Classic designs — overview
-Canonical **interview and production** problems that combine **Part I** (caching, DBs, sharding) and **Scalable patterns** (APIs, queues, CDN, search).
+クラシックなデザイン — 概要
 
-## Map of this submenu
+**パート I** (キャッシュ、DB、シャーディング) と **スケーラブル パターン** (API、キュー、CDN、検索) を組み合わせた正規の **インタビューと本番**の問題。
 
-| Note | System | Core tension |
+## このサブメニューのマップ
+
+|注 |システム |コアテンション |
 |------|--------|--------------|
-| [URL shortener](ii-url-shortener.md) | Bitly-style redirects | Read-heavy; key generation; 301 vs 302 |
-| [News feed & timeline](iii-news-feed-timeline.md) | Twitter/Instagram feed | Fan-out on write vs read; celebrities |
-| [Chat & realtime messaging](iv-chat-realtime-messaging.md) | WhatsApp/Slack-style chat | WebSockets; presence; message order |
-| [Video streaming](v-video-streaming.md) | YouTube/Netflix-style video | Upload/transcode pipeline vs CDN playback |
-| [Ride-sharing & location](vi-ride-sharing-location.md) | Uber/Lyft-style matching | High-frequency GPS; geospatial index |
-| [Web crawler](vii-web-crawler.md) | Googlebot-style crawler | Politeness; frontier; deduplication |
+| [短縮URL](ii-url-shortener.md) | Bitly スタイルのリダイレクト |読み取りが多い。鍵の生成。 301 対 302 |
+| [ニュースフィードとタイムライン](iii-news-feed-timeline.md) |ツイッター/インスタグラムフィード |書き込み時と読み取り時のファンアウト。有名人 |
+| [チャットとリアルタイムメッセージング](iv-chat-realtime-messaging.md) | WhatsApp/Slack スタイルのチャット | WebSocket;面前;メッセージの順序 |
+| [ビデオストリーミング](v-video-streaming.md) | YouTube/Netflix スタイルのビデオ |アップロード/トランスコード パイプラインと CDN 再生 |
+| [ライドシェアリングとロケーション](vi-ride-sharing-location.md) | Uber/Lyft スタイルのマッチング |高周波GPS;地理空間インデックス |
+| [Web クローラー](vii-web-crawler.md) | Googlebot スタイルのクローラー |礼儀正しさ。フロンティア;重複排除 |
 
-## How designs connect
+## デザインがどのように接続されるか
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="Classic design problems mapped to building blocks">
+<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 520 160" role="img" aria-label="Classic design problems mapped to building blocks">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Shared building blocks across classic designs</text>
   <rect x="12" y="36" width="88" height="28" rx="3" fill="rgba(34,197,94,0.12)" stroke="#86efac"/>
   <text x="24" y="54" fill="#e4e4e7" font-size="9">Cache (Redis)</text>
@@ -38,12 +39,12 @@ Canonical **interview and production** problems that combine **Part I** (caching
   <text x="12" y="148" fill="#71717a" font-size="9">Part I → Scalable patterns → Classic designs → Bottleneck analysis</text>
 </svg></figure>
 
-## Rehearsal questions
+## リハーサルの質問
 
-- URL shortener data model and read scaling?
-- Fan-out write vs read — hybrid for celebrities?
-- WebSocket vs long polling for chat?
-- Snowflake ID properties?
-- Video upload → transcode → HLS playback path?
-- Geohash vs S2 for ride matching?
-- Bloom filter role in crawlers?
+- URL短縮データモデルと読み取りスケーリング?
+- ファンアウト書き込みと読み取り — 有名人向けのハイブリッド?
+- チャットの WebSocket とロングポーリングは?
+- スノーフレーク ID プロパティ?
+- ビデオのアップロード → トランスコード → HLS 再生パス?
+- ライドマッチングのための Geohash vs S2?
+- クローラーにおけるブルームフィルターの役割?

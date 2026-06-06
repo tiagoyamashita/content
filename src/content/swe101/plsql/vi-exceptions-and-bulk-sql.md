@@ -1,13 +1,14 @@
 ---
 label: "VI"
-subtitle: "Exceptions & bulk SQL"
+subtitle: "例外と一括SQL"
 group: "PL/SQL"
 order: 6
 ---
-PL/SQL — exceptions & bulk SQL
-Handle Oracle errors with **`EXCEPTION`**, raise app errors with **`RAISE_APPLICATION_ERROR`**, and speed large loops with **`BULK COLLECT`** and **`FORALL`**.
+PL/SQL — 例外とバルク SQL
 
-## 1. Built-in exceptions
+**`EXCEPTION`** で Oracle エラーを処理し、**`RAISE_APPLICATION_ERROR`** でアプリ エラーを発生させ、**`BULK COLLECT`** および **`FORALL`** で大規模なループを高速化します。
+
+## 1. 組み込みの例外
 
 ```sql
 DECLARE
@@ -26,14 +27,14 @@ END;
 /
 ```
 
-| Handler | Typical cause |
-|---------|---------------|
-| **`NO_DATA_FOUND`** | `SELECT INTO` returned 0 rows |
-| **`TOO_MANY_ROWS`** | `SELECT INTO` returned 2+ rows |
-| **`DUP_VAL_ON_INDEX`** | Unique constraint violation |
-| **`OTHERS`** | Catch-all — log and re-raise when unsure |
+|ハンドラー |典型的な原因 |
+|-------|---------------|
+| **`NO_DATA_FOUND`** | `SELECT INTO` は 0 行を返しました |
+| **`TOO_MANY_ROWS`** | `SELECT INTO` は 2 行以上を返しました |
+| **`DUP_VAL_ON_INDEX`** |一意の制約違反 |
+| **`OTHERS`** |キャッチオール — 不明な場合は記録して再レイズする |
 
-## 2. User-defined exceptions
+## 2. ユーザー定義の例外
 
 ```sql
 DECLARE
@@ -48,11 +49,11 @@ END;
 /
 ```
 
-**`RAISE_APPLICATION_ERROR(code, message)`** — use codes **-20000 .. -20999** for application errors.
+**`RAISE_APPLICATION_ERROR(code, message)`** — アプリケーション エラーにはコード **-20000 .. -20999** を使用します。
 
-## 3. Transaction and exceptions
+## 3. トランザクションと例外
 
-Unhandled exceptions in a block roll back **only** DML in that block unless you **`COMMIT`** earlier (avoid partial commits in procedures).
+ブロック内の未処理例外は、事前に**`COMMIT`**しない限り、そのブロック内の**のみ** DML をロールバックします (プロシージャでの部分的なコミットは避けてください)。
 
 ```sql
 BEGIN
@@ -67,11 +68,11 @@ END;
 /
 ```
 
-Keep financial logic in one transaction boundary — match your app’s `@Transactional` semantics.
+財務ロジックを 1 つのトランザクション境界に保ち、アプリの `@Transactional` セマンティクスに一致させます。
 
-## 4. BULK COLLECT
+## 4. 一括収集
 
-Fetch many rows into a collection in one round trip:
+1 回の往復で多くの行をコレクションにフェッチします。
 
 ```sql
 DECLARE
@@ -90,7 +91,7 @@ END;
 /
 ```
 
-Use **`LIMIT`** on cursors for paging large sets:
+大きなセットをページングするには、カーソルで **`LIMIT`** を使用します。
 
 ```sql
 OPEN c;
@@ -102,7 +103,7 @@ END LOOP;
 CLOSE c;
 ```
 
-## 5. FORALL (bulk DML)
+## 5. FORALL (バルク DML)
 
 ```sql
 DECLARE
@@ -116,9 +117,9 @@ END;
 /
 ```
 
-**`FORALL`** sends batches to the SQL engine — much faster than row-by-row **`UPDATE`** in a loop.
+**`FORALL`** は SQL エンジンにバッチを送信します。ループ内で行ごとに **`UPDATE`** するよりもはるかに高速です。
 
-**Save exceptions** (continue on failure):
+**例外を保存** (失敗しても続行):
 
 ```sql
 FORALL i IN 1 .. v_ids.COUNT SAVE EXCEPTIONS
@@ -126,7 +127,7 @@ FORALL i IN 1 .. v_ids.COUNT SAVE EXCEPTIONS
 -- inspect SQL%BULK_EXCEPTIONS after
 ```
 
-## 6. Pragmas (selected)
+## 6. プラグマ (選択済み)
 
 ```sql
 CREATE OR REPLACE PROCEDURE log_action IS
@@ -138,30 +139,30 @@ END;
 /
 ```
 
-**`AUTONOMOUS_TRANSACTION`** commits audit even if outer transaction rolls back — powerful and easy to misuse.
+**`AUTONOMOUS_TRANSACTION`** は、外部トランザクションがロールバックした場合でも監査をコミットします。強力ですが、悪用しやすいです。
 
-## 7. Testing and maintainability
+## 7. テストと保守性
 
-| Practice | Why |
+|練習 |なぜ |
 |----------|-----|
-| **Unit test with utPLSQL or SQL Developer** | Catch regressions in packages |
-| **Log with **`DBMS_APPLICATION_INFO`** | Trace sessions in AWR/ASH |
-| **Version scripts in Flyway/Liquibase** | Same discipline as [Postgres migrations](../postgres/iii-schema-and-migrations.md) |
-| **Document `RAISE_APPLICATION_ERROR` codes** | App can map -20001.. to HTTP errors |
+| **utPLSQL または SQL Developer を使用した単体テスト** |パッケージ内のリグレッションをキャッチする |
+| ****`DBMS_APPLICATION_INFO`** のログ | AWR/ASH でのトレースセッション |
+| **Flyway/Liquibase のバージョン スクリプト** | [Postgres の移行](../postgres/iii-schema-and-migrations.md) と同じ分野 |
+| **ドキュメント `RAISE_APPLICATION_ERROR` コード** |アプリは -20001.. を HTTP エラーにマッピングできます。
 
-## 8. Migration off Oracle
+## 8. Oracle からの移行
 
-When replacing PL/SQL:
+PL/SQLを置き換える場合:
 
-1. Inventory **`USER_SOURCE`** / **`ALL_PROCEDURES`** — who calls what.
-2. Move read-heavy reporting to the warehouse; move rules to app services.
-3. Replace triggers with app validators or DB constraints where possible.
-4. Port incrementally — packages often hide years of edge cases.
+1. 在庫 **`USER_SOURCE`** / **`ALL_PROCEDURES`** — 誰が何を電話するか。
+2. 読み取りの多いレポートをウェアハウスに移動します。ルールをアプリサービスに移動します。
+3. 可能な場合は、トリガーをアプリバリデーターまたは DB 制約に置き換えます。
+4. 段階的に移植する — パッケージには、長年にわたるエッジケースが隠蔽されていることがよくあります。
 
-## Related notes
+## 関連メモ
 
-- [Relational (SQL)](../../CS101/databases/ii-relational.md) — SQL foundation
-- [Database optimizations](vii-database-optimizations.md) — AWR/V$SQL workflow, set-based SQL, checklist
-- [Postgres overview](../postgres/i-overview.md) — open-source alternative stack
-- [Database optimizations (Postgres)](../postgres/vii-database-optimizations.md) — parallel tuning guide
-- [App integration (Postgres)](../postgres/v-app-integration.md) — JDBC patterns that also apply to Oracle drivers
+- [リレーショナル (SQL)](../../CS101/databases/ii-relational.md) — SQL 基礎
+- [データベース最適化](vii-database-optimizations.md) — AWR/V$SQLワークフロー、セットベースSQL、チェックリスト
+- [Postgres の概要](../postgres/i-overview.md) — オープンソースの代替スタック
+- [データベース最適化 (Postgres)](../postgres/vii-database-optimizations.md) — 並列チューニング ガイド
+- [アプリ統合 (Postgres)](../postgres/v-app-integration.md) — Oracle ドライバーにも適用される JDBC パターン

@@ -1,15 +1,16 @@
 ---
 label: "VIII"
-subtitle: "Elimination playbook"
-group: "System design"
+subtitle: "排除プレイブック"
+group: "システム設計"
 order: 8
 ---
-Bottleneck elimination playbook
-Repeatable process for **incidents** and **design reviews** — measure first, fix in **impact order**, validate, prevent recurrence.
+ボトルネック解消プレイブック
 
-## 1. Five phases
+**インシデント**と**設計レビュー**の反復可能なプロセス - 最初に測定し、**影響の順番**で修正し、検証して再発を防止します。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="Five phase bottleneck playbook cycle">
+## 1. 5 つのフェーズ
+
+<figure class="notes-diagram"><svg xmlns="1 viewBox="0 0 480 100" role="img" aria-label="Five phase bottleneck playbook cycle">
   <rect x="12" y="40" width="72" height="28" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="28" y="58" fill="#e4e4e7" font-size="8">1 Measure</text>
   <path d="M84 54 H108" stroke="#a1a1aa" stroke-width="1"/>
@@ -26,50 +27,50 @@ Repeatable process for **incidents** and **design reviews** — measure first, f
   <text x="392" y="58" fill="#e4e4e7" font-size="8">5 Prevent</text>
 </svg></figure>
 
-### Phase 1 — Measure, don't guess
+### フェーズ 1 — 推測せずに測定する
 
-| Collect | Tools |
-|---------|-------|
-| p50 / p95 / p99 latency | APM, Prometheus |
-| Throughput, error rate | RED dashboards |
-| Per-resource USE | CPU, disk, NIC, DB |
-| Trace waterfall | Jaeger, Tempo, X-Ray |
+|収集 |ツール |
+|----------|----------|
+| p50 / p95 / p99 レイテンシー | APM、プロメテウス |
+|スループット、エラー率 |赤いダッシュボード |
+|リソースごとの使用 | CPU、ディスク、NIC、DB |
+|トレース滝 | 写真 トレース滝イェーガー、テンポ、X 線 |
 
-### Phase 2 — Isolate
+### フェーズ 2 — 隔離
 
-| Question | Narrows cause |
-|----------|---------------|
-| One endpoint or all? | Route-specific bug vs shared infra |
-| Correlated with deploy / cron / spike? | Change vs load |
-| One AZ, shard, host? | Localised failure |
+|質問 |ナローズの原因 |
+|----------|--------------|
+|エンドポイントは 1 つだけですか、それともすべてですか? |ルート固有のバグと共有インフラ |
+|デプロイ/cron/スパイクと相関関係がありますか? |変更と負荷 |
+| 1 つの AZ、シャード、ホスト? |局所的な障害 |
 
-### Phase 3 — Fix by impact / cost
+### フェーズ 3 — 影響/コストによる修正
 
-| Priority | Tactic | Cost |
-|----------|--------|------|
-| 1 | Query + index optimisation | Low |
-| 2 | Cache layer, TTL tuning | Low–medium |
-| 3 | Async / queue off hot path | Medium |
-| 4 | Scale out instances | Medium |
-| 5 | Sharding / partitioning | High |
-| 6 | Architecture rewrite | Very high |
+|優先順位 |戦術 |コスト |
+|----------|----------|------|
+| 1 |クエリ + インデックスの最適化 |低い |
+| 2 |キャッシュ層、TTL チューニング |低～中 |
+| 3 |非同期/キューオフホットパス |中 |
+| 4 |スケールアウトインスタンス |中 |
+| 5 |シャーディング/パーティショニング |高 |
+| 6 |アーキテクチャの書き換え |非常に高い |
 
-### Phase 4 — Validate
+### フェーズ 4 — 検証
 
-- Load test (**k6**, Locust, Gatling) before vs after
-- Watch **p99** and **error budget** post-deploy
-- Canary / gradual rollout
+- 負荷テスト (**k6**、ローカスト、ガトリング) の前後
+- デプロイ後に **p99** と **エラー バジェット** を監視する
+- カナリア / 段階的なロールアウト
 
-### Phase 5 — Prevent
+### フェーズ 5 — 防止
 
-| Action | |
+|アクション | |
 |--------|---|
-| Alert on symptom that caught incident | |
-| Load test in CI/CD for regression | |
-| Runbook: symptom → cause → fix | |
-| Post-incident review (blameless) | |
+|インシデントを捉えた症状に関するアラート | |
+|回帰のための CI/CD での負荷テスト | |
+|ランブック: 症状 → 原因 → 修正 | |
+|事件後のレビュー (非難の余地なし) | |
 
-## 2. Runbook snippet template
+## 2. Runbook スニペット テンプレート
 
 ```markdown
 ## Alert: High p99 on POST /orders
@@ -80,12 +81,12 @@ Repeatable process for **incidents** and **design reviews** — measure first, f
 - Escalation: DBA on-call
 ```
 
-## 3. Interview answer shape
+＃＃３ 面接の回答形式
 
-1. **Metric** hurting (p99 latency)
-2. **Trace** → DB span 800 ms
-3. **EXPLAIN** → seq scan → add index
-4. **Validate** with load test
-5. **Prevent** — slow query log alert
+1. **メトリクス** が有害 (p99 レイテンシ)
+2. **トレース** → DB スパン 800 ミリ秒
+3. **EXPLAIN** → シーケンススキャン → インデックスの追加
+4. 負荷テストによる **検証**
+5. **防止** — 低速クエリ ログ アラート
 
-**Related:** [Identifying bottlenecks](ii-identifying-bottlenecks.md), scalable patterns observability, SRE tooling.
+**関連:** [ボトルネックの特定](ii-identifying-bottlenecks.md)、スケーラブルなパターンの可観測性、SRE ツール。

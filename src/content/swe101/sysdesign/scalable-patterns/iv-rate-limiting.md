@@ -1,53 +1,54 @@
 ---
 label: "IV"
-subtitle: "Rate limiting"
-group: "System design"
+subtitle: "レート制限"
+group: "システム設計"
 order: 4
 ---
-Rate limiting
-**Rate limiting** caps how many requests a client (user, IP, API key) can make in a window — protecting cost, fairness, and stability.
+レート制限
 
-## 1. Why limit
+**レート制限** は、クライアント (ユーザー、IP、API キー) が 1 つのウィンドウ内で実行できるリクエストの数を制限し、コスト、公平性、安定性を保護します。
 
-| Goal | Example |
-|------|---------|
-| **Abuse prevention** | Scraping, credential stuffing |
-| **Fairness** | Free tier 100 req/min vs paid 10 K |
-| **Cost control** | Expensive LLM or GPU endpoints |
-| **Stability** | Prevent one tenant saturating shared DB |
+## 1. なぜ制限するのか
 
-## 2. Algorithms
+|目標 |例 |
+|-----|----------|
+| **虐待防止** |スクレイピング、クレデンシャルスタッフィング |
+| **公平性** |無料枠 100 リクエスト/分と有料枠 10,000 |
+| **コスト管理** |高価な LLM または GPU エンドポイント |
+| **安定性** | 1 つのテナントによる共有 DB の飽和を防ぐ |
 
-### Token bucket
+## 2. アルゴリズム
 
-- Bucket holds at most **B** tokens; refilled at **R** tokens/sec.
-- Each request costs **1** token; empty bucket → reject.
+### トークンバケット
 
-| Param | Effect |
-|-------|--------|
-| Large **B** | Allows **bursts** up to B |
-| High **R** | Sustained throughput ceiling |
+- バケットには最大で **B** トークンが保持されます。 **R** トークン/秒で補充されます。
+- 各リクエストには **1** トークンがかかります。空のバケツ→拒否。
 
-### Leaky bucket
+|パラム |効果 |
+|------|----------|
+|大 **B** | B まで **バースト** が可能 |
+|高 **R** |持続的なスループットの上限 |
 
-- Requests enter a **queue**; processed at **fixed rate**.
-- Queue full → drop. **Smooths** bursts (no large spikes).
+### 漏れのあるバケツ
 
-### Fixed window counter
+- リクエストは**キュー**に入ります。 **固定レート**で処理されます。
+- キューがいっぱい→ドロップ。 **スムーズ** バースト (大きなスパイクはありません)。
 
-- Count requests per calendar minute; reset at boundary.
-- **Flaw:** 2× burst at window edges (599 + 599 in two adjacent minutes).
+### 固定ウィンドウカウンター
 
-### Sliding window log
+- 暦分ごとのリクエストの数。境界でリセットします。
+- **欠陥:** ウィンドウの端で 2 回のバースト (隣接する 2 分間で 599 + 599)。
 
-- Store timestamp per request; count in last **T** seconds.
-- **Accurate**; memory heavy at high QPS.
+### スライディング ウィンドウ ログ
 
-### Sliding window counter
+- リクエストごとにタイムスタンプを保存します。最後の **T** 秒間のカウント。
+- **正確な**;高い QPS ではメモリが重くなります。
 
-- Blend previous + current window counts — good balance of accuracy and memory (common in Redis implementations).
+### 引き違い窓カウンター
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Token bucket allows burst then steady rate">
+- 以前のウィンドウ数と現在のウィンドウ数をブレンドします — 精度とメモリのバランスが取れています (Redis 実装で一般的)。
+
+<figure class="notes-diagram"><svg xmlns="8 viewBox="0 0 440 100" role="img" aria-label="Token bucket allows burst then steady rate">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Token bucket (B=5, R=1/s)</text>
   <rect x="12" y="32" width="120" height="24" rx="3" fill="rgba(34,197,94,0.15)" stroke="#86efac"/>
   <text x="24" y="48" fill="#e4e4e7" font-size="9">●●●●● tokens</text>
@@ -57,28 +58,28 @@ Rate limiting
   <text x="140" y="80" fill="#f87171" font-size="9">6th rejected until refill</text>
 </svg></figure>
 
-## 3. Comparison table
+## 3. 比較表
 
-| Algorithm | Burst friendly | Memory | Edge-case |
-|-----------|----------------|--------|-----------|
-| Token bucket | Yes (bounded) | Low | Tune B vs R |
-| Leaky bucket | No | Queue size | Steady output only |
-| Fixed window | Yes at boundary | Low | Double burst at edge |
-| Sliding window log | Controlled | High | Per-request timestamps |
-| Sliding window counter | Controlled | Medium | Popular in production |
+|アルゴリズム |バーストフレンドリー |メモリ |エッジケース |
+|----------|-----|----------|----------|
+|トークンバケット |はい (制限あり) |低い |チューンB vs R |
+|漏れやすいバケツ |いいえ |キューのサイズ |定常出力のみ |
+|固定ウィンドウ |境界ではい |低い |エッジでのダブルバースト |
+|スライディングウィンドウログ |制御された |高 |リクエストごとのタイムスタンプ |
+|引き違い窓カウンター |制御された |中 |本番環境で人気 |
 
-## 4. Where to enforce
+## 4. どこで強制するか
 
-| Layer | Pros | Cons |
-|-------|------|------|
-| **API Gateway** | Central policy, WAF integration | Single config blast radius |
-| **Service mesh** | Per-route limits | Operational complexity |
-| **App + Redis** | Fine-grained business rules | Every service must implement |
-| **CDN / edge** | Blocks abuse before origin | Limited logic |
+|レイヤー |長所 |短所 |
+|------|------|------|
+| **API ゲートウェイ** |中央ポリシー、WAF 統合 |単一構成の爆発半径 |
+| **サービス メッシュ** |ルートごとの制限 |運用の複雑さ |
+| **アプリ + Redis** |きめ細かいビジネス ルール |すべてのサービスは | を実装する必要があります。
+| **CDN / エッジ** |発信元の前に悪用をブロック |限定されたロジック |
 
-**Key dimensions:** `user_id`, `api_key`, `IP`, `tenant_id`, route (`POST /v1/generate`).
+**主要な寸法:** `user_id`、`api_key`、`IP`、`tenant_id`、ルート (`POST /v1/generate`)。
 
-## 5. Client response
+## 5. クライアントの応答
 
 ```http
 HTTP/1.1 429 Too Many Requests
@@ -88,10 +89,10 @@ X-RateLimit-Remaining: 0
 X-RateLimit-Reset: 1716120060
 ```
 
-Document limits in API docs; clients should **back off** exponentially with jitter.
+API ドキュメントのドキュメント制限。クライアントはジッタを急激に**後退**する必要があります。
 
-## 6. Distributed rate limiting
+## 6. 分散レート制限
 
-Multiple API instances need a **shared counter** — typically **Redis** (`INCR` + `EXPIRE`, or sliding window Lua script). Clock skew matters for window boundaries; prefer monotonic TTL keys.
+複数の API インスタンスには **共有カウンター** が必要です。通常は **Redis** (`INCR` + `EXPIRE`、またはスライディング ウィンドウ Lua スクリプト) です。クロック スキューはウィンドウ境界にとって重要です。単調な TTL キーを好みます。
 
-**Related:** [API design](ii-api-design.md) (429 status), Part I caching (Redis).
+**関連:** [API 設計](ii-api-design.md) (429 ステータス)、パート I キャッシュ (Redis)。

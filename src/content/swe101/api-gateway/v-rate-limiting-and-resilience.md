@@ -1,33 +1,34 @@
 ---
 label: "V"
-subtitle: "Rate limiting & resilience"
-group: "API Gateway"
+subtitle: "レート制限と回​​復力"
+group: "APIゲートウェイ"
 order: 5
 ---
-API gateway — rate limiting & resilience
-**Rate limiting** at the gateway protects upstream from abuse and unfair usage. Pair with **timeouts**, **retries** (careful), and **circuit breakers** for resilience.
+API ゲートウェイ — レート制限と復元力
 
-Deep dive on algorithms: [Rate limiting](../sysdesign/scalable-patterns/iv-rate-limiting.md). App-layer limiter: [Redis patterns](../redis/iv-patterns-and-use-cases.md).
+ゲートウェイでの **レート制限** により、アップストリームを悪用や不当な使用から保護します。回復力を高めるために、**タイムアウト**、**再試行** (慎重に)、および **サーキット ブレーカー** と組み合わせてください。
 
-## 1. Why limit at the gateway
+アルゴリズムの詳細: [レート制限](../sysdesign/scalable-patterns/iv-rate-limiting.md)。アプリ層リミッター: [Redis パターン](../redis/iv-patterns-and-use-cases.md)。
 
-| Goal | Example |
-|------|---------|
-| **Abuse** | Block scraping, credential stuffing |
-| **Fairness** | Free tier 100 req/min; paid 10 K |
-| **Cost** | LLM/GPU endpoints |
-| **Stability** | One tenant cannot exhaust connection pool |
+## 1. ゲートウェイで制限する理由
 
-Reject with **429 Too Many Requests** + **`Retry-After`** header when possible.
+|目標 |例 |
+|-----|----------|
+| **虐待** |ブロックスクレイピング、クレデンシャルスタッフィング |
+| **公平性** |無料利用枠 100 リクエスト/分。 10,000 を支払った |
+| **コスト** | LLM/GPU エンドポイント |
+| **安定性** | 1 つのテナントが接続プールを使い果たすことはできません。
 
-## 2. Limit dimensions
+可能な場合は、**429 Too Many Requests** + **`Retry-After`** ヘッダーを使用して拒否します。
 
-| Key | Use |
+## 2. 寸法の制限
+
+|キー |使用 |
 |-----|-----|
-| **API key / client id** | Partner quotas |
-| **User id** (from JWT) | Per-account fairness |
-| **IP address** | Anonymous endpoints — noisy neighbor |
-| **Route** | Stricter on `/search` vs `/health` |
+| **API キー / クライアント ID** |パートナーの割り当て |
+| **ユーザー ID** (JWT から) |アカウントごとの公平性 |
+| **IP アドレス** |匿名エンドポイント — うるさい隣人 |
+| **ルート** | `/search` と `/health` の方が厳格 |
 
 ```yaml
 plugins:
@@ -38,58 +39,58 @@ plugins:
       limit_by: consumer
 ```
 
-Use **Redis-backed** limiter when multiple gateway instances must share counters.
+複数のゲートウェイ インスタンスがカウンターを共有する必要がある場合は、**Redis-backed** リミッターを使用します。
 
-## 3. Token bucket (typical)
+## 3. トークンバケット (通常)
 
-- Bucket size **B** allows burst
-- Refill rate **R** caps sustained QPS
+- バケット サイズ **B** ではバーストが可能
+- 補充率 **R** は持続する QPS を上限とします
 
-Gateway plugins often expose “requests per minute” — maps to bucket/window internally.
+ゲートウェイ プラグインは多くの場合、「1 分あたりのリクエスト」を公開し、内部でバケット/ウィンドウにマップします。
 
-## 4. Timeouts and payload limits
+## 4. タイムアウトとペイロード制限
 
-| Setting | Purpose |
-|---------|---------|
-| **Connect timeout** | Fail fast if upstream dead |
-| **Read timeout** | Max wait for response body |
-| **Max body size** | Reject huge uploads at edge |
+|設定 |目的 |
+|----------|----------|
+| **接続タイムアウト** |上流が停止している場合は高速に失敗する |
+| **読み取りタイムアウト** |応答本文の最大待ち時間 |
+| **最大ボディサイズ** |エッジで巨大なアップロードを拒否 |
 
-Gateway timeout should be **≤ CDN timeout** and **≥ upstream p99** — align all three layers ([CDN & gateway together](../cdn/viii-cdn-and-api-gateway-together.md)).
+ゲートウェイのタイムアウトは **≤ CDN タイムアウト**、**≧アップストリーム p99** である必要があります。3 つのレイヤーすべてを揃えます ([CDN とゲートウェイを一緒に](../cdn/viii-cdn-and-api-gateway-together.md))。
 
-## 5. Circuit breaker
+## 5. サーキットブレーカー
 
-When upstream error rate spikes, **fail fast** instead of queueing threads:
+アップストリームのエラー率が急上昇した場合、スレッドをキューに入れる代わりに**フェイルファスト**します。
 
-| State | Behavior |
-|-------|----------|
-| **Closed** | Normal proxy |
-| **Open** | Immediate 503/504 to client |
-| **Half-open** | Probe requests — recover or stay open |
+|状態 |行動 |
+|------|----------|
+| **閉店** |通常のプロキシ |
+| **開く** |クライアントへの即時 503/504 |
+| **ハーフオープン** |プローブリクエスト — 回復するか開いたままにする |
 
-**Resilience4j** (Java), **Envoy outlier detection**, **Istio destination rules** — gateway or mesh.
+**Resilience4j** (Java)、**Envoy 外れ値検出**、**Istio 宛先ルール** - ゲートウェイまたはメッシュ。
 
-Without breaker: retry storms amplify outages.
+ブレーカーなし: 再試行の嵐により停止が拡大します。
 
-## 6. Retries at gateway
+## 6. ゲートウェイでの再試行
 
-| Safe to retry | Not safe |
+|安全に再試行できます |安全ではありません |
 |---------------|----------|
-| **GET** idempotent | **POST** payment |
-| **503** with idempotent id | Any non-idempotent write |
+| **GET** べき等 | **ポスト** 支払い |
+| **503** 冪等 ID |冪等でない書き込み |
 
-If gateway retries, use **bounded retries + jitter**; prefer idempotency keys in app for writes.
+ゲートウェイが再試行する場合は、**制限付き再試行 + ジッター** を使用します。書き込みにはアプリ内の冪等キーを優先します。
 
-## 7. WAF and bot protection
+## 7. WAF とボット保護
 
-Many stacks combine:
+多くのスタックは以下を組み合わせています。
 
 ```text
 CDN/WAF (SQLi, XSS patterns) → Gateway (auth, rate limit) → service
 ```
 
-Cloudflare, AWS WAF on ALB/API Gateway — block obvious attacks before app code.
+Cloudflare、ALB/API ゲートウェイ上の AWS WAF — アプリコードの前に明らかな攻撃をブロックします。
 
-## Next
+＃＃ 次
 
-Continue with [Setup & providers](vi-setup-and-providers.md) for AWS API Gateway, Kong, and NGINX patterns.
+AWS API Gateway、Kong、および NGINX パターンの [セットアップとプロバイダー](vi-setup-and-providers.md) に進みます。

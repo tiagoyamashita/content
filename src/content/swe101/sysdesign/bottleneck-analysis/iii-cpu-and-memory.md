@@ -1,68 +1,69 @@
 ---
 label: "III"
-subtitle: "CPU & memory"
-group: "System design"
+subtitle: "CPUとメモリ"
+group: "システム設計"
 order: 3
 ---
-CPU and memory bottlenecks
-Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **GC pauses**.
+CPUとメモリのボトルネック
 
-## 1. CPU — signals
+コンピューティングと RAM の制限は、**負荷に応じたレイテンシー スケーリング**、**OOM**、**GC 一時停止**として表示されます。
 
-| Signal | Tool / indicator |
-|--------|------------------|
-| Sustained **> 80%** all cores | `top`, cloud metrics |
-| Run queue **r > # CPUs** | `vmstat` |
-| Latency ∝ load (no headroom) | APM p99 vs QPS |
+## 1. CPU — 信号
 
-## 2. CPU — causes and fixes
+|信号 |ツール/インジケーター |
+|------|------|
+|すべてのコアで **> 80%** を維持 | `top`、クラウド メトリクス |
+|実行キュー **r > # CPUs** | `vmstat` |
+|レイテンシー ∝ 負荷 (ヘッドルームなし) | APM p99 対 QPS |
 
-| Cause | Fix |
-|-------|-----|
-| O(n²) algorithm | Profile (pprof, perf, py-spy); better algorithm |
-| **GIL** / global lock (Python) | Multiprocess, async I/O, Rust/Go for hot path |
-| JSON encode/decode at high QPS | Protobuf, msgpack; cache parsed objects |
-| Thread/goroutine explosion | Bounded worker pool; async I/O vs thread-per-request |
-| Regex compile per request | Pre-compile; reuse |
+## 2. CPU — 原因と解決策
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 80" role="img" aria-label="Profile before optimize CPU hot path">
+|原因 |修正 |
+|------|-----|
+| O(n²) アルゴリズム |プロファイル (pprof、perf、py-spy);より良いアルゴリズム |
+| **GIL** / グローバル ロック (Python) |マルチプロセス、非同期 I/O、ホット パス用の Rust/Go |
+|高い QPS での JSON エンコード/デコード | Protobuf、msgpack;解析されたオブジェクトをキャッシュする |
+|スレッド/ゴルーチンの爆発 |制限されたワーカー プール。非同期 I/O とリクエストごとのスレッド |
+|リクエストごとに正規表現をコンパイルする |プリコンパイル。再利用 |
+
+<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 420 80" role="img" aria-label="Profile before optimize CPU hot path">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Profiler-driven fixes only</text>
   <text x="12" y="40" fill="#86efac" font-size="9">measure → flame graph → fix top 1–2 frames → re-measure</text>
   <text x="12" y="58" fill="#f87171" font-size="9">avoid optimising cold paths</text>
 </svg></figure>
 
-## 3. Memory — signals
+## 3. メモリ — 信号
 
-| Signal | Meaning |
-|--------|---------|
-| **OOM kill** | Process exceeded cgroup limit |
-| **Swap > 0** | RAM exhausted — disk-speed RAM |
-| **GC pause spikes** | JVM / Go stop-the-world |
-| Redis **evicted_keys** ↑ | Cache too large for RAM |
+|信号 |意味 |
+|--------|--------|
+| **OOM キル** |プロセスが cgroup 制限を超えました |
+| **スワップ > 0** | RAM が使い果たされました — ディスク速度の RAM |
+| **GC 一時停止のスパイク** | JVM / ストップ・ザ・ワールドに行く |
+| Redis **evicted_keys** ↑ |キャッシュが RAM に対して大きすぎます |
 
-## 4. Memory — causes and fixes
+## 4. メモリ — 原因と解決策
 
-| Cause | Fix |
-|-------|-----|
-| Memory leak | Heap profiler; fix lifecycle / listeners |
-| Over-caching | TTL, maxmemory policy, smaller values |
-| Large copies | Pointers, streaming, zero-copy where possible |
-| Allocation churn | Object pools; reduce short-lived allocations |
-| JVM heap too small/large | Tune `-Xmx`; G1/ZGC for latency |
+|原因 |修正 |
+|------|-----|
+|メモリリーク |ヒーププロファイラー。ライフサイクル/リスナーを修正する |
+|オーバーキャッシュ | TTL、maxmemory ポリシー、より小さい値 |
+|大量コピー |ポインタ、ストリーミング、可能な場合はゼロコピー |
+|割り当てのチャーン |オブジェクトプール。有効期間の短い割り当てを減らす |
+| JVM ヒープが小さすぎる/大きすぎる | `-Xmx`を調整します。遅延のための G1/ZGC |
 
-## 5. CPU vs memory interaction
+## 5. CPU とメモリの相互作用
 
-| Pattern | Symptom |
-|---------|---------|
-| CPU-bound + low memory | Scale out CPU instances |
-| Memory-bound + low CPU | Larger RAM; cache tier; leak fix |
-| GC thrashing | High CPU + high alloc rate — reduce allocations first |
+|パターン |症状 |
+|----------|----------|
+| CPU バウンド + メモリ不足 | CPU インスタンスのスケールアウト |
+|メモリ制限 + 低 CPU |より大きなRAM。キャッシュ層。漏れの修正 |
+| GC スラッシング |高い CPU + 高い割り当てレート - 最初に割り当てを減らします |
 
-## 6. Quick checklist
+## 6. 簡単なチェックリスト
 
-- [ ] Flame graph on hottest endpoint
-- [ ] Heap dump if RSS grows unbounded
-- [ ] Compare p99 before/after one change
-- [ ] Load test at 2× expected peak
+- [ ] 最もホットなエンドポイントのフレーム グラフ
+- [ ] RSS が無制限に増大する場合のヒープ ダンプ
+- [ ] 1 つの変更前と変更後の p99 を比較
+- [ ] 予想ピークの 2 倍での負荷テスト
 
-**Related:** [Identifying bottlenecks](ii-identifying-bottlenecks.md), application hot keys [Application-level](vii-application-level.md).
+**関連:** [ボトルネックの特定](ii-identifying-bottlenecks.md)、アプリケーション ホット キー [アプリケーション レベル](vii-application-level.md)。

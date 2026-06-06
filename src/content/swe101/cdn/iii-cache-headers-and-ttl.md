@@ -1,26 +1,27 @@
 ---
 label: "III"
-subtitle: "Cache headers & TTL"
+subtitle: "キャッシュヘッダーとTTL"
 group: "CDN"
 order: 3
 ---
-CDN — cache headers & TTL
-Browsers and CDNs cache based on **HTTP cache headers**. You control behavior from the **origin response** (or CDN override rules).
+CDN — キャッシュヘッダーと TTL
 
-## 1. Core headers
+ブラウザと CDN は **HTTP キャッシュ ヘッダー** に基づいてキャッシュします。 **元の応答** (または CDN オーバーライド ルール) から動作を制御します。
 
-| Header | Meaning |
-|--------|---------|
-| **`Cache-Control: max-age=3600`** | Fresh for 3600 seconds at CDN/browser |
-| **`Cache-Control: public`** | Shared caches (CDN) may store |
-| **`Cache-Control: private`** | Only end-user browser — not CDN |
-| **`Cache-Control: no-store`** | Do not cache at all |
-| **`Cache-Control: no-cache`** | Cache but must revalidate before use |
-| **`Cache-Control: immutable`** | Content never changes (with hashed URL) |
-| **`ETag: "abc123"`** | Validator for conditional GET |
-| **`Last-Modified`** | Time-based validator |
+## 1. コアヘッダー
 
-Example — long-lived asset:
+|ヘッダー |意味 |
+|--------|--------|
+| **`Cache-Control: max-age=3600`** | CDN/ブラウザで 3600 秒間新鮮 |
+| **`Cache-Control: public`** |共有キャッシュ (CDN) には |
+| **`Cache-Control: private`** |エンドユーザーのブラウザのみ - CDN ではない |
+| **`Cache-Control: no-store`** |キャッシュをまったく行わない |
+| **`Cache-Control: no-cache`** |キャッシュしますが、使用前に再検証する必要があります |
+| **`Cache-Control: immutable`** |コンテンツは変更されません (ハッシュ化された URL を使用) |
+| **`ETag: "abc123"`** |条件付き GET のバリデータ |
+| **`Last-Modified`** |時間ベースのバリデータ |
+
+例 - 長期間存続する資産:
 
 ```http
 HTTP/1.1 200 OK
@@ -28,7 +29,7 @@ Content-Type: application/javascript
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-Example — API config:
+例 - API 構成:
 
 ```http
 HTTP/1.1 200 OK
@@ -37,9 +38,9 @@ Cache-Control: public, max-age=300
 ETag: "config-v7"
 ```
 
-## 2. Revalidation
+## 2. 再検証
 
-When TTL expires, edge may **revalidate** without full download:
+TTL の有効期限が切れると、Edge は完全にダウンロードせずに **再検証**する場合があります。
 
 ```http
 GET /v1/public/config HTTP/1.1
@@ -48,27 +49,27 @@ If-None-Match: "config-v7"
 HTTP/1.1 304 Not Modified
 ```
 
-**304** saves bandwidth; origin still gets a request — tune TTL to balance freshness vs origin load.
+**304** は帯域幅を節約します。オリジンは依然としてリクエストを取得します。新鮮さとオリジンの負荷のバランスを取るために TTL を調整します。
 
-## 3. Versioned URLs (best for static assets)
+## 3. バージョン管理された URL (静的アセットに最適)
 
-Instead of purging, ship new filename:
+パージする代わりに、新しいファイル名を送信します。
 
 ```text
 /app.v2.js   →  max-age=1 year, immutable
 /app.v3.js   →  new deploy; old cache harmless
 ```
 
-Build tools emit hashes:
+ビルド ツールはハッシュを生成します。
 
 ```text
 /assets/main-Dk3f9a2b.js
 /assets/main-Cx8e1f0c.css
 ```
 
-HTML references new hashes — no CDN purge needed for JS/CSS on deploy.
+HTML は新しいハッシュを参照します。デプロイ時に JS/CSS に対して CDN パージは必要ありません。
 
-## 4. HTML and SPA shell
+## 4. HTML および SPA シェル
 
 `index.html` often **should not** cache forever — it points at hashed assets:
 
@@ -76,52 +77,52 @@ HTML references new hashes — no CDN purge needed for JS/CSS on deploy.
 Cache-Control: public, max-age=60, must-revalidate
 ```
 
-Or:
+または：
 
 ```http
 Cache-Control: no-cache
 ```
 
-**`stale-while-revalidate`** — serve stale HTML while fetching fresh (smooth spikes):
+**`stale-while-revalidate`** — 新しい (スムーズなスパイク) を取得しながら、古い HTML を提供します。
 
 ```http
 Cache-Control: public, max-age=60, stale-while-revalidate=300
 ```
 
-## 5. CDN behavior vs origin headers
+## 5. CDN の動作とオリジンヘッダーの比較
 
-Providers let you **override** at the edge:
+プロバイダーを使用すると、エッジで**オーバーライド**できます。
 
-| Rule | Example |
-|------|---------|
-| Path pattern | `/assets/*` → 1 year TTL |
-| File type | `*.jpg` → 7 days |
-| Query string | Ignore `utm_*` in cache key |
-| Origin missing headers | Default TTL 86400 |
+|ルール |例 |
+|-----|----------|
+|パスパターン | `/assets/*` → 1 年間 TTL |
+|ファイルの種類 | `*.jpg` → 7日 |
+|クエリ文字列 |キャッシュ キーの `utm_*` を無視する |
+|オリジンにヘッダーがありません |デフォルトの TTL 86400 |
 
-Prefer setting headers **at origin** (S3 metadata, app middleware) so behavior is consistent if you change CDN.
+CDN を変更しても動作が一貫しているように、**オリジン** でヘッダーを設定することを優先します (S3 メタデータ、アプリのミドルウェア)。
 
-## 6. Dangerous mistakes
+## 6. 危険な間違い
 
-| Mistake | Consequence |
-|---------|-------------|
-| `public, max-age=3600` on `/api/me` | User A’s data served to User B |
-| Caching `Set-Cookie` responses | Broken sessions |
-| Ignoring `Authorization` in cache key | Leaked private JSON |
-| Long TTL on unversioned `/app.js` | Users stuck on old bundle after deploy |
+|間違い |結果 |
+|----------|---------------|
+| `public, max-age=3600` に `/api/me` |ユーザー A のデータがユーザー B に提供される |
+| `Set-Cookie` 応答のキャッシュ |壊れたセッション |
+|キャッシュキーの `Authorization` を無視します |プライベート JSON が漏洩 |
+|バージョン管理されていない `/app.js` での長い TTL |デプロイ後にユーザーが古いバンドルにスタックする |
 
-Default sensitive routes to **`Cache-Control: private, no-store`**.
+デフォルトの機密ルートは **`Cache-Control: private, no-store`** です。
 
-## 7. Quick reference table
+## 7. 早見表
 
-| Asset | Typical policy |
-|-------|----------------|
-| Hashed JS/CSS | `public, max-age=31536000, immutable` |
-| Images (versioned path) | `public, max-age=604800` |
-| `index.html` | `max-age=0, must-revalidate` or short TTL |
-| Public GET API | `public, max-age=60–300` + ETag |
-| Authenticated API | `private, no-store` |
+|資産 |典型的なポリシー |
+|------|----------------|
+|ハッシュ化された JS/CSS | `public, max-age=31536000, immutable` |
+|画像 (バージョン管理されたパス) | `public, max-age=604800` |
+| `index.html` | `max-age=0, must-revalidate` または短い TTL |
+|パブリック GET API | `public, max-age=60–300` + Eタグ |
+|認証済み API | `private, no-store` |
 
-## Next
+＃＃ 次
 
-Continue with [Setup & origin](iv-setup-and-origin.md) for CloudFront, Cloudflare, and origin patterns.
+CloudFront、Cloudflare、およびオリジンパターンの [セットアップとオリジン](iv-setup-and-origin.md) に進みます。

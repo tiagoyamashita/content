@@ -1,13 +1,14 @@
 ---
 label: "V"
-subtitle: "Remotes & collaboration"
+subtitle: "リモートとコラボレーション"
 group: "Git"
 order: 5
 ---
-Remotes & collaboration
-A **remote** is a named URL to another repository — usually **`origin`** on GitHub. **Fetch** downloads; **pull** fetches + integrates; **push** uploads your commits.
+リモートとコラボレーション
 
-## 1. Remote commands
+**リモート** は、別のリポジトリ (通常は GitHub 上の **`origin`**) への名前付き URL です。 **ダウンロード**を取得します。 **プル** フェッチ + 統合。 **プッシュ** はコミットをアップロードします。
+
+## 1. リモートコマンド
 
 ```bash
 git remote -v
@@ -20,16 +21,16 @@ git push origin main          # upload commits
 git push -u origin feature/x  # first push — set upstream
 ```
 
-After `-u`, plain **`git push`** / **`git pull`** use the tracking branch.
+`-u` 以降、プレーン **`git push`** / **`git pull`** は追跡ブランチを使用します。
 
-## 2. Fetch vs pull
+## 2. フェッチとプル
 
 ```text
 fetch:  origin/main updates on your machine — your branch unchanged until merge/rebase
 pull:   fetch + merge (or rebase if configured) into current branch
 ```
 
-Safer workflow for shared branches:
+共有ブランチのより安全なワークフロー:
 
 ```bash
 git fetch origin
@@ -37,9 +38,9 @@ git log HEAD..origin/main --oneline   # what's new upstream?
 git merge origin/main                 # or rebase
 ```
 
-## 3. Pull with rebase
+## 3. リベースでプルする
 
-Keeps feature branch linear before push:
+プッシュする前に機能ブランチを線形に保ちます。
 
 ```bash
 git config --global pull.rebase true
@@ -47,7 +48,7 @@ git config --global pull.rebase true
 git pull --rebase origin main
 ```
 
-On feature branch before opening PR:
+PR を開く前の機能ブランチ:
 
 ```bash
 git switch feature/api
@@ -56,22 +57,22 @@ git rebase origin/main
 git push --force-with-lease
 ```
 
-**`--force-with-lease`** — safer than `--force`; fails if remote moved unexpectedly.
+**`--force-with-lease`** — `--force` より安全です。リモートが予期せず移動した場合は失敗します。
 
-## 4. Tracking branches
+## 4. ブランチの追跡
 
 ```bash
 git branch -vv
 # feature/api  abc1234 [origin/feature/api] latest commit msg
 ```
 
-Set upstream if missing:
+欠落している場合は上流に設定します。
 
 ```bash
 git push -u origin feature/api
 ```
 
-## 5. Collaboration flow
+## 5. コラボレーションの流れ
 
 ```text
 1. git fetch / pull latest main
@@ -84,11 +85,11 @@ git push -u origin feature/api
 8. git branch -d feature/issue-42
 ```
 
-See **GitHub** topic for PR UI, reviews, branch protection.
+PR UI、レビュー、ブランチ保護については、**GitHub** トピックを参照してください。
 
-## 6. Fork workflow
+## 6. フォークのワークフロー
 
-Contributing to someone else's repo:
+他の人のリポジトリに貢献する:
 
 ```bash
 # clone your fork
@@ -102,9 +103,9 @@ git merge upstream/main
 git push origin main
 ```
 
-PR goes **from your fork** → **upstream**.
+PR は **フォークから** → **上流**に進みます。
 
-## 7. Tags and releases
+## 7. タグとリリース
 
 ```bash
 git tag v1.0.0
@@ -113,14 +114,14 @@ git push origin v1.0.0
 git push origin --tags
 ```
 
-GitHub **Releases** attach binaries and notes to tags.
+GitHub **リリース**はバイナリとメモをタグに添付します。
 
-## 8. Troubleshooting push
+## 8. プッシュのトラブルシューティング
 
-| Error | Fix |
-|-------|-----|
-| `rejected (non-fast-forward)` | Pull/rebase first, then push |
-| `permission denied` | SSH key or token |
-| `protected branch` | Use PR; cannot push directly to `main` |
+|エラー |修正 |
+|------|-----|
+| `rejected (non-fast-forward)` |最初にプル/リベースしてから | を押します。
+| `permission denied` | SSH キーまたはトークン |
+| `protected branch` | PR を使用する。 `main` に直接プッシュすることはできません |
 
-**Related:** [Branching & merging](iv-branching-and-merging.md), CI/CD (workflows on `push`).
+**関連:** [分岐とマージ](iv-branching-and-merging.md)、CI/CD (`push`のワークフロー)。

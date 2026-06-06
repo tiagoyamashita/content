@@ -1,13 +1,14 @@
 ---
 label: "Activity"
-subtitle: "Contribution graph"
+subtitle: "貢献度グラフ"
 group: "GitHub"
 order: 4
 ---
-GitHub activity
-The grid below mirrors the **public contribution calendar** on your GitHub profile (daily activity levels 0–4). Squares **appear gradually** after the data loads. Hover a cell for the date and count.
+GitHub アクティビティ
 
-To change which username is loaded, set **`VITE_GITHUB_USERNAME`** for the front-end and optionally **`GITHUB_CONTRIBUTIONS_USER`** on the server (defaults match this site). Data is proxied through **`/api/github-contributions`** and cached for about an hour.
+以下のグリッドは、GitHub プロファイルの **パブリック コントリビューション カレンダー** を反映しています (毎日のアクティビティ レベル 0 ～ 4)。データのロード後、**正方形が徐々に表示されます**。日付とカウントのセルにカーソルを置きます。
 
-## 1. How it maps to the site menu
-This page is a normal study topic: open **GitHub** in the hero menu, select **Activity**, then scroll the article. The graph mounts when you land on the topic so the animation runs each visit.
+ロードされるユーザー名を変更するには、フロントエンドに **`VITE_GITHUB_USERNAME`** を設定し、オプションでサーバーに **`GITHUB_CONTRIBUTIONS_USER`** を設定します (デフォルトはこのサイトと一致します)。データは **`/api/github-contributions`** を通じてプロキシされ、約 1 時間キャッシュされます。
+
+## 1. サイトメニューへのマッピング方法
+このページは通常の学習トピックです。ヒーロー メニューで **GitHub** を開き、**アクティビティ** を選択して、記事をスクロールします。トピックにアクセスするとグラフが表示されるので、訪問するたびにアニメーションが実行されます。

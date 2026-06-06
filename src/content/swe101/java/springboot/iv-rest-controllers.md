@@ -1,15 +1,16 @@
 ---
 label: "IV"
-subtitle: "REST controllers"
-group: "Spring Boot"
+subtitle: "RESTコントローラー"
+group: "スプリングブーツ"
 groupOrder: 2
 order: 4
 ---
-Spring Boot — Part IV
-Expose HTTP APIs with **`@RestController`**, map paths and payloads, return **`ResponseEntity`** for status control, and centralize errors with **`@ControllerAdvice`**.
+スプリングブート — パート IV
 
-## 1. Controller skeleton
-**`@RestController`** combines **`@Controller`** + **`@ResponseBody`** — return values serialize via Jackson by default.
+**`@RestController`** で HTTP API を公開し、パスとペイロードをマップし、ステータス制御のために **`ResponseEntity`** を返し、**`@ControllerAdvice`** でエラーを一元管理します。
+
+## 1. コントローラーのスケルトン
+**`@RestController`** は **`@Controller`** + **`@ResponseBody`** を組み合わせたものです。戻り値はデフォルトで Jackson 経由でシリアル化されます。
 
 ```java
 // Compile: javac --release 22 …
@@ -60,8 +61,8 @@ public class CustomerController {
 }
 ```
 
-## 2. Request / response DTOs + validation
-Keep entities out of the wire format — use dedicated records:
+## 2. リクエスト/レスポンス DTO + 検証
+エンティティをワイヤ形式にしないようにします。専用のレコードを使用します。
 
 ```java
 // Compile: javac --release 22 …
@@ -73,19 +74,19 @@ public record CreateCustomerRequest(
 public record CustomerResponse(UUID id, String name, String email) {}
 ```
 
-Enable **`jakarta.validation`** on incoming bodies with **`@Valid`** on the parameter (requires **`spring-boot-starter-validation`** on the classpath).
+パラメータに **`@Valid`** を指定して、受信ボディで **`jakarta.validation`** を有効にします (クラスパスに **`spring-boot-starter-validation`** が必要です)。
 
-## 3. Mapping cheat sheet
-| Annotation | Maps from |
-|------------|-----------|
-| **`@PathVariable`** | `/items/{id}` segment |
-| **`@RequestParam`** | Query string `?page=1` |
-| **`@RequestHeader`** | HTTP headers |
-| **`@RequestBody`** | JSON / XML body |
-| **`@RequestPart`** | **`multipart/form-data`** fields |
+## 3. マッピングのチートシート
+|注釈 | |からの地図
+|-----------|----------|
+| **`@PathVariable`** | `/items/{id}`セグメント |
+| **`@RequestParam`** |クエリ文字列 `?page=1` |
+| **`@RequestHeader`** | HTTP ヘッダー |
+| **`@RequestBody`** | JSON / XML 本文 |
+| **`@RequestPart`** | **`multipart/form-data`** フィールド |
 
-## 4. Status codes without exceptions
-**`ResponseEntity`** wraps body + status + headers:
+## 4. 例外のないステータス コード
+**`ResponseEntity`** 本文 + ステータス + ヘッダーをラップします。
 
 ```java
 // Compile: javac --release 22 …
@@ -96,8 +97,8 @@ public ResponseEntity<Void> delete(@PathVariable UUID id) {
 }
 ```
 
-## 5. Global exception mapping
-Return Problem Details–style payloads consistently:
+## 5. グローバル例外マッピング
+問題の詳細形式のペイロードを一貫して返します。
 
 ```java
 // Compile: javac --release 22 …
@@ -142,8 +143,8 @@ public class ApiExceptionHandler {
 }
 ```
 
-## 6. CORS (when browsers call your API)
-For simple demos only — tighten origins in production:
+## 6. CORS (ブラウザが API を呼び出すとき)
+単純なデモの場合のみ — 実稼働環境でのオリジンを強化します。
 
 ```java
 // Compile: javac --release 22 …
@@ -153,9 +154,9 @@ For simple demos only — tighten origins in production:
 public class PublicFeedController { /* … */ }
 ```
 
-Prefer **`WebMvcConfigurer.addCorsMappings`** or gateway-level CORS for multiple controllers.
+複数のコントローラーには **`WebMvcConfigurer.addCorsMappings`** またはゲートウェイ レベルの CORS を優先します。
 
-## 7. Related notes
+## 7. 関連メモ
 
-- **Security basics & filter chain** — [Basics & filter chain](security-basics-and-filter-chain.md) (JWT, HTTP Basic for dev, method security)
-- **Global errors with Problem Details** — pair **`@ControllerAdvice`** with **`ProblemDetail`** (Spring 6+) for RFC 7807 responses in new APIs
+- **セキュリティの基本とフィルター チェーン** — [基本とフィルター チェーン](security-basics-and-filter-chain.md) (JWT、開発用の HTTP 基本、メソッド セキュリティ)
+- **問題の詳細を含むグローバル エラー** — 新しい API での RFC 7807 応答の **`@ControllerAdvice`** と **`ProblemDetail`** (Spring 6 以降) のペア

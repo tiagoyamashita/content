@@ -1,75 +1,76 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "CDN"
 order: 1
 ---
-CDN — overview
-A **CDN (Content Delivery Network)** serves copies of your content from **edge locations** close to users — lower latency, less load on origin, and better resilience under traffic spikes. Most production web apps put **static assets** (JS, CSS, images, video segments) behind a CDN; many also cache **selected GET APIs**.
+CDN — 概要
 
-For system-design framing (pull vs push, invalidation), see [CDN & edge caching](../sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md). For regions and edge vs cloud regions, see [Regions, AZs & edge](../../sre101/cloud-architecture/foundations/iii-regions-azs-and-edge.md).
+**CDN (コンテンツ配信ネットワーク)** は、ユーザーに近い **エッジ ロケーション**からコンテンツのコピーを提供します。これにより、レイテンシーが短縮され、オリジンの負荷が軽減され、トラフィックの急増に対する復元力が向上します。ほとんどの実稼働 Web アプリは、**静的アセット** (JS、CSS、画像、ビデオ セグメント) を CDN の背後に置きます。多くは **選択された GET API** もキャッシュします。
 
-## Map of this track
+システム設計のフレーミング (プルとプッシュ、無効化) については、[CDN とエッジ キャッシュ](../sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md) を参照してください。リージョンおよびエッジ リージョンとクラウド リージョンについては、[リージョン、AZ、エッジ](../../sre101/cloud-architecture/foundations/iii-regions-azs-and-edge.md)を参照してください。
 
-| Part | Focus |
-|------|--------|
-| **I — Overview** | What a CDN does, where it sits in the stack |
-| **II — How CDNs work** | DNS, PoPs, cache hit/miss, pull vs push |
-| **III — Cache headers & TTL** | `Cache-Control`, ETag, versioning |
-| **IV — Setup & origin** | Origin config, TLS, major providers |
-| **V — Static assets & SPAs** | Hashed filenames, S3 + CDN, deploy flow |
-| **VI — APIs & dynamic content** | Cacheable GETs, `Vary`, purge, edge logic |
-| **VII — Operations & troubleshooting** | Purge, monitoring, common failures |
-| **VIII — CDN & API gateway together** | How CDN and gateway split work at the edge |
+## このトラックの地図
 
-## Where CDN fits
+|パート |フォーカス |
+|------|----------|
+| **I — 概要** | CDN の機能、スタック内のどこに配置されるか |
+| **II — CDN の仕組み** | DNS、PoP、キャッシュのヒット/ミス、プルとプッシュ |
+| **III — キャッシュ ヘッダーと TTL** | `Cache-Control`、ETag、バージョン管理 |
+| **IV — セットアップと原点** |オリジン構成、TLS、主要プロバイダー |
+| **V — 静的資産と SPA** |ハッシュされたファイル名、S3 + CDN、デプロイ フロー |
+| **VI — API と動的コンテンツ** |キャッシュ可能な GET、`Vary`、パージ、エッジ ロジック |
+| **VII — 操作とトラブルシューティング** |パージ、監視、一般的な障害 |
+| **VIII — CDN と API ゲートウェイの併用** | CDN とゲートウェイ分割がエッジでどのように機能するか |
+
+## CDN が適している場所
 
 ```text
 User  →  DNS  →  CDN edge (PoP)  →  [cache HIT → response]
                               └──→  [cache MISS → origin (S3, ALB, app)]
 ```
 
-| Layer | Role |
-|-------|------|
-| **CDN edge** | Cache bytes close to user; terminate TLS |
-| **Origin** | Source of truth — S3 bucket, load balancer, app server |
-| **App cache ([Redis](../redis/i-overview.md))** | Session, DB query cache — different layer, often together |
-| **Database** | Not behind CDN — origin only |
+|レイヤー |役割 |
+|------|------|
+| **CDN エッジ** |ユーザーに近いバイトをキャッシュします。 TLSを終了する |
+| **起源** |信頼できる情報源 — S3 バケット、ロード バランサー、アプリ サーバー |
+| **アプリ キャッシュ ([Redis](../redis/i-overview.md))** |セッション、DB クエリ キャッシュ - 異なるレイヤー、多くの場合一緒 |
+| **データベース** | CDN の背後にない — オリジンのみ |
 
-CDN caches **HTTP responses** (files, JSON). Redis caches **application objects** inside your stack. Use both.
+CDN は **HTTP 応答** (ファイル、JSON) をキャッシュします。 Redis は **アプリケーション オブジェクト** をスタック内にキャッシュします。両方を使用してください。
 
-## What to put on a CDN
+## CDN に何を置くか
 
-| Content | CDN? | Notes |
-|---------|------|-------|
-| JS/CSS/fonts (hashed) | Yes | Long TTL, immutable |
-| Images, video segments | Yes | HLS/DASH chunks |
-| Public read-only API GET | Sometimes | Short TTL + cache keys |
-| HTML (SPA shell) | Careful | Short TTL or stale-while-revalidate |
-| Authenticated/private API | Usually no | `private`, `no-store` |
-| POST/PUT/DELETE | No | Always to origin |
+|コンテンツ | CDN? |メモ |
+|-------|------|------|
+| JS/CSS/フォント（ハッシュ化） |はい |長い TTL、不変 |
+|画像、ビデオセグメント |はい | HLS/DASH チャンク |
+|パブリック読み取り専用 API GET |時々 |短い TTL + キャッシュ キー |
+| HTML (SPA シェル) |注意してください |短い TTL または再検証中に失効する |
+|認証済み/プライベート API |通常はいいえ | `private`、`no-store` |
+|投稿/挿入/削除 |いいえ |常に原点へ |
 
-## Why engineers care
+## エンジニアが気にする理由
 
-| Benefit | Explanation |
-|---------|-------------|
-| **Latency** | Edge in hundreds of cities vs one origin region |
-| **Scale** | Edge absorbs flash traffic; origin sees fewer requests |
-| **Cost** | Cheaper egress at edge; smaller origin fleet |
-| **Security** | DDoS absorption, WAF at edge (provider-dependent) |
+|メリット |説明 |
+|----------|---------------|
+| **レイテンシ** |数百の都市のエッジと 1 つの発信地域のエッジ |
+| **スケール** |エッジはフラッシュ トラフィックを吸収します。オリジンで受信されるリクエストが少なくなります。
+| **コスト** |エッジでの下り料金が安くなる。より小規模な出発地フリート |
+| **セキュリティ** | DDoS 吸収、エッジでの WAF (プロバイダー依存) |
 
-## Common providers
+## 一般的なプロバイダー
 
-| Provider | Typical use |
-|----------|-------------|
-| **Cloudflare** | DNS + CDN + TLS; free tier for small sites |
-| **Amazon CloudFront** | AWS origins (S3, ALB, API Gateway) |
-| **Fastly** | Fine-grained purge, edge compute |
-| **Azure CDN / Front Door** | Azure and multi-cloud |
-| **Google Cloud CDN** | GCS / LB backends |
+|プロバイダー |一般的な使用法 |
+|----------|---------------|
+| **クラウドフレア** | DNS + CDN + TLS;小規模サイトの無料枠 |
+| **Amazon CloudFront** | AWS オリジン (S3、ALB、API ゲートウェイ) |
+| **すぐに** |きめ細かいパージ、エッジ コンピューティング |
+| **Azure CDN / フロント ドア** | Azure とマルチクラウド |
+| **Google Cloud CDN** | GCS / LB バックエンド |
 
-Managed platforms (**Vercel**, **Netlify**, **Cloudflare Pages**) include CDN automatically — see [Hosting, domains & CDN](../../startups/free-services/iii-hosting-domains-and-cdn.md) for MVP options.
+管理対象プラットフォーム (**Vercel**、**Netlify**、**Cloudflare Pages**) には CDN が自動的に含まれます。MVP オプションについては、[ホスティング、ドメイン、CDN](../../startups/free-services/iii-hosting-domains-and-cdn.md) を参照してください。
 
-## Next
+＃＃ 次
 
-Continue with [How CDNs work](ii-how-cdns-work.md) for DNS routing, PoPs, and cache hit/miss flow.
+DNS ルーティング、PoP、キャッシュ ヒット/ミス フローについては、[CDN の仕組み](ii-how-cdns-work.md) に進みます。

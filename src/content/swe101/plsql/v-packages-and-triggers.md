@@ -1,20 +1,21 @@
 ---
 label: "V"
-subtitle: "Packages & triggers"
+subtitle: "パッケージとトリガー"
 group: "PL/SQL"
 order: 5
 ---
-PL/SQL — packages & triggers
-**Packages** group related procedures, functions, types, and **package-level variables**. **Triggers** run PL/SQL automatically on table events or session actions.
+PL/SQL — パッケージとトリガー
 
-## 1. Package structure
+**パッケージ**は、関連するプロシージャ、関数、型、**パッケージ レベルの変数**をグループ化します。 **トリガー**は、テーブル イベントまたはセッション アクションで PL/SQL を自動的に実行します。
+
+## 1. パッケージ構造
 
 ```text
 PACKAGE spec     — public interface (what callers see)
 PACKAGE body     — implementation + private helpers
 ```
 
-**Specification:**
+**仕様：**
 
 ```sql
 CREATE OR REPLACE PACKAGE emp_mgmt AS
@@ -28,7 +29,7 @@ END emp_mgmt;
 /
 ```
 
-**Body:**
+**体：**
 
 ```sql
 CREATE OR REPLACE PACKAGE BODY emp_mgmt AS
@@ -58,7 +59,7 @@ END emp_mgmt;
 /
 ```
 
-Call:
+電話：
 
 ```sql
 BEGIN
@@ -67,20 +68,20 @@ END;
 /
 ```
 
-## 2. Why packages
+## 2. パッケージを使用する理由
 
-| Benefit | Explanation |
-|---------|-------------|
-| **Namespace** | `emp_mgmt.hire` vs dozens of standalone procedures |
-| **Encapsulation** | Private helpers live only in the body |
-| **Session state** | Package variables persist for the session (use carefully) |
-| **Performance** | First call loads body; subsequent calls reuse parsed tree |
+|メリット |説明 |
+|----------|---------------|
+| **名前空間** | `emp_mgmt.hire` 対 数十のスタンドアロン手順 |
+| **カプセル化** |民間のヘルパーは体だけで生きています |
+| **セッション状態** |パッケージ変数はセッションの間保持されます (慎重に使用してください)。
+| **パフォーマンス** |最初の呼び出しでは本体がロードされます。後続の呼び出しでは解析されたツリーを再利用します。
 
-Avoid abusing package globals for cross-request state in connection-pooled apps — each JDBC borrow may be a different session.
+接続プールされたアプリでクロスリクエスト状態のパッケージ グローバルを悪用しないでください。各 JDBC 借用は異なるセッションである可能性があります。
 
-## 3. Row-level triggers
+## 3. 行レベルのトリガー
 
-**`BEFORE INSERT OR UPDATE`** — validate or default columns:
+**`BEFORE INSERT OR UPDATE`** — 列を検証またはデフォルトにします:
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_employees_biur
@@ -95,12 +96,12 @@ END;
 /
 ```
 
-| Pseudo-record | Role |
+|疑似記録 |役割 |
 |---------------|------|
-| **`:NEW`** | Incoming row (INSERT/UPDATE) |
-| **`:OLD`** | Previous row (UPDATE/DELETE) |
+| **`:NEW`** |受信行 (INSERT/UPDATE) |
+| **`:OLD`** |前の行 (更新/削除) |
 
-**`AFTER`** triggers often write audit rows:
+**`AFTER`** トリガーは監査行を書き込むことがよくあります。
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_employees_audit
@@ -113,34 +114,34 @@ END;
 /
 ```
 
-## 4. Statement-level vs row-level
+## 4. ステートメントレベルと行レベル
 
-| | **`FOR EACH ROW`** | No row clause (statement) |
-|---|-------------------|---------------------------|
-| **Fires** | Once per affected row | Once per statement |
-| **Use** | Column defaults, row audit | Bulk guard, logging count |
+| | **`FOR EACH ROW`** |行句がありません (ステートメント) |
+|---|-------------------|--------------------------|
+| **火災** |影響を受ける行ごとに 1 回 |ステートメントごとに 1 回 |
+| **使用** |列のデフォルト、行の監査 |バルクガード、ロギングカウント |
 
-**Mutating table:** a row trigger on `employees` cannot query `employees` in the same statement without workaround — design audit tables or use compound triggers for complex cases.
+**テーブルの変更:** `employees` の行トリガーは同じステートメントで `employees` をクエリすることはできません。回避策 - 監査テーブルを設計するか、複雑な場合には複合トリガーを使用してください。
 
-## 5. Trigger timing
+## 5. トリガータイミング
 
 ```text
 BEFORE statement → BEFORE each row → DML → AFTER each row → AFTER statement
 ```
 
-Prefer **`BEFORE`** for validation; **`AFTER`** for side effects that should not block the change itself.
+検証には **`BEFORE`** を優先します。 **`AFTER`** 変更自体を妨げない副作用については。
 
-## 6. When not to use triggers
+## 6. トリガーを使用しない場合
 
-| Trigger-heavy | App-layer alternative |
+|トリガーヘビー |アプリ層の代替 |
 |---------------|----------------------|
-| Hidden business rules | Service methods, domain events |
-| Cross-table orchestration | Transactional outbox, job queue |
-| Logic that changes weekly | Versioned app deploys |
+|隠されたビジネスルール |サービスメソッド、ドメインイベント |
+|クロステーブル オーケストレーション |トランザクション送信ボックス、ジョブ キュー |
+|毎週変更されるロジック |バージョン管理されたアプリのデプロイ |
 
-Triggers are hard to test, invisible in stack traces, and surprise ORMs that expect simple DML.
+トリガーはテストが難しく、スタック トレースに表示されないため、単純な DML を期待する ORM を驚かせます。
 
-## 7. Compile and dependencies
+## 7. コンパイルと依存関係
 
 ```sql
 SELECT object_name, object_type, status
@@ -151,7 +152,7 @@ ALTER PACKAGE emp_mgmt COMPILE;
 ALTER TRIGGER trg_employees_biur COMPILE;
 ```
 
-After table DDL, recompile invalid objects:
+テーブル DDL の後、無効なオブジェクトを再コンパイルします。
 
 ```sql
 BEGIN
@@ -160,6 +161,6 @@ END;
 /
 ```
 
-## Next
+＃＃ 次
 
-Continue with [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md) for structured error handling and high-volume DML.
+構造化エラー処理と大量の DML については、[例外と一括 SQL](vi-exceptions-and-bulk-sql.md) に進みます。

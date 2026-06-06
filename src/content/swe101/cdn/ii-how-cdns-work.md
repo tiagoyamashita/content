@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "How CDNs work"
+subtitle: "CDN の仕組み"
 group: "CDN"
 order: 2
 ---
-CDN — how CDNs work
-A CDN is a **distributed cache** in front of your **origin**. Users talk to the nearest **PoP (Point of Presence)**; on a **miss**, the PoP fetches from origin once and stores the response for later requests.
+CDN — CDN の仕組み
 
-## 1. Request flow (pull CDN)
+CDN は、**オリジン**の前にある**分散キャッシュ**です。ユーザーは最寄りの **PoP (Point of Presence)** と通話します。 **ミス**の場合、PoP はオリジンから一度フェッチし、後のリクエストに備えて応答を保存します。
+
+## 1. リクエスト フロー (プル CDN)
 
 ```text
 1. Browser GET https://cdn.example.com/assets/app.a1b2c3.js
@@ -18,75 +19,75 @@ A CDN is a **distributed cache** in front of your **origin**. Users talk to the 
 6. Next user in same region → HIT
 ```
 
-| Term | Meaning |
-|------|---------|
-| **PoP / edge** | CDN server in a city/region |
-| **Origin** | Your bucket, server, or load balancer |
-| **Cache hit** | Edge serves without contacting origin |
-| **Cache miss** | Edge fetches from origin, then caches |
-| **TTL** | How long edge keeps copy before revalidating |
+|用語 |意味 |
+|-----|----------|
+| **PoP / エッジ** |都市/地域の CDN サーバー |
+| **起源** |バケット、サーバー、またはロード バランサー |
+| **キャッシュ ヒット** |エッジは原点に接触せずに機能します |
+| **キャッシュミス** |エッジはオリジンからフェッチし、キャッシュします。
+| **TTL** |再検証するまでエッジがコピーを保持する期間 |
 
-Same mental model as [CDN & edge caching](../sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md).
+[CDN とエッジ キャッシング](../sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md) と同じメンタル モデル。
 
-## 2. DNS routing
+## 2. DNS ルーティング
 
-| Method | Behavior |
-|--------|----------|
-| **CNAME to CDN** | `cdn.example.com` → `d111111.cloudfront.net` |
-| **Anycast** | One IP; BGP routes to nearest PoP |
-| **Geo DNS** | Different answers by user continent |
+|方法 |行動 |
+|----------|----------|
+| **CNAME から CDN へ** | `cdn.example.com` → `d111111.cloudfront.net` |
+| **エニーキャスト** | 1 つの IP; BGP は最も近い PoP にルートします。
+| **地理 DNS** |ユーザー大陸ごとに異なる回答 |
 
-User does not pick a PoP — CDN DNS/network layer does.
+ユーザーが PoP を選択するのではなく、CDN DNS/ネットワーク層が選択します。
 
-## 3. Pull vs push
+## 3. プルとプッシュ
 
-| | **Pull** (most web apps) | **Push** |
+| | **プル** (ほとんどの Web アプリ) | **プッシュ** |
 |---|--------------------------|----------|
-| **How** | CDN fetches from your origin on miss | You upload files to CDN storage |
-| **Origin** | S3, nginx, ALB, custom server | CDN bucket (e.g. S3 origin + OAI, or push zone) |
-| **Cold start** | First visitor in region slower | Pre-upload before launch |
-| **Best for** | Sites, APIs with cache headers | Large downloads, live event seeding |
+| **方法** | CDN はミス時にオリジンからフェッチします。ファイルを CDN ストレージにアップロードします |
+| **起源** | S3、nginx、ALB、カスタムサーバー | CDN バケット (例: S3 オリジン + OAI、またはプッシュ ゾーン) |
+| **コールドスタート** |地域の最初の訪問者が遅くなる |発売前に事前アップロード |
+| **こんな用途に最適** |キャッシュヘッダーを備えたサイト、API |大規模なダウンロード、ライブ イベントのシーディング |
 
-Modern setups are **pull** with object storage origin (S3 + CloudFront, GCS + Cloud CDN).
+最新のセットアップは、オブジェクト ストレージ オリジン (S3 + CloudFront、GCS + Cloud CDN) を使用した **プル** です。
 
-## 4. Cache key
+## 4. キャッシュキー
 
-Edge stores responses under a **cache key** — not always “URL only”:
+Edge は応答を **キャッシュ キー** に保存します。必ずしも「URL のみ」であるとは限りません。
 
 ```text
 Default key:  host + path + query string (provider-specific)
 Custom key:   include/exclude query params, headers, cookies
 ```
 
-Misconfigured keys cause:
+キーの設定が間違っていると、次のような原因が発生します。
 
-- **Wrong content** — same URL, different users get same cached JSON
-- **Low hit rate** — random query params bust cache every time
+- **間違ったコンテンツ** - 同じ URL、異なるユーザーが同じキャッシュされた JSON を取得する
+- **低ヒット率** — ランダムなクエリパラメータにより毎回キャッシュが無効になります
 
-Configure **which query params** matter (`?v=3` yes, `?utm_source=` no).
+**どのクエリパラメータ**が重要かを構成します (`?v=3` はい、`?utm_source=` いいえ)。
 
-## 5. TLS termination
+## 5. TLS 終端
 
 ```text
 User ──HTTPS──► CDN edge (public cert for cdn.example.com)
                     └──HTTPS or HTTP──► origin (can use private cert)
 ```
 
-CDN holds the **public certificate** users trust. Origin can be HTTP inside VPC (with signed requests) or HTTPS — provider docs vary (**Origin Access Control**, **signed URLs**).
+CDN は、ユーザーが信頼する **公開証明書** を保持します。オリジンは、VPC 内の HTTP (署名付きリクエストあり) または HTTPS にすることができます。プロバイダーのドキュメントは異なります (**オリジン アクセス コントロール**、**署名付き URL**)。
 
-## 6. Origin shield (optional)
+## 6. オリジンシールド（オプション）
 
-Some CDNs add a **regional mid-tier cache** between many PoPs and origin — fewer origin hits when one file goes viral globally.
+一部の CDN は、多くの PoP とオリジンの間に **地域中間層キャッシュ** を追加します。これにより、1 つのファイルが世界的に拡散した場合にオリジンのヒットが減少します。
 
-## 7. What CDN does not do
+## 7. CDN が行わないこと
 
-| Not CDN’s job | Where instead |
+| CDN の仕事ではありません |代わりに |
 |---------------|---------------|
-| Run your Java/Python API logic | App servers, serverless |
-| Replace database | Postgres, MongoDB |
-| Session storage | [Redis](../redis/iv-patterns-and-use-cases.md) |
-| Write operations | POST always to origin |
+| Java/Python API ロジックを実行する |アプリサーバー、サーバーレス |
+|データベースを置き換える | Postgres、MongoDB |
+|セッションストレージ | [Redis](../redis/iv-patterns-and-use-cases.md) |
+|書き込み操作 | POST は常に原点に送信されます |
 
-## Next
+＃＃ 次
 
-Continue with [Cache headers & TTL](iii-cache-headers-and-ttl.md) to control what gets stored and for how long.
+[キャッシュヘッダーとTTL](iii-cache-headers-and-ttl.md)に進み、何をどのくらいの期間保存するかを制御します。

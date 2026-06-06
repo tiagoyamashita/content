@@ -1,13 +1,14 @@
 ---
 label: "IV"
-subtitle: "Patterns & use cases"
-group: "Redis"
+subtitle: "パターンと使用例"
+group: "レディス"
 order: 4
 ---
-Redis — patterns & use cases
-Production Redis usage centers on a few **repeatable patterns**. Each assumes a durable store ([Postgres](../postgres/i-overview.md), [MongoDB](../mongodb/i-overview.md)) holds source of truth unless noted.
+Redis — パターンとユースケース
 
-## 1. Cache-aside
+本番環境での Redis の使用は、いくつかの**反復可能なパターン**に重点を置いています。それぞれは、注記がない限り、耐久性ストア ([Postgres](../postgres/i-overview.md)、[MongoDB](../mongodb/i-overview.md)) が信頼できる情報源を保持していることを前提としています。
+
+## 1. キャッシュアサイド
 
 ```text
 READ:
@@ -26,17 +27,17 @@ GET cache:product:8812
 SET cache:product:8812 "{...json...}" EX 600
 ```
 
-| Pitfall | Fix |
-|---------|-----|
-| **Stale cache** | Invalidate on write; or short TTL + accept staleness |
-| **Thundering herd** | Lock key `SET lock:… NX EX` while one worker rebuilds |
-| **Caching null** | Cache short “not found” to protect DB |
+|落とし穴 |修正 |
+|----------|-----|
+| **古いキャッシュ** |書き込み時に無効化します。または短い TTL + 古いことを受け入れる |
+| **雷鳴の群れ** | 1 人のワーカーが再構築している間、キー `SET lock:… NX EX` をロックします。
+| **キャッシュ null** | DB を保護するためのキャッシュ不足が「見つかりません」 |
 
-Define **TTL** by freshness needs — product catalog 10m, user profile 1m, config 5s.
+**TTL** を鮮度のニーズに応じて定義します (製品カタログ 10 分、ユーザー プロファイル 1 分、構成 5 秒)。
 
-## 2. Session store
+## 2. セッションストア
 
-Web app stores **session id** in cookie; server stores blob in Redis:
+Web アプリは **セッション ID** を Cookie に保存します。サーバーは Redis に BLOB を保存します。
 
 ```text
 SET session:sess_abc123 "{\"userId\":42,\"roles\":[\"user\"]}" EX 86400
@@ -44,13 +45,13 @@ GET session:sess_abc123
 DEL session:sess_abc123    # logout
 ```
 
-Benefits: **horizontal scale** without sticky sessions; instant logout via **DEL**.
+利点: スティッキーセッションなしの**水平スケール**。 **DEL** による即時ログアウト。
 
-Spring Session Redis and similar libraries handle serialization and cookie wiring — see [App integration](v-app-integration.md).
+Spring Session Redis および同様のライブラリは、シリアル化と Cookie ワイヤリングを処理します。「アプリの統合」(v-app-integration.md) を参照してください。
 
-## 3. Rate limiting
+## 3. レート制限
 
-**Fixed window** — simple:
+**固定ウィンドウ** — シンプル:
 
 ```text
 INCR ratelimit:api:10.0.0.1:2026051914
@@ -58,11 +59,11 @@ EXPIRE ratelimit:api:10.0.0.1:2026051914 60
 # if count > 100 → 429 Too Many Requests
 ```
 
-**Sliding window** — use **sorted set** with timestamps as scores, trim old entries, count members — more accurate, more complex.
+**スライディング ウィンドウ** — スコアとしてタイムスタンプを含む **ソート セット**を使用し、古いエントリをトリミングし、メンバーをカウントします。 – より正確で、より複雑です。
 
-For API gateways, consider dedicated limiter (Kong, Envoy) — Redis still common at app layer.
+API ゲートウェイの場合は、専用のリミッター (Kong、Envoy) を検討してください。Redis は依然としてアプリ層で一般的です。
 
-## 4. Distributed lock (careful)
+## 4. 分散ロック（注意）
 
 ```text
 SET lock:import:20260519 worker-7 NX EX 30
@@ -70,26 +71,26 @@ SET lock:import:20260519 worker-7 NX EX 30
 DEL lock:import:20260519   # only if value matches (use Lua script)
 ```
 
-| Risk | Mitigation |
-|------|------------|
-| **Lock expires before work done** | Extend TTL with watchdog; keep tasks short |
-| **Unlock wrong holder** | Compare token in value; use Redisson-style libraries |
-| **Split brain** | Redlock is debated — prefer DB constraints or queue with single consumer when possible |
+|リスク |緩和 |
+|------|-----------|
+| **作業が完了する前にロックの有効期限が切れます** |ウォッチドッグで TTL を延長します。タスクを短くする |
+| **間違ったホルダーのロックを解除** |トークンの値を比較します。 Redisson スタイルのライブラリを使用する |
+| **スプリット ブレイン** | Redlock については議論が行われています。可能であれば、DB 制約または単一コンシューマのキューを推奨します。
 
-Use locks sparingly — **idempotent** jobs and **unique constraints** in Postgres often beat distributed locks.
+ロックは慎重に使用してください。Postgres の **冪等** ジョブと **一意の制約** は、分散ロックよりも優れていることがよくあります。
 
-## 5. Pub/sub
+## 5. パブリッシュ/サブスクライブ
 
-Fire-and-forget broadcast — not durable:
+ファイアアンドフォーゲットブロードキャスト — 耐久性がない:
 
 ```text
 SUBSCRIBE notifications
 PUBLISH notifications "{\"type\":\"deploy\",\"env\":\"staging\"}"
 ```
 
-Subscribers must be online; messages not replayed. For durable fan-out use **Streams**, Kafka, or SQS.
+購読者はオンラインである必要があります。メッセージは再生されません。耐久性のあるファンアウトを実現するには、**Streams**、Kafka、または SQS を使用します。
 
-## 6. Streams (lightweight queue)
+## 6. ストリーム (軽量キュー)
 
 ```text
 XADD jobs * type email to ada@example.com
@@ -99,26 +100,26 @@ XREADGROUP GROUP workers consumer1 COUNT 1 STREAMS jobs >
 XACK jobs workers <message-id>
 ```
 
-Consumer groups give **at-least-once** delivery with ack — good for moderate job volume; monitor pending list length.
+消費者団体は、**少なくとも 1 回** ack 付きで配信します。これは、中程度のジョブ量に適しています。保留リストの長さを監視します。
 
-## 7. Feature flags and config
+## 7. 機能フラグと構成
 
 ```text
 HSET config:flags dark_mode on beta_checkout off
 HGET config:flags dark_mode
 ```
 
-Pub/sub **`CONFIG`** channel to notify apps to refresh — or poll with short TTL cache in app memory.
+Pub/sub **`CONFIG`** チャネルを使用してアプリに更新を通知するか、アプリ メモリ内の短い TTL キャッシュを使用してポーリングします。
 
-## 8. What not to put in Redis
+## 8. Redis に入れてはいけないもの
 
-| Avoid | Use instead |
-|-------|-------------|
-| Sole copy of financial records | Postgres + audit log |
-| Large blobs (> few MB) | Object storage (S3) |
-| Complex queries across entities | SQL / MongoDB |
-| Long-term analytics | Warehouse |
+|避ける |代わりに使用してください |
+|------|-----------|
+|財務記録の唯一のコピー | Postgres + 監査ログ |
+|大きな BLOB (> 数 MB) |オブジェクトストレージ (S3) |
+|エンティティにわたる複雑なクエリ | SQL / MongoDB |
+|長期的な分析 |倉庫 |
 
-## Next
+＃＃ 次
 
-Continue with [App integration](v-app-integration.md) for Lettuce, Spring Data Redis, and redis-py.
+Lettuce、Spring Data Redis、redis-py の [アプリ統合](v-app-integration.md) に進みます。
