@@ -1,128 +1,128 @@
 ---
 label: "IV"
-subtitle: "DNS and name resolution"
-group: "Networking"
+subtitle: "DNSと名前解決"
+group: "ネットワーキング"
 order: 4
 ---
-Networking — Part IV: DNS and name resolution
+ネットワーキング — パート IV: DNS と名前解決
 
-**DNS** maps **human-readable names** (`api.example.com`) to **records** used at connection time: mostly **A/AAAA** (addresses), **CNAME** (alias), **MX** (mail), **TXT** (verification, SPF, etc.).
+**DNS** は、**人間が判読できる名前** (`api.example.com`) を接続時に使用される **レコード**にマッピングします。主に **A/AAAA** (アドレス)、**CNAME** (エイリアス)、**MX** (メール)、**TXT** (検証、SPF など)。
 
-## 1. Why DNS matters before TCP and TLS
+## 1. TCP や TLS よりも先に DNS が重要な理由
 
-To open **TCP** to `api.example.com:443`, the resolver must obtain an **IP address**. The TLS **ClientHello** often includes **SNI** with the same hostname so the server can pick the right certificate.
+**TCP** を `api.example.com:443` に開くには、リゾルバは **IP アドレス**を取得する必要があります。 TLS **ClientHello** には、サーバーが適切な証明書を選択できるように、同じホスト名の **SNI** が含まれることがよくあります。
 
-## 2. Recursive vs authoritative
+## 2. 再帰的と権威的
 
-- **Stub resolver** (your laptop, container) asks a **recursive resolver** (ISP, `8.8.8.8`, corporate DNS, CoreDNS in Kubernetes).
-- The recursive resolver walks the tree from **root** → **TLD** (`.com`) → **authoritative** nameservers for `example.com` until it gets the final answer, then **caches** it according to **TTL**.
+- **スタブ リゾルバー** (ラップトップ、コンテナ) は **再帰リゾルバー** (ISP、`8.8.8.8`、企業 DNS、Kubernetes の CoreDNS) に要求します。
+- 再帰リゾルバは、**ルート** → **TLD** (`.com`) → **権威** ネームサーバーから `example.com` までツリーをたどり、最終的な答えが得られるまで、**TTL** に従って**キャッシュ**します。
 
-## 3. Record types (practical subset)
+## 3. レコードタイプ (実用的なサブセット)
 
-| Type | Role | Name | Value |
-|------|------|------|-------|
-| **A** | IPv4 address | `api` | `203.0.113.50` |
-| **AAAA** | IPv6 address | `api` | `2001:db8::1` |
-| **CNAME** | Canonical name — alias to another hostname | `api` | `k8s-lb.eu-west-1.elb.amazonaws.com` |
-| **TXT** | Arbitrary text | `_acme-challenge.api` | `xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cB2aE` |
-| **TXT** | Arbitrary text | `@` | `v=spf1 include:_spf.google.com ~all` |
-| **NS** | Delegates zone to authoritative servers | `@` | `ns1.cloudflare.com` |
-| **NS** | Delegates zone to authoritative servers | `@` | `ns2.cloudflare.com` |
+|タイプ |役割 |名前 |値 |
+|------|------|------|------|
+| **A** | IPv4 アドレス | `api` | `203.0.113.50` |
+| **ああああ** | IPv6 アドレス | `api` | `2001:db8::1` |
+| **CNAME** |正規名 — 別のホスト名のエイリアス | `api` | `k8s-lb.eu-west-1.elb.amazonaws.com` |
+| **TXT** |任意のテキスト | `_acme-challenge.api` | `xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cB2aE` |
+| **TXT** |任意のテキスト | `@` | `v=spf1 include:_spf.google.com ~all` |
+| **NS** |ゾーンを権限のあるサーバーに委任します。 `@` | `ns1.cloudflare.com` |
+| **NS** |ゾーンを権限のあるサーバーに委任します。 `@` | `ns2.cloudflare.com` |
 
-### Hostinger hPanel — DNS zone list (zone `myrestapp.com`)
+### Hostinger hPanel — DNS ゾーン リスト (ゾーン `myrestapp.com`)
 
-Same records as they appear under **Websites → myrestapp.com → DNS / DNS records** (columns **Type**, **Name**, **Points to**, **TTL**):
+**Web サイト → myrestapp.com → DNS / DNS レコード** に表示されるものと同じレコード (**タイプ**、**名前**、**ポイント先**、**TTL** 列):
 
-| Type | Name | Points to | TTL |
+|タイプ |名前 | | を指すTTL |
 |------|------|-----------|-----|
-| A | @ | 185.248.155.42 | 14400 |
-| A | ftp | 185.248.155.42 | 14400 |
+|あ | @ | 185.248.155.42 | 14400 |
+|あ | ftp | 185.248.155.42 | 14400 |
 | CNAME | www | myrestapp.com | 14400 |
-| CNAME | api | lb-1847293021.eu-west-1.elb.amazonaws.com | 300 |
-| AAAA | api | 2001:db8:5ca8:1::42 | 300 |
-| TXT | _acme-challenge.api | xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cB2aE | 300 |
+| CNAME |アピ | lb-1847293021.eu-west-1.elb.amazonaws.com | 300 |
+|ああああ |アピ | 2001:db8:5ca8:1::42 | 300 |
+| TXT | _acme-challenge.api | xK8f9Qm2vP7L3nR8wT1sY0uJ5hF4gD6cb2aE 300 |
 | TXT | @ | v=spf1 include:_spf.google.com ~all | 14400 |
 | NS | @ | ns1.dns-parking.com | 14400 |
 | NS | @ | ns2.dns-parking.com | 14400 |
 
-## 4. TTL and caching
+## 4. TTL とキャッシュ
 
-**TTL** (time to live) on each answer tells resolvers how long they may cache. **Low TTL** speeds failover and migrations; **high TTL** reduces load and can improve resilience to resolver issues but slows cutover.
+各回答の **TTL** (生存時間) により、リゾルバーがキャッシュできる期間が決まります。 **低い TTL** により、フェイルオーバーと移行が高速化されます。 **高い TTL** により負荷が軽減され、リゾルバーの問題に対する回復力が向上しますが、カットオーバーが遅くなります。
 
-## 5. Kubernetes, DNS, and Ingress
+## 5. Kubernetes、DNS、および Ingress
 
-Kubernetes uses **two different DNS systems**. Confusing them is a common source of “works in the cluster, fails from my laptop” bugs.
+Kubernetes は **2 つの異なる DNS システム**を使用します。これらを混同すると、「クラスター内では動作するが、ラップトップでは動作しない」というバグが発生する一般的な原因になります。
 
-| DNS scope | Who answers | Example name | Used by |
-|-----------|-------------|--------------|---------|
-| **Public (internet)** | Hostinger, Cloudflare, Route 53, … | `api.myrestapp.com` | Browsers, mobile apps, partners |
-| **In-cluster** | **CoreDNS** | `rest-api.default.svc.cluster.local` | Pods talking to Services |
+| DNS スコープ |誰が答えますか |例名 |使用者 |
+|----------|---------------|--------------|----------|
+| **パブリック (インターネット)** | Hostinger、Cloudflare、Route 53、… | `api.myrestapp.com` |ブラウザ、モバイル アプリ、パートナー |
+| **クラスター内** | **コアDNS** | `rest-api.default.svc.cluster.local` |サービスと通信するポッド |
 
-Public DNS stops at your **cloud load balancer**. **Ingress** only runs **after** TCP reaches the cluster and uses the HTTP **`Host`** header — DNS does not know about Kubernetes Services.
+パブリック DNS は **クラウド ロード バランサー**で停止します。 **Ingress** は、TCP がクラスターに到達し、HTTP **`Host`** ヘッダーを使用した**後のみ実行されます。DNS は Kubernetes Services について認識しません。
 
-### What is Ingress?
+### Ingress とは何ですか?
 
-**Ingress** (in Kubernetes) is the **HTTP/HTTPS front door** for apps running in a cluster. It has two parts:
+**Ingress** (Kubernetes 内) は、クラスター内で実行されているアプリの **HTTP/HTTPS フロント ドア**です。これには 2 つの部分があります。
 
-| Piece | What it is |
-|-------|------------|
-| **Ingress resource** | A config object (YAML) that lists rules: “if **`Host`** is `api.myrestapp.com` and path is `/v1/…`, send traffic to **Service** `rest-api` on port **8080**.” |
-| **Ingress controller** | A running program (nginx, Traefik, …) that **reads** those rules and configures a **reverse proxy** to enforce them. |
+|ピース |それは何ですか |
+|------|-----------|
+| **Ingress リソース** |ルールをリストする構成オブジェクト (YAML): 「**`Host`** が `api.myrestapp.com` でパスが `/v1/…` の場合、ポート **8080** 上の **Service** `rest-api` にトラフィックを送信します。」 |
+| **イングレス コントローラー** |これらのルールを**読み取り**し、それらを強制するように**リバース プロキシ**を構成する実行中のプログラム (nginx、Traefik など)。 |
 
-**Ingress is not DNS.** DNS tells the client **which IP** to connect to. Ingress tells the cluster **which Service** should handle the request **after** the connection arrives, using the URL’s hostname and path.
+**Ingress は DNS ではありません。** DNS はクライアントに **どの IP** に接続するかを指示します。 Ingress は、URL のホスト名とパスを使用して、**接続の到着後**にリクエストを処理する**サービス**をクラスターに指示します。
 
-**Ingress is not a Service.** A **Service** is stable in-cluster networking to pods. **Ingress** sits **in front of** Services and routes **external** HTTP traffic to the right one.
+**Ingress はサービスではありません。** **サービス** は、ポッドへの安定したクラスター内ネットワークです。 **Ingress** は**サービスの前に位置し、**外部** HTTP トラフィックを適切なサービスにルーティングします。
 
 ```text
 DNS:      api.myrestapp.com  →  203.0.113.50 (load balancer)
 Ingress:  Host: api.myrestapp.com  +  path /v1/users  →  Service rest-api:8080  →  Pod
 ```
 
-### 5.1 In-cluster DNS (CoreDNS)
+### 5.1 クラスター内 DNS (CoreDNS)
 
-Every **Service** gets a stable DNS name inside the cluster:
+すべての **サービス** は、クラスター内の安定した DNS 名を取得します。
 
 ```text
 <service>.<namespace>.svc.cluster.local
 ```
 
-| Service | Namespace | Cluster DNS name | ClusterIP (example) |
-|---------|-----------|------------------|---------------------|
+|サービス |ネームスペース |クラスターDNS名 | ClusterIP (例) |
+|----------|----------|---------------------|---------------------|
 | `rest-api` | `default` | `rest-api.default.svc.cluster.local` | `10.96.42.18` |
 | `postgres` | `data` | `postgres.data.svc.cluster.local` | `10.96.88.5` |
 
-- Pods use this name in connection strings — **not** pod IPs (pods restart and change IP).
-- Short names work inside the same namespace: `rest-api` → `rest-api.default.svc.cluster.local`.
-- This DNS is **not** visible on the public internet.
+- ポッドは接続文字列でこの名前を使用します。**ポッド IP ではありません** (ポッドは再起動して IP を変更します)。
+- 短縮名は同じ名前空間内で機能します: `rest-api` → `rest-api.default.svc.cluster.local`。
+- この DNS は公共のインターネット上では**表示されません**。
 
-### 5.2 From public DNS to the cluster
+### 5.2 パブリック DNS からクラスターへ
 
-Typical cloud setup for a REST API:
+REST API の一般的なクラウド設定:
 
-1. You deploy an **Ingress controller** (nginx, Traefik, …) behind a **LoadBalancer** Service.
-2. The cloud creates a **load balancer** with a hostname, e.g. `lb-1847293021.eu-west-1.elb.amazonaws.com`.
-3. In **Hostinger** (or any public DNS) you add **`api` CNAME → that hostname** (see §3 table).
-4. Client resolves `api.myrestapp.com` → LB IP → **TCP :443** → **Ingress controller** pod.
+1. **Ingress コントローラー** (nginx、Traefik など) を **LoadBalancer** サービスの背後にデプロイします。
+2. クラウドは、ホスト名を使用して **ロード バランサー** を作成します。 `lb-1847293021.eu-west-1.elb.amazonaws.com`。
+3. **Hostinger** (または任意のパブリック DNS) で、**`api` CNAME → そのホスト名** を追加します (§3 の表を参照)。
+4. クライアントは `api.myrestapp.com` → LB IP → **TCP :443** → **イングレス コントローラー** ポッドを解決します。
 
-| Public DNS record | Points to | Kubernetes object |
-|-------------------|-----------|-------------------|
-| `api` CNAME | `lb-1847293021.eu-west-1.elb.amazonaws.com` | `Service` type **LoadBalancer** (or LB in front of Ingress) |
-| (none in public DNS) | — | **Ingress** rule: `Host: api.myrestapp.com` |
-| (none in public DNS) | — | **Service** `rest-api` → **Pods** |
+|パブリックDNSレコード | | を指すKubernetes オブジェクト |
+|---------------------|-----------|---------------------|
+| `api` CNAME | `lb-1847293021.eu-west-1.elb.amazonaws.com` | `Service` タイプ **LoadBalancer** (または Ingress の前の LB) |
+| (パブリック DNS にはなし) | — | **進入**ルール: `Host: api.myrestapp.com` |
+| (パブリック DNS にはなし) | — | **サービス** `rest-api` → **ポッド** |
 
-### 5.3 What Ingress adds (after DNS)
+### 5.3 Ingress で追加されるもの (DNS の後)
 
-**DNS** answers: “What IP is `api.myrestapp.com`?”  
-**Ingress** answers: “For `Host: api.myrestapp.com` and path `/v1/…`, which **Service** and port?”
+**DNS** は次のように答えます:「`api.myrestapp.com` とはどの IP ですか?」  
+**Ingress** は次のように答えます: 「`Host: api.myrestapp.com` およびパス `/v1/…` の場合、**サービス**とポートはどれですか?」
 
-| Ingress field | Example | Must match |
-|---------------|---------|------------|
-| `host` | `api.myrestapp.com` | Name clients use in URL **and** TLS cert SAN |
-| `path` | `/` or `/v1` | URL path prefix |
-| `backend.service.name` | `rest-api` | Kubernetes Service name |
-| `backend.service.port.number` | `8080` | Service port (targets container port) |
+|入力フィールド |例 | | と一致する必要があります
+|--------------|--------|---------------|
+| `host` | `api.myrestapp.com` |クライアントが URL **および** TLS 証明書で使用する名前 SAN |
+| `path` | `/` または `/v1` | URL パスのプレフィックス |
+| `backend.service.name` | `rest-api` | Kubernetes サービス名 |
+| `backend.service.port.number` | `8080` |サービスポート (ターゲットコンテナポート) |
 
-Minimal Ingress (conceptual YAML):
+最小限のイングレス (概念的な YAML):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -148,11 +148,11 @@ spec:
                   number: 8080
 ```
 
-**cert-manager** often creates the `api-tls-cert` Secret and the **`_acme-challenge.api`** TXT record in public DNS during issuance.
+**cert-manager** は、発行時にパブリック DNS に `api-tls-cert` Secret と **`_acme-challenge.api`** TXT レコードを作成することがよくあります。
 
-### 5.4 End-to-end path (illustration)
+### 5.4 エンドツーエンドのパス (図)
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" role="img" aria-label="Public DNS through load balancer ingress service to pod">
+<figure class="notes-diagram"><svg xmlns="74 viewBox="0 0 520 280" role="img" aria-label="Public DNS through load balancer ingress service to pod">
   <defs>
     <marker id="net-iv-k8s-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#86efac"/></marker>
   </defs>
@@ -205,32 +205,32 @@ spec:
   <text x="24" y="258" fill="#a1a1aa" font-size="8">kubectl get ingress,svc · dig api.myrestapp.com · curl -v https://api.myrestapp.com/health</text>
 </svg></figure>
 
-### 5.5 Objects at a glance
+### 5.5 オブジェクトの概要
 
-| Layer | Kubernetes kind | Name (example) | DNS / addressing |
-|-------|-----------------|----------------|------------------|
-| Workload | Deployment | `rest-api` | — |
-| Network | Service | `rest-api` | `rest-api.default.svc.cluster.local` |
-| Routing | Ingress | `rest-api` | Needs **public** DNS → LB |
-| Entry | Service (LB) | `ingress-nginx-controller` | Cloud hostname for CNAME |
-| Config | Secret | `api-tls-cert` | TLS cert/key for Ingress |
+|レイヤー | Kubernetes の種類 |名前（例） | DNS / アドレス指定 |
+|------|---------------|----------------|---------------|
+|ワークロード |導入 | `rest-api` | — |
+|ネットワーク |サービス | `rest-api` | `rest-api.default.svc.cluster.local` |
+|ルーティング |イングレス | `rest-api` | **パブリック** DNS → LB が必要 |
+|エントリー |サービス (LB) | `ingress-nginx-controller` | CNAME のクラウド ホスト名 |
+|構成 |秘密 | `api-tls-cert` | Ingress の TLS 証明書/キー |
 
-### 5.6 Common mistakes
+### 5.6 よくある間違い
 
-| Symptom | Likely cause |
-|---------|--------------|
-| `curl: Could not resolve host` | Public DNS missing or wrong **Name** / **Points to** |
-| TLS cert name mismatch | Cert SAN ≠ URL host; fix Ingress `tls.hosts` or DNS name |
-| 404 from nginx ingress | Ingress `host` or `path` does not match request |
-| Works inside cluster, not outside | Used `rest-api.default.svc` URL from laptop — need public `api.myrestapp.com` |
-| DNS OK but connection refused | LB / firewall / Ingress controller Service not ready |
+|症状 |考えられる原因 |
+|----------|--------------|
+| `curl: Could not resolve host` |パブリック DNS が欠落しているか間違っています **名前** / **ポイント先** |
+| TLS 証明書名が一致しません |証明書 SAN ≠ URL ホスト。 Ingress `tls.hosts` または DNS 名を修正する |
+| nginx イングレスからの 404 |入力 `host` または `path` がリクエストと一致しません |
+|クラスタの外部ではなく内部で動作します。ラップトップから `rest-api.default.svc` URL を使用しました - 公開 `api.myrestapp.com` が必要 |
+| DNS は OK ですが接続が拒否されました | LB / ファイアウォール / Ingress コントローラー サービスの準備ができていません |
 
-Full REST + Hostinger + regional examples: **Part V — Ingress** [Ingress, edge, and load balancers](v-ingress-edge-and-load-balancers.md).
+フル REST + ホスティンガー + リージョンの例: **パート V — イングレス** [イングレス、エッジ、ロード バランサー](v-ingress-edge-and-load-balancers.md)。
 
-## 6. Operational footguns
+## 6. 運用可能なフットガン
 
-- **Stale cache** after IP changes.
-- **Split-horizon DNS** — different answers inside corp vs internet (debugging surprises).
-- **DNSSEC** — authenticity chain for DNS itself (adoption varies).
+- IP 変更後の **古いキャッシュ**。
+- **スプリットホライズン DNS** — 企業内とインターネットでは異なる答え (デバッグで驚くべきこと)。
+- **DNSSEC** — DNS 自体の信頼性チェーン (採用はさまざまです)。
 
-Next: **Ingress** and edge routing (HTTP routing on top of names and IPs).
+次: **Ingress** とエッジ ルーティング (名前と IP に基づく HTTP ルーティング)。

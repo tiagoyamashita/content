@@ -1,13 +1,14 @@
 ---
 label: "IV"
-subtitle: "Roles, variables & Vault"
+subtitle: "役割、変数、Vault"
 group: "CI/CD"
 order: 4
 ---
-Roles, variables & Vault
-**Roles** package reusable automation. **Variables** layer config per env. **Ansible Vault** encrypts secrets at rest in Git.
+役割、変数、Vault
 
-## 1. Role directory layout
+**ロール** パッケージの再利用可能な自動化。 **変数** 環境ごとのレイヤー構成。 **Ansible Vault** は、Git に保存されているシークレットを暗号化します。
+
+## 1. ロールディレクトリのレイアウト
 
 ```text
 roles/postgres/
@@ -21,7 +22,7 @@ roles/postgres/
   molecule/            ← optional test scenarios
 ```
 
-**postgres** role `tasks/main.yml`:
+**postgres** ロール `tasks/main.yml`:
 
 ```yaml
 ---
@@ -37,7 +38,7 @@ roles/postgres/
   notify: Restart postgres
 ```
 
-Use in playbook:
+プレイブックでの使用:
 
 ```yaml
 - hosts: dbservers
@@ -47,20 +48,20 @@ Use in playbook:
         postgres_version: "16"
 ```
 
-## 2. Variable precedence (low → high)
+## 2. 変数の優先順位 (低→高)
 
-| Priority | Source |
-|----------|--------|
-| 1 | Role `defaults/main.yml` |
-| 2 | Inventory `group_vars` / `host_vars` |
-| 3 | Play `vars:` |
-| 4 | Role `vars/main.yml` |
-| 5 | Task `vars:` |
-| 6 | `-e` / `--extra-vars` on CLI |
+|優先順位 |出典 |
+|----------|----------|
+| 1 |役割 `defaults/main.yml` |
+| 2 |在庫 `group_vars` / `host_vars` |
+| 3 |プレイ `vars:` |
+| 4 |役割 `vars/main.yml` |
+| 5 |タスク `vars:` |
+| 6 | CLI の `-e` / `--extra-vars` |
 
-**Rule of thumb:** defaults in role; environment overrides in `group_vars/staging/` vs `group_vars/production/`.
+**経験則:** はデフォルトで役割を果たします。環境は `group_vars/staging/` と `group_vars/production/` で上書きされます。
 
-## 3. group_vars structure
+## 3. group_vars 構造体
 
 ```text
 inventory/
@@ -89,7 +90,7 @@ jvm_opts: "-Xms2g -Xmx2g"
 
 ## 4. Ansible Vault
 
-Encrypt secrets in repo — decrypt at runtime with password or key file.
+リポジトリ内のシークレットを暗号化します。実行時にパスワードまたはキー ファイルを使用して復号化します。
 
 ```bash
 # Encrypt entire file
@@ -99,7 +100,7 @@ ansible-vault encrypt group_vars/production/secrets.yml
 ansible-vault encrypt_string 'SuperSecretDbPass' --name 'db_password'
 ```
 
-Encrypted file header:
+暗号化されたファイルヘッダー:
 
 ```yaml
 # group_vars/production/secrets.yml (encrypted)
@@ -107,7 +108,7 @@ $ANSIBLE_VAULT;1.1;AES256
 663864396538...
 ```
 
-Use in template (decrypted at runtime):
+テンプレートで使用します (実行時に復号化されます):
 
 ```yaml
 - name: Set DB password in app config
@@ -118,9 +119,9 @@ Use in template (decrypted at runtime):
     db_password: "{{ vault_db_password }}"
 ```
 
-Reference from `group_vars` with `_vault` prefix convention or include in encrypted vars file.
+`_vault` プレフィックス規則を使用して `group_vars` から参照するか、暗号化された vars ファイルに含めます。
 
-## 5. Running with Vault in CI
+## 5. CI で Vault を使用して実行する
 
 ```bash
 # Password file (Jenkins writes from credential)
@@ -132,9 +133,9 @@ ansible-playbook site.yml \
 ansible-playbook site.yml --ask-vault-pass
 ```
 
-Never commit vault password — store in Jenkins **Credentials** [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).
+ボールトのパスワードは決してコミットしないでください。Jenkins **認証情報** [Jenkins + Ansible パイプライン](vi-jenkins-ansible-pipelines.md) に保存します。
 
-## 6. Role dependencies
+## 6. 役割の依存関係
 
 ```yaml
 # roles/myapp/meta/main.yml
@@ -145,11 +146,11 @@ dependencies:
       nginx_port: 443
 ```
 
-Ansible runs dependencies before the role that declares them.
+Ansible は、依存関係を宣言するロールの前に依存関係を実行します。
 
 ## 7. ansible-galaxy
 
-Install community roles:
+コミュニティの役割をインストールします。
 
 ```bash
 ansible-galaxy install geerlingguy.java --roles-path roles
@@ -166,15 +167,15 @@ roles:
 ansible-galaxy install -r requirements.yml
 ```
 
-Pin versions in CI for reproducible builds.
+再現可能なビルドのために CI にバージョンを固定します。
 
-## 8. Anti-patterns
+## 8. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| Secrets in plain `group_vars` | Vault encrypt |
-| Copy-paste tasks across playbooks | Extract role |
-| `-e` for everything | Use inventory/group_vars |
-| Huge monolithic role | Split by concern (nginx, app, log) |
+|プレーンの秘密 `group_vars` |ボールトの暗号化 |
+| Playbook 間でタスクをコピーアンドペーストする |役割の抽出 |
+|すべての`-e` | inventory/group_vars を使用する |
+|巨大な一枚岩の役割 |懸念事項ごとに分割 (nginx、アプリ、ログ) |
 
-**Related:** [Inventory & playbooks](iii-inventory-and-playbooks.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).
+**関連:** [インベントリとプレイブック](iii-inventory-and-playbooks.md)、[秘密とOIDC](../security-and-best-practices/iii-secrets-and-oidc.md)。

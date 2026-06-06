@@ -1,31 +1,32 @@
 ---
 label: "VI"
-subtitle: "Pipeline observability & DORA"
+subtitle: "パイプラインの可観測性と DORA"
 group: "CI/CD"
 order: 6
 ---
-Pipeline observability & DORA
-A pipeline is a **distributed system** — measure it like production. **DORA metrics** link delivery speed to reliability.
+パイプラインの可観測性と DORA
 
-## 1. DORA four key metrics
+パイプラインは **分散システム** であり、本番環境と同様に測定します。 **DORA メトリクス** は配信速度と信頼性を結び付けます。
 
-| Metric | Measures | Better direction |
-|--------|----------|------------------|
-| **Deployment frequency** | How often you ship to prod | Higher (for mature teams) |
-| **Lead time for changes** | Commit → running in prod | Lower |
-| **Change failure rate** | % deploys causing incident/rollback | Lower |
-| **MTTR** | Mean time to restore after failure | Lower |
+## 1. DORA の 4 つの主要な指標
 
-Elite performers: deploy on demand, lead time under a day, CFR under 15%, MTTR under an hour — your targets depend on domain (bank vs SaaS).
+|メトリック |対策 |より良い方向へ |
+|----------|----------|----------|
+| **展開頻度** |本番環境に発送する頻度 |高レベル (成熟したチーム向け) |
+| **変更のリードタイム** |コミット→本番環境で実行 |下 |
+| **失敗率の変更** | % デプロイによりインシデント/ロールバックが発生します |下 |
+| **MTTR** |障害後の平均復元時間 |下 |
 
-## 2. Mapping metrics to CI/CD data
+エリート パフォーマー: オンデマンドでのデプロイ、1 日未満のリードタイム、15% 未満の CFR、1 時間未満の MTTR — 目標はドメイン (銀行か SaaS) によって異なります。
 
-| DORA metric | CI/CD signal |
-|-------------|--------------|
-| Deployment frequency | Deploy workflow runs on `main` / prod tag |
-| Lead time | `commit timestamp` → `deploy job end` |
-| Change failure rate | Deploy followed by rollback or hotfix within 24h |
-| MTTR | Incident open → prod restored (PagerDuty + deploy log) |
+## 2. CI/CD データへのメトリクスのマッピング
+
+| DORA メトリック | CI/CD信号 |
+|---------------|--------------|
+|導入頻度 |デプロイワークフローは `main` / prod タグで実行されます |
+|リードタイム | `commit timestamp` → `deploy job end` |
+|故障率の変更 |導入後、24 時間以内にロールバックまたはホットフィックスを実行 |
+| MTTR |インシデントオープン → 本番環境が復元 (PagerDuty + デプロイログ) |
 
 ```yaml
 # Tag deploy job for analytics
@@ -39,31 +40,31 @@ deploy:
         echo "deploy_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
 ```
 
-Export to data warehouse (BigQuery, Snowflake) or tools like **Haystack**, **LinearB**, **Swarmia**.
+データ ウェアハウス (BigQuery、Snowflake) または **Haystack**、**LinearB**、**Swarmia** などのツールにエクスポートします。
 
-## 3. Pipeline health metrics
+## 3. パイプラインの健全性メトリクス
 
-| Metric | Why track |
-|--------|-----------|
-| **P50 / P95 duration** | Catch slowdowns from deps or cache miss |
-| **Queue time** | Runner capacity planning |
-| **Cache hit rate** | Cost and speed |
-| **Flaky test rate** | Quality debt |
-| **Failure rate by stage** | Where to invest |
+|メトリック |なぜ追跡するのか |
+|----------|----------|
+| **P50 / P95 の期間** | deps またはキャッシュミスによる速度低下をキャッチ |
+| **待ち時間** |ランナーのキャパシティ プランニング |
+| **キャッシュ ヒット率** |コストとスピード |
+| **不安定なテスト率** |質の高い負債 |
+| **段階別の故障率** |どこに投資するか |
 
 ```yaml
 # GitHub — job timing in summary
 - run: echo "duration=${SECONDS}s" >> $GITHUB_STEP_SUMMARY
 ```
 
-## 4. Alerting
+## 4. アラート
 
-| Alert | Channel | Severity |
-|-------|---------|----------|
-| `main` pipeline failed | Slack `#ci-alerts` | High |
-| Prod deploy failed | PagerDuty | Critical |
-| Nightly security scan CVE | Slack + ticket | Medium |
-| P95 duration > 2× baseline | Slack | Low |
+|警告 |チャンネル |重大度 |
+|----------|-----------|----------|
+| `main` パイプラインが失敗しました |スラック `#ci-alerts` |高 |
+|本番環境のデプロイに失敗しました | PagerDuty |クリティカル |
+|夜間のセキュリティ スキャン CVE | Slack + チケット |中 |
+| P95 持続時間 > ベースラインの 2 倍 |スラック |低い |
 
 ```yaml
 - name: Notify on failure
@@ -74,11 +75,11 @@ Export to data warehouse (BigQuery, Snowflake) or tools like **Haystack**, **Lin
       {"text": "Main CI failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}
 ```
 
-Avoid alert fatigue — page only on **prod path** failures.
+アラート疲労を回避します — **本番パス** の失敗に関するページのみを表示します。
 
-## 5. OpenTelemetry tracing
+## 5. OpenTelemetry トレース
 
-Instrument custom steps for distributed trace:
+分散トレースのカスタム ステップを計測します。
 
 ```yaml
 - name: Run integration tests
@@ -89,32 +90,32 @@ Instrument custom steps for distributed trace:
     otel-cli exec -- mvn -Pintegration verify
 ```
 
-View spans in **Honeycomb**, **Grafana Tempo**, or **Jaeger** — compare slow runs side by side.
+**Honeycomb**、**Grafana Tempo**、または **Jaeger** でスパンを表示し、遅い実行を並べて比較します。
 
-## 6. Dashboard example (what to chart)
+## 6. ダッシュボードの例 (何をグラフ化するか)
 
-| Panel | Query idea |
-|-------|------------|
-| Deploys / week | Count prod deploy events |
-| Lead time trend | Median commit→deploy hours |
-| CI duration P95 | Job end − job start by workflow |
-| Main branch success % | Green runs / total runs |
-| Queue depth | Pending jobs on self-hosted pool |
+|パネル |クエリのアイデア |
+|------|-----------|
+|デプロイ/週 |製品デプロイ イベントを数える |
+|リードタイムの​​傾向 |コミット→デプロイ時間の中央値 |
+| CI期間 P95 |ワークフローによるジョブ終了 - ジョブ開始 |
+|メインブランチの成功率 % |緑のラン / 総ラン |
+|キューの深さ |自己ホスト型プール上の保留中のジョブ |
 
-## 7. CI vs CD observability
+## 7. CI と CD の可観測性
 
-| Phase | Focus |
-|-------|-------|
-| **CI** (build/test) | Fast feedback, flake detection, cache |
-| **CD** (deploy) | DORA metrics, rollback time, blast radius |
+|フェーズ |フォーカス |
+|------|------|
+| **CI** (ビルド/テスト) |高速フィードバック、フレーク検出、キャッシュ |
+| **CD** (展開) | DORA メトリクス、ロールバック時間、爆発範囲 |
 
-Connect CI green to CD deploy — a green build that never deploys still hurts **lead time**.
+CI グリーンを CD デプロイに接続します。グリーン ビルドがデプロイされない場合でも、**リード タイム**はかかります。
 
-## 8. Rehearsal answers
+## 8. リハーサルの答え
 
-- **Lead time** — time from code commit to production.
-- **Change failure rate** — not unit test failure rate; deploys that hurt users.
-- **Why trace CI?** — Find which stage regressed when total time doubles.
-- **MTTR** — includes detection, fix, and redeploy.
+- **リードタイム** — コードのコミットから本番までの時間。
+- **変更失敗率** — 単体テストの失敗率ではありません。ユーザーに損害を与えるデプロイ。
+- **CI をトレースする理由** — 合計時間が 2 倍になったときにどのステージが後退したかを調べます。
+- **MTTR** — 検出、修正、再展開が含まれます。
 
-**Related:** [Testing strategy](v-testing-strategy.md), [Release gates & rollbacks](vii-release-gates-and-rollbacks.md), Part I fundamentals.
+**関連:** [テスト戦略](v-testing-strategy.md)、[ゲートとロールバックのリリース](vii-release-gates-and-rollbacks.md)、パート I の基礎。
