@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "Relational (SQL)"
-group: "Databases"
+subtitle: "リレーショナル (SQL)"
+group: "データベース"
 order: 2
 ---
-Relational databases (SQL)
-**Relational** databases store data in **tables** (relations): rows with typed **columns**, linked by **keys**. You query with **SQL** — declarative **SELECT**, **JOIN**, **GROUP BY** — and rely on **ACID transactions** when several rows or tables must change together.
+リレーショナル データベース (SQL)
 
-## 1. Data model
+**リレーショナル** データベースは、**テーブル** (リレーション) にデータを保存します。これは、**キー** によってリンクされた、型指定された**列**を持つ行です。 **SQL** (宣言型 **SELECT**、**JOIN**、**GROUP BY**) を使用してクエリを実行し、複数の行またはテーブルを同時に変更する必要がある場合は **ACID トランザクション** に依存します。
+
+## 1. データモデル
 
 ```text
 users                          orders
@@ -21,16 +22,16 @@ users                          orders
          └──────── foreign key ──────────┘
 ```
 
-| Concept | Role |
-|---------|------|
-| **Primary key (PK)** | Unique row id (`id`) |
-| **Foreign key (FK)** | References another table’s PK (`orders.user_id → users.id`) |
-| **Constraint** | `NOT NULL`, `UNIQUE`, `CHECK`, `REFERENCES` — enforced by the DB |
-| **Schema** | Table definitions fixed at DDL time (migrations in apps) |
+|コンセプト |役割 |
+|-------|------|
+| **主キー (PK)** |一意の行 ID (`id`) |
+| **外部キー (FK)** |別のテーブルの PK (`orders.user_id → users.id`) を参照します。
+| **制約** | `NOT NULL`、`UNIQUE`、`CHECK`、`REFERENCES` — DB によって強制されます。
+| **スキーマ** | DDL 時にテーブル定義を修正 (アプリでの移行) |
 
-## 2. SQL in one pass
+## 2. 1 パスの SQL
 
-**DDL** — define structure:
+**DDL** — 構造体を定義します。
 
 ```sql
 CREATE TABLE users (
@@ -47,7 +48,7 @@ CREATE TABLE orders (
 );
 ```
 
-**DML** — read/write:
+**DML** — 読み取り/書き込み:
 
 ```sql
 INSERT INTO users (name, email) VALUES ('Ada', 'ada@example.com');
@@ -62,16 +63,16 @@ UPDATE orders SET status = 'shipped' WHERE id = 10;
 DELETE FROM orders WHERE status = 'cancelled' AND created_at < NOW() - INTERVAL '90 days';
 ```
 
-**JOIN** combines tables on a key — the main reason to pick SQL when entities relate many-to-many.
+**JOIN** はキーに基づいてテーブルを結合します。これが、エンティティが多対多の関係にある場合に SQL を選択する主な理由です。
 
-## 3. ACID transactions
+## 3. ACID トランザクション
 
-| Property | Meaning |
-|----------|---------|
-| **Atomicity** | All statements in a transaction commit or all roll back |
-| **Consistency** | Constraints hold after commit |
-| **Isolation** | Concurrent transactions don’t corrupt each other’s view (levels: Read Committed, Repeatable Read, Serializable) |
-| **Durability** | Committed data survives crash (WAL + fsync) |
+|プロパティ |意味 |
+|----------|----------|
+| **原子性** |トランザクション内のすべてのステートメントがコミットされるか、すべてロールバックされます。
+| **一貫性** |コミット後に制約が保持される |
+| **孤立** |同時トランザクションは互いのビューを破壊しません (レベル: コミット読み取り、反復読み取り、シリアル化可能) |
+| **耐久性** |コミットされたデータはクラッシュしても存続します (WAL + fsync) |
 
 ```sql
 BEGIN;
@@ -81,7 +82,7 @@ COMMIT;
 -- ROLLBACK; if anything fails
 ```
 
-Application code (JDBC / Spring) wraps the same boundary:
+アプリケーション コード (JDBC / Spring) は同じ境界をラップします。
 
 ```java
 // Compile: javac --release 22 …
@@ -97,63 +98,63 @@ try {
 }
 ```
 
-## 4. Indexes and query plans
+## 4. インデックスとクエリ プラン
 
-Without an index, **`WHERE email = ?`** scans every row (**O(n)**). A **B-tree** index on `email` makes point lookups roughly **O(log n)**.
+インデックスを使用しない場合、**`WHERE email = ?`** はすべての行 (**O(n)**) をスキャンします。 `email` の **B ツリー** インデックスは、おおよそ **O(log n)** でポイント検索を行います。
 
 ```sql
 CREATE INDEX idx_users_email ON users (email);
 EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'ada@example.com';
 ```
 
-Rules of thumb:
+経験則:
 
-- Index columns in **WHERE**, **JOIN**, **ORDER BY** predicates you use often.
-- Too many indexes slow **INSERT/UPDATE** (each index must update).
-- **Composite index** `(user_id, status)` helps `WHERE user_id = ? AND status = ?`.
+- よく使用する **WHERE**、**JOIN**、**ORDER BY** 述語の列にインデックスを付けます。
+- インデックスが多すぎると **INSERT/UPDATE** が遅くなります (各インデックスを更新する必要があります)。
+- **複合インデックス** `(user_id, status)` は `WHERE user_id = ? AND status = ?` に役立ちます。
 
-## 5. Normalization (why multiple tables)
+## 5. 正規化 (なぜ複数のテーブルがあるのか​​)
 
-| Normal form | Idea |
-|-------------|------|
-| **1NF** | Atomic columns (no repeating groups) |
-| **2NF** | No partial dependency on composite PK |
-| **3NF** | No non-key column depends on another non-key column |
+|標準形 |アイデア |
+|---------------|------|
+| **1NF** |アトミック列 (繰り返しグループなし) |
+| **2NF** |複合 PK への部分的な依存性はありません |
+| **3NF** |非キー列は別の非キー列に依存しません。
 
-**Denormalization** — duplicate data on purpose — trades storage and update complexity for read speed (common in analytics, rare in OLTP until measured need).
+**非正規化** - 意図的にデータを重複させる - ストレージと更新の複雑さを引き換えに読み取り速度を実現します (分析では一般的ですが、OLTP では必要性が確認されるまではまれです)。
 
-## 6. Strengths and limits
+## 6. 強みと限界
 
-**Strengths**
+**強み**
 
-- Flexible **ad-hoc queries** and **JOINs**
-- Strong **integrity** (FK, constraints)
-- Mature **transactions**, backups, tooling
+- 柔軟な **アドホック クエリ** および **JOIN**
+- 強力な**整合性** (FK、制約)
+- 成熟した**トランザクション**、バックアップ、ツール
 
-**Limits**
+**制限**
 
-- **Scale-out writes** on one giant table is hard (sharding is manual or via NewSQL)
-- **Schema migrations** slow very rapid shape churn (document DBs compete here)
-- **Graph traversal** many hops — possible in SQL with recursive CTEs but awkward at huge scale
+- 1 つの巨大なテーブルに対する **スケールアウト書き込み** は困難です (シャーディングは手動または NewSQL 経由で行われます)
+- **スキーマの移行**により、非常に急速な形状の変化が遅くなります (ドキュメント DB がここで競合します)
+- **グラフ トラバーサル** 多くのホップ - 再帰的 CTE を使用する SQL では可能ですが、大規模な場合は扱いにくい
 
-## 7. When to choose relational
+## 7. リレーショナルを選択する場合
 
-- Orders, billing, inventory, accounts — money and invariants matter
-- Many entity types with **many-to-many** relationships
-- Reporting needs unpredictable **JOIN** / **GROUP BY**
-- Team already standardizes on **PostgreSQL** / **MySQL**
+- 注文、請求、在庫、アカウント — お金と不変条件が重要
+- **多対多**の関係を持つ多くのエンティティ タイプ
+- レポートには予測不可能な **JOIN** / **GROUP BY** が必要です
+- チームはすでに **PostgreSQL** / **MySQL** を標準化しています
 
-## 8. Examples
+## 8. 例
 
-| Engine | Typical use |
-|--------|-------------|
-| **PostgreSQL** | General-purpose, JSON columns, extensions |
-| **MySQL / MariaDB** | Web apps, LAMP stacks |
-| **SQLite** | Embedded, mobile, tests, single-file |
-| **SQL Server** | Enterprise Windows/.NET stacks |
+|エンジン |一般的な使用法 |
+|----------|---------------|
+| **PostgreSQL** |汎用、JSON 列、拡張機能 |
+| **MySQL / MariaDB** | Web アプリ、LAMP スタック |
+| **SQLite** |組み込み、モバイル、テスト、単一ファイル |
+| **SQL サーバー** |エンタープライズ Windows/.NET スタック |
 
-## 9. Related
+## 9. 関連
 
-- **Overview** — [Databases overview](i-overview.md)
-- **Document** — when nested JSON beats wide normalization [Document](iv-document.md)
-- **Hash table** — hash indexes vs B-trees (Data structures submenu)
+- **概要** — [データベースの概要](i-overview.md)
+- **ドキュメント** — ネストされた JSON が広範な正規化に勝る場合 [ドキュメント](iv-document.md)
+- **ハッシュ テーブル** — ハッシュ インデックスと B ツリー (データ構造サブメニュー)

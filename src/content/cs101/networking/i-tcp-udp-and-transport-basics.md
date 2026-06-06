@@ -1,21 +1,21 @@
 ---
 label: "I"
-subtitle: "TCP, UDP, and transport basics"
-group: "Networking"
+subtitle: "TCP、UDP、トランスポートの基本"
+group: "ネットワーキング"
 order: 1
 ---
-Networking — Part I: TCP, UDP, and transport basics
+ネットワーキング — パート I: TCP、UDP、およびトランスポートの基本
 
-How applications send bytes across a network: addressing, ports, and the two dominant transport protocols.
+アプリケーションがネットワーク上でバイトを送信する方法: アドレス指定、ポート、および 2 つの主要なトランスポート プロトコル。
 
-## 1. Addresses and ports
+## 1. アドレスとポート
 
-- **IP address** (IPv4 or IPv6) identifies a **host** on a network.
-- **Port** (0–65535) identifies an **application or service** on that host. Together **IP:port** is a socket endpoint clients use to reach a server.
+- **IP アドレス** (IPv4 または IPv6) は、ネットワーク上の **ホスト** を識別します。
+- **ポート** (0 ～ 65535) は、そのホスト上の **アプリケーションまたはサービス**を識別します。 **IP:port** は、クライアントがサーバーにアクセスするために使用するソケット エンドポイントです。
 
-Without ports, the OS could not demultiplex which process should receive incoming traffic.
+ポートがないと、OS はどのプロセスが受信トラフィックを受信するかを逆多重化できません。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="One host IP with multiple processes on different ports; client targets a specific IP port pair">
+<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 440 200" role="img" aria-label="One host IP with multiple processes on different ports; client targets a specific IP port pair">
   <defs>
     <marker id="net-i-port-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#86efac"/></marker>
   </defs>
@@ -37,19 +37,19 @@ Without ports, the OS could not demultiplex which process should receive incomin
   <text x="12" y="182" fill="#71717a" font-size="10">OS routes by destination port → correct process (demultiplexing).</text>
 </svg></figure>
 
-## 2. UDP — User Datagram Protocol
+## 2. UDP — ユーザー データグラム プロトコル
 
-**Characteristics**
+**特徴**
 
-- **Connectionless:** no setup handshake; you send datagrams when ready.
-- **Unreordered / best-effort:** no built-in retransmission or ordering guarantees (applications can add their own).
-- **Small header, low latency:** good for DNS queries, VoIP, gaming, metrics where occasional loss is acceptable.
+- **コネクションレス:** セットアップ ハンドシェイクはありません。準備ができたらデータグラムを送信します。
+- **再順序付けなし / ベストエフォート:** 再送信または順序付けの保証は組み込まれていません (アプリケーションは独自の保証を追加できます)。
+- **ヘッダーが小さく、遅延が少ない:** DNS クエリ、VoIP、ゲーム、時折損失が許容されるメトリクスに適しています。
 
-**When to choose UDP**
+**UDP を選択する場合**
 
-- You need **low latency** and can tolerate loss, or you implement your own reliability (e.g. QUIC builds on UDP).
+- **低レイテンシー**が必要で、損失を許容できるか、独自の信頼性を実装している場合 (例: UDP 上に構築された QUIC)。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 176" role="img" aria-label="UDP sends independent datagrams with no handshake; one may be lost or arrive out of order">
+<figure class="notes-diagram"><svg xmlns="1 viewBox="0 0 440 176" role="img" aria-label="UDP sends independent datagrams with no handshake; one may be lost or arrive out of order">
   <defs>
     <marker id="net-i-udp-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#a1a1aa"/></marker>
     <marker id="net-i-udp-lost" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#f87171"/></marker>
@@ -73,21 +73,21 @@ Without ports, the OS could not demultiplex which process should receive incomin
   <text x="12" y="168" fill="#71717a" font-size="10">No connection state; no automatic retry or ordering.</text>
 </svg></figure>
 
-## 3. TCP — Transmission Control Protocol
+## 3. TCP — 伝送制御プロトコル
 
-**Characteristics**
+**特徴**
 
-- **Connection-oriented:** a **three-way handshake** establishes state before application data (in the classic model).
-- **Reliable, ordered byte stream:** retransmissions, sequencing, flow control, congestion control.
-- **Full duplex:** both sides can send after the connection is up.
+- **接続指向:** **3 ウェイ ハンドシェイク** により、アプリケーション データの前に状態が確立されます (クラシック モデルの場合)。
+- **信頼性の高い、順序付けられたバイト ストリーム:** 再送信、シーケンス、フロー制御、輻輳制御。
+- **全二重:** 接続が確立された後、双方が送信できます。
 
-**Rough three-way handshake (simplified)**
+**ラフなスリーウェイ ハンドシェイク (簡易)**
 
-1. Client sends **SYN** (synchronize sequence numbers).
-2. Server replies **SYN-ACK**.
-3. Client sends **ACK** — connection considered established for data transfer (details vary by stack and TCP options).
+1. クライアントは **SYN** (シーケンス番号を同期) を送信します。
+2. サーバーは **SYN-ACK** を応答します。
+3. クライアントは **ACK** を送信します — データ転送のために確立された接続とみなされます (詳細はスタックと TCP オプションによって異なります)。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" role="img" aria-label="TCP three-way handshake SYN SYN-ACK ACK then bidirectional data stream">
+<figure class="notes-diagram"><svg xmlns="2 viewBox="0 0 440 220" role="img" aria-label="TCP three-way handshake SYN SYN-ACK ACK then bidirectional data stream">
   <defs>
     <marker id="net-i-tcp-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#86efac"/></marker>
     <marker id="net-i-tcp-l" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto"><path d="M7 0 L0 3.5 L7 7 Z" fill="#60a5fa"/></marker>
@@ -112,11 +112,11 @@ Without ports, the OS could not demultiplex which process should receive incomin
   <text x="12" y="212" fill="#71717a" font-size="10">Kernel buffers reorder, retransmit, and pace sends — app sees one ordered byte stream.</text>
 </svg></figure>
 
-**When to choose TCP**
+**TCP を選択する場合**
 
-- **HTTP/1.1 and HTTP/2** historically sat on TCP; you want the stack to handle loss and ordering for a byte stream.
+- **HTTP/1.1 と HTTP/2** は歴史的に TCP 上にありました。スタックがバイト ストリームの損失と順序付けを処理できるようにする必要があります。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="TCP vs UDP comparison">
+<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 440 120" role="img" aria-label="TCP vs UDP comparison">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">TCP vs UDP at a glance</text>
   <rect x="12" y="30" width="200" height="78" rx="5" fill="rgba(34,197,94,0.08)" stroke="#86efac"/>
   <text x="24" y="50" fill="#86efac" font-size="11" font-weight="600">TCP</text>
@@ -130,11 +130,11 @@ Without ports, the OS could not demultiplex which process should receive incomin
   <text x="240" y="96" fill="#71717a" font-size="9">DNS, VoIP, gaming, QUIC base</text>
 </svg></figure>
 
-## 4. Sockets (conceptual)
+## 4. ソケット (概念的)
 
-A **socket** is the API boundary your program uses: bind/listen/accept on servers, connect/send/recv on clients. The kernel ties sockets to **protocol** (TCP or UDP), **local** and **remote** IP/port pairs, and buffers.
+**ソケット** は、プログラムが使用する API 境界です。サーバーではバインド/リッスン/受け入れ、クライアントでは接続/送信/受信します。カーネルは、ソケットを **プロトコル** (TCP または UDP)、**ローカル** および **リモート** の IP/ポート ペア、およびバッファーに結び付けます。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 188" role="img" aria-label="Server bind listen accept and client connect socket flow">
+<figure class="notes-diagram"><svg xmlns="4 viewBox="0 0 440 188" role="img" aria-label="Server bind listen accept and client connect socket flow">
   <defs>
     <marker id="net-i-sock-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#a1a1aa"/></marker>
   </defs>
@@ -157,17 +157,17 @@ A **socket** is the API boundary your program uses: bind/listen/accept on server
   <text x="12" y="182" fill="#71717a" font-size="10">accept() returns a connected socket per client; listen socket stays open.</text>
 </svg></figure>
 
-## 5. Mental model for what follows
+## 5. 以下のメンタルモデル
 
-| Layer (conceptual) | Examples |
-|--------------------|----------|
-| Transport | TCP, UDP, ports |
-| Application | HTTP, TLS, DNS message format |
-| Security on the wire | TLS (often “on top of” TCP) |
-| Naming | DNS maps names → addresses |
-| Edge / cluster | Ingress, load balancers, reverse proxies |
+|レイヤー (概念的) |例 |
+|---------------------|----------|
+|輸送 | TCP、UDP、ポート |
+|アプリケーション | HTTP、TLS、DNS メッセージ形式 |
+|ネットワーク上のセキュリティ | TLS (多くの場合、TCP の「上に」) |
+|ネーミング | DNS マップ名 → アドレス |
+|エッジ/クラスター | Ingress、ロードバランサー、リバースプロキシ |
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 224" role="img" aria-label="Networking stack layers from application down to transport">
+<figure class="notes-diagram"><svg xmlns="5 viewBox="0 0 440 224" role="img" aria-label="Networking stack layers from application down to transport">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Where this note sits in the stack</text>
   <rect x="80" y="32" width="280" height="32" rx="4" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
   <text x="108" y="52" fill="#e4e4e7" font-size="10">Edge — ingress, load balancer, reverse proxy</text>
@@ -185,4 +185,4 @@ A **socket** is the API boundary your program uses: bind/listen/accept on server
   <text x="368" y="166" fill="#71717a" font-size="9">Part II</text>
 </svg></figure>
 
-Next: **HTTP** (application semantics), then **TLS** (encryption and identity on the wire).
+次: **HTTP** (アプリケーション セマンティクス)、次に **TLS** (ネットワーク上の暗号化と ID)。
