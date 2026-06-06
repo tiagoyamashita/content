@@ -5,7 +5,7 @@ group: "CI/CD"
 order: 6
 ---
 Jenkins + Ansible pipelines
-**Jenkins** builds and tests; a **Deploy** stage invokes **`ansible-playbook`**. General Jenkins CI patterns (Docker agents, Shared Libraries) live in **`tools-and-platforms/iv-jenkins.md`**.
+**Jenkins** builds and tests; a **Deploy** stage invokes **`ansible-playbook`**. General Jenkins CI patterns (Docker agents, Shared Libraries) live in **[Jenkins](../tools-and-platforms/iv-jenkins.md)**.
 
 ## 1. Responsibility split
 
@@ -185,7 +185,7 @@ pipeline {
 }
 ```
 
-Matches runner segmentation in `../security-and-best-practices/iv-least-privilege-runners.md`.
+Matches runner segmentation in [Least-privilege runners](../security-and-best-practices/iv-least-privilege-runners.md).
 
 ## 6. Multibranch + inventory per env
 
@@ -204,4 +204,4 @@ Matches runner segmentation in `../security-and-best-practices/iv-least-privileg
 | Host unreachable | Security group, VPN, deploy agent network |
 | `changed=0` but app old | Wrong `app_version` extra-var |
 
-**Related:** `../tools-and-platforms/iv-jenkins.md`, `vii-deploy-patterns-and-operations.md`.
+**Related:** [Jenkins](../tools-and-platforms/iv-jenkins.md), [Deploy patterns & operations](vii-deploy-patterns-and-operations.md).

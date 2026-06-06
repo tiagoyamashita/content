@@ -58,7 +58,7 @@ public class DemoApplication {
 
 ## 3. Configuration (`application.yml`)
 
-Point every instance at the **same** Redis (or cluster). Use env vars in prod (see **Part II** — `ii-yaml-and-external-config.md`).
+Point every instance at the **same** Redis (or cluster). Use env vars in prod (see **Part II** — [YAML & external config](ii-yaml-and-external-config.md)).
 
 ```yaml
 spring:
@@ -239,7 +239,7 @@ For **`app.cache.enabled=false`**, use **`spring.cache.type=none`** or a **`NoOp
 
 ## 10. Related notes
 
-- **YAML & config** — Part II (`ii-yaml-and-external-config.md`)
-- **Beans & profiles** — Part III (`iii-beans-and-dependency-injection.md`)
-- **JPA & transactions** — Part V (`v-jpa-and-transactional.md`) — cache sits **outside** the DB transaction; evict **after** successful commit when consistency matters
-- **Security** — `security-basics-and-filter-chain.md` (Redis passwords, TLS, network exposure)
+- **YAML & config** — Part II [YAML & external config](ii-yaml-and-external-config.md)
+- **Beans & profiles** — Part III [Beans & dependency injection](iii-beans-and-dependency-injection.md)
+- **JPA & transactions** — Part V [JPA & @Transactional](v-jpa-and-transactional.md) — cache sits **outside** the DB transaction; evict **after** successful commit when consistency matters
+- **Security** — [Basics & filter chain](security-basics-and-filter-chain.md) (Redis passwords, TLS, network exposure)

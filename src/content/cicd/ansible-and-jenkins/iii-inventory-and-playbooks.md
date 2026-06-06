@@ -182,7 +182,7 @@ Built-in facts like **`ansible_hostname`**, **`ansible_default_ipv4`** come from
 ansible-playbook playbooks/site.yml --tags deploy
 ```
 
-Jenkins uses `--tags deploy` for fast redeploys (`vi-jenkins-ansible-pipelines.md`).
+Jenkins uses `--tags deploy` for fast redeploys [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).
 
 ## 8. Ad-hoc commands
 
@@ -194,4 +194,4 @@ ansible webservers -i inventory/staging.ini -b -m service -a "name=nginx state=r
 ansible webservers -i inventory/staging.ini -m setup
 ```
 
-**Related:** `iv-roles-variables-and-vault.md`, `vii-deploy-patterns-and-operations.md`.
+**Related:** [Roles, variables & Vault](iv-roles-variables-and-vault.md), [Deploy patterns & operations](vii-deploy-patterns-and-operations.md).

@@ -131,4 +131,4 @@ CircleCI caches **`~/.npm`**, **`~/.m2`**, **`~/.gradle`** keyed by checksum of 
 | Polyrepo with shared orbs | Already all-in on GitHub Actions |
 | Teams wanting SaaS without self-host Jenkins | Strict on-prem only |
 
-**Related:** `viii-choosing-a-platform.md`, `v-docker-in-ci.md`.
+**Related:** [Choosing a platform](viii-choosing-a-platform.md), [Docker in CI](v-docker-in-ci.md).

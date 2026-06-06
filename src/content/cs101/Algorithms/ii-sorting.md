@@ -100,7 +100,7 @@ private static int partition(int[] a, int lo, int hi) {
 1. **Build** a max-heap in the array (**O(n)** bottom-up).
 2. Repeatedly swap root with last unsorted position and **sink** root — **O(log n)** per step → **O(n log n)** total.
 
-Uses the **binary heap** ADT (`viii-binary-heap.md`); **in-place** if you heapify the array itself.
+Uses the **binary heap** ADT [Binary heap](../data-structures/viii-binary-heap.md); **in-place** if you heapify the array itself.
 
 ## 5. When to use which
 - **General purpose in Java:** `Arrays.sort`.
@@ -142,4 +142,4 @@ for (int x : a) {
 | Custom order | `Comparator.comparing`, `comparingInt`, `reverseOrder` |
 | Only k largest / smallest | `PriorityQueue` size **k** |
 
-More examples: **`xi-solving-with-the-jdk.md`**.
+More examples: **[Solving with the JDK](xi-solving-with-the-jdk.md)**.

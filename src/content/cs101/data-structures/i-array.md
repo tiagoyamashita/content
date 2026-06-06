@@ -13,7 +13,7 @@ Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the 
 
 - **Strengths:** random access, cache-friendly scans, simple layout.
 - **Limits:** fixed length (static array); inserting in the middle requires shifting **O(n)** elements to keep indices dense.
-- **Related:** see **Dynamic array** in this submenu for growable vectors; the full complexity and ADT context live in **Level I — Foundations** (`i-foundations.md`).
+- **Related:** see **Dynamic array** in this submenu for growable vectors; the full complexity and ADT context live in **Level I — Foundations** [Foundations](../i-foundations.md).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
   <defs>

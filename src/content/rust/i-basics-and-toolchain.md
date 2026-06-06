@@ -309,4 +309,4 @@ fn label(status: OrderStatus) -> &'static str {
 - **`mod foo;`** pulls in **`foo.rs`** or **`foo/mod.rs`**. Items are private to their parent by default; **`pub`** exposes them.
 - A **binary crate** runs **`main`**; a **library crate** exports **`pub`** items for other crates (see **Part II** — Cargo & shareable crates).
 
-Next: **Part II** — **Cargo**, library crates, workspaces (`ii-cargo-and-shareable-crates.md`). **Part III** — practice with **[Rustlings](https://rustlings.rust-lang.org/)** (`iii-learn-with-rustlings.md`). Later notes can deepen **lifetimes**, **iterators**, and **error handling** on real crate boundaries.
+Next: **Part II** — **Cargo**, library crates, workspaces [Cargo & shareable crates](ii-cargo-and-shareable-crates.md). **Part III** — practice with **[Rustlings](https://rustlings.rust-lang.org/)** [Learn with Rustlings](iii-learn-with-rustlings.md). Later notes can deepen **lifetimes**, **iterators**, and **error handling** on real crate boundaries.

@@ -117,4 +117,4 @@ Connect CI green to CD deploy — a green build that never deploys still hurts *
 - **Why trace CI?** — Find which stage regressed when total time doubles.
 - **MTTR** — includes detection, fix, and redeploy.
 
-**Related:** `v-testing-strategy.md`, `vii-release-gates-and-rollbacks.md`, Part I fundamentals.
+**Related:** [Testing strategy](v-testing-strategy.md), [Release gates & rollbacks](vii-release-gates-and-rollbacks.md), Part I fundamentals.

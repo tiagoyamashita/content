@@ -152,7 +152,7 @@ ansible-playbook deploy.yml --tags deploy
 
 ## 7. Integration with release gates
 
-Align with `../security-and-best-practices/vii-release-gates-and-rollbacks.md`:
+Align with [Release gates & rollbacks](../security-and-best-practices/vii-release-gates-and-rollbacks.md):
 
 - Jenkins **`input`** before production playbook
 - Deploy **`app_version=${BUILD_NUMBER}`** or git SHA — immutable reference
@@ -175,4 +175,4 @@ Align with `../security-and-best-practices/vii-release-gates-and-rollbacks.md`:
 - **Vault from Jenkins** — `credentials('ansible-vault-pass')` + `--vault-password-file`.
 - **postgres role layout** — `tasks/`, `handlers/`, `templates/`, `defaults/`, `vars/`, `meta/`.
 
-**Related:** `vi-jenkins-ansible-pipelines.md`, `iii-inventory-and-playbooks.md`.
+**Related:** [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md), [Inventory & playbooks](iii-inventory-and-playbooks.md).

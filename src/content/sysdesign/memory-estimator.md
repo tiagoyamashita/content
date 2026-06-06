@@ -7,7 +7,7 @@ System Design — Memory Estimation (interactive)
 
 Use the **graph in Preview mode** to drag sliders for session size, node count, and RAM per node.
 
-**Full write-up** — formulas, concurrency tables, worked scenarios, and diagrams: **`mem-memory-estimator.md`**.
+**Full write-up** — formulas, concurrency tables, worked scenarios, and diagrams: **[Memory Estimator](mem-memory-estimator.md)**.
 
 ## Quick reference
 

@@ -59,4 +59,4 @@ Design APIs so **critical path** minimizes cross-region hops.
 
 Offload **static** and **cacheable API** responses — see scalable patterns CDN note.
 
-**Related:** Networking track (TCP, HTTP, TLS), `vii-application-level.md` (timeouts, circuit breakers).
+**Related:** Networking track (TCP, HTTP, TLS), [Application-level](vii-application-level.md) (timeouts, circuit breakers).

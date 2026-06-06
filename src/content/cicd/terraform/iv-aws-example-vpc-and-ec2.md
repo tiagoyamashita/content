@@ -198,6 +198,6 @@ Plan: 8 to add, 0 to change, 0 to destroy.
 terraform destroy
 ```
 
-Destroys all resources in state for this root module. Use separate state per environment so destroying dev does not touch prod (`v-state-and-remote-backends.md`).
+Destroys all resources in state for this root module. Use separate state per environment so destroying dev does not touch prod [State & remote backends](v-state-and-remote-backends.md).
 
-**Related:** `iii-hcl-resources-and-variables.md`, `vi-modules-and-environments.md`.
+**Related:** [HCL, resources & variables](iii-hcl-resources-and-variables.md), [Modules & environments](vi-modules-and-environments.md).

@@ -94,4 +94,4 @@ Document limits in API docs; clients should **back off** exponentially with jitt
 
 Multiple API instances need a **shared counter** — typically **Redis** (`INCR` + `EXPIRE`, or sliding window Lua script). Clock skew matters for window boundaries; prefer monotonic TTL keys.
 
-**Related:** `ii-api-design.md` (429 status), Part I caching (Redis).
+**Related:** [API design](ii-api-design.md) (429 status), Part I caching (Redis).

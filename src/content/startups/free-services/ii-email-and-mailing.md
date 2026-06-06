@@ -144,4 +144,4 @@ Use webhooks for **bounces** and **complaints**; stop mailing those addresses.
 | Need SLA or dedicated support | Enterprise plan |
 | High-volume product email | SES + configuration sets, or Postmark |
 
-**Related:** `iii-hosting-domains-and-cdn.md` (DNS host), networking DNS notes, CI/CD secrets.
+**Related:** [Hosting, domains & CDN](iii-hosting-domains-and-cdn.md) (DNS host), networking DNS notes, CI/CD secrets.

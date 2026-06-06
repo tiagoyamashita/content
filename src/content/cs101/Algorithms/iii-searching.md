@@ -70,7 +70,7 @@ When the problem asks for the **minimum x** such that a predicate `P(x)` flips f
 Examples: first bad version, capacity to ship packages in D days, minimum eating speed.
 
 ## 4. Hash-based lookup
-With a **hash table** (`x-hash-table.md`), average **O(1)** insert and lookup — no sorted order required; worst case **O(n)** without good hashing.
+With a **hash table** [Hash table](../data-structures/x-hash-table.md), average **O(1)** insert and lookup — no sorted order required; worst case **O(n)** without good hashing.
 
 | Method | Preconditions | Time |
 |--------|---------------|------|

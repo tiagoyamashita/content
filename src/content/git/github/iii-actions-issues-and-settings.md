@@ -125,4 +125,4 @@ Alternative: Vercel/Netlify (startups free-services note).
 - [ ] Dependabot or Renovate (optional)
 - [ ] Secret scanning enabled (public repos default)
 
-**Related:** CI/CD security (pin actions, OIDC), **Git** workflows note, `activity-contribution-graph.md`.
+**Related:** CI/CD security (pin actions, OIDC), **Git** workflows note, [Contribution graph](activity-contribution-graph.md).

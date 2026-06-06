@@ -118,4 +118,4 @@ docker compose -f docker-compose.ci.yml run --rm test
 
 Same image CI uses → “works on my machine” shrinks.
 
-**Related:** `ii-github-actions.md`, `iii-gitlab-ci.md`, `../security-and-best-practices/ii-supply-chain-and-slsa.md`.
+**Related:** [GitHub Actions](ii-github-actions.md), [GitLab CI](iii-gitlab-ci.md), [Supply chain & SLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md).

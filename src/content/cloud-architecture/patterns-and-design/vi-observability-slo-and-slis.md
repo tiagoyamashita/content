@@ -144,4 +144,4 @@ Prefer **OpenTelemetry** for portable instrumentation across clouds.
 - **SLI vs SLO** — measurement vs target; SLA adds contract/penalties.
 - **Why structured JSON** — queryable fields, not regex on plain text.
 
-**Related:** `v-api-gateway-and-service-mesh.md`, CI/CD `vi-pipeline-observability-and-dora.md`.
+**Related:** [API Gateway & service mesh](v-api-gateway-and-service-mesh.md), CI/CD [Pipeline observability & DORA](../../cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md).

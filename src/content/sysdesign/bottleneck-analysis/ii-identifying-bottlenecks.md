@@ -88,8 +88,8 @@ Slow request → trace_id → waterfall → longest span → USE/RED on that hop
 
 | Span type | Next drill |
 |-----------|------------|
-| DB query | `vi-database.md` |
-| HTTP client | `v-network.md`, `vii-application-level.md` |
-| CPU-bound compute | `iii-cpu-and-memory.md` |
+| DB query | [Database](vi-database.md) |
+| HTTP client | [Network](v-network.md), [Application-level](vii-application-level.md) |
+| CPU-bound compute | [CPU & memory](iii-cpu-and-memory.md) |
 
-**Related:** `viii-elimination-playbook.md`, scalable patterns observability.
+**Related:** [Elimination playbook](viii-elimination-playbook.md), scalable patterns observability.

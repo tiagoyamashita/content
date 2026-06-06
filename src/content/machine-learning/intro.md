@@ -125,7 +125,7 @@ print(classification_report(y_test, model.predict(X_test)))
 |-------|--------|
 | **Machine learning** (this track) | Algorithms, data, training, evaluation |
 | **MLOps** | Pipelines, versioning, deployment, monitoring |
-| **AI / deep learning** | Larger models, LLMs, generative AI — see **AI** submenu (`i-ml-foundations.md`, `ii-deep-learning-and-llms.md`) |
+| **AI / deep learning** | Larger models, LLMs, generative AI — see **AI** submenu ([ML Foundations](../ai/i-ml-foundations.md), [Deep Learning & LLMs](../ai/ii-deep-learning-and-llms.md)) |
 | **Data science** | Exploration, storytelling, experiments — overlaps heavily with ML |
 
 ## 10. How to use this track

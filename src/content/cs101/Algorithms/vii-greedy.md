@@ -9,7 +9,7 @@ At each step, take the **locally best** option that looks good now — **without
 
 **When it works:** you can prove the local choice is safe (exchange argument, matroid, or known theorem). **When it fails:** a counterexample where greedy misses the global optimum (e.g. **0/1 knapsack** — use DP).
 
-See also **Level IV — Paradigms** (`iv-paradigms-and-limits.md`).
+See also **Level IV — Paradigms** [Paradigms & limits](../iv-paradigms-and-limits.md).
 
 ## 1. Classic problems
 
@@ -18,7 +18,7 @@ See also **Level IV — Paradigms** (`iv-paradigms-and-limits.md`).
 | Activity selection | Pick earliest **finishing** compatible activity | Sort by finish time |
 | Huffman coding | Merge two least frequent symbols | Uses min-heap |
 | Fractional knapsack | Take items by **value/weight** ratio | Optimal; 0/1 version is not greedy |
-| MST (Prim / Kruskal) | Cheapest safe edge | `vi-shortest-paths-and-mst.md` |
+| MST (Prim / Kruskal) | Cheapest safe edge | [Shortest paths & MST](vi-shortest-paths-and-mst.md) |
 | Dijkstra | Settle smallest tentative distance | Needs non-negative weights |
 
 ## 2. Activity selection (sketch)

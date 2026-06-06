@@ -63,7 +63,7 @@ Protect information, systems, and assets.
 | **Audit** | CloudTrail, Config, GuardDuty |
 | **Network isolation** | Private subnets, security groups |
 
-See patterns `vii-cost-and-governance.md` for IAM/SCP detail.
+See patterns [Cost & governance](../patterns-and-design/vii-cost-and-governance.md) for IAM/SCP detail.
 
 ## 4. Reliability
 
@@ -76,7 +76,7 @@ Recover from failures and meet demand.
 | **Health checks** | LB + Route 53 |
 | **Graceful degradation** | Circuit breakers, cached fallbacks |
 
-Foundations: `vii-ha-and-disaster-recovery.md`. Patterns: event-driven, circuit breakers.
+Foundations: [HA & disaster recovery](vii-ha-and-disaster-recovery.md). Patterns: event-driven, circuit breakers.
 
 ## 5. Performance Efficiency
 
@@ -106,7 +106,7 @@ Avoid unnecessary spend while meeting requirements.
 | **Auto scaling in** | Remove idle capacity |
 | **Tagging & budgets** | Cost allocation by team |
 
-Full detail: patterns `vii-cost-and-governance.md`.
+Full detail: patterns [Cost & governance](../patterns-and-design/vii-cost-and-governance.md).
 
 ## 7. Sustainability
 
@@ -145,8 +145,8 @@ Output: **HRIs** (high-risk issues) prioritized for remediation.
 
 | Pillar | Foundations note | Patterns note |
 |--------|------------------|---------------|
-| Ops | `vii-ha-and-disaster-recovery.md` | observability, CI/CD |
-| Security | `vi-networking-vpc-and-lb.md` | governance |
+| Ops | [HA & disaster recovery](vii-ha-and-disaster-recovery.md) | observability, CI/CD |
+| Security | [Networking, VPC & LB](vi-networking-vpc-and-lb.md) | governance |
 | Reliability | multi-AZ, DR | scaling, circuit breakers |
 | Performance | compute, storage | caching |
 | Cost | — | FinOps |
@@ -158,4 +158,4 @@ Output: **HRIs** (high-risk issues) prioritized for remediation.
 - **Reliability vs HA** — reliability is pillar; HA is multi-AZ technique.
 - **IaC** — supports Ops + Security (reviewable changes).
 
-**Related:** `i-overview.md`, **Patterns & design** submenu, CI/CD Terraform submenu.
+**Related:** [Overview](i-overview.md), **Patterns & design** submenu, CI/CD Terraform submenu.

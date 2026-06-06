@@ -88,4 +88,4 @@ Product choice: **302** for analytics; **301** + async click log if load dominat
 | KGS single point | Multiple KGS instances with partitioned ranges |
 | Shard imbalance | Consistent hashing; re-shard plan |
 
-**Related:** Scalable patterns `vi-cdn-and-edge-caching.md`, Part I caching/sharding.
+**Related:** Scalable patterns [CDN & edge caching](../scalable-patterns/vi-cdn-and-edge-caching.md), Part I caching/sharding.

@@ -11,12 +11,12 @@ Patterns & design — overview
 
 | Note | Focus |
 |------|--------|
-| `ii-scalability-and-caching.md` | Scale up/out, stateless apps, auto scaling, cache tiers |
-| `iii-microservices-vs-monolith.md` | Monolith, modular monolith, microservices trade-offs |
-| `iv-event-driven-architecture.md` | Queues, pub/sub, streaming, sagas |
-| `v-api-gateway-and-service-mesh.md` | North-south vs east-west, circuit breakers |
-| `vi-observability-slo-and-slis.md` | Logs, metrics, traces, SLI/SLO/SLA |
-| `vii-cost-and-governance.md` | Pricing models, FinOps, IAM, guardrails |
+| [Scalability & caching](ii-scalability-and-caching.md) | Scale up/out, stateless apps, auto scaling, cache tiers |
+| [Microservices vs monolith](iii-microservices-vs-monolith.md) | Monolith, modular monolith, microservices trade-offs |
+| [Event-driven architecture](iv-event-driven-architecture.md) | Queues, pub/sub, streaming, sagas |
+| [API Gateway & service mesh](v-api-gateway-and-service-mesh.md) | North-south vs east-west, circuit breakers |
+| [Observability, SLI & SLO](vi-observability-slo-and-slis.md) | Logs, metrics, traces, SLI/SLO/SLA |
+| [Cost & governance](vii-cost-and-governance.md) | Pricing models, FinOps, IAM, guardrails |
 
 **Related:** **Foundations** submenu (Well-Architected pillars), system design **scalable-patterns**, networking ingress/CDN notes.
 

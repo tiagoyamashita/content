@@ -140,3 +140,42 @@ src/content/robotics/intro/ii-setup.md
 ```
 
 That matches how **`getting-started/intro/`** is laid out in this repository.
+
+## 8. Cross-links between notes
+
+When pointing readers to another note in this repo, use **markdown links** with **relative paths** (not bare backtick filenames).
+
+| Do | Don't |
+|----|--------|
+| `[Networking, VPC & LB](../foundations/vi-networking-vpc-and-lb.md)` | `` `vi-networking-vpc-and-lb.md` `` |
+| `[Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md)` | `` `../security-and-best-practices/iii-secrets-and-oidc.md` `` |
+
+**Link text:** use the target note’s **`subtitle`** from frontmatter (e.g. “Networking, VPC & LB”). If there is no subtitle, use a short human title from the filename.
+
+**Same submenu** — filename only is fine:
+
+```markdown
+**Related:** [HA & disaster recovery](vii-ha-and-disaster-recovery.md)
+```
+
+**Another submenu or topic** — include the path:
+
+```markdown
+See [Docker in CI](../../cicd/tools-and-platforms/v-docker-in-ci.md).
+```
+
+**Submenu name in prose** — keep bold for the sidebar label; link the overview or a specific note:
+
+```markdown
+**Patterns & design** submenu — start at [Overview](../patterns-and-design/i-overview.md).
+```
+
+**External URLs** — normal markdown links (`[Rust Book](https://doc.rust-lang.org/book/)`).
+
+**Do not link** meta examples in this guide (filenames shown as naming rules), external repos’ `README.md`, or notes that do not exist yet.
+
+To re-apply links after bulk edits, run:
+
+```text
+python scripts/linkify-content-refs.py
+```

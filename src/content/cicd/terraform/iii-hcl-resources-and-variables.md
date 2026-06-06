@@ -212,4 +212,4 @@ resource "aws_instance" "web" {
 }
 ```
 
-**Related:** `iv-aws-example-vpc-and-ec2.md`, `vi-modules-and-environments.md`.
+**Related:** [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md), [Modules & environments](vi-modules-and-environments.md).

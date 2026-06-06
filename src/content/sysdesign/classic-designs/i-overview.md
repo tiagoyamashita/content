@@ -11,12 +11,12 @@ Canonical **interview and production** problems that combine **Part I** (caching
 
 | Note | System | Core tension |
 |------|--------|--------------|
-| `ii-url-shortener.md` | Bitly-style redirects | Read-heavy; key generation; 301 vs 302 |
-| `iii-news-feed-timeline.md` | Twitter/Instagram feed | Fan-out on write vs read; celebrities |
-| `iv-chat-realtime-messaging.md` | WhatsApp/Slack-style chat | WebSockets; presence; message order |
-| `v-video-streaming.md` | YouTube/Netflix-style video | Upload/transcode pipeline vs CDN playback |
-| `vi-ride-sharing-location.md` | Uber/Lyft-style matching | High-frequency GPS; geospatial index |
-| `vii-web-crawler.md` | Googlebot-style crawler | Politeness; frontier; deduplication |
+| [URL shortener](ii-url-shortener.md) | Bitly-style redirects | Read-heavy; key generation; 301 vs 302 |
+| [News feed & timeline](iii-news-feed-timeline.md) | Twitter/Instagram feed | Fan-out on write vs read; celebrities |
+| [Chat & realtime messaging](iv-chat-realtime-messaging.md) | WhatsApp/Slack-style chat | WebSockets; presence; message order |
+| [Video streaming](v-video-streaming.md) | YouTube/Netflix-style video | Upload/transcode pipeline vs CDN playback |
+| [Ride-sharing & location](vi-ride-sharing-location.md) | Uber/Lyft-style matching | High-frequency GPS; geospatial index |
+| [Web crawler](vii-web-crawler.md) | Googlebot-style crawler | Politeness; frontier; deduplication |
 
 ## How designs connect
 

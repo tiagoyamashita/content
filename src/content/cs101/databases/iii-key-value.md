@@ -121,6 +121,6 @@ Spring Cache with Redis backs **`@Cacheable`** methods — same key-value idea a
 
 ## 9. Related
 
-- **Overview** — `i-overview.md`
-- **Relational** — source of truth behind cache (`ii-relational.md`)
+- **Overview** — [Databases overview](i-overview.md)
+- **Relational** — source of truth behind cache [Relational (SQL)](ii-relational.md)
 - **Hash table** — same key → slot idea (Data structures submenu)

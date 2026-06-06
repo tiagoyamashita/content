@@ -26,7 +26,7 @@ Many algorithms satisfy **T(n) = a T(n/b) + f(n)**:
 
 **Binary search:** one subproblem of half size, **O(1)** work → **T(n) = T(n/2) + O(1) = O(log n)**.
 
-The **Master theorem** (see `iv-paradigms-and-limits.md`) classifies many such recurrences without expanding the recursion tree.
+The **Master theorem** (see [Paradigms & limits](../iv-paradigms-and-limits.md)) classifies many such recurrences without expanding the recursion tree.
 
 ## 3. Maximum subarray (Kadane vs divide & conquer)
 **Kadane** (linear scan) is the practical **O(n)** solution:
@@ -48,7 +48,7 @@ public static int maxSubarraySum(int[] a) {
 **Divide & conquer** version: max sum is either entirely in left half, right half, or **crossing** the middle — recurse on halves and combine with an **O(n)** crossing scan. Still **O(n log n)** overall; teaches the **combine** step.
 
 ## 4. When divide & conquer is not enough
-If subproblems **overlap** (same subproblem solved many times), pure recursion wastes work — use **memoization** or **tabulation** (**dynamic programming**, `viii-dynamic-programming.md`).
+If subproblems **overlap** (same subproblem solved many times), pure recursion wastes work — use **memoization** or **tabulation** (**dynamic programming**, [Dynamic programming](viii-dynamic-programming.md)).
 
 | Overlapping subproblems? | Typical approach |
 |------------------------|------------------|

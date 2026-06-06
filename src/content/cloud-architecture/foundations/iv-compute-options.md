@@ -157,4 +157,4 @@ Batch nightly job?          → Spot VM or Lambda
 | PostgreSQL | RDS (managed VM) — not Lambda |
 | Redis cache | ElastiCache (managed) |
 
-**Related:** `ii-service-models.md`, patterns `ii-scalability-and-caching.md`.
+**Related:** [Service models](ii-service-models.md), patterns [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md).

@@ -90,4 +90,4 @@ Enables **at-least-once** messaging and HTTP retries without double charge.
 | Strong cross-shard in one DB | 2PC / XA (rare at app layer) |
 | Read models | Eventual consistency + CDC |
 
-**Related:** `iii-message-queues-and-async.md` (outbox, events), `ii-api-design.md` (Idempotency-Key).
+**Related:** [Message queues & async](iii-message-queues-and-async.md) (outbox, events), [API design](ii-api-design.md) (Idempotency-Key).

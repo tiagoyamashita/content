@@ -90,14 +90,14 @@ Extract to microservice when: **independent release cadence**, **different scali
 | Join across tables | API composition or read model |
 | Strong consistency | Eventual consistency + idempotency |
 
-See `iv-event-driven-architecture.md` for sagas.
+See [Event-driven architecture](iv-event-driven-architecture.md) for sagas.
 
 ## 7. Operational cost
 
 Microservices require:
 
 - **CI/CD** per service (or monorepo with path filters)
-- **Observability** — traces across calls (`vi-observability-slo-and-slis.md`)
+- **Observability** — traces across calls [Observability, SLI & SLO](vi-observability-slo-and-slis.md)
 - **Service discovery** — K8s DNS, Consul, cloud LB
 - **Versioning** — backward-compatible APIs, consumer-driven contracts
 
@@ -119,4 +119,4 @@ Microservices require:
 | Scale | Extract payments (PCI scope), orders (peak load) |
 | Mature | Service mesh, event bus, independent SLOs |
 
-**Related:** `iv-event-driven-architecture.md`, `v-api-gateway-and-service-mesh.md`.
+**Related:** [Event-driven architecture](iv-event-driven-architecture.md), [API Gateway & service mesh](v-api-gateway-and-service-mesh.md).

@@ -156,8 +156,8 @@ Organization (AWS Org / Azure MG)
 ## 10. Rehearsal answers
 
 - **Spot** — cheap spare capacity; can be reclaimed; needs fault-tolerant workload.
-- **SLI/SLO** — see `vi-observability-slo-and-slis.md`; SLA adds customer contract.
+- **SLI/SLO** — see [Observability, SLI & SLO](vi-observability-slo-and-slis.md); SLA adds customer contract.
 - **SCP** — organization-level deny that applies even to account admins.
-- **Stateless + auto scaling** — see `ii-scalability-and-caching.md`.
+- **Stateless + auto scaling** — see [Scalability & caching](ii-scalability-and-caching.md).
 
-**Related:** **Foundations** submenu → `viii-well-architected-framework.md`, CI/CD Terraform for IaC guardrails.
+**Related:** **Foundations** submenu → [Well-Architected Framework](../foundations/viii-well-architected-framework.md), CI/CD Terraform for IaC guardrails.

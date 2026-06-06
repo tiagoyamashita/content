@@ -109,7 +109,7 @@ Use when teams already run PostgreSQL and want **hybrid** relational + metrics.
 
 ## 7. Time-series vs wide-column
 
-Both handle high write volume. **TSDBs** add **time semantics** (retention, rollups, rate functions). **Cassandra** can store time-ordered rows but you build rollup jobs yourself. Pick **TSDB** when monitoring is the product; **wide-column** when events are generic rows with many attributes (`v-wide-column.md`).
+Both handle high write volume. **TSDBs** add **time semantics** (retention, rollups, rate functions). **Cassandra** can store time-ordered rows but you build rollup jobs yourself. Pick **TSDB** when monitoring is the product; **wide-column** when events are generic rows with many attributes [Wide-column](v-wide-column.md).
 
 ## 8. When to choose time-series
 
@@ -138,6 +138,6 @@ Prefer **aggregating at the client** or **sampling** high-cardinality dimensions
 
 ## 11. Related
 
-- **Overview** — `i-overview.md`
-- **Wide-column** — event logs at scale without TS-specific rollups (`v-wide-column.md`)
-- **Key-value** — short-lived counters before export (`iii-key-value.md`)
+- **Overview** — [Databases overview](i-overview.md)
+- **Wide-column** — event logs at scale without TS-specific rollups [Wide-column](v-wide-column.md)
+- **Key-value** — short-lived counters before export [Key-value](iii-key-value.md)

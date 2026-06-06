@@ -11,10 +11,10 @@ Curated **free tiers** useful for an early-stage product. Limits change — alwa
 
 | Note | Focus |
 |------|--------|
-| `ii-email-and-mailing.md` | Transactional email, newsletters, DNS — **start here** |
-| `iii-hosting-domains-and-cdn.md` | Static sites, serverless, DNS, TLS |
-| `iv-database-auth-and-storage.md` | Postgres, auth, files, secrets |
-| `v-monitoring-analytics-and-devtools.md` | Errors, uptime, analytics, CI |
+| [Email & mailing](ii-email-and-mailing.md) | Transactional email, newsletters, DNS — **start here** |
+| [Hosting, domains & CDN](iii-hosting-domains-and-cdn.md) | Static sites, serverless, DNS, TLS |
+| [Database, auth & storage](iv-database-auth-and-storage.md) | Postgres, auth, files, secrets |
+| [Monitoring, analytics & devtools](v-monitoring-analytics-and-devtools.md) | Errors, uptime, analytics, CI |
 
 ## Do not run your own mail server
 

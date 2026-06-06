@@ -130,4 +130,4 @@ Scale API pods on request rate; warm Redis on deploy; CDN for 90% of bytes trans
 | Cache everything with no TTL | Define freshness requirements |
 | Scale out during incident without root cause | Fix leak/OOM first |
 
-**Related:** `iii-microservices-vs-monolith.md`, system design scalable-patterns CDN note.
+**Related:** [Microservices vs monolith](iii-microservices-vs-monolith.md), system design scalable-patterns CDN note.

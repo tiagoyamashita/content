@@ -136,6 +136,6 @@ Spring Data MongoDB maps **`@Document`** entities similarly to JPA.
 
 ## 10. Related
 
-- **Overview** — `i-overview.md`
-- **Relational** — when JOINs and strict schema dominate (`ii-relational.md`)
-- **Wide-column** — another NoSQL family for write-heavy wide rows (`v-wide-column.md`)
+- **Overview** — [Databases overview](i-overview.md)
+- **Relational** — when JOINs and strict schema dominate [Relational (SQL)](ii-relational.md)
+- **Wide-column** — another NoSQL family for write-heavy wide rows [Wide-column](v-wide-column.md)

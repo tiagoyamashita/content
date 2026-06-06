@@ -156,4 +156,4 @@ Install **EventListener** + Ingress for `POST /hook`.
 | Platform team on Kubernetes | Small team, GitHub-only |
 | OpenShift Pipelines already licensed | No K8s in org |
 
-**Related:** **Terraform** submenu → `vii-terraform-in-cicd.md` (cluster infra), `v-docker-in-ci.md` (Kaniko builds).
+**Related:** **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (cluster infra), [Docker in CI](v-docker-in-ci.md) (Kaniko builds).

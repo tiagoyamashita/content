@@ -120,4 +120,4 @@ become_method = sudo
 
 In Jenkins set `ANSIBLE_HOST_KEY_CHECKING=False` only when you trust inventory hosts; prefer known_hosts or SSH keys.
 
-**Related:** `iii-inventory-and-playbooks.md`, `v-dynamic-inventory-and-modules.md`.
+**Related:** [Inventory & playbooks](iii-inventory-and-playbooks.md), [Dynamic inventory & modules](v-dynamic-inventory-and-modules.md).

@@ -154,6 +154,6 @@ Rules of thumb:
 
 ## 9. Related
 
-- **Overview** — `i-overview.md`
-- **Document** — when nested JSON beats wide normalization (`iv-document.md`)
+- **Overview** — [Databases overview](i-overview.md)
+- **Document** — when nested JSON beats wide normalization [Document](iv-document.md)
 - **Hash table** — hash indexes vs B-trees (Data structures submenu)

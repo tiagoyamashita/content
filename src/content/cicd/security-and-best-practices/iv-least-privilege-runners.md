@@ -153,4 +153,4 @@ Store production credentials in **folder-scoped** credentials, not global.
 - [ ] Fork PRs on isolated runners without secrets
 - [ ] Deploy agents cannot compile arbitrary PR code
 
-**Related:** `iii-secrets-and-oidc.md`, `tools-and-platforms/iv-jenkins.md`.
+**Related:** [Secrets & OIDC](iii-secrets-and-oidc.md), [Jenkins](../tools-and-platforms/iv-jenkins.md).

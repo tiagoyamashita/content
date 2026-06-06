@@ -86,9 +86,9 @@ Run **parallel** pipelines during migration; compare artifacts and test results.
 
 ## 6. Rehearsal answers
 
-- **GitHub Actions minimal workflow:** checkout → setup runtime → install deps → test (`ii-github-actions.md`).
+- **GitHub Actions minimal workflow:** checkout → setup runtime → install deps → test [GitHub Actions](ii-github-actions.md).
 - **GitLab `needs:`:** DAG edges — job starts when dependencies finish, not entire previous stage.
 - **Jenkins over SaaS:** on-prem control, air-gap, plugin legacy, existing controller investment.
-- **Multi-stage Docker:** builder stage discarded — runtime image only has JAR/binary (`v-docker-in-ci.md`).
+- **Multi-stage Docker:** builder stage discarded — runtime image only has JAR/binary [Docker in CI](v-docker-in-ci.md).
 
-**Related:** Part I fundamentals, **Security & best practices** submenu, tools overview `i-overview.md`.
+**Related:** Part I fundamentals, **Security & best practices** submenu, tools overview [Overview](i-overview.md).

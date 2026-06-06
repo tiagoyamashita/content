@@ -297,7 +297,7 @@ Linked list backing: **no resize** in the array sense — “growth” is **Θ(1
 </svg></figure>
 
 
-See **Level I — Foundations** (`i-foundations.md`) for another circular-buffer diagram with head/tail labels.
+See **Level I — Foundations** [Foundations](../i-foundations.md) for another circular-buffer diagram with head/tail labels.
 
 ### Java: ring-buffer queue with grow
 

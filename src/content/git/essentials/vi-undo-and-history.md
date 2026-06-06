@@ -97,4 +97,4 @@ Prevention: `.gitignore`, pre-commit hooks, secret scanning on GitHub.
 | Pause work | `git stash` |
 | Find lost commit | `git reflog` |
 
-**Related:** `vii-workflows-and-conventions.md`, CI/CD security (no secrets in repo).
+**Related:** [Workflows & conventions](vii-workflows-and-conventions.md), CI/CD security (no secrets in repo).

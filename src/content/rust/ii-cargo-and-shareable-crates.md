@@ -8,7 +8,7 @@ order: 2
 Rust — Part II: Cargo & shareable crates
 **Cargo** is Rust’s **package manager and build tool**. It downloads dependencies, compiles your code, runs tests, and publishes **crates** (Rust packages) others can reuse.
 
-See **Part I** (`i-basics-and-toolchain.md`) for **`rustup`**, **`rustc`**, and Windows **MSVC** linker setup.
+See **Part I** [Basics & toolchain](i-basics-and-toolchain.md) for **`rustup`**, **`rustc`**, and Windows **MSVC** linker setup.
 
 ## 1. What Cargo is
 
@@ -284,7 +284,7 @@ Dependents opt in: **`greeter_utils = { version = "0.1", features = ["extra"] }`
 
 ## 10. Related
 
-- **Part I** — ownership, **`match`**, basics (`i-basics-and-toolchain.md`)
-- **Part III** — hands-on practice with **Rustlings** (`iii-learn-with-rustlings.md`)
-- **Part IV** — **`async`/`await`**, runtimes, common pitfalls (`iv-async.md`)
+- **Part I** — ownership, **`match`**, basics [Basics & toolchain](i-basics-and-toolchain.md)
+- **Part III** — hands-on practice with **Rustlings** [Learn with Rustlings](iii-learn-with-rustlings.md)
+- **Part IV** — **`async`/`await`**, runtimes, common pitfalls [Async Rust](iv-async.md)
 - [The Cargo Book](https://doc.rust-lang.org/cargo/) — official reference for manifests, workspaces, publishing

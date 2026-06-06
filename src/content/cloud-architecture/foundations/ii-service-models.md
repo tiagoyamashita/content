@@ -64,7 +64,7 @@ Security and compliance are **always shared** — even in SaaS you configure acc
 
 ## 4. FaaS as PaaS extreme
 
-**Functions as a Service** (Lambda, Cloud Functions) — you upload code; provider runs and scales it. See `iv-compute-options.md`.
+**Functions as a Service** (Lambda, Cloud Functions) — you upload code; provider runs and scales it. See [Compute options](iv-compute-options.md).
 
 ## 5. Hybrid and multi-cloud
 
@@ -95,4 +95,4 @@ Higher abstraction often improves **utilization** — you pay for what you use, 
 | Static site + API | PaaS | S3 + API Gateway + Lambda |
 | Company email | SaaS | Google Workspace |
 
-**Related:** `iv-compute-options.md`, `viii-well-architected-framework.md`.
+**Related:** [Compute options](iv-compute-options.md), [Well-Architected Framework](viii-well-architected-framework.md).

@@ -53,7 +53,7 @@ Deploy by **digest** or **semver tag** — never `latest` in prod.
     kubectl rollout status deploy/api --timeout=5m
 ```
 
-CI built and scanned that exact image in an earlier stage (`tools-and-platforms/v-docker-in-ci.md`).
+CI built and scanned that exact image in an earlier stage [Docker in CI](../tools-and-platforms/v-docker-in-ci.md).
 
 ## 4. Progressive delivery
 
@@ -177,4 +177,4 @@ Flags decouple **deploy** (safe, frequent) from **release** (business decision).
 - [ ] Rollback command documented and rehearsed
 - [ ] On-call notified on deploy failure
 
-**Related:** `v-testing-strategy.md`, `ii-supply-chain-and-slsa.md` (signed images), `iii-secrets-and-oidc.md`.
+**Related:** [Testing strategy](v-testing-strategy.md), [Supply chain & SLSA](ii-supply-chain-and-slsa.md) (signed images), [Secrets & OIDC](iii-secrets-and-oidc.md).

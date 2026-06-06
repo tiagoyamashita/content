@@ -11,13 +11,13 @@ Tools & platforms — overview
 
 | Note | Platform | Config file |
 |------|----------|-------------|
-| `ii-github-actions.md` | GitHub Actions | `.github/workflows/*.yml` |
-| `iii-gitlab-ci.md` | GitLab CI/CD | `.gitlab-ci.yml` |
-| `iv-jenkins.md` | Jenkins | `Jenkinsfile` |
-| `v-docker-in-ci.md` | Docker (all platforms) | `Dockerfile`, build args |
-| `vi-circleci.md` | CircleCI | `.circleci/config.yml` |
-| `vii-tekton.md` | Tekton (Kubernetes) | `Pipeline`, `Task` CRDs |
-| `viii-choosing-a-platform.md` | Decision guide | — |
+| [GitHub Actions](ii-github-actions.md) | GitHub Actions | `.github/workflows/*.yml` |
+| [GitLab CI](iii-gitlab-ci.md) | GitLab CI/CD | `.gitlab-ci.yml` |
+| [Jenkins](iv-jenkins.md) | Jenkins | `Jenkinsfile` |
+| [Docker in CI](v-docker-in-ci.md) | Docker (all platforms) | `Dockerfile`, build args |
+| [CircleCI](vi-circleci.md) | CircleCI | `.circleci/config.yml` |
+| [Tekton](vii-tekton.md) | Tekton (Kubernetes) | `Pipeline`, `Task` CRDs |
+| [Choosing a platform](viii-choosing-a-platform.md) | Decision guide | — |
 
 **Related:** Part I fundamentals, **Security & best practices** submenu, **Ansible & Jenkins** submenu, **Terraform** submenu.
 

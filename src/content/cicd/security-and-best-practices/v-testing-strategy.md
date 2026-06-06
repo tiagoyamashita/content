@@ -132,7 +132,7 @@ JUnit XML → PR annotations; developers see failures without opening CI logs.
 | Order-dependent | Isolate test data; avoid shared static state |
 | Network race | Awaitility / proper timeouts |
 
-**Do not** disable flaky tests silently — metric **flaky test count** on dashboard (`vi-pipeline-observability-and-dora.md`).
+**Do not** disable flaky tests silently — metric **flaky test count** on dashboard [Pipeline observability & DORA](vi-pipeline-observability-and-dora.md).
 
 ```yaml
 # Re-run failed tests once (temporary mitigation)
@@ -163,4 +163,4 @@ Fix root cause; retries are a band-aid.
 | Shared staging DB for parallel CI | Ephemeral DB per job |
 | `sleep(5000)` in tests | Poll with timeout |
 
-**Related:** Part I fundamentals (artifacts/caching), `vii-release-gates-and-rollbacks.md`.
+**Related:** Part I fundamentals (artifacts/caching), [Release gates & rollbacks](vii-release-gates-and-rollbacks.md).

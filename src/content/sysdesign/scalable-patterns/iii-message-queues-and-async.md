@@ -95,4 +95,4 @@ Most production systems: **at-least-once** + **idempotency keys**.
 | Image/video processing | Strong read-your-writes on same request |
 | Fan-out to many subscribers | Simple CRUD with low latency SLA |
 
-**Related:** `vii-distributed-transactions.md` (saga events), `v-search-systems.md` (CDC to index).
+**Related:** [Distributed transactions](vii-distributed-transactions.md) (saga events), [Search systems](v-search-systems.md) (CDC to index).

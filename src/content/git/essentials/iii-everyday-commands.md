@@ -73,7 +73,7 @@ target/
 .idea/
 ```
 
-If a file was committed by mistake, see `vi-undo-and-history.md` — removing from `.gitignore` alone is not enough.
+If a file was committed by mistake, see [Undo & history](vi-undo-and-history.md) — removing from `.gitignore` alone is not enough.
 
 ## 6. Show one commit
 
@@ -107,4 +107,4 @@ git log main..feature/login --oneline
 | History | `git log --oneline --graph` |
 | Who edited line? | `git blame file.js` |
 
-**Related:** `iv-branching-and-merging.md`, `vii-workflows-and-conventions.md`.
+**Related:** [Branching & merging](iv-branching-and-merging.md), [Workflows & conventions](vii-workflows-and-conventions.md).

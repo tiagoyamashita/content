@@ -99,4 +99,4 @@ Products: pgvector, Pinecone, OpenSearch k-NN, Elasticsearch dense_vector.
 - How CDC handles deletes and updates?
 - When hybrid search beats pure vector?
 
-**Related:** `iii-message-queues-and-async.md` (Kafka), Part I (SQL vs search store).
+**Related:** [Message queues & async](iii-message-queues-and-async.md) (Kafka), Part I (SQL vs search store).

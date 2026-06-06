@@ -69,7 +69,7 @@ myapp/
 | Approve, request changes, or comment | Resolve conversations |
 | Check CI status | Keep PR small and focused |
 
-**Required approvals** — set in branch protection (`iii-actions-issues-and-settings.md`).
+**Required approvals** — set in branch protection [Actions, issues & settings](iii-actions-issues-and-settings.md).
 
 ## 6. Merge options
 
@@ -104,7 +104,7 @@ Closing keywords (`Fixes`, `Closes`) auto-close issues on merge.
 
 **Releases** page → **Draft new release** → choose tag `v1.0.0`, notes, attach binaries.
 
-Pairs with Git tags from `git/essentials/v-remotes-and-collaboration.md`.
+Pairs with Git tags from [Remotes & collaboration](../essentials/v-remotes-and-collaboration.md).
 
 ## 10. Permissions (org repos)
 

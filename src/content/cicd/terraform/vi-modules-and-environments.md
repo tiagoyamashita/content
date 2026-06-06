@@ -182,4 +182,4 @@ Outputs from one module feed inputs to another — Terraform builds the graph.
 | Monolithic 2000-line root | Split modules by domain (network, compute, data) |
 | Prod and dev in one state | Separate backend keys |
 
-**Related:** `iv-aws-example-vpc-and-ec2.md`, `vii-terraform-in-cicd.md`.
+**Related:** [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md), [Terraform in CI/CD](vii-terraform-in-cicd.md).

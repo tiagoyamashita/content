@@ -7,12 +7,12 @@ order: 5
 Graph traversal — BFS & DFS
 On a graph **G = (V, E)**, traversal visits vertices systematically. Store the graph as an **adjacency list** for sparse graphs — **O(n + m)** space and time for traversals when **n = |V|**, **m = |E|**.
 
-See **Graph** (`data-structures/xi-graph.md`) and **Level III — Graphs** (`iii-graphs.md`).
+See **Graph** [Graph](../data-structures/xi-graph.md) and **Level III — Graphs** (`iii-graphs.md`).
 
 ## 1. Breadth-first search (BFS)
 Explore in **layers** by distance (in **unweighted** edges, hop count).
 
-- **Queue** ADT — enqueue neighbors, dequeue current (`v-queue.md`).
+- **Queue** ADT — enqueue neighbors, dequeue current [Queue](../data-structures/v-queue.md).
 - **Time O(n + m)** with adjacency lists.
 - **Uses:** shortest path in **unweighted** graphs, level order, connectivity.
 
@@ -127,4 +127,4 @@ List<Integer> topo = new ArrayList<>();
 
 **Topological sort:** Kahn’s algorithm = **`Queue`** + indegree array; no single `Collections.topologicalSort`.
 
-See **`v-queue.md`**, **`iv-stack.md`**, and **`xi-solving-with-the-jdk.md`**.
+See **[Queue](../data-structures/v-queue.md)**, **[Stack](../data-structures/iv-stack.md)**, and **[Solving with the JDK](xi-solving-with-the-jdk.md)**.

@@ -225,7 +225,7 @@ spec:
 | Works inside cluster, not outside | Used `rest-api.default.svc` URL from laptop — need public `api.myrestapp.com` |
 | DNS OK but connection refused | LB / firewall / Ingress controller Service not ready |
 
-Full REST + Hostinger + regional examples: **Part V — Ingress** (`v-ingress-edge-and-load-balancers.md`).
+Full REST + Hostinger + regional examples: **Part V — Ingress** [Ingress, edge, and load balancers](v-ingress-edge-and-load-balancers.md).
 
 ## 6. Operational footguns
 

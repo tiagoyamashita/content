@@ -59,7 +59,7 @@ Higher **RTO** than active-active app tier (~minutes for DB failover).
 
 - Replace unhealthy instances automatically.
 - Spread across AZs via launch template.
-- Pair with ALB health checks (`vi-networking-vpc-and-lb.md`).
+- Pair with ALB health checks [Networking, VPC & LB](vi-networking-vpc-and-lb.md).
 
 ## 4. DR tiers (cheapest → lowest RTO)
 
@@ -129,4 +129,4 @@ Active-active:        [Region A: 100%] + [Region B: 100%] via Route 53
 - [ ] DR strategy documented with RTO/RPO
 - [ ] Runbook rehearsed annually
 
-**Related:** `iii-regions-azs-and-edge.md`, patterns `ii-scalability-and-caching.md`, `viii-well-architected-framework.md`.
+**Related:** [Regions, AZs & edge](iii-regions-azs-and-edge.md), patterns [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md), [Well-Architected Framework](viii-well-architected-framework.md).

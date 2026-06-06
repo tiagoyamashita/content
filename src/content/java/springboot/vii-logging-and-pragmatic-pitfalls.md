@@ -61,6 +61,6 @@ Common surprises (full detail in **Part V — JPA & `@Transactional`**):
 
 ## 4. Related notes
 
-- **JPA & transactions** — `v-jpa-and-transactional.md`
-- **REST validation & errors** — `iv-rest-controllers.md`
-- **YAML logging levels** — `ii-yaml-and-external-config.md`
+- **JPA & transactions** — [JPA & @Transactional](v-jpa-and-transactional.md)
+- **REST validation & errors** — [REST controllers](iv-rest-controllers.md)
+- **YAML logging levels** — [YAML & external config](ii-yaml-and-external-config.md)

@@ -89,7 +89,7 @@ Each topic folder has a **`README.md`** with links — skim it before diving int
 | Generics, **`trait`**, lifetimes | Book ch. 10–11 (go deeper after basics) |
 | Tests, **`clippy`**, **`macro`s** | Part II — **`cargo test`**, quality habits |
 
-When an exercise mentions **crates** or **`Cargo.toml`**, cross-check **Part II** (`ii-cargo-and-shareable-crates.md`).
+When an exercise mentions **crates** or **`Cargo.toml`**, cross-check **Part II** [Cargo & shareable crates](ii-cargo-and-shareable-crates.md).
 
 ## 6. Suggested study order
 
@@ -131,7 +131,7 @@ Do **not** skip exercises permanently because they feel hard — use **`l`** to 
 
 - [rustlings.rust-lang.org](https://rustlings.rust-lang.org/) — setup, usage, demo
 - [github.com/rust-lang/rustlings](https://github.com/rust-lang/rustlings) — source and issues
-- **Part I** — `i-basics-and-toolchain.md`
-- **Part II** — `ii-cargo-and-shareable-crates.md`
-- **Part IV** — async, pitfalls, Tokio (`iv-async.md`)
+- **Part I** — [Basics & toolchain](i-basics-and-toolchain.md)
+- **Part II** — [Cargo & shareable crates](ii-cargo-and-shareable-crates.md)
+- **Part IV** — async, pitfalls, Tokio [Async Rust](iv-async.md)
 - [The Rust Book](https://doc.rust-lang.org/book/)

@@ -13,7 +13,7 @@ Git — overview
 |---------|--------|
 | **Essentials** | Install, daily commands, branches, remotes, undo, workflows |
 
-Start: **Essentials** → `essentials/i-overview.md`.
+Start: **Essentials** → [Overview](essentials/i-overview.md).
 
 Hosting platforms (**GitHub**, GitLab, Bitbucket) sit on top of Git — see the **GitHub** topic for PRs, Actions, and this site's contribution graph.
 

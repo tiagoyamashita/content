@@ -80,4 +80,4 @@ Video streaming
 | GPU transcode fleet | Parallelize; spot for cost |
 | Separate read/write paths | Don’t transcode on play request |
 
-**Related:** `scalable-patterns/vi-cdn-and-edge-caching.md`, classic designs web crawler (object storage at scale).
+**Related:** [CDN & edge caching](../scalable-patterns/vi-cdn-and-edge-caching.md), classic designs web crawler (object storage at scale).

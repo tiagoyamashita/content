@@ -121,6 +121,6 @@ Nodes form a **ring** (often **consistent hashing**). Each partition key maps to
 
 ## 10. Related
 
-- **Overview** — `i-overview.md`
-- **Time-series** — overlapping use cases; TSDBs add retention/aggregation (`vii-time-series.md`)
-- **Key-value** — simpler key model without wide columns (`iii-key-value.md`)
+- **Overview** — [Databases overview](i-overview.md)
+- **Time-series** — overlapping use cases; TSDBs add retention/aggregation [Time-series](vii-time-series.md)
+- **Key-value** — simpler key model without wide columns [Key-value](iii-key-value.md)

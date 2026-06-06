@@ -155,4 +155,4 @@ Gate merges on **CRITICAL/HIGH**; track MEDIUM in backlog.
 | Ignoring scan failures | `exit-code: 1` on HIGH+ |
 | No lock file in repo | Commit lockfile; fail CI if out of sync |
 
-**Related:** `tools-and-platforms/v-docker-in-ci.md`, `iii-secrets-and-oidc.md`.
+**Related:** [Docker in CI](../tools-and-platforms/v-docker-in-ci.md), [Secrets & OIDC](iii-secrets-and-oidc.md).

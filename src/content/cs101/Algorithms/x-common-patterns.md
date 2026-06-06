@@ -133,4 +133,4 @@ int[] sorted = Arrays.stream(nums).sorted().toArray();
 | Sort + scan | `Arrays.sort`, `Comparator` |
 | Count | `Map.merge`, `getOrDefault` |
 
-See **`xi-solving-with-the-jdk.md`** for a full cheat sheet.
+See **[Solving with the JDK](xi-solving-with-the-jdk.md)** for a full cheat sheet.

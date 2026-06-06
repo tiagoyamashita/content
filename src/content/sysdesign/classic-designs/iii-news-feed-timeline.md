@@ -78,4 +78,4 @@ Pagination: cursor = `(score, post_id)` tuple.
 | Hot users | Dedicated cache partition |
 | Ranked feed | Precompute scores async; store in ZSET |
 
-**Related:** Scalable patterns `iii-message-queues-and-async.md`, Part I Redis.
+**Related:** Scalable patterns [Message queues & async](../scalable-patterns/iii-message-queues-and-async.md), Part I Redis.

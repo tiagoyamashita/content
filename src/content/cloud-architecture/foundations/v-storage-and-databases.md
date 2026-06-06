@@ -120,7 +120,7 @@ Sort key: orderTimestamp
 | Memorystore | GCP Redis/Memcached |
 | Azure Cache for Redis | |
 
-Not durable primary storage — session cache, rate limits, hot keys (`patterns-and-design/ii-scalability-and-caching.md`).
+Not durable primary storage — session cache, rate limits, hot keys [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md).
 
 ## 8. Example stack
 
@@ -141,4 +141,4 @@ Not durable primary storage — session cache, rate limits, hot keys (`patterns-
 | One giant RDS for everything | Split by bounded context or read replicas |
 | No backup retention tested | Restore drill quarterly |
 
-**Related:** `iii-regions-azs-and-edge.md`, CS101 databases submenu.
+**Related:** [Regions, AZs & edge](iii-regions-azs-and-edge.md), CS101 databases submenu.

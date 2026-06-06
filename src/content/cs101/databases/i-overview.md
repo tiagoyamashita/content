@@ -35,12 +35,12 @@ Real systems often use **more than one** store (**polyglot persistence**): Postg
 
 | Type | Data model | Best for | Examples | Deep dive |
 |------|------------|----------|----------|-----------|
-| **Relational (SQL)** | Tables, rows, typed columns, **JOINs** | Structured data, relationships, strong transactions | PostgreSQL, MySQL, SQLite | `ii-relational.md` |
-| **Key-value** | Opaque key → value | Cache, sessions, feature flags, simple lookups | Redis, DynamoDB (single-key), etcd | `iii-key-value.md` |
-| **Document** | JSON/BSON documents, optional schema | Flexible records, content, catalogs | MongoDB, CouchDB, Firestore | `iv-document.md` |
-| **Wide-column** | Row key + many columns; partition by key | Huge write throughput, time-ordered rows at scale | Cassandra, HBase, ScyllaDB | `v-wide-column.md` |
-| **Graph** | Vertices + edges + properties | Relationship traversal, recommendations, fraud rings | Neo4j, Amazon Neptune | `vi-graph.md` |
-| **Time-series** | Timestamp + measurements (tags + fields) | Metrics, IoT, monitoring, finance ticks | InfluxDB, TimescaleDB, Prometheus TSDB | `vii-time-series.md` |
+| **Relational (SQL)** | Tables, rows, typed columns, **JOINs** | Structured data, relationships, strong transactions | PostgreSQL, MySQL, SQLite | [Relational (SQL)](ii-relational.md) |
+| **Key-value** | Opaque key → value | Cache, sessions, feature flags, simple lookups | Redis, DynamoDB (single-key), etcd | [Key-value](iii-key-value.md) |
+| **Document** | JSON/BSON documents, optional schema | Flexible records, content, catalogs | MongoDB, CouchDB, Firestore | [Document](iv-document.md) |
+| **Wide-column** | Row key + many columns; partition by key | Huge write throughput, time-ordered rows at scale | Cassandra, HBase, ScyllaDB | [Wide-column](v-wide-column.md) |
+| **Graph** | Vertices + edges + properties | Relationship traversal, recommendations, fraud rings | Neo4j, Amazon Neptune | [Graph](vi-graph.md) |
+| **Time-series** | Timestamp + measurements (tags + fields) | Metrics, IoT, monitoring, finance ticks | InfluxDB, TimescaleDB, Prometheus TSDB | [Time-series](vii-time-series.md) |
 
 ### Where older models fit
 
@@ -49,7 +49,7 @@ Real systems often use **more than one** store (**polyglot persistence**): Postg
 
 ### “NewSQL” and distributed SQL (one line)
 
-**CockroachDB**, **Spanner**, **TiDB**: **SQL** interface with **horizontal scaling** — relational semantics across clusters. Start with **`ii-relational.md`**, then read vendor docs when you need global scale.
+**CockroachDB**, **Spanner**, **TiDB**: **SQL** interface with **horizontal scaling** — relational semantics across clusters. Start with **[Relational (SQL)](ii-relational.md)**, then read vendor docs when you need global scale.
 
 ## 4. SQL vs NoSQL (decision sketch)
 
@@ -93,11 +93,11 @@ Hash indexes appear in key-value and hash-table-backed stores for **O(1)** point
 
 | Note | Topic |
 |------|--------|
-| `ii-relational.md` | Tables, SQL, ACID, normalization |
-| `iii-key-value.md` | Redis, TTL, cache patterns |
-| `iv-document.md` | Embedded docs, aggregation |
-| `v-wide-column.md` | Partition keys, Cassandra-style modeling |
-| `vi-graph.md` | Cypher/Gremlin, traversal vs JOINs |
-| `vii-time-series.md` | Retention, downsampling, PromQL-style queries |
+| [Relational (SQL)](ii-relational.md) | Tables, SQL, ACID, normalization |
+| [Key-value](iii-key-value.md) | Redis, TTL, cache patterns |
+| [Document](iv-document.md) | Embedded docs, aggregation |
+| [Wide-column](v-wide-column.md) | Partition keys, Cassandra-style modeling |
+| [Graph](vi-graph.md) | Cypher/Gremlin, traversal vs JOINs |
+| [Time-series](vii-time-series.md) | Retention, downsampling, PromQL-style queries |
 | **Hash table** (Data structures submenu) | how hash maps relate to key-value stores |
 | **B-tree / BST** (Data structures submenu) | index structure under SQL |

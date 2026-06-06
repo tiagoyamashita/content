@@ -78,4 +78,4 @@ Bloom filter: “definitely not seen” or “probably seen” — no false nega
 - **Redirect chains** → cap depth; normalize final URL.
 - **Poison URLs** → max size, timeout, MIME allowlist.
 
-**Related:** `scalable-patterns/v-search-systems.md`, `iv-rate-limiting.md`.
+**Related:** [Search systems](../scalable-patterns/v-search-systems.md), [Rate limiting](../scalable-patterns/iv-rate-limiting.md).

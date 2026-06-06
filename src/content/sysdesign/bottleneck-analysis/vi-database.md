@@ -73,4 +73,4 @@ The **database** is the most common bottleneck in web systems — reads, writes,
 | Sharding | Write scale exceeds single primary |
 | Denormalize | Read path cheaper; write complexity up |
 
-**Related:** Part I (replication, sharding), `vii-application-level.md` (hot partition).
+**Related:** Part I (replication, sharding), [Application-level](vii-application-level.md) (hot partition).

@@ -89,4 +89,4 @@ Common pattern: Terraform creates EC2 + security groups; Ansible installs app on
 
 After HashiCorp's license change (BSL), **OpenTofu** is a community fork under MPL 2.0. CLI and HCL are largely compatible — check org policy for which binary CI uses.
 
-**Related:** `iii-hcl-resources-and-variables.md`, `v-state-and-remote-backends.md`.
+**Related:** [HCL, resources & variables](iii-hcl-resources-and-variables.md), [State & remote backends](v-state-and-remote-backends.md).

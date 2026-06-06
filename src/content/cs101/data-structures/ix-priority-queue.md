@@ -61,7 +61,7 @@ Naive ideas:
 - **Unsorted array or list:** **insert** **O(1)** (append), but **extract-min** scans everything — **O(n)**.
 - **Sorted array:** **extract-min** from one end **O(1)**, but **insert** may shift — **O(n)** in the worst case.
 
-The usual sweet spot for a general mutable priority queue is a **binary heap** (see **Binary heap** in this submenu, `viii-binary-heap.md`): store a **complete binary tree** in an array, restore **heap order** after each insert (**bubble up** / **swim**) and after each extract (**sink down** / **sift**). Height is **O(log n)**, so:
+The usual sweet spot for a general mutable priority queue is a **binary heap** (see **Binary heap** in this submenu, [Binary heap](viii-binary-heap.md)): store a **complete binary tree** in an array, restore **heap order** after each insert (**bubble up** / **swim**) and after each extract (**sink down** / **sift**). Height is **O(log n)**, so:
 
 | Operation | Binary heap (typical) |
 |-----------|------------------------|
@@ -202,8 +202,8 @@ jobs.poll();  // patch — deadline 2 first
 
 ## 8. Related notes
 
-- **Binary heap** in this submenu (`viii-binary-heap.md`) — array layout, index formulas, **buildHeap**, **heapsort**.
-- **Queue** (`v-queue.md`) — strict **FIFO**; no per-item priority unless you simulate it badly.
+- **Binary heap** in this submenu [Binary heap](viii-binary-heap.md) — array layout, index formulas, **buildHeap**, **heapsort**.
+- **Queue** [Queue](v-queue.md) — strict **FIFO**; no per-item priority unless you simulate it badly.
 - **Level II** overview: `ii-trees-heaps-hashing.md` (if present in your curriculum track).
 
 Once you are comfortable with “insert anywhere, always take best,” the heap note is the natural next step: it is the standard **machinery** behind this ADT.

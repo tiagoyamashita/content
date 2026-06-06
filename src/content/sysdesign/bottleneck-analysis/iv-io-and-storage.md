@@ -64,4 +64,4 @@ I/O and storage bottlenecks
 | Archive | Cold object storage |
 | Logs | Stream to aggregator; not local disk forever |
 
-**Related:** `vi-database.md`, classic designs video streaming (S3).
+**Related:** [Database](vi-database.md), classic designs video streaming (S3).

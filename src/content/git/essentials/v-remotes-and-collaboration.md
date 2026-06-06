@@ -123,4 +123,4 @@ GitHub **Releases** attach binaries and notes to tags.
 | `permission denied` | SSH key or token |
 | `protected branch` | Use PR; cannot push directly to `main` |
 
-**Related:** `iv-branching-and-merging.md`, CI/CD (workflows on `push`).
+**Related:** [Branching & merging](iv-branching-and-merging.md), CI/CD (workflows on `push`).

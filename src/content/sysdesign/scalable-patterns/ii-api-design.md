@@ -122,4 +122,4 @@ Client sends one **query** describing the exact response shape.
 - **Correlation-Id** / trace headers — observability across services.
 - **HATEOAS** — optional; hypermedia links in responses for discoverability.
 
-**Related:** `iv-rate-limiting.md` (429), `vii-distributed-transactions.md` (idempotency).
+**Related:** [Rate limiting](iv-rate-limiting.md) (429), [Distributed transactions](vii-distributed-transactions.md) (idempotency).

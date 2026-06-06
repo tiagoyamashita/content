@@ -14,7 +14,7 @@ Practical notes for **building a company on a budget**: free tiers, sensible def
 | **Free services** | Email, hosting, DB, auth, monitoring on $0 tiers |
 | *(future)* | Incorporation checklist, MVP scope, go-to-market |
 
-Start here: **Free services** → `free-services/i-overview.md`.
+Start here: **Free services** → [Overview](free-services/i-overview.md).
 
 ## Principles
 

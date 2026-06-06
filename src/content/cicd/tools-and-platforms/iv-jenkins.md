@@ -7,7 +7,7 @@ order: 4
 Jenkins
 **Self-hosted** automation server with **1800+ plugins**. Pipelines as code in a **`Jenkinsfile`** (Declarative or Scripted Groovy).
 
-**Also see:** **Ansible & Jenkins** submenu — playbooks, Vault, deploy patterns (`../ansible-and-jenkins/i-overview.md`).
+**Also see:** **Ansible & Jenkins** submenu — playbooks, Vault, deploy patterns [Overview](../ansible-and-jenkins/i-overview.md).
 
 ## 1. Pipeline types
 
@@ -165,4 +165,4 @@ Requires **Ansible** plugin.
 | Strict on-prem requirement | GitHub/GitLab native CI enough |
 | Existing Jenkins investment | Want zero controller maintenance |
 
-**Related:** `../ansible-and-jenkins/vi-jenkins-ansible-pipelines.md`, `viii-choosing-a-platform.md`.
+**Related:** [Jenkins + Ansible pipelines](../ansible-and-jenkins/vi-jenkins-ansible-pipelines.md), [Choosing a platform](viii-choosing-a-platform.md).

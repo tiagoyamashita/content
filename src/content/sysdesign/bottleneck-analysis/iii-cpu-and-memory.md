@@ -65,4 +65,4 @@ Compute and RAM limits show up as **latency scaling with load**, **OOM**, and **
 - [ ] Compare p99 before/after one change
 - [ ] Load test at 2× expected peak
 
-**Related:** `ii-identifying-bottlenecks.md`, application hot keys (`vii-application-level.md`).
+**Related:** [Identifying bottlenecks](ii-identifying-bottlenecks.md), application hot keys [Application-level](vii-application-level.md).

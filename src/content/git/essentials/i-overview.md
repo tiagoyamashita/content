@@ -11,12 +11,12 @@ Day-to-day Git: configure once, then **add → commit → push**, branch for fea
 
 | Note | Focus |
 |------|--------|
-| `ii-install-and-configure.md` | Install, `user.name`, SSH keys |
-| `iii-everyday-commands.md` | init, clone, add, commit, status, log |
-| `iv-branching-and-merging.md` | branch, merge, conflicts |
-| `v-remotes-and-collaboration.md` | push, pull, fetch, pull with rebase |
-| `vi-undo-and-history.md` | restore, reset, revert, stash |
-| `vii-workflows-and-conventions.md` | GitHub flow, commits, `.gitignore` |
+| [Install & configure](ii-install-and-configure.md) | Install, `user.name`, SSH keys |
+| [Everyday commands](iii-everyday-commands.md) | init, clone, add, commit, status, log |
+| [Branching & merging](iv-branching-and-merging.md) | branch, merge, conflicts |
+| [Remotes & collaboration](v-remotes-and-collaboration.md) | push, pull, fetch, pull with rebase |
+| [Undo & history](vi-undo-and-history.md) | restore, reset, revert, stash |
+| [Workflows & conventions](vii-workflows-and-conventions.md) | GitHub flow, commits, `.gitignore` |
 
 **Related:** **GitHub** topic (PRs, hosting), CI/CD fundamentals (triggers on push).
 

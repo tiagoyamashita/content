@@ -65,7 +65,7 @@ filters:
   - labels.env = staging
 ```
 
-Use **service account** or **OIDC** credentials on the control node — same least-privilege ideas as CI (`../security-and-best-practices/iii-secrets-and-oidc.md`).
+Use **service account** or **OIDC** credentials on the control node — same least-privilege ideas as CI [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).
 
 ## 3. Common modules reference
 
@@ -160,4 +160,4 @@ Runs create → converge → verify → destroy — good for role authors, heavi
 | `pipelining = True` in ansible.cfg | Fewer SSH round trips |
 | Fact caching | Skip repeated `setup` |
 
-**Related:** `ii-ansible-fundamentals.md`, `vi-jenkins-ansible-pipelines.md`.
+**Related:** [Ansible fundamentals](ii-ansible-fundamentals.md), [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).

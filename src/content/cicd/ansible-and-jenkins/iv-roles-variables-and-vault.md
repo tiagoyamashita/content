@@ -132,7 +132,7 @@ ansible-playbook site.yml \
 ansible-playbook site.yml --ask-vault-pass
 ```
 
-Never commit vault password — store in Jenkins **Credentials** (`vi-jenkins-ansible-pipelines.md`).
+Never commit vault password — store in Jenkins **Credentials** [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md).
 
 ## 6. Role dependencies
 
@@ -177,4 +177,4 @@ Pin versions in CI for reproducible builds.
 | `-e` for everything | Use inventory/group_vars |
 | Huge monolithic role | Split by concern (nginx, app, log) |
 
-**Related:** `iii-inventory-and-playbooks.md`, `../security-and-best-practices/iii-secrets-and-oidc.md`.
+**Related:** [Inventory & playbooks](iii-inventory-and-playbooks.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).

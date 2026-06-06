@@ -11,13 +11,13 @@ Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN
 
 | Note | Topic | Core question |
 |------|--------|---------------|
-| `ii-api-design.md` | REST, gRPC, GraphQL | How do clients talk to services at scale? |
-| `iii-message-queues-and-async.md` | Queues, pub/sub, outbox | How do you decouple and absorb spikes? |
-| `iv-rate-limiting.md` | Token bucket, sliding window | How do you protect backends from overload? |
-| `v-search-systems.md` | Inverted index, CDC, vectors | How do you serve fast full-text and semantic search? |
-| `vi-cdn-and-edge-caching.md` | CDN, cache invalidation | How do you serve static and cacheable content globally? |
-| `vii-distributed-transactions.md` | Saga, 2PC, idempotency | How do you coordinate writes across services? |
-| `viii-observability-at-scale.md` | SLOs, tracing, chaos | How do you know when scale breaks something? |
+| [API design](ii-api-design.md) | REST, gRPC, GraphQL | How do clients talk to services at scale? |
+| [Message queues & async](iii-message-queues-and-async.md) | Queues, pub/sub, outbox | How do you decouple and absorb spikes? |
+| [Rate limiting](iv-rate-limiting.md) | Token bucket, sliding window | How do you protect backends from overload? |
+| [Search systems](v-search-systems.md) | Inverted index, CDC, vectors | How do you serve fast full-text and semantic search? |
+| [CDN & edge caching](vi-cdn-and-edge-caching.md) | CDN, cache invalidation | How do you serve static and cacheable content globally? |
+| [Distributed transactions](vii-distributed-transactions.md) | Saga, 2PC, idempotency | How do you coordinate writes across services? |
+| [Observability at scale](viii-observability-at-scale.md) | SLOs, tracing, chaos | How do you know when scale breaks something? |
 
 ## Where these sit in a typical architecture
 

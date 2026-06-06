@@ -392,7 +392,7 @@ Use async when you have **many concurrent I/O waits** and want **one binary** th
 
 ## 10. Related
 
-- **Part I** — organization, ownership (`i-basics-and-toolchain.md`)
-- **Part II** — `Cargo.toml`, dependencies (`ii-cargo-and-shareable-crates.md`)
+- **Part I** — organization, ownership [Basics & toolchain](i-basics-and-toolchain.md)
+- **Part II** — `Cargo.toml`, dependencies [Cargo & shareable crates](ii-cargo-and-shareable-crates.md)
 - [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
 - [Tokio](https://tokio.rs/) — runtime, tutorials, docs

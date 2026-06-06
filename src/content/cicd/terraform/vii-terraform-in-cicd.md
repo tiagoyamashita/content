@@ -111,7 +111,7 @@ jobs:
 | `plan` on PR | Review infra diff like code |
 | `apply` only on `main` | No rogue PR applying to cloud |
 | `-out=tfplan` | Apply exact planned changes |
-| OIDC role | No static AWS keys (`../security-and-best-practices/iii-secrets-and-oidc.md`) |
+| OIDC role | No static AWS keys [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md) |
 
 ## 3. GitLab CI example
 
@@ -199,7 +199,7 @@ projects:
   run: checkov -d infra/ --framework terraform
 ```
 
-Gate PR on **HIGH** misconfigs (open SG, unencrypted S3). Complements `../security-and-best-practices/ii-supply-chain-and-slsa.md`.
+Gate PR on **HIGH** misconfigs (open SG, unencrypted S3). Complements [Supply chain & SLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md).
 
 ## 6. Plan exit codes for automation
 
@@ -237,4 +237,4 @@ Use exit code 2 to trigger apply job only when needed.
 - **`module` source** — registry URL, git URL, or local path.
 - **Terraform vs CloudFormation** — HashiCorp multi-cloud vs AWS-native.
 
-**Related:** `v-state-and-remote-backends.md`, `../tools-and-platforms/ii-github-actions.md`.
+**Related:** [State & remote backends](v-state-and-remote-backends.md), [GitHub Actions](../tools-and-platforms/ii-github-actions.md).

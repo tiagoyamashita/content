@@ -189,4 +189,4 @@ jobs:
 | Huge **Marketplace** | Complex org billing at scale |
 | Free minutes for public repos | Self-hosted runners need ops |
 
-**Related:** `v-docker-in-ci.md`, `../security-and-best-practices/iii-secrets-and-oidc.md`.
+**Related:** [Docker in CI](v-docker-in-ci.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).

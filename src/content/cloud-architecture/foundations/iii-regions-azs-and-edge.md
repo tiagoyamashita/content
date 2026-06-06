@@ -78,7 +78,7 @@ Region: eu-west-1
 | Complexity | Standard HA | DNS failover, replication lag |
 | Cost | Moderate | Higher (duplicate infra + transfer) |
 
-Start with **multi-AZ**; add **multi-region** when RTO/RPO or compliance requires it (`vii-ha-and-disaster-recovery.md`).
+Start with **multi-AZ**; add **multi-region** when RTO/RPO or compliance requires it [HA & disaster recovery](vii-ha-and-disaster-recovery.md).
 
 ## 6. Data residency example
 
@@ -105,4 +105,4 @@ Specialized — use when milliseconds matter to specific metro.
 - [ ] Pricing (varies by region)
 - [ ] DR region paired or chosen explicitly
 
-**Related:** `vi-networking-vpc-and-lb.md`, `vii-ha-and-disaster-recovery.md`, patterns **CDN** note.
+**Related:** [Networking, VPC & LB](vi-networking-vpc-and-lb.md), [HA & disaster recovery](vii-ha-and-disaster-recovery.md), patterns **CDN** note.

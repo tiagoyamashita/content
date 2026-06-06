@@ -11,13 +11,13 @@ A **bottleneck** is the resource whose **saturation** caps overall throughput. R
 
 | Note | Focus |
 |------|--------|
-| `ii-identifying-bottlenecks.md` | Little's Law, USL, USE, RED, finding the limiter |
-| `iii-cpu-and-memory.md` | CPU, GC, leaks, caching pressure |
-| `iv-io-and-storage.md` | Disk, SSD, object storage, WAL |
-| `v-network.md` | Bandwidth, latency, connections, mesh |
-| `vi-database.md` | Reads, writes, pools, indexes |
-| `vii-application-level.md` | Thundering herd, hot keys, circuit breakers |
-| `viii-elimination-playbook.md` | Measure → isolate → fix → validate → prevent |
+| [Identifying bottlenecks](ii-identifying-bottlenecks.md) | Little's Law, USL, USE, RED, finding the limiter |
+| [CPU & memory](iii-cpu-and-memory.md) | CPU, GC, leaks, caching pressure |
+| [I/O & storage](iv-io-and-storage.md) | Disk, SSD, object storage, WAL |
+| [Network](v-network.md) | Bandwidth, latency, connections, mesh |
+| [Database](vi-database.md) | Reads, writes, pools, indexes |
+| [Application-level](vii-application-level.md) | Thundering herd, hot keys, circuit breakers |
+| [Elimination playbook](viii-elimination-playbook.md) | Measure → isolate → fix → validate → prevent |
 
 ## The whack-a-mole mental model
 

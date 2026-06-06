@@ -131,7 +131,7 @@ try (var session = driver.session()) {
 
 ## 10. Related
 
-- **Overview** — `i-overview.md`
+- **Overview** — [Databases overview](i-overview.md)
 - **Graph** (Data structures submenu) — adjacency list, BFS, DFS
 - **Graph traversal** (Algorithms submenu) — algorithms the DB runs internally
-- **Relational** — when JOINs suffice (`ii-relational.md`)
+- **Relational** — when JOINs suffice [Relational (SQL)](ii-relational.md)

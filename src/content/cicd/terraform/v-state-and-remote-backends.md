@@ -144,4 +144,4 @@ output "db_password" {
 
 Still stored in state — remote backend encryption and IAM on bucket are required.
 
-**Related:** `vii-terraform-in-cicd.md`, `../security-and-best-practices/iii-secrets-and-oidc.md`.
+**Related:** [Terraform in CI/CD](vii-terraform-in-cicd.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).

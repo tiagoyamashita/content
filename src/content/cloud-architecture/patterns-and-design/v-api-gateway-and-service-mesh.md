@@ -140,4 +140,4 @@ Often: **CloudFront → ALB Ingress → services** for web; **API Gateway** for 
 | No timeout on HTTP client | Set connect + read timeout + breaker |
 | 20 retry with no jitter | Bounded retries + exponential backoff |
 
-**Related:** networking ingress note, `vi-observability-slo-and-slis.md`, `iv-event-driven-architecture.md`.
+**Related:** networking ingress note, [Observability, SLI & SLO](vi-observability-slo-and-slis.md), [Event-driven architecture](iv-event-driven-architecture.md).

@@ -91,7 +91,7 @@ See networking DNS notes for global API zoning.
 
 ## 5. CDN (edge)
 
-**CloudFront**, **Azure CDN**, **Cloudflare** — cache at edge PoPs (`iii-regions-azs-and-edge.md`).
+**CloudFront**, **Azure CDN**, **Cloudflare** — cache at edge PoPs [Regions, AZs & edge](iii-regions-azs-and-edge.md).
 
 ```text
 User ──▶ CloudFront edge (cache HIT) → fast
@@ -144,4 +144,4 @@ Reduces NAT cost and keeps traffic on AWS backbone.
 - **Ingress** or cloud LB exposes HTTP services.
 - **Network policies** restrict pod-to-pod traffic.
 
-**Related:** networking TCP/HTTP/DNS/Ingress notes, patterns `v-api-gateway-and-service-mesh.md`.
+**Related:** networking TCP/HTTP/DNS/Ingress notes, patterns [API Gateway & service mesh](../patterns-and-design/v-api-gateway-and-service-mesh.md).

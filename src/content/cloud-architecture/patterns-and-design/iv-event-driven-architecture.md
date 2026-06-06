@@ -154,4 +154,4 @@ void handle(OrderPlaced event) {
 | Strong consistency required | Single DB transaction |
 | Two-service startup | Direct call until complexity grows |
 
-**Related:** `iii-microservices-vs-monolith.md`, `v-api-gateway-and-service-mesh.md`.
+**Related:** [Microservices vs monolith](iii-microservices-vs-monolith.md), [API Gateway & service mesh](v-api-gateway-and-service-mesh.md).

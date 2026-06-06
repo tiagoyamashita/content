@@ -137,6 +137,6 @@ Enable with **`@EnableMethodSecurity`** on a **`@Configuration`** class.
 
 ## 6. Related notes
 
-- **REST controllers** — `iv-rest-controllers.md` (validation, Problem Details)
-- **YAML & profiles** — `ii-yaml-and-external-config.md`
+- **REST controllers** — [REST controllers](iv-rest-controllers.md) (validation, Problem Details)
+- **YAML & profiles** — [YAML & external config](ii-yaml-and-external-config.md)
 - **Testing** — use **`@SpringBootTest`** + **`@AutoConfigureMockMvc`** with **`@WithMockUser`** or test JWT fixtures; **`@WebMvcTest`** alone does not load the full security chain unless configured

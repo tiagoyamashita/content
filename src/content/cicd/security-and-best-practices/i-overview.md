@@ -11,14 +11,14 @@ Secure CI/CD protects **source**, **build**, **artifacts**, and **deploy targets
 
 | Note | Focus |
 |------|--------|
-| `ii-supply-chain-and-slsa.md` | SLSA, SBOM, signing, dependency pinning |
-| `iii-secrets-and-oidc.md` | Vaults, rotation, OIDC to cloud |
-| `iv-least-privilege-runners.md` | Token scope, self-hosted runners, fork PRs |
-| `v-testing-strategy.md` | Test pyramid, gates, sharding, flaky tests |
-| `vi-pipeline-observability-and-dora.md` | DORA metrics, alerts, pipeline tracing |
-| `vii-release-gates-and-rollbacks.md` | Approvals, immutable deploys, rollback |
+| [Supply chain & SLSA](ii-supply-chain-and-slsa.md) | SLSA, SBOM, signing, dependency pinning |
+| [Secrets & OIDC](iii-secrets-and-oidc.md) | Vaults, rotation, OIDC to cloud |
+| [Least-privilege runners](iv-least-privilege-runners.md) | Token scope, self-hosted runners, fork PRs |
+| [Testing strategy](v-testing-strategy.md) | Test pyramid, gates, sharding, flaky tests |
+| [Pipeline observability & DORA](vi-pipeline-observability-and-dora.md) | DORA metrics, alerts, pipeline tracing |
+| [Release gates & rollbacks](vii-release-gates-and-rollbacks.md) | Approvals, immutable deploys, rollback |
 
-**Related:** Part I fundamentals, **Tools & platforms** submenu, **Terraform** submenu → `vii-terraform-in-cicd.md` (OIDC in apply jobs).
+**Related:** Part I fundamentals, **Tools & platforms** submenu, **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (OIDC in apply jobs).
 
 ## Secure pipeline layers
 

@@ -11,14 +11,14 @@ Terraform — overview
 
 | Note | Focus |
 |------|--------|
-| `ii-what-is-terraform.md` | Problem IaC solves, vs CloudFormation, workflow |
-| `iii-hcl-resources-and-variables.md` | HCL syntax, variables, outputs, data sources |
-| `iv-aws-example-vpc-and-ec2.md` | VPC, subnet, EC2 — full working example |
-| `v-state-and-remote-backends.md` | tfstate, S3 backend, locking, state CLI |
-| `vi-modules-and-environments.md` | Modules, registry, workspaces, env split |
-| `vii-terraform-in-cicd.md` | Plan on PR, apply on main, OIDC, Atlantis |
+| [What is Terraform](ii-what-is-terraform.md) | Problem IaC solves, vs CloudFormation, workflow |
+| [HCL, resources & variables](iii-hcl-resources-and-variables.md) | HCL syntax, variables, outputs, data sources |
+| [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md) | VPC, subnet, EC2 — full working example |
+| [State & remote backends](v-state-and-remote-backends.md) | tfstate, S3 backend, locking, state CLI |
+| [Modules & environments](vi-modules-and-environments.md) | Modules, registry, workspaces, env split |
+| [Terraform in CI/CD](vii-terraform-in-cicd.md) | Plan on PR, apply on main, OIDC, Atlantis |
 
-**Related:** Part I fundamentals, **Security & best practices** → `iii-secrets-and-oidc.md`, **Tools & platforms** → GitHub Actions.
+**Related:** Part I fundamentals, **Security & best practices** → [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md), **Tools & platforms** → GitHub Actions.
 
 ## Core workflow
 

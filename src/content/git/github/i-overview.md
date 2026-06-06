@@ -12,9 +12,9 @@ GitHub — overview
 | Note | Focus |
 |------|--------|
 | **Git → Essentials** | Local Git commands, branches, remotes |
-| `ii-repositories-and-pull-requests.md` | Repos, forks, PRs, reviews |
-| `iii-actions-issues-and-settings.md` | CI, issues, branch protection, tokens |
-| `activity-contribution-graph.md` | This site's contribution grid demo |
+| [Repositories & pull requests](ii-repositories-and-pull-requests.md) | Repos, forks, PRs, reviews |
+| [Actions, issues & settings](iii-actions-issues-and-settings.md) | CI, issues, branch protection, tokens |
+| [Contribution graph](activity-contribution-graph.md) | This site's contribution grid demo |
 
 ## Git + GitHub flow
 

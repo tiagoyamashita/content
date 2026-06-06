@@ -16,7 +16,7 @@ Weighted graphs: edges carry **cost** or **distance**.
 | **Bellman–Ford** | Any | Allows negative (no neg cycles) | O(nm) |
 
 ### Dijkstra (non-negative weights)
-Greedy: always settle the **closest** unsettled vertex using a **min-priority queue** (`ix-priority-queue.md`).
+Greedy: always settle the **closest** unsettled vertex using a **min-priority queue** [Priority queue](../data-structures/ix-priority-queue.md).
 
 ```java
 // Compile: javac --release 22 …
@@ -66,7 +66,7 @@ public static int[] dijkstra(List<List<int[]>> adj, int source) {
 | **Kruskal** | Sort edges; add if no cycle (union–find) | O(m log m) |
 | **Prim** | Grow tree from a start; always add cheapest edge to tree | O((n + m) log n) with heap |
 
-Both are **greedy**; correctness proofs use **cut property** / **exchange argument** (`vii-greedy.md`).
+Both are **greedy**; correctness proofs use **cut property** / **exchange argument** [Greedy](vii-greedy.md).
 
 ## 4. When to use what
 - **Maps / routing (non-negative):** Dijkstra.

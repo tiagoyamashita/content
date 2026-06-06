@@ -98,4 +98,4 @@ git remote add origin git@github.com:you/myproject.git
 git push -u origin main
 ```
 
-**Related:** `iii-everyday-commands.md`, **GitHub** → repositories note.
+**Related:** [Everyday commands](iii-everyday-commands.md), **GitHub** → repositories note.

@@ -200,4 +200,4 @@ publish:
 | Strong self-managed option | YAML can grow large |
 | Review apps, security scanning built-in | |
 
-**Related:** `v-docker-in-ci.md`, `../security-and-best-practices/i-overview.md`.
+**Related:** [Docker in CI](v-docker-in-ci.md), [Overview](../security-and-best-practices/i-overview.md).

@@ -152,10 +152,10 @@ int[] sorted = Arrays.stream(a).sorted().toArray();
 
 | Note | JDK focus |
 |------|-----------|
-| `ii-sorting.md` | `Arrays.sort`, `Comparator` |
-| `iii-searching.md` | `binarySearch`, `HashMap` |
-| `v-graph-traversal.md` | `ArrayDeque`, `Queue` |
-| `vi-shortest-paths-and-mst.md` | `PriorityQueue`, sort edges for Kruskal |
-| `vii-greedy.md` | sort + `PriorityQueue` |
-| `viii-dynamic-programming.md` | `int[][]`, `HashMap` memo |
-| `x-common-patterns.md` | `HashMap`, `Arrays.sort`, streams |
+| [Sorting](ii-sorting.md) | `Arrays.sort`, `Comparator` |
+| [Searching](iii-searching.md) | `binarySearch`, `HashMap` |
+| [Graph traversal](v-graph-traversal.md) | `ArrayDeque`, `Queue` |
+| [Shortest paths & MST](vi-shortest-paths-and-mst.md) | `PriorityQueue`, sort edges for Kruskal |
+| [Greedy](vii-greedy.md) | sort + `PriorityQueue` |
+| [Dynamic programming](viii-dynamic-programming.md) | `int[][]`, `HashMap` memo |
+| [Common patterns](x-common-patterns.md) | `HashMap`, `Arrays.sort`, streams |

@@ -98,7 +98,7 @@ After rebase onto C:
 | **Squash merge** | One commit on main | Clean main log |
 | **Rebase merge** | Linear commits replayed | Linear main |
 
-Team picks one convention — document in `vii-workflows-and-conventions.md`.
+Team picks one convention — document in [Workflows & conventions](vii-workflows-and-conventions.md).
 
 ## 7. Detached HEAD
 
@@ -114,4 +114,4 @@ git switch -c recover-work
 - **Fast-forward** — main simply moves forward to branch tip; no merge commit.
 - **Conflict** — same region edited differently; Git cannot auto-pick.
 
-**Related:** `v-remotes-and-collaboration.md`, **GitHub** PRs note.
+**Related:** [Remotes & collaboration](v-remotes-and-collaboration.md), **GitHub** PRs note.

@@ -65,4 +65,4 @@ Included with Cloudflare, Vercel, Netlify. Cache static assets; set **`Cache-Con
 - [ ] Deploy hook from GitHub
 - [ ] Staging subdomain (`staging.app.com`) optional
 
-**Related:** `ii-email-and-mailing.md` (DNS records), cloud foundations **edge**.
+**Related:** [Email & mailing](ii-email-and-mailing.md) (DNS records), cloud foundations **edge**.

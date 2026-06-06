@@ -179,4 +179,4 @@ Prefer **HashiCorp Vault** or cloud OIDC plugins over long-lived Jenkins-stored 
 | Logging `env` in debug step | Secret in log archive |
 | OIDC role trusts `*` repos | Any repo can assume |
 
-**Related:** **Terraform** submenu → `vii-terraform-in-cicd.md` (OIDC in plan/apply), `iv-least-privilege-runners.md`.
+**Related:** **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (OIDC in plan/apply), [Least-privilege runners](iv-least-privilege-runners.md).

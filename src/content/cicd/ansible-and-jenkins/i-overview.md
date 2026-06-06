@@ -11,14 +11,14 @@ Ansible & Jenkins — overview
 
 | Note | Focus |
 |------|--------|
-| `ii-ansible-fundamentals.md` | Agentless model, idempotency, core terms |
-| `iii-inventory-and-playbooks.md` | Hosts, groups, tasks, handlers |
-| `iv-roles-variables-and-vault.md` | Role layout, var precedence, secrets |
-| `v-dynamic-inventory-and-modules.md` | Cloud inventory, common modules, ansible-lint |
-| `vi-jenkins-ansible-pipelines.md` | Jenkinsfile, Vault creds, Ansible plugin |
-| `vii-deploy-patterns-and-operations.md` | Deploy playbooks, tags, hotfixes, staging/prod |
+| [Ansible fundamentals](ii-ansible-fundamentals.md) | Agentless model, idempotency, core terms |
+| [Inventory & playbooks](iii-inventory-and-playbooks.md) | Hosts, groups, tasks, handlers |
+| [Roles, variables & Vault](iv-roles-variables-and-vault.md) | Role layout, var precedence, secrets |
+| [Dynamic inventory & modules](v-dynamic-inventory-and-modules.md) | Cloud inventory, common modules, ansible-lint |
+| [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md) | Jenkinsfile, Vault creds, Ansible plugin |
+| [Deploy patterns & operations](vii-deploy-patterns-and-operations.md) | Deploy playbooks, tags, hotfixes, staging/prod |
 
-**Related:** **Tools & platforms** → `iv-jenkins.md` (CI-focused Jenkins), Part I fundamentals, **Terraform** submenu.
+**Related:** **Tools & platforms** → [Jenkins](../tools-and-platforms/iv-jenkins.md) (CI-focused Jenkins), Part I fundamentals, **Terraform** submenu.
 
 ## CI build → Ansible deploy flow
 

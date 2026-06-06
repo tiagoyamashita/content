@@ -88,4 +88,4 @@ Repeatable process for **incidents** and **design reviews** — measure first, f
 4. **Validate** with load test
 5. **Prevent** — slow query log alert
 
-**Related:** `ii-identifying-bottlenecks.md`, scalable patterns observability, SRE tooling.
+**Related:** [Identifying bottlenecks](ii-identifying-bottlenecks.md), scalable patterns observability, SRE tooling.

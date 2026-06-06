@@ -11,13 +11,13 @@ Before patterns and scale, understand **what cloud providers offer**: service mo
 
 | Note | Focus |
 |------|--------|
-| `ii-service-models.md` | IaaS, PaaS, SaaS, shared responsibility |
-| `iii-regions-azs-and-edge.md` | Regions, AZs, CDN edge, data residency |
-| `iv-compute-options.md` | VMs, containers/K8s, serverless, cold starts |
-| `v-storage-and-databases.md` | Object, block, file storage; SQL and NoSQL |
-| `vi-networking-vpc-and-lb.md` | VPC, subnets, load balancers, DNS, firewalls |
-| `vii-ha-and-disaster-recovery.md` | RTO/RPO, multi-AZ, DR tiers |
-| `viii-well-architected-framework.md` | Six pillars with cloud examples |
+| [Service models](ii-service-models.md) | IaaS, PaaS, SaaS, shared responsibility |
+| [Regions, AZs & edge](iii-regions-azs-and-edge.md) | Regions, AZs, CDN edge, data residency |
+| [Compute options](iv-compute-options.md) | VMs, containers/K8s, serverless, cold starts |
+| [Storage & databases](v-storage-and-databases.md) | Object, block, file storage; SQL and NoSQL |
+| [Networking, VPC & LB](vi-networking-vpc-and-lb.md) | VPC, subnets, load balancers, DNS, firewalls |
+| [HA & disaster recovery](vii-ha-and-disaster-recovery.md) | RTO/RPO, multi-AZ, DR tiers |
+| [Well-Architected Framework](viii-well-architected-framework.md) | Six pillars with cloud examples |
 
 **Next:** **Patterns & design** submenu — scalability, microservices, events, observability, cost.
 
