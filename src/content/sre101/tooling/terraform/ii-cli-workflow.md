@@ -1,14 +1,13 @@
 ---
 label: "II"
-subtitle: "CLI ワークフロー"
+subtitle: "CLI workflow"
 group: "SRE"
 order: 2
 ---
-SRE ツール — Terraform: CLI ワークフロー
+SRE tooling — Terraform: CLI workflow
+Daily commands from **`init`** through **`apply`**, plus variables and refreshes.
 
-**`init`** から **`apply`** までの毎日のコマンドと変数およびリフレッシュ。
-
-## 1. 標準的なライフサイクル
+## 1. Standard lifecycle
 
 ```text
 terraform init          # providers + backends + modules
@@ -18,14 +17,14 @@ terraform plan -out=plan.tfplan
 terraform apply plan.tfplan
 ```
 
-**`apply`** のない **`plan`** は、ゲートがマージするものであり、CI アーティファクト内のテキスト/HTML プランをキャプチャします。
+**`plan`** without **`apply`** is what gates merges—capture textual/HTML plans in CI artifacts.
 
-## 2. ワークスペースと環境
+## 2. Workspaces & environments
 
-- **CLI ワークスペース** (`terraform workspace select prod`) は、1 つのバックエンド構成内で **state** 名前空間を分割します。シンプルですが、悪用されやすいです。多くのチームは、個別のディレクトリ (`env/prod`) + 個別の **`backend.key`**、または完全に個別の状態バケットを好みます。
-- **`-var-file=prod.tfvars`** および CI シークレットを介して環境の詳細を渡します。
+- **CLI workspaces** (`terraform workspace select prod`) split **state** namespaces inside one backend configuration—simple but easy to misuse; many teams prefer separate directories (`env/prod`) + distinct **`backend.key`** or entirely separate state buckets.
+- Pass environment specifics via **`-var-file=prod.tfvars`** and CI secrets.
 
-## 3. 変数と秘密
+## 3. Variables & secrets
 
 ```hcl
 variable "db_password" {
@@ -34,21 +33,21 @@ variable "db_password" {
 }
 ```
 
-シークレットを使用した **`.tfvars`** のコミットは避けてください。環境変数 **`TF_VAR_db_password`**、Vault、または CI シークレット ストアを使用してください。
+Avoid committing **`.tfvars`** with secrets—use env vars **`TF_VAR_db_password`**, Vault, or CI secret stores.
 
-## 4. インポートとターゲットを絞った操作
+## 4. Imports & targeted ops
 
-- **`terraform import aws_instance.app i-0abc123`** は既存のインフラを接続します。依然として一致するリソース ブロックが必要です。
-- **`-target`** 外科的修正の場合 - 避難ハッチのみ。依存関係の偏りは問題を隠す危険性があります。
+- **`terraform import aws_instance.app i-0abc123`** attaches existing infra—still requires matching resource blocks.
+- **`-target`** for surgical fixes—escape hatch only; dependency skew risks hiding problems.
 
-## 5. リフレッシュ＆ドリフト
+## 5. Refresh & drift
 
-- デフォルト プランはリモート オブジェクトを更新します。手動によるコンソール編集をドリフトとして検出します。
-- **`terraform refresh`** / 計画に組み込まれた非推奨のスタンドアロン更新セマンティクス - ドリフトを無視すると、Terraform/状態の相違が生じることを理解してください。
+- Default plans refresh remote objects—detect manual console edits as drift.
+- **`terraform refresh`** / deprecated standalone refresh semantics folded into plan—understand that ignoring drift breeds Terraform/state divergence.
 
-## 6. 破壊して置き換える
+## 6. Destroy & replaces
 
-- **`terraform destroy`** は管理オブジェクトを削除します。承認とスコープ指定されたワークスペース/モジュールで本番環境を保護します。
-- **`lifecycle { prevent_destroy = true }`** は重要なデータセットを保護します。とにかくバックアップと組み合わせます。
+- **`terraform destroy`** removes managed objects—protect prod with approvals + scoped workspaces/modules.
+- **`lifecycle { prevent_destroy = true }`** guards critical datasets—combine with backups anyway.
 
-次: **モジュール / バックエンド / 状態**、次に **CI とプラクティス**。
+Next: **Modules / backends / state**, then **CI & practices**.

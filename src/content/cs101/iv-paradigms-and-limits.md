@@ -1,58 +1,57 @@
 ---
 label: "IV"
-subtitle: "パラダイムと限界"
-group: "データ構造とアルゴリズム"
+subtitle: "Paradigms & limits"
+group: "Data structures & algorithms"
 order: 4
 ---
-レベル IV — パラダイムと限界
+Level IV — Paradigms & limits
+Greedy, divide & conquer, DP, reductions, hardness, approximation.
 
-貪欲、分割統治、DP、軽減、硬さ、近似。
+## 1. Greedy algorithms
+- Build solution step-by-step; each step makes the locally best choice.
+- Correctness needs proof: often exchange argument or matroid structure.
+- Counterexample habit: if greedy fails, smallest input where it diverges from optimal.
+- Classic: activity selection, Huffman coding, MST (Kruskal/Prim), fractional knapsack.
+- 0/1 knapsack is not greedy-safe — need DP.
 
-## 1. 貪欲なアルゴリズム
-- ソリューションを段階的に構築します。それぞれのステップで、ローカルで最善の選択が行われます。
-- 正しさには証明が必要です。引数やマトロイド構造を交換することがよくあります。
-- 反例の習慣: 欲張りが失敗した場合、最適値から乖離する最小の入力。
-- クラシック: アクティビティ選択、ハフマンコーディング、MST (クラスカル/プリム)、フラクショナルナップザック。
-- 0/1 ナップサックは貪欲に安全ではありません - DP が必要です。
+## 2. Divide & conquer
+- Split problem into subproblems, solve recursively, combine results.
+- Runtime from recurrence: mergesort, closest pair, Strassen-style ideas.
+- Master theorem helps bound T(n) = aT(n/b) + f(n) for many recurrences.
+- Contrast with DP: subproblems overlap → pure divide & conquer may redo work.
 
-## 2. 分割統治
-- 問題をサブ問題に分割し、再帰的に解決し、結果を結合します。
-- 繰り返しからの実行時間: マージソート、最近接ペア、Strassen スタイルのアイデア。
-- マスター定理は、多くの再帰に対して T(n) = aT(n/b) + f(n) を制限するのに役立ちます。
-- DP との対比: 部分問題が重なっている → 純粋な分割統治では作業をやり直す可能性があります。
+## 3. Dynamic programming
+- Optimal substructure: optimal solution built from optimal subsolutions.
+- Overlapping subproblems: same subproblem many times → memoize or tabulate.
+- Top-down memoization vs bottom-up table: same complexity; trade recursion depth.
+- State design is the hard part: dimensions = subproblems you index.
+- Examples: Fibonacci, LCS, edit distance, subset sums, knapsack variants.
 
-## 3. 動的プログラミング
-- 最適な部分構造: 最適な部分解から構築される最適なソリューション。
-- 重複する部分問題: 同じ部分問題を何度も → メモ化または表化します。
-- トップダウンのメモ化とボトムアップのテーブル: 複雑さは同じ。トレードの再帰の深さ。
-- 状態の設計は難しい部分です。次元 = インデックスを付けるサブ問題です。
-- 例: フィボナッチ、LCS、編集距離、サブセット合計、ナップザック バリアント。
+## 4. DP vs greedy — decision checklist
+- Greedy if local choices cannot trap you (proved).
+- DP when optimal answer depends on overlapping smaller structured instances.
+- Try: write recurrence first; if exponential naive tree → memoize.
 
-## 4. DP 対貪欲 — 意思決定チェックリスト
-- 地元の選択があなたを罠にはめることができない場合は貪欲です（証明されています）。
-- 最適な答えが重複する小さな構造化インスタンスに依存する場合の DP。
-- 試してみてください: 最初に繰り返しを書きます。指数関数的単純ツリーの場合 → メモ化。
+## 5. Reductions
+- Reduce problem A to B: solving B lets you solve A with little overhead.
+- If A reduces to B and A is hard → B is at least as hard (complexity lower bounds).
+- SAT, NP-completeness chain: many problems reduce to each other.
+- Practically: reuse solver libraries by encoding your problem as known form.
 
-## 5. 削減
-- 問題 A を B に削減します。B を解決すると、ほとんどオーバーヘッドなく A を解決できます。
-- A が B に減少し、A が難しい場合 → B は少なくとも同じくらい難しい (複雑さの下限)。
-- SAT、NP 完全性チェーン: 多くの問題は相互に帰属します。
-- 実際: 問題を既知の形式としてエンコードすることで、ソルバー ライブラリを再利用します。
+## 6. P, NP, NP-hardness (practical framing)
+- P: decision problems solvable in polynomial time (efficient in theory land).
+- NP: solutions verifiable in polynomial time (certificate checked quickly).
+- NP-complete: in NP and every NP problem reduces to it — hardest in NP.
+- NP-hard: at least as hard as NP-complete; need not be in NP.
+- Real solvers: SAT/SMT, ILP, CP — exponential worst case; often OK on instances.
 
-## 6. P、NP、NP 硬度 (実用フレーム)
-- P: 多項式時間で解決できる決定問題 (理論上は効率的)。
-- NP: 多項式時間で検証可能なソリューション (証明書は迅速にチェックされます)。
-- NP 完全: NP およびすべての NP 問題はそれに帰着します。NP では最も困難です。
-- NP ハード: 少なくとも NP 完全と同じくらい難しい。 NP である必要はありません。
-- 実際のソルバー: SAT/SMT、ILP、CP — 指数関数的な最悪のケース。多くの場合、インスタンスでは問題ありません。
+## 7. When exact is too expensive
+- Approximation algorithms: proven ratio vs optimum for optimization versions.
+- Heuristics / metaheuristics: no guarantee; tune for speed or quality (GA, SA, etc.).
+- FPT: fixed-parameter tractable — exponential only in parameter k, poly in n.
+- Pick exact DP vs heuristic based on n, time budget, and failure cost.
 
-## 7. 正確さが高すぎる場合
-- 近似アルゴリズム: 実証済みの比率と最適化バージョンの最適値。
-- ヒューリスティック/メタヒューリスティック: 保証なし。速度または品質を調整します (GA、SA など)。
-- FPT: 固定パラメータの扱いやすい — パラメータ k のみ指数関数、n はポリゴン。
-- n、時間予算、および失敗コストに基づいて、正確な DP とヒューリスティックを選択します。
-
-## 8. 覚えてリハーサルする
-- LCS の繰り返しを作成するか、距離を編集し、1 つの小さなテーブルをトレースします。
-・欲張りな証明スケッチを言葉でひとつ（やりとり）。
-- ポリタイムでは確実に解決できない NP の問題を 1 つ挙げてください (例: TSP の決定)。
+## 8. Remember & rehearse
+- Write recurrence for LCS or edit distance and trace one small table.
+- One greedy proof sketch in words (exchange).
+- Name one problem in NP you cannot solve reliably in poly time (e.g. TSP decision).

@@ -1,29 +1,28 @@
 ---
 label: "IV"
-subtitle: "ロキ"
+subtitle: "Loki"
 group: "SRE"
 order: 4
 ---
-SRE ツール — Loki
+SRE tooling — Loki
+Log aggregation tuned for labels, not full-text indexing of everything.
 
-すべての全文インデックス作成ではなく、ラベルに合わせて調整されたログ集約。
+## 1. Role
 
-## 1. 役割
+**Grafana Loki** ingests log streams identified by **labels** (cluster, namespace, pod, app). It indexes labels heavily and compresses log chunks—cheaper than treating every field as indexed columns.
 
-**Grafana Loki** は、**ラベル** (クラスター、名前空間、ポッド、アプリ) で識別されるログ ストリームを取り込みます。ラベルのインデックスを大量に作成し、ログのチャンクを圧縮します。すべてのフィールドをインデックス付きの列として扱うよりもコストがかかりません。
-
-## 2. 中心となる概念
+## 2. Core concepts
 
 - **Promtail / Fluent Bit / OpenTelemetry** — agents that ship logs with consistent labels.
 - **LogQL** — query language combining label selectors with line filters and metric queries over logs.
-- **Retention & storage** — object-store backends for chunks;テナントごとの保持ポリシー。
+- **Retention & storage** — object-store backends for chunks; retention policies per tenant.
 
-## 3. SRE の実践
+## 3. SRE practices
 
-- チーム全体で **ラベル スキーマ**を標準化することで、調査 (`{namespace="payments"} |= "timeout"`) を迅速に行うことができます。
-- ログ行の共有 **トレース ID** または **リクエスト ID** を介してトレース/メトリクスと関連付けます。
-- 秘密の記録を避ける。可能な場合はエージェントに問い合わせてください。
+- Standardize **label schema** across teams so investigations (`{namespace="payments"} |= "timeout"`) stay fast.
+- Correlate with traces/metrics via shared **trace IDs** or **request IDs** in log lines.
+- Avoid logging secrets; scrub at the agent where possible.
 
-## 4. ペアリング
+## 4. Pairing
 
-**Grafana** のログを、同じサービスと時間範囲の Prometheus グラフと並べて調査します。
+Explore logs in **Grafana** alongside Prometheus graphs for the same service and time range.

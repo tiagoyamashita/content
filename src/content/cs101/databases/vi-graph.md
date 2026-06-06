@@ -1,14 +1,13 @@
 ---
 label: "VI"
-subtitle: "グラフ"
-group: "データベース"
+subtitle: "Graph"
+group: "Databases"
 order: 6
 ---
-グラフデータベース
+Graph databases
+A **graph** database stores **vertices** (nodes) and **edges** (relationships) with **properties** on both. Queries **traverse** the graph — follow friends, paths, cycles — instead of joining many SQL tables or pulling nested documents.
 
-**グラフ** データベースには、**頂点** (ノード) と **エッジ** (関係) が両方の **プロパティ**とともに保存されます。クエリは、多くの SQL テーブルに結合したり、ネストされたドキュメントを取得したりするのではなく、グラフを**横断**し、友人、パス、サイクルをたどります。
-
-## 1. データモデル
+## 1. Data model
 
 ```text
 (Ada:Person { born: 1815 })
@@ -17,18 +16,18 @@ order: 6
 (Grace)-[:WROTE]-> (Algorithm:Book { title: "..." })
 ```
 
-|ピース |意味 |
-|------|-----------|
-| **頂点 / ノード** |エンティティ (人、製品、アカウント) |
-| **エッジ/関係** |方向付きの入力済みリンク (知っている、購入した、フォローする) |
-| **プロパティ** |ノードまたはエッジの Key-Value (`since: 1833`) |
-| **ラベル** |ノードタイプ (`:Person`) |
+| Piece | Meaning |
+|-------|---------|
+| **Vertex / node** | Entity (Person, Product, Account) |
+| **Edge / relationship** | Typed link with direction (KNOWS, PURCHASED, FOLLOWS) |
+| **Property** | Key-value on node or edge (`since: 1833`) |
+| **Label** | Node type (`:Person`) |
 
-**プロパティ グラフ** モデル (Neo4j、Neptune) は業界で最も一般的です。
+**Property graph** model (Neo4j, Neptune) is most common in industry.
 
-## 2. グラフとリレーショナル JOIN の比較
+## 2. Graph vs relational JOINs
 
-**SQL** — 友達の友達を検索:
+**SQL** — find friends of friends:
 
 ```sql
 SELECT f2.name
@@ -38,25 +37,25 @@ WHERE f1.user_id = :me;
 -- deeper hops → more JOINs or recursive CTE
 ```
 
-**サイファー** (Neo4j):
+**Cypher** (Neo4j):
 
 ```cypher
 MATCH (me:Person {name: 'Ada'})-[:KNOWS*1..2]-(fof:Person)
 RETURN DISTINCT fof.name;
 ```
 
-このエンジンは**インデックスフリーの隣接関係**を使用しており、各ノードはそのエッジを指しているため、**ローカルトラバーサル**は低コストです。 SQL はグラフをシミュレートできますが、**深い可変長パス** クエリは 10 億エッジのスケールでは扱いにくくなります。
+The engine uses **index-free adjacency** — each node points to its edges — so **local traversal** is cheap. SQL can simulate graphs but **deep, variable-length path** queries get awkward at billion-edge scale.
 
-## 3. クエリ言語
+## 3. Query languages
 
-|言語 |使用者 |
-|----------|----------|
-| **サイファー** | Neo4j (宣言型、パターン マッチング) |
-| **グレムリン** | TinkerPop、Amazon Neptune (トラバーサル ステップ) |
-| **スパークル** | RDF トリプル ストア (セマンティック Web) |
-| **GQL** |新しい ISO 標準 (Cypher のような) |
+| Language | Used by |
+|----------|---------|
+| **Cypher** | Neo4j (declarative, pattern matching) |
+| **Gremlin** | TinkerPop, Amazon Neptune (traversal steps) |
+| **SPARQL** | RDF triple stores (semantic web) |
+| **GQL** | Emerging ISO standard (Cypher-like) |
 
-グレムリンの味:
+Gremlin flavor:
 
 ```text
 g.V().has('Person', 'name', 'Ada')
@@ -64,61 +63,61 @@ g.V().has('Person', 'name', 'Ada')
   .values('name')
 ```
 
-## 4. グラフ上のアルゴリズム
+## 4. Algorithms on graphs
 
-グラフ DB は、次のような場合に威力を発揮します。
+Graph DBs shine when you need:
 
-|問題 |アプローチ |
-|----------|----------|
-| **最短パス** |加重エッジ上の BFS / ダイクストラ |
-| **推奨事項** | 「X を購入したユーザーは Y も購入しました」 — 2 ホップ パターン |
-| **詐欺リング** |密な部分グラフ、共有属性を検出 |
-| **アクセス制御** |推移的な「グループのメンバー」閉包 |
-| **PageRank スタイル** |反復走査による重要性 (多くの場合オフライン) |
+| Problem | Approach |
+|---------|----------|
+| **Shortest path** | BFS / Dijkstra on weighted edges |
+| **Recommendations** | “Users who bought X also bought Y” — 2-hop patterns |
+| **Fraud rings** | Detect dense subgraphs, shared attributes |
+| **Access control** | Transitive “member of group” closure |
+| **PageRank-style** | Importance via iterative traversal (often offline) |
 
-CS101 **BFS/DFS** (`Algorithms` サブメニュー) は、メモリ内の隣接リストに関する同じ考え方です。つまり、DB が永続化され、インデックスが付けられます。
+CS101 **BFS/DFS** (`Algorithms` submenu) is the same idea on an in-memory adjacency list — the DB persists and indexes it.
 
-## 5. モデリングのヒント
+## 5. Modeling tips
 
-- **トラバーサルが主なアクセスである場合は、偽の結合テーブルではなく、動詞をリレーションシップとしてモデル化**します (`(:User)-[:RATED {stars: 5}]->(:Movie)`)。
-- **スーパーノードを避ける** — 1 人の有名人に 5,000 万人のフォロワーがいると、ファンアウトに費用がかかります。場合によっては、キーと値の数を組み合わせたハイブリッド。
-- 更新がまれな場合は、読み取り速度を高めるためにエッジに表示プロパティを **複製**します。
+- **Model verbs as relationships**, not fake join tables when traversal is the main access (`(:User)-[:RATED {stars: 5}]->(:Movie)`).
+- **Avoid supernodes** — one celebrity with 50M followers makes fan-out expensive; sometimes hybrid with key-value counts.
+- **Duplicate** display properties on edges for read speed if updates are rare.
 
-## 6. 強みと限界
+## 6. Strengths and limits
 
-**強み**
+**Strengths**
 
-- **直観的**で高度に接続されたデータを実現
-- **高速マルチホップ** クエリと深い SQL JOIN チェーン
-- **柔軟なスキーマ** — 移行地獄のない新しいエッジタイプ
-- Neo4j ブラウザおよび同様のツールでの **視覚的な探索**
+- **Intuitive** for highly connected data
+- **Fast multi-hop** queries vs deep SQL JOIN chains
+- **Flexible schema** — new edge types without migrations hell
+- **Visual exploration** in Neo4j Browser and similar tools
 
-**制限**
+**Limits**
 
-- **グローバル集計** (「世界中のすべての注文を合計する」) - SQL ウェアハウスの方が優れている場合が多い
-- **一括分析** — グラフ全体をオンラインでスキャンするのではなく、バッチ (Spark) にエクスポートします
-- **グラフのシャーディング**は困難です - 局所性を切断することは困難です。マネージドサービスは多少の痛みを隠します
-- PostgreSQL よりも **小規模なエコシステム**
+- **Global aggregations** (“sum all orders worldwide”) — SQL warehouses often better
+- **Bulk analytics** — export to batch (Spark) rather than scan whole graph online
+- **Sharding** graphs is hard — cuts break locality; managed services hide some pain
+- **Smaller ecosystem** than PostgreSQL
 
-## 7. グラフを選択する場合
+## 7. When to choose graph
 
-- ソーシャルネットワーク、組織図、権限の継承
-- **ナレッジ グラフ** (入力された事実によってリンクされたエンティティ)
-- **詐欺/AML** — アカウントと送金のパターン検出
-- **ネットワーク/ITトポロジ** — サービス間の依存関係
+- Social networks, org charts, permission inheritance
+- **Knowledge graphs** (entities linked by typed facts)
+- **Fraud / AML** — pattern detection on accounts and transfers
+- **Network / IT topology** — dependencies between services
 
-接続が単純な FK であり、レポートが優勢である場合は、**リレーショナル** を使用します。 **パス クエリ**が製品のコアである場合は、**グラフ**を使用してください。
+Use **relational** when connections are simple FKs and reports dominate; use **graph** when **path queries** are the product core.
 
-## 8. 例
+## 8. Examples
 
-|製品 |メモ |
-|----------|----------|
-| **Neo4j** |ネイティブ プロパティ グラフ、Cypher |
-| **アマゾン ネプチューン** |グレムリン + SPARQL、マネージド |
-| **アランゴDB** |マルチモデル (ドキュメント + グラフ) |
-| **PostgreSQL + 再帰的 CTE** |別個の DB を必要としないグラフのようなクエリ |
+| Product | Notes |
+|---------|--------|
+| **Neo4j** | Native property graph, Cypher |
+| **Amazon Neptune** | Gremlin + SPARQL, managed |
+| **ArangoDB** | Multi-model (document + graph) |
+| **PostgreSQL + recursive CTE** | Graph-like queries without separate DB |
 
-## 9. Java スケッチ (Neo4j ドライバー)
+## 9. Java sketch (Neo4j driver)
 
 ```java
 // Compile: javac --release 22 …
@@ -130,9 +129,9 @@ try (var session = driver.session()) {
 }
 ```
 
-## 10. 関連
+## 10. Related
 
-- **概要** — [データベースの概要](i-overview.md)
-- **グラフ** (データ構造サブメニュー) - 隣接リスト、BFS、DFS
-- **グラフ トラバーサル** (アルゴリズム サブメニュー) - DB が内部で実行するアルゴリズム
-- **リレーショナル** — JOIN で十分な場合 [リレーショナル (SQL)](ii-relational.md)
+- **Overview** — [Databases overview](i-overview.md)
+- **Graph** (Data structures submenu) — adjacency list, BFS, DFS
+- **Graph traversal** (Algorithms submenu) — algorithms the DB runs internally
+- **Relational** — when JOINs suffice [Relational (SQL)](ii-relational.md)

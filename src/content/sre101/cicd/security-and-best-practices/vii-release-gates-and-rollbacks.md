@@ -1,27 +1,26 @@
 ---
 label: "VII"
-subtitle: "ゲートのリリースとロールバック"
+subtitle: "Release gates & rollbacks"
 group: "CI/CD"
 order: 7
 ---
-ゲートのリリースとロールバック
+Release gates & rollbacks
+Shipping safely means **gating** who can deploy what, using **immutable artifacts**, and having a **tested rollback** before you need it.
 
-安全に出荷するということは、誰が何をデプロイできるかを **ゲート**し、**不変のアーティファクト**を使用し、必要になる前に**テスト済みのロールバック**を行うことを意味します。
+## 1. Branch protection
 
-## 1. ブランチ保護
+| Rule | Purpose |
+|------|---------|
+| Require PR before merge | Review + CI on branch |
+| Require status checks | Unit/integration must pass |
+| Require signed commits | Verify author identity |
+| Restrict who can push to `main` | No direct commits |
 
-|ルール |目的 |
-|-----|----------|
-|マージ前に PR を要求する |ブランチのレビュー + CI |
-|ステータスチェックが必要 |ユニット/統合は合格する必要があります |
-|署名付きコミットを要求する |著者の身元を確認する |
-| `main` にプッシュできる人を制限する |直接コミットはありません |
+GitHub: **Settings → Branches → Branch protection rules**.
 
-GitHub: **設定 → ブランチ → ブランチ保護ルール**。
+GitLab: **Protected branches** + **Merge request approvals** (e.g. 2 approvers for `main`).
 
-GitLab: **保護されたブランチ** + **マージリクエストの承認** (例: `main` に対して 2 人の承認者)。
-
-## 2. 環境保護
+## 2. Environment protection
 
 ```yaml
 # GitHub — production gate
@@ -35,17 +34,17 @@ jobs:
       - run: ./deploy.sh ${{ github.sha }}
 ```
 
-環境設定で **必須レビュー担当者** と **待機タイマー** を構成します。 **保護された環境**を使用した GitLab `environment: production` でも同じパターン。
+Configure **required reviewers** and **wait timer** in environment settings. Same pattern on GitLab `environment: production` with **protected environments**.
 
-## 3. 不変のデプロイアーティファクト
+## 3. Immutable deploy artifacts
 
-**ダイジェスト** または **semver タグ** によってデプロイします。本番環境では決して `latest` しないでください。
+Deploy by **digest** or **semver tag** — never `latest` in prod.
 
-|悪い |良い |
+| Bad | Good |
 |-----|------|
-| `myapp:latest` | `myapp:1.4.2` または `@sha256:abc...` |
-|サーバー上で再構築する | CI から事前に構築されたイメージをプルする |
-|フローティング ブランチのデプロイ |コミット SHA に `v1.4.2` をタグ付け |
+| `myapp:latest` | `myapp:1.4.2` or `@sha256:abc...` |
+| Rebuild on server | Pull pre-built image from CI |
+| Floating branch deploy | Tag `v1.4.2` on commit SHA |
 
 ```yaml
 - name: Deploy
@@ -54,15 +53,15 @@ jobs:
     kubectl rollout status deploy/api --timeout=5m
 ```
 
-CI は、初期の段階でその正確なイメージを構築し、スキャンしました [CI の Docker](../tools-and-platforms/v-docker-in-ci.md)。
+CI built and scanned that exact image in an earlier stage [Docker in CI](../tools-and-platforms/v-docker-in-ci.md).
 
-## 4. 段階的な配信
+## 4. Progressive delivery
 
-|戦略 |行動 |ロールバック |
+| Strategy | Behavior | Rollback |
 |----------|----------|----------|
-| **ローリング** |ポッドをバッチで交換する | `kubectl rollout undo` |
-| **青/緑** |トラフィックを新しいスタックに切り替える |戻る |
-| **カナリア** |トラフィック 5% → 25% → 100% |トラフィックを古いバージョンにルーティングする |
+| **Rolling** | Replace pods in batches | `kubectl rollout undo` |
+| **Blue/green** | Switch traffic to new stack | Switch back |
+| **Canary** | 5% → 25% → 100% traffic | Route traffic to old version |
 
 ```yaml
 # Flagger canary (Kubernetes)
@@ -88,11 +87,11 @@ spec:
         threshold: 99
 ```
 
-メトリクスが合格した場合の自動プロモーション。失敗した場合は自動的にロールバックします。
+Automated promotion when metrics pass; automatic rollback when they fail.
 
-## 5. CI での手動承認
+## 5. Manual approval in CI
 
-**GitHub アクション:**
+**GitHub Actions:**
 
 ```yaml
 jobs:
@@ -119,7 +118,7 @@ deploy_prod:
   script: ./deploy.sh
 ```
 
-**ジェンキンス** — `input` ステップ:
+**Jenkins** — `input` step:
 
 ```groovy
 stage('Approve') {
@@ -130,15 +129,15 @@ stage('Approve') {
 }
 ```
 
-## 6. ロールバック プレイブック
+## 6. Rollback playbook
 
-|ステップ |アクション |
-|------|----------|
-| 1 |フォワードデプロイを停止/カナリア |
-| 2 |最後に正常であった **イメージ タグ** または **git SHA** を特定します。
-| 3 |以前のバージョンを再デプロイします (`rollout undo` またはジョブを再デプロイします) |
-| 4 |ヘルスチェックと主要な SLO を検証する |
-| 5 |インシデント後: 修正を進め、テストを追加 |
+| Step | Action |
+|------|--------|
+| 1 | Stop forward deploy / canary |
+| 2 | Identify last known good **image tag** or **git SHA** |
+| 3 | Redeploy previous version (`rollout undo` or redeploy job) |
+| 4 | Verify health checks and key SLOs |
+| 5 | Post-incident: fix forward, add test |
 
 ```bash
 # Kubernetes — one command rollback
@@ -146,36 +145,36 @@ kubectl rollout undo deployment/api
 kubectl rollout status deployment/api
 ```
 
-ロールバックは**四半期ごとにテスト**してください。テストされていないロールバックはプレッシャーがかかると失敗します。
+Keep rollback **tested quarterly** — untested rollbacks fail under pressure.
 
-## 7. 機能フラグとホットデプロイ
+## 7. Feature flags vs hot deploy
 
-|アプローチ | | の場合に使用します。
+| Approach | Use when |
 |----------|----------|
-| **機能フラグ** |不完全なロジックを非表示にします。再デプロイせずに切り替える |
-| **ホットフィックス ブランチ** |重大なバグ。普通列車をスキップします |
-| **ロールバック** | prod のバイナリ/構成が間違っています |
+| **Feature flag** | Hide incomplete logic; toggle without redeploy |
+| **Hotfix branch** | Critical bug; skip normal train |
+| **Rollback** | Bad binary/config in prod |
 
-フラグは、**展開** (安全、頻繁) と **リリース** (ビジネス上の決定) を切り離します。
+Flags decouple **deploy** (safe, frequent) from **release** (business decision).
 
-## 8. 導入のアンチパターン
+## 8. Deployment anti-patterns
 
-|アンチパターン |リスク |
+| Anti-pattern | Risk |
 |--------------|------|
-|金曜日の午後 5 時に展開 |ロールバックする人がいません |
-|デプロイ後にヘルスチェックが行われない |サイレント部分障害 |
-|共有本番環境/ステージング資格情報 |ステージング違反 → 本番 |
-|下位互換性のないデータベースの移行 |ロールバックによりスキーマが破壊される |
+| Deploy Friday 5pm | No one to rollback |
+| No health check after deploy | Silent partial failure |
+| Shared prod/staging credentials | Staging breach → prod |
+| Database migration without backward compatibility | Rollback breaks schema |
 
-**拡張コントラクト移行:** 列の追加 → 二重書き込み → バックフィル → 古い削除 - DB を壊さずにアプリをロールバックできます。
+**Expand-contract migrations:** add column → dual-write → backfill → remove old — allows rollback of app without breaking DB.
 
-## 9. 最初の本番環境のデプロイ前のチェックリスト
+## 9. Checklist before first prod deploy
 
-- [ ] 分岐保護 + 必要な CI チェック
-- [ ] 運用環境では承認が必要です
-- [ ] デプロイでは不変のタグ/ダイジェストを使用します
-- [ ] 導入後のヘルスチェック/スモークテスト
-- [ ] ロールバック コマンドを文書化してリハーサルしました
-- [ ] デプロイ失敗時にオンコールに通知される
+- [ ] Branch protection + required CI checks
+- [ ] Production environment requires approval
+- [ ] Deploy uses immutable tag/digest
+- [ ] Health check / smoke test post-deploy
+- [ ] Rollback command documented and rehearsed
+- [ ] On-call notified on deploy failure
 
-**関連:** [テスト戦略](v-testing-strategy.md)、[サプライチェーンとSLSA](ii-supply-chain-and-slsa.md) (署名された画像)、[秘密とOIDC](iii-secrets-and-oidc.md)。
+**Related:** [Testing strategy](v-testing-strategy.md), [Supply chain & SLSA](ii-supply-chain-and-slsa.md) (signed images), [Secrets & OIDC](iii-secrets-and-oidc.md).

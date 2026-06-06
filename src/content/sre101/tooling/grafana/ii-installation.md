@@ -1,34 +1,33 @@
 ---
 label: "II"
-subtitle: "インストール"
+subtitle: "Installation"
 group: "SRE"
 order: 2
 ---
-SRE ツール — Grafana: インストール
+SRE tooling — Grafana: Installation
+Common ways to run Grafana for labs and production-shaped setups.
 
-ラボおよび本番環境向けのセットアップで Grafana を実行する一般的な方法。
+## 1. Official packages & binary
 
-## 1. 公式パッケージとバイナリ
+- Follow OS-specific packages (**APT/YUM/RPM**) or download the binary from Grafana’s distribution pages when you need a quick VM install.
+- Configure **`grafana.ini`** (or env vars) for HTTP port, **`root_url`** behind reverse proxies, and admin credentials—rotate defaults immediately.
 
-- VM を簡単にインストールする必要がある場合は、OS 固有のパッケージ (**APT/YUM/RPM**) に従うか、Grafana の配布ページからバイナリをダウンロードします。
-- HTTP ポートの **`grafana.ini`** (または環境変数)、リバース プロキシの背後の **`root_url`**、および管理者の資格情報を構成します。デフォルトはすぐにローテーションされます。
-
-## 2. ドッカー
+## 2. Docker
 
 ```text
 docker run -d -p 3000:3000 --name=grafana grafana/grafana
 ```
 
-永続化のために **`/var/lib/grafana`** をマウントします。非対話型ブートストラップの場合は **`GF_SECURITY_ADMIN_PASSWORD`** を挿入します。
+Mount **`/var/lib/grafana`** for persistence; inject **`GF_SECURITY_ADMIN_PASSWORD`** for non-interactive bootstrap.
 
-## 3. Kubernetes (ヘルム)
+## 3. Kubernetes (Helm)
 
-Grafana のチャート リポジトリから **Grafana Helm チャート** を使用します。ピン チャート バージョン、**`persistence.enabled`** を設定し、**`datasources`** YAML またはサイドカー構成を介してデータソースを挿入して、ポッドが再スケジュールに耐えられるようにします。
+Use the **Grafana Helm chart** from Grafana’s chart repo: pin chart version, set **`persistence.enabled`**, and inject datasources via **`datasources`** YAML or sidecar configs so Pods survive reschedules.
 
-## 4. グラファナクラウド
+## 4. Grafana Cloud
 
-マネージド Grafana は運用オーバーヘッドを除去します。 Prometheus 互換のエンドポイントとベンダーのドキュメントごとにホストされたログ/トレースを接続します。バイナリを実行せずに SSO とスケーリングが必要な場合に適しています。
+Managed Grafana removes ops overhead; connect Prometheus-compatible endpoints and hosted logs/traces per vendor docs—good when you want SSO and scaling without running the binary.
 
-## 5. 最初のデータソース
+## 5. First datasource
 
-Grafana が起動したら、**接続 → データソースの追加 → Prometheus** (または Loki)、URL (クラスター内サービス DNS またはゲートウェイ) を設定し、**保存してテスト**します。一貫した名前を付けて環境ごとに繰り返します (`prometheus-prod`、`loki-prod`)。
+After Grafana is up: **Connections → Add datasource → Prometheus** (or Loki), set URL (in-cluster service DNS or gateway), **Save & test**. Repeat per environment with consistent naming (`prometheus-prod`, `loki-prod`).

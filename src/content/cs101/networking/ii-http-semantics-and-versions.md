@@ -1,54 +1,54 @@
 ---
 label: "II"
-subtitle: "HTTP のセマンティクスとバージョン"
-group: "ネットワーキング"
+subtitle: "HTTP semantics and versions"
+group: "Networking"
 order: 2
 ---
-ネットワーキング — パート II: HTTP のセマンティクスとバージョン
+Networking — Part II: HTTP semantics and versions
 
-HTTP は **アプリケーション層** プロトコルです。**メソッド**、**URL**、**ヘッダー**、**ボディ**でリクエストと応答を記述します。通常、**TCP** 上で実行されます (そして現在では、**TLS**、つまり HTTPS 内で実行されることがよくあります)。
+HTTP is an **application-layer** protocol: **methods**, **URLs**, **headers**, and **bodies** describe requests and responses. It usually runs over **TCP** (and today often inside **TLS**, i.e. HTTPS).
 
-## 1. リクエスト/レスポンスモデル
+## 1. Request / response model
 
-- **クライアント**は接続(通常、HTTPの場合はポート**80**、HTTPSの場合は**443**)を開き、**リクエスト**を送信します。
-- **サーバー**は、**ステータスコード**、ヘッダー、およびオプションの本文を含む**応答**を返します。
+- **Client** opens a connection (typically to port **80** for HTTP, **443** for HTTPS) and sends a **request**.
+- **Server** returns a **response** with a **status code**, headers, and optional body.
 
-**一般的な方法**
+**Common methods**
 
-- **GET** — リソースを読み取ります。正しく使用すると安全で冪等である必要があります。
-- **POST** — データを送信し、アクションを作成します。冪等であるとはみなされません。
-- **PUT / PATCH** — リソースを置換または部分的に更新します。
-- **DELETE** — リソースを削除します。
+- **GET** — read a resource; should be safe and idempotent when used correctly.
+- **POST** — submit data, create actions; not assumed idempotent.
+- **PUT / PATCH** — replace or partially update resources.
+- **DELETE** — remove a resource.
 
-## 2. ステータスコード (ファミリー)
+## 2. Status codes (families)
 
-- **1xx** — 情報 (例: `100 Continue`)。
-- **2xx** — 成功 (`200 OK`、`201 Created`、`204 No Content`)。
-- **3xx** — リダイレクト (`301`、`302`、`304 Not Modified`)。
-- **4xx** — クライアントエラー (`400`、`401`、`403`、`404`)。
-- **5xx** — サーバーエラー (`500`、`502`、`503`)。
+- **1xx** — informational (e.g. `100 Continue`).
+- **2xx** — success (`200 OK`, `201 Created`, `204 No Content`).
+- **3xx** — redirection (`301`, `302`, `304 Not Modified`).
+- **4xx** — client error (`400`, `401`, `403`, `404`).
+- **5xx** — server error (`500`, `502`, `503`).
 
-## 3. どこにでもあるヘッダー
+## 3. Headers you see everywhere
 
-- **ホスト** — サーバー上の仮想ホスト (HTTP/1.1 では必須)。
-- **Content-Type** — 本文の MIME タイプ (`application/json`、`text/html`、…)。
-- **Content-Length** / **Transfer-Encoding** — 本文のフレーム化方法。
-- **接続** — キープアライブ動作 (HTTP/1.1 のデフォルトは HTTP/1.0 とは異なります)。
+- **Host** — which virtual host on the server (required in HTTP/1.1).
+- **Content-Type** — MIME type of the body (`application/json`, `text/html`, …).
+- **Content-Length** / **Transfer-Encoding** — how the body is framed.
+- **Connection** — keep-alive behavior (HTTP/1.1 defaults differ from HTTP/1.0).
 
-## 4. HTTP/1.1 対 HTTP/2 対 HTTP/3 (高レベル)
+## 4. HTTP/1.1 vs HTTP/2 vs HTTP/3 (high level)
 
-|バージョン |輸送 |多重化 |典型的なメモ |
-|----------|-----------|--------------|--------------|
-| HTTP/1.1 | TCP |パイプライン処理 (まれな場合) を除き、接続ごとに 1 つのリクエスト。多くの場合、多数の並列 TCP 接続 |接続レベルでの行頭ブロック |
-| HTTP/2 | TCP | 1 つの TCP 接続上で多重化された多数のストリーム |ヘッダー圧縮 (HPACK)。サーバープッシュ (実際にはまれです) |
-| HTTP/3 | QUIC (UDP ベース) | TCP+H2 と比較して損失回復が向上した多重化 | CDN とブラウザのサポートの拡大 |
+| Version | Transport | Multiplexing | Typical note |
+|---------|-----------|--------------|--------------|
+| HTTP/1.1 | TCP | One request per connection unless pipelining (rare); often many parallel TCP connections | Head-of-line blocking at connection level |
+| HTTP/2 | TCP | Many streams multiplexed on one TCP connection | Header compression (HPACK); server push (rare in practice) |
+| HTTP/3 | QUIC (UDP-based) | Multiplexed with improved loss recovery vs TCP+H2 | Growing CDN and browser support |
 
-## 5. HTTPS は「別の HTTP」ではありません
+## 5. HTTPS is not “a different HTTP”
 
-**HTTPS** は、**TLS** 上の HTTP を意味します。 **TLS ハンドシェイク** (次の注) が最初に実行されます。 HTTP メッセージはネットワーク上で暗号化されます。
+**HTTPS** means HTTP over **TLS**. The **TLS handshake** (next note) runs first; then HTTP messages are encrypted on the wire.
 
-## 6. Ingress とプロキシとの関係
+## 6. Relation to ingress and proxies
 
-**リバース プロキシ** と **イングレス コントローラー**は HTTP(S) を終了し、**ホスト** とパスによってルーティングし、バックエンドに転送します。正しいロギングとセキュリティ ヘッダーには、エッジでの **Host**、**X-Forwarded-For**、および **TLS Termination** を理解することが不可欠です。
+**Reverse proxies** and **ingress controllers** terminate HTTP(S), route by **Host** and path, and forward to backends. Understanding **Host**, **X-Forwarded-For**, and **TLS termination** at the edge is essential for correct logging and security headers.
 
-次へ: **TLS ハンドシェイク** と証明書。
+Next: **TLS handshake** and certificates.

@@ -1,14 +1,13 @@
 ---
 label: "IV"
-subtitle: "コンピューティングオプション"
-group: "クラウドアーキテクチャ"
+subtitle: "Compute options"
+group: "Cloud architecture"
 order: 4
 ---
-コンピューティングオプション
+Compute options
+Cloud **compute** ranges from full **VMs** to **functions**. Pick based on control, portability, traffic pattern, and ops capacity.
 
-クラウド **コンピューティング**は、完全な **VM** から **機能**まで多岐にわたります。制御、移植性、トラフィック パターン、運用能力に基づいて選択してください。
-
-## 1. 抽象化のスペクトル
+## 1. Spectrum of abstraction
 
 ```text
 More control                                                          Less ops
@@ -16,21 +15,21 @@ More control                                                          Less ops
     VM ──▶ Container (K8s) ──▶ PaaS (managed runtime) ──▶ FaaS (Lambda)
 ```
 
-|オプション |請求 |こんな方に最適 |
-|----------|----------|----------|
-| **VM (IaaS)** |実行中の 1 秒/時間あたり |リフトアンドシフト、ステートフル、カスタム OS |
-| **コンテナ** |クラスター + ノード |マイクロサービス、ポータブル ワークロード |
-| **サーバーレス** |呼び出しごと + 期間 |イベント駆動型の散発的なトラフィック |
+| Option | Billing | Best for |
+|--------|---------|----------|
+| **VM (IaaS)** | Per second/hour while running | Lift-and-shift, stateful, custom OS |
+| **Containers** | Cluster + nodes | Microservices, portable workloads |
+| **Serverless** | Per invocation + duration | Event-driven, sporadic traffic |
 
-## 2. 仮想マシン
+## 2. Virtual machines
 
-完全な OS インスタンス — 永続的、常時オン (停止しない限り)。
+Full OS instance — persistent, always-on (unless stopped).
 
-|クラウド |サービス |
-|------|-----------|
+| Cloud | Service |
+|-------|---------|
 | AWS | EC2 |
-|アズール |仮想マシン |
-| GCP |コンピューティング エンジン |
+| Azure | Virtual Machines |
+| GCP | Compute Engine |
 
 ```text
 EC2 instance
@@ -40,22 +39,22 @@ EC2 instance
   └── security group + subnet
 ```
 
-|強さ |弱点 |
+| Strength | Weakness |
 |----------|----------|
-|フルコントロール | OS にパッチを適用し、インスタンスのサイズを変更します。
-|あらゆるソフトウェアスタック |コンテナ/サーバーレスよりもスケールアウトが遅い |
-|安定した負荷を予測可能 |アイドル状態のときに支払う |
+| Full control | You patch OS, size instances |
+| Any software stack | Slower scale-out than containers/serverless |
+| Predictable for steady load | Pay while idle |
 
-**次の場合に使用します:** レガシー アプリ、ライセンスを取得したソフトウェア、GPU ワークロード、強力な分離が必要な場合。
+**Use when:** legacy apps, licensed software, GPU workloads, strong isolation needs.
 
-## 3. コンテナと Kubernetes
+## 3. Containers and Kubernetes
 
-**Docker** アプリと依存関係をパッケージ化します。 **Kubernetes** はノード全体でコンテナをスケジュールします。
+**Docker** packages app + dependencies; **Kubernetes** schedules containers across nodes.
 
-|マネージド K8 |プロバイダーはコントロール プレーンを実行します |
-|-----------|----------------------------|
+| Managed K8s | Provider runs control plane |
+|-------------|----------------------------|
 | **EKS** | AWS |
-| **AKS** |アズール |
+| **AKS** | Azure |
 | **GKE** | GCP |
 
 ```yaml
@@ -76,25 +75,25 @@ spec:
             limits:   { cpu: "500m", memory: "1Gi" }
 ```
 
-|強さ |弱点 |
+| Strength | Weakness |
 |----------|----------|
-|ポータブル画像 | K8s の学習曲線 |
-|ノード上の高密度パッキング |マニフェスト/Helm を管理する |
-|高速スケール ポッド |クラスター操作 (マネージドも含む) |
+| Portable images | K8s learning curve |
+| Dense packing on nodes | You manage manifests/Helm |
+| Fast scale pods | Cluster ops (even managed) |
 
-**次の場合に使用します:** マイクロサービス、環境間でのポータブルなデプロイが必要、チームが K8s スキルを持っている。
+**Use when:** microservices, need portable deploy across envs, team has K8s skills.
 
-**より軽量な代替案:** ECS Fargate、Cloud Run、Azure Container Apps — YAML を減らし、より独自性を高めます。
+**Lighter alternatives:** ECS Fargate, Cloud Run, Azure Container Apps — less YAML, more opinionated.
 
-## 4. サーバーレス/FaaS
+## 4. Serverless / FaaS
 
-**関数**をアップロードします。プロバイダーはランタイム、スケーリング、パッチ適用を処理します。
+Upload a **function**; provider handles runtime, scaling, patching.
 
-|クラウド |サービス |
-|------|-----------|
-| AWS |ラムダ |
-|アズール |機能 |
-| GCP | Cloud Functions / Cloud Run (コンテナベース) |
+| Cloud | Service |
+|-------|---------|
+| AWS | Lambda |
+| Azure | Functions |
+| GCP | Cloud Functions / Cloud Run (container-based) |
 
 ```python
 # AWS Lambda handler (conceptual)
@@ -104,43 +103,43 @@ def handler(event, context):
     return {"statusCode": 200}
 ```
 
-**料金:** 呼び出しごと + GB 秒のメモリ × 期間。
+**Billing:** per invocation + GB-seconds of memory × duration.
 
-## 5. コールドスタート
+## 5. Cold start
 
-アイドル後の最初の呼び出しでは追加の待ち時間が発生します。プロバイダーは次のことを行う必要があります。
+First invocation after idle incurs extra latency — provider must:
 
-1.サンドボックスの割り当て
-2. デプロイメントパッケージのダウンロード / コンテナーの起動
-3. ランタイムを初期化します (JVM が特に遅い)
+1. Allocate sandbox
+2. Download deployment package / start container
+3. Initialize runtime (JVM especially slow)
 
-|ランタイム |典型的なコールドスタート |
-|----------|--------|
-| Node.js / Python | ~100 ～ 300 ミリ秒 |
-| Java / .NET | ~500 ミリ秒 – 2 秒 |
-| VPC に接続された Lambda | + ENI セットアップ (歴史的に遅い) |
+| Runtime | Typical cold start |
+|---------|-------------------|
+| Node.js / Python | ~100–300 ms |
+| Java / .NET | ~500 ms–2 s |
+| VPC-attached Lambda | + ENI setup (historically slower) |
 
-|緩和 |どのように |
-|-----------|-----|
-| **プロビジョニングされた同時実行性** | N 個のインスタンスをウォームに保つ |
-| **小型パッケージ** |依存関係をトリミングする |
-| **SnapStart** (Lambda 上の Java) |スナップショットの開始フェーズ |
-| **必要な場合を除き、VPC は避けてください** |または、新しい超平面 ENI を使用してください。
+| Mitigation | How |
+|------------|-----|
+| **Provisioned concurrency** | Keep N warm instances |
+| **Smaller package** | Trim dependencies |
+| **SnapStart** (Java on Lambda) | Snapshot init phase |
+| **Avoid VPC** unless needed | Or use newer hyperplane ENI |
 
-**次の場合にサーバーレスを使用します。** イベント トリガー (S3 アップロード、キュー メッセージ、API の散発的なトラフィック)、グルー/ETL、Webhook。
+**Use serverless when:** event triggers (S3 upload, queue message, API sporadic traffic), glue/ETL, webhooks.
 
-**次の場合は避けてください:** 常に 10 ミリ秒未満の厳密なレイテンシ、長時間実行されるコンピューティング、メモリの重い状態。
+**Avoid when:** strict sub-10 ms latency always, long-running compute, heavy state in memory.
 
-## 6. 比較表
+## 6. Comparison table
 
-| | VM | K8sポッド |ラムダ |
-|---|-----|--------|--------|
-|スケール速度 |議事録 (ASG) |秒 |ミリ秒 |
-|最大持続時間 |無制限 |無制限 | 15 分 (ラムダ) |
-|状態 |ローカルディスク |一時的な |一時的な |
-|トラフィックゼロ時のコスト |まだ支払い中 |ノードのベースライン | ~$0 |
+| | VM | K8s pod | Lambda |
+|---|-----|---------|--------|
+| Scale speed | Minutes (ASG) | Seconds | Milliseconds |
+| Max duration | Unlimited | Unlimited | 15 min (Lambda) |
+| State | Local disk | Ephemeral | Ephemeral |
+| Cost at zero traffic | Still paying | Node baseline | ~$0 |
 
-## 7. 意思決定の流れ
+## 7. Decision flow
 
 ```text
 Need custom OS/kernel?     → VM
@@ -149,13 +148,13 @@ HTTP API with variable traffic? → Lambda or Cloud Run
 Batch nightly job?          → Spot VM or Lambda
 ```
 
-## 8. アーキテクチャの組み合わせの例
+## 8. Example architecture mix
 
-|コンポーネント |コンピューティングの選択 |
-|----------|----------------|
-|パブリック REST API | Lambda + API ゲートウェイまたは K8s + ALB |
-|バックグラウンドワーカー | SQS からの K8s デプロイメントまたは Lambda |
-|ポストグレSQL | RDS (マネージド VM) — Lambda ではありません |
-| Redis キャッシュ | ElastiCache (マネージド) |
+| Component | Compute choice |
+|-----------|----------------|
+| Public REST API | Lambda + API Gateway OR K8s + ALB |
+| Background workers | K8s Deployment or Lambda from SQS |
+| PostgreSQL | RDS (managed VM) — not Lambda |
+| Redis cache | ElastiCache (managed) |
 
-**関連:** [サービス モデル](ii-service-models.md)、パターン [スケーラビリティとキャッシュ](../patterns-and-design/ii-scalability-and-caching.md)。
+**Related:** [Service models](ii-service-models.md), patterns [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md).

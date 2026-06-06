@@ -1,14 +1,13 @@
 ---
 label: "VII"
-subtitle: "パターンとオペレーションをデプロイする"
+subtitle: "Deploy patterns & operations"
 group: "CI/CD"
 order: 7
 ---
-パターンとオペレーションをデプロイする
+Deploy patterns & operations
+Production deploys need **idempotent playbooks**, clear **staging/prod** separation, and a **CLI path** for hotfixes when Jenkins is down.
 
-運用環境のデプロイには、*冪等のプレイブック**、明確な**ステージング/本番**の分離、および Jenkins がダウンしている場合のホットフィックス用の **CLI パス**が必要です。
-
-## 1. 最小限のデプロイ プレイブック
+## 1. Minimal deploy playbook
 
 ```yaml
 ---
@@ -54,15 +53,15 @@ order: 7
         daemon_reload: true
 ```
 
-|設定 |目的 |
-|----------|----------|
-| `serial: 1` |ローリング デプロイ - 一度に 1 台のサーバー |
-| `serial: "25%"` |バッチあたりのフリートの 4 分の 1 |
-| `tags: [deploy]` | Jenkins は `--tags deploy` のみを実行します。
+| Setting | Purpose |
+|---------|---------|
+| `serial: 1` | Rolling deploy — one server at a time |
+| `serial: "25%"` | Quarter of fleet per batch |
+| `tags: [deploy]` | Jenkins runs `--tags deploy` only |
 
-## 2. ローリング デプロイ図
+## 2. Rolling deploy diagram
 
-<figure class="notes-diagram"><svg xmlns="31 viewBox="0 0 400 100" role="img" aria-label="Rolling deploy serial one">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" role="img" aria-label="Rolling deploy serial one">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">serial: 1 — update web1, then web2, then web3</text>
   <rect x="12" y="40" width="56" height="36" rx="3" fill="rgba(34,197,94,0.2)" stroke="#86efac"/>
   <text x="24" y="62" fill="#e4e4e7" font-size="9">web1 ✓</text>
@@ -73,7 +72,7 @@ order: 7
   <text x="12" y="92" fill="#71717a" font-size="9">Load balancer keeps serving healthy nodes during rollout</text>
 </svg></figure>
 
-## 3. ステージングと本番環境
+## 3. Staging vs production
 
 ```text
 ansible/
@@ -88,11 +87,11 @@ ansible/
       webservers.yml     # pinned version, stricter jvm_opts
 ```
 
-ステージング ボールト ファイルでは本番環境の秘密を決して共有しないでください。個別の **`ansible-vault`** パスワードまたは **`vault_id`** ラベルを使用してください。
+Never share production secrets in staging vault files. Use separate **`ansible-vault`** passwords or **`vault_id`** labels.
 
-## 4. Jenkins を使用しないホットフィックス
+## 4. Hotfix without Jenkins
 
-ラップトップからの同じプレイブック (ブレークグラス):
+Same playbook from laptop (break-glass):
 
 ```bash
 cd ansible
@@ -106,18 +105,18 @@ ansible-playbook \
   --limit web1.example.com
 ```
 
-|ステップ |アクション |
-|------|----------|
-| 1 |ホットフィックス JAR をローカルでビルドするか、CI アーティファクトからプルする |
-| 2 | `--limit` 最初に 1 つのカナリア ホスト |
-| 3 |健全性/メトリクスを確認する |
-| 4 |フルフリートの場合は `--limit` を削除 |
+| Step | Action |
+|------|--------|
+| 1 | Build hotfix JAR locally or pull from CI artifact |
+| 2 | `--limit` one canary host first |
+| 3 | Verify health / metrics |
+| 4 | Remove `--limit` for full fleet |
 
-これをランブックに文書化します。インシデント発生中、運用は Jenkins UI に依存すべきではありません。
+Document this in runbook — ops shouldn't depend on Jenkins UI during incident.
 
-## 5. Ansible を使用したブルー/グリーン (VM パターン)
+## 5. Blue/green with Ansible (VM pattern)
 
-2 つのアプリ ディレクトリ — シンボリックリンクを切り替えます。
+Two app directories — switch symlink:
 
 ```yaml
 - name: Deploy to inactive slot
@@ -133,15 +132,15 @@ ansible-playbook \
   notify: Restart myapp
 ```
 
-ロールバック = シンボリックリンクを以前のリリースのディレクトリに再ポイントし、ハンドラーを再起動します。
+Rollback = repoint symlink to previous release directory + handler restart.
 
-## 6. 事前デプロイタグとデプロイタグ
+## 6. Pre-deploy vs deploy tags
 
-|タグ | | の場合に実行されます。タスク |
-|-----|-----------|------|
-| `packages` |毎週または新しいホスト | JDK、nginxのインストール |
-| `config` |構成変更 PR |テンプレート、systemd ユニット |
-| `deploy` |リリースごと | JAR をコピーし、再起動します。
+| Tag | Runs when | Tasks |
+|-----|-----------|-------|
+| `packages` | Weekly or new host | JDK, nginx install |
+| `config` | Config change PR | templates, systemd units |
+| `deploy` | Every release | copy JAR, restart |
 
 ```bash
 # Full configure (new server)
@@ -151,29 +150,29 @@ ansible-playbook site.yml
 ansible-playbook deploy.yml --tags deploy
 ```
 
-## 7. リリースゲートとの統合
+## 7. Integration with release gates
 
-[ゲートとロールバックのリリース](../security-and-best-practices/vii-release-gates-and-rollbacks.md) と調整します。
+Align with [Release gates & rollbacks](../security-and-best-practices/vii-release-gates-and-rollbacks.md):
 
-- 本番プレイブック前のジェンキンス **`input`**
-- **`app_version=${BUILD_NUMBER}`** または git SHA のデプロイ — 不変参照
-- ヘルスチェックタスクがプレイブックに失敗する → 自動 Jenkins ステージが失敗する
-- Playbook または以前の **`app_version`** 追加変数をロールバックします
+- Jenkins **`input`** before production playbook
+- Deploy **`app_version=${BUILD_NUMBER}`** or git SHA — immutable reference
+- Health check tasks fail playbook → automatic Jenkins stage failure
+- Rollback playbook or previous **`app_version`** extra-var
 
-## 8. 操作チェックリスト
+## 8. Operations checklist
 
-- [ ] Git のインベントリは実際のフリート (または新しい動的プラグイン) と一致します
-- マージ前の設定変更に関する [ ] `--check`
-- [ ] `ansible-lint` (CI)
-- [ ] Vault シークレットがスケジュールに従ってローテーションされました
-- [ ] Hotfix Runbook は Jenkins を使用せずにテストされました
-- [ ] `serial` は本番環境のローリング アップデートに設定されています
+- [ ] Inventory in Git matches actual fleet (or dynamic plugin fresh)
+- [ ] `--check` on config changes before merge
+- [ ] `ansible-lint` in CI
+- [ ] Vault secrets rotated on schedule
+- [ ] Hotfix runbook tested without Jenkins
+- [ ] `serial` set for production rolling updates
 
-## 9. リハーサルの答え
+## 9. Rehearsal answers
 
-- **ハンドラー** — 通知されたタスクが変更された場合、最後に 1 回実行されます (例: 構成コピー後の再起動)。
-- **`when { branch 'main' }`** — デプロイ ステージをメイン ブランチ ビルドに制限します。
-- **Jenkins からの Vault** — `credentials('ansible-vault-pass')` + `--vault-password-file`。
-- **postgres ロール レイアウト** — `tasks/`、`handlers/`、`templates/`、`defaults/`、`vars/`、`meta/`。
+- **Handler** — runs once at end if notified task changed (e.g. restart after config copy).
+- **`when { branch 'main' }`** — limits deploy stage to main branch builds.
+- **Vault from Jenkins** — `credentials('ansible-vault-pass')` + `--vault-password-file`.
+- **postgres role layout** — `tasks/`, `handlers/`, `templates/`, `defaults/`, `vars/`, `meta/`.
 
-**関連:** [Jenkins + Ansible パイプライン](vi-jenkins-ansible-pipelines.md)、[インベントリとプレイブック](iii-inventory-and-playbooks.md)。
+**Related:** [Jenkins + Ansible pipelines](vi-jenkins-ansible-pipelines.md), [Inventory & playbooks](iii-inventory-and-playbooks.md).

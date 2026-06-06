@@ -1,14 +1,13 @@
 ---
 label: "IV"
-subtitle: "AWS の例 — VPC と EC2"
+subtitle: "AWS example — VPC & EC2"
 group: "CI/CD"
 order: 4
 ---
-AWS の例 — VPC と EC2
+AWS example — VPC & EC2
+A minimal but realistic stack: **VPC**, **public subnet**, **security group**, **EC2** with AMI from data source.
 
-最小限だが現実的なスタック: **VPC**、**パブリック サブネット**、**セキュリティ グループ**、データ ソースからの AMI を備えた **EC2**。
-
-## 1. 変数.tf
+## 1. variables.tf
 
 ```hcl
 variable "aws_region" {
@@ -27,7 +26,7 @@ variable "vpc_cidr" {
 }
 ```
 
-## 2.main.tf
+## 2. main.tf
 
 ```hcl
 terraform {
@@ -133,7 +132,7 @@ resource "aws_instance" "app" {
 }
 ```
 
-## 3.出力.tf
+## 3. outputs.tf
 
 ```hcl
 output "vpc_id" {
@@ -149,7 +148,7 @@ output "app_instance_id" {
 }
 ```
 
-## 4. ローカルで実行する
+## 4. Run locally
 
 ```bash
 cd infra
@@ -159,7 +158,7 @@ terraform apply   # type yes
 terraform output app_public_ip
 ```
 
-計画行の例:
+Sample plan lines:
 
 ```text
 Plan: 8 to add, 0 to change, 0 to destroy.
@@ -169,9 +168,9 @@ Plan: 8 to add, 0 to change, 0 to destroy.
   ...
 ```
 
-## 5. 依存関係グラフ (簡略化)
+## 5. Dependency graph (simplified)
 
-<figure class="notes-diagram"><svg xmlns="8 viewBox="0 0 360 120" role="img" aria-label="Terraform AWS dependency graph">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-label="Terraform AWS dependency graph">
   <text x="12" y="18" fill="#d4d4d8" font-size="11" font-weight="600">Resources apply in dependency order</text>
   <rect x="140" y="28" width="80" height="24" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="168" y="44" fill="#e4e4e7" font-size="8">aws_vpc</text>
@@ -184,21 +183,21 @@ Plan: 8 to add, 0 to change, 0 to destroy.
   <path d="M180 52 V68 M100 68 H180 M260 68 H180 M180 68 V92" stroke="#71717a" stroke-width="1"/>
 </svg></figure>
 
-## 6. セキュリティに関する注意事項
+## 6. Security notes
 
-|トピック |推薦 |
-|------|----------------|
-| SSH `0.0.0.0/0` |本番環境の要塞または VPN CIDR に制限する |
-| IMDSv2 | EC2 に `metadata_options { http_tokens = "required" }` を設定する |
-|国家機密 |リモートバックエンド。決してコミットしない状態 |
-| IAM |最小権限を持つ CI ロール — 管理者ではない |
+| Topic | Recommendation |
+|-------|----------------|
+| SSH `0.0.0.0/0` | Restrict to bastion or VPN CIDR in prod |
+| IMDSv2 | Set `metadata_options { http_tokens = "required" }` on EC2 |
+| State secrets | Remote backend; never commit state |
+| IAM | CI role with least privilege — not admin |
 
-## 7. 解体する
+## 7. Tear down
 
 ```bash
 terraform destroy
 ```
 
-このルート モジュールの状態にあるすべてのリソースを破棄します。環境ごとに個別の状態を使用して、dev を破棄しても prod [状態とリモート バックエンド](v-state-and-remote-backends.md) に影響を与えないようにします。
+Destroys all resources in state for this root module. Use separate state per environment so destroying dev does not touch prod [State & remote backends](v-state-and-remote-backends.md).
 
-**関連:** [HCL、リソースと変数](iii-hcl-resources-and-variables.md)、[モジュールと環境](vi-modules-and-environments.md)。
+**Related:** [HCL, resources & variables](iii-hcl-resources-and-variables.md), [Modules & environments](vi-modules-and-environments.md).

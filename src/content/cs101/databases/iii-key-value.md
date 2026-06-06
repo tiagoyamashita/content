@@ -1,14 +1,13 @@
 ---
 label: "III"
-subtitle: "キーと値"
-group: "データベース"
+subtitle: "Key-value"
+group: "Databases"
 order: 3
 ---
-Key-Value ストア
+Key-value stores
+A **key-value** database maps an opaque **key** (string, bytes) to a **value** (string, bytes, or structured blob). Lookups are usually **O(1)** or near it. There is **no query language** for arbitrary field searches unless the product adds a secondary index layer.
 
-**キー/値** データベースは、不透明な **キー** (文字列、バイト) を **値** (文字列、バイト、または構造化 BLOB) にマップします。通常、ルックアップは **O(1)** またはそれに近い値です。製品がセカンダリ インデックス レイヤーを追加しない限り、任意のフィールド検索用の **クエリ言語**はありません。
-
-## 1. データモデル
+## 1. Data model
 
 ```text
 key                    value
@@ -19,19 +18,19 @@ feature:dark_mode      "on"
 rate_limit:192.168.1.1 "37"
 ```
 
-アプリケーションは **キーに名前を付け**、**値を解釈します**。ストアは JSON スキーマを理解しません。
+The application **names keys** and **interprets values** — the store does not understand your JSON schema.
 
-## 2. 操作
+## 2. Operations
 
-|操作 |意味 |
-|----------|----------|
-| **取得** / **セット** | 1 つのキーの読み取りまたは書き込み |
-| **削除** |キーを削除 |
-| **INCR** |アトミック整数バンプ (カウンター) |
-| **有効期限 / TTL** |キーは時間が経つと消えます - セッションやキャッシュに最適 |
-| **CAS** |比較して設定 — 値が変更されていない場合にのみ書き込みます (楽観的ロック) |
+| Operation | Meaning |
+|-----------|---------|
+| **GET** / **SET** | Read or write one key |
+| **DELETE** | Remove key |
+| **INCR** | Atomic integer bump (counters) |
+| **EXPIRE / TTL** | Key vanishes after time — ideal for sessions and cache |
+| **CAS** | Compare-and-set — write only if value unchanged (optimistic lock) |
 
-Redis の例 (CLI):
+Redis example (CLI):
 
 ```text
 SET session:abc123 "{\"userId\":42}" EX 3600
@@ -40,19 +39,19 @@ INCR rate_limit:10.0.0.1
 EXPIRE rate_limit:10.0.0.1 60
 ```
 
-## 3. インメモリ vs 耐久性
+## 3. In-memory vs durable
 
-|スタイル |行動 |例 |
-|----------|----------|----------|
-| **インメモリ プライマリ** |速い;耐久性を高めるためにスナップショットまたは AOF |レディス |
-| **ディスクバックアップ、分散型** |ノード間のパーティション化されたキー | DynamoDB、Riak |
-| **コーディネート** |小さなキー、ロックの強力な一貫性 | etcd、ZooKeeper |
+| Style | Behavior | Examples |
+|-------|----------|----------|
+| **In-memory primary** | Fast; snapshot or AOF for durability | Redis |
+| **Disk-backed, distributed** | Partitioned keys across nodes | DynamoDB, Riak |
+| **Coordination** | Small keys, strong consistency for locks | etcd, ZooKeeper |
 
-**Redis** は、多くの場合、PostgreSQL の前にある**キャッシュ**ですが、障害時の損失を受け入れて設計しない限り、記録システムではありません。
+**Redis** is often a **cache** in front of PostgreSQL — not the system of record unless you accept loss on failure and design for it.
 
-## 4. よくあるパターン
+## 4. Common patterns
 
-### キャッシュアサイド
+### Cache-aside
 
 ```text
 1. READ:  app → cache GET key
@@ -60,21 +59,21 @@ EXPIRE rate_limit:10.0.0.1 60
 2. WRITE: app → DB commit → DELETE cache key (or update)
 ```
 
-キャッシュを無効にせずに DB を更新すると、古いキャッシュが発生します。コードで順序を定義します。
+Stale cache happens if you update DB without invalidating cache — define order in code.
 
-### セッションストア
+### Session store
 
-Web サーバーはセッション ID を Cookie に保存します。 Redis の **session:{id}** はユーザー状態を保持します (スティッキー セッションなしの水平スケーリング)。
+Web server stores session id in cookie; **session:{id}** in Redis holds user state — horizontal scaling without sticky sessions.
 
-### レート制限
+### Rate limiting
 
-IP ごとの **INCR** キー + **EXPIRE** ウィンドウ - シンプルな固定ウィンドウ リミッター。
+**INCR** key per IP + **EXPIRE** window — simple fixed-window limiter.
 
-### 分散ロック (注意)
+### Distributed lock (careful)
 
-**SET キー値 NX EX ttl** — ホルダーは 1 つだけ。本番環境では有効期限とフェンシングトークンを処理する必要があります。
+**SET key value NX EX ttl** — only one holder; must handle expiry and fencing tokens in production.
 
-## 5. Java スケッチ (レタス / Redis)
+## 5. Java sketch (Lettuce / Redis)
 
 ```java
 // Compile: javac --release 22 …
@@ -86,42 +85,42 @@ try (var redis = RedisClient.create("redis://localhost:6379").connect()) {
 }
 ```
 
-Redis を使用した Spring Cache は **`@Cacheable`** メソッドをサポートします。これはフレームワーク層での同じキーと値の考え方です。
+Spring Cache with Redis backs **`@Cacheable`** methods — same key-value idea at the framework layer.
 
-## 6. 強みと限界
+## 6. Strengths and limits
 
-**強み**
+**Strengths**
 
-- 極めて低いレイテンシ**の読み取り/書き込み
-- **シンプルなメンタル モデル** — 1 つのキー、1 つの BLOB
-- **TTL** 内蔵
-- **アトミック** カウンターとリスト (Redis データ構造: ハッシュ、セット、ソート セット)
+- Extremely **low latency** reads/writes
+- **Simple mental model** — one key, one blob
+- **TTL** built in
+- **Atomic** counters and lists (Redis data structures: hash, set, sorted set)
 
-**制限**
+**Limits**
 
-- **JOIN** なし — アクセス パスに一致するキーを設計します
-- 純粋な RAM ストアの **メモリ コスト**
-- **ホットキー** — 1 つの人気のあるキーがシャードを飽和させます
-- **重複のないリレーショナル レポートの代替品ではありません**
+- No **JOIN** — you design keys to match access paths
+- **Memory cost** for pure RAM stores
+- **Hot keys** — one popular key saturates a shard
+- **Not** a replacement for relational reporting without duplication
 
-## 7. Key-Value を選択する場合
+## 7. When to choose key-value
 
-- **キャッシュ** レイヤー (HTML フラグメント、クエリ結果、オブジェクト)
-- **セッション**、**レート制限**、**機能フラグ**
-- **リーダーボード** (Redis のソートされたセット)
-- **パブ/サブ** および単純なキュー (耐久性には十分注意してください)
+- **Cache** layer (HTML fragments, query results, objects)
+- **Sessions**, **rate limits**, **feature flags**
+- **Leaderboards** (sorted sets in Redis)
+- **Pub/sub** and simple queues (with eyes open on durability)
 
-## 8. 例
+## 8. Examples
 
-|製品 |メモ |
-|----------|----------|
-| **Redis** |豊富なタイプ、パブ/サブスクライブ、ストリーム。デファクトキャッシュ |
-| **Amazon DynamoDB** |管理されています。パーティション キー + オプションのソート キー |
-| **etcd** | Kubernetes 構成、分散ロック |
-| **Memcached** |シンプルなキャッシュ、永続化フォーカスなし |
+| Product | Notes |
+|---------|--------|
+| **Redis** | Rich types, pub/sub, streams; de facto cache |
+| **Amazon DynamoDB** | Managed; partition key + optional sort key |
+| **etcd** | Kubernetes config, distributed locks |
+| **Memcached** | Simple cache, no persistence focus |
 
-## 9. 関連
+## 9. Related
 
-- **概要** — [データベースの概要](i-overview.md)
-- **リレーショナル** — キャッシュの背後にある信頼できる情報源 [リレーショナル (SQL)](ii-relational.md)
-- **ハッシュ テーブル** — 同じキー → スロットのアイデア (データ構造サブメニュー)
+- **Overview** — [Databases overview](i-overview.md)
+- **Relational** — source of truth behind cache [Relational (SQL)](ii-relational.md)
+- **Hash table** — same key → slot idea (Data structures submenu)

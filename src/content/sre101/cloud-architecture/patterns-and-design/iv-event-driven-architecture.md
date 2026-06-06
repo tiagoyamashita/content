@@ -1,21 +1,20 @@
 ---
 label: "IV"
-subtitle: "イベント駆動型アーキテクチャ"
-group: "クラウドアーキテクチャ"
+subtitle: "Event-driven architecture"
+group: "Cloud architecture"
 order: 4
 ---
-イベント駆動型アーキテクチャ
+Event-driven architecture
+Services communicate via **events** on a **message broker** instead of synchronous chains. Decouples producers from consumers and absorbs traffic spikes.
 
-サービスは、同期チェーンではなく、**メッセージ ブローカー**上の**イベント**を介して通信します。プロデューサーを消費者から切り離し、トラフィックの急増を吸収します。
+## 1. Sync vs async
 
-## 1. 同期と非同期
-
-|同期 (HTTP) |非同期 (イベント) |
-|----||---------|
-|発信者が待つ |プロデューサーは解雇して忘れる |
-|密結合 |時間内の疎結合 |
-|簡単なデバッグ |冪等性が必要です、DLQ |
-|カスケード遅延 |負荷時のバッファリング |
+| Synchronous (HTTP) | Asynchronous (events) |
+|--------------------|------------------------|
+| Caller waits | Producer fires and forgets |
+| Tight coupling | Loose coupling in time |
+| Simple debugging | Needs idempotency, DLQ |
+| Cascade latency | Buffering under load |
 
 ```text
 Sync:  Order Svc ──HTTP──▶ Inventory Svc ──HTTP──▶ Payment Svc
@@ -25,22 +24,22 @@ Async: Order Svc ──▶ queue ──▶ Inventory worker
                     └──▶ Payment worker (parallel)
 ```
 
-## 2. メッセージキュー (ポイントツーポイント)
+## 2. Message queue (point-to-point)
 
-**1 つのコンシューマ** が各メッセージを処理します (競合するコンシューマ)。
+**One consumer** processes each message (competing consumers).
 
 ```text
 Producer ──▶ [ Queue ] ──▶ Consumer A
                     └──▶ Consumer B  (only one gets each message)
 ```
 
-|クラウドサービス |モデル |
-|---------------|------|
-| **AWS SQS** |標準または FIFO キュー |
-| **Azure サービス バス** |キュー |
-| **Google Cloud タスク** |タスクキュー |
+| Cloud service | Model |
+|---------------|-------|
+| **AWS SQS** | Standard or FIFO queue |
+| **Azure Service Bus** | Queues |
+| **Google Cloud Tasks** | Task queue |
 
-**次の場合に使用します:** ジョブ処理、作業分散、バックプレッシャー (プロデューサーがコンシューマーよりも速い)。
+**Use when:** job processing, work distribution, back-pressure (producer faster than consumer).
 
 ```json
 {
@@ -51,9 +50,9 @@ Producer ──▶ [ Queue ] ──▶ Consumer A
 }
 ```
 
-## 3. パブリッシュ/サブスクライブ (ファンアウト)
+## 3. Pub/sub (fan-out)
 
-**各購読者**はメッセージのコピーを受信します。
+**Each subscriber** receives a copy of the message.
 
 ```text
 Publisher ──▶ [ Topic ] ──▶ Subscriber A (email)
@@ -61,50 +60,50 @@ Publisher ──▶ [ Topic ] ──▶ Subscriber A (email)
                     └──▶ Subscriber C (inventory)
 ```
 
-|クラウドサービス |パターン |
-|--------------|----------|
-| **AWS SNS** + SQS |複数の SQS キューへの SNS ファンアウト |
-| **Google Pub/Sub** |ネイティブパブ/サブ |
-| **Azure Event Grid** |イベントルーティング |
+| Cloud service | Pattern |
+|---------------|---------|
+| **AWS SNS** + SQS | SNS fan-out to multiple SQS queues |
+| **Google Pub/Sub** | Native pub/sub |
+| **Azure Event Grid** | Event routing |
 
-**次の場合に使用します:** 複数のシステムに同じ事実を通知します (`UserRegistered` → ウェルカム電子メール + CRM + 監査)。
+**Use when:** notify multiple systems of same fact (`UserRegistered` → welcome email + CRM + audit).
 
-## 4. キューとパブ/サブスクライブの比較
+## 4. Queue vs pub/sub
 
-| |キュー |パブ/サブ |
-|---|------|----------|
-|配送 |メッセージごとに 1 人のコンシューマ |すべての購読者はコピーを取得します |
-|注文 | FIFO キューはオプション |トピックの順序は異なります |
-|例 |支払い処理ジョブ |ブロードキャスト設定の変更 |
-|背圧 |キューの深さのメトリック |遅いサブスクライバには独自のキューが必要です。
+| | Queue | Pub/sub |
+|---|-------|---------|
+| Delivery | One consumer per message | All subscribers get copy |
+| Ordering | FIFO queue optional | Topic ordering varies |
+| Example | Process payment job | Broadcast config change |
+| Back-pressure | Queue depth metric | Slow subscriber needs own queue |
 
-## 5. イベントストリーミング
+## 5. Event streaming
 
-**順序付けされた再生可能なログ** — 消費者はオフセットを追跡します。
+**Ordered, replayable log** — consumers track offset.
 
 ```text
 Producer ──▶ [ Kafka topic: orders ] ──▶ Consumer group A (analytics)
                                    └──▶ Consumer group B (fraud)
 ```
 
-|プラットフォーム |特徴 |
-|----------|------|
-| **Apache Kafka** |パーティション、保持、再生 |
-| **AWS Kinesis** |シャード、ストリーム処理 |
-| **Azure イベント ハブ** | Kafka 互換エンドポイント |
+| Platform | Characteristics |
+|----------|-----------------|
+| **Apache Kafka** | Partitions, retention, replay |
+| **AWS Kinesis** | Shards, stream processing |
+| **Azure Event Hubs** | Kafka-compatible endpoint |
 
-**次の場合に使用します:**
+**Use when:**
 
-- **監査証跡** — 再生履歴
-- **イベント ソーシング** — イベント ログから派生した状態
-- **複数の独立したコンシューマー**が異なる速度で使用可能
-- **ストリーム処理** — Flink、ksqlDB、Lambda
+- **Audit trail** — replay history
+- **Event sourcing** — state derived from event log
+- **Multiple independent consumers** at different speeds
+- **Stream processing** — Flink, ksqlDB, Lambda
 
-##6.サーガパターン
+## 6. Saga pattern
 
-サービス間での分散トランザクション - **単一の DB トランザクションはありません**。
+Distributed transaction across services — **no single DB transaction**.
 
-### 振付（イベントのみ）
+### Choreography (events only)
 
 ```text
 OrderCreated ──▶ ReserveInventory ──▶ PaymentCaptured ──▶ OrderConfirmed
@@ -112,9 +111,9 @@ OrderCreated ──▶ ReserveInventory ──▶ PaymentCaptured ──▶ Orde
                       └──▶ ReleaseInventory (compensating)
 ```
 
-各サービスはリッスンして、次のステップまたは補償を公開します。
+Each service listens and publishes next step or compensation.
 
-### オーケストレーション (中央コーディネーター)
+### Orchestration (central coordinator)
 
 ```text
 Saga orchestrator
@@ -123,20 +122,20 @@ Saga orchestrator
   3. on failure → payment.refund(), inventory.release()
 ```
 
-| |振付 |オーケストレーション |
-|---|--------------|--------------|
-|カップリング |ルース | Orchestrator はすべての手順を知っています |
-|可視性 |追跡が困難 |中央ステートマシン |
-|ツーリング |イベントバス |時間関数、ステップ関数 |
+| | Choreography | Orchestration |
+|---|--------------|---------------|
+| Coupling | Loose | Orchestrator knows all steps |
+| Visibility | Harder to trace | Central state machine |
+| Tooling | Event bus | Temporal, Step Functions |
 
-## 7. 信頼性パターン
+## 7. Reliability patterns
 
-|パターン |目的 |
-|----------|----------|
-| **配信不能キュー (DLQ)** | N 回の再試行後の有害なメッセージ |
-| **冪等コンシューマ** |同じ `orderId` を 1 回処理 |
-| **送信トレイのパターン** | DB コミット + イベントをアトミックにパブリッシュ |
-| **可視性タイムアウト** |ワーカーがクラッシュした場合の SQS 再配信 |
+| Pattern | Purpose |
+|---------|---------|
+| **Dead-letter queue (DLQ)** | Poison messages after N retries |
+| **Idempotent consumer** | Same `orderId` processed once |
+| **Outbox pattern** | DB commit + event publish atomically |
+| **Visibility timeout** | SQS redelivery if worker crashes |
 
 ```java
 // Idempotent consumer — Java 22
@@ -147,12 +146,12 @@ void handle(OrderPlaced event) {
 }
 ```
 
-## 8. イベントを使用しない場合
+## 8. When not to use events
 
-|状況 |優先する |
-|----------|----------|
-|即時応答を待っているユーザー | HTTP/gRPC を同期する |
-|強い一貫性が必要 |単一 DB トランザクション |
-| 2 つのサービスのスタートアップ |複雑になるまで直接呼び出し |
+| Situation | Prefer |
+|-----------|--------|
+| User waiting for immediate response | Sync HTTP/gRPC |
+| Strong consistency required | Single DB transaction |
+| Two-service startup | Direct call until complexity grows |
 
-**関連:** [マイクロサービス vs モノリス](iii-microservices-vs-monolith.md)、[API ゲートウェイとサービス メッシュ](v-api-gateway-and-service-mesh.md)。
+**Related:** [Microservices vs monolith](iii-microservices-vs-monolith.md), [API Gateway & service mesh](v-api-gateway-and-service-mesh.md).

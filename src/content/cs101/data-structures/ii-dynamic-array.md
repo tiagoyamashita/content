@@ -1,51 +1,50 @@
 ---
 label: "II"
-subtitle: "動的配列"
-group: "データ構造とアルゴリズム"
+subtitle: "Dynamic array"
+group: "Data structures & algorithms"
 order: 2
 ---
-動的配列（ベクトル）
+Dynamic array (vector)
+Growable contiguous buffer with efficient append.
 
-効率的な追加を備えた拡張可能な連続バッファ。
+### What happens in Java when you push to a fixed-size array or dynamic array?
 
-### 固定サイズの配列または動的配列にプッシュすると Java では何が起こりますか?
+#### Fixed-Size Array (`int[] arr = new int[4];`)
 
-#### 固定サイズ配列 (`int[] arr = new int[4];`)
+In Java, if you use a fixed-size array, the size is determined at creation and **cannot change**.  
+- If you try to assign a value past the last valid index (e.g., `arr[4] = 42` for array of length 4), Java will throw an **`ArrayIndexOutOfBoundsException`** at runtime.
+- There is **no automatic resizing, copying, or growing**. The array size is fixed, and you must manually create a new (larger) array and copy elements yourself if you want to "extend" it.
 
-Java では、固定サイズの配列を使用する場合、サイズは作成時に決定され、**変更することはできません**。  
-- 最後の有効なインデックスを超える値 (たとえば、長さ 4 の配列の `arr[4] = 42`) を割り当てようとすると、Java は実行時に **`ArrayIndexOutOfBoundsException`** をスローします。
-- **自動サイズ変更、コピー、拡大はありません**。配列のサイズは固定されており、それを「拡張」したい場合は、新しい（より大きな）配列を手動で作成し、要素を自分でコピーする必要があります。
+#### Dynamic Array (`ArrayList<E>`)
 
-#### 動的配列 (`ArrayList<E>`)
+Java provides the `ArrayList<E>` class, which behaves as a dynamic array:
+- When you call `add(e)` and the underlying array is *not* full (`size < capacity`), Java inserts the element at the next slot (**O(1)** time).
+- If you call `add(e)` when the internal array *is* full (`size == capacity`), Java does the following:
+  1. **Allocates** a new, larger internal array (by default, capacity grows by ~50% in Java 8+).
+  2. **Copies** all existing elements into the new array.
+  3. **Frees** the old array (for garbage collection).
+  4. **Appends** the new element.
+- The resizing and copying step is *expensive* (`O(n)` for n elements), but since it happens infrequently, average time per `add` remains **amortized O(1)**.
 
-Java は、動的配列として動作する `ArrayList<E>` クラスを提供します。
-- `add(e)` を呼び出し、基になる配列が *いっぱいではない (`size < capacity`) 場合、Java は次のスロット (**O(1)** 時) に要素を挿入します。
-- 内部配列が * いっぱい* (`size == capacity`) のときに `add(e)` を呼び出すと、Java は次の処理を実行します。
-  1. **新しい、より大きな内部配列を割り当てます** (デフォルトでは、Java 8 以降では容量が最大 50% 増加します)。
-  2. すべての既存の要素を新しい配列に **コピー**します。
-  3. 古い配列を **解放**します (ガベージ コレクションのため)。
-  4. 新しい要素を **追加**します。
-- サイズ変更とコピーのステップは *高価* (n 要素に対して `O(n)`) ですが、頻度が低いため、`add` あたりの平均時間は **償却 O(1)** のままです。
+#### Edge Cases (Java)
 
-#### エッジケース (Java)
+- **Initial Capacity Zero:** If you create an `ArrayList` with no initial capacity and immediately add, the list must allocate storage on the first add.
+- **Repeated Adds:** If you push many items in a short time, Java may reallocate and copy several times in succession depending on growth policy.
+- **Maximum Array Size:** Java arrays have a maximum size (`Integer.MAX_VALUE`). Trying to grow past this throws an `OutOfMemoryError`.
+- **Bulk Addition (`addAll`):** Adding many elements at once may trigger immediate resizing to fit all new items.
 
-- **初期容量ゼロ:** 初期容量なしで `ArrayList` を作成し、すぐに追加する場合、リストは最初の追加時にストレージを割り当てる必要があります。
-- **繰り返し追加:** 短期間に多くの項目をプッシュすると、Java は成長ポリシーに応じて、再割り当てとコピーを連続して数回行うことがあります。
-- **最大配列サイズ:** Java 配列には最大サイズ (`Integer.MAX_VALUE`) があります。これを超えて成長しようとすると、`OutOfMemoryError` がスローされます。
-- **一括追加 (`addAll`):** 多くの要素を一度に追加すると、すべての新しいアイテムに合わせて即座にサイズ変更が行われる可能性があります。
+#### What *Doesn't* Happen (Java)
 
-#### *起こらないこと* (Java)
-
-- **固定サイズの配列**の場合、プッシュ (「過去の容量の追加」) によってサイズが変更されることはなく、例外がスローされます。
-- `ArrayList` の場合、Java はサイズ変更を自動的に処理しますが、時間がかかり、大量のメモリ割り当てが原因でガベージ コレクションの一時停止が発生する場合があります。
-- カスタム ポリシー (追加するたびに常に +1 ずつサイズ変更するなど) の場合、パフォーマンスが 2 次まで低下する可能性があります。Java のデフォルトの方が効率的です。
+- For **fixed-size arrays**, pushing ("adding past capacity") never resizes—they throw exceptions.
+- For `ArrayList`, Java handles resizes automatically, but at the cost of time and occasionally triggering a garbage collection pause because of large memory allocations.
+- For custom policies (e.g., always resizing by +1 each add), the performance can degrade to quadratic — Java's default is more efficient.
 
 ---
 
-- **一般的な操作:** インデックス (**O(1)**) で `get`/`set`;償却を終了するには `add` **O(1)**。シフトのため、中央 **O(n)** で挿入/削除します。
-- **スペース:** `n` 要素の場合は Θ(n)。実際の内部容量はさらに大きくなる可能性があります (サイズ変更のため、通常は n から約 1.5n の間です)。
+- **Typical ops:** `get`/`set` at index (**O(1)**); `add` to end amortized **O(1)**; insert/remove in middle **O(n)** because of shifting.
+- **Space:** Θ(n) for `n` elements; actual internal capacity may be more (due to resizing, typically between n and about 1.5n).
 
-<figure class="notes-diagram"><svg xmlns="20 viewBox="0 0 420 132" role="img" aria-label="Dynamic array doubles capacity and copies elements when full">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 132" role="img" aria-label="Dynamic array doubles capacity and copies elements when full">
   <defs>
     <marker id="ds-dyn-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#a1a1aa"/></marker>
   </defs>

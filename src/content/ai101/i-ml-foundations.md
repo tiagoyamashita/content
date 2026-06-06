@@ -1,138 +1,137 @@
 ---
 label: "I"
-subtitle: "ML 財団"
-group: "人工知能"
+subtitle: "ML Foundations"
+group: "Artificial intelligence"
 order: 1
 ---
-人工知能 — パート I: ML の基礎
+Artificial Intelligence — Part I: ML Foundations
+Core concepts, supervised & unsupervised learning, evaluation.
 
-中心となる概念、教師あり学習と教師なし学習、評価。
+## 1. What is machine learning
+Traditional programming: hand-write rules → program transforms input to output.
+Machine learning: feed (input, output) examples → algorithm learns rules.
 
-## 1. 機械学習とは
-従来のプログラミング: ルールを手書き → プログラムは入力を出力に変換します。
-機械学習: フィード (入力、出力) サンプル → アルゴリズムがルールを学習します。
+Three broad paradigms:
+- Supervised learning:   labelled data → predict label on new data.
+- Unsupervised learning: unlabelled data → find structure.
+- Reinforcement learning: agent takes actions → maximise reward signal.
 
-3 つの広範なパラダイム:
-- 教師あり学習: ラベル付きデータ → 新しいデータのラベルを予測します。
-- 教師なし学習: ラベルなしデータ → 構造を見つけます。
-- 強化学習: エージェントがアクションを実行 → 報酬シグナルを最大化します。
+Key vocabulary:
+- Feature (X): measurable property of an observation (column in a table).
+- Label / target (y): what we want to predict.
+- Model: learned function f such that f(X) ≈ y.
+- Training: optimising model parameters on a dataset.
+- Inference: running the trained model on new inputs.
 
-主要な語彙:
-- 特徴 (X): 観測値の測定可能な特性 (表の列)。
-- ラベル/ターゲット (y): 予測したいもの。
-- モデル: f(X) ≈ y となる関数 f を学習しました。
-- トレーニング: データセット上のモデル パラメーターを最適化します。
-- 推論: 新しい入力に対してトレーニングされたモデルを実行します。
+## 2. Supervised learning
+Given: dataset {(x₁,y₁), …, (xₙ,yₙ)}
+Goal:  learn f(x) → ŷ that generalises to unseen x.
 
-## 2. 教師あり学習
-与えられた: データセット {(x₁,y₁), …, (xₙ,yₙ)}
-目標: 目に見えない x に一般化する f(x) → ŷ を学習します。
+Classification — y is a discrete class:
+- Binary:      spam / not-spam.
+- Multi-class: digit 0–9.
+- Algorithms: Logistic Regression, Decision Tree, Random Forest, SVM, k-NN.
 
-分類 — y は離散クラスです。
-- バイナリ: スパム/非スパム。
-- マルチクラス: 数字 0 ～ 9。
-- アルゴリズム: ロジスティック回帰、デシジョン ツリー、ランダム フォレスト、SVM、k-NN。
+Regression — y is a continuous value:
+- House price, temperature forecast.
+- Algorithms: Linear Regression, Ridge, Lasso, Gradient Boosting.
 
-回帰 — y は連続値です。
-- 住宅価格、気温予測。
-- アルゴリズム: 線形回帰、リッジ、なげなわ、勾配ブースティング。
+Loss functions — measure prediction error during training:
+- MSE  (Mean Squared Error): Σ(ŷ−y)²/n  — regression.
+- Cross-entropy: −Σ y·log(ŷ)            — classification.
+- Training = minimise loss via gradient descent.
 
-損失関数 — トレーニング中の予測誤差を測定します。
-- MSE (平均二乗誤差): Σ(ŷ−y)²/n — 回帰。
-- クロスエントロピー: −Σ y・log(ŷ) — 分類。
-- トレーニング = 勾配降下による損失を最小限に抑えます。
+## 3. Unsupervised learning
+No labels — find hidden structure in X alone.
 
-## 3. 教師なし学習
-ラベルなし - X のみの隠れた構造を見つけます。
+Clustering — group similar points:
+- k-Means: assign each point to its nearest of k centroids; update centroids.
+- DBSCAN:  density-based; discovers arbitrary shapes; labels outliers noise.
+- Hierarchical: build a dendrogram; cut at desired level.
 
-クラスタリング — 類似した点をグループ化します。
-- k-Means: 各点を k 個の重心の中で最も近いものに割り当てます。重心を更新します。
-- DBSCAN: 密度ベース。任意の形状を発見します。外れ値ノイズにラベルを付けます。
-- 階層: 樹状図を構築します。希望のレベルでカットします。
+Dimensionality reduction — compress features while preserving structure:
+- PCA (Principal Component Analysis): linear projection to axes of max variance.
+- t-SNE / UMAP: non-linear; great for 2-D visualisation of high-dim data.
 
-次元削減 — 構造を維持しながら特徴を圧縮します。
-- PCA (主成分分析): 最大分散の軸への線形投影。
-- t-SNE / UMAP: 非線形。高輝度データの 2 次元視覚化に最適です。
+Anomaly detection — find rare outliers (fraud, defects):
+- Isolation Forest, Autoencoder reconstruction error.
 
-異常検出 — まれな外れ値 (不正、欠陥) を見つけます。
-- 隔離フォレスト、オートエンコーダー再構成エラー。
+## 4. Model evaluation
+Train / Validation / Test split:
+- Train (60-80%): fit model parameters.
+- Validation (10-20%): tune hyperparameters, select model.
+- Test (10-20%): unbiased final estimate of real-world performance.
+!! Never touch the test set until the very end.
 
-## 4. モデルの評価
-トレーニング/検証/テストの分割:
-- トレーニング (60-80%): モデルパラメータを適合させます。
-- 検証 (10-20%): ハイパーパラメータを調整し、モデルを選択します。
-- テスト (10-20%): 現実世界のパフォーマンスの公平な最終推定値。
-!!最後までテストセットには絶対に触れないでください。
+Cross-validation (k-fold):
+- Partition data into k folds; train on k-1, validate on 1; rotate.
+- Average score is a low-variance estimate — useful when data is scarce.
 
-交差検証 (k 分割):
-- データを k 個のフォールドに分割します。 k-1 でトレーニングし、1 で検証します。回転します。
-- 平均スコアは分散が低い推定値であり、データが不足している場合に役立ちます。
+Classification metrics:
+- Accuracy   = (TP+TN) / total  — misleading on imbalanced classes.
+- Precision  = TP / (TP+FP)     — of predicted positives, how many right?
+- Recall     = TP / (TP+FN)     — of actual positives, how many caught?
+- F1         = 2·P·R / (P+R)    — harmonic mean; balances P & R.
+- AUC-ROC    = area under the ROC curve; threshold-independent rank quality.
 
-分類メトリック:
-- 精度 = (TP+TN) / 合計 — 不均衡なクラスでは誤解を招きます。
-- 精度 = TP / (TP+FP) — 予測陽性のうち、いくつ正しいでしょうか?
-- リコール = TP / (TP+FN) — 実際の陽性者のうち、何人が捕捉されましたか?
-- F1 = 2・P・R / (P+R) — 調和平均。利益と利益のバランスをとる。
-- AUC-ROC = ROC 曲線の下の面積。しきい値に依存しないランク品質。
+Regression metrics:
+- MAE  = Σ|ŷ−y|/n
+- RMSE = √(Σ(ŷ−y)²/n)   — penalises large errors more.
+- R²   = 1 − SS_res/SS_tot  — fraction of variance explained (1 = perfect).
 
-回帰指標:
-- MAE = Σ|ŷ−y|/n
-- RMSE = √(Σ(ŷ−y)²/n) — 大きなエラーにはさらにペナルティを課します。
-- R² = 1 − SS_res/SS_tot — 説明された分散の割合 (1 = 完全)。
+## 5. Overfitting & regularization
+Bias-variance tradeoff:
+- High bias (underfitting): model too simple; misses signal in both train & test.
+- High variance (overfitting): model memorises noise; great train, poor test.
+- Sweet spot: just complex enough to capture real patterns.
 
-## 5. 過学習と正則化
-バイアスと分散のトレードオフ:
-- バイアスが高い (フィッティング不足): モデルが単純すぎます。電車でも試験でも信号を見逃します。
-- 高い分散 (過学習): モデルはノイズを記憶します。素晴らしい列車、悪いテスト。
-- スイート スポット: 実際のパターンを捉えるのに十分なだけ複雑です。
+Regularization — penalise model complexity to reduce variance:
+- L2 (Ridge): add λΣwᵢ² to loss → shrinks weights toward zero smoothly.
+- L1 (Lasso): add λΣ|wᵢ| to loss → drives some weights to exactly zero (sparse).
+- Dropout (neural nets): randomly zero activations during training.
+- Early stopping: halt training when validation loss stops improving.
 
-正則化 — 分散を減らすためにモデルの複雑さにペナルティを与えます。
-- L2 (Ridge): 損失に λΣwᵢ² を追加 → 重みをゼロに向かってスムーズに縮小します。
-- L1 (なげなわ): λΣ|wᵢ| を追加します。損失 → 一部の重みを正確にゼロ (疎) にします。
-- ドロップアウト (ニューラル ネット): トレーニング中にランダムにアクティベーションがゼロになります。
-- 早期停止: 検証損失の改善が止まったらトレーニングを停止します。
+Diagnosing:
+- Train ≈ Test error (both high)  → underfitting → more capacity or features.
+- Train << Test error             → overfitting  → regularize or more data.
 
-診断:
-- トレーニング ≈ テスト エラー (両方とも高い) → 適合不足 → 容量または機能の増加。
-- トレーニング << テスト エラー → 過学習 → 正規化またはより多くのデータ。
+## 6. Feature engineering
+Raw data rarely feeds directly into a model. Common transforms:
 
-## 6. 特徴量エンジニアリング
-生データがモデルに直接フィードされることはほとんどありません。一般的な変換:
+Numerical:
+- Normalisation (min-max): scale to [0, 1].
+- Standardisation (z-score): subtract mean, divide by std → N(0,1).
+- Log transform: compress right-skewed distributions (e.g. income).
 
-数値:
-- 正規化 (最小-最大): [0, 1] にスケールします。
-- 標準化 (Z スコア): 平均を減算し、std → N(0,1) で除算します。
-- 対数変換: 右に歪んだ分布 (収入など) を圧縮します。
+Categorical:
+- One-hot encoding: binary column per category.
+- Label encoding: integer per category (only for ordinal data).
+- Target encoding: replace category with mean of target (risk of leakage).
 
-カテゴリ:
-- ワンホット エンコーディング: カテゴリごとのバイナリ列。
-- ラベルエンコーディング: カテゴリごとの整数 (順序データのみ)。
-- ターゲットのエンコーディング: カテゴリをターゲットの平均値に置き換えます (漏洩のリスク)。
+Text:
+- Bag-of-words / TF-IDF: count-based sparse vectors.
+- Word embeddings (Word2Vec, GloVe): dense semantic vectors.
 
-テキスト:
-- Bag-of-words / TF-IDF: カウントベースのスパース ベクトル。
-- 単語埋め込み (Word2Vec、GloVe): 高密度の意味ベクトル。
+Leakage warning: never include information from the future or the label
+itself in features — model looks great in training but fails in production.
 
-漏洩警告: 将来またはレーベルからの情報は決して含めないでください
-それ自体が特徴です — モデルはトレーニングではうまく見えますが、実稼働では失敗します。
+## 7. The ML workflow
+1. Define the problem & success metric.
+2. Collect & explore data (EDA).
+3. Clean: handle missing values, outliers, duplicates.
+4. Feature engineering & selection.
+5. Split: train / validation / test.
+6. Baseline model (simple heuristic or linear model).
+7. Train & tune (grid search, random search, Bayesian optimisation).
+8. Evaluate on validation set; iterate.
+9. Final evaluation on test set — report this number.
+10. Deploy, monitor for drift.
 
-## 7. ML ワークフロー
-1. 問題と成功の指標を定義します。
-2. データの収集と探索 (EDA)。
-3. クリーン: 欠損値、外れ値、重複を処理します。
-4. 機能エンジニアリングと選択。
-5. 分割: トレーニング / 検証 / テスト。
-6. ベースライン モデル (単純なヒューリスティック モデルまたは線形モデル)。
-7. トレーニングと調整 (グリッド検索、ランダム検索、ベイジアン最適化)。
-8. 検証セットを評価します。繰り返します。
-9. テストセットの最終評価 — この数値を報告します。
-10. 展開し、ドリフトを監視します。
-
-## 8. 覚えてリハーサルする
-- 分類と回帰の違いは何ですか?
-- バイアスと分散のトレードオフをわかりやすい英語で説明します。
-- 不均衡なデータセットではなぜ精度が誤解を招く可能性があるのでしょうか?
-- 検証セットとテスト セットの目的は何ですか?
-- L2 正則化ではなく L1 正則化を選択するのはどのような場合ですか?
-- 機能リークとは何ですか?例を挙げてみましょう。
-- 2 つの教師なし学習アルゴリズムとその使用例を挙げてください。
+## 8. Remember & rehearse
+- What is the difference between classification and regression?
+- Explain the bias-variance tradeoff in plain English.
+- Why can accuracy be misleading on an imbalanced dataset?
+- What is the purpose of the validation set vs the test set?
+- When would you choose L1 over L2 regularization?
+- What is feature leakage? Give an example.
+- Name two unsupervised learning algorithms and their use cases.

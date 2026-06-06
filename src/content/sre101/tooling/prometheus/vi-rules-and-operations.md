@@ -1,25 +1,24 @@
 ---
 label: "VI"
-subtitle: "ルールと運営"
+subtitle: "Rules & operations"
 group: "SRE"
 order: 6
 ---
-SRE ツール — Prometheus: ルールと操作
+SRE tooling — Prometheus: Rules & operations
+Recording rules, alerting rules, HA hints, and operator habits.
 
-記録ルール、警告ルール、HA ヒント、オペレーターの習慣。
+## 1. Rule files
 
-## 1. ルールファイル
-
-**`prometheus.yml`** の YAML ルール グループを参照します。
+Reference YAML rule groups from **`prometheus.yml`**:
 
 ```yaml
 rule_files:
   - /etc/prometheus/rules/*.yml
 ```
 
-## 2. 記録ルール
+## 2. Recording rules
 
-負荷の高いクエリを **`evaluation_interval`** ごとに 1 回事前計算します。
+Precompute expensive queries once per **`evaluation_interval`**:
 
 ```yaml
 groups:
@@ -30,11 +29,11 @@ groups:
         expr: sum(rate(http_requests_total[5m])) by (job)
 ```
 
-ダッシュボードとアラートは、長い **`rate`** 式を繰り返すのではなく、**`job:http_requests:rate5m`** を参照します。
+Dashboards and alerts reference **`job:http_requests:rate5m`** instead of repeating long **`rate`** expressions.
 
-## 3. アラートルール
+## 3. Alerting rules
 
-プロメテウスは **`expr`** を評価します。 **`for`** 期間にわたって true の場合、**Alertmanager** にアラートが発行されます。
+Prometheus evaluates **`expr`**; when true for **`for`** duration, it fires an alert to **Alertmanager**:
 
 ```yaml
 groups:
@@ -54,9 +53,9 @@ groups:
           description: "See runbook https://wiki/runbooks/high-5xx"
 ```
 
-**`severity`** を **Alertmanager** ルートに合わせます (`critical` 対 `warning`)。
+Align **`severity`** with **Alertmanager** routes (`critical` vs `warning`).
 
-## 4. 配線アラートマネージャー
+## 4. Wiring Alertmanager
 
 ```yaml
 alerting:
@@ -66,22 +65,22 @@ alerting:
             - alertmanager:9093
 ```
 
-オペレーター管理の Prometheus は通常、これが事前構成された状態で出荷されます。Helm 値をカスタマイズした後に確認してください。
+Operator-managed Prometheus usually ships this preconfigured—verify after customizing Helm values.
 
-## 5. 高可用性と長期保管
+## 5. High availability & long-term storage
 
-- **HA スクレイピング**: 同一の構成で AZ ごとに Prometheus を複製します。クエリ レイヤーで重複排除するか、アラート用の重複を受け入れます (Alertmanager 重複排除通知)。
-- **フェデレーション**: 階層型 Prometheus は **`/federate`** アグリゲートを上方にプルします。
-- **Thanos / Mimir / Cortex**: 耐久性のあるストレージ + グローバル クエリ。リモート書き込みサイドカーはブロックをオフノードに出荷します。
+- **HA scrape**: duplicate Prometheus per AZ with identical config—dedupe in query layer or accept overlap for alerting (Alertmanager dedupes notifications).
+- **Federation**: hierarchical Prometheus pulls **`/federate`** aggregates upward.
+- **Thanos / Mimir / Cortex**: durable storage + global query; remote-write sidecars ship blocks off-node.
 
-## 6. 保持と容量
+## 6. Retention & capacity
 
-**`--storage.tsdb.retention.time`** とディスクを調整します。カーディナリティは、生のスクレイピング レートよりも RAM/ディスクを支配します。インストルメンテーションおよび **`metric_relabel_configs`** のラベルを保護します。
+Tune **`--storage.tsdb.retention.time`** and disk; cardinality dominates RAM/disk more than raw scrape rate—guard labels in instrumentation and **`metric_relabel_configs`**.
 
-## 7. SRE の実践
+## 7. SRE practices
 
-- クリティカル パスには **RED** / **USE** を設定します。レイテンシのパーセンタイルのヒストグラム。
-- **`team`**、**`severity`**、**`service`** ラベルをルーティング用に予測可能な状態に保ちます。
-- 人間にページングする前に、Grafana **Explore** を使用してルール **`expr`** をテストします。
+- Instrument **RED** / **USE** for critical paths; histograms for latency percentiles.
+- Keep **`team`**, **`severity`**, **`service`** labels predictable for routing.
+- Test rule **`expr`** with Grafana **Explore** before paging humans.
 
-**Grafana** は PromQL を視覚化します。 **Alertmanager** は通知ルーティングを所有します。Tooling の **Alertmanager** サブフォルダーを参照してください。
+**Grafana** visualizes PromQL; **Alertmanager** owns notification routing—see the **Alertmanager** subfolder in Tooling.

@@ -1,24 +1,23 @@
 ---
 label: "IV"
-subtitle: "ジェンキンス"
+subtitle: "Jenkins"
 group: "CI/CD"
 order: 4
 ---
-ジェンキンス
+Jenkins
+**Self-hosted** automation server with **1800+ plugins**. Pipelines as code in a **`Jenkinsfile`** (Declarative or Scripted Groovy).
 
-**1800 以上のプラグイン**を備えた **セルフホスト** オートメーション サーバー。 **`Jenkinsfile`** のコードとしてのパイプライン (宣言的またはスクリプト化された Groovy)。
+**Also see:** **Ansible & Jenkins** submenu — playbooks, Vault, deploy patterns [Overview](../ansible-and-jenkins/i-overview.md).
 
-**こちらもご覧ください:** **Ansible と Jenkins** サブメニュー — Playbook、Vault、デプロイ パターン [概要](../ansible-and-jenkins/i-overview.md)。
+## 1. Pipeline types
 
-## 1. パイプラインの種類
+| Type | Syntax | Use |
+|------|--------|-----|
+| **Declarative** | Structured `pipeline { }` | New projects — preferred |
+| **Scripted** | Full Groovy DSL | Legacy, complex flow control |
+| **Freestyle** | UI-only | Avoid for new work |
 
-|タイプ |構文 |使用 |
-|------|----------|-----|
-| **宣言的** |構造化 `pipeline { }` |新しいプロジェクト — 優先 |
-| **スクリプト付き** |完全な Groovy DSL |従来の複雑なフロー制御 |
-| **フリースタイル** | UIのみ |新しい仕事の場合は避ける |
-
-## 2. 宣言的なスケルトン
+## 2. Declarative skeleton
 
 ```groovy
 // Jenkinsfile
@@ -55,7 +54,7 @@ pipeline {
 }
 ```
 
-## 3. ステージごとの Docker エージェント
+## 3. Docker agent per stage
 
 ```groovy
 pipeline {
@@ -80,7 +79,7 @@ pipeline {
 }
 ```
 
-## 4. 認証情報と環境
+## 4. Credentials and environment
 
 ```groovy
 pipeline {
@@ -107,17 +106,17 @@ pipeline {
 }
 ```
 
-## 5. マルチブランチ パイプライン
+## 5. Multibranch pipeline
 
-Jenkins は各ブランチ/PR で **`Jenkinsfile`** を検出しました:
+Jenkins discovers **`Jenkinsfile`** on each branch/PR:
 
-- **ブランチソース** → GitHub/GitLab Webhook
-- PR ビルドはステータス チェックを取得します
-- リポジトリの `Jenkinsfile` が真実の情報源です
+- **Branch Source** → GitHub/GitLab webhook
+- PR builds get status checks
+- `Jenkinsfile` in repo is source of truth
 
-## 6. 共有ライブラリ
+## 6. Shared Libraries
 
-別のリポジトリで再利用可能な Groovy:
+Reusable Groovy in a separate repo:
 
 ```groovy
 @Library('my-company-lib@v2') _
@@ -134,9 +133,9 @@ pipeline {
 }
 ```
 
-ライブラリ リポジトリの **`vars/deployToK8s.groovy`** は、kubectl/helm ロジックをカプセル化します。
+**`vars/deployToK8s.groovy`** in library repo encapsulates kubectl/helm logic.
 
-## 7. Jenkins から Ansible をトリガーする
+## 7. Trigger Ansible from Jenkins
 
 ```groovy
 stage('Configure servers') {
@@ -151,19 +150,19 @@ stage('Configure servers') {
 }
 ```
 
-**Ansible** プラグインが必要です。
+Requires **Ansible** plugin.
 
-## 8. Jenkins を選択する場合
+## 8. When to choose Jenkins
 
-|長所 |短所 |
+| Pros | Cons |
 |------|------|
-|オンプレミスでフルコントロール | HA、アップグレード、プラグインを操作します。
-|大規模なプラグイン エコシステム |素晴らしい学習曲線 |
-|エアギャップ / コンプライアンスに優しい | UI は SaaS CI と比べて時代遅れに感じられる |
+| Full control on-prem | You operate HA, upgrades, plugins |
+| Massive plugin ecosystem | Groovy learning curve |
+| Air-gapped / compliance friendly | UI can feel dated vs SaaS CI |
 
-|次の場合に Jenkins を選択してください |次の場合には SaaS を選択してください |
-|---------------------|------|
-|厳しいオンプレミス要件 | GitHub/GitLab ネイティブ CI で十分 |
-|既存の Jenkins への投資 |コントローラーのメンテナンスをゼロにしたい |
+| Choose Jenkins when | Choose SaaS when |
+|---------------------|------------------|
+| Strict on-prem requirement | GitHub/GitLab native CI enough |
+| Existing Jenkins investment | Want zero controller maintenance |
 
-**関連:** [Jenkins + Ansible パイプライン](../ansible-and-jenkins/vi-jenkins-ansible-pipelines.md)、[プラットフォームの選択](viii-choosing-a-platform.md)。
+**Related:** [Jenkins + Ansible pipelines](../ansible-and-jenkins/vi-jenkins-ansible-pipelines.md), [Choosing a platform](viii-choosing-a-platform.md).

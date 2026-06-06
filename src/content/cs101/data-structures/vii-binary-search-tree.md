@@ -1,20 +1,19 @@
 ---
 label: "VII"
-subtitle: "二分探索木"
-group: "データ構造とアルゴリズム"
+subtitle: "Binary search tree"
+group: "Data structures & algorithms"
 order: 7
 ---
-二分探索木 (BST)
+Binary search tree (BST)
+Ordered binary tree: all keys in the left subtree are strictly smaller than the node’s key; all keys in the right subtree are strictly larger (for a strict total order).
 
-順序付きバイナリ ツリー: 左側のサブツリー内のすべてのキーはノードのキーよりも厳密に小さくなります。右側のサブツリー内のすべてのキーは厳密に大きくなります (厳密な合計順序の場合)。
+**Ops:** search, insert, delete follow a root-to-leaf path — time **O(h)** where **h** is height. Balanced: **h = O(log n)**; skewed chain from sorted inserts: **h = Θ(n)**.
 
-**操作:** 検索、挿入、削除はルートからリーフのパスに従います。時間は **O(h)** で、**h** は高さです。バランス: **h = O(log n)**;ソートされたインサートからのスキューチェーン: **h = Θ(n)**。
+**Balancing (overview):** **AVL** trees enforce a tight height balance with rotations; **red-black** trees use color rules to keep **h = O(log n)** with slightly looser balance and fewer rotations on average. Both restore **O(log n)** worst-case search/insert/delete.
 
-**バランス調整 (概要):** **AVL** ツリーは、回転によって高さの厳密なバランスを強制します。 **赤黒**の木は、カラー ルールを使用して **h = O(log n)** を維持し、バランスをわずかに緩め、平均して回転を少なくします。どちらも **O(log n)** の最悪の場合の検索/挿入/削除を復元します。
+**Related:** **Level II — Trees, heaps, hashing** (`ii-trees-heaps-hashing.md`).
 
-**関連:** **レベル II - ツリー、ヒープ、ハッシュ** (`ii-trees-heaps-hashing.md`)。
-
-<figure class="notes-diagram"><svg xmlns="1 viewBox="0 0 400 218" role="img" aria-label="Binary search tree with smaller keys left larger keys right">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 218" role="img" aria-label="Binary search tree with smaller keys left larger keys right">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">BST ordering (example)</text>
   <text x="12" y="40" fill="#a1a1aa" font-size="10">search compares target with node; go left if smaller, right if larger</text>
   <circle cx="200" cy="72" r="22" fill="rgba(34,197,94,0.15)" stroke="#86efac" stroke-width="2"/>

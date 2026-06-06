@@ -1,25 +1,24 @@
 ---
 label: "III"
-subtitle: "マイクロサービス vs モノリス"
-group: "クラウドアーキテクチャ"
+subtitle: "Microservices vs monolith"
+group: "Cloud architecture"
 order: 3
 ---
-マイクロサービス vs モノリス
+Microservices vs monolith
+**Monolith** — one deployable unit. **Microservices** — independent services per domain. Most teams should start simpler and extract services only when friction justifies complexity.
 
-**モノリス** — 1 つの展開可能なユニット。 **マイクロサービス** — ドメインごとの独立したサービス。ほとんどのチームは、より単純な作業から開始し、摩擦によって複雑さが正当化される場合にのみサービスを抽出する必要があります。
+## 1. Comparison
 
-## 1. 比較
-
-| |モノリス |マイクロサービス |
+| | Monolith | Microservices |
 |---|----------|---------------|
-| **展開** |単一のアーティファクト |サービスごとのパイプライン |
-| **スケール** |アプリ全体 |サービスごと |
-| **デバッグ** |単一プロセスのスタック トレース |分散トレースが必要 |
-| **データ** |共有DB、ACIDトランザクション |サービスごとのデータベース、結果整合性 |
-| **チーム** |共有コードベース |チームはエンドツーエンドのサービスを所有します |
-| **レイテンシ** |インプロセス呼び出し |ネットワークホップ |
+| **Deploy** | Single artifact | Per-service pipelines |
+| **Scale** | Whole app | Per service |
+| **Debug** | Single process stack trace | Distributed tracing required |
+| **Data** | Shared DB, ACID transactions | Database per service, eventual consistency |
+| **Team** | Shared codebase | Team owns service end-to-end |
+| **Latency** | In-process calls | Network hops |
 
-## 2. モノリスの利点
+## 2. Monolith advantages
 
 ```text
 ┌─────────────────────────────────┐
@@ -32,11 +31,11 @@ order: 3
 └─────────────────────────────────┘
 ```
 
-- 迅速なローカル開発 - 実行するサービス メッシュが不要
-- モジュール間の単純なトランザクション
-- 小規模チーム向けの 1 つのデプロイメント アーティファクト
+- Fast local development — no service mesh to run
+- Simple transactions across modules
+- One deployment artifact for small teams
 
-## 3. マイクロサービスの利点
+## 3. Microservices advantages
 
 ```text
      ┌─────────┐     ┌─────────┐     ┌──────────┐
@@ -48,13 +47,13 @@ order: 3
                     message bus (optional)
 ```
 
-- 認証をスケーリングせずにピーク時に **注文** サービスをスケーリングする
-- プラットフォーム全体を再デプロイせずにインベントリ修正をデプロイします
-- **境界コンテキスト**の所有権をクリア (DDD)
+- Scale **orders** service during peak without scaling auth
+- Deploy inventory fix without redeploying entire platform
+- Clear **bounded context** ownership (DDD)
 
-## 4. モジュラーモノリス — 中間パス
+## 4. Modular monolith — middle path
 
-コードを 1 つのデプロイ可能な内部に **明確な境界**を持つモジュールとして構造化します。
+Structure code as modules with **clear boundaries** inside one deployable:
 
 ```text
 src/
@@ -64,60 +63,60 @@ src/
   shared-kernel/   ← minimal shared types only
 ```
 
-|ルール |強制する |
-|-----|----------|
-|クロスモジュール DB テーブルはありません |モジュールはそのスキーマを所有します。
-|モジュールごとのパブリック API |内部クラスプライベート |
-|継ぎ目での結合テスト |サービスを抽出する前に |
+| Rule | Enforce |
+|------|---------|
+| No cross-module DB tables | Module owns its schema |
+| Public API per module | Internal classes private |
+| Integration tests at seams | Before extracting service |
 
-**独立したリリース ペース**、**異なるスケーリング プロファイル**、または **チームの所有権** 境界が安定している場合に、マイクロサービスに抽出します。
+Extract to microservice when: **independent release cadence**, **different scaling profile**, or **team ownership** boundary is stable.
 
-## 5. いつ移行するか
+## 5. When to migrate
 
-|信号 |アクション |
-|----------|----------|
-|無関係なチームの変更によってデプロイがブロックされる |安定したドメインを抽出 |
-| 1 つのモジュールには 10 倍の CPU が必要 |個別に抽出してスケーリングする |
-|さまざまな SLA (支払いとカタログ) |個別のサービス + SLO |
-|時期尚早の解散は「Netflixのせい」 |モジュラーモノリスを維持 |
+| Signal | Action |
+|--------|--------|
+| Deploy blocked by unrelated team changes | Extract stable domain |
+| One module needs 10× CPU | Extract and scale separately |
+| Different SLAs (payments vs catalog) | Separate service + SLO |
+| Premature split "because Netflix" | Stay modular monolith |
 
-**ストラングラー図:** トラフィックの `%` をゲートウェイ経由で新しいサービスにルーティングします。段階的に移行します。
+**Strangler fig:** route `%` of traffic to new service via gateway; migrate incrementally.
 
-## 6. 分散データの課題
+## 6. Distributed data challenges
 
-|モノリス |マイクロサービス |
+| Monolith | Microservice |
 |----------|--------------|
-| `BEGIN; UPDATE orders; UPDATE inventory; COMMIT` |佐賀または送信ボックスのパターン |
-|テーブル間で結合する | API 構成または読み取りモデル |
-|強い一貫性 |結果整合性 + 冪等性 |
+| `BEGIN; UPDATE orders; UPDATE inventory; COMMIT` | Saga or outbox pattern |
+| Join across tables | API composition or read model |
+| Strong consistency | Eventual consistency + idempotency |
 
-サガについては、[イベント駆動型アーキテクチャ](iv-event-driven-architecture.md) を参照してください。
+See [Event-driven architecture](iv-event-driven-architecture.md) for sagas.
 
-## 7. 運用コスト
+## 7. Operational cost
 
-マイクロサービスには次のものが必要です。
+Microservices require:
 
-- サービスごとの **CI/CD** (またはパス フィルターを備えたモノリポジトリ)
-- **可観測性** — 呼び出し全体のトレース [可観測性、SLI および SLO](vi-observability-slo-and-slis.md)
-- **サービスディスカバリ** — K8s DNS、Consul、クラウド LB
-- **バージョン管理** — 下位互換性のある API、消費者主導のコントラクト
+- **CI/CD** per service (or monorepo with path filters)
+- **Observability** — traces across calls [Observability, SLI & SLO](vi-observability-slo-and-slis.md)
+- **Service discovery** — K8s DNS, Consul, cloud LB
+- **Versioning** — backward-compatible APIs, consumer-driven contracts
 
-## 8. 意思決定チェックリスト
+## 8. Decision checklist
 
-|質問 |モノリスは次の場合に OK |
+| Question | Monolith OK if |
 |----------|----------------|
-|チームの規模が 10 未満ですか? |多くの場合、そうです |
-|シングルリリーストレイン？ |はい |
-|ドメインはまだ移行中ですか? |はい — 早期の分割は避けてください |
-| 1 つのドメインにスケーリングのボトルネックがあることが判明していますか? |抽出を検討してください |
+| Team size < 10? | Often yes |
+| Single release train? | Yes |
+| Domains still shifting? | Yes — avoid early split |
+| Proven scaling bottleneck in one domain? | Consider extract |
 
-## 9. 進化の例
+## 9. Example evolution
 
-|フェーズ |建築 |
-|------|--------------|
-| MVP |単一の Spring Boot アプリ + Postgres |
-|成長 |モジュラーモノリス + Redis + リードレプリカ |
-|スケール |支払い (PCI 範囲)、注文 (ピーク負荷) を抽出 |
-|成熟した |サービス メッシュ、イベント バス、独立した SLO |
+| Phase | Architecture |
+|-------|--------------|
+| MVP | Single Spring Boot app + Postgres |
+| Growth | Modular monolith + Redis + read replica |
+| Scale | Extract payments (PCI scope), orders (peak load) |
+| Mature | Service mesh, event bus, independent SLOs |
 
-**関連:** [イベント駆動型アーキテクチャ](iv-event-driven-architecture.md)、[API ゲートウェイとサービス メッシュ](v-api-gateway-and-service-mesh.md)。
+**Related:** [Event-driven architecture](iv-event-driven-architecture.md), [API Gateway & service mesh](v-api-gateway-and-service-mesh.md).

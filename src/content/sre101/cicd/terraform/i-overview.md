@@ -1,29 +1,28 @@
 ---
 label: "I"
-subtitle: "概要"
+subtitle: "Overview"
 group: "CI/CD"
 order: 1
 ---
-Terraform — 概要
+Terraform — overview
+**Terraform** (HashiCorp, IBM 2024) is **Infrastructure as Code (IaC)**: describe cloud resources in **HCL**, version in Git, apply consistently across environments. It is **cloud-agnostic** — not an AWS product (AWS native IaC is **CloudFormation**).
 
-**Terraform** (HashiCorp、IBM 2024) は **Infra Structure as Code (IaC)** です。**HCL** でクラウド リソースを記述し、バージョンは Git で、環境間で一貫して適用されます。これは **クラウドに依存しない** - AWS 製品ではありません (AWS ネイティブ IaC は **CloudFormation**)。
+## Map of this submenu
 
-## このサブメニューのマップ
+| Note | Focus |
+|------|--------|
+| [What is Terraform](ii-what-is-terraform.md) | Problem IaC solves, vs CloudFormation, workflow |
+| [HCL, resources & variables](iii-hcl-resources-and-variables.md) | HCL syntax, variables, outputs, data sources |
+| [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md) | VPC, subnet, EC2 — full working example |
+| [State & remote backends](v-state-and-remote-backends.md) | tfstate, S3 backend, locking, state CLI |
+| [Modules & environments](vi-modules-and-environments.md) | Modules, registry, workspaces, env split |
+| [Terraform in CI/CD](vii-terraform-in-cicd.md) | Plan on PR, apply on main, OIDC, Atlantis |
 
-|注 |フォーカス |
-|------|----------|
-| [Terraformとは](ii-what-is-terraform.md) | IaC が解決する問題、vs CloudFormation、ワークフロー |
-| [HCL、リソース、変数](iii-hcl-resources-and-variables.md) | HCL 構文、変数、出力、データ ソース |
-| [AWS の例 — VPC と EC2](iv-aws-example-vpc-and-ec2.md) | VPC、サブネット、EC2 — 完全な動作例 |
-| [状態およびリモートバックエンド](v-state-and-remote-backends.md) | tfstate、S3 バックエンド、ロック、状態 CLI |
-| [モジュールと環境](vi-modules-and-environments.md) |モジュール、レジストリ、ワークスペース、環境分割 |
-| [CI/CD での Terraform](vii-terraform-in-cicd.md) | PR の計画、メイン、OIDC、Atlantis への申請 |
+**Related:** Part I fundamentals, **Security & best practices** → [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md), **Tools & platforms** → GitHub Actions.
 
-**関連:** パート I の基礎、**セキュリティとベスト プラクティス** → [秘密と OIDC](../security-and-best-practices/iii-secrets-and-oidc.md)、**ツールとプラットフォーム** → GitHub アクション。
+## Core workflow
 
-## コアワークフロー
-
-<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 480 100" role="img" aria-label="Terraform init plan apply destroy">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="Terraform init plan apply destroy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Plan before apply — always</text>
   <rect x="12" y="40" width="56" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="20" y="60" fill="#e4e4e7" font-size="8">init</text>
@@ -39,25 +38,25 @@ Terraform — 概要
   <text x="320" y="56" fill="#71717a" font-size="9">teardown only</text>
 </svg></figure>
 
-## 主要なプロパティ
+## Key properties
 
-|プロパティ |意味 |
-|----------|----------|
-| **宣言的** |希望する状態を指定します。 Terraform は diff | を計算します。
-| **冪等** |同じ設定を再適用 → 追加の変更は不要 |
-| **計画第一** | API に触れる前にプレビューで作成/更新/削除 |
-| **プロバイダーベース** | AWS、Azure、GCP、K8s、GitHub、Datadog — 3000 以上のプロバイダー |
+| Property | Meaning |
+|----------|---------|
+| **Declarative** | You specify desired state; Terraform computes diff |
+| **Idempotent** | Re-apply same config → no extra changes |
+| **Plan-first** | Preview creates/updates/deletes before touching APIs |
+| **Provider-based** | AWS, Azure, GCP, K8s, GitHub, Datadog — 3000+ providers |
 
-## Terraform を使用する場合
+## When to use Terraform
 
-|良いフィット感 |代替案を検討する |
-|----------|--------------------------|
-|マルチクラウドまたはマルチサービスインフラ | AWS専用ショップ → CloudFormation/CDK |
-|チームには状態の共有とレビューが必要 |小規模な個人プロジェクト → クリック操作OK |
-| GitOps スタイルのインフラの変更 | VM 上のアプリ構成 → Ansible (`ansible-and-jenkins/`) |
+| Good fit | Consider alternatives |
+|----------|------------------------|
+| Multi-cloud or multi-service infra | AWS-only shop → CloudFormation/CDK |
+| Team needs shared state + review | Small personal project → click-ops OK |
+| GitOps-style infra changes | App config on VMs → Ansible (`ansible-and-jenkins/`) |
 
-## リハーサル
+## Rehearsal
 
-- Terraform と CloudFormation — それぞれをロックインするのは誰ですか?
-- なぜ `terraform.tfstate` をコミットしないのですか?
-- `terraform plan` は何を示していますか?
+- Terraform vs CloudFormation — who makes each, lock-in?
+- Why never commit `terraform.tfstate`?
+- What does `terraform plan` show?

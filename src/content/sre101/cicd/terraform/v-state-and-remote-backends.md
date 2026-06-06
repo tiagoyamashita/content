@@ -1,14 +1,13 @@
 ---
 label: "V"
-subtitle: "状態およびリモートのバックエンド"
+subtitle: "State & remote backends"
 group: "CI/CD"
 order: 5
 ---
-状態およびリモートのバックエンド
+State & remote backends
+**Terraform state** (`terraform.tfstate`) maps your HCL to real cloud resource IDs. Teams **must** use a **remote backend** with **locking** — never commit state to Git.
 
-**Terraform 状態** (`terraform.tfstate`) は、HCL を実際のクラウド リソース ID にマップします。チームは**ロック**を備えた**リモート バックエンド**を使用する必要があります**。状態を Git にコミットしないでください。
-
-## 1. 状態に含まれるもの
+## 1. What state contains
 
 ```json
 {
@@ -28,23 +27,23 @@ order: 5
 }
 ```
 
-|状態が存在する理由 |詳細 |
-|-------|------|
-|マップ名 → ID | `aws_instance.app` → `i-0abc123` |
-|パフォーマンス |各プランのすべてのリソースを再クエリすることを回避します。
-|メタデータ |依存関係、シリアル、系統 |
+| Why state exists | Detail |
+|------------------|--------|
+| Map names → IDs | `aws_instance.app` → `i-0abc123` |
+| Performance | Avoid re-querying every resource on each plan |
+| Metadata | Dependencies, serial, lineage |
 
-状態には **機密値** (パスワード、キー) が含まれる場合があります。秘密として扱います。
+State may contain **sensitive values** (passwords, keys) — treat as secret.
 
-## 2. 状態を Git にコミットしないでください
+## 2. Never commit state to Git
 
-|リスク |結果 |
-|------|---------------|
-| JSON の秘密 |リポジトリ履歴によるリーク |
-|多様な地方州 | 2 人のエンジニアが矛盾する変更を適用します。
-|ロックなし |破損したリソースを同時に適用します。
+| Risk | Consequence |
+|------|-------------|
+| Secrets in JSON | Leak via repo history |
+| Divergent local states | Two engineers apply conflicting changes |
+| No locking | Concurrent applies corrupt resources |
 
-`.gitignore`に追加:
+Add to `.gitignore`:
 
 ```gitignore
 .terraform/
@@ -53,9 +52,9 @@ order: 5
 .terraform.lock.hcl   # commit lock file — pins provider checksums
 ```
 
-再現可能なプロバイダーのバージョンについては **コミット** `.terraform.lock.hcl` を実行してください。
+**Do commit** `.terraform.lock.hcl` for reproducible provider versions.
 
-## 3. S3 リモート バックエンド (AWS)
+## 3. S3 remote backend (AWS)
 
 ```hcl
 terraform {
@@ -69,24 +68,24 @@ terraform {
 }
 ```
 
-|コンポーネント |役割 |
+| Component | Role |
 |-----------|------|
-| **S3 バケット** |状態ファイルを保存します |
-| **DynamoDB テーブル** |ロック ID — 一度に 1 つずつ適用 |
-| **暗号化** |静止時の SSE |
+| **S3 bucket** | Stores state file |
+| **DynamoDB table** | Lock ID — one apply at a time |
+| **encrypt** | SSE at rest |
 
-バックエンド リソースを一度作成し (ブートストラップ スタックまたは別の管理プロセス)、すべての環境設定から参照します。
+Create backend resources once (bootstrap stack or separate admin process), then reference from all env configs.
 
-## 4. その他のバックエンド
+## 4. Other backends
 
-|バックエンド | | に共通
-|-----------|-----------|
-| **Terraform クラウド / HCP** | HashiCorp がホストする状態 + 実行 |
-| **アズールム** | Azure BLOB + リース |
-| **gcs** | Google クラウド ストレージ |
-| **ローカル** |ソロ開発者のみ |
+| Backend | Common for |
+|---------|------------|
+| **Terraform Cloud / HCP** | HashiCorp-hosted state + runs |
+| **azurerm** | Azure Blob + lease |
+| **gcs** | Google Cloud Storage |
+| **local** | Solo dev only |
 
-## 5. 状態のロック
+## 5. State locking
 
 ```text
 Engineer A: terraform apply  → acquires lock
@@ -95,9 +94,9 @@ Engineer A: apply completes  → releases lock
 Engineer B: retry            → succeeds
 ```
 
-ロックを使用しない場合、2 つの適用により API 呼び出しがインターリーブされ、インフラストラクチャが不整合になる可能性があります。
+Without locking, two applies can interleave API calls and leave infra inconsistent.
 
-## 6. 状態 CLI コマンド
+## 6. State CLI commands
 
 ```bash
 terraform state list
@@ -107,13 +106,13 @@ terraform state rm aws_instance.orphan   # remove from state, not cloud
 terraform import aws_instance.app i-0abc123
 ```
 
-|コマンド |使用 |
-|----------|-----|
-| **インポート** |既存のクラウド リソースを Terraform に取り込む |
-| **MV** |破棄/作成を行わずに構成内のリソースの名前を変更します。
-| **rm** |リソースの管理を停止する (手動クリーンアップ) |
+| Command | Use |
+|---------|-----|
+| **import** | Bring existing cloud resource under Terraform |
+| **mv** | Rename resource in config without destroy/create |
+| **rm** | Stop managing resource (manual cleanup) |
 
-## 7. 環境ごとの状態
+## 7. State per environment
 
 ```text
 S3 key paths:
@@ -122,19 +121,19 @@ S3 key paths:
   myapp/prod/terraform.tfstate
 ```
 
-個別のキー (または個別のバケット) は爆発範囲を分離します。 **決して**、開発環境と製品環境で 1 つの状態ファイルを共有しないでください。
+Separate keys (or separate buckets) isolate blast radius. **Never** share one state file across dev and prod.
 
-## 8. ドリフト検出
+## 8. Drift detection
 
-**ドリフト** — 誰かが Terraform の外でクラウド コンソールを変更しました。
+**Drift** — someone changed cloud console outside Terraform.
 
 ```bash
 terraform plan   # shows ~ update or unexpected -/+ replace
 ```
 
-CI: `terraform plan` をスケジュールどおりに実行します。プランが空でない場合はアラートを発します。オプション: **terraform plan -detailed-exitcode` — 変更が保留中の場合は 2 を終了します。
+CI: run `terraform plan` on schedule; alert if non-empty plan. Optional: **terraform plan -detailed-exitcode` — exit 2 if changes pending.
 
-## 9. 敏感な出力
+## 9. Sensitive outputs
 
 ```hcl
 output "db_password" {
@@ -143,6 +142,6 @@ output "db_password" {
 }
 ```
 
-状態のまま保存されます。リモート バックエンド暗号化とバケット上の IAM が必要です。
+Still stored in state — remote backend encryption and IAM on bucket are required.
 
-**関連:** [CI/CD の Terraform](vii-terraform-in-cicd.md)、[秘密と OIDC](../security-and-best-practices/iii-secrets-and-oidc.md)。
+**Related:** [Terraform in CI/CD](vii-terraform-in-cicd.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).

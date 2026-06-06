@@ -1,21 +1,20 @@
 ---
 label: "VII"
-subtitle: "コストとガバナンス"
-group: "クラウドアーキテクチャ"
+subtitle: "Cost & governance"
+group: "Cloud architecture"
 order: 7
 ---
-コストとガバナンス
+Cost & governance
+Cloud bills scale with usage. **FinOps** aligns engineering and finance; **governance** enforces guardrails so speed does not become sprawl.
 
-クラウドの料金は使用量に応じて増加します。 **FinOps** はエンジニアリングと財務を連携させます。 **ガバナンス** は速度がスプロールにならないようにガードレールを強化します。
+## 1. Pricing models
 
-## 1. 価格モデル
-
-|モデル |コミットメント |割引 |こんな方に最適 |
-|----------|-----------|----------|----------|
-| **オンデマンド** |なし | 0% (ベースライン) |スパイク、予測不能、開発/テスト |
-| **予約/節約プラン** | 1 ～ 3 年 | 30～70% |定常状態の本番ワークロード |
-| **スポット / プリエンプティブル** |回収可能 |最大 ~90% |バッチ、ML トレーニング、ステートレス ワーカー |
-| **コミットメント使用 (GCP)** | 1 ～ 3 歳 | RIに似ている |安定したコンピューティング |
+| Model | Commitment | Discount | Best for |
+|-------|------------|----------|----------|
+| **On-Demand** | None | 0% (baseline) | Spiky, unpredictable, dev/test |
+| **Reserved / Savings Plans** | 1–3 years | 30–70% | Steady-state prod workloads |
+| **Spot / Preemptible** | Can be reclaimed | Up to ~90% | Batch, ML training, stateless workers |
+| **Committed use (GCP)** | 1–3 yr | Similar to RIs | Stable compute |
 
 ```text
 On-Demand:  $$$$  full flexibility
@@ -23,27 +22,27 @@ Reserved:   $$    predictable baseline capacity
 Spot:       $     interruptible — checkpoint & retry
 ```
 
-## 2. スポット インスタンスを使用する場合
+## 2. When to use Spot instances
 
-|良いフィット感 |フィット感が悪い |
-|----------|----------|
-|再試行付きの Kubernetes バッチ ジョブ |単一ノードのステートフル DB |
-|ビデオトランスコーディングキュー |チェックポイントのない長いシングルスレッド ジョブ |
-| CI ビルド エージェント |冗長性のないモノリシック アプリ |
-|フリンク / スパークワーカー |キルを許容できないレガシーアプリ |
+| Good fit | Bad fit |
+|----------|---------|
+| Kubernetes batch jobs with retry | Single-node stateful DB |
+| Video transcoding queue | Long single-thread job with no checkpoint |
+| CI build agents | Monolithic app with no redundancy |
+| Flink / Spark workers | Legacy app that cannot tolerate kill |
 
-**パターン:** スポット フリート + オンデマンド ベースライン。スポット中断時には、作業はキューに戻ります。
+**Pattern:** Spot fleet + on-demand baseline; on Spot interruption, work returns to queue.
 
-## 3. FinOps の実践
+## 3. FinOps practices
 
-|練習 |アクション |
-|----------|----------|
-| **タグ付け** |すべてのリソースの `team`、`env`、`project`、`cost-center` |
-| **予算とアラート** |月次予算の 80% でアラート |
-| **適切なサイジング** | CloudWatch CPU/RAM とインスタンス サイズの比較 |
-| **アイドル状態のクリーンアップ** |切り離された EBS、古いスナップショット、未使用の ELB、アイドル状態の NAT ゲートウェイ |
-| **ストレージ階層化** | S3 標準 → IA → Glacier (コールド データ用) |
-| **ショーバック/チャージバック** |チームタグごとの月次レポート |
+| Practice | Action |
+|----------|--------|
+| **Tagging** | `team`, `env`, `project`, `cost-center` on every resource |
+| **Budgets & alerts** | Alert at 80% of monthly budget |
+| **Right-sizing** | Compare CloudWatch CPU/RAM vs instance size |
+| **Idle cleanup** | Detached EBS, old snapshots, unused ELBs, idle NAT Gateway |
+| **Storage tiering** | S3 Standard → IA → Glacier for cold data |
+| **Showback/chargeback** | Monthly report per team tag |
 
 ```text
 Required tags (example policy):
@@ -52,20 +51,20 @@ Required tags (example policy):
   Application: checkout-api
 ```
 
-タグなしリソース → デプロイ時に拒否 (ポリシー) または自動通知。
+Untagged resources → deny at deploy (policy) or auto-remind.
 
-## 4. サービス別コストの最適化
+## 4. Cost optimization by service
 
-|サービス |ヒント |
-|----------|-----|
-| **EC2 / VM** |ベースライン用に予約されています。バースト用スポット |
-| **RDS** |適切なサイズ。夜間/週末に開発インスタンスを停止する |
-| **S3** |ライフサイクルルール。不完全なマルチパート アップロードを削除する |
-| **NAT ゲートウェイ** |高価 — S3/DynamoDB 用の VPC エンドポイント |
-| **データ転送** |同じ地域。出力の多いコンテンツ用の CDN |
-| **ラムダ** |適切なサイズのメモリ (CPU とコストに影響) |
+| Service | Tip |
+|---------|-----|
+| **EC2 / VM** | Reserved for baseline; Spot for burst |
+| **RDS** | Right-size; stop dev instances nights/weekends |
+| **S3** | Lifecycle rules; delete incomplete multipart uploads |
+| **NAT Gateway** | Expensive — VPC endpoints for S3/DynamoDB |
+| **Data transfer** | Same-region; CDN for egress-heavy content |
+| **Lambda** | Right-size memory (affects CPU and cost) |
 
-## 5. ガバナンス階層
+## 5. Governance hierarchy
 
 ```text
 Organization (AWS Org / Azure MG)
@@ -76,15 +75,15 @@ Organization (AWS Org / Azure MG)
         └── IAM roles per workload (least privilege)
 ```
 
-|メカニズム |目的 |
-|----------|----------|
-| **AWS 組織 / Azure 管理グループ** |マルチアカウント構造 |
-| **SCP / Azure ポリシー** |管理者にもガードレール |
-| **IAM / RBAC** |ロールごとの最小権限 |
-| **CloudTrail / アクティビティ ログ** |不変 API 監査 |
-| **構成 / ポリシーのコンプライアンス** |パブリック S3 バケットを検出する |
+| Mechanism | Purpose |
+|-----------|---------|
+| **AWS Organizations / Azure Management Groups** | Multi-account structure |
+| **SCP / Azure Policy** | Guardrails even for admins |
+| **IAM / RBAC** | Least privilege per role |
+| **CloudTrail / Activity Log** | Immutable API audit |
+| **Config / Policy compliance** | Detect public S3 buckets |
 
-## 6. IAM の最小権限
+## 6. IAM least privilege
 
 ```json
 {
@@ -97,16 +96,16 @@ Organization (AWS Org / Azure MG)
 }
 ```
 
-|避ける |優先する |
-|------|----------|
-| `"Action": "*"` |範囲指定されたアクション |
-| `"Resource": "*"` |リソース ARN プレフィックス |
-|有効期間の長いアクセス キー | IAM ロール、CI 用の OIDC |
-|共有ルート認証情報 | SSO + 想定される役割 |
+| Avoid | Prefer |
+|-------|--------|
+| `"Action": "*"` | Scoped actions |
+| `"Resource": "*"` | Resource ARN prefix |
+| Long-lived access keys | IAM roles, OIDC for CI |
+| Shared root credentials | SSO + assumed roles |
 
-## 7. ポリシーの例
+## 7. Policy examples
 
-**暗号化されていない S3 アップロードを拒否します:**
+**Deny unencrypted S3 upload:**
 
 ```json
 {
@@ -121,7 +120,7 @@ Organization (AWS Org / Azure MG)
 }
 ```
 
-**地域の制限 (SCP):**
+**Restrict regions (SCP):**
 
 ```json
 {
@@ -136,29 +135,29 @@ Organization (AWS Org / Azure MG)
 }
 ```
 
-## 8. 適切に設計されたコストの柱 (概要)
+## 8. Well-Architected cost pillar (summary)
 
-|質問を確認する |アクション |
-|-----------------|----------|
-|コスト要因のトップ 5 を知っていますか? | Cost Explorer / 請求書のエクスポート |
-|開発リソースは営業時間外にシャットダウンされますか? | Lambda スケジューラ、インスタンス スケジューラ |
-|未使用の容量に対して料金を支払うのでしょうか? | Trusted Advisor、コンピューティングオプティマイザー |
-|アーキテクチャはマネージド サービスを使用していますか? |操作が少なくなり、多くの場合、$/value が向上します |
+| Review question | Action |
+|-----------------|--------|
+| Do we know top 5 cost drivers? | Cost Explorer / billing export |
+| Are dev resources shut down off-hours? | Lambda scheduler, Instance Scheduler |
+| Are we paying for unused capacity? | Trusted Advisor, Compute Optimizer |
+| Is architecture using managed services? | Less ops, often better $/value |
 
-## 9. アンチパターン
+## 9. Anti-patterns
 
-|アンチパターン |コストへの影響 |
-|--------------|---------------|
-|常にオンデマンドの大規模な製品 | 30 ～ 50% の超過支出と予約済み |
-|タグなし |割り当てまたは最適化ができません |
-|特大の「万が一に備えて」インスタンス | 10% の CPU で 2 倍の支出 |
-|プライベート サブネットごとの NAT ゲートウェイ |高固定時間給 + データ処理 |
+| Anti-pattern | Cost impact |
+|--------------|-------------|
+| Always on-demand prod at scale | 30–50% overspend vs reserved |
+| No tags | Cannot allocate or optimize |
+| Oversized "just in case" instances | 2× spend with 10% CPU |
+| NAT Gateway per private subnet | High fixed hourly + data processing |
 
-## 10. リハーサルの答え
+## 10. Rehearsal answers
 
-- **スポット** — 安価な予備容量。回収できる。フォールトトレラントなワークロードが必要です。
-- **SLI/SLO** — [可観測性、SLI および SLO](vi-observability-slo-and-slis.md) を参照。 SLA により顧客契約が追加されます。
-- **SCP** — アカウント管理者にも適用される組織レベルの拒否。
-- **ステートレス + 自動スケーリング** — [スケーラビリティとキャッシュ](ii-scalability-and-caching.md)を参照してください。
+- **Spot** — cheap spare capacity; can be reclaimed; needs fault-tolerant workload.
+- **SLI/SLO** — see [Observability, SLI & SLO](vi-observability-slo-and-slis.md); SLA adds customer contract.
+- **SCP** — organization-level deny that applies even to account admins.
+- **Stateless + auto scaling** — see [Scalability & caching](ii-scalability-and-caching.md).
 
-**関連:** **基礎** サブメニュー → [Well-Architected Framework](../foundations/viii-well-architected-framework.md)、IaC ガードレール用の CI/CD Terraform。
+**Related:** **Foundations** submenu → [Well-Architected Framework](../foundations/viii-well-architected-framework.md), CI/CD Terraform for IaC guardrails.

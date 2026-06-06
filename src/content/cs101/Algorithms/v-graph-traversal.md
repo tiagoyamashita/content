@@ -1,21 +1,20 @@
 ---
 label: "V"
-subtitle: "グラフのトラバーサル"
-group: "データ構造とアルゴリズム"
+subtitle: "Graph traversal"
+group: "Data structures & algorithms"
 order: 5
 ---
-グラフトラバーサル — BFS および DFS
+Graph traversal — BFS & DFS
+On a graph **G = (V, E)**, traversal visits vertices systematically. Store the graph as an **adjacency list** for sparse graphs — **O(n + m)** space and time for traversals when **n = |V|**, **m = |E|**.
 
-グラフ **G = (V, E)** では、走査は系統的に頂点を訪問します。グラフをスパース グラフの **隣接リスト**として保存します。**n = |V|**、**m = |E|** の場合、走査には **O(n + m)** の空間と時間がかかります。
+See **Graph** [Graph](../data-structures/xi-graph.md) and **Level III — Graphs** (`iii-graphs.md`).
 
-**グラフ** [グラフ](../data-structures/xi-graph.md) および **レベル III - グラフ** (`iii-graphs.md`) を参照してください。
+## 1. Breadth-first search (BFS)
+Explore in **layers** by distance (in **unweighted** edges, hop count).
 
-## 1. 幅優先検索 (BFS)
-距離に基づいて **レイヤー** で探索します (**重み付けされていない** エッジ、ホップ数で)。
-
-- **キュー** ADT — 近隣のキューをエンキューし、現在の [キュー](../data-structures/v-queue.md) をデキューします。
-- 隣接リストを使用した場合の **時間 O(n + m)**。
-- **用途: **重み付けされていない**グラフの最短パス、レベル順序、接続性。
+- **Queue** ADT — enqueue neighbors, dequeue current [Queue](../data-structures/v-queue.md).
+- **Time O(n + m)** with adjacency lists.
+- **Uses:** shortest path in **unweighted** graphs, level order, connectivity.
 
 ```java
 // Compile: javac --release 22 …
@@ -45,13 +44,13 @@ public static List<Integer> bfsOrder(List<List<Integer>> adj, int start) {
 }
 ```
 
-**最短パス長 (重みなし):** 最初に検出されたときに `dist[v]` を保存します。 `dist[w] = dist[v] + 1`。
+**Shortest path lengths (unweighted):** store `dist[v]` when first discovered; `dist[w] = dist[v] + 1`.
 
-## 2. 深さ優先検索 (DFS)
-バックトラックする前に **深く**してください — **スタック** または **再帰**。
+## 2. Depth-first search (DFS)
+Go **deep** before backtracking — **stack** or **recursion**.
 
-- **時間 O(n + m)**。
-- **用途:** サイクル検出、トポロジカルソート、接続コンポーネント、迷路探索。
+- **Time O(n + m)**.
+- **Uses:** cycle detection, topological sort, connected components, maze exploration.
 
 ```java
 // Compile: javac --release 22 …
@@ -69,31 +68,31 @@ public static void dfsRecursive(List<List<Integer>> adj, int v, boolean[] seen, 
 }
 ```
 
-**反復 DFS** はスタックとして明示的な `Deque` を使用します (同じ端で `push` / `pop`)。
+**Iterative DFS** uses an explicit `Deque` as a stack (`push` / `pop` at same end).
 
-## 3. BFS と DFS の比較
+## 3. BFS vs DFS
 
 | | BFS | DFS |
 |--|-----|-----|
-|構造 |キュー |スタック / 再帰 |
-|重み付けされていない最短パス |はい |いいえ (最初に幸運に恵まれない限り) |
-|幅の広いグラフ上のメモリ |大きなフロンティアになる可能性があります |パスの深さのみ |
-|トポロジカルソート |いいえ |はい (追加の状態あり) |
+| Structure | Queue | Stack / recursion |
+| Unweighted shortest path | Yes | No (unless first hit by luck) |
+| Memory on wide graphs | Can be large frontier | Path depth only |
+| Topological sort | No | Yes (with extra state) |
 
-## 4. トポロジカルソート (DAG)
-**有向非巡回グラフ** — すべてのエッジが順序で **前方**になるように頂点を順序付けします。
+## 4. Topological sort (DAG)
+**Directed acyclic graph** — order vertices so every edge goes **forward** in the order.
 
-- **カーン (BFS):** は **次数 0** の頂点を繰り返し削除します。
-- **DFS:** 終了時注文 (逆事後注文)。
+- **Kahn (BFS):** repeatedly remove vertices with **in-degree 0**.
+- **DFS:** finish-time order (reverse postorder).
 
-すべての頂点を処理できない場合、グラフには **サイクル** が発生します。
+If you cannot process all vertices, the graph has a **cycle**.
 
-## 5. 接続されたコンポーネント
-未訪問の各頂点から BFS または DFS を実行します。各実行には、1 つの **コンポーネント** (無指向) または **到達可能なセット** (有向) のラベルが付けられます。
+## 5. Connected components
+Run BFS or DFS from each unvisited vertex; each run labels one **component** (undirected) or **reachable set** (directed).
 
-## 6. JDK を使用した解決 (実装済み)
+## 6. Solving with the JDK (already implemented)
 
-標準ライブラリには** `Graph.bfs()` はありません。 **隣接リスト** (`List<List<Integer>>` または `Map`) を保持し、JDK **キュー** / **セット**を使用します。
+There is **no** `Graph.bfs()` in the standard library. You keep an **adjacency list** (`List<List<Integer>>` or `Map`) and use JDK **queues** / **sets**:
 
 ```java
 // Compile: javac --release 22 …
@@ -119,13 +118,13 @@ int[] indegree = new int[n];
 List<Integer> topo = new ArrayList<>();
 ```
 
-|役割 | JDK タイプ |
+| Role | JDK type |
 |------|----------|
-| FIFO フロンティア (BFS) | `Queue` + `ArrayDeque` |
-|スタック (DFS) | `ArrayDeque` `push` / `pop` |
-|訪問セット | `HashSet`、`boolean[]` |
-|近隣リスト | `List<List<Integer>>`、`Map<Integer, List<Integer>>` |
+| FIFO frontier (BFS) | `Queue` + `ArrayDeque` |
+| Stack (DFS) | `ArrayDeque` `push` / `pop` |
+| Visited set | `HashSet`, `boolean[]` |
+| Neighbor list | `List<List<Integer>>`, `Map<Integer, List<Integer>>` |
 
-**トポロジカルソート:** カーンのアルゴリズム = **`Queue`** + 度数配列;単一の`Collections.topologicalSort`はありません。
+**Topological sort:** Kahn’s algorithm = **`Queue`** + indegree array; no single `Collections.topologicalSort`.
 
-**[キュー](../data-structures/v-queue.md)**、**[スタック](../data-structures/iv-stack.md)**、**[JDK を使用した解決](xi-solving-with-the-jdk.md)** を参照してください。
+See **[Queue](../data-structures/v-queue.md)**, **[Stack](../data-structures/iv-stack.md)**, and **[Solving with the JDK](xi-solving-with-the-jdk.md)**.

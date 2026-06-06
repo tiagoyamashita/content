@@ -1,16 +1,15 @@
 ---
 label: "IV"
-subtitle: "スクレイピングと発見"
+subtitle: "Scrape & discovery"
 group: "SRE"
 order: 4
 ---
-SRE ツール — Prometheus: スクレイピングと発見
+SRE tooling — Prometheus: Scrape & discovery
+Configure **what** to scrape, **how often**, and **how labels map** into the TSDB.
 
-**何を**スクレイピングするか、**どのくらいの頻度で**、**ラベルをTSDBにマッピングする方法**を構成します。
+## 1. Static targets (non-Kubernetes)
 
-## 1. 静的ターゲット (Kubernetes 以外)
-
-最小 **`prometheus.yml`** フラグメント:
+Minimal **`prometheus.yml`** fragment:
 
 ```yaml
 global:
@@ -28,21 +27,21 @@ scrape_configs:
           region: us-east-1
 ```
 
-**`job_name`** は、ラベルを変更しない限り、デフォルトの **`job`** ラベルになります。
+**`job_name`** becomes the default **`job`** label unless relabeled.
 
-## 2. 一般的なスクレープノブ
+## 2. Common scrape knobs
 
-|フィールド |目的 |
-|------|-----------|
-| **`scrape_interval`** |ジョブごとにグローバルをオーバーライドします。 |
-| **`metrics_path`** | **`/metrics`** 以外のパス。 |
-| **`scheme`** | **`https`** ポッド上で TLS が終了するとき。 |
-| **`basic_auth` / `bearer_token`** |内部の擦り傷は稀です。ネットワークの信頼境界を優先します。 |
-| **`honor_labels`** |ターゲットが供給された状態を維持 **`job`**/`instance`—フットガンが簡単。有効にする前に理解してください。 |
+| Field | Purpose |
+|-------|---------|
+| **`scrape_interval`** | Overrides global per job. |
+| **`metrics_path`** | Path other than **`/metrics`**. |
+| **`scheme`** | **`https`** when TLS terminates on the pod. |
+| **`basic_auth` / `bearer_token`** | Rare for internal scrape; prefer network trust boundaries. |
+| **`honor_labels`** | Keep target-supplied **`job`**/`instance`—easy to footgun; understand before enabling. |
 
-## 3. サービスディスカバリ（概要）
+## 3. Service discovery (overview)
 
-Prometheus は、**Kubernetes**、**Consul**、**EC2**、**DNS**、**files** などからターゲットを検出できます。 **Kubernetes ポッド** の例 (Operator CRD ではなく、生の Prometheus 構成):
+Prometheus can discover targets from **Kubernetes**, **Consul**, **EC2**, **DNS**, **files**, etc. Example **Kubernetes pods** (raw Prometheus config—not Operator CRDs):
 
 ```yaml
 scrape_configs:
@@ -59,16 +58,16 @@ scrape_configs:
         regex: (.+)
 ```
 
-通常、オペレーター (**kube-prometheus-stack**) は **`ServiceMonitor`** からこれを生成します。Prometheus 構成を手動で保守しない限り、そのパスを優先します。
+Operators (**kube-prometheus-stack**) usually generate this for you from **`ServiceMonitor`**—prefer that path unless you maintain Prometheus config by hand.
 
-## 4. 考え方のラベルを付け直す
+## 4. Relabeling mindset
 
-2 つのフェーズ:
+Two phases:
 
-- **`relabel_configs`** — スクレイピングの前に **ターゲット メタデータ** (`__meta_*`) に対して実行されます。 **`__address__`**、**`__metrics_path__`** を設定し、ターゲット (**`action: drop`**) を削除し、ラベルをシリーズにコピーします。
-- **`metric_relabel_configs`** — 取り込み前に**スクレイピングされたサンプル**に対して実行されます。高価なメトリクスを削除し、ラベルを書き換えます。
+- **`relabel_configs`** — runs on **target metadata** (`__meta_*`) before scrape; sets **`__address__`**, **`__metrics_path__`**, drops targets (**`action: drop`**), copies labels onto the series.
+- **`metric_relabel_configs`** — runs on **scraped samples** before ingest—drop expensive metrics, rewrite labels.
 
-例: 高カーディナリティのメトリックを **保存前に削除**:
+Example: drop high-cardinality metric **before storage**:
 
 ```yaml
 metric_relabel_configs:
@@ -77,8 +76,8 @@ metric_relabel_configs:
     action: drop
 ```
 
-**`labeldrop`** / **`labelkeep`** は慎重に使用してください。器具の固定を優先します。
+Use **`labeldrop`** / **`labelkeep`** sparingly—prefer fixing instrumentation.
 
-## 5. フェデレーションとスケーリングのスクレイピング (ヒント)
+## 5. Federation & scaling scrape (hint)
 
-1 つの Prometheus がすべてをスクレイピングできない場合、**フェデレーション** は他の Prometheus サーバー (**`/federated`**) から選択されたシリーズをプルします。 **Thanos / Mimir / Cortex** は、長期ストレージとグローバル クエリを拡張します。**ルールと操作**を参照してください。
+When one Prometheus cannot scrape everything, **federation** pulls selected series from other Prometheus servers (**`/federated`**); **Thanos / Mimir / Cortex** extend long-term storage and global query—see **Rules & operations**.

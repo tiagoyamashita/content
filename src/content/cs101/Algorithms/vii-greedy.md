@@ -1,29 +1,28 @@
 ---
 label: "VII"
-subtitle: "よく深い"
-group: "データ構造とアルゴリズム"
+subtitle: "Greedy"
+group: "Data structures & algorithms"
 order: 7
 ---
-貪欲なアルゴリズム
+Greedy algorithms
+At each step, take the **locally best** option that looks good now — **without** revisiting past choices.
 
-各ステップで、**過去の選択を再検討することなく**、現時点で適切と思われる**ローカルで最適**なオプションを選択します。
+**When it works:** you can prove the local choice is safe (exchange argument, matroid, or known theorem). **When it fails:** a counterexample where greedy misses the global optimum (e.g. **0/1 knapsack** — use DP).
 
-**それが機能すると:** ローカルの選択が安全であることを証明できます (交換引数、マトロイド、または既知の定理)。 **失敗した場合:** 貪欲が全体最適を逃す反例 (例: **0/1 ナップザック** - DP を使用)。
+See also **Level IV — Paradigms** [Paradigms & limits](../iv-paradigms-and-limits.md).
 
-**レベル IV — パラダイム** [パラダイムと限界](../iv-paradigms-and-limits.md) も参照してください。
+## 1. Classic problems
 
-## 1. 典型的な問題
+| Problem | Greedy rule | Notes |
+|---------|-------------|-------|
+| Activity selection | Pick earliest **finishing** compatible activity | Sort by finish time |
+| Huffman coding | Merge two least frequent symbols | Uses min-heap |
+| Fractional knapsack | Take items by **value/weight** ratio | Optimal; 0/1 version is not greedy |
+| MST (Prim / Kruskal) | Cheapest safe edge | [Shortest paths & MST](vi-shortest-paths-and-mst.md) |
+| Dijkstra | Settle smallest tentative distance | Needs non-negative weights |
 
-|問題 |貪欲なルール |メモ |
-|----------|---------------|----------|
-|アクティビティの選択 |互換性のある最も早い**終了**のアクティビティを選択してください |終了時間順に並べ替え |
-|ハフマンコーディング | 2 つの最低頻度シンボルをマージします。最小ヒープを使用します |
-|フラクショナルナップサック | **価値/重量** の比率でアイテムを計算する |最適。 0/1 バージョンは貪欲ではありません |
-| MST (プリム/クラスカル) |最も安いセーフエッジ | [最短パスとMST](vi-shortest-paths-and-mst.md) |
-|ディクストラ |最小の暫定距離を設定 |負でない重みが必要 |
-
-## 2. アクティビティの選択 (スケッチ)
-**終了時間**でアクティビティを並べ替えます。最後に選択した終了後に**開始される次のアクティビティを実行します。
+## 2. Activity selection (sketch)
+Sort activities by **finish time**. Take the next activity that **starts after** the last chosen finish.
 
 ```java
 // Compile: javac --release 22 …
@@ -46,24 +45,24 @@ public static int maxActivities(Activity[] acts) {
 }
 ```
 
-## 3. 証拠の習慣
-1. **貪欲な選択プロパティ:** 一部の最適解では貪欲な最初の選択を使用できます。
-2. **最適な部分構造:** その選択の後、残りを最適に解決します。
+## 3. Proof habit
+1. **Greedy choice property:** some optimal solution can use the greedy first pick.
+2. **Optimal substructure:** after that pick, solve the rest optimally.
 
-ステップ 1 が失敗した場合は、**DP** または **分岐とバインド** を試してください。
+If step 1 fails, try **DP** or **branch and bound**.
 
-## 4. 貪欲なプログラミングと動的プログラミング
+## 4. Greedy vs dynamic programming
 
-| |貪欲 | DP |
-|---|--------|-----|
-|選択肢 |コミットされた 1 つのステップ |サブ問題テーブルを探索する |
-|サブ問題 |通常は重複しない |重なる |
-|時間 |多くの場合、ソート + リニア スキャン |多くの場合、擬似多項式または O(n²) |
-|勝利の例 | MST、ハフマン | 0/1 ナップザック、LCS |
+| | Greedy | DP |
+|--|--------|-----|
+| Choices | One committed step | Explore subproblem table |
+| Subproblems | Usually non-overlapping | Overlapping |
+| Time | Often sort + linear scan | Often pseudo-polynomial or O(n²) |
+| Example win | MST, Huffman | 0/1 knapsack, LCS |
 
-## 5. JDK で解決する (実装済み)
+## 5. Solving with the JDK (already implemented)
 
-貪欲なコードは通常、**sort** + **1 パス** + 場合によっては **ヒープ** です。
+Greedy code is usually **sort** + **one pass** + sometimes a **heap**:
 
 ```java
 // Compile: javac --release 22 …
@@ -88,8 +87,8 @@ Item[] items = { /* … */ };
 Arrays.sort(items, Comparator.comparingDouble(it -> -(double) it.v / it.w));
 ```
 
-|貪欲な一歩 | JDK |
-|---------------|-----|
-|注文候補 | `Arrays.sort`、`Comparator` |
-|最小値 | を繰り返し取得します。 `PriorityQueue` |
-|現在の最大値を取る | `Collections.max`、`stream().max` |
+| Greedy step | JDK |
+|-------------|-----|
+| Order candidates | `Arrays.sort`, `Comparator` |
+| Repeatedly take smallest | `PriorityQueue` |
+| Take current max | `Collections.max`, `stream().max` |

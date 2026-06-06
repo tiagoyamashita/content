@@ -1,36 +1,35 @@
 ---
 label: "IV"
-subtitle: "分割して征服する"
-group: "データ構造とアルゴリズム"
+subtitle: "Divide & conquer"
+group: "Data structures & algorithms"
 order: 4
 ---
-分割して征服する
+Divide & conquer
+**Recipe:** split the problem into smaller subproblems, solve them (often recursively), **combine** results.
 
-**レシピ:** 問題を小さなサブ問題に分割し、(多くの場合再帰的に) 解決し、**結果を結合します**。
+## 1. Template
+1. **Base case** — small **n** solved directly.
+2. **Divide** — split input into **a** parts of size about **n/b**.
+3. **Conquer** — recurse on each part.
+4. **Combine** — merge partial answers in **O(n)** or similar.
 
-## 1. テンプレート
-1. **基本ケース** — 小さい **n** は直接解決されます。
-2. **分割** — 入力を **n/b** 程度のサイズの **a** 部分に分割します。
-3. **征服** — 各部分を再帰します。
-4. **結合** — 部分的な回答を **O(n)** などに結合します。
+Examples: **merge sort**, **binary search**, **maximum subarray** (cross-midpoint case), **Karatsuba** multiplication (advanced).
 
-例: **マージ ソート**、**二分探索**、**最大部分配列** (中間点をまたぐ場合)、**カラツバ** 乗算 (上級)。
+## 2. Recurrence (sketch)
+Many algorithms satisfy **T(n) = a T(n/b) + f(n)**:
 
-## 2. 再発 (スケッチ)
-多くのアルゴリズムは **T(n) = a T(n/b) + f(n)** を満たします。
+- **a** = number of subproblems per call.
+- **n/b** = subproblem size.
+- **f(n)** = divide + combine cost.
 
-- **a** = 呼び出しごとの副問題の数。
-- **n/b** = 副問題のサイズ。
-- **f(n)** = 除算 + 結合コスト。
+**Merge sort:** **a = 2**, **b = 2**, **f(n) = Θ(n)** → **T(n) = Θ(n log n)**.
 
-**マージソート:** **a = 2**、**b = 2**、**f(n) = Θ(n)** → **T(n) = Θ(n log n)**。
+**Binary search:** one subproblem of half size, **O(1)** work → **T(n) = T(n/2) + O(1) = O(log n)**.
 
-**二分探索:** 半分のサイズの 1 つの部分問題、**O(1)** 作業 → **T(n) = T(n/2) + O(1) = O(log n)**。
+The **Master theorem** (see [Paradigms & limits](../iv-paradigms-and-limits.md)) classifies many such recurrences without expanding the recursion tree.
 
-**マスター定理** ([パラダイムと限界](../iv-paradigms-and-limits.md) を参照) は、再帰ツリーを展開することなく、そのような多くの再帰を分類します。
-
-## 3. 最大部分配列 (カダン vs 分割統治)
-**Kadane** (リニア スキャン) は実用的な **O(n)** ソリューションです。
+## 3. Maximum subarray (Kadane vs divide & conquer)
+**Kadane** (linear scan) is the practical **O(n)** solution:
 
 ```java
 // Compile: javac --release 22 …
@@ -46,19 +45,19 @@ public static int maxSubarraySum(int[] a) {
 }
 ```
 
-**分割統治** バージョン: 最大合計は完全に左半分、右半分、または中央を**交差**します。半分で再帰し、**O(n)** 交差スキャンと結合します。それでも全体としては **O(n log n)** です。 **結合**ステップを教えます。
+**Divide & conquer** version: max sum is either entirely in left half, right half, or **crossing** the middle — recurse on halves and combine with an **O(n)** crossing scan. Still **O(n log n)** overall; teaches the **combine** step.
 
-## 4. 分割統治だけでは不十分な場合
-部分問題が **重複** (同じ部分問題が何度も解決される) 場合、純粋な再帰では作業が無駄になります。**メモ化** または **表作成** (**動的計画法**、[動的計画法](viii-dynamic-programming.md)) を使用します。
+## 4. When divide & conquer is not enough
+If subproblems **overlap** (same subproblem solved many times), pure recursion wastes work — use **memoization** or **tabulation** (**dynamic programming**, [Dynamic programming](viii-dynamic-programming.md)).
 
-|副次的な問題が重複していますか? |典型的なアプローチ |
-|----------------------|------|
-|いいえ |分割統治 |
-|はい |動的プログラミング |
+| Overlapping subproblems? | Typical approach |
+|------------------------|------------------|
+| No | Divide & conquer |
+| Yes | Dynamic programming |
 
-## 5. JDK で解決する (実装済み)
+## 5. Solving with the JDK (already implemented)
 
-実際の分割統治は、主に **ライブラリ呼び出し** に **結合** ロジックを加えたものです。
+Divide & conquer in the wild is mostly **library calls** plus your **combine** logic:
 
 ```java
 // Compile: javac --release 22 …
@@ -76,8 +75,8 @@ Arrays.sort(rightHalf);
 // Max subarray — Kadane is O(n); no JDK one-liner, but simple loop (see §3)
 ```
 
-| D&C のアイデア | JDKヘルパー |
-|----------|-----------|
-|ソート範囲を検索 | `Arrays.binarySearch` |
-|マージ前に部分範囲を並べ替える | `Arrays.sort(from, to)` |
-|ブロックをコピー | `System.arraycopy`、`Arrays.copyOfRange` |
+| D&C idea | JDK helper |
+|----------|------------|
+| Search sorted range | `Arrays.binarySearch` |
+| Sort subranges before merge | `Arrays.sort(from, to)` |
+| Copy block | `System.arraycopy`, `Arrays.copyOfRange` |

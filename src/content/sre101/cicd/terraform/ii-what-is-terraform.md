@@ -1,38 +1,37 @@
 ---
 label: "II"
-subtitle: "テラフォームとは"
+subtitle: "What is Terraform"
 group: "CI/CD"
 order: 2
 ---
-テラフォームとは
+What is Terraform
+Console clicking is slow, error-prone, and not reproducible. **Terraform** lets you describe infrastructure in code, review in PRs, and apply the same config to dev, staging, and prod.
 
-コンソールのクリックは遅く、エラーが発生しやすく、再現性がありません。 **Terraform** を使用すると、コードでインフラストラクチャを記述し、PR でレビューし、同じ構成を開発、ステージング、本番環境に適用できます。
+## 1. Who makes it
 
-## 1. 誰が作るのか
+| Tool | Vendor | Scope |
+|------|--------|-------|
+| **Terraform** | HashiCorp (IBM) | Multi-cloud, 3000+ providers |
+| **CloudFormation** | AWS | AWS only (JSON/YAML) |
+| **ARM / Bicep** | Microsoft | Azure |
+| **Deployment Manager** | Google | GCP |
+| **Pulumi / CDK** | Various | General-purpose languages |
 
-|ツール |ベンダー |範囲 |
-|------|--------|------|
-| **テラフォーム** |ハシコープ (IBM) |マルチクラウド、3000 以上のプロバイダー |
-| **クラウドフォーメーション** | AWS | AWS のみ (JSON/YAML) |
-| **腕 / 上腕二頭筋** |マイクロソフト |アズール |
-| **展開マネージャー** |グーグル | GCP |
-| **プルミ / CDK** |いろいろ |汎用言語 |
+Terraform is **not** an AWS product. Teams on AWS-only stacks sometimes still choose Terraform for modules, community, or multi-account patterns.
 
-Terraform は AWS 製品ではありません**。 AWS のみのスタックを使用するチームは、モジュール、コミュニティ、またはマルチアカウント パターンに Terraform を選択する場合があります。
+## 2. Core concepts
 
-## 2. 中心となる概念
+| Term | Definition |
+|------|------------|
+| **Provider** | Plugin that talks to an API (`aws`, `azurerm`, `google`) |
+| **Resource** | Managed object (`aws_instance`, `azurerm_resource_group`) |
+| **Data source** | Read existing infra without managing it |
+| **Variable** | Input parameter |
+| **Output** | Value exported after apply (IP, ARN) |
+| **State** | Map of config → real resource IDs (`terraform.tfstate`) |
+| **Module** | Reusable bundle of `.tf` files |
 
-|用語 |定義 |
-|------|-----------|
-| **プロバイダー** | API と通信するプラグイン (`aws`、`azurerm`、`google`) |
-| **リソース** |管理対象オブジェクト (`aws_instance`、`azurerm_resource_group`) |
-| **データソース** |既存のインフラを管理せずに読み取る |
-| **変数** |入力パラメータ |
-| **出力** |適用後にエクスポートされる値 (IP、ARN) |
-| **州** |構成 → 実リソース ID のマップ (`terraform.tfstate`) |
-| **モジュール** |再利用可能な `.tf` ファイルのバンドル |
-
-## 3. CLI ワークフロー
+## 3. CLI workflow
 
 ```bash
 terraform init      # Download providers & modules; configure backend
@@ -53,17 +52,17 @@ terraform destroy   # Tear down all managed resources
  & backend       state          calls
 ```
 
-## 4. Terraform が変更を適用する方法
+## 4. How Terraform applies changes
 
-1. 現在の **状態** (ローカルまたはリモート) を読み取ります。
-2. 更新 — 実際のリソース属性についてクラウドをクエリします。
-3. 目的の構成 (`.tf` ファイル) と状態を比較します。
-4. **実行計画**を構築します: `+` 作成、`~` 更新、`-` 破棄。
-5. `apply` で、依存関係の順序でプロバイダ API を呼び出します。
+1. Read current **state** (local or remote).
+2. Refresh — query cloud for actual resource attributes.
+3. Compare desired config (`.tf` files) vs state.
+4. Build **execution plan**: `+` create, `~` update, `-` destroy.
+5. On `apply`, call provider APIs in dependency order.
 
-**依存関係グラフ** — Terraform は、`aws_subnet` が `vpc_id = aws_vpc.main.id` を介して `aws_vpc` に依存していることを認識します。
+**Dependency graph** — Terraform knows `aws_subnet` depends on `aws_vpc` via `vpc_id = aws_vpc.main.id`.
 
-## 5. 宣言型と命令型
+## 5. Declarative vs imperative
 
 ```hcl
 # Declarative — desired count
@@ -74,20 +73,20 @@ resource "aws_instance" "web" {
 }
 ```
 
-「インスタンス 1 を作成してから 2 を作成する」というスクリプトは作成しません。 **3 つのインスタンス**を宣言します。 Terraform は調和します。
+You do not script "create instance 1, then 2". You declare **3 instances**; Terraform reconciles.
 
-## 6. Terraform と Ansible
+## 6. Terraform vs Ansible
 
-| |テラフォーム |アンシブル |
-|---|----------|----------|
-|主な用途 | **プロビジョニング** インフラ (VPC、DB、K8s クラスター) | **構成** サーバー (パッケージ、ファイル、サービス) |
-|モデル |宣言状態 |宣言的タスク |
-|エージェント |なし (API 呼び出し) |ホストへの SSH |
+| | Terraform | Ansible |
+|---|-----------|---------|
+| Primary use | **Provision** infra (VPC, DB, K8s cluster) | **Configure** servers (packages, files, services) |
+| Model | Declarative state | Declarative tasks |
+| Agent | None (API calls) | SSH to hosts |
 
-一般的なパターン: Terraform は EC2 + セキュリティ グループを作成します。 Ansible はそれらのホストにアプリをインストールします (`ansible-and-jenkins/`)。
+Common pattern: Terraform creates EC2 + security groups; Ansible installs app on those hosts (`ansible-and-jenkins/`).
 
-## 7. OpenTofu フォーク
+## 7. OpenTofu fork
 
-HashiCorp のライセンス変更 (BSL) の後、**OpenTofu** は MPL 2.0 のコミュニティ フォークになりました。 CLI と HCL はほぼ互換性があります。バイナリ CI が使用する組織ポリシーを確認してください。
+After HashiCorp's license change (BSL), **OpenTofu** is a community fork under MPL 2.0. CLI and HCL are largely compatible — check org policy for which binary CI uses.
 
-**関連:** [HCL、リソースと変数](iii-hcl-resources-and-variables.md)、[状態とリモート バックエンド](v-state-and-remote-backends.md)。
+**Related:** [HCL, resources & variables](iii-hcl-resources-and-variables.md), [State & remote backends](v-state-and-remote-backends.md).

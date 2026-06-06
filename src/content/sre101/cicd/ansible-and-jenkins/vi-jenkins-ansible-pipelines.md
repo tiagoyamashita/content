@@ -1,21 +1,20 @@
 ---
 label: "VI"
-subtitle: "Jenkins + Ansible パイプライン"
+subtitle: "Jenkins + Ansible pipelines"
 group: "CI/CD"
 order: 6
 ---
-Jenkins + Ansible パイプライン
+Jenkins + Ansible pipelines
+**Jenkins** builds and tests; a **Deploy** stage invokes **`ansible-playbook`**. General Jenkins CI patterns (Docker agents, Shared Libraries) live in **[Jenkins](../tools-and-platforms/iv-jenkins.md)**.
 
-**Jenkins** はビルドとテストを行います。 **Deploy** ステージは **`ansible-playbook`** を呼び出します。一般的な Jenkins CI パターン (Docker エージェント、共有ライブラリ) は **[Jenkins](../tools-and-platforms/iv-jenkins.md)** に存在します。
+## 1. Responsibility split
 
-## 1. 責任の分担
+| Layer | Owns |
+|-------|------|
+| **Jenkins** | Checkout, compile, unit/integration test, artifacts, gates |
+| **Ansible** | OS packages, config files, artifact placement, service restart |
 
-|レイヤー |所有 |
-|------|------|
-| **ジェンキンス** |チェックアウト、コンパイル、単体/統合テスト、アーティファクト、ゲート |
-| **アンシブル** | OS パッケージ、構成ファイル、アーティファクトの配置、サービスの再起動 |
-
-## 2. Jenkinsfile の完全な例
+## 2. Full Jenkinsfile example
 
 ```groovy
 // Jenkinsfile
@@ -102,16 +101,16 @@ pipeline {
 }
 ```
 
-|ディレクティブ |効果 |
-|---------------|----------|
-| `when { branch 'main' }` |ステージをメインにのみデプロイ |
-| `input` |本番前の手動承認 |
-| `--tags deploy` |完全なサイト構成をスキップします。デプロイタスクのみ |
-| `credentials('ansible-vault-pass')` |シークレットを注入します。ログ内でマスクされる |
+| Directive | Effect |
+|-------------|--------|
+| `when { branch 'main' }` | Deploy stages only on main |
+| `input` | Manual approval before prod |
+| `--tags deploy` | Skip full site config; deploy tasks only |
+| `credentials('ansible-vault-pass')` | Injects secret; masked in logs |
 
-## 3. Ansible Jenkins プラグイン
+## 3. Ansible Jenkins plugin
 
-**Ansible** プラグインをインストールします — 生のシェルよりもクリーンです:
+Install **Ansible** plugin — cleaner than raw shell:
 
 ```groovy
 stage('Deploy') {
@@ -130,15 +129,15 @@ stage('Deploy') {
 }
 ```
 
-|パラメータ |目的 |
-|----------|----------|
-| `credentialsId` | `ansible_user` の SSH キー |
-| `vaultCredentialsId` |ボールトのパスワード |
-| `extras` |追加の CLI 引数 |
+| Parameter | Purpose |
+|-----------|---------|
+| `credentialsId` | SSH key for `ansible_user` |
+| `vaultCredentialsId` | Vault password |
+| `extras` | Extra CLI args |
 
-## 4. アーティファクトの引き継ぎ
+## 4. Artifact handoff
 
-**オプション A** — Jenkins エージェント上に構築し、ワークスペースからコピーします。
+**Option A** — build on Jenkins agent, copy from workspace:
 
 ```yaml
 # deploy.yml — artifact already in workspace
@@ -147,7 +146,7 @@ stage('Deploy') {
     dest: /opt/myapp/app.jar
 ```
 
-**オプション B** — Jenkins で Nexus/S3 にアップロードし、Ansible が取得します。
+**Option B** — upload to Nexus/S3 in Jenkins, Ansible fetches:
 
 ```groovy
 stage('Publish') {
@@ -164,9 +163,9 @@ stage('Publish') {
     mode: '0644'
 ```
 
-オプション B は、デプロイ エージェントがビルド エージェントと異なる場合に拡張されます。
+Option B scales when deploy agents differ from build agents.
 
-## 5. 個別のデプロイ エージェント プール
+## 5. Separate deploy agent pool
 
 ```groovy
 pipeline {
@@ -186,23 +185,23 @@ pipeline {
 }
 ```
 
-[最小権限ランナー](../security-and-best-practices/iv-least-privilege-runners.md) のランナー セグメンテーションと一致します。
+Matches runner segmentation in [Least-privilege runners](../security-and-best-practices/iv-least-privilege-runners.md).
 
-## 6. マルチブランチ + 環境ごとのインベントリ
+## 6. Multibranch + inventory per env
 
-|支店 |在庫 |自動展開しますか? |
-|------|-----------|--------------|
-| `feature/*` | — |ビルド/テストのみ |
-| `main` | `staging.ini` |はい |
-| `release/*` | `production.ini` |手動承認 |
+| Branch | Inventory | Auto-deploy? |
+|--------|-----------|--------------|
+| `feature/*` | — | Build/test only |
+| `main` | `staging.ini` | Yes |
+| `release/*` | `production.ini` | Manual approval |
 
-## 7. トラブルシューティング
+## 7. Troubleshooting
 
-|症状 |チェック |
-|----------|----------|
-| `Permission denied (publickey)` | SSH 認証情報 / `ansible_user` |
-|ボールトの復号化に失敗しました | `vaultCredentialsId` またはパスワード ファイル |
-|ホストに到達できません |セキュリティ グループ、VPN、エージェント ネットワークの展開 |
-| `changed=0` でもアプリは古い |間違った `app_version` 追加変数 |
+| Symptom | Check |
+|---------|-------|
+| `Permission denied (publickey)` | SSH credential / `ansible_user` |
+| Vault decrypt fail | `vaultCredentialsId` or password file |
+| Host unreachable | Security group, VPN, deploy agent network |
+| `changed=0` but app old | Wrong `app_version` extra-var |
 
-**関連:** [Jenkins](../tools-and-platforms/iv-jenkins.md)、[パターンと操作のデプロイ](vii-deploy-patterns-and-operations.md)。
+**Related:** [Jenkins](../tools-and-platforms/iv-jenkins.md), [Deploy patterns & operations](vii-deploy-patterns-and-operations.md).

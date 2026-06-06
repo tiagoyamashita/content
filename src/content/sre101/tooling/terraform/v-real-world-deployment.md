@@ -1,22 +1,21 @@
 ---
 label: "V"
-subtitle: "現実世界への展開"
+subtitle: "Real world deployment"
 group: "SRE"
 order: 5
 ---
-SRE ツール — Terraform: 現実世界への展開
+SRE tooling — Terraform: Real world deployment
+A pattern teams actually ship: **remote state**, **environment splits**, **VPC + Kubernetes**, and **additive modules**—trimmed for clarity.
 
-チームが実際に出荷するパターン: **リモート状態**、**環境分割**、**VPC + Kubernetes**、**追加モジュール** - 明確にするためにトリミングされています。
+## 1. Scenario
 
-## 1. シナリオ
+You run **staging** and **prod** in one AWS account (or separate accounts—same layout, different **`backend`** keys / **`providers`** aliases). Infra includes:
 
-**staging** と **prod** を 1 つの AWS アカウント (または別のアカウント - 同じレイアウト、異なる **`backend`** キー / **`providers`** エイリアス) で実行します。インフラには次のものが含まれます。
+- Shared-style **VPC** (private + public subnets, NAT for egress).
+- **EKS** cluster for workloads.
+- Optional **addons** (Ingress controller, metrics-server) via Helm or GitOps—often **not** all in one Terraform root to limit blast radius; below focuses on **network + control plane**.
 
-- 共有スタイル **VPC** (プライベート + パブリック サブネット、下り用 NAT)。
-- ワークロード用の **EKS** クラスター。
-- Helm または GitOps を介したオプションの **アドオン** (Ingress コントローラー、メトリクス サーバー)。多くの場合、爆発範囲を制限するためにすべてが 1 つの Terraform ルートに含まれるわけではありません。以下では、**ネットワーク + コントロール プレーン**に焦点を当てています。
-
-## 2. リポジトリのレイアウト
+## 2. Repository layout
 
 ```text
 terraform/
@@ -39,9 +38,9 @@ terraform/
       prod.tfvars       # never commit secrets — inject via CI
 ```
 
-各 **`env/<name>`** は、**独自の Terraform ルート** → 個別の **`terraform.tfstate`** (S3 では異なる **`key`**) です。
+Each **`env/<name>`** is its **own Terraform root** → separate **`terraform.tfstate`** (different **`key`** in S3).
 
-## 3. バックエンドとプロバイダー (`env/prod/backend.tf`)
+## 3. Backend & providers (`env/prod/backend.tf`)
 
 ```hcl
 terraform {
@@ -76,7 +75,7 @@ provider "aws" {
 }
 ```
 
-## 4. VPC モジュール (`env/prod/main.tf` 抜粋)
+## 4. VPC module (`env/prod/main.tf` excerpt)
 
 ```hcl
 module "vpc" {
@@ -105,7 +104,7 @@ module "vpc" {
 }
 ```
 
-## 5. EKS モジュール (`env/prod/main.tf` 抜粋)
+## 5. EKS module (`env/prod/main.tf` excerpt)
 
 ```hcl
 module "eks" {
@@ -144,9 +143,9 @@ output "configure_kubectl" {
 }
 ```
 
-すべてのモジュールに **`version`** をピン付けします。メジャー バージョンにアップグレードする前に、モジュール アップグレード ガイドをお読みください。
+Pin **`version`** on every module; read module upgrade guides before bumping major versions.
 
-## 6. 変数のスケッチ (`env/prod/variables.tf`)
+## 6. Variables sketch (`env/prod/variables.tf`)
 
 ```hcl
 variable "region" {
@@ -179,27 +178,27 @@ variable "kubernetes_version" {
 }
 ```
 
-**`prod.tfvars`** には具体的な CIDR/AZ/クラスター名が含まれます。ここにはパスワードはありません。
+**`prod.tfvars`** holds concrete CIDRs/AZs/cluster name—no passwords here.
 
-## 7. CI で何が起こるか
+## 7. What happens in CI
 
-1. PR: **`terraform fmt -check`** / **`validate`**
-2. OIDC 経由の **`terraform plan`** と **`AWS_ROLE_ARN`** (有効期間の長いキーなし)。
-3. 人間による承認 → マージまたはプロモートされたワークフローに関する **`terraform apply`**。
+1. **`terraform fmt -check`** / **`validate`** on PR.
+2. **`terraform plan`** with **`AWS_ROLE_ARN`** via OIDC (no long-lived keys).
+3. Human approval → **`terraform apply`** on merge or promoted workflow.
 
-スタックの重複 **`env/staging`** をより小さいノード プールと **`single_nat_gateway = true`** でステージングし、コストを節約します。
+Staging stack duplicates **`env/staging`** with smaller node pools and **`single_nat_gateway = true`** to save cost.
 
-## 8. 2 日目の分割 (現実世界での一般的な選択)
+## 8. Day-two split (common real-world choice)
 
-- **Terraform** は、**VPC**、**EKS**、**IAM**、**RDS** スケルトン、**Route53** ゾーンを所有しています。
-- **Helm / Argo CD / Flux** は、毎日変更される **マイクロサービス** をデプロイします。アプリの調整に 40 分間かかる Terraform 計画を回避できます。
+- **Terraform** owns **VPC**, **EKS**, **IAM**, **RDS** skeletons, **Route53** zones.
+- **Helm / Argo CD / Flux** deploy **microservices** that change daily—avoids 40-minute Terraform plans for app tweaks.
 
-GitOps または **`remote_state`** または手動出力を介して **`cluster_endpoint`** を参照する専用の Terraform スタックで可観測性 (**Prometheus Operator**、**Ingress**) を維持します。
+Keep observability (**Prometheus Operator**, **Ingress**) in GitOps or a dedicated Terraform stack that references **`cluster_endpoint`** via **`remote_state`** or manual outputs.
 
-## 9. このレイアウトで回避できる落とし穴
+## 9. Pitfalls this layout avoids
 
-- 200 個のアプリの場合、単一の巨大な **`tfstate`** → ロックの痛み。 **爆発半径** (ネットワーク、クラスター、アプリ) によって分割されます。
-- ロックのないラップトップから **`apply`** → リモート バックエンドを **常に**使用します。
-- リリース ノートを読まずに EKS をアップグレードする → **`cluster_version`** をピン留めし、最初に **ステージング** でテストします。
+- Single giant **`tfstate`** for 200 apps → locking pain; split by **blast radius** (network vs cluster vs apps).
+- **`apply`** from laptops without locks → use remote backend **always**.
+- Upgrading EKS without reading release notes → pin **`cluster_version`**, test in **staging** first.
 
-プロバイダー/リージョンをクラウドに合わせて調整します。**形状** (環境ディレクトリ、リモート状態、VPC → クラスター → GitOps) は、異なるモジュールを使用して **GCP/GKE** および **Azure/AKS** に転送されます。
+Adjust providers/regions to your cloud—the **shape** (env dirs, remote state, VPC → cluster → GitOps) transfers to **GCP/GKE** and **Azure/AKS** with different modules.

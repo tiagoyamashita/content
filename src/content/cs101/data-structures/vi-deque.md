@@ -1,20 +1,19 @@
 ---
 label: "VI"
-subtitle: "デケ"
-group: "データ構造とアルゴリズム"
+subtitle: "Deque"
+group: "Data structures & algorithms"
 order: 6
 ---
-Deque (両端キュー)
+Deque (double-ended queue)
+Insert and remove at **both** ends in **O(1)**.
 
-**O(1)** の **両端**で挿入および取り外しを行います。
+A **deque** generalizes **stack** (one end) and **queue** (opposite ends only): you can push/pop at front **and** back depending on API naming (`push_front`, `push_back`, etc.).
 
-**deque** は **stack** (一方の端) と **queue** (反対側の端のみ) を一般化します。API の名前付け (`push_front`、`push_back` など) に応じて、前 ** と後ろ ** でプッシュ/ポップできます。
+**Implementations:** **doubly linked list**, or **circular array** with two indices moving toward each other with wrap.
 
-**実装:** **二重リンク リスト**、または 2 つのインデックスがラップで互いに向かって移動する **循環配列**。
+**Uses:** sliding-window algorithms, work-stealing queues, palindrome checks with two pointers.
 
-**用途:** スライディング ウィンドウ アルゴリズム、ワークスチール キュー、2 つのポインターによる回文チェック。
-
-<figure class="notes-diagram"><svg xmlns="2 viewBox="0 0 440 120" role="img" aria-label="Deque allows push and pop at both front and back ends">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="Deque allows push and pop at both front and back ends">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Four O(1) end operations</text>
   <text x="12" y="40" fill="#a1a1aa" font-size="10">stack = one end only · queue = opposite ends · deque = both</text>
   <text x="24" y="78" fill="#86efac" font-size="10" font-weight="600">front</text>

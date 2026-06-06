@@ -1,16 +1,15 @@
 ---
 label: "VII"
-subtitle: "CI/CD での Terraform"
+subtitle: "Terraform in CI/CD"
 group: "CI/CD"
 order: 7
 ---
-CI/CD での Terraform
+Terraform in CI/CD
+Standard pattern: **PR → plan (review) → merge → apply**. Never **`apply`** on untrusted PR branches; use **OIDC** for cloud credentials.
 
-標準パターン: **PR → 計画 (レビュー) → マージ → 適用**。信頼できない PR ブランチでは **`apply`** しないでください。クラウド認証情報には **OIDC** を使用します。
+## 1. Pipeline flow
 
-## 1. パイプラインの流れ
-
-<figure class="notes-diagram"><svg xmlns="19 viewBox="0 0 460 100" role="img" aria-label="Terraform PR plan merge apply">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Terraform PR plan merge apply">
   <rect x="12" y="40" width="64" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="24" y="60" fill="#e4e4e7" font-size="8">PR opened</text>
   <path d="M76 56 H96" stroke="#a1a1aa" stroke-width="1.5"/>
@@ -26,7 +25,7 @@ CI/CD での Terraform
   <text x="12" y="88" fill="#71717a" font-size="9">Post plan output as PR comment for human review</text>
 </svg></figure>
 
-## 2. GitHub アクション — 完全なワークフロー
+## 2. GitHub Actions — full workflow
 
 ```yaml
 name: Terraform
@@ -107,14 +106,14 @@ jobs:
         run: terraform apply -input=false -auto-approve tfplan
 ```
 
-|ルール |なぜ |
+| Rule | Why |
 |------|-----|
-| PR について `plan` |インフラ diff のようなコードを確認する |
-| `apply`は`main`のみ |不正な PR をクラウドに適用しない |
-| `-out=tfplan` |計画された変更を正確に適用する |
-| OIDC の役割 |静的 AWS キーはありません [シークレットと OIDC](../security-and-best-practices/iii-secrets-and-oidc.md) |
+| `plan` on PR | Review infra diff like code |
+| `apply` only on `main` | No rogue PR applying to cloud |
+| `-out=tfplan` | Apply exact planned changes |
+| OIDC role | No static AWS keys [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md) |
 
-## 3. GitLab CI の例
+## 3. GitLab CI example
 
 ```yaml
 stages: [validate, plan, apply]
@@ -158,9 +157,9 @@ apply:
     name: staging
 ```
 
-## 4. アトランティス
+## 4. Atlantis
 
-**Atlantis** — 自己ホスト型ボット。 PRトリガープラン/応募に関するコメント:
+**Atlantis** — self-hosted bot; comments on PR trigger plan/apply:
 
 ```text
 # PR comment
@@ -182,13 +181,13 @@ projects:
       when_modified: ["**/*.tf", "**/*.tfvars"]
 ```
 
-| | GitHub アクション |アトランティス |
+| | GitHub Actions | Atlantis |
 |---|----------------|----------|
-|ホスティング | GitHub ランナー |あなたのサーバー |
-| UX |ワークフロー YAML | PRコメント |
-|マルチプロジェクト |マトリックスの仕事 |組み込みプロジェクト ディレクトリ |
+| Hosting | GitHub runners | Your server |
+| UX | Workflow YAML | PR comments |
+| Multi-project | Matrix jobs | Built-in project dirs |
 
-## 5. ポリシーとセキュリティのスキャン
+## 5. Policy and security scanning
 
 ```yaml
 - name: tfsec
@@ -200,9 +199,9 @@ projects:
   run: checkov -d infra/ --framework terraform
 ```
 
-**HIGH** のゲート PR の設定ミス (オープン SG、暗号化されていない S3)。 [サプライチェーンとSLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md)を補完します。
+Gate PR on **HIGH** misconfigs (open SG, unencrypted S3). Complements [Supply chain & SLSA](../security-and-best-practices/ii-supply-chain-and-slsa.md).
 
-## 6. 自動化のための終了コードを計画する
+## 6. Plan exit codes for automation
 
 ```bash
 terraform plan -detailed-exitcode -out=tfplan
@@ -211,31 +210,31 @@ terraform plan -detailed-exitcode -out=tfplan
 # 2 = changes pending
 ```
 
-終了コード 2 を使用して、必要な場合にのみ適用ジョブをトリガーします。
+Use exit code 2 to trigger apply job only when needed.
 
-## 7. 本番環境の安全対策
+## 7. Production safeguards
 
-|コントロール |実装 |
-|----------|----------------|
-|手動承認 | GitHub 環境、GitLab `when: manual` |
-|個別の IAM ロール | `github-terraform-prod` ステージングよりも厳格 |
-|個別の状態キー | `myapp/prod/terraform.tfstate` |
-|ドリフト検出 |予定 `terraform plan` + アラート |
+| Control | Implementation |
+|---------|----------------|
+| Manual approval | GitHub Environment, GitLab `when: manual` |
+| Separate IAM role | `github-terraform-prod` stricter than staging |
+| Separate state key | `myapp/prod/terraform.tfstate` |
+| Drift detection | Scheduled `terraform plan` + alert |
 
-## 8. アンチパターン
+## 8. Anti-patterns
 
-|アンチパターン |リスク |
+| Anti-pattern | Risk |
 |--------------|------|
-|すべての PR で `apply` |攻撃者の PR がインフラを破壊 |
-| CI のローカル状態 |ランの間にロスト |
-| CI ロールの管理者 IAM |爆発範囲 |
-| PRに計画はない |マージ時の驚き |
+| `apply` on every PR | Attacker PR destroys infra |
+| Local state in CI | Lost between runs |
+| Admin IAM for CI role | Blast radius |
+| No plan in PR | Surprises at merge |
 
-## 9. リハーサルの答え
+## 9. Rehearsal answers
 
-- **`terraform plan`** — 作成/更新/削除と状態のプレビュー。
-- **リモート バックエンド** — チームの共有状態 + ロック。
-- **`module` ソース** — レジストリ URL、git URL、またはローカル パス。
-- **Terraform と CloudFormation** — HashiCorp マルチクラウドと AWS ネイティブ。
+- **`terraform plan`** — preview create/update/delete vs state.
+- **Remote backend** — shared state + locking for teams.
+- **`module` source** — registry URL, git URL, or local path.
+- **Terraform vs CloudFormation** — HashiCorp multi-cloud vs AWS-native.
 
-**関連:** [状態とリモート バックエンド](v-state-and-remote-backends.md)、[GitHub アクション](../tools-and-platforms/ii-github-actions.md)。
+**Related:** [State & remote backends](v-state-and-remote-backends.md), [GitHub Actions](../tools-and-platforms/ii-github-actions.md).

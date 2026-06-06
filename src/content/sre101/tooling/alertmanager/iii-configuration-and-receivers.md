@@ -1,18 +1,17 @@
 ---
 label: "III"
-subtitle: "構成と受信機"
+subtitle: "Configuration & receivers"
 group: "SRE"
 order: 3
 ---
-SRE ツール — アラートマネージャー: 構成と受信者
+SRE tooling — Alertmanager: Configuration & receivers
+**`alertmanager.yml`** defines routes, receivers (Slack, PagerDuty, webhooks), and inhibit rules.
 
-**`alertmanager.yml`** は、ルート、レシーバー (Slack、PagerDuty、Webhook)、および禁止ルールを定義します。
+## 1. Essentials
 
-## 1. 必需品
+One file defines **routes**, **receivers**, and optional **`inhibit_rules`**. Prometheus sends alerts with **labels** and **annotations**—routes use **`matchers`** (or legacy **`match:`**) on those labels.
 
-1 つのファイルでは、**ルート**、**レシーバー**、およびオプションの**`inhibit_rules`**を定義します。 Prometheus は、**ラベル** と **注釈** を使用してアラートを送信します。ルートは、これらのラベルで **`matchers`** (または従来の **`match:`**) を使用します。
-
-## 2. 最小限のスケルトン
+## 2. Minimal skeleton
 
 ```yaml
 global:
@@ -51,11 +50,11 @@ receivers:
       - routing_key: <SERVICE_ROUTING_KEY>
 ```
 
-**マッチャー:** **`severity = critical`** スタイル (Alertmanager ≥ v0.22 **`routes[].matchers`**)。古い **`match:`** キー/値マップは、依然として多くの Helm チャートに表示されます。
+**Matchers:** **`severity = critical`** style (Alertmanager ≥ v0.22 **`routes[].matchers`**); older **`match:`** key/value maps still appear in many Helm charts.
 
-## 3. 阻害
+## 3. Inhibition
 
-同じ論理インシデントに対して **`critical`** が発生しているときに **`warning`** をミュートします。
+Mute **`warning`** when **`critical`** is firing for the same logical incident:
 
 ```yaml
 inhibit_rules:
@@ -66,19 +65,19 @@ inhibit_rules:
     equal: [alertname, namespace]
 ```
 
-## 4. 検証する
+## 4. Validate
 
 ```text
 amtool check-config alertmanager.yml
 ```
 
-## 5. レシーバーの要約
+## 5. Receivers recap
 
-|受信機のタイプ |一般的な使用法 |
-|--------------|---------------|
-| **`slack_configs`** |チーム チャネル、リッチ テキスト |
-| **`pagerduty_configs`** |オンコール エスカレーション (**routing_key** / イベント API) |
-| **`email_configs`** |低ノイズダイジェスト |
-| **`webhook_configs`** |カスタムオートメーション、チケット発行 |
+| Receiver type | Typical use |
+|---------------|-------------|
+| **`slack_configs`** | Team channels, rich text |
+| **`pagerduty_configs`** | On-call escalation (**routing_key** / Events API) |
+| **`email_configs`** | Low-noise digests |
+| **`webhook_configs`** | Custom automation, ticketing |
 
-PagerDuty は Alertmanager の代替品ではありません。**`receivers`** 内に構成された **1 つの出力チャネル**です。
+PagerDuty is **not** a substitute for Alertmanager—it is **one output channel** configured inside **`receivers`**.

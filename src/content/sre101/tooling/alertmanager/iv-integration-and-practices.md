@@ -1,16 +1,15 @@
 ---
 label: "IV"
-subtitle: "統合と実践"
+subtitle: "Integration & practices"
 group: "SRE"
 order: 4
 ---
-SRE ツール — Alertmanager: 統合と実践
+SRE tooling — Alertmanager: Integration & practices
+Wire Prometheus to Alertmanager and keep paging sane.
 
-Prometheus を Alertmanager に接続し、ページングを正常に保ちます。
+## 1. Point Prometheus at Alertmanager
 
-## 1. プロメテウスをアラートマネージャーに指示する
-
-**`prometheus.yml`** (またはオペレータ **`Prometheus`** CR **`spec.alerting`**):
+In **`prometheus.yml`** (or Operator **`Prometheus`** CR **`spec.alerting`**):
 
 ```yaml
 alerting:
@@ -20,11 +19,11 @@ alerting:
             - alertmanager:9093   # Service DNS in-cluster
 ```
 
-Prometheus Operator のセットアップは、多くの場合、クラスター **`Alertmanager`** サービスに **事前に接続**されており、誤って **`alerting`** をオーバーライドすることを避けてください。
+Prometheus Operator setups are often **pre-wired** to the cluster **`Alertmanager`** Service—avoid overriding **`alerting`** accidentally.
 
-## 2. アラート ルールの例 (Prometheus)
+## 2. Example alert rule (Prometheus)
 
-Alertmanager でのラベルのルート。 **`annotations`** Slack/メール テンプレートを入力します:
+Labels route in Alertmanager; **`annotations`** populate Slack/email templates:
 
 ```yaml
 groups:
@@ -40,13 +39,13 @@ groups:
           description: "Check dashboard X — runbook https://wiki/runbooks/high-5xx"
 ```
 
-## 3. SRE の実践
+## 3. SRE practices
 
-- ページングが **ユーザーに影響する** または **SLO 書き込み** の場合にのみ発生するように **`severity`** を設計します。
-- **注釈**に **`runbook_url`** (またはリンクを含む **`description`**) を入力すると、通知でコンテキストがすぐに開きます。
-- **`alertmanager.yml`** を **`amtool check-config`** でテストします。 prod ルートの前に **ステージング** Slack/PagerDuty Webhook を実行します。
-- 共有クラスターでは **`AlertmanagerConfig`** 名前空間ごとの RBAC を優先するため、チームは 1 つの巨大なグローバル ファイルを使用せずにレシーバーを所有できます。
+- Design **`severity`** so paging only happens for **user-impacting** or **SLO-burn** conditions.
+- Put **`runbook_url`** (or **`description`** with links) in **annotations** so notifications open context fast.
+- Test **`alertmanager.yml`** with **`amtool check-config`**; exercise **staging** Slack/PagerDuty webhooks before prod routes.
+- Prefer **`AlertmanagerConfig`** per-namespace RBAC on shared clusters so teams own receivers without one giant global file.
 
-## 4. ペアリング
+## 4. Pairing
 
-**Prometheus** はルールを評価し、アラートの発生を転送します。 **Alertmanager** は、**重複排除、グループ化、ルーティング**、および Slack、PagerDuty などへの**配信**を所有しています。
+**Prometheus** evaluates rules and forwards firing alerts; **Alertmanager** owns **dedupe, grouping, routing**, and **delivery** to Slack, PagerDuty, etc.

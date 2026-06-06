@@ -1,30 +1,29 @@
 ---
 label: "I"
-subtitle: "概要"
-group: "クラウドアーキテクチャ"
+subtitle: "Overview"
+group: "Cloud architecture"
 order: 1
 ---
-基礎 — 概要
+Foundations — overview
+Before patterns and scale, understand **what cloud providers offer**: service models, regions, compute, storage, networking, and how to design for **failure and recovery**.
 
-パターンとスケールの前に、**クラウド プロバイダーが提供するもの**: サービス モデル、リージョン、コンピューティング、ストレージ、ネットワーキング、**障害と復旧**に備えた設計方法を理解してください。
+## Map of this submenu
 
-## このサブメニューのマップ
+| Note | Focus |
+|------|--------|
+| [Service models](ii-service-models.md) | IaaS, PaaS, SaaS, shared responsibility |
+| [Regions, AZs & edge](iii-regions-azs-and-edge.md) | Regions, AZs, CDN edge, data residency |
+| [Compute options](iv-compute-options.md) | VMs, containers/K8s, serverless, cold starts |
+| [Storage & databases](v-storage-and-databases.md) | Object, block, file storage; SQL and NoSQL |
+| [Networking, VPC & LB](vi-networking-vpc-and-lb.md) | VPC, subnets, load balancers, DNS, firewalls |
+| [HA & disaster recovery](vii-ha-and-disaster-recovery.md) | RTO/RPO, multi-AZ, DR tiers |
+| [Well-Architected Framework](viii-well-architected-framework.md) | Six pillars with cloud examples |
 
-|注 |フォーカス |
-|------|----------|
-| [サービスモデル](ii-service-models.md) | IaaS、PaaS、SaaS、共同責任 |
-| [リージョン、AZ、エッジ](iii-regions-azs-and-edge.md) |リージョン、AZ、CDN エッジ、データ常駐 |
-| [計算オプション](iv-compute-options.md) | VM、コンテナ/K8、サーバーレス、コールド スタート |
-| [ストレージとデータベース](v-storage-and-databases.md) |オブジェクト、ブロック、ファイルストレージ。 SQL と NoSQL |
-| [ネットワーキング、VPC、LB](vi-networking-vpc-and-lb.md) | VPC、サブネット、ロードバランサー、DNS、ファイアウォール |
-| [HA および災害復旧](vii-ha-and-disaster-recovery.md) | RTO/RPO、マルチ AZ、DR 層 |
-| [適切に設計されたフレームワーク](viii-well-architected-framework.md) | 6 つの柱とクラウドの例 |
+**Next:** **Patterns & design** submenu — scalability, microservices, events, observability, cost.
 
-**次へ:** **パターンとデザイン** サブメニュー - スケーラビリティ、マイクロサービス、イベント、可観測性、コスト。
+## Cloud stack at a glance
 
-## クラウドスタックの概要
-
-<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 440 100" role="img" aria-label="Cloud foundation layers compute storage network">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Cloud foundation layers compute storage network">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Build blocks every architecture uses</text>
   <rect x="12" y="40" width="80" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="28" y="60" fill="#e4e4e7" font-size="9">Compute</text>
@@ -37,9 +36,9 @@ order: 1
   <text x="12" y="88" fill="#71717a" font-size="9">All run inside regions · spread across AZs for HA</text>
 </svg></figure>
 
-## リハーサル
+## Rehearsal
 
-- IaaS 対 PaaS 対 SaaS — それぞれ 1 つの例?
-- **≥ 2 AZ** に展開する理由は何ですか?
-- オブジェクト ストレージとブロック ストレージ — それぞれをいつ使用するか?
-- RTO と RPO — ダウンタイムとデータ損失はどちらですか?
+- IaaS vs PaaS vs SaaS — one example each?
+- Why deploy across **≥ 2 AZs**?
+- Object vs block storage — when to use each?
+- RTO vs RPO — which is downtime vs data loss?

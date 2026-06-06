@@ -1,16 +1,15 @@
 ---
 label: "IV"
-subtitle: "書類"
-group: "データベース"
+subtitle: "Document"
+group: "Databases"
 order: 4
 ---
-文書データベース
+Document databases
+**Document** stores treat each record as a **self-contained document** — usually **JSON** or **BSON** — with an **`_id`** and optional **schema validation**. Nested objects and arrays live **inside** one document instead of many normalized SQL tables.
 
-**ドキュメント** ストアは、各レコードを **自己完結型ドキュメント** (通常は **JSON** または **BSON**) として扱い、**`_id`** とオプションの **スキーマ検証** を使用します。ネストされたオブジェクトと配列は、多数の正規化された SQL テーブルではなく、1 つのドキュメント内**に存在します。
+## 1. Data model
 
-## 1. データモデル
-
-1 つのドキュメント = 1 つの論理エンティティ (ユーザー プロファイル、製品、ブログ投稿):
+One document = one logical entity (user profile, product, blog post):
 
 ```json
 {
@@ -37,21 +36,21 @@ reviews table             reviews: [ ... ] embedded
 specs columns or EAV      specs: { nested object }
 ```
 
-## 2. スキーマの柔軟性
+## 2. Schema flexibility
 
-|モード |トレードオフ |
+| Mode | Trade-off |
 |------|-----------|
-| **スキーマレス** |高速な反復。アプリは形状を検証します |
-| **JSON スキーマの検証** | DB は不正なドキュメントを拒否します (MongoDB `$jsonSchema`) |
-| **移行** |フィールドの意味が変わっても引き続き必要 |
+| **Schema-less** | Fast iteration; app validates shape |
+| **JSON Schema validation** | DB rejects bad documents (MongoDB `$jsonSchema`) |
+| **Migrations** | Still needed when field meaning changes |
 
-**異なるレコードに異なるフィールドがある** (カタログ、CMS、ユーザー生成コンテンツ) 場合に適しています。
+Good fit when **different records have different fields** (catalogs, CMS, user-generated content).
 
-## 3. クエリ
+## 3. Querying
 
-ドキュメント DB は、任意のテーブル間の SQL JOIN の代わりに **API** または **集計パイプライン** を公開します。
+Document DBs expose **APIs** or **aggregation pipelines** instead of SQL JOINs across arbitrary tables.
 
-MongoDB スタイルの例:
+MongoDB-style examples:
 
 ```javascript
 // Find cheap hardware-tagged products
@@ -67,63 +66,63 @@ db.products.aggregate([
 ]);
 ```
 
-ネストされたフィールド (`specs.switch`) の **インデックス** によりフィルタが高速になります。SQL と同じ B ツリーの考え方ですが、構文が異なります。
+**Indexes** on nested fields (`specs.switch`) make filters fast — same B-tree idea as SQL, different syntax.
 
-## 4. 埋め込みと参照
+## 4. Embedding vs referencing
 
-|パターン | | の場合に使用します。
-|----------|----------|
-| **親に配列/オブジェクトを埋め込む | 1 対数。一緒に読んでください。制限されたサイズ |
-| **参照** 別のドキュメントのストア `_id` | 1 対多の巨大なセット。共有サブドキュメント |
+| Pattern | Use when |
+|---------|----------|
+| **Embed** array/object in parent | One-to-few; read together; bounded size |
+| **Reference** store `_id` of another doc | One-to-many huge sets; shared sub-documents |
 
-参考例:
+Example reference:
 
 ```json
 { "_id": "order_99", "userId": "user_42", "lines": [ ... ] }
 { "_id": "user_42", "name": "Ada", "email": "..." }
 ```
 
-アプリケーションは **2 つの検索** または **`$lookup`** (左外部結合) を実行します。すべての形状に対して無料のリレーショナル JOIN オプティマイザーはありません。
+Application does **two lookups** or **`$lookup`** (left-outer join) — no free relational JOIN optimizer for every shape.
 
-## 5. トランザクションと一貫性
+## 5. Transactions and consistency
 
-最新のドキュメント DB (MongoDB 4+) は、レプリカ セット上で **マルチドキュメント ACID トランザクション** をサポートしています。金銭的な更新に使用しますが、可能な場合は **単一ドキュメントの書き込み用に設計**します (よりシンプルで高速)。
+Modern document DBs (MongoDB 4+) support **multi-document ACID transactions** on a replica set — use for money-like updates, but **design for single-document writes** when possible (simpler, faster).
 
-**結果整合性**は、セカンダリから読み取る場合は**レプリカ読み取り**に引き続き表示されます。これは SQL リードレプリカと同じ種類のバグです。
+**Eventual consistency** still appears in **replica reads** if you read from secondaries — same class of bugs as SQL read replicas.
 
-## 6. 強みと限界
+## 6. Strengths and limits
 
-**強み**
+**Strengths**
 
-- **JSON API とモバイル クライアントに自然に適合**
-- 多くの製品では、`_id` またはシャード キーによる **水平シャーディング**
-- 進化する製品のための **柔軟なスキーマ**
-- データが埋め込まれている場合、**ネストされた読み取り**を 1 往復で実行
+- **Natural fit** for JSON APIs and mobile clients
+- **Horizontal sharding** by `_id` or shard key in many products
+- **Flexible schema** for evolving products
+- **Nested reads** in one round trip when data is embedded
 
-**制限**
+**Limits**
 
-- 1 つのドキュメント内の **無制限の配列** → ドキュメント サイズの制限 (MongoDB では 16 MB)
-- SQL ウェアハウスよりも難しいエンティティ全体にわたる **アドホック分析**
-- **埋め込み時のデータの重複** - 共有フィールドを変更するには多くのドキュメントを更新します
-- **複雑な多対多**のレポートは、**SQL** または **ウェアハウス** に移行されることがよくあります。
+- **Unbounded arrays** in one document → document size limits (16 MB in MongoDB)
+- **Ad-hoc analytics** across entities harder than SQL warehouses
+- **Duplicate data** when embedding — update many docs to change shared field
+- **Complex many-to-many** reporting often moves to **SQL** or **warehouse**
 
-## 7. ドキュメントを選択する場合
+## 7. When to choose document
 
-- コンテンツ プラットフォーム、さまざまな属性を持つカタログ
-- **フロントエンド用バックエンド** API 形状の BLOB を保存する
-- スキーマ チャーンが多いプロトタイプ
-- **テーブル間不変条件が重い厳密な財務台帳のデフォルトではありません** - **リレーショナル**が勝つことがよくあります
+- Content platforms, catalogs with varying attributes
+- **Backend-for-frontend** storing API-shaped blobs
+- Prototypes where schema churn is high
+- **NOT** default for strict financial ledger with heavy cross-table invariants — **relational** often wins
 
-## 8. 例
+## 8. Examples
 
-|製品 |メモ |
-|----------|----------|
-| **MongoDB** |一般的なドキュメント ストア、集約フレームワーク |
-| **CouchDB** | HTTP API、マルチマスターレプリケーション |
-| **ファイアストア** |マネージド、モバイル/Web SDK、リアルタイム リスナー |
-| **PostgreSQL JSONB** |ハイブリッド: 1 つのエンジンで SQL + ドキュメント列 |
+| Product | Notes |
+|---------|--------|
+| **MongoDB** | General document store, aggregation framework |
+| **CouchDB** | HTTP API, multi-master replication |
+| **Firestore** | Managed, mobile/web SDKs, realtime listeners |
+| **PostgreSQL JSONB** | Hybrid: SQL + document columns in one engine |
 
-## 9. Java スケッチ (MongoDB ドライバー)
+## 9. Java sketch (MongoDB driver)
 
 ```java
 // Compile: javac --release 22 …
@@ -133,10 +132,10 @@ Document filter = new Document("tags", "hardware")
 collection.find(filter).into(new ArrayList<>());
 ```
 
-Spring Data MongoDB は、JPA と同様に **`@Document`** エンティティをマップします。
+Spring Data MongoDB maps **`@Document`** entities similarly to JPA.
 
-## 10. 関連
+## 10. Related
 
-- **概要** — [データベースの概要](i-overview.md)
-- **リレーショナル** — JOIN と厳密なスキーマが優勢な場合 [リレーショナル (SQL)](ii-relational.md)
-- **ワイドカラム** — 書き込みの多いワイド行用の別の NoSQL ファミリ [ワイドカラム](v-wide-column.md)
+- **Overview** — [Databases overview](i-overview.md)
+- **Relational** — when JOINs and strict schema dominate [Relational (SQL)](ii-relational.md)
+- **Wide-column** — another NoSQL family for write-heavy wide rows [Wide-column](v-wide-column.md)

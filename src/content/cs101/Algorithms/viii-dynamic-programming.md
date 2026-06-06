@@ -1,26 +1,25 @@
 ---
 label: "VIII"
-subtitle: "動的プログラミング"
-group: "データ構造とアルゴリズム"
+subtitle: "Dynamic programming"
+group: "Data structures & algorithms"
 order: 8
 ---
-動的プログラミング (DP)
+Dynamic programming (DP)
+Solve optimization or counting problems by reusing answers to **overlapping subproblems**.
 
-**重複する部分問題**に対する回答を再利用して、最適化または計数の問題を解決します。
+**Requirements**
+1. **Optimal substructure** — optimal solution built from optimal subsolutions.
+2. **Overlapping subproblems** — same subproblem appears many times in a naive recursion tree.
 
-**要件**
-1. **最適な部分構造** — 最適な部分解から構築された最適なソリューション。
-2. **重複する部分問題** — 単純な再帰ツリーでは、同じ部分問題が何度も現れます。
+## 1. Top-down vs bottom-up
 
-## 1. トップダウンとボトムアップ
+| Style | Mechanism | Pros |
+|-------|-----------|------|
+| **Memoization** | Recursion + cache (`Map` or array) | Fast to write |
+| **Tabulation** | Fill table in dependency order | No recursion depth; often faster |
 
-|スタイル |メカニズム |長所 |
-|------|-----------|------|
-| **メモ化** |再帰 + キャッシュ (`Map` または配列) |書くのが早い |
-| **集計** |依存関係の順序でテーブルを埋める |再帰の深さはありません。多くの場合、より速くなります |
-
-## 2. フィボナッチ (おもちゃの例)
-単純な再帰 **O(2ⁿ)**;メモまたは表 **O(n)**。
+## 2. Fibonacci (toy example)
+Naive recursion **O(2ⁿ)**; memo or table **O(n)**.
 
 ```java
 // Compile: javac --release 22 …
@@ -49,13 +48,13 @@ public static long fibTab(int n) {
 }
 ```
 
-## 3. 0/1 ナップザック
-**n** アイテム。項目 **i** には重み **wᵢ** と値 **vᵢ** があります。容量**W**。各項目 **最大 1 回**。
+## 3. 0/1 knapsack
+**n** items; item **i** has weight **wᵢ** and value **vᵢ**; capacity **W**. Each item **at most once**.
 
-**状態:** `dp[i][c]` = 容量 **c** のアイテム `0..i-1` を使用した最大値。  
-**移行:** 項目 **i** をスキップするか、該当する場合はそのまま使用してください。
+**State:** `dp[i][c]` = max value using items `0..i-1` with capacity **c**.  
+**Transition:** skip item **i** or take it if it fits.
 
-**時間 O(n · W)**、**スペース O(n · W)** (または 1 行の場合は O(W))。
+**Time O(n · W)**, **space O(n · W)** (or O(W) with one row).
 
 ```java
 // Compile: javac --release 22 …
@@ -74,8 +73,8 @@ public static int knapsack01(int[] weight, int[] value, int capacity) {
 }
 ```
 
-## 4. 最長共通部分列 (LCS)
-**状態:** `dp[i][j]` = **A** の最初の **i** 文字と **B** の最初の **j** の LCS 長さ。
+## 4. Longest common subsequence (LCS)
+**State:** `dp[i][j]` = LCS length of first **i** chars of **A** and first **j** of **B**.
 
 ```java
 // Compile: javac --release 22 …
@@ -94,18 +93,18 @@ public static int lcsLength(String a, String b) {
 }
 ```
 
-## 5. 距離の編集 (レーベンシュタイン)
-**A** を **B** に変えるための最小限の挿入/削除/置換 — 古典的な **2D DP**、**O(|A| · |B|)**。
+## 5. Edit distance (Levenshtein)
+Minimum insert / delete / replace to turn **A** into **B** — classic **2D DP**, **O(|A| · |B|)**.
 
-## 6. DP 設計チェックリスト
-1. **状態** (部分問題の意味) を定義します。
-2. **再発** + **基本ケース**を書きます。
-3. 反復順序 (ボトムアップ) またはメモ キー (トップダウン) を決定します。
-4. テーブル サイズで **時間/空間** を追跡します。
+## 6. DP design checklist
+1. Define **state** (what subproblem means).
+2. Write **recurrence** + **base cases**.
+3. Decide iteration order (bottom-up) or memo keys (top-down).
+4. Track **time/space** in table size.
 
-## 7. JDK を使用した解決 (実装済み)
+## 7. Solving with the JDK (already implemented)
 
-Java には**** `DynamicProgramming.solve()` はありません。 JDK がすでに提供している **配列** と **マップ** を使用します。
+There is **no** `DynamicProgramming.solve()` in Java. You use **arrays** and **maps** the JDK already provides:
 
 ```java
 // Compile: javac --release 22 …
@@ -128,11 +127,11 @@ int ans = memo.get(key);
 // Edit distance / LCS — still nested loops on int[][]
 ```
 
-| DP の必要性 | JDK |
-|----------|-----|
-| 2Dテーブル | `int[][]`、`long[][]` |
-|メモ化 | `HashMap`、`Map.computeIfAbsent` |
-|行を初期化する | `Arrays.fill` |
-|繰り返しの最小/最大 | `Math.min`、`Math.max` |
+| DP need | JDK |
+|---------|-----|
+| 2D table | `int[][]`, `long[][]` |
+| Memoization | `HashMap`, `Map.computeIfAbsent` |
+| Initialize row | `Arrays.fill` |
+| Min/max in recurrence | `Math.min`, `Math.max` |
 
-**フィボナッチスケール**のトイ問題の場合のみ、`Map` メモで十分です。本番環境の DP は、スタックの安全性を確保するために **反復テーブル** のままです。
+For **Fibonacci-scale** toy problems only, `Map` memo is enough; production DP stays **iterative tables** for stack safety.

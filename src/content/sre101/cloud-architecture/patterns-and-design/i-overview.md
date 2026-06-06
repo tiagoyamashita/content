@@ -1,29 +1,28 @@
 ---
 label: "I"
-subtitle: "概要"
-group: "クラウドアーキテクチャ"
+subtitle: "Overview"
+group: "Cloud architecture"
 order: 1
 ---
-パターンとデザイン — 概要
+Patterns & design — overview
+**Foundations** submenu covers **what cloud gives you** (compute, storage, VPC). This submenu covers **how to architect** for scale, resilience, observability, and cost at application and platform level.
 
-**基礎** サブメニューでは、**クラウドが提供するもの** (コンピューティング、ストレージ、VPC) をカバーします。このサブメニューでは、アプリケーションおよびプラットフォーム レベルでの規模、復元力、可観測性、コストを**設計する方法**について説明します。
+## Map of this submenu
 
-## このサブメニューのマップ
+| Note | Focus |
+|------|--------|
+| [Scalability & caching](ii-scalability-and-caching.md) | Scale up/out, stateless apps, auto scaling, cache tiers |
+| [Microservices vs monolith](iii-microservices-vs-monolith.md) | Monolith, modular monolith, microservices trade-offs |
+| [Event-driven architecture](iv-event-driven-architecture.md) | Queues, pub/sub, streaming, sagas |
+| [API Gateway & service mesh](v-api-gateway-and-service-mesh.md) | North-south vs east-west, circuit breakers |
+| [Observability, SLI & SLO](vi-observability-slo-and-slis.md) | Logs, metrics, traces, SLI/SLO/SLA |
+| [Cost & governance](vii-cost-and-governance.md) | Pricing models, FinOps, IAM, guardrails |
 
-|注 |フォーカス |
-|------|----------|
-| [スケーラビリティとキャッシュ](ii-scalability-and-caching.md) |スケールアップ/アウト、ステートレス アプリ、自動スケーリング、キャッシュ層 |
-| [マイクロサービス vs モノリス](iii-microservices-vs-monolith.md) |モノリス、モジュラーモノリス、マイクロサービスのトレードオフ |
-| [イベント駆動型アーキテクチャ](iv-event-driven-architecture.md) |キュー、パブ/サブスク、ストリーミング、物語 |
-| [APIゲートウェイとサービスメッシュ](v-api-gateway-and-service-mesh.md) |南北対東西、サーキットブレーカー |
-| [可観測性、SLI および SLO](vi-observability-slo-and-slis.md) |ログ、メトリック、トレース、SLI/SLO/SLA |
-| [コストとガバナンス](vii-cost-and-governance.md) |価格モデル、FinOps、IAM、ガードレール |
+**Related:** **Foundations** submenu (Well-Architected pillars), system design **scalable-patterns**, networking ingress/CDN notes.
 
-**関連:** **Foundations** サブメニュー (Well-Architected の柱)、システム設計 **スケーラブル パターン**、ネットワーキング Ingress/CDN のメモ。
+## Architecture layers (mental model)
 
-## アーキテクチャ層 (メンタルモデル)
-
-<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 440 120" role="img" aria-label="Cloud architecture layers client gateway services data">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="Cloud architecture layers client gateway services data">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Request path — patterns apply at each hop</text>
   <rect x="12" y="40" width="56" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="24" y="58" fill="#e4e4e7" font-size="8">Client</text>
@@ -42,18 +41,18 @@ order: 1
   <text x="12" y="92" fill="#71717a" font-size="9">Scale services horizontally · cache reads · async where possible · observe everything</text>
 </svg></figure>
 
-## 適切に設計された接続
+## Well-Architected connection
 
-|柱 |このサブメニューのパターン |
-|----------|--------------------------|
-| **信頼性** |オートスケーリング、サーキットブレーカー、マルチ AZ (基盤) |
-| **パフォーマンス** |キャッシュ、CDN、適切なサイジング |
-| **セキュリティ** |ゲートウェイ認証、IAM 最小権限、ガバナンス |
-| **コスト** |スポット、予約済み、FinOps タグ付け |
-| **優れた運用能力** |可観測性、SLO |
+| Pillar | Patterns in this submenu |
+|--------|--------------------------|
+| **Reliability** | Auto scaling, circuit breakers, multi-AZ (Foundations) |
+| **Performance** | Caching, CDN, right-sizing |
+| **Security** | Gateway auth, IAM least privilege, governance |
+| **Cost** | Spot, reserved, FinOps tagging |
+| **Operational excellence** | Observability, SLOs |
 
-## リハーサル
+## Rehearsal
 
-- ステートレスとステートフル — 自動スケーリングへの影響?
-- キューとパブ/サブスクライブ — 1 人のコンシューマーか、それとも複数のコンシューマーか?
-- SLI、SLO、SLA — どちらが契約上のものですか?
+- Stateless vs stateful — impact on auto scaling?
+- Queue vs pub/sub — one consumer or many?
+- SLI vs SLO vs SLA — which is contractual?

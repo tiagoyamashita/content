@@ -1,29 +1,28 @@
 ---
 label: "I"
-subtitle: "概要"
+subtitle: "Overview"
 group: "CI/CD"
 order: 1
 ---
-セキュリティとベスト プラクティス — 概要
+Security & best practices — overview
+Secure CI/CD protects **source**, **build**, **artifacts**, and **deploy targets**. Treat the pipeline as part of your **attack surface** — not just app code.
 
-安全な CI/CD は、**ソース**、**ビルド**、**アーティファクト**、**デプロイ ターゲット**を保護します。パイプラインを単なるアプリコードではなく、**攻撃対象領域**の一部として扱います。
+## Map of this submenu
 
-## このサブメニューのマップ
+| Note | Focus |
+|------|--------|
+| [Supply chain & SLSA](ii-supply-chain-and-slsa.md) | SLSA, SBOM, signing, dependency pinning |
+| [Secrets & OIDC](iii-secrets-and-oidc.md) | Vaults, rotation, OIDC to cloud |
+| [Least-privilege runners](iv-least-privilege-runners.md) | Token scope, self-hosted runners, fork PRs |
+| [Testing strategy](v-testing-strategy.md) | Test pyramid, gates, sharding, flaky tests |
+| [Pipeline observability & DORA](vi-pipeline-observability-and-dora.md) | DORA metrics, alerts, pipeline tracing |
+| [Release gates & rollbacks](vii-release-gates-and-rollbacks.md) | Approvals, immutable deploys, rollback |
 
-|注 |フォーカス |
-|------|----------|
-| [サプライチェーンとSLSA](ii-supply-chain-and-slsa.md) | SLSA、SBOM、署名、依存関係の固定 |
-| [秘密とOIDC](iii-secrets-and-oidc.md) |ボールト、ローテーション、クラウドへの OIDC |
-| [最低特権ランナー](iv-least-privilege-runners.md) |トークン スコープ、セルフホスト ランナー、フォーク PR |
-| [テスト戦略](v-testing-strategy.md) |テスト ピラミッド、ゲート、シャーディング、不安定なテスト |
-| [パイプラインの可観測性と DORA](vi-pipeline-observability-and-dora.md) | DORA メトリクス、アラート、パイプライン トレース |
-| [ゲートのリリースとロールバック](vii-release-gates-and-rollbacks.md) |承認、不変のデプロイ、ロールバック |
+**Related:** Part I fundamentals, **Tools & platforms** submenu, **Terraform** submenu → [Terraform in CI/CD](../terraform/vii-terraform-in-cicd.md) (OIDC in apply jobs).
 
-**関連:** パート I の基礎、**ツールとプラットフォーム** サブメニュー、**Terraform** サブメニュー → [CI/CD の Terraform](../terraform/vii-terraform-in-cicd.md) (適用ジョブの OIDC)。
+## Secure pipeline layers
 
-## 安全なパイプライン層
-
-<figure class="notes-diagram"><svg xmlns="1 viewBox="0 0 480 120" role="img" aria-label="CI/CD security layers from source to deploy">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="CI/CD security layers from source to deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Defense in depth across the pipeline</text>
   <rect x="12" y="36" width="88" height="28" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="20" y="54" fill="#e4e4e7" font-size="8">Source &amp; deps</text>
@@ -39,20 +38,20 @@ order: 1
   <text x="12" y="88" fill="#71717a" font-size="9">Pin actions · SBOM · least privilege · OIDC · signed images · prod approval</text>
 </svg></figure>
 
-## 簡単なチェックリスト
+## Quick checklist
 
-|レイヤー |こうする |
-|------|-----------|
-|依存関係 |ファイルのロック、改修/依存ボット、CVE のスキャン |
-|アクション / プラグイン | **コミット SHA**、フローティング `@v4` タグではなく固定する |
-|資格情報 | OIDC または有効期間の短いトークン。リポジトリ内でキーを決して使用しない |
-|ランナー |一時的な VM。 PR ジョブからの本番ネットワークがない |
-|アーティファクト |画像に署名 (Cosign);デプロイ前に検証する |
-|制作 |環境保護、手動承認、ロールバック パス |
+| Layer | Do this |
+|-------|---------|
+| Dependencies | Lock files, Renovate/Dependabot, scan CVEs |
+| Actions / plugins | Pin to **commit SHA**, not floating `@v4` tag |
+| Credentials | OIDC or short-lived tokens; never keys in repo |
+| Runners | Ephemeral VMs; no prod network from PR jobs |
+| Artifacts | Sign images (Cosign); verify before deploy |
+| Production | Environment protection, manual approval, rollback path |
 
-## リハーサル
+## Rehearsal
 
-- SLSA L2 と L3 とは何ですか?
-- なぜ GitHub アクションを SHA に固定するのでしょうか?
-- 4 つの DORA メトリクスに名前を付けます。
-- シークレットを使用して自己ホスト ランナーでフォーク PR を実行してみてはいかがでしょうか?
+- What is SLSA L2 vs L3?
+- Why pin a GitHub Action to a SHA?
+- Name the four DORA metrics.
+- Why not run fork PRs on self-hosted runners with secrets?

@@ -1,23 +1,22 @@
 ---
 label: "I"
-subtitle: "中心となる概念"
-group: "データ構造とアルゴリズム"
+subtitle: "Core concepts"
+group: "Data structures & algorithms"
 order: 1
 ---
-レベル I — 中心となる概念
+Level I — Core concepts
+Bits and bytes, how data sits in memory, and the memory hierarchy from CPU to disk.
 
-ビットとバイト、データがメモリ内にどのように配置されるか、CPU からディスクまでのメモリ階層。
+## 1. Bit and byte
+A **bit** (binary digit) is one symbol from `{0, 1}` — the smallest piece of information a digital machine distinguishes. All richer data (numbers, text, images, instructions) is ultimately encoded as long bit patterns.
 
-## 1. ビットとバイト
-**ビット** (2 進数) は、`{0, 1}` からの 1 つの記号であり、デジタル マシンが識別する最小の情報です。より豊富なデータ (数値、テキスト、画像、指示) はすべて、最終的には長いビット パターンとしてエンコードされます。
+A **byte** is a fixed group of **8 bits** (one **octet**). Most modern systems **address memory in bytes**: each byte in RAM has an integer **address** (0, 1, 2, …). Wider values span several consecutive bytes; the **width** of a type (e.g. 32-bit integer = 4 bytes) tells you how many byte slots it occupies.
 
-**バイト**は**8ビット** (1 **オクテット**)の固定グループです。最新のシステムは **バイト単位でメモリにアドレス指定します**: RAM の各バイトには整数 **アドレス** (0、1、2、…) があります。幅の広い値は、複数の連続したバイトにまたがります。型の **幅** (例: 32 ビット整数 = 4 バイト) は、その型が占有するバイト スロットの数を示します。
-
-- **なぜ 8 なのか?** 歴史的な収束。現在、「バイト = 8 ビット」がデフォルトのメンタル モデルです。
-- **大きなチャンク:** プロセッサは、**キャッシュ ライン** と **ページ** (以下の階層を参照) にもデータを移動しますが、依然としてその下のバイトから構築されています。
+- **Why 8?** Historical convergence; today “byte = 8 bits” is the default mental model.
+- **Larger chunks:** processors also move data in **cache lines** and **pages** (see hierarchy below), still built from bytes underneath.
 
 
-<figure class="notes-diagram"><svg xmlns="2 viewBox="0 0 420 120" role="img" aria-label="One byte as eight bits with index order">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="One byte as eight bits with index order">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">One byte = 8 bits (example pattern)</text>
   <text x="12" y="40" fill="#a1a1aa" font-size="10">bit index 7 (often MSB of the byte) … 0 (often LSB) — convention depends on context</text>
   <g font-family="ui-monospace" font-size="11">
@@ -44,16 +43,16 @@ order: 1
 </svg></figure>
 
 
-## 2. 大まかなイメージ: データの保存と取得
-**ストア:** CPU (またはデバイス) はビット パターンをバイト アドレスのセットに配置します。たとえば、ストア命令はアドレス `p` から始まる 32 ビット整数の 4 バイトを書き込みます。ハードウェアは、**物理アドレス**を RAM チップの位置にマップします (また、**仮想メモリ**を使用して変換テーブルを使用して、各プロセスが独自のアドレス空間を持つことができます)。
+## 2. Rough picture: storing and retrieving data
+**Store:** the CPU (or device) places a bit pattern into a set of byte addresses — for example a store instruction writes 4 bytes of a 32-bit integer starting at address `p`. The hardware maps that **physical address** to a RAM chip location (and, with **virtual memory**, through translation tables so each process can have its own address space).
 
-**取得:** **ロード**は、同じアドレス (またはそのアドレスが既に含まれているキャッシュ ライン) を使用して、演算が実行される CPU **レジスタ**にビットをコピーします。データがレジスタまたはキャッシュにない場合、メモリ サブシステムは **RAM** からフェッチします。 **ディスク**上にのみある場合、OS は最初に **ページ**を RAM に取り込みます (非常に遅くなります)。
+**Retrieve:** a **load** uses the same address (or a cache line that already contains that address) to copy bits into a CPU **register** where arithmetic runs. If the data is not in registers or cache, the memory subsystem fetches from **RAM**; if it is only on **disk**, the OS brings a **page** into RAM first (much slower).
 
-- **アドレスと値:** アドレスは *どこ* です。内容は*なんと*です。高級言語のポインターは通常、アドレス (またはその抽象化) です。
-- **アライメント:** 一部の CPU は、高速アクセスのために、マルチバイト値を 4 または 8 で割り切れるアドレスから開始することを好みます (または要求します)。
+- **Addresses vs values:** an address is *where*; the contents are *what*. Pointers in high-level languages are usually addresses (or abstractions over them).
+- **Alignment:** some CPUs prefer (or require) multi-byte values to start at addresses divisible by 4 or 8 for fast access.
 
 
-<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 440 168" role="img" aria-label="CPU load and store to byte addressed RAM">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" role="img" aria-label="CPU load and store to byte addressed RAM">
   <defs>
     <marker id="cc-bus-mk" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#a1a1aa"/></marker>
   </defs>
@@ -75,20 +74,20 @@ order: 1
 </svg></figure>
 
 
-## 3. メモリ層（階層）
-メモリは一定の速度ではありません。これは、**容量**、**レイテンシ**、**コスト**を取引する**階層**です。高速レイヤーは小さいです。大きなレイヤーは遅くなります。
+## 3. Memory layers (hierarchy)
+Memory is not one flat speed; it is a **hierarchy** trading **capacity**, **latency**, and **cost**. Fast layers are small; large layers are slower.
 
-|レイヤー |役割（大まか） |
-|------|----------------|
-| **CPU レジスタ** |最速のストレージ。オペランドは実行中にここに存在します。 |
-| **L1 / L2 / L3 キャッシュ** | SRAM はコアに非常に近い。 RAM レイテンシーを隠すために、最近使用した **キャッシュ ライン** (RAM フラグメントのコピー) を保持します。 |
-| **RAM (メインメモリ)** | DRAM: プログラムを実行するための大規模なワーキング セット。 **揮発性** (電力損失により失われます)。 |
-| **ディスク/SSD** |永続的で、はるかに大規模で、**はるかに遅い** ランダム アクセス。 OS は必要に応じてデータをページインします。 |
+| Layer | Role (rough) |
+|--------|----------------|
+| **CPU registers** | Fastest storage; operands live here during execution. |
+| **L1 / L2 / L3 cache** | SRAM very close to cores; holds recently used **cache lines** (copies of RAM fragments) to hide RAM latency. |
+| **RAM (main memory)** | DRAM: large working set for running programs; **volatile** (lost on power loss). |
+| **Disk / SSD** | Persistent, much larger, **much slower** random access; OS pages data in when needed. |
 
-**地域性:** **時間的** 地域性 = すぐに再利用。 **空間** 局所性 = 隣接するアドレスをすぐに使用します。優れた局所性により、ホットデータがレジスタとキャッシュに保持されます。
+**Locality:** **temporal** locality = reuse soon; **spatial** locality = use neighboring addresses soon. Good locality keeps the hot data in registers and cache.
 
 
-<figure class="notes-diagram"><svg xmlns="4 viewBox="0 0 400 220" role="img" aria-label="Memory hierarchy pyramid from fast small registers to slow large disk">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" role="img" aria-label="Memory hierarchy pyramid from fast small registers to slow large disk">
   <text x="100" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Memory hierarchy (fast ↑ small, slow ↓ large)</text>
   <polygon points="200,40 280,72 120,72" fill="rgba(34,197,94,0.35)" stroke="#86efac" stroke-width="2"/>
   <text x="168" y="62" fill="#e4e4e7" font-size="10" font-weight="600">registers</text>
@@ -102,10 +101,10 @@ order: 1
 </svg></figure>
 
 
-## 4. 仮想メモリ (1 段落)
-通常、プロセスには **仮想アドレス** が表示されます。 **MMU** はそれらを **物理** RAM フレームにマップします。これにより分離が実現され (プロセス A が誤って B のメモリにアクセスすることはありません)、**オーバーコミット** (物理メモリにはアクティブ ページのみが存在するときに、仮想サイズの合計が RAM を超える可能性があります) が可能になります。 **ページ フォールト** は、必要なページが RAM にないことを意味します。OS はそのページをディスクからロードし、命令を再開します。
+## 4. Virtual memory (one paragraph)
+Processes usually see **virtual addresses**; the **MMU** maps them to **physical** RAM frames. That gives isolation (process A cannot touch B’s memory by mistake) and allows **overcommit** (total virtual size can exceed RAM while only active pages sit in physical memory). A **page fault** means the needed page is not in RAM — the OS loads it from disk and resumes your instruction.
 
-## 5. 覚えてリハーサルする
-- 1 バイトは何ビットですか? 1 バイトで表現できる個別の値はいくつありますか?
-- 一文で言うと、**アドレス**とそのアドレスの**コンテンツ**の違いは何ですか?
-- 一般的なラップトップの場合、レイヤーを最小/高速から最大/低速の順に並べます。
+## 5. Remember & rehearse
+- How many bits in a byte? How many distinct values can one byte represent?
+- In one sentence: what is the difference between an **address** and the **contents** at that address?
+- Order the layers from smallest/fastest to largest/slowest for a typical laptop.
