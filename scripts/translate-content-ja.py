@@ -14,6 +14,7 @@ import urllib.request
 from pathlib import Path
 
 CONTENT_ROOT = Path(__file__).resolve().parent.parent / "src" / "content"
+GLOSSARY_PATH = Path(__file__).resolve().parent / "ja-menu-labels.json"
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 FENCE_RE = re.compile(r"```[\s\S]*?```")
@@ -23,8 +24,29 @@ LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)]+)\)")
 HTML_TAG_RE = re.compile(r"<[^>]+>")
 PLACEHOLDER_RE = re.compile(r"\uE000(\d+)\uE001")
 
+def load_label_glossary() -> dict[str, str]:
+    if not GLOSSARY_PATH.exists():
+        return {}
+    try:
+        return json.loads(GLOSSARY_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
 TRANSLATE_FM_KEYS = {"subtitle", "group"}
 SKIP_MD = set()  # filenames still translated; add paths to skip if needed
+
+
+def load_label_glossary() -> dict[str, str]:
+    if not GLOSSARY_PATH.exists():
+        return {}
+    try:
+        return json.loads(GLOSSARY_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+LABEL_GLOSSARY = load_label_glossary()
 
 # Heuristic: already translated if many CJK chars in body
 CJK_RE = re.compile(r"[\u3040-\u30ff\u3400-\u9fff]")
@@ -181,10 +203,12 @@ def translate_markdown(translator_fn, path: Path) -> str:
 
 def translate_meta(translator_fn, path: Path) -> str:
     data = json.loads(path.read_text(encoding="utf-8"))
+    rel = path.relative_to(CONTENT_ROOT).as_posix()
     if "label" in data and isinstance(data["label"], str):
-        label = data["label"]
-        if not looks_japanese(label):
-            data["label"] = translate_chunk(translator_fn, label)
+        if rel in LABEL_GLOSSARY:
+            data["label"] = LABEL_GLOSSARY[rel]
+        elif not looks_japanese(data["label"]):
+            data["label"] = translate_chunk(translator_fn, data["label"])
             time.sleep(0.1)
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
