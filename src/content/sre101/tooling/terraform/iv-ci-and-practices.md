@@ -1,48 +1,49 @@
 ---
 label: "IV"
-subtitle: "CI & practices"
+subtitle: "CI と実践"
 group: "SRE"
 order: 4
 ---
-SRE tooling — Terraform: CI & practices
-Automate **`plan`** review, reduce drift, and document operational assumptions baked into modules.
+SRE ツール — Terraform: CI と実践
 
-## 1. CI gates
+**`plan`** レビューを自動化し、ドリフトを削減し、モジュールに組み込まれた運用上の前提を文書化します。
 
-Typical pipeline stages:
+## 1. CI ゲート
 
-1. **`terraform fmt -check`** — blocks noisy diffs.
-2. **`terraform validate`** — catches syntax/provider misconfig early.
-3. **`terraform plan`** — upload textual plan to PR; require reviewer acknowledgement before **`apply`** on protected branches.
-4. Optional **`tfsec` / `checkov` / `tflint`** — policy-as-code for insecure defaults.
+典型的なパイプラインステージ:
 
-For GitOps-heavy flows (**Atlantis**, Terraform Cloud run tasks), map approvals to team RBAC.
+1. **`terraform fmt -check`** — ノイズの多い差分をブロックします。
+2. **`terraform validate`** — 構文/プロバイダーの設定ミスを早期に検出します。
+3. **`terraform plan`** — テキストの計画を PR にアップロードします。保護されたブランチでは **`apply`** までにレビュー担当者の承認が必要です。
+4. オプション **`tfsec` / `checkov` / `tflint`** — 安全でないデフォルトのコードとしてのポリシー。
 
-## 2. Apply discipline
+GitOps を多用するフロー (**Atlantis**、Terraform Cloud 実行タスク) の場合、承認をチーム RBAC にマップします。
 
-- **`apply`** from CI with OIDC/IAM roles—not long-lived static keys on laptops where avoidable.
-- Separate workspaces/backends per environment—never **`apply`** prod stacks accidentally using staging vars.
+## 2. 規律を保つ
 
-## 3. Runbooks & modules
+- OIDC/IAM ロールを使用した CI からの **`apply`** - 回避可能な場合、ラップトップ上の長期静的キーではありません。
+- 環境ごとにワークスペース/バックエンドを分離します。**`apply`** prod スタックが誤ってステージング変数を使用することはありません。
 
-When defaults encode capacity assumptions (**instance sizes**, **regions**, **retention**), mirror operational context:
+## 3. ランブックとモジュール
 
-- Module **`README`** — SLIs touched by defaults (e.g. NAT concurrency).
-- Linked wiki/runbook URLs inside observability resources provisioned alongside infra.
+デフォルトが容量の仮定 (**インスタンス サイズ**、**リージョン**、**保持**) をエンコードする場合、運用コンテキストをミラーリングします。
 
-## 4. Drift & imports
+- モジュール **`README`** — デフォルトでタッチされる SLI (NAT 同時実行など)。
+- インフラとともにプロビジョニングされた可観測性リソース内のリンクされた Wiki/Runbook URL。
 
-- Schedule **`terraform plan`** against prod weekly—even without merges—to detect manual console edits early.
-- **`import`** discovered orphans deliberately instead of letting unmanaged infra linger.
+## 4. ドリフトとインポート
 
-## 5. Pairing with Kubernetes & observability
+- 手動コンソール編集を早期に検出するために、マージなしでも、毎週本番環境に対して **`terraform plan`** をスケジュールします。
+- **`import`** は、管理されていないインフラを放置するのではなく、意図的に孤児を発見しました。
 
-Provision **EKS/GKE/AKS**, node pools, IAM roles (**IRSA** / workload identity), load balancers, DNS—then layer Helm/`kubernetes_manifest` resources or GitOps controllers.
+## 5. Kubernetes とのペアリングと可観測性
 
-Managed Prometheus/Grafana stacks often expose Terraform providers—keep **cluster**, **network**, **dashboards**, and **Alertmanager** routes evolving together in one reviewed pipeline when feasible.
+**EKS/GKE/AKS**、ノード プール、IAM ロール (**IRSA** / ワークロード ID)、ロード バランサー、DNS をプロビジョニングし、次に Helm/`kubernetes_manifest` リソースまたは GitOps コントローラーを階層化します。
 
-## 6. Where Terraform stops
+マネージド Prometheus/Grafana スタックは、多くの場合 Terraform プロバイダーを公開します。**クラスター**、**ネットワーク**、**ダッシュボード**、**Alertmanager** の各ルートは、可能な場合には 1 つのレビュー済みパイプラインで一緒に進化し続けます。
 
-Day-two workload rollout semantics remain Kubernetes controllers—Terraform provisions clusters/add-ons; **kubectl/Helm/GitOps** handle frequent microservice churn unless you intentionally unify via **`kubernetes_*`** resources (trade-offs on blast radius & plan runtime).
+## 6. Terraform が停止する場所
 
-See **Real world deployment** for a concrete repo layout and VPC + EKS module sketch.
+2 日目のワークロード ロールアウト セマンティクスは Kubernetes コントローラーのままです。Terraform はクラスター/アドオンをプロビジョニングします。 **kubectl/Helm/GitOps** は、**`kubernetes_*`** リソース (爆発範囲と計画ランタイムのトレードオフ) を介して意図的に統合しない限り、頻繁なマイクロサービスのチャーンを処理します。
+
+具体的なリポジトリのレイアウトと VPC + EKS モジュールのスケッチについては、**実際のデプロイ** を参照してください。

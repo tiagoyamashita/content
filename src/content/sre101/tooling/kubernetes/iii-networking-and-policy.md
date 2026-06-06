@@ -1,31 +1,32 @@
 ---
 label: "III"
-subtitle: "Networking & policy"
+subtitle: "ネットワーキングとポリシー"
 group: "SRE"
 order: 3
 ---
-SRE tooling — Kubernetes: Networking & policy
-Clusters default **allow-all** Pod-to-Pod traffic until you tighten **NetworkPolicy**.
+SRE ツール — Kubernetes: ネットワーキングとポリシー
 
-## 1. Services & DNS
+**NetworkPolicy** を強化するまで、クラスターはデフォルトで **allow-all** ポッド間のトラフィックを許可します。
 
-- **ClusterIP** — virtual IP inside cluster; **`kube-proxy`** (iptables/IPVS) or eBPF datapaths route traffic to healthy endpoints (Pods passing readiness).
-- **NodePort** — publishes port on every Node—handy for labs; prod usually fronts with LB/Ingress.
-- **LoadBalancer** — cloud integration allocates external LB (implementation varies by provider).
-- **Headless (`clusterIP: None`)** — DNS **`A`** records per Pod—common with StatefulSets.
+## 1. サービスと DNS
 
-Cluster DNS (**CoreDNS**) resolves **`my-svc.my-ns.svc.cluster.local`**.
+- **ClusterIP** — クラスター内の仮想 IP。 **`kube-proxy`** (iptables/IPVS) または eBPF データパスは、トラフィックを正常なエンドポイント (準備完了状態を渡すポッド) にルーティングします。
+- **NodePort** — すべてのノードでポートを公開します。ラボに便利です。通常、prod は LB/Ingress の前に置かれます。
+- **LoadBalancer** — クラウド統合により外部 LB が割り当てられます (実装はプロバイダーによって異なります)。
+- **ヘッドレス (`clusterIP: None`)** — ポッドあたりの DNS **`A`** レコード - StatefulSet と共通。
 
-## 2. Ingress vs Gateway API
+クラスター DNS (**CoreDNS**) は **`my-svc.my-ns.svc.cluster.local`** を解決します。
 
-- **Ingress** — HTTP routing via controller (nginx, contour, etc.); **`IngressClass`** selects implementation.
-- **Gateway API** — richer routing/TLS models with **`Gateway`** / **`HTTPRoute`** CRDs—preferred greenfield when supported.
+## 2. Ingress API とゲートウェイ API
 
-TLS termination may live at Ingress/LB or mesh—pick one story per environment.
+- **Ingress** — コントローラー (nginx、contour など) を介した HTTP ルーティング。 **`IngressClass`** は実装を選択します。
+- **ゲートウェイ API** - **`Gateway`** / **`HTTPRoute`** CRD を備えたより豊富なルーティング/TLS モデル - サポートされている場合はグリーンフィールドが推奨されます。
 
-## 3. NetworkPolicy
+TLS 終端は Ingress/LB またはメッシュに存在する可能性があります。環境ごとに 1 つのストーリーを選択してください。
 
-Without policies, any Pod can reach any Pod/CIDR allowed by CNI defaults. Example deny-by-default baseline (illustrative—adapt labels/CIDRs):
+## 3. ネットワークポリシー
+
+ポリシーがなければ、どのポッドも CNI デフォルトで許可されている任意のポッド/CIDR に到達できます。デフォルト拒否ベースラインの例 (例示 - ラベル/CIDR の適応):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -40,12 +41,12 @@ spec:
     - Egress
 ```
 
-Then add **allow** policies per app (`podSelector` + `namespaceSelector` + **`ports`**). Verify with **`kubectl exec`** + **`nc`** / **`curl`** from representative Pods.
+次に、アプリごとに **許可** ポリシーを追加します (`podSelector` + `namespaceSelector` + **`ports`**)。代表的な Pod から **`kubectl exec`** + **`nc`** / **`curl`** で検証します。
 
-## 4. Multitenancy knobs
+## 4. マルチテナンシーノブ
 
-Combine **namespaces**, **ResourceQuota** / **LimitRange**, **RBAC**, **NetworkPolicy**, and optionally **PodSecurity** / admission (OPA/Kyverno) for safer shared clusters.
+**名前空間**、**ResourceQuota** / **LimitRange**、**RBAC**、**NetworkPolicy**、およびオプションで **PodSecurity** / アドミッション (OPA/Kyverno) を組み合わせて、より安全な共有クラスターを実現します。
 
-## 5. Pairing with observability
+## 5. 可観測性とのペアリング
 
-Service meshes / CNIs emit metrics—Prometheus targets often scrape **`kube-state-metrics`**, **cAdvisor/node-exporter**, and app **`ServiceMonitor`** objects (see **Prometheus → Kubernetes** in Tooling).
+サービス メッシュ/CNI はメトリクスを生成します。Prometheus ターゲットは、**`kube-state-metrics`**、**cAdvisor/node-exporter**、およびアプリ **`ServiceMonitor`** オブジェクトを収集することがよくあります (ツールの **Prometheus → Kubernetes** を参照)。

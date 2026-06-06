@@ -1,109 +1,109 @@
 ---
 label: "V"
-subtitle: "Ingress, edge, and load balancers"
-group: "Networking"
+subtitle: "Ingress、エッジ、ロードバランサー"
+group: "ネットワーキング"
 order: 5
 ---
-Networking — Part V: Ingress, edge, and load balancers
+ネットワーキング — パート V: Ingress、エッジ、ロード バランサー
 
-By the time traffic hits your cluster or data center, **TCP** is established and **TLS** may already be terminated.
+トラフィックがクラスターまたはデータセンターに到達するまでに、**TCP** が確立され、**TLS** がすでに終了している可能性があります。
 
-### What is Ingress?
+### Ingress とは何ですか?
 
-**Ingress** is an **application-layer (L7) entry point** that routes **HTTP and HTTPS** requests to the correct backend based on **hostname**, **URL path**, and sometimes **headers** — instead of sending every request on the same IP to a single app.
+**Ingress** は、同じ IP 上のすべてのリクエストを単一のアプリに送信するのではなく、**ホスト名**、**URL パス**、および場合によっては **ヘッダー**に基づいて **HTTP および HTTPS** リクエストを正しいバックエンドにルーティングする **アプリケーション層 (L7) エントリ ポイント**です。
 
-In **Kubernetes** specifically:
+**Kubernetes** では具体的には次のようになります。
 
-- An **Ingress** object is **configuration** (rules + optional TLS).
-- An **Ingress controller** is the **running proxy** that applies those rules (nginx Ingress Controller, Traefik, AWS Load Balancer Controller, …).
+- **Ingress** オブジェクトは **構成** (ルール + オプションの TLS) です。
+- **Ingress コントローラー** は、これらのルール (nginx Ingress コントローラー、Traefik、AWS ロード バランサー コントローラーなど) を適用する **実行中のプロキシ** です。
 
-| Term | Layer | Job |
+|用語 |レイヤー |仕事 |
 |------|-------|-----|
-| **Load balancer (L4)** | TCP/UDP | Spread connections across nodes; may not look at URL |
-| **Ingress (L7)** | HTTP/HTTPS | “`api.example.com/v1` → this Service; `www.example.com` → that Service” |
-| **Service** | In-cluster | Stable address to a set of pods |
+| **ロードバランサー (L4)** | TCP/UDP |ノード間で接続を分散します。 URL | は見ないかもしれません。
+| **イングレス (L7)** | HTTP/HTTPS | 「`api.example.com/v1` → このサービス; `www.example.com` → そのサービス」 |
+| **サービス** |クラスター内 |ポッドのセットへの安定したアドレス |
 
-Non-Kubernetes systems use the same idea under names like **reverse proxy**, **API gateway**, or **edge router** — Kubernetes standardized the name **Ingress** for the config resource.
+Kubernetes 以外のシステムは、**リバース プロキシ**、**API ゲートウェイ**、**エッジ ルーター** などの名前で同じ考え方を使用します。Kubernetes は、構成リソースの名前 **Ingress** を標準化しました。
 
-## 1. Load balancer vs reverse proxy
+## 1. ロード バランサーとリバース プロキシの比較
 
-- **Network / L4 load balancer** — distributes **TCP/UDP** flows by IP/port (sometimes TLS pass-through). Fast, less application-aware.
-- **Application / L7 reverse proxy** — understands **HTTP** (Host, path, headers), can do **TLS termination**, compression, rate limits, WAF integration.
+- **ネットワーク / L4 ロード バランサー** — **TCP/UDP** フローを IP/ポートごとに分散します (TLS パススルーの場合もあります)。高速で、アプリケーションをあまり意識しません。
+- **アプリケーション / L7 リバース プロキシ** — **HTTP** (ホスト、パス、ヘッダー) を理解し、**TLS 終端**、圧縮、レート制限、WAF 統合を実行できます。
 
-**Ingress controllers** (nginx, Traefik, HAProxy, Envoy-based gateways, cloud vendor controllers) are usually **L7** proxies in front of **NodePort/ClusterIP** or cloud LB integrations.
+**Ingress コントローラー** (nginx、Traefik、HAProxy、Envoy ベースのゲートウェイ、クラウド ベンダー コントローラー) は通常、**NodePort/ClusterIP** またはクラウド LB 統合の前にある **L7** プロキシです。
 
-## 2. Kubernetes Ingress (conceptual)
+## 2. Kubernetes Ingress (概念的)
 
-- An **Ingress** resource declares rules: **host**, **path** → **backend Service** (and port).
-- The **controller** watches Ingress objects and programs the proxy (routes, certs).
-- **TLS** is often wired via **Secrets** referenced by the Ingress; **cert-manager** automates **ACME** certificates.
+- **Ingress** リソースはルールを宣言します: **ホスト**、**パス** → **バックエンド サービス** (およびポート)。
+- **コントローラー** は Ingress オブジェクトを監視し、プロキシ (ルート、証明書) をプログラムします。
+- **TLS** は、Ingress によって参照される **Secrets** を介して接続されることがよくあります。 **cert-manager** は **ACME** 証明書を自動化します。
 
-Traffic path (typical):
+トラフィック パス (通常):
 
 ```text
 Internet → cloud LB (optional TLS) → Ingress controller → Service → Pod
 ```
 
-## 3. TLS at the edge
+## 3. エッジでの TLS
 
-- **Terminate TLS at ingress** — pods see HTTP; simpler, but traffic inside the cluster may be plaintext unless you add **mTLS** or **backend TLS**.
-- **Pass-through TLS** — LB forwards encrypted TCP; ingress or app terminates; useful when SNI routing is done at a smarter LB.
+- **入力時に TLS を終了** — ポッドは HTTP を参照します。より単純ですが、**mTLS** または **バックエンド TLS** を追加しない限り、クラスター内のトラフィックはプレーンテキストになる可能性があります。
+- **パススルー TLS** — LB は暗号化された TCP を転送します。イングレスまたはアプリが終了します。 SNI ルーティングがよりスマートな LB で実行される場合に便利です。
 
-## 4. Headers proxies set
+## 4. ヘッダープロキシセット
 
-Clients see one hop; backends need context:
+クライアントには 1 ホップが見えます。バックエンドにはコンテキストが必要です。
 
-- **X-Forwarded-For** — original client IP (chain of proxies).
-- **X-Forwarded-Proto** — `http` or `https` as seen by the first proxy.
-- **X-Forwarded-Host** — original Host header.
+- **X-Forwarded-For** — 元のクライアント IP (プロキシのチェーン)。
+- **X-Forwarded-Proto** — 最初のプロキシから認識される `http` または `https`。
+- **X-Forwarded-Host** — 元のホスト ヘッダー。
 
-Trust only **trusted** proxies when interpreting these (spoofing otherwise).
+これらを解釈するときは、**信頼できる** プロキシのみを信頼します (そうでない場合はスプーフィング)。
 
-## 5. gRPC and WebSockets
+## 5. gRPC と WebSocket
 
-Ingress must support **HTTP/2** for **gRPC**, and **Upgrade** / long-lived connections for **WebSockets**. Not every default annotation supports both; verify controller docs.
+Ingress は、**gRPC** の **HTTP/2** と、**WebSocket** の **アップグレード** / 長期接続をサポートする必要があります。すべてのデフォルトのアノテーションが両方をサポートしているわけではありません。コントローラーのドキュメントを確認してください。
 
-## 6. DNS + Ingress together
+## 6. DNS と Ingress の併用
 
-1. **DNS** `A`/`AAAA` or `CNAME` → **load balancer** IP or hostname provided by the cloud or bare-metal LB.
-2. **Ingress** rules match **Host** to route to the right **Service**.
-3. **TLS** cert must cover that **Host** (SAN on certificate).
+1. **DNS** `A`/`AAAA` または `CNAME` → **ロード バランサー** クラウドまたはベアメタル LB によって提供される IP またはホスト名。
+2. **Ingress** ルールは **ホスト**と一致し、正しい **サービス**にルーティングします。
+3. **TLS** 証明書は、**ホスト** (証明書上の SAN) をカバーする必要があります。
 
-### Example — REST API on Kubernetes (production)
+### 例 — Kubernetes 上の REST API (実稼働)
 
-Assume:
+仮定する：
 
-- Public REST API: **`https://api.example.com`**
-- Staging API: **`https://api.staging.example.com`**
-- Cloud load balancer hostname from the ingress controller: **`k8s-prod-abc123.eu-west-1.elb.amazonaws.com`** (AWS-style; GCP/Azure use their own LB hostnames or static IPs)
-- In-cluster **Services**: `rest-api-prod` (port **8080**), `rest-api-staging` (port **8080**)
+- パブリック REST API: **`https://api.example.com`**
+- ステージング API: **`https://api.staging.example.com`**
+- イングレス コントローラーからのクラウド ロード バランサーのホスト名: **`k8s-prod-abc123.eu-west-1.elb.amazonaws.com`** (AWS スタイル。GCP/Azure は独自の LB ホスト名または静的 IP を使用します)
+- クラスター内 **サービス**: `rest-api-prod` (ポート **8080**)、 `rest-api-staging` (ポート **8080**)
 
-**Step 1 — DNS records** (create at your DNS provider for zone **`example.com`**):
+**ステップ 1 — DNS レコード** (ゾーン **`example.com`** の DNS プロバイダーで作成します):
 
-| Record name (hostname) | Type | Value / points to | TTL | Purpose |
-|------------------------|------|-------------------|-----|---------|
-| **`api.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 | Production REST API — name resolves to the **ingress load balancer** |
-| **`api.staging.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 | Staging API — same LB; **Ingress Host** header picks the backend |
-| **`_acme-challenge.api.example.com`** | **TXT** | (value from cert-manager / Let’s Encrypt) | 60 | Proves domain control for TLS certificate issuance |
-| **`api.example.com`** (optional apex alias) | **A** | `203.0.113.50` | 300 | Use **A** only if the cloud gives a **stable IPv4** instead of a CNAME target |
+|レコード名 (ホスト名) |タイプ |値 / へのポイント | TTL |目的 |
+|--------------------------|------|---------------------|-----|----------|
+| **`api.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 |実稼働 REST API — 名前は **入力ロード バランサー** に解決されます。
+| **`api.staging.example.com`** | **CNAME** | `k8s-prod-abc123.eu-west-1.elb.amazonaws.com` | 300 |ステージング API — 同じ LB。 **Ingress Host** ヘッダーはバックエンドを選択します。
+| **`_acme-challenge.api.example.com`** | **TXT** | (cert-manager / Let’s Encrypt からの値) | 60 | TLS 証明書発行のドメイン制御を証明 |
+| **`api.example.com`** (オプションの頂点エイリアス) | **A** | `203.0.113.50` | 300 |クラウドが CNAME ターゲットではなく **安定した IPv4** を提供する場合にのみ **A** を使用します。
 
-Notes on record names:
+レコード名に関する注意:
 
-- In many UIs the **Name** column is relative to the zone: enter **`api`** not the full FQDN for `api.example.com`; enter **`api.staging`** for `api.staging.example.com`.
-- **Do not** CNAME the zone apex (`example.com` itself) on most providers — use **A/AAAA** or **ALIAS/ANAME** if the root must hit the LB.
-- **PTR** is not something you create for your API; reverse DNS is owned by the IP allocator (cloud provider).
+- 多くの UI では、**名前** 列はゾーンに関連しています。`api.example.com` の完全な FQDN ではなく **`api`** と入力します。 `api.staging.example.com`には**`api.staging`**と入力します。
+- ほとんどのプロバイダーでは、ゾーンの頂点 (`example.com` 自体) に CNAME を付けないでください**。ルートが LB に到達する必要がある場合は、**A/AAAA** または **ALIAS/ANAME** を使用してください。
+- **PTR** は API 用に作成するものではありません。逆引き DNS は IP アロケーター (クラウド プロバイダー) によって所有されます。
 
-**Step 2 — Ingress rules** (what happens after DNS resolves to the LB):
+**ステップ 2 — イングレス ルール** (DNS が LB に解決された後に何が起こるか):
 
-| `Host` header (must match DNS name) | Path | Backend Service | Service port | TLS cert SAN |
-|-------------------------------------|------|-----------------|--------------|--------------|
-| **`api.example.com`** | `/` (prefix) | `rest-api-prod` | 8080 | `api.example.com` |
+| `Host` ヘッダー (DNS 名と一致する必要があります) |パス |バックエンドサービス |サービスポート | TLS 証明書 SAN |
+|-------------------------------------|------|--------------|--------------|--------------|
+| **`api.example.com`** | `/` (プレフィックス) | `rest-api-prod` | 8080 | `api.example.com` |
 | **`api.staging.example.com`** | `/` | `rest-api-staging` | 8080 | `api.staging.example.com` |
-| **`api.example.com`** | `/health` | `rest-api-prod` | 8080 | same cert |
+| **`api.example.com`** | `/health` | `rest-api-prod` | 8080 |同じ証明書 |
 
-The client always connects to the **same LB IP/hostname**; the **Host** header (from the URL) tells the ingress controller which **Service** receives the HTTP request.
+クライアントは常に **同じ LB IP/ホスト名** に接続します。 **Host** ヘッダー (URL から) は、どの **Service** が HTTP リクエストを受信するかをイングレス コントローラーに伝えます。
 
-**Step 3 — End-to-end path for one REST call**
+**ステップ 3 — 1 つの REST 呼び出しのエンドツーエンド パス**
 
 ```text
 GET https://api.example.com/v1/users/42
@@ -116,68 +116,68 @@ GET https://api.example.com/v1/users/42
 6. Pod     Spring Boot / Express / etc. handles GET /v1/users/42
 ```
 
-**Common mistakes**
+**よくある間違い**
 
-| Mistake | Symptom |
-|---------|---------|
-| DNS **A** points to a **pod** IP | Breaks when pods restart; always point to **LB / ingress** |
-| **Host** in Ingress ≠ DNS name | 404 or default backend; cert mismatch |
-| Cert SAN missing **`api.staging.example.com`** | Browser TLS error on staging URL only |
-| Low TTL forgotten during migration | Clients hit old IP for hours |
+|間違い |症状 |
+|----------|----------|
+| DNS **A** は **pod** IP を指します |ポッドが再起動すると中断します。常に **LB / ingress** を指します |
+| Ingress の **ホスト** ≠ DNS 名 | 404 またはデフォルトのバックエンド。証明書の不一致 |
+|証明書 SAN がありません **`api.staging.example.com`** |ステージング URL のみでのブラウザ TLS エラー |
+|移行中に忘れられた低 TTL |クライアントが古い IP に何時間もアクセスする |
 
-### Example — zoning a REST API by region (global deploy)
+### 例 — リージョンごとに REST API をゾーニングする (グローバル展開)
 
-When you run **multiple regional clusters** (EU, US, APAC), you need clients to reach the **nearest** ingress and, for compliance, sometimes **only** data in that **jurisdiction**. Two common DNS patterns:
+**複数の地域クラスタ** (EU、米国、APAC) を実行する場合、クライアントは**最も近い**入力に到達する必要があり、コンプライアンスのため、場合によってはその**管轄区域**内の**のみ**のデータに到達する必要があります。 2 つの一般的な DNS パターン:
 
-| Pattern | Public URL | How routing works | Best when |
-|---------|------------|-------------------|-----------|
-| **Geo DNS on one name** | `api.example.com` | Resolver returns **different A/CNAME** by client geography | Mobile/web apps use a **single** API hostname |
-| **Regional subdomains** | `api.eu.example.com`, `api.us.example.com` | Client (or config) picks the zone explicitly | B2B integrations, **data residency** contracts, debugging |
-| **Both** | `api.example.com` + regional aliases | Geo DNS for default; subdomains for override / failover | Large products with compliance + convenience |
+|パターン |公開 URL |ルーティングの仕組み |最適な時期 |
+|-----------|-----------|-----------|----------|
+| **1 つの名前の地理 DNS** | `api.example.com` |リゾルバーはクライアントの地域によって **異なる A/CNAME** を返します |モバイル/Web アプリは **単一** API ホスト名を使用します |
+| **地域のサブドメイン** | `api.eu.example.com`、`api.us.example.com` |クライアント (または構成) がゾーンを明示的に選択します。 B2B 統合、**データ常駐** 契約、デバッグ |
+| **両方** | `api.example.com` + 地域別名 |デフォルトの地理 DNS。オーバーライド/フェイルオーバー用のサブドメイン |コンプライアンス＋利便性を備えた大型製品 |
 
-Assume three production clusters:
+3 つの実稼働クラスターを想定します。
 
-| Region | Kubernetes cluster | Ingress LB hostname | Primary data store |
-|--------|-------------------|---------------------|-------------------|
-| **EU** | `prod-eu-west-1` | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | RDS / DB in **eu-west-1** |
-| **US** | `prod-us-east-1` | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | RDS in **us-east-1** |
-| **APAC** | `prod-ap-southeast-1` | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | RDS in **ap-southeast-1** |
+|地域 | Kubernetes クラスター |イングレス LB ホスト名 |プライマリ データ ストア |
+|----------|-------------------|---------------------|--------|
+| **EU** | `prod-eu-west-1` | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | **eu-west-1** の RDS / DB |
+| **米国** | `prod-us-east-1` | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | **us-east-1** の RDS |
+| **アジア太平洋** | `prod-ap-southeast-1` | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | **ap-southeast-1** の RDS |
 
-**Option A — Geo DNS on `api.example.com`** (Route 53 Geolocation, Cloudflare Load Balancing, Azure Traffic Manager, etc.):
+**オプション A — `api.example.com`** の地理 DNS (Route 53 地理位置情報、Cloudflare 負荷分散、Azure Traffic Manager など):
 
-| Record name | Type | Routing policy | Value / points to | Purpose |
-|-------------|------|----------------|-------------------|---------|
-| **`api.example.com`** | **CNAME** | Geolocation: **Europe** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU users → EU ingress |
-| **`api.example.com`** | **CNAME** | Geolocation: **North America** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | US/Canada → US ingress |
-| **`api.example.com`** | **CNAME** | Geolocation: **Asia Pacific** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | APAC → AP ingress |
-| **`api.example.com`** | **CNAME** | Geolocation: **Default** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | Fallback if geo unknown |
+|レコード名 |タイプ |ルーティングポリシー |値 / へのポイント |目的 |
+|-----------|------|----------------|--------|-----------|
+| **`api.example.com`** | **CNAME** |地理的位置: **ヨーロッパ** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU ユーザー → EU 進入 |
+| **`api.example.com`** | **CNAME** |地理的位置: **北米** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` |米国/カナダ → 米国の入力 |
+| **`api.example.com`** | **CNAME** |地理的位置: **アジア太平洋** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | APAC → AP イングレス |
+| **`api.example.com`** | **CNAME** |地理位置情報: **デフォルト** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` |地域が不明な場合のフォールバック |
 
-Each regional **Ingress** uses the **same** `Host: api.example.com` rule — only the **backend cluster** differs:
+各リージョン **Ingress** は **同じ** `Host: api.example.com` ルールを使用します。**バックエンド クラスタ** のみが異なります。
 
-| Region | `Host` | Path | Backend Service | Notes |
-|--------|--------|------|-----------------|-------|
-| EU | `api.example.com` | `/v1/` | `rest-api` | Reads/writes **EU** database only |
-| US | `api.example.com` | `/v1/` | `rest-api` | **US** database replica or primary |
-| APAC | `api.example.com` | `/v1/` | `rest-api` | **APAC** database |
+|地域 | `Host` |パス |バックエンドサービス |メモ |
+|----------|----------|------|---------------------|----------|
+| EU | `api.example.com` | `/v1/` | `rest-api` | **EU** データベースのみ読み取り/書き込み |
+|米国 | `api.example.com` | `/v1/` | `rest-api` | **US** データベースのレプリカまたはプライマリ |
+|アジア太平洋 | `api.example.com` | `/v1/` | `rest-api` | **APAC** データベース |
 
-TLS: one certificate with SAN **`api.example.com`** (same name everywhere); terminate at **each regional** ingress with the same cert (or regional cert-manager issuers).
+TLS: SAN **`api.example.com`** を持つ 1 つの証明書 (どこでも同じ名前)。同じ証明書 (または地域の証明書マネージャー発行者) を使用して **各地域** のイングレスで終了します。
 
-**Option B — explicit regional subdomains** (clearer for compliance and partner docs):
+**オプション B — 明示的な地域サブドメイン** (コンプライアンスとパートナーのドキュメントが明確になります):
 
-| Record name | Type | Value / points to | Purpose |
-|-------------|------|-------------------|---------|
-| **`api.eu.example.com`** | **CNAME** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU REST API — GDPR / EU data residency |
-| **`api.us.example.com`** | **CNAME** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` | Americas API |
-| **`api.ap.example.com`** | **CNAME** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` | Asia-Pacific API |
-| **`api.example.com`** | **CNAME** | Geo policy or **CNAME** → `api.us.example.com` | Global marketing URL; or geo-routed as in Option A |
+|レコード名 |タイプ |値 / へのポイント |目的 |
+|-------------|------|--------|----------|
+| **`api.eu.example.com`** | **CNAME** | `k8s-eu-aaa111.eu-west-1.elb.amazonaws.com` | EU REST API — GDPR / EU データ常駐 |
+| **`api.us.example.com`** | **CNAME** | `k8s-us-bbb222.us-east-1.elb.amazonaws.com` |アメリカAPI |
+| **`api.ap.example.com`** | **CNAME** | `k8s-ap-ccc333.ap-southeast-1.elb.amazonaws.com` |アジア太平洋 API |
+| **`api.example.com`** | **CNAME** |地域ポリシーまたは **CNAME** → `api.us.example.com` |グローバル マーケティング URL。または、オプション A | のように地理的ルートで指定されます。
 
-| Region | `Host` (Ingress) | TLS cert SAN | Client config |
-|--------|------------------|--------------|---------------|
-| EU | `api.eu.example.com` | `api.eu.example.com` | EU mobile app build points here |
-| US | `api.us.example.com` | `api.us.example.com` | US app / default SDK base URL |
-| APAC | `api.ap.example.com` | `api.ap.example.com` | APAC tenant onboarding |
+|地域 | `Host` (イングレス) | TLS 証明書 SAN |クライアント構成 |
+|------|---------------|--------------|---------------|
+| EU | `api.eu.example.com` | `api.eu.example.com` | EU モバイル アプリのビルド ポイントはこちら |
+|米国 | `api.us.example.com` | `api.us.example.com` |米国のアプリ / デフォルトの SDK ベース URL |
+|アジア太平洋 | `api.ap.example.com` | `api.ap.example.com` | APAC テナントのオンボーディング |
 
-**Request flow (EU user, Option A)**
+**リクエスト フロー (EU ユーザー、オプション A)**
 
 ```text
 GET https://api.example.com/v1/orders
@@ -188,7 +188,7 @@ GET https://api.example.com/v1/orders
 4. App         uses EU DB connection string; no cross-region DB hop on hot path
 ```
 
-**Request flow (partner pins EU subdomain, Option B)**
+**リクエスト フロー (パートナー PIN EU サブドメイン、オプション B)**
 
 ```text
 GET https://api.eu.example.com/v1/orders
@@ -197,61 +197,61 @@ GET https://api.eu.example.com/v1/orders
 2. Ingress EU  Host api.eu.example.com → rest-api:8080
 ```
 
-**Global deploy checklist**
+**グローバル展開チェックリスト**
 
-| Concern | Practice |
-|---------|----------|
-| **Latency** | Geo DNS or regional subdomain so RTT stays low; avoid EU user → US cluster by default |
-| **Data residency** | Prefer **Option B** or shard IDs in tokens; document which hostname stores PII where |
-| **Sessions / JWT** | Region-specific issuers or `region` claim; don’t share sticky sessions across oceans |
-| **Writes across regions** | Async replication or **single write region** per entity; REST API docs state consistency model |
-| **Health checks** | Per-region LB health; geo DNS **failover** record to next region if EU LB unhealthy |
-| **Observability** | Tag metrics/logs with `region=eu-west-1`; one global dashboard, regional alerts |
+|懸念事項 |練習 |
+|----------|----------|
+| **レイテンシ** |地域 DNS または地域サブドメインにより、RTT が低く抑えられます。デフォルトで EU ユーザー→ US クラスターを回避 |
+| **データ常駐** | **オプション B** またはトークン内のシャード ID を優先します。 PII を保存するホスト名を文書化します。
+| **セッション / JWT** |地域固有の発行者または`region`クレーム。海を越えてスティッキーなセッションを共有しないでください |
+| **リージョン間での書き込み** |非同期レプリケーションまたはエンティティごとの **単一書き込み領域**。 REST API ドキュメントの状態整合性モデル |
+| **健康診断** |リージョンごとの LB ヘルス。 EU LB が異常な場合は geo DNS **フェイルオーバー** レコードを次のリージョンに記録します。
+| **可観測性** |メトリクス/ログに `region=eu-west-1` のタグを付けます。 1 つのグローバル ダッシュボード、地域別アラート |
 
-**Anti-patterns**
+**アンチパターン**
 
-| Anti-pattern | Why it hurts |
+|アンチパターン |なぜ痛いのか |
 |--------------|--------------|
-| One global cluster, one DB, geo DNS only | DNS sends user to a **nearby edge** but **app + DB** may still be one region — see fixes below |
-| Same `Host` rule, shared DB across regions | Compliance failure; cross-region latency on every query |
-| CNAME all regions to **one** LB | Defeats zoning — all traffic hits a single region |
+| 1 つのグローバル クラスター、1 つの DB、地理 DNS のみ | DNS はユーザーを **近くのエッジ**に送信しますが、**アプリ + DB** は依然として 1 つのリージョンである可能性があります。以下の修正を参照してください。
+|同じ `Host` ルール、リージョン間で DB を共有 |コンプライアンス違反。すべてのクエリのリージョン間のレイテンシ |
+|すべてのリージョンを **1** LB に CNAME |ゾーニングの無効化 - すべてのトラフィックが単一のリージョンに到達します。
 
-#### Can replication or sharding fix “geo DNS only”?
+#### レプリケーションまたはシャーディングで「地域 DNS のみ」を修正できますか?
 
-**Partly — but only if data and compute move with the user**, not DNS alone.
+**部分的に – ただし、DNS 単独ではなく、データとコンピューティングがユーザーとともに移動する場合に限ります**。
 
-| Fix | What you add | What it solves | What it does **not** solve |
+|修正 |追加するもの |解決するもの |何が**解決しない** |
 |-----|--------------|----------------|----------------------------|
-| **Regional app tier** | Ingress + API pods in **EU, US, APAC** (Option A/B above) | TLS/HTTP handled locally; app code runs near the client | Nothing about data by itself |
-| **Read replication** | **Primary** in one region + **read replicas** in others; regional API uses **local replica** for reads | **Read latency** for `GET /v1/orders`, dashboards, caches | **Writes** still hit primary (cross-ocean RTT) unless you accept async replication lag |
-| **Multi-primary / active-active** | CockroachDB, Spanner, Aurora Global, Cassandra, etc. | Writes closer to some users; built-in conflict handling | Complexity, cost, **eventual consistency** trade-offs; not all SQL apps migrate easily |
-| **DB sharding by region** | Shard key = `region` or `tenant_region`; EU rows live on **EU-primary** shard | **Reads and writes** stay in-region when routing is correct | Cross-region queries/joins; re-sharding pain; wrong shard key sends EU user to US data |
-| **Geo DNS only + CDN** | Cache `GET` at edge | Static assets and **cacheable** API responses | Personalized or `POST`/`PUT` still reach origin + DB far away |
+| **リージョン アプリ層** | **EU、米国、APAC** の Ingress + API ポッド (上記のオプション A/B) | TLS/HTTP はローカルで処理されます。アプリのコードはクライアントの近くで実行されます。データそのものについては何もありません |
+| **読み取りレプリケーション** | 1 つのリージョンの **プライマリ** + 他のリージョンの **リードレプリカ**。リージョン API は読み取りに **ローカル レプリカ** を使用します | `GET /v1/orders`、ダッシュボード、キャッシュの **読み取り遅延** | **書き込み**は、非同期レプリケーションのラグを受け入れない限り、依然としてプライマリ (クロスオーシャン RTT) に達します。
+| **マルチプライマリ/アクティブ-アクティブ** | CockroachDB、Spanner、Aurora Global、Cassandra など |一部のユーザーに近い書き込みを行います。組み込みの競合処理 |複雑さ、コスト、**最終整合性**のトレードオフ。すべての SQL アプリが簡単に移行できるわけではありません。
+| **リージョン別の DB シャーディング** |シャードキー = `region` または `tenant_region`; EU 行は **EU プライマリ** シャードに存在します |ルーティングが正しい場合、**読み取りと書き込み**はリージョン内に留まります。クロスリージョンのクエリ/結合。痛みの再分割。間違ったシャード キーにより EU ユーザーが米国のデータに送信される |
+| **地域 DNS のみ + CDN** |エッジでキャッシュ `GET` |静的アセットと **キャッシュ可能な** API 応答 |パーソナライズされたまたは `POST`/`PUT` は依然として原点 + DB に遠く離れたところに到達します。
 
-**Minimal viable fix (common REST pattern)**
+**実行可能な最小限の修正 (一般的な REST パターン)**
 
 ```text
 Geo DNS → regional ingress → regional API pods → local read replica (reads)
                                               → primary or regional writer (writes)
 ```
 
-1. Deploy **regional clusters** (not just geo DNS to one global LB).
-2. Add **read replicas** per region; configure connection pools: **read** → `replica.eu.internal`, **write** → `primary` or region-local writer.
-3. Document **replication lag** on reads (`GET` may be stale for N seconds) or use **read-your-writes** routing for the session.
-4. For **strict residency**, shard or pin **primary** data in that jurisdiction (`api.eu` → EU-primary only) — replication for DR, not as the only copy abroad.
+1. **リージョン クラスター** (1 つのグローバル LB への地理 DNS だけではありません) を展開します。
+2. リージョンごとに **リードレプリカ** を追加します。接続プールを構成します: **読み取り** → `replica.eu.internal`、**書き込み** → `primary` またはリージョンローカルライター。
+3. 読み取り時の **レプリケーション ラグ** (`GET` は N 秒間失効する可能性があります) を文書化するか、セッションに対して **read-your-writes** ルーティングを使用します。
+4. **厳密な常駐**の場合、その管轄区域内の**プライマリ** データをシャードまたはピン留めします (`api.eu` → EU プライマリのみ) - 海外での唯一のコピーとしてではなく、DR 用のレプリケーション。
 
-**Sharding example (region in the key)**
+**シャーディングの例 (キー内の領域)**
 
-| Shard | Primary location | Serves |
-|-------|------------------|--------|
-| `region=eu` | `eu-west-1` RDS | `api.eu.example.com` and EU geo-DNS traffic |
-| `region=us` | `us-east-1` RDS | `api.us.example.com` and Americas traffic |
-| `region=ap` | `ap-southeast-1` RDS | APAC traffic |
+|シャード |主な場所 |サービス |
+|------|------|----------|
+| `region=eu` | `eu-west-1` RDS | `api.eu.example.com` および EU geo-DNS トラフィック |
+| `region=us` | `us-east-1` RDS | `api.us.example.com` とアメリカ大陸の交通 |
+| `region=ap` | `ap-southeast-1` RDS | APAC トラフィック |
 
-Ingress sends traffic to the regional API; the API resolves tenant/user → **shard** and opens a DB connection **in that region**. Geo DNS without this stack only optimizes the **first network hop**.
+Ingress はトラフィックを地域 API に送信します。 API はテナント/ユーザー → **シャード**を解決し、**そのリージョン**で DB 接続を開きます。このスタックを使用しない Geo DNS は、**最初のネットワーク ホップ**のみを最適化します。
 
-**Rule of thumb:** replication fixes **read distance**; sharding (or regional primaries) fixes **write distance and residency**; geo DNS fixes **which front door** the client knocks on — you need all three aligned for a global REST API.
+**経験則:** レプリケーションは **読み取り距離** を修正します。シャーディング (またはリージョン プライマリ) により **書き込み距離と常駐**が修正されます。 geo DNS は、クライアントが **どの玄関ドア** をノックするかを修正します。グローバル REST API 用に 3 つすべてを調整する必要があります。
 
-## 7. Study order recap
+## 7. 研究順序の要約
 
-**TCP/UDP** → **HTTP** → **TLS** → **DNS** (name → address) → **Ingress/LB** (HTTP routing and TLS at the edge). Together they describe how a browser request reaches a pod.
+**TCP/UDP** → **HTTP** → **TLS** → **DNS** (名前 → アドレス) → **Ingress/LB** (HTTP ルーティングとエッジでの TLS)。これらは一緒に、ブラウザーのリクエストがどのようにポッドに到達するかを説明します。

@@ -1,47 +1,48 @@
 ---
 label: "I"
-subtitle: "Installation"
-group: "Getting started"
+subtitle: "インストール"
+group: "はじめる"
 order: 1
 ---
-Getting started — Intro: Installation
-How to open and edit notes on disk, or connect GitHub so the app can host your vault.
+はじめに — はじめに: インストール
 
-## 1. Two ways to work
+ディスク上のメモを開いて編集する方法、またはアプリがボールトをホストできるように GitHub に接続する方法。
 
-**Browse your files (local)**  
-Clone or download this repository and **open the folder in Cursor**. Your notes are Markdown under **`src/content/`**. You do **not** need to sign in to GitHub just to read or edit files on your machine—Explorer and search behave like any project.
+## 1. 2 つの作業方法
 
-**Sign in with GitHub (vault)**  
-Use **GitHub login** in the Notes flow when you want the program to **create your vault** and **manage notes** against your repository—creating folders, `_meta.json`, and Markdown through the UI while staying in sync with GitHub. You grant access so the client can read (and write, if you enable it) the repo that backs your vault.
+**ファイルを参照する (ローカル)**  
+このリポジトリのクローンを作成するかダウンロードし、**カーソルでフォルダーを開きます**。あなたのメモは **`src/content/`** でマークダウンされています。マシン上のファイルを読み取りまたは編集するためだけに GitHub にサインインする必要は**ありません**。エクスプローラーと検索は他のプロジェクトと同様に動作します。
 
-Pick local browsing for full offline editing and Git from the terminal; pick GitHub login when you want integrated vault creation and remote sync without hand-maintaining every path.
+**GitHub (ボールト) でサインイン**  
+プログラムでリポジトリに対して **ボールトを作成**し、**ノートを管理**する場合は、Notes フローで **GitHub ログイン**を使用します。つまり、GitHub との同期を維持しながら、UI を介してフォルダー、`_meta.json`、Markdown を作成します。アクセスを許可すると、クライアントはコンテナーをバックアップするリポジトリを読み取り (有効にしている場合は書き込みも) できるようになります。
 
-## 2. Git
+完全なオフライン編集にはローカル ブラウジングを選択し、ターミナルから Git を使用します。すべてのパスを手動で管理せずに、統合されたボールトの作成とリモート同期が必要な場合は、GitHub ログインを選択します。
 
-Install **[Git](https://git-scm.com/downloads)** when you plan to clone, branch, commit, or push (required for both workflows if you use a remote).
+## 2.Git
 
-Check:
+クローン作成、ブランチ、コミット、またはプッシュを計画する場合は、**[Git](8)** をインストールします (リモートを使用する場合は両方のワークフローに必要です)。
+
+チェック：
 
 ```text
 git --version
 ```
 
-## 3. Editor / Cursor
+## 3. エディター/カーソル
 
-Use **Cursor** (or VS Code) with Markdown preview for comfortable editing of `.md` files and YAML frontmatter.
+**カーソル** (または VS Code) を Markdown プレビューで使用すると、`.md` ファイルと YAML フロントマターを快適に編集できます。
 
-## 4. Clone the repo (local copy)
+## 4. リポジトリのクローンを作成します (ローカル コピー)
 
-Even if you later use GitHub sign-in, a **local clone** is useful for backups, diffs, and bulk edits:
+後で GitHub サインインを使用する場合でも、**ローカル クローン** はバックアップ、差分、一括編集に役立ちます。
 
 ```text
 git clone https://github.com/<owner>/<repo>.git
 cd <repo>
 ```
 
-Replace **`<owner>`** / **`<repo>`** with your GitHub path.
+**`<owner>`** / **`<repo>`** を GitHub パスに置き換えます。
 
-## 5. Next
+## 5. 次へ
 
-Continue with **Setup** in this Intro folder for branch, **`src/content`** path, tokens, and OAuth scopes when using GitHub-backed notes.
+GitHub ベースのノートを使用する場合は、この Intro フォルダーでブランチ、**`src/content`** パス、トークン、OAuth スコープの **セットアップ** を続行します。

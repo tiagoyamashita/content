@@ -1,24 +1,25 @@
 ---
 label: "III"
-subtitle: "Linked list"
-group: "Data structures & algorithms"
+subtitle: "リンクされたリスト"
+group: "データ構造とアルゴリズム"
 order: 3
 ---
-Linked list
-Pointer-based sequence: singly and doubly linked. In **Java**, “pointers” are **object references**: a field like `Node next` holds the address of another node on the **heap**; you never do manual `free` — unreachable nodes are **garbage-collected**.
+リンクされたリスト
 
-**Java baseline:** snippets assume **Java SE 22** (`javac --release 22`); they remain valid on **JDK 21 LTS**.
+ポインタベースのシーケンス: 単一リンクおよび二重リンク。 **Java** では、「ポインタ」は **オブジェクト参照**です。`Node next` のようなフィールドは、**ヒープ**上の別のノードのアドレスを保持します。手動 `free` は決して実行しないでください。到達不能なノードは **ガベージ コレクション**されます。
 
-**Singly linked:** each node holds `value` and `next`. The list is reached from a **head** reference. Insert after a node you already hold: **O(1)**. Find the k-th element by walking: **O(k)**; search by value without index: **O(n)**.
+**Java ベースライン:** スニペットは **Java SE 22** (`javac --release 22`) を前提としています。これらは **JDK 21 LTS** でも引き続き有効です。
 
-**Doubly linked:** nodes add `prev`, so you can remove a node in **O(1)** when you hold its reference, and walk backward without scanning from the head.
+**単一リンク:** 各ノードは `value` と `next` を保持します。このリストは **head** 参照からアクセスされます。すでに保持しているノードの後に​​挿入します: **O(1)**。歩いて k 番目の要素を見つけます: **O(k)**;インデックスなしの値による検索: **O(n)**。
 
-- **vs array:** lists win on **O(1) splice** at a known node; arrays win on **O(1) index** and sequential **cache** behavior.
-- **Java cost:** every node is a **separate object** (header + fields + alignment). A dense `int[]` or `ArrayList<Integer>` is usually more cache-friendly than a long chain of `Integer` nodes (and avoids **autoboxing** if you stay primitive).
+**二重リンク:** ノードは `prev` を追加するため、その参照を保持すると **O(1)** 内のノードを削除し、先頭からスキャンせずに後方に進むことができます。
 
-## 1. Singly linked — minimal custom list (Java)
+- **vs array:** リストは既知のノードの **O(1) splice** で勝ちます。配列は **O(1) インデックス** とシーケンシャル **キャッシュ** の動作で優れています。
+- **Java コスト:** すべてのノードは **別個のオブジェクト** (ヘッダー + フィールド + アライメント)。通常、高密度の `int[]` または `ArrayList<Integer>` は、`Integer` ノードの長いチェーンよりもキャッシュに適しています (プリミティブなままであれば **オートボックス**を回避できます)。
 
-Typical pattern: a **static nested class** `Node<E>`. Libraries often keep it **`private`**; here **`Node` is `public static`** so examples can call **`addAfter`** with a node reference without awkward accessors. **`head`** is `null` when the list is empty.
+## 1. 単一リンク — 最小限のカスタム リスト (Java)
+
+典型的なパターン: **静的ネストされたクラス** `Node<E>`。図書館では **`private`** を保管していることがよくあります。ここで **`Node` は `public static`** であるため、例では面倒なアクセサを使用せずにノード参照を使用して **`addAfter`** を呼び出すことができます。リストが空の場合、**`head`** は `null` になります。
 
 ```java
 // Compile: javac --release 22 …
@@ -102,7 +103,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 }
 ```
 
-**Usage sketch:** prepend `3`, then insert `9` after the head.
+**使用法のスケッチ:** 先頭に `3` を追加し、先頭の後に `9` を挿入します。
 
 ```java
 // Compile: javac --release 22 …
@@ -112,11 +113,11 @@ SinglyLinkedList.Node<Integer> h = list.getHeadNode();
 list.addAfter(h, 9); // 3 -> 9
 ```
 
-**Removing the first node** is **O(1)**: `head = head.next` (after null-check). Removing an **arbitrary** interior node in a singly linked list is **O(1)** only if you already have the **predecessor** reference; otherwise you must walk from `head` (**O(n)**) to find it.
+**最初のノードの削除**は **O(1)**: `head = head.next` (null チェック後) です。単一リンク リスト内の **任意** 内部ノードの削除は、**先行** 参照が既にある場合にのみ **O(1)** です。それ以外の場合は、`head` (**O(n)**) から歩いて見つける必要があります。
 
-## 2. `java.util.LinkedList<E>` — JDK doubly linked deque
+## 2. `java.util.LinkedList<E>` — JDK の二重リンクされた両端キュー
 
-The standard library’s **`LinkedList`** is a **doubly linked** list that also implements **`Deque<E>`** (double-ended queue): efficient **`addFirst` / `addLast` / `removeFirst` / `removeLast`**.
+標準ライブラリの**`LinkedList`**は**二重リンク**リストであり、**`Deque<E>`**（両端キュー）：効率的な**`addFirst` / `addLast` / `removeFirst` / `removeLast`**も実装しています。
 
 ```java
 // Compile: javac --release 22 …
@@ -137,25 +138,25 @@ ListIterator<String> it = names.listIterator(1);
 it.add("Linus"); // insert before "Ada" when cursor is at index 1
 ```
 
-**Iterator and structural changes:** if you modify the list through **`add` / `remove`** while iterating with a fail-fast iterator (the usual **`for (E x : list)`**), you can get **`ConcurrentModificationException`**. Use **`ListIterator`**’s **`add` / `remove`**, or collect changes separately.
+**反復子と構造の変更:** フェイルファスト反復子 (通常の **`for (E x : list)`**) で反復中に **`add` / `remove`** を通じてリストを変更すると、**`ConcurrentModificationException`** を取得できます。 **`ListIterator`** の **`add` / `remove`** を使用するか、変更を個別に収集します。
 
-## 3. `LinkedList` vs `ArrayList` in Java
+## 3. Java の `LinkedList` と `ArrayList`
 
-| Operation / concern | `ArrayList<E>` | `LinkedList<E>` |
-|---------------------|----------------|-----------------|
-| Random access `get(i)` | **O(1)** | **O(n)** (walk from nearer end) |
-| Insert/remove at **known index** | **O(n)** shift | **O(n)** to reach index, then **O(1)** link fix |
-| Insert/remove at **head** (deque usage) | **O(n)** unless you use extra tricks | **O(1)** |
-| Memory | one backing array + slack | **one object per element** + links |
-| Cache | contiguous, friendly | pointer chasing, less friendly |
+|操作・お悩み | `ArrayList<E>` | `LinkedList<E>` |
+|---------------------|----------------|----------------|
+|ランダムアクセス `get(i)` | **O(1)** | **O(n)** (近い端から歩きます) |
+| **既知のインデックス**で挿入/削除 | **O(n)** シフト | **O(n)** でインデックスに到達し、**O(1)** でリンクを修正します。
+| **head** での挿入/削除 (deque の使用) | **O(n)** 特別なトリックを使用しない限り | **O(1)** |
+|メモリ | 1 つのバッキング配列 + スラック | **要素ごとに 1 つのオブジェクト** + リンク |
+|キャッシュ |連続した、フレンドリーな |ポインタの追跡、フレンドリーではない |
 
-For most **sequential** workloads, **`ArrayList`** is the default choice in Java. **`LinkedList`** shines when you truly need many **O(1)** inserts/removes at **ends** or with a **`ListIterator`** walking a **large** list — still profile; modern CPUs often favor compact arrays.
+ほとんどの **シーケンシャル** ワークロードでは、**`ArrayList`** が Java のデフォルトの選択です。 **`LinkedList`** は、**末尾**で多くの **O(1)** 挿入/削除を本当に必要とする場合、または **`ListIterator`** で **大きな** リストを実行する場合に最適です — 静止プロファイル。最近の CPU はコンパクトなアレイを好むことがよくあります。
 
-## 4. Doubly linked — why `prev` helps
+## 4. 二重リンク — `prev` が役立つ理由
 
-With **`prev`**, **`unlink(node)`** rewires neighbor pointers in **O(1)** without scanning for the predecessor. The JDK’s **`LinkedList`** does this internally for **`remove(Obj)`** once the node is found (finding is still **O(n)** unless you already hold a **`ListIterator`** position).
+**`prev`** を使用すると、**`unlink(node)`** は、先行ポインタをスキャンせずに **O(1)** に隣接ポインタを再配線します。 JDK の **`LinkedList`** は、ノードが見つかると **`remove(Obj)`** に対してこれを内部で実行します (すでに **`ListIterator`** の位置を保持していない限り、検索は **O(n)** のままです)。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" role="img" aria-label="Singly linked list and O(1) insert after a known node">
+<figure class="notes-diagram"><svg xmlns="51 viewBox="0 0 440 168" role="img" aria-label="Singly linked list and O(1) insert after a known node">
   <defs>
     <marker id="ds-ll-n" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#a1a1aa"/></marker>
   </defs>
@@ -185,7 +186,7 @@ With **`prev`**, **`unlink(node)`** rewires neighbor pointers in **O(1)** withou
   <text x="358" y="152" fill="#e4e4e7" font-size="11">C</text>
 </svg></figure>
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 88" role="img" aria-label="Doubly linked list prev and next pointers">
+<figure class="notes-diagram"><svg xmlns="52 viewBox="0 0 400 88" role="img" aria-label="Doubly linked list prev and next pointers">
   <defs>
     <marker id="ds-ll-df" markerWidth="7" markerHeight="7" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#60a5fa"/></marker>
     <!-- Same geometry as ds-ll-df so marker-end on a leftward path points along prev (toward earlier node). -->

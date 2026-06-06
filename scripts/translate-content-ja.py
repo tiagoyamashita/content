@@ -202,6 +202,11 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Max .md files (0 = all)")
     parser.add_argument("--meta-only", action="store_true")
+    parser.add_argument(
+        "--include-meta",
+        action="store_true",
+        help="Also translate _meta.json labels (off by default; main uses English sidebar labels)",
+    )
     parser.add_argument("--md-only", action="store_true")
     args = parser.parse_args()
 
@@ -224,7 +229,7 @@ def main() -> int:
                 if not args.dry_run:
                     path.write_text(new_text, encoding="utf-8")
 
-    if not args.md_only and (args.meta_only or not limit):
+    if not args.md_only and (args.meta_only or args.include_meta):
         for i, path in enumerate(meta_files, 1):
             rel = path.relative_to(CONTENT_ROOT.parent.parent)
             print(f"[meta {i}/{len(meta_files)}] {rel}", flush=True)

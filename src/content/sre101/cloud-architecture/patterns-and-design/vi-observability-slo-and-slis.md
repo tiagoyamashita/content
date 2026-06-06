@@ -1,19 +1,20 @@
 ---
 label: "VI"
-subtitle: "Observability, SLI & SLO"
-group: "Cloud architecture"
+subtitle: "可観測性、SLI、SLO"
+group: "クラウドアーキテクチャ"
 order: 6
 ---
-Observability, SLI & SLO
-You cannot operate what you cannot see. **Observability** combines logs, metrics, and traces; **SLOs** turn measurements into actionable targets.
+可観測性、SLI、SLO
 
-## 1. Three pillars
+見えないものを操作することはできません。 **可観測性** は、ログ、メトリック、トレースを組み合わせます。 **SLO** は、測定値を実行可能な目標に変えます。
 
-| Pillar | What | Tooling examples |
-|--------|------|------------------|
-| **Logs** | Discrete events with context | CloudWatch Logs, Datadog, ELK |
-| **Metrics** | Numeric time series | Prometheus, CloudWatch Metrics |
-| **Traces** | Request path across services | OpenTelemetry → Jaeger, Tempo, X-Ray |
+＃＃１．３つの柱
+
+|柱 |何を |ツーリングの例 |
+|------|------|------|
+| **ログ** |コンテキスト付きの離散イベント | CloudWatch ログ、Datadog、ELK |
+| **メトリクス** |数値時系列 |プロメテウス、CloudWatch メトリクス |
+| **痕跡** |サービス間のリクエスト パス | OpenTelemetry → イェーガー、テンポ、X-Ray |
 
 ```text
 Request abc-123
@@ -23,9 +24,9 @@ Request abc-123
   └─ span: postgres (3 ms)
 ```
 
-## 2. Structured logging
+## 2. 構造化されたロギング
 
-**JSON logs** — machine-parseable, filterable in log aggregators.
+**JSON ログ** — マシンで解析可能、ログ アグリゲーターでフィルタリング可能。
 
 ```json
 {
@@ -41,14 +42,14 @@ Request abc-123
 }
 ```
 
-| Bad | Good |
+|悪い |良い |
 |-----|------|
-| `ERROR payment failed for user` | JSON with `orderId`, `traceId`, `errorCode` |
-| Log PII (full card number) | Mask or omit sensitive fields |
+| `ERROR payment failed for user` | `orderId`、`traceId`、`errorCode` を含む JSON |
+|ログ PII (完全なカード番号) |機密フィールドをマスクまたは省略する |
 
-## 3. Correlation ID
+## 3. 相関ID
 
-Inject at **API Gateway**; propagate on every hop.
+**API ゲートウェイ** で注入します。すべてのホップで伝播します。
 
 ```http
 GET /api/orders/9281 HTTP/1.1
@@ -66,33 +67,29 @@ try {
 }
 ```
 
-Search logs by one ID → entire request story across services.
+1 つの ID でログを検索 → サービス全体のリクエスト ストーリー全体。
 
-## 4. Metrics that matter (RED method)
+## 4. 重要な指標 (RED メソッド)
 
-For each service:
+各サービスについて:
 
-| Metric | Meaning |
-|--------|---------|
-| **Rate** | Requests per second |
-| **Errors** | Failed requests / total |
-| **Duration** | Latency (p50, p95, p99) |
+|メトリック |意味 |
+|--------|--------|
+| **料金** | 1 秒あたりのリクエスト |
+| **エラー** |失敗したリクエスト / 合計 |
+| **期間** |レイテンシー (p50、p95、p99) |
 
-**USE method** for infrastructure: **Utilization**, **Saturation**, **Errors** (CPU, disk queue depth).
+インフラストラクチャの **USE メソッド**: **使用率**、**飽和度**、**エラー** (CPU、ディスク キューの深さ)。
 
-## 5. SLI, SLO, SLA
+## 5. SLI、SLO、SLA
 
-| Term | Definition | Example |
-|------|------------|---------|
-| **SLI** | **Indicator** — what you measure | p99 latency = 120 ms |
-| **SLO** | **Objective** — internal target | p99 latency < 200 ms over 30 days |
+|用語 |定義 |例 |
+|------|-----------|----------|
+| **SLI** | **指標** — 測定するもの | p99 レイテンシ = 120 ミリ秒 |
+| **SLO** | **目的** — 内部目標 | p99 遅延 < 200 ms over 30 days |
 | **SLA** | **Agreement** — contractual | 99.9% uptime or credit |
 
-```text
-SLI (measure)  →  SLO (target)  →  SLA (contract with customer)
-     │                │
-     └── error budget: 100% - SLO = allowed bad minutes/month
-```
+4
 
 **Error budget:** if SLO is 99.9%, you have ~43 min downtime/month. Budget exhausted → freeze features, focus on reliability.
 
@@ -101,24 +98,24 @@ SLI (measure)  →  SLO (target)  →  SLA (contract with customer)
 | Service | SLI | SLO (30-day) | Alert |
 |---------|-----|--------------|-------|
 | Public API | Availability | 99.95% | < 99.9% in 1h window |
-| Public API | Latency p99 | < 300 ms | p99 > 500 ms for 5 min |
-| Checkout | Success rate | 99.5% | Error rate > 1% |
-| Batch jobs | Completion | 99% on time | DLQ depth > 100 |
+| Public API | Latency p99 | < 300 ms | p99 > 5 分間で 500 ミリ秒 |
+|チェックアウト |成功率 | 99.5% |エラー率 > 1% |
+|バッチジョブ |完成 | 99% 予定どおり | DLQ 深さ > 100 |
 
-## 7. Alerting principles
+## 7. 警告の原則
 
-| Alert on | Don't alert on |
+| | に関するアラート| ではアラートを発しない
 |----------|----------------|
-| SLO burn rate | Every log ERROR line |
-| Symptom (latency up) | Possible cause (CPU 80% alone) |
-| User-visible impact | Dev environment noise |
+| SLO 燃焼速度 |すべてのログのエラー行 |
+|症状（レイテンシーアップ） |考えられる原因 (CPU 80% のみ) |
+|ユーザーに見える影響 |開発環境のノイズ |
 
 ```text
 Page on-call:  SLO breach imminent (fast burn)
 Ticket only:   Disk 70% — trend warning
 ```
 
-## 8. OpenTelemetry flow
+## 8. OpenTelemetry フロー
 
 ```text
 App SDK → OTLP exporter → Collector → Backend (Tempo, Datadog)
@@ -126,22 +123,22 @@ App SDK → OTLP exporter → Collector → Backend (Tempo, Datadog)
                 └── same traceId in logs (log correlation)
 ```
 
-One instrumentation standard for metrics, logs, traces.
+メトリクス、ログ、トレースのための 1 つのインストルメンテーション標準。
 
-## 9. Cloud-native services
+## 9. クラウドネイティブ サービス
 
-| AWS | Azure | GCP |
-|-----|-------|-----|
-| CloudWatch + X-Ray | Monitor + App Insights | Cloud Monitoring + Trace |
-| Managed Grafana | | |
+| AWS |アズール | GCP |
+|-----|----------|-----|
+| CloudWatch + X 線 |モニター + アプリのインサイト |クラウドモニタリング + トレース |
+|マネージド Grafana | | |
 
-Prefer **OpenTelemetry** for portable instrumentation across clouds.
+クラウド間でのポータブル計測には **OpenTelemetry** を推奨します。
 
-## 10. Rehearsal answers
+## 10. リハーサルの答え
 
-- **Three pillars** — logs, metrics, traces.
-- **Correlation ID** — ties one user request across services.
-- **SLI vs SLO** — measurement vs target; SLA adds contract/penalties.
-- **Why structured JSON** — queryable fields, not regex on plain text.
+- **3 つの柱** — ログ、メトリクス、トレース。
+- **相関 ID** — 1 つのユーザー リクエストを複数のサービスに結び付けます。
+- **SLI 対 SLO** — 測定値とターゲット。 SLA により契約/罰則が追加されます。
+- **構造化 JSON を使用する理由** — プレーン テキストの正規表現ではなく、クエリ可能なフィールドです。
 
-**Related:** [API Gateway & service mesh](v-api-gateway-and-service-mesh.md), CI/CD [Pipeline observability & DORA](../../cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md).
+**関連:** [API ゲートウェイとサービス メッシュ](v-api-gateway-and-service-mesh.md)、CI/CD [パイプラインの可観測性と DORA](../../cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md)。

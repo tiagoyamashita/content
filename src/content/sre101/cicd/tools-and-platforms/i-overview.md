@@ -1,29 +1,30 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "CI/CD"
 order: 1
 ---
-Tools & platforms — overview
-**CI/CD platforms** run your pipeline on **runners** (agents): checkout code, build, test, scan, deploy. Pick based on **where code lives**, **hosting**, and **team skills**.
+ツールとプラットフォーム — 概要
 
-## Map of this submenu
+**CI/CD プラットフォーム**は、**ランナー** (エージェント) 上でパイプラインを実行します: コードのチェックアウト、ビルド、テスト、スキャン、デプロイ。 **コードが存在する場所**、**ホスティング**、**チームのスキル**に基づいて選択してください。
 
-| Note | Platform | Config file |
-|------|----------|-------------|
-| [GitHub Actions](ii-github-actions.md) | GitHub Actions | `.github/workflows/*.yml` |
+## このサブメニューのマップ
+
+|注 |プラットフォーム |設定ファイル |
+|------|----------|---------------|
+| [GitHub アクション](ii-github-actions.md) | GitHub アクション | `.github/workflows/*.yml` |
 | [GitLab CI](iii-gitlab-ci.md) | GitLab CI/CD | `.gitlab-ci.yml` |
-| [Jenkins](iv-jenkins.md) | Jenkins | `Jenkinsfile` |
-| [Docker in CI](v-docker-in-ci.md) | Docker (all platforms) | `Dockerfile`, build args |
-| [CircleCI](vi-circleci.md) | CircleCI | `.circleci/config.yml` |
-| [Tekton](vii-tekton.md) | Tekton (Kubernetes) | `Pipeline`, `Task` CRDs |
-| [Choosing a platform](viii-choosing-a-platform.md) | Decision guide | — |
+| [ジェンキンス](iv-jenkins.md) |ジェンキンス | `Jenkinsfile` |
+| [CI の Docker](v-docker-in-ci.md) | Docker (すべてのプラットフォーム) | `Dockerfile`、ビルド引数 |
+| [CircleCI](vi-circleci.md) |サークルCI | `.circleci/config.yml` |
+| [テクトン](vii-tekton.md) | Tekton (Kubernetes) | `Pipeline`、`Task` CRD |
+| [プラットフォームの選択](viii-choosing-a-platform.md) |意思決定ガイド | — |
 
-**Related:** Part I fundamentals, **Security & best practices** submenu, **Ansible & Jenkins** submenu, **Terraform** submenu.
+**関連:** パート I の基礎、**セキュリティとベスト プラクティス** サブメニュー、**Ansible と Jenkins** サブメニュー、**Terraform** サブメニュー。
 
-## Typical pipeline on any platform
+## あらゆるプラットフォーム上の一般的なパイプライン
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="CI pipeline stages checkout build test publish deploy">
+<figure class="notes-diagram"><svg xmlns="8 viewBox="0 0 480 100" role="img" aria-label="CI pipeline stages checkout build test publish deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Same stages, different YAML syntax</text>
   <rect x="12" y="36" width="56" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="20" y="54" fill="#e4e4e7" font-size="8">checkout</text>
@@ -41,8 +42,8 @@ Tools & platforms — overview
   <text x="308" y="54" fill="#e4e4e7" font-size="8">deploy</text>
 </svg></figure>
 
-## Rehearsal
+## リハーサル
 
-- Minimal GitHub Actions: checkout → install → test?
-- GitLab `needs:` vs stages?
-- Why multi-stage Docker in CI?
+- 最小限の GitHub アクション: チェックアウト → インストール → テスト?
+- GitLab `needs:` 対ステージ?
+- CI で Docker を多段階にする理由は何ですか?

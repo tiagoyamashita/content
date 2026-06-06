@@ -1,19 +1,20 @@
 ---
 label: "X"
-subtitle: "Hash table"
-group: "Data structures & algorithms"
+subtitle: "ハッシュテーブル"
+group: "データ構造とアルゴリズム"
 order: 10
 ---
-Hash table
-Map keys to table slots via a **hash function** `h(key)`; average-case **O(1)** lookup when load is reasonable.
+ハッシュテーブル
 
-**Collisions** are inevitable in a finite table. **Chaining:** each slot holds a list of entries sharing that hash; load factor **α = n/m** drives expected chain length. **Open addressing:** probe sequences (linear, quadratic, double hashing) place alternatives in the same array.
+**ハッシュ関数** `h(key)` を介してキーをテーブル スロットにマップします。負荷が適切な場合の平均ケース **O(1)** ルックアップ。
 
-**Costs:** average **O(1)** insert/lookup/delete with a good hash and load control; worst case **Θ(n)** if all keys collide.
+**衝突**は有限テーブルでは避けられません。 **連鎖:** 各スロットは、そのハッシュを共有するエントリのリストを保持します。負荷係数 **α = n/m** により、予想されるチェーン長さが決まります。 **オープン アドレッシング:** プローブ シーケンス (線形、二次、ダブル ハッシュ) は、同じ配列に代替を配置します。
 
-**Related:** **Level II** (`ii-trees-heaps-hashing.md`).
+**コスト:** 平均 **O(1)** 適切なハッシュと負荷制御による挿入/検索/削除。最悪の場合 **Θ(n)** すべてのキーが衝突した場合。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" role="img" aria-label="Hash function maps keys into buckets with collision chaining">
+**関連:** **レベル II** (`ii-trees-heaps-hashing.md`)。
+
+<figure class="notes-diagram"><svg xmlns="2 viewBox="0 0 440 168" role="img" aria-label="Hash function maps keys into buckets with collision chaining">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Chaining: same slot, many keys</text>
   <text x="12" y="40" fill="#a1a1aa" font-size="10">h(key) mod m picks a bucket; collisions stored as a short linked list at that bucket</text>
   <text x="20" y="78" fill="#71717a" font-size="9" font-family="ui-monospace">slot 0</text>

@@ -1,15 +1,16 @@
 ---
 label: "V"
-subtitle: "Wide-column"
-group: "Databases"
+subtitle: "ワイドカラム"
+group: "データベース"
 order: 5
 ---
-Wide-column (column-family) databases
-**Wide-column** stores (also **column-family** or **Bigtable-style**) partition rows by a **partition key** and store **many columns** per row — often sparse (millions of possible column names, only some set per row). They optimize for **massive write throughput** and **linear scale-out**, not arbitrary JOINs.
+ワイドカラム (カラムファミリー) データベース
 
-## 1. Data model
+**ワイドカラム** ストア (**カラム ファミリー** または **Bigtable スタイル**) は、**パーティション キー** によって行を分割し、行ごとに **多くの列** を格納します。多くの場合、スパースです (数百万の列名が考えられ、行ごとに一部のみが設定されています)。これらは、任意の JOIN ではなく、**大規模な書き込みスループット** と **線形スケールアウト** を最適化します。
 
-Think **distributed hash map of wide rows**:
+## 1. データモデル
+
+**幅の広い行の分散ハッシュ マップ**を考えてみましょう。
 
 ```text
 Partition key: user_id = 42
@@ -19,28 +20,28 @@ Row key (within partition): timestamp or event_id
 row 42   ada@…            2026-05-19T10:00Z    dark
 ```
 
-In **Cassandra** terms:
+**カサンドラ** 用語:
 
 ```text
 PRIMARY KEY ((tenant_id), event_time, event_id)
            └─ partition ─┘  └─ clustering order within partition ─┘
 ```
 
-All rows with the same **partition key** live on the same node (simplified) — **choose partition keys** to spread load.
+同じ **パーティション キー**を持つすべての行は同じノード上に存在します (単純化) — **パーティション キー**を選択して負荷を分散します。
 
-## 2. Query pattern drives design
+## 2. クエリパターンが設計を推進する
 
-Unlike SQL, you **design tables for queries upfront** (query-first modeling):
+SQL とは異なり、**事前にクエリ用のテーブルを設計**します (クエリファースト モデリング)。
 
-| Access need | Table design |
-|-------------|--------------|
-| Latest 100 events for user | Partition by `user_id`, cluster by `event_time DESC` |
-| Events by device per day | Partition by `(device_id, day)` |
-| Lookup user by email | **Secondary table** duplicating data keyed by `email` |
+|アクセスの必要性 |テーブルデザイン |
+|---------------|--------------|
+|ユーザーの最新 100 イベント | `user_id` によるパーティション、`event_time DESC` によるクラスタ |
+|デバイスごとの 1 日あたりのイベント | `(device_id, day)` によるパーティション |
+|電子メールでユーザーを検索 | **セカンダリ テーブル** キーが `email` のデータを複製しています |
 
-**Denormalization is normal** — duplicate rows in multiple tables to match read paths.
+**非正規化は正常です** - 読み取りパスと一致するように複数のテーブルで行を複製します。
 
-## 3. CQL example (Cassandra)
+## 3. CQL の例 (Cassandra)
 
 ```sql
 CREATE TABLE events_by_user (
@@ -60,67 +61,67 @@ WHERE user_id = ?
 LIMIT 100;
 ```
 
-**ALLOW FILTERING** without partition key = full cluster scan — avoid in production.
+**ALLOW FILTERING** パーティション キーなし = フル クラスター スキャン — 運用環境では避けてください。
 
-## 4. Tunable consistency
+## 4. 調整可能な一貫性
 
-Many wide-column systems let per-query **consistency level**:
+多くのワイドカラム システムでは、クエリごとの **一貫性レベル**:
 
-| Level | Behavior |
-|-------|----------|
-| **ONE** | Fast; may read stale replica |
-| **QUORUM** | Majority of replicas — common default |
-| **ALL** | Slowest; all replicas agree |
+|レベル |行動 |
+|------|----------|
+| **1つ** |速い;古いレプリカを読み取る可能性があります |
+| **定員** |大部分のレプリカ - 共通のデフォルト |
+| **すべて** |最も遅い。すべてのレプリカが一致します |
 
-Under network partition, **availability** vs **strong consistency** trade off (CAP).
+ネットワーク分割では、*可用性** と **強整合性** のトレードオフ (CAP) が決まります。
 
-## 5. Replication and ring
+## 5. レプリケーションとリング
 
-Nodes form a **ring** (often **consistent hashing**). Each partition key maps to replicas responsible for that range. Adding nodes **moves** only neighboring key ranges — not the whole dataset.
+ノードは **リング** (多くの場合 **一貫したハッシュ**) を形成します。各パーティション キーは、その範囲を担当するレプリカにマップされます。ノードを追加すると、データセット全体ではなく、隣接するキー範囲のみが**移動**されます。
 
-## 6. Strengths and limits
+## 6. 強みと限界
 
-**Strengths**
+**強み**
 
-- **Huge write rates** (IoT, feeds, logs at scale)
-- **Linear horizontal scale** when partition keys are balanced
-- **Geographic replication** in some products
-- **Time-ordered** data within partition fits naturally
+- **膨大な書き込み速度** (IoT、フィード、大規模なログ)
+- **パーティションキーのバランスが取れている場合の**線形水平スケール**
+- 一部の製品における **地理的レプリケーション**
+- **時間順**のパーティション内のデータは自然に収まります
 
-**Limits**
+**制限**
 
-- **No ad-hoc JOIN** — application merges or duplicate tables
-- **Hot partitions** if one key gets all traffic (celebrity user, global counter)
-- **Learning curve** — wrong partition key is expensive to fix
-- **Limited transactions** — often partition-scoped only
+- **アドホック JOIN なし** - アプリケーションのマージまたはテーブルの重複
+- **ホット パーティション** 1 つのキーがすべてのトラフィックを取得する場合 (有名人ユーザー、グローバル カウンター)
+- **学習曲線** — 間違ったパーティション キーの修正には費用がかかる
+- **制限されたトランザクション** - 多くの場合、パーティション スコープのみ
 
-## 7. When to choose wide-column
+## 7. ワイドカラムを選択する場合
 
-- Event logs, activity streams, messaging metadata at **very large scale**
-- **Write-heavy** workloads where SQL single-primary bottlenecks
-- You can accept **query-first schema** and **eventual consistency** options
-- **Not** first choice for small CRUD apps — PostgreSQL is simpler
+- **非常に大規模な**のイベント ログ、アクティビティ ストリーム、メッセージング メタデータ
+- SQL シングルプライマリがボトルネックとなる **書き込み負荷の高い** ワークロード
+- **クエリファースト スキーマ** および **結果整合性** オプションを受け入れることができます
+- **小規模な CRUD アプリの第一選択ではありません** — PostgreSQL の方がシンプルです
 
-## 8. Examples
+## 8. 例
 
-| Product | Notes |
-|---------|--------|
-| **Apache Cassandra** | Open source, partition + clustering keys |
-| **ScyllaDB** | Cassandra-compatible, C++ engine |
-| **HBase** | Hadoop ecosystem, Bigtable model |
-| **Google Bigtable** | Managed original; Spanner adds SQL layer |
+|製品 |メモ |
+|----------|----------|
+| **Apache Cassandra** |オープンソース、パーティション + クラスタリング キー |
+| **スキュラDB** | Cassandra 互換の C++ エンジン |
+| **HBase** | Hadoop エコシステム、Bigtable モデル |
+| **Google Bigtable** |管理されたオリジナル。 Spanner は SQL レイヤーを追加します |
 
-## 9. Wide-column vs document vs relational
+## 9. ワイドカラム vs ドキュメント vs リレーショナル
 
-| | Relational | Document | Wide-column |
-|---|------------|----------|-------------|
-| **Unit** | Row in table | JSON document | Wide row under partition key |
-| **Query** | Flexible SQL | Document filter | Partition key + column range |
-| **Scale writes** | Harder on one node | Moderate | Designed for it |
-| **Schema** | Strict tables | Flexible | Column families per row |
+| |リレーショナル |ドキュメント |ワイドカラム |
+|---|-----------|----------|---------------|
+| **ユニット** |テーブル内の行 | JSONドキュメント |パーティションキーの下の広い行 |
+| **クエリ** |柔軟な SQL |ドキュメントフィルター |パーティションキー + 列範囲 |
+| **スケール書き込み** | 1 つのノードではより困難 |中程度 |そのために設計された |
+| **スキーマ** |厳密なテーブル |柔軟 |行ごとの列ファミリー |
 
-## 10. Related
+## 10. 関連
 
-- **Overview** — [Databases overview](i-overview.md)
-- **Time-series** — overlapping use cases; TSDBs add retention/aggregation [Time-series](vii-time-series.md)
-- **Key-value** — simpler key model without wide columns [Key-value](iii-key-value.md)
+- **概要** — [データベースの概要](i-overview.md)
+- **時系列** — 重複するユースケース。 TSDB は保持/集計を追加します [時系列](vii-time-series.md)
+- **Key-value** — ワイド列のない単純なキー モデル [Key-value](iii-key-value.md)

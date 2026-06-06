@@ -1,23 +1,24 @@
 ---
 label: "II"
-subtitle: "GitHub Actions"
+subtitle: "GitHub アクション"
 group: "CI/CD"
 order: 2
 ---
-GitHub Actions
-Native CI/CD for **GitHub** repos. Workflows live in **`.github/workflows/`** as YAML; jobs run on **GitHub-hosted** or **self-hosted** runners.
+GitHub アクション
 
-## 1. Core concepts
+**GitHub** リポジトリのネイティブ CI/CD。ワークフローは YAML として **`.github/workflows/`** に存在します。ジョブは **GitHub ホスト** または **自己ホスト** ランナーで実行されます。
 
-| Term | Meaning |
-|------|---------|
-| **Workflow** | YAML file; triggered by events |
-| **Job** | Runs on one runner; can depend on other jobs |
-| **Step** | Shell command or **`uses:`** action |
-| **Action** | Reusable unit (checkout, setup-node, deploy) |
-| **Runner** | VM/container executing the job |
+## 1. 中心となる概念
 
-## 2. Triggers
+|用語 |意味 |
+|-----|----------|
+| **ワークフロー** | YAML ファイル。イベントによって引き起こされる |
+| **仕事** | 1 人のランナーで実行されます。他の仕事に依存できる |
+| **ステップ** |シェルコマンドまたは **`uses:`** アクション |
+| **アクション** |再利用可能なユニット (チェックアウト、セットアップノード、デプロイ) |
+| **ランナー** |ジョブを実行している VM/コンテナ |
+
+## 2. トリガー
 
 ```yaml
 on:
@@ -30,7 +31,7 @@ on:
   workflow_dispatch:        # manual run button
 ```
 
-## 3. Minimal Node.js CI example
+## 3. 最小限の Node.js CI の例
 
 ```yaml
 # .github/workflows/ci.yml
@@ -57,9 +58,9 @@ jobs:
       - run: npm run build
 ```
 
-## 4. Matrix builds
+## 4. マトリックスの構築
 
-Run the same job across OS / runtime versions:
+OS / ランタイムのバージョン間で同じジョブを実行します。
 
 ```yaml
 jobs:
@@ -78,7 +79,7 @@ jobs:
       - run: npm ci && npm test
 ```
 
-## 5. Java / Maven example
+## 5. Java / Maven の例
 
 ```yaml
 jobs:
@@ -94,7 +95,7 @@ jobs:
       - run: mvn -B verify
 ```
 
-## 6. Build and push Docker image
+## 6. Docker イメージをビルドしてプッシュする
 
 ```yaml
 jobs:
@@ -119,9 +120,9 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
 ```
 
-## 7. Deploy with environments
+## 7. 環境を使用してデプロイする
 
-Gate production with **required reviewers**:
+**必須レビュー担当者**によるゲート制作:
 
 ```yaml
 jobs:
@@ -137,9 +138,9 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
 ```
 
-Configure **Settings → Environments → production → Required reviewers**.
+**[設定] → [環境] → [運用] → [必要なレビュー担当者]** を構成します。
 
-## 8. Reusable workflows
+## 8. 再利用可能なワークフロー
 
 **`.github/workflows/reusable-test.yml`:**
 
@@ -162,7 +163,7 @@ jobs:
       - run: npm ci && npm test
 ```
 
-**Caller:**
+**発信者:**
 
 ```yaml
 jobs:
@@ -172,21 +173,21 @@ jobs:
       node-version: "22"
 ```
 
-## 9. Secrets and permissions
+## 9. シークレットと権限
 
-| Practice | Why |
+|練習 |なぜ |
 |----------|-----|
-| `secrets.*` for tokens | Never commit credentials |
-| Least-privilege `permissions:` | Default GITHUB_TOKEN scope |
-| OIDC to cloud (`aws-actions/configure-aws-credentials`) | No long-lived AWS keys |
-| Fork PRs don't get secrets | Security default |
+|トークンの場合は `secrets.*` |資格情報を決してコミットしないでください |
+|最低特権 `permissions:` |デフォルトの GITHUB_TOKEN スコープ |
+| OIDC からクラウドへ (`aws-actions/configure-aws-credentials`) |有効期間の長い AWS キーはありません |
+|フォーク PR はシークレットを取得しません。セキュリティのデフォルト |
 
-## 10. When to choose Actions
+## 10. アクションを選択する場合
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Native on GitHub | Tied to GitHub (or mirror) |
-| Huge **Marketplace** | Complex org billing at scale |
-| Free minutes for public repos | Self-hosted runners need ops |
+| GitHub 上でネイティブ | GitHub (またはミラー) に関連付けられている |
+|巨大な **マーケットプレイス** |大規模な複雑な組織の請求 |
+|パブリック リポジトリの無料分 |自己ホスト型ランナーには運用が必要 |
 
-**Related:** [Docker in CI](v-docker-in-ci.md), [Secrets & OIDC](../security-and-best-practices/iii-secrets-and-oidc.md).
+**関連:** [CI の Docker](v-docker-in-ci.md)、[秘密と OIDC](../security-and-best-practices/iii-secrets-and-oidc.md)。

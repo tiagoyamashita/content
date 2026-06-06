@@ -1,15 +1,16 @@
 ---
 label: "V"
-subtitle: "API Gateway & service mesh"
-group: "Cloud architecture"
+subtitle: "APIゲートウェイとサービスメッシュ"
+group: "クラウドアーキテクチャ"
 order: 5
 ---
-API Gateway & service mesh
-**North-south** traffic (clients → cluster) and **east-west** traffic (service ↔ service) need different control planes. **Circuit breakers** stop failures from cascading.
+APIゲートウェイとサービスメッシュ
 
-## 1. Traffic directions
+**南北**トラフィック (クライアント → クラスタ) と **東西** トラフィック (サービス ↔ サービス) には、異なるコントロール プレーンが必要です。 **サーキット ブレーカー** は、障害の連鎖を阻止します。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 110" role="img" aria-label="North south API gateway east west service mesh">
+## 1. 交通案内
+
+<figure class="notes-diagram"><svg xmlns="4 viewBox="0 0 400 110" role="img" aria-label="North south API gateway east west service mesh">
   <text x="12" y="18" fill="#d4d4d8" font-size="11" font-weight="600">North-south vs east-west</text>
   <rect x="160" y="28" width="80" height="24" rx="3" fill="rgba(59,130,246,0.2)" stroke="#60a5fa"/>
   <text x="172" y="44" fill="#e4e4e7" font-size="9">API Gateway</text>
@@ -27,25 +28,25 @@ API Gateway & service mesh
   <text x="220" y="68" fill="#71717a" font-size="8">east-west (mesh)</text>
 </svg></figure>
 
-## 2. API Gateway (north-south)
+## 2. API ゲートウェイ (南北)
 
-Single public entry point for clients.
+クライアント用の単一のパブリック エントリ ポイント。
 
-| Capability | Example |
-|------------|---------|
-| **Routing** | `/api/orders` → orders service |
-| **TLS termination** | HTTPS at edge |
-| **Authentication** | JWT validation, API keys |
-| **Rate limiting** | 1000 req/min per client |
-| **Request transformation** | Header injection, path rewrite |
-| **WAF integration** | Block SQLi patterns |
+|能力 |例 |
+|-----------|-----------|
+| **ルーティング** | `/api/orders` → 注文サービス |
+| **TLS 終端** |エッジでの HTTPS |
+| **認証** | JWT 検証、API キー |
+| **レート制限** |クライアントあたり 1000 リクエスト/分 |
+| **変換のリクエスト** |ヘッダー挿入、パス書き換え |
+| **WAF の統合** |ブロック SQLi パターン |
 
-| Product | Cloud |
-|---------|-------|
-| **AWS API Gateway** | REST / HTTP API |
-| **Azure API Management** | Azure |
-| **Google Apigee / Gateway** | GCP |
-| **Kong, NGINX** | Self-hosted / K8s Ingress |
+|製品 |クラウド |
+|----------|----------|
+| **AWS API ゲートウェイ** | REST / HTTP API |
+| **Azure API 管理** |アズール |
+| **Google Apigee / ゲートウェイ** | GCP |
+| **コング、NGINX** |セルフホスト / K8s Ingress |
 
 ```yaml
 # Conceptual route (Kong-style)
@@ -59,9 +60,9 @@ routes:
       - name: jwt
 ```
 
-## 3. Service mesh (east-west)
+## 3. サービス メッシュ (東西)
 
-**Sidecar proxy** (Envoy) next to each pod handles service-to-service traffic.
+各ポッドの隣にある **サイドカー プロキシ** (Envoy) は、サービス間のトラフィックを処理します。
 
 ```text
 Pod: [ app container ] [ Envoy sidecar ]
@@ -71,30 +72,30 @@ Pod: [ app container ] [ Envoy sidecar ]
               mTLS to peer Envoy
 ```
 
-| Feature | Without mesh | With mesh (Istio, Linkerd) |
-|---------|--------------|----------------------------|
-| Retries / timeouts | Per-library | Policy in YAML |
-| mTLS | App code or manual certs | Automatic |
-| Traffic split | Custom LB rules | 90/10 canary in config |
-| Metrics | Per-app instrumentation | Uniform sidecar metrics |
+|特集 |メッシュなし |メッシュあり (Istio、Linkerd) |
+|----------|--------------|----------------------------|
+|再試行/タイムアウト |ライブラリごと | YAML のポリシー |
+| mTLS |アプリコードまたは手動証明書 |自動 |
+|トラフィック分割 |カスタム LB ルール |構成内の 90/10 カナリア |
+|メトリクス |アプリごとのインストルメンテーション |均一なサイドカー メトリクス |
 
-| Product | Notes |
-|---------|-------|
-| **Istio** | Feature-rich, complex |
-| **Linkerd** | Lightweight |
-| **AWS App Mesh** | AWS-native Envoy |
+|製品 |メモ |
+|----------|----------|
+| **Istio** |機能が豊富で複雑 |
+| **リンカード** |軽量 |
+| **AWS アプリメッシュ** | AWS ネイティブの Envoy |
 
-**When to adopt:** many microservices, need uniform mTLS and traffic policy — not for a 3-service system.
+**いつ採用するか:** 多くのマイクロサービスでは、統一された mTLS とトラフィック ポリシーが必要です。3 サービス システムには必要ありません。
 
-## 4. Circuit breaker
+## 4. サーキットブレーカー
 
-Track failures to a downstream dependency; **fail fast** when unhealthy.
+障害を下流の依存関係まで追跡します。異常な場合は **すぐに失敗します**。
 
-| State | Behavior |
-|-------|----------|
-| **Closed** | Normal calls |
-| **Open** | Fail immediately — don't wait for timeout |
-| **Half-open** | Probe with limited calls — recover or re-open |
+|状態 |行動 |
+|------|----------|
+| **閉店** |通常の通話 |
+| **開く** |すぐに失敗します - タイムアウトを待たないでください |
+| **ハーフオープン** |制限された呼び出しでプローブする - 回復または再オープン |
 
 ```text
 Svc A ──▶ [ breaker CLOSED ] ──▶ Svc B (healthy)
@@ -105,39 +106,39 @@ Svc A ──▶ [ breaker OPEN ] ──✕ fast fail (fallback or cached respons
 After cooldown → HALF-OPEN → test call → CLOSED if OK
 ```
 
-**Resilience4j** (Java), **Envoy outlier detection**, **Istio destination rules**.
+**Resilience4j** (Java)、**Envoy 外れ値検出**、**Istio 宛先ルール**。
 
-| Without breaker | With breaker |
+|ブレーカーなし |ブレーカー付き |
 |-----------------|--------------|
-| Threads blocked on timeouts | Fail in ms |
-| Retry storm amplifies outage | Shed load |
-| Cascade: A waits on B waits on C | A degrades gracefully |
+|タイムアウトでブロックされたスレッド |ミリ秒以内に失敗します |
+|再試行の嵐により停止が拡大 |シェッドロード |
+|カスケード: A は B を待機し、C は待機します。 A は正常に劣化します。
 
-## 5. Gateway + mesh together
+## 5. ゲートウェイとメッシュの結合
 
-| Layer | Handles |
-|-------|---------|
-| **Gateway** | External auth, public API versioning, WAF |
-| **Mesh** | Internal mTLS, retries between services |
-| **Both** | Correlation ID injection at gateway, propagated by mesh |
+|レイヤー |ハンドル |
+|------|-----------|
+| **ゲートウェイ** |外部認証、パブリック API バージョニング、WAF |
+| **メッシュ** |内部 mTLS、サービス間での再試行 |
+| **両方** |ゲートウェイでの相関 ID の挿入、メッシュによって伝播 |
 
-## 6. Ingress vs API Gateway (Kubernetes)
+## 6. Ingress と API ゲートウェイ (Kubernetes)
 
-| | Ingress (NGINX, ALB) | API Gateway |
-|---|----------------------|-------------|
-| Scope | L7 routing into cluster | Full API management |
-| Auth | Basic, OAuth via annotations | Built-in policies |
-| Use | Internal + simple public | Public API product |
+| | Ingress (NGINX、ALB) | APIゲートウェイ |
+|---|---------------------|---------------|
+|範囲 |クラスターへの L7 ルーティング |完全な API 管理 |
+|認証 |基本、アノテーションによる OAuth |組み込みポリシー |
+|使用 |内部 + 単純なパブリック |パブリック API 製品 |
 
-Often: **CloudFront → ALB Ingress → services** for web; **API Gateway** for partner APIs.
+多くの場合: Web の **CloudFront → ALB Ingress → サービス**。パートナー API 用の **API ゲートウェイ**。
 
-## 7. Anti-patterns
+## 7. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| Mesh on day one | Direct K8s DNS until pain appears |
-| Gateway does business logic | Thin gateway — logic in services |
-| No timeout on HTTP client | Set connect + read timeout + breaker |
-| 20 retry with no jitter | Bounded retries + exponential backoff |
+|初日のメッシュ |痛みが現れるまで K8s DNS を直接指定する |
+|ゲートウェイはビジネス ロジックを実行します。シン ゲートウェイ — サービス内のロジック |
+| HTTP クライアントでタイムアウトなし |接続 + 読み取りタイムアウト + ブレーカーを設定 |
+|ジッターなしで 20 回再試行 |制限された再試行 + 指数バックオフ |
 
-**Related:** networking ingress note, [Observability, SLI & SLO](vi-observability-slo-and-slis.md), [Event-driven architecture](iv-event-driven-architecture.md).
+**関連:** ネットワーキングイングレスノート、[可観測性、SLI および SLO](vi-observability-slo-and-slis.md)、[イベント駆動型アーキテクチャ](iv-event-driven-architecture.md)。

@@ -1,20 +1,21 @@
 ---
 label: "VI"
-subtitle: "Modules & environments"
+subtitle: "モジュールと環境"
 group: "CI/CD"
 order: 6
 ---
-Modules & environments
-**Modules** package reusable infrastructure. **Workspaces** or **directory-per-env** patterns separate dev, staging, and prod without copy-paste.
+モジュールと環境
 
-## 1. Module basics
+**モジュール** は、再利用可能なインフラストラクチャをパッケージ化します。 **ワークスペース** または **ディレクトリごとの環境** パターンは、コピーアンドペーストすることなく開発、ステージング、本番環境を分離します。
 
-| Term | Meaning |
-|------|---------|
-| **Root module** | Directory where you run `terraform` |
-| **Child module** | Called via `module "name" { ... }` |
+## 1. モジュールの基本
 
-Local module:
+|用語 |意味 |
+|-----|----------|
+| **ルートモジュール** | `terraform`を実行するディレクトリ |
+| **子モジュール** | `module "name" { ... }`経由で電話をかけました |
+
+ローカルモジュール:
 
 ```text
 modules/
@@ -44,7 +45,7 @@ output "vpc_id" {
 }
 ```
 
-## 2. Public registry module
+## 2. パブリックレジストリモジュール
 
 ```hcl
 module "vpc" {
@@ -63,17 +64,17 @@ module "vpc" {
 }
 ```
 
-Browse: [registry.terraform.io](https://registry.terraform.io).
+参照: [registry.terraform.io](21)。
 
-| Source type | Example |
-|-------------|---------|
-| Registry | `terraform-aws-modules/vpc/aws` |
-| Git | `git::https://github.com/org/module.git?ref=v1.2.0` |
-| Local | `./modules/vpc` |
+|ソースタイプ |例 |
+|-----------|-----------|
+|レジストリ | `terraform-aws-modules/vpc/aws` |
+|ギット | `git::https://github.com/org/module.git?ref=v1.2.0` |
+|ローカル | `./modules/vpc` |
 
-Pin **`version`** or **`ref`** — floating tags break reproducibility.
+ピン **`version`** または **`ref`** — フローティング タグにより再現性が損なわれます。
 
-## 3. Writing a module
+## 3. モジュールの作成
 
 ```hcl
 # modules/vpc/variables.tf
@@ -92,11 +93,11 @@ output "vpc_id" {
 }
 ```
 
-Modules expose **inputs** (variables) and **outputs** — hide internal resource names.
+モジュールは **入力** (変数) と **出力** を公開し、内部リソース名を非表示にします。
 
-## 4. Environment strategies
+## 4. 環境戦略
 
-### A. Directory per environment (recommended)
+### A. 環境ごとのディレクトリ (推奨)
 
 ```text
 infra/
@@ -112,9 +113,9 @@ infra/
       terraform.tfvars
 ```
 
-Clear separation; different backends, vars, and approval paths.
+明確な分離。さまざまなバックエンド、変数、承認パス。
 
-### B. Terraform workspaces
+### B. Terraform ワークスペース
 
 ```bash
 terraform workspace new staging
@@ -122,17 +123,17 @@ terraform workspace select prod
 terraform workspace list
 ```
 
-Same code, different state namespaces. Works for small teams; can get confusing at scale.
+コードは同じですが、状態の名前空間は異なります。小規模なチームに適しています。大規模になると混乱する可能性があります。
 
-### C. Single root + `-var-file`
+### C. 単一ルート + `-var-file`
 
 ```bash
 terraform apply -var-file=environments/prod.tfvars
 ```
 
-One state unless combined with workspace or separate backend keys.
+ワークスペースまたは個別のバックエンド キーと組み合わせない限り、1 つの状態。
 
-## 5. tfvars per environment
+## 5. 環境ごとの tfvars
 
 ```hcl
 # environments/prod.tfvars
@@ -146,13 +147,13 @@ instance_type = "t3.micro"
 vpc_cidr      = "10.10.0.0/16"
 ```
 
-Never put secrets in tfvars in Git — use env vars, Vault, or CI secrets:
+Git の tfvars にはシークレットを決して置かないでください。env vars、Vault、または CI シークレットを使用してください。
 
 ```bash
 export TF_VAR_db_password="$(vault read -field=password secret/db)"
 ```
 
-## 6. Module composition example
+## 6. モジュール構成例
 
 ```hcl
 module "vpc" {
@@ -171,15 +172,15 @@ module "eks" {
 }
 ```
 
-Outputs from one module feed inputs to another — Terraform builds the graph.
+1 つのモジュールからの出力が別のモジュールに入力をフィードします。つまり、Terraform がグラフを構築します。
 
-## 7. Anti-patterns
+## 7. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| Copy-paste `.tf` per env | Module + tfvars |
-| Unpinned module version | Pin `version` / git `ref` |
-| Monolithic 2000-line root | Split modules by domain (network, compute, data) |
-| Prod and dev in one state | Separate backend keys |
+|環境ごとに `.tf` をコピーして貼り付け |モジュール + tfvars |
+|固定されていないモジュールのバージョン |ピン `version` / git `ref` |
+|モノリシック 2000 行ルート |ドメインごとにモジュールを分割 (ネットワーク、コンピューティング、データ) |
+|本番環境と開発環境が 1 つの状態にある |個別のバックエンド キー |
 
-**Related:** [AWS example — VPC & EC2](iv-aws-example-vpc-and-ec2.md), [Terraform in CI/CD](vii-terraform-in-cicd.md).
+**関連:** [AWS の例 — VPC および EC2](iv-aws-example-vpc-and-ec2.md)、[CI/CD での Terraform](vii-terraform-in-cicd.md)。
