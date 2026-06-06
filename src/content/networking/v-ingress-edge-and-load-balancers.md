@@ -6,7 +6,24 @@ order: 5
 ---
 Networking — Part V: Ingress, edge, and load balancers
 
-By the time traffic hits your cluster or data center, **TCP** is established and **TLS** may already be terminated. **Ingress** (especially in **Kubernetes**) is the **HTTP(S) routing layer** that maps **hostnames and paths** to **Services** and pods.
+By the time traffic hits your cluster or data center, **TCP** is established and **TLS** may already be terminated.
+
+### What is Ingress?
+
+**Ingress** is an **application-layer (L7) entry point** that routes **HTTP and HTTPS** requests to the correct backend based on **hostname**, **URL path**, and sometimes **headers** — instead of sending every request on the same IP to a single app.
+
+In **Kubernetes** specifically:
+
+- An **Ingress** object is **configuration** (rules + optional TLS).
+- An **Ingress controller** is the **running proxy** that applies those rules (nginx Ingress Controller, Traefik, AWS Load Balancer Controller, …).
+
+| Term | Layer | Job |
+|------|-------|-----|
+| **Load balancer (L4)** | TCP/UDP | Spread connections across nodes; may not look at URL |
+| **Ingress (L7)** | HTTP/HTTPS | “`api.example.com/v1` → this Service; `www.example.com` → that Service” |
+| **Service** | In-cluster | Stable address to a set of pods |
+
+Non-Kubernetes systems use the same idea under names like **reverse proxy**, **API gateway**, or **edge router** — Kubernetes standardized the name **Ingress** for the config resource.
 
 ## 1. Load balancer vs reverse proxy
 
