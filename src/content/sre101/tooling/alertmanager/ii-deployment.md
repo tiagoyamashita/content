@@ -1,13 +1,14 @@
 ---
 label: "II"
-subtitle: "Deployment"
+subtitle: "導入"
 group: "SRE"
 order: 2
 ---
-SRE tooling — Alertmanager: Deployment
-Run Alertmanager locally or on Kubernetes.
+SRE ツール — アラートマネージャー: 導入
 
-## 1. Docker (quickest lab)
+Alertmanager をローカルまたは Kubernetes 上で実行します。
+
+## 1. Docker (最も速いラボ)
 
 ```text
 docker run -d --name alertmanager -p 9093:9093 \
@@ -17,13 +18,13 @@ docker run -d --name alertmanager -p 9093:9093 \
   --web.external-url=http://localhost:9093
 ```
 
-UI: **`http://localhost:9093`**. Swap **`/absolute/path`** for your machine.
+UI: **`http://localhost:9093`**。 **`/absolute/path`** をあなたのマシンに置き換えてください。
 
 ## 2. Kubernetes (kube-prometheus-stack / Prometheus Operator)
 
-Helm usually ships an **`Alertmanager`** CR (**`monitoring.coreos.com/v1`**) managed by the Operator. You customize **`alertmanager.config`** (or **`AlertmanagerConfig`** CRDs if enabled)—values merge into the generated **`Secret`**. Scale HA with **`replicas`** on the **`Alertmanager`** CR.
+Helm は通常、オペレーターによって管理される **`Alertmanager`** CR (**`monitoring.coreos.com/v1`**) を出荷します。 **`alertmanager.config`** (または有効な場合は **`AlertmanagerConfig`** CRD) をカスタマイズすると、生成された **`Secret`** に値がマージされます。 **`Alertmanager`** CR で **`replicas`** を使用して HA をスケールします。
 
-Rough Helm **`values.yaml`** sketch:
+ラフヘルム **`values.yaml`** スケッチ:
 
 ```yaml
 alertmanager:
@@ -46,10 +47,10 @@ alertmanager:
             channel: "#alerts"
 ```
 
-Treat **`api_url`** and tokens as secrets (**ExternalSecrets**, **SealedSecrets**, or CSI)—avoid committing real URLs.
+**`api_url`** とトークンをシークレット (**ExternalSecrets**、**SealedSecrets**、または CSI) として扱います。実際の URL のコミットは避けてください。
 
-## 3. Binary / VM
+## 3. バイナリ/VM
 
-Download release from Prometheus projects; point **`--config.file`** at **`alertmanager.yml`**; run under **systemd** with **`Restart=always`** and **`User`** without root.
+Prometheus プロジェクトからリリースをダウンロードします。 **`alertmanager.yml`**の地点**`--config.file`**。 root なしで **`Restart=always`** および **`User`** を使用して **systemd** の下で実行します。
 
-Next: **Configuration & receivers** for **`alertmanager.yml`** details.
+次へ: **構成と受信機**、**`alertmanager.yml`** の詳細。

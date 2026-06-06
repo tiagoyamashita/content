@@ -1,15 +1,16 @@
 ---
 label: "VI"
-subtitle: "CircleCI"
+subtitle: "サークルCI"
 group: "CI/CD"
 order: 6
 ---
-CircleCI
-SaaS CI with strong **caching**, **orbs** (reusable config packages), and fast Linux/Docker executors.
+サークルCI
 
-## 1. Config basics
+強力な **キャッシュ**、**orbs** (再利用可能な構成パッケージ)、および高速な Linux/Docker エグゼキューターを備えた SaaS CI。
 
-**`.circleci/config.yml`** — version 2.1 recommended:
+## 1. 構成の基本
+
+**`.circleci/config.yml`** — バージョン 2.1 を推奨:
 
 ```yaml
 version: 2.1
@@ -35,7 +36,7 @@ workflows:
       - test
 ```
 
-## 2. Maven / Java orb
+## 2. Maven / Java Orb
 
 ```yaml
 version: 2.1
@@ -58,7 +59,7 @@ workflows:
       - verify
 ```
 
-## 3. Docker build and push
+## 3. Docker のビルドとプッシュ
 
 ```yaml
 jobs:
@@ -83,9 +84,9 @@ workflows:
           context: registry-credentials
 ```
 
-**Contexts** group secrets (`registry-credentials`) shared across projects.
+**コンテキスト** グループ シークレット (`registry-credentials`) はプロジェクト間で共有されます。
 
-## 4. Workflow with approval gate
+## 4. 承認ゲートを使用したワークフロー
 
 ```yaml
 workflows:
@@ -101,9 +102,9 @@ workflows:
             - hold
 ```
 
-## 5. Caching
+## 5. キャッシング
 
-CircleCI caches **`~/.npm`**, **`~/.m2`**, **`~/.gradle`** keyed by checksum of lockfiles:
+CircleCI キャッシュ **`~/.npm`**、**`~/.m2`**、**`~/.gradle`** はロックファイルのチェックサムによってキー設定されています。
 
 ```yaml
 - restore_cache:
@@ -116,19 +117,19 @@ CircleCI caches **`~/.npm`**, **`~/.m2`**, **`~/.gradle`** keyed by checksum of 
       - ~/.npm
 ```
 
-**Docker layer caching** (`setup_remote_docker: docker_layer_caching: true`) speeds image builds.
+**Docker レイヤー キャッシュ** (`setup_remote_docker: docker_layer_caching: true`) により、イメージのビルドが高速化されます。
 
-## 6. When to choose CircleCI
+## 6. CircleCI を選択する場合
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Excellent cache UX | Separate from GitHub/GitLab UI |
-| Orbs reduce boilerplate | Pricing at high concurrency |
-| Fast startup | Less built-in than GitLab all-in-one |
+|優れたキャッシュ UX | GitHub/GitLab UI から分離 |
+|オーブは定型文を削減します |高同時実行時の価格設定 |
+|高速スタートアップ | GitLab オールインワンよりも組み込み機能が少ない |
 
-| Good fit | Less ideal |
-|----------|------------|
-| Polyrepo with shared orbs | Already all-in on GitHub Actions |
-| Teams wanting SaaS without self-host Jenkins | Strict on-prem only |
+|良いフィット感 |あまり理想的ではない |
+|----------|-----------|
+|共有 Orbs を使用した Polyrepo |すでに GitHub Actions に全力を尽くしています |
+|セルフホスト Jenkins を使用しない SaaS を必要とするチーム |厳密にオンプレミスのみ |
 
-**Related:** [Choosing a platform](viii-choosing-a-platform.md), [Docker in CI](v-docker-in-ci.md).
+**関連:** [プラットフォームの選択](viii-choosing-a-platform.md)、[CI の Docker](v-docker-in-ci.md)。

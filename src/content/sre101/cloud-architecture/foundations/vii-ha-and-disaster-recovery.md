@@ -1,18 +1,19 @@
 ---
 label: "VII"
-subtitle: "HA & disaster recovery"
-group: "Cloud architecture"
+subtitle: "HA と災害復旧"
+group: "クラウドアーキテクチャ"
 order: 7
 ---
-High availability & disaster recovery
-Systems fail. **HA** minimizes downtime within a region; **DR** prepares for region-wide or major disasters. Define **RTO** and **RPO** before picking a strategy.
+高可用性と災害復旧
 
-## 1. Key metrics
+システムに障害が発生します。 **HA** は、リージョン内のダウンタイムを最小限に抑えます。 **DR** は、地域全体または大規模な災害に備えます。戦略を選択する前に、**RTO** と **RPO** を定義します。
 
-| Metric | Definition | Example |
-|--------|------------|---------|
-| **RTO** | Recovery **Time** Objective — max acceptable **downtime** | 4 hours |
-| **RPO** | Recovery **Point** Objective — max acceptable **data loss** (time window) | 15 minutes |
+## 1. 主要な指標
+
+|メトリック |定義 |例 |
+|----------|-----------|----------|
+| **RTO** |復旧 **時間** 目標 — 許容可能な最大 **ダウンタイム** | 4時間 |
+| **RPO** |回復 **ポイント** 目標 — 最大許容**データ損失** (時間枠) | 15分 |
 
 ```text
 Failure at T0 ───────────────────────────▶ Service restored
@@ -22,20 +23,20 @@ Last good backup ──▶ Failure
               │◀──── RPO (data lost) ───▶│
 ```
 
-Lower RTO/RPO → higher cost and complexity.
+RTO/RPO の低下 → コストと複雑さの増加。
 
-## 2. Failure scopes
+## 2. 障害の範囲
 
-| Scope | Mitigation |
-|-------|------------|
-| Single instance | Auto Scaling replacement, LB health checks |
-| Single AZ | Multi-AZ deployment |
-| Whole region | Multi-region DR |
-| Operator error | Backups, IaC, change review |
+|範囲 |緩和 |
+|------|-----------|
+|単一インスタンス | Auto Scaling の置き換え、LB ヘルスチェック |
+|シングル AZ |マルチ AZ 展開 |
+|全域 |マルチリージョン DR |
+|オペレーターエラー |バックアップ、IaC、変更レビュー |
 
-## 3. Multi-AZ patterns
+## 3. マルチ AZ パターン
 
-### Active-active (preferred for stateless tiers)
+### アクティブ/アクティブ (ステートレス層に推奨)
 
 ```text
         ┌── AZ-a: app instances ──┐
@@ -43,9 +44,9 @@ Lower RTO/RPO → higher cost and complexity.
         └── AZ-b: app instances ──┘
 ```
 
-Traffic load-balanced across AZs **at all times**.
+**常に**、AZ間でトラフィックの負荷が分散されます。
 
-### Active-passive (common for databases)
+### アクティブ/パッシブ (データベースに共通)
 
 ```text
 RDS Primary (AZ-a) ──sync──▶ Standby (AZ-b)
@@ -53,22 +54,22 @@ RDS Primary (AZ-a) ──sync──▶ Standby (AZ-b)
     failover on AZ-a failure → promote standby
 ```
 
-Higher **RTO** than active-active app tier (~minutes for DB failover).
+アクティブ/アクティブ アプリ層よりも高い **RTO** (DB フェイルオーバーに数分)。
 
-### Auto Scaling Group
+### オートスケーリンググループ
 
-- Replace unhealthy instances automatically.
-- Spread across AZs via launch template.
-- Pair with ALB health checks [Networking, VPC & LB](vi-networking-vpc-and-lb.md).
+- 異常なインスタンスを自動的に置き換えます。
+- 起動テンプレートを介して AZ に分散します。
+- ALB ヘルスチェック [ネットワーキング、VPC および LB](vi-networking-vpc-and-lb.md) と組み合わせます。
 
-## 4. DR tiers (cheapest → lowest RTO)
+## 4. DR 階層 (最安 → 最低 RTO)
 
-| Tier | Description | RTO | RPO | Cost |
-|------|-------------|-----|-----|------|
-| **Backup & restore** | Periodic snapshots to S3; rebuild on disaster | Hours–days | Hours | $ |
-| **Pilot light** | Minimal core (DB replica, AMIs) always on; scale up rest | Hours | Minutes–hours | $$ |
-| **Warm standby** | Scaled-down full stack running; scale on failover | Minutes–hours | Minutes | $$$ |
-| **Active-active multi-region** | Full capacity in 2+ regions | Seconds–minutes | Near zero | $$$$ |
+|階層 |説明 | RTO | RPO |コスト |
+|------|---------------|-----|-----|------|
+| **バックアップと復元** | S3 への定期的なスナップショット。災害時の再建 |時間 – 日 |営業時間 | $ |
+| **パイロットライト** |最小限のコア (DB レプリカ、AMI) は常にオン。スケールアップレスト |営業時間 |分–時間 | $$ |
+| **ウォーム スタンバイ** |スケールダウンされたフルスタックの実行。フェイルオーバー時のスケール |分–時間 |分 | $$$ |
+| **アクティブ-アクティブ マルチリージョン** | 2 つ以上のリージョンでフルキャパシティ |秒–分 |ゼロに近い | $$$$ |
 
 ```text
 Backup & restore:     [snapshots in S3] ──on DR──▶ rebuild everything
@@ -80,53 +81,53 @@ Warm standby:         [small running env in DR region] ──scale up──▶
 Active-active:        [Region A: 100%] + [Region B: 100%] via Route 53
 ```
 
-## 5. Backup best practices
+## 5. バックアップのベスト プラクティス
 
-| Resource | Backup method |
-|----------|---------------|
-| RDS | Automated backups + manual snapshots |
-| EBS | Snapshots |
-| S3 | Versioning + cross-region replication |
-| K8s | Velero, etcd backup (managed control plane handled) |
-| IaC | Git is source of truth — rebuild env from Terraform |
+|リソース |バックアップ方法 |
+|----------|--------------|
+| ＲＤＳ |自動バックアップ + 手動スナップショット |
+| EBS |スナップショット |
+| S3 |バージョニング + リージョン間レプリケーション |
+| K8s | Velero、etcd バックアップ (マネージド コントロール プレーン処理) |
+| IaC | Git は真実の源 — Terraform から環境を再構築する |
 
-**Test restores** — untested backups are wishful thinking.
+**テスト復元** — テストされていないバックアップは希望的観測です。
 
-## 6. Multi-region considerations
+## 6. マルチリージョンに関する考慮事項
 
-| Topic | Detail |
-|-------|--------|
-| **Replication** | Async cross-region — non-zero RPO |
-| **DNS failover** | Route 53 health checks + failover routing |
-| **Data sovereignty** | Some data cannot leave primary region |
-| **Split brain** | Avoid dual-write without conflict resolution |
+|トピック |詳細 |
+|------|----------|
+| **レプリケーション** |非同期クロスリージョン — ゼロ以外の RPO |
+| **DNS フェイルオーバー** | Route 53 ヘルスチェック + フェイルオーバー ルーティング |
+| **データ主権** |一部のデータはプライマリ リージョンから出ることができません。
+| **スプリット ブレイン** |競合を解決しない二重書き込みを避ける |
 
-## 7. Example RTO/RPO targets
+## 7. RTO/RPO 目標の例
 
-| Business | RTO | RPO | Strategy |
+|ビジネス | RTO | RPO |戦略 |
 |----------|-----|-----|----------|
-| Internal admin tool | 24 h | 24 h | Backup & restore |
-| B2B SaaS | 4 h | 1 h | Warm standby |
-| Payments API | 15 min | 1 min | Multi-AZ + cross-region replica |
-| Global social app | 1 min | ~0 | Active-active multi-region |
+|内部管理ツール | 24時間 | 24時間 |バックアップと復元 |
+| B2B SaaS | 4時間 | 1時間 |ウォームスタンバイ |
+|決済API | 15分 | 1分 |マルチ AZ + クロスリージョン レプリカ |
+|グローバルソーシャルアプリ | 1分 | ~0 |アクティブ/アクティブ マルチリージョン |
 
-## 8. Runbook essentials
+## 8. ランブックの要点
 
-| Step | Action |
-|------|--------|
-| 1 | Detect (monitoring, health checks) |
-| 2 | Declare incident, assign commander |
-| 3 | Failover DNS / promote standby |
-| 4 | Verify SLO, communicate status |
-| 5 | Post-incident review, fix root cause |
+|ステップ |アクション |
+|------|----------|
+| 1 |検出 (監視、ヘルスチェック) |
+| 2 |事件を宣言し、指揮官を任命 |
+| 3 |フェイルオーバー DNS / スタンバイのプロモート |
+| 4 | SLO を確認し、ステータスを伝達する |
+| 5 |インシデント後のレビュー、根本原因の修正 |
 
-## 9. HA checklist
+## 9. HA チェックリスト
 
-- [ ] App tier in **≥ 2 AZs** behind LB
-- [ ] Database **Multi-AZ** or equivalent
-- [ ] Health checks + auto replacement
-- [ ] Backups with retention + **tested restore**
-- [ ] DR strategy documented with RTO/RPO
-- [ ] Runbook rehearsed annually
+- [ ] LB の背後にある **≥ 2 AZ** のアプリ層
+- [ ] データベース **Multi-AZ** または同等のもの
+- [ ] ヘルスチェック + 自動置換
+- [ ] 保持付きバックアップ + **テスト済みの復元**
+- [ ] RTO/RPO とともに文書化された DR 戦略
+- [ ] ランブックを毎年リハーサル
 
-**Related:** [Regions, AZs & edge](iii-regions-azs-and-edge.md), patterns [Scalability & caching](../patterns-and-design/ii-scalability-and-caching.md), [Well-Architected Framework](viii-well-architected-framework.md).
+**関連:** [リージョン、AZ およびエッジ](iii-regions-azs-and-edge.md)、パターン [スケーラビリティおよびキャッシュ](../patterns-and-design/ii-scalability-and-caching.md)、[適切に設計されたフレームワーク](viii-well-architected-framework.md)。

@@ -1,10 +1,10 @@
 ---
 label: "I"
 subtitle: "TCP、UDP、トランスポートの基本"
-group: "ネットワーキング"
+group: "働いています"
 order: 1
 ---
-ネットワーキング — パート I: TCP、UDP、およびトランスポートの基本
+インターネット作業 — パート I: TCP、UDP、およびトランスポートの基本
 
 アプリケーションがネットワーク上でバイトを送信する方法: アドレス指定、ポート、および 2 つの主要なトランスポート プロトコル。
 
@@ -37,7 +37,7 @@ order: 1
   <text x="12" y="182" fill="#71717a" font-size="10">OS routes by destination port → correct process (demultiplexing).</text>
 </svg></figure>
 
-## 2. UDP — ユーザー データグラム プロトコル
+## 2. UDP — ユーザーデータグラム プロトコル
 
 **特徴**
 
@@ -45,7 +45,7 @@ order: 1
 - **再順序付けなし / ベストエフォート:** 再送信または順序付けの保証は組み込まれていません (アプリケーションは独自の保証を追加できます)。
 - **ヘッダーが小さく、遅延が少ない:** DNS クエリ、VoIP、ゲーム、時折損失が許容されるメトリクスに適しています。
 
-**UDP を選択する場合**
+**UDPを選択する場合**
 
 - **低レイテンシー**が必要で、損失を許容できるか、独自の信頼性を実装している場合 (例: UDP 上に構築された QUIC)。
 
@@ -73,7 +73,7 @@ order: 1
   <text x="12" y="168" fill="#71717a" font-size="10">No connection state; no automatic retry or ordering.</text>
 </svg></figure>
 
-## 3. TCP — 伝送制御プロトコル
+## 3. TCP — 中継制御プロトコル
 
 **特徴**
 
@@ -112,7 +112,7 @@ order: 1
   <text x="12" y="212" fill="#71717a" font-size="10">Kernel buffers reorder, retransmit, and pace sends — app sees one ordered byte stream.</text>
 </svg></figure>
 
-**TCP を選択する場合**
+**TCPを選択する場合**
 
 - **HTTP/1.1 と HTTP/2** は歴史的に TCP 上にありました。スタックがバイト ストリームの損失と順序付けを処理できるようにする必要があります。
 
@@ -130,7 +130,7 @@ order: 1
   <text x="240" y="96" fill="#71717a" font-size="9">DNS, VoIP, gaming, QUIC base</text>
 </svg></figure>
 
-## 4. ソケット (概念的)
+## 4.ソケット (考え方)
 
 **ソケット** は、プログラムが使用する API 境界です。サーバーではバインド/リッスン/受け入れ、クライアントでは接続/送信/受信します。カーネルは、ソケットを **プロトコル** (TCP または UDP)、**ローカル** および **リモート** の IP/ポート ペア、およびバッファーに結び付けます。
 
