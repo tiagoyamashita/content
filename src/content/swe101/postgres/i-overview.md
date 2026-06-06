@@ -1,38 +1,37 @@
 ---
 label: "I"
-subtitle: "概要"
-group: "ポストグレ"
+subtitle: "Overview"
+group: "Postgres"
 order: 1
 ---
-Postgres — 概要
+Postgres — overview
+**PostgreSQL** (Postgres) is the default **relational** database for many production applications: strong **ACID** transactions, rich **SQL**, extensible types, and mature tooling. This track focuses on what you need as a **software engineer** — schema design, migrations, query performance, app integration, and day-two operations.
 
-**PostgreSQL** (Postgres) は、強力な **ACID** トランザクション、豊富な **SQL**、拡張可能なタイプ、成熟したツールなど、多くの実稼働アプリケーションのデフォルトの **リレーショナル** データベースです。このトラックでは、**ソフトウェア エンジニア**として必要なこと、つまりスキーマ設計、移行、クエリ パフォーマンス、アプリの統合、2 日目の操作に焦点を当てます。
+For the general database landscape (NoSQL, CAP, polyglot persistence), see [Databases overview](../../CS101/databases/i-overview.md). For relational theory and SQL fundamentals, see [Relational (SQL)](../../CS101/databases/ii-relational.md).
 
-一般的なデータベースの状況 (NoSQL、CAP、多言語永続性) については、[データベースの概要](../../CS101/databases/i-overview.md) を参照してください。リレーショナル理論と SQL の基礎については、[リレーショナル (SQL)](../../CS101/databases/ii-relational.md) を参照してください。
+## Map of this track
 
-## このトラックの地図
+| Part | Focus |
+|------|--------|
+| **I — Overview** | Why Postgres, architecture mental model |
+| **II — Install & psql** | Local setup, `psql`, basic admin |
+| **III — Schema & migrations** | DDL, constraints, versioned schema changes |
+| **IV — Indexes & EXPLAIN** | B-tree indexes, query plans, slow-query triage |
+| **V — App integration** | JDBC, connection pools, Spring Data JPA |
+| **VI — Operations & backups** | Roles, `pg_dump`, replication basics |
+| **VII — Database optimizations** | Triage workflow, query rewrites, scaling checklist |
 
-|パート |フォーカス |
-|------|----------|
-| **I — 概要** | Postgres を使用する理由、アーキテクチャ メンタル モデル |
-| **II — インストールと psql** |ローカルセットアップ、`psql`、基本管理 |
-| **III — スキーマと移行** | DDL、制約、バージョン対応スキーマの変更 |
-| **IV — 索引と説明** | B ツリー インデックス、クエリ プラン、低速クエリのトリアージ |
-| **V — アプリの統合** | JDBC、接続プール、Spring Data JPA |
-| **VI — 操作とバックアップ** |ロール、`pg_dump`、レプリケーションの基本 |
-| **VII — データベースの最適化** |ワークフローの優先順位付け、クエリのリライト、スケーリング チェックリスト |
+## Why Postgres (for apps)
 
-## Postgres を使用する理由 (アプリ用)
+| Strength | What it means in practice |
+|----------|---------------------------|
+| **ACID transactions** | Multi-row updates (order + inventory) succeed or roll back together |
+| **Rich SQL** | `JOIN`, window functions, CTEs, `JSONB`, full-text search |
+| **Constraints** | `UNIQUE`, `CHECK`, foreign keys enforced in the DB — not only in app code |
+| **Extensions** | `pgcrypto`, PostGIS, `pgvector` — add capabilities without switching stores |
+| **Ecosystem** | Managed offerings (RDS, Cloud SQL, Supabase, Neon), ORMs, migration tools |
 
-|強さ |実際の意味 |
-|----------|--------------------------|
-| **ACID トランザクション** |複数行の更新 (注文 + 在庫) が成功するか、一緒にロールバックされる |
-| **リッチ SQL** | `JOIN`、ウィンドウ関数、CTE、`JSONB`、全文検索 |
-| **制約** | `UNIQUE`、`CHECK`、アプリ コードだけでなく DB にも外部キーが適用される |
-| **拡張機能** | `pgcrypto`、PostGIS、`pgvector` — ストアを切り替えずに機能を追加 |
-| **生態系** |マネージド オファリング (RDS、Cloud SQL、Supabase、Neon)、ORM、移行ツール |
-
-## アーキテクチャ (メンタルモデル)
+## Architecture (mental model)
 
 ```text
 Application  →  connection pool  →  Postgres server
@@ -43,32 +42,32 @@ Application  →  connection pool  →  Postgres server
               (cache pages)       (crash recovery)  (vacuum, checkpointer)
 ```
 
-|コンポーネント |役割 |
+| Component | Role |
 |-----------|------|
-| **データベース** |スキーマの名前空間。 1 つのクラスターが多数のデータベースをホストします。
-| **スキーマ** |デフォルトは `public`;テーブル、ビュー、関数を保持します。
-| **表/索引** |ディスク上の構造。インデックスは別個の B ツリーです。
-| **ウォール** |先行書き込みログ — データ ページがフラッシュされる前でもコミットは永続的です。
-| **真空** |デッドタプルスペースを再利用します。プランナー統計を更新します |
+| **Database** | Namespace for schemas; one cluster hosts many databases |
+| **Schema** | Default `public`; holds tables, views, functions |
+| **Table / index** | On-disk structures; indexes are separate B-trees |
+| **WAL** | Write-ahead log — commits are durable before data pages flush |
+| **Vacuum** | Reclaims dead tuple space; updates planner statistics |
 
-## Postgres vs 「SQLite だけを使う」
+## Postgres vs “just use SQLite”
 
-| | SQLite |ポストグレ |
+| | SQLite | Postgres |
 |---|--------|----------|
-| **展開** |埋め込みファイル、ゼロサーバー |クライアント/サーバープロセス |
-| **同時実行性** |シングルライター |多数の同時リーダー/ライター |
-| **こんな用途に最適** |ローカル ツール、モバイル、テスト |マルチユーザー Web アプリ、共有状態 |
-| **作戦** |ファイルをコピーします |バックアップ、ロール、レプリケーション、モニタリング |
+| **Deployment** | Embedded file, zero server | Client/server process |
+| **Concurrency** | Single writer | Many concurrent readers/writers |
+| **Best for** | Local tools, mobile, tests | Multi-user web apps, shared state |
+| **Ops** | Copy the file | Backups, roles, replication, monitoring |
 
-ローカルの開発テストと単体テストには SQLite を使用します。複数のアプリ インスタンスまたはユーザーが 1 つのデータベースを共有する場合は、Postgres を使用します。
+Use SQLite for local dev and unit tests; use Postgres when multiple app instances or users share one database.
 
-## 名前とタイプ (簡単な規則)
+## Naming and types (quick conventions)
 
-- **`snake_case`** テーブル名と列名を優先します - SQL の伝統とほとんどの ORM に一致します。
-- サロゲート主キーには **`BIGSERIAL` / `GENERATED … AS IDENTITY`** を使用します。
-- `TIMESTAMP` より **`TIMESTAMPTZ`** を優先 — UTC を保存し、セッション タイムゾーンで表示します。
-- 厳しいビジネス制限がある場合を除き、`VARCHAR(n)` の代わりに **`TEXT`** を使用します (Postgres ではこれらを同様に扱います。`TEXT` の方が簡単です)。
+- Prefer **`snake_case`** table and column names — matches SQL tradition and most ORMs.
+- Use **`BIGSERIAL` / `GENERATED … AS IDENTITY`** for surrogate primary keys.
+- Prefer **`TIMESTAMPTZ`** over `TIMESTAMP` — stores UTC, displays in session timezone.
+- Use **`TEXT`** instead of `VARCHAR(n)` unless you have a hard business limit (Postgres treats them similarly; `TEXT` is simpler).
 
-＃＃ 次
+## Next
 
-[インストールと psql](ii-install-and-psql.md) に進み、Postgres をローカルで実行し、シェルから接続します。
+Continue with [Install & psql](ii-install-and-psql.md) to run Postgres locally and connect from the shell.

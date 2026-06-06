@@ -1,22 +1,21 @@
 ---
 label: "III"
-subtitle: "ニュースフィードとタイムライン"
-group: "システム設計"
+subtitle: "News feed & timeline"
+group: "System design"
 order: 3
 ---
-ニュースフィードとタイムライン
+News feed and timeline
+**Twitter / Instagram-style** home timeline: show recent posts from people you **follow**, ranked by time or score.
 
-**Twitter / Instagram スタイル**のホーム タイムライン: **フォローしている**人の最近の投稿を時間またはスコアでランク付けして表示します。
+## 1. Delivery models
 
-## 1. 配信モデル
+| Model | On post | On read | Best for |
+|-------|---------|---------|----------|
+| **Fan-out on write (push)** | Write post id to every follower’s feed cache | Read pre-built list — O(1) | Normal users, moderate followers |
+| **Fan-out on read (pull)** | Only write posts table | Merge N followees’ posts | Write-cheap; read expensive |
+| **Hybrid** | Push for most; pull for celebrities | Merge push cache + celebrity pull | Production social graphs |
 
-|モデル |ポスト上 |読み取り時 |こんな方に最適 |
-|----------|-----------|----------|----------|
-| **書き込み時のファンアウト (プッシュ)** |投稿 ID をすべてのフォロワーのフィード キャッシュに書き込みます |事前に構築されたリストを読み取る — O(1) |一般ユーザー、適度なフォロワー |
-| **読み取り（プル）時のファンアウト** |投稿テーブルのみを書き込みます | N 人のフォロワーの投稿を結合 |ライトチープ。高価な本を読む |
-| **ハイブリッド** |ほとんどの場合はプッシュします。有名人のためのプル |プッシュ キャッシュと有名人のプルをマージ |プロダクションソーシャルグラフ |
-
-<figure class="notes-diagram"><svg xmlns="14 viewBox="0 0 460 130" role="img" aria-label="Fan-out on write vs hybrid with celebrity">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 130" role="img" aria-label="Fan-out on write vs hybrid with celebrity">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Fan-out on write (normal user)</text>
   <rect x="12" y="32" width="48" height="24" rx="2" fill="rgba(34,197,94,0.15)" stroke="#86efac"/>
   <text x="20" y="48" fill="#e4e4e7" font-size="8">Post</text>
@@ -30,38 +29,38 @@ order: 3
   <text x="12" y="92" fill="#fbbf24" font-size="9">Celebrity (10M followers): skip fan-out → fetch on read only</text>
 </svg></figure>
 
-## 2. 書き込み増幅
+## 2. Write amplification
 
-|フォロワー |ポストごとのファンアウト書き込み |
-|----------|-----------|
+| Followers | Fan-out writes per post |
+|-----------|-------------------------|
 | 500 | 500 Redis ZADD |
-| 10M | 1,000 万回の書き込み — 受け入れられない |
+| 10 M | 10 M writes — unacceptable |
 
-**しきい値ルール:** `followers > X` (例: 10 K) の場合、**有名人**として扱います — プッシュ ファンアウトはありません。
+**Threshold rule:** if `followers > X` (e.g. 10 K), treat as **celebrity** — no push fan-out.
 
-## 3. データモデル
+## 3. Data model
 
-**投稿 (真実の情報源)**
+**Posts (source of truth)**
 
-|コラム |タイプ |
-|------|------|
-| `post_id` | BIGINT (スノーフレーク) |
-| `author_id` |ビッグINT |
-| `content` |テキスト |
+| Column | Type |
+|--------|------|
+| `post_id` | BIGINT (Snowflake) |
+| `author_id` | BIGINT |
+| `content` | TEXT |
 | `media_ids` | JSON |
-| `created_at` |タイムスタンプ |
+| `created_at` | TIMESTAMP |
 
-**フィード キャッシュ (Redis)**
+**Feed cache (Redis)**
 
-- キー: `feed:{user_id}`
-- タイプ: **ソートセット** — メンバー = `post_id`、スコア = `created_at` エポック ミリ秒
-- 最後の K エントリまでトリミング (例: 1000)
+- Key: `feed:{user_id}`
+- Type: **sorted set** — member = `post_id`, score = `created_at` epoch ms
+- Trim to last K entries (e.g. 1000)
 
-**グラフをたどる**
+**Follow graph**
 
 | `follower_id` | `followee_id` | `created_at` |
 
-## 4. 読み取りパス (ハイブリッド)
+## 4. Read path (hybrid)
 
 ```text
 1. ZREVRANGE feed:{user_id} 0 49          → pushed posts
@@ -69,14 +68,14 @@ order: 3
 3. Merge + dedupe + rank → return page
 ```
 
-ページネーション: カーソル = `(score, post_id)` タプル。
+Pagination: cursor = `(score, post_id)` tuple.
 
-## 5. スケール戦術
+## 5. Scale tactics
 
-|コンポーネント |戦術 |
-|----------|----------|
-|ファンアウトワーカー |ポストイベントごとのキュー。バッチ Redis パイプライン |
-|ホットユーザー |専用キャッシュ パーティション |
-|ランク付けされたフィード |スコアを非同期で事前計算します。 ZSET に保存 |
+| Component | Tactic |
+|-----------|--------|
+| Fan-out workers | Queue per post event; batch Redis pipeline |
+| Hot users | Dedicated cache partition |
+| Ranked feed | Precompute scores async; store in ZSET |
 
-**関連:** スケーラブルなパターン [メッセージ キューと非同期](../scalable-patterns/iii-message-queues-and-async.md)、パート I Redis。
+**Related:** Scalable patterns [Message queues & async](../scalable-patterns/iii-message-queues-and-async.md), Part I Redis.

@@ -1,14 +1,13 @@
 ---
 label: "II"
-subtitle: "ゲートウェイの仕組み"
-group: "APIゲートウェイ"
+subtitle: "How gateways work"
+group: "API Gateway"
 order: 2
 ---
-API ゲートウェイ — ゲートウェイの仕組み
+API gateway — how gateways work
+**North-south** traffic flows from **clients** (internet, mobile, partners) **into** your system through the gateway. The gateway terminates the client connection, applies policy, and opens a **new** connection to upstream services.
 
-**南北**のトラフィックは、**クライアント** (インターネット、モバイル、パートナー) からゲートウェイを介して**システムに流れます。ゲートウェイはクライアント接続を終了し、ポリシーを適用して、上流サービスへの**新しい**接続を開きます。
-
-## 1. リクエストの流れ
+## 1. Request flow
 
 ```text
 1. Client TLS handshake with gateway (api.example.com)
@@ -19,59 +18,59 @@ API ゲートウェイ — ゲートウェイの仕組み
 6. Gateway may transform response → client
 ```
 
-|ステップ |故障モード |
+| Step | Failure mode |
 |------|--------------|
-| **ルートミス** |ゲートウェイからの 404 — アップストリーム ヒットなし |
-| **認証失敗** | 401/403 — アップストリームが呼び出されません |
-| **レート制限** | 429 — 上流を保護する |
-| **アップストリームのタイムアウト** | 504 — ゲートウェイとサービスのタイムアウトを調整する |
+| **Route miss** | 404 from gateway — no upstream hit |
+| **Auth fail** | 401/403 — upstream not called |
+| **Rate limit** | 429 — protect upstream |
+| **Upstream timeout** | 504 — tune gateway vs service timeouts |
 
-## 2. 南北と東西
+## 2. North-south vs east-west
 
-|方向 |パス |ツーリング |
-|----------|------|----------|
-| **南北** |クライアント → ゲートウェイ → サービス | **API ゲートウェイ**、CDN |
-| **東西** |サービス ↔ サービス | K8s DNS、**サービス メッシュ** (Istio、Linkerd) |
+| Direction | Path | Tooling |
+|-----------|------|---------|
+| **North-south** | Client → gateway → service | **API gateway**, CDN |
+| **East-west** | Service ↔ service | K8s DNS, **service mesh** (Istio, Linkerd) |
 
-ゲートウェイは **外部** 信頼境界を処理します。内部サービス呼び出しはパブリック ゲートウェイをスキップすることがよくあります。mTLS を使用したメッシュまたはダイレクト クラスター DNS を使用します。
+Gateway handles **external** trust boundary. Internal service calls often skip the public gateway — use mesh or direct cluster DNS with mTLS.
 
-「API ゲートウェイとサービスメッシュ」(../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md) を参照してください。
+See [API Gateway & service mesh](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md).
 
-## 3. ゲートウェイとロードバランサー
+## 3. Gateway vs load balancer
 
-| | **ロードバランサー (ALB/NLB)** | **API ゲートウェイ** |
-|---|----------------------------|---------------|
-| **レイヤー** | L4/L7 分布 | L7 API セマンティクス |
-| **ルーティング** |ホスト/パス → ターゲットグループ |バージョン管理されたルート、プラグイン |
-| **認証** |最小限 | JWT、API キー、OAuth |
-| **レート制限** |オプションの低速 |ファーストクラス |
-| **典型的なスタック** |ゲートウェイ **→** ALB **→** ポッド |両層共通 |
+| | **Load balancer (ALB/NLB)** | **API gateway** |
+|---|----------------------------|-----------------|
+| **Layer** | L4/L7 distribution | L7 API semantics |
+| **Routing** | Host/path → target group | Versioned routes, plugins |
+| **Auth** | Minimal | JWT, API keys, OAuth |
+| **Rate limit** | Optional slow | First-class |
+| **Typical stack** | Gateway **→** ALB **→** pods | Both layers common |
 
-ALB は負荷を分散します。ゲートウェイは **API 製品** 機能を追加します。
+ALB spreads load; gateway adds **API product** features.
 
-## 4. CDN が前にある場合
+## 4. With CDN in front
 
 ```text
 GET /assets/app.js     → CDN → S3 (gateway not involved)
 POST /api/v1/orders    → CDN bypass → Gateway → orders-service
 ```
 
-CDN はホスト名を共有する場合があります — **パスベースの動作** により API トラフィックがゲートウェイのオリジンに送信されます。詳細: [CDN と API ゲートウェイの併用](../cdn/viii-cdn-and-api-gateway-together.md)。
+CDN may share hostname — **path-based behaviors** send API traffic to gateway origin. Details: [CDN & API gateway together](../cdn/viii-cdn-and-api-gateway-together.md).
 
-## 5. 同期統合と非同期統合
+## 5. Synchronous vs async integration
 
-|上流タイプ |パターン |
-|--------------|----------|
-| **HTTP サービス** |プロキシパススルー |
-| **AWS Lambda** | API ゲートウェイ イベントの呼び出し |
-| **キュー** |ゲートウェイ HTTP → サービス エンキュー (ゲートウェイはクライアントとの同期を維持) |
-| **WebSocket** |ゲートウェイのアップグレード + ルート (プロバイダー固有) |
+| Upstream type | Pattern |
+|---------------|---------|
+| **HTTP service** | Proxy pass-through |
+| **AWS Lambda** | API Gateway event invoke |
+| **Queue** | Gateway HTTP → service enqueues (gateway stays sync to client) |
+| **WebSocket** | Gateway upgrade + route (provider-specific) |
 
-非同期パターン (202 + ポーリング/Webhook) を公開しない限り、クライアントは通常、**1** の同期応答を待ちます。
+Client usually waits for **one** synchronous response unless you expose async pattern (202 + poll/webhook).
 
-## 6. ヘッダーとコンテキスト
+## 6. Headers and context
 
-ゲートウェイはアップストリームにコンテキストを挿入します。
+Gateway injects context for upstream:
 
 ```http
 X-Request-Id: 7f3a9c2e-...
@@ -80,16 +79,16 @@ X-Authenticated-User: user_42
 Authorization: (stripped or forwarded per policy)
 ```
 
-内部ネットワーク (mTLS またはプライベート サブネット) がクライアントのスプーフィングを防止する場合にのみ、サービスは **ゲートウェイ検証済み** ID ヘッダーを信頼します。
+Services trust **gateway-validated** identity headers only if internal network prevents client spoofing (mTLS or private subnet).
 
-## 7. コールド パスとホット パス
+## 7. Cold path vs hot path
 
-| |ゲートウェイ |上流サービス |
-|---|--------|----|
-| **ステートレスを維持** |はい — 水平スケール | DBのビジネス状態 |
-| **構成の変更** |ルート、プラグイン — 慎重にデプロイ |アプリのリリース |
-| **レイテンシ バジェット** | 1 桁のミリ秒オーバーヘッド目標 |ほとんどの作業はここで行われます |
+| | Gateway | Upstream service |
+|---|---------|------------------|
+| **Keep stateless** | Yes — horizontal scale | Business state in DB |
+| **Config changes** | Routes, plugins — deploy carefully | App releases |
+| **Latency budget** | Single-digit ms overhead target | Most work here |
 
-＃＃ 次
+## Next
 
-パス、ステージング、およびカナリアについては、[ルーティングとバージョン](iii-routing-and-versions.md) に進みます。
+Continue with [Routing & versions](iii-routing-and-versions.md) for paths, staging, and canaries.

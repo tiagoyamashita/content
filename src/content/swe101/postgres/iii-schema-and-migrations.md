@@ -1,14 +1,13 @@
 ---
 label: "III"
-subtitle: "スキーマと移行"
-group: "ポストグレ"
+subtitle: "Schema & migrations"
+group: "Postgres"
 order: 3
 ---
-Postgres — スキーマと移行
+Postgres — schema & migrations
+Define tables with **DDL**, enforce rules with **constraints**, and evolve schema through **versioned migrations** — never hand-edit production without a tracked script.
 
-**DDL** でテーブルを定義し、**制約**でルールを適用し、**バージョン管理された移行** を通じてスキーマを進化させます。追跡されたスクリプトを使用せずに本番環境を手動で編集する必要はありません。
-
-## 1. DDL ビルディング ブロック
+## 1. DDL building blocks
 
 ```sql
 CREATE TABLE accounts (
@@ -33,15 +32,15 @@ CREATE TABLE posts (
 CREATE INDEX posts_account_id_idx ON posts (account_id);
 ```
 
-|制約 |を防ぐ |
-|-----------|----------|
-| **`PRIMARY KEY`** | ID が重複しています |
-| **`NOT NULL`** |必須フィールドが欠落しています |
-| **`UNIQUE`** |重複メール、スラッグ |
-| **`CHECK`** |無効な列挙型の値です。
-| **`REFERENCES`** |孤立した外部キ​​ー |
+| Constraint | Prevents |
+|------------|----------|
+| **`PRIMARY KEY`** | Duplicate ids |
+| **`NOT NULL`** | Missing required fields |
+| **`UNIQUE`** | Duplicate emails, slugs |
+| **`CHECK`** | Invalid enum-like values |
+| **`REFERENCES`** | Orphan foreign keys |
 
-## 2. 移行ワークフロー
+## 2. Migrations workflow
 
 ```text
 V1__create_accounts.sql   →  applied once, recorded in history table
@@ -49,16 +48,16 @@ V2__add_posts.sql         →  runs on next deploy
 V3__index_posts.sql       →  additive, backward-compatible when possible
 ```
 
-|ルール |なぜ |
+| Rule | Why |
 |------|-----|
-| **ファイルごとに一方向** |アップマイグレーションは契約です。ダウンはオプションです |
-| **ツールが許可する場合は冪等** |一部のフローのインデックスの場合は `IF NOT EXISTS` |
-| **拡張→デプロイ→契約** | NULL 可能な列を追加 → バックフィル → NOT NULL を設定 → 古いものを削除 |
-| **適用された履歴を書き換えないでください** |新しい移行で修正を進めます |
+| **One direction per file** | Up migration is the contract; down is optional |
+| **Idempotent where tools allow** | `IF NOT EXISTS` for indexes in some flows |
+| **Expand → deploy → contract** | Add column nullable → backfill → set NOT NULL → drop old |
+| **Never rewrite applied history** | Fix forward with a new migration |
 
-一般的なツール: **Flyway**、**Liquibase**、**Alembic** (Python)、**Rails 移行**、**Prisma 移行**、**golang-maigrate**。
+Popular tools: **Flyway**, **Liquibase**, **Alembic** (Python), **Rails migrations**, **Prisma migrate**, **golang-migrate**.
 
-### フライウェイの例
+### Flyway example
 
 ```sql
 -- V1__create_accounts.sql
@@ -73,20 +72,20 @@ flyway -url=jdbc:postgresql://localhost:5432/myapp_dev \
   -user=myapp -password=secret migrate
 ```
 
-Flyway は **`flyway_schema_history`** を作成し、新しいバージョンのみを適用します。
+Flyway creates **`flyway_schema_history`** and applies only new versions.
 
-## 3. 安全な列変更
+## 3. Safe column changes
 
-|変更 |より安全なパターン |
-|------|------|
-| **列を追加** | `ADD COLUMN col TYPE DEFAULT value` — null 許容 + デフォルトの最近の Postgres でのテーブル全体の書き換えを回避します。
-| **列の名前を変更** |両方の名前を読み取る移行 + アプリのデプロイ、またはロックステップでデプロイ |
-| **列を削除** |書き込みの停止 → デプロイ → 読み取りの停止 → 移行が中止される |
-| **タイプの変更** |新しい列 `col_new`、バックフィル、2 つのリリースでの名前の交換 |
+| Change | Safer pattern |
+|--------|---------------|
+| **Add column** | `ADD COLUMN col TYPE DEFAULT value` — avoids full table rewrite on recent Postgres for nullable + default |
+| **Rename column** | Migration + app deploy that reads both names, or deploy in lockstep |
+| **Drop column** | Stop writing → deploy → stop reading → migration drops |
+| **Change type** | New column `col_new`, backfill, swap names in two releases |
 
-トラフィックのピーク時にホット テーブルで **`ACCESS EXCLUSIVE`** の長時間ロックを避けてください。インデックスの作成には **`CONCURRENTLY`** を使用します ([インデックスと EXPLAIN](iv-indexes-and-explain.md) を参照)。
+**Avoid** long **`ACCESS EXCLUSIVE`** locks on hot tables during peak traffic. Use **`CONCURRENTLY`** for index creation (see [Indexes & EXPLAIN](iv-indexes-and-explain.md)).
 
-## 4. 形状が柔軟な場合 `JSONB`
+## 4. `JSONB` when the shape is flexible
 
 ```sql
 ALTER TABLE products ADD COLUMN metadata JSONB NOT NULL DEFAULT '{}';
@@ -96,9 +95,9 @@ SELECT id, title FROM products
 WHERE metadata @> '{"category": "electronics"}';
 ```
 
-リレーショナル モデル内のクエリ可能なドキュメント フィールドには、**`JSON`** (読み取りごとのテキスト解析) ではなく **`JSONB`** (バイナリ、インデックス可能) を使用します。
+Use **`JSONB`** (binary, indexable) not **`JSON`** (text parse per read) for queryable document fields inside a relational model.
 
-## 5. `updated_at` のトリガー (一般的なパターン)
+## 5. Triggers for `updated_at` (common pattern)
 
 ```sql
 CREATE OR REPLACE FUNCTION set_updated_at()
@@ -114,18 +113,18 @@ CREATE TRIGGER accounts_updated_at
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 ```
 
-多くのチームは、代わりにアプリケーション コードで `updated_at` を設定することを好みます。これにより、DB 層での驚きが少なくなります。
+Many teams prefer setting `updated_at` in application code instead — fewer surprises in the DB layer.
 
-## 6. シードと移行
+## 6. Seeds vs migrations
 
-| |移行 |種子 |
-|---|-----------|----------|
-| **目的** |スキーマ構造 |開発/デモデータ |
-| **本番環境で実行** |はい |通常はいいえ |
-| **例** | `CREATE TABLE` | `INSERT INTO roles …` |
+| | Migrations | Seeds |
+|---|------------|-------|
+| **Purpose** | Schema structure | Dev/demo data |
+| **Runs in prod** | Yes | Usually no |
+| **Example** | `CREATE TABLE` | `INSERT INTO roles …` |
 
-本番データを移行ファイルに含めないようにしてください。
+Keep production data out of migration files.
 
-＃＃ 次
+## Next
 
-[インデックスと説明](iv-indexes-and-explain.md) に進み、運用環境でクエリを高速かつ読みやすくします。
+Continue with [Indexes & EXPLAIN](iv-indexes-and-explain.md) to make queries fast and readable in production.

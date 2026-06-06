@@ -1,35 +1,34 @@
 ---
 label: "V"
-subtitle: "ネットワーク"
-group: "システム設計"
+subtitle: "Network"
+group: "System design"
 order: 5
 ---
-ネットワークのボトルネック
+Network bottlenecks
+**Physics and protocol choices** cap throughput and add latency between services and regions.
 
-**物理的およびプロトコルの選択**により、スループットが制限され、サービスとリージョン間の遅延が増加します。
+## 1. Signals
 
-## 1. 信号
+| Signal | Detection |
+|--------|-----------|
+| NIC bandwidth maxed | `sar -n DEV`, cloud NIC metrics |
+| TCP **retransmits** high | `ss -ti`, `netstat -s` |
+| Cross-AZ / cross-region latency | Trace span between services |
+| **Ephemeral port exhaustion** | `TIME_WAIT` storm, connect errors |
+| TLS handshake CPU | CPU on edge during spike |
 
-|信号 |検出 |
-|----------|----------|
-| NIC 帯域幅が最大に達しました | `sar -n DEV`、クラウド NIC メトリクス |
-| TCP **再送信** 高 | `ss -ti`、`netstat -s` |
-|クロス AZ / クロスリージョン レイテンシ |サービス間のトレース スパン |
-| **一時的なポート枯渇** | `TIME_WAIT` ストーム、接続エラー |
-| TLS ハンドシェイク CPU |スパイク中にエッジ上の CPU |
+## 2. Causes and fixes
 
-## 2. 原因と解決策
+| Cause | Fix |
+|-------|-----|
+| Chatty RPC (many round trips) | Batch APIs; gRPC streaming |
+| Large JSON payloads | gzip/Brotli; protobuf |
+| New TCP conn per request | **Connection pool**; keep-alive |
+| HTTP/1.1 head-of-line blocking | **HTTP/2** multiplex; **HTTP/3** (QUIC) |
+| Cross-region RTT | CDN; regional deploy; cache at edge |
+| Service mesh sidecar ~1 ms each hop | Mesh on critical paths only; bypass for internals |
 
-|原因 |修正 |
-|------|-----|
-|おしゃべりな RPC (多くの往復) |バッチ API。 gRPC ストリーミング |
-|大きな JSON ペイロード | gzip/ブロトリ;プロトブフ |
-|リクエストごとの新しい TCP 接続 | **接続プール**;キープアライブ |
-| HTTP/1.1 行頭ブロック | **HTTP/2** マルチプレックス。 **HTTP/3** (QUIC) |
-|クロスリージョン RTT | CDN;地域展開。エッジでのキャッシュ |
-|サービス メッシュ サイドカー 各ホップ ~1 ミリ秒 |クリティカル パス上のメッシュのみ。内部のバイパス |
-
-<figure class="notes-diagram"><svg xmlns="4 viewBox="0 0 460 110" role="img" aria-label="Chatty vs batched network calls">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 110" role="img" aria-label="Chatty vs batched network calls">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Chatty vs batched</text>
   <text x="12" y="38" fill="#f87171" font-size="9">10 × 1 RTT = 10 × latency</text>
   <path d="M12 50 H40" stroke="#f87171" stroke-width="1"/><path d="M12 58 H40" stroke="#f87171" stroke-width="1"/><path d="M12 66 H40" stroke="#f87171" stroke-width="1"/>
@@ -37,27 +36,27 @@ order: 5
   <path d="M200 58 H280" stroke="#86efac" stroke-width="2"/>
 </svg></figure>
 
-## 3. レイテンシーバジェット (例)
+## 3. Latency budget (example)
 
-|ホップ |典型的な |
-|-----|----------|
-|同じアリゾナ州 | 0.1 ～ 0.5 ミリ秒 |
-|クロスアリゾナ | 1 ～ 3 ミリ秒 |
-|クロスリージョン (米国↔EU) | 80 ～ 120 ミリ秒 |
-|モバイルのラストワンマイル | 20 ～ 200 ミリ秒 |
+| Hop | Typical |
+|-----|---------|
+| Same AZ | 0.1–0.5 ms |
+| Cross-AZ | 1–3 ms |
+| Cross-region (US↔EU) | 80–120 ms |
+| Mobile last mile | 20–200 ms |
 
-**クリティカル パス**がリージョン間のホップを最小限に抑えるように API を設計します。
+Design APIs so **critical path** minimizes cross-region hops.
 
-## 4. 接続管理
+## 4. Connection management
 
-|練習 |なぜ |
+| Practice | Why |
 |----------|-----|
-| DB/API の制限に合わせて調整されたプール サイズ |疲労を避ける |
-| LB に合わせたアイドル タイムアウト |古いソケットはありません |
-| HTTP/2 1 つの接続で多数のストリーム |握手の減少 |
+| Pool size tuned to DB/API limits | Avoid exhaustion |
+| Idle timeout aligned with LB | No stale sockets |
+| HTTP/2 one conn many streams | Fewer handshakes |
 
-## 5. CDN とエッジ
+## 5. CDN and edge
 
-**静的** および **キャッシュ可能な API** 応答をオフロードします。スケーラブル パターンの CDN ノートを参照してください。
+Offload **static** and **cacheable API** responses — see scalable patterns CDN note.
 
-**関連:** ネットワーク トラック (TCP、HTTP、TLS)、[アプリケーション レベル](vii-application-level.md) (タイムアウト、サーキット ブレーカー)。
+**Related:** Networking track (TCP, HTTP, TLS), [Application-level](vii-application-level.md) (timeouts, circuit breakers).

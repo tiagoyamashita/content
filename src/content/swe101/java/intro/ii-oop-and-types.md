@@ -1,20 +1,19 @@
 ---
 label: "II"
-subtitle: "OOP とタイプ"
-group: "ジャワ"
+subtitle: "OOP & types"
+group: "Java"
 groupOrder: 1
 order: 2
 ---
-Java — パート II
+Java — Part II
+Classes, encapsulation, inheritance, polymorphism, interfaces, and packages.
 
-クラス、カプセル化、継承、ポリモーフィズム、インターフェイス、およびパッケージ。
+**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
-**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
-
-## 1. クラスとオブジェクト
-- **クラス** = ブループリント。 **オブジェクト** = 独自のフィールド値を持つメモリ内のインスタンス。
-- コンストラクターは状態を初期化します。 none を宣言した場合は、コンストラクターを追加するまで、デフォルトの引数なしのコンストラクターが表示されます。
-- `this` は現在のインスタンスを指します。コンストラクターの連鎖には `this(...)` が使用されます。
+## 1. Classes and objects
+- **Class** = blueprint; **object** = instance in memory with its own field values.
+- Constructors initialize state; if you declare none, a default no-arg constructor appears until you add any constructor.
+- `this` refers to the current instance; constructor chaining uses `this(...)`.
 
 ```java
 // Compile: javac --release 22 …
@@ -40,10 +39,10 @@ public class Counter {
 ```
 
 
-## 2. カプセル化
-- アクセサー (`getX`、`setX`) またはより明確なドメイン メソッドの背後にあるフィールドを非表示にします。
-- 最も狭い可視性を使用します: 意図的に選択された `private` フィールド、`public` API サーフェス。
-- 可能な限り不変性 - `final` フィールドは一度設定され、ミューテーターは不要 - 同時実行コードでの推論が簡素化されます。
+## 2. Encapsulation
+- Hide fields behind accessors (`getX`, `setX`) or clearer domain methods.
+- Use the narrowest visibility: `private` fields, `public` API surface deliberately chosen.
+- Immutability where possible — `final` fields set once, no mutators — simplifies reasoning in concurrent code.
 
 ```java
 // Compile: javac --release 22 …
@@ -64,11 +63,11 @@ public final class EmailAddress {
 ```
 
 
-## 3. 継承とポリモーフィズム
-- `extends` 1 つのスーパークラス。 Java は実装の単一継承をサポートしています。
-- **`@Override`** スーパークラス メソッドを置き換える場合 - コンパイル時に署名の間違いを検出します。
-- **動的ディスパッチ**: 仮想メソッドはランタイム型の実装に解決されます。
-- 深い継承階層よりも構成を優先します。継承により、脆弱な基本クラスのコントラクトが明らかになります。
+## 3. Inheritance and polymorphism
+- `extends` one superclass; Java supports single inheritance for implementation.
+- **`@Override`** when replacing superclass methods — catches signature mistakes at compile time.
+- **Dynamic dispatch**: virtual methods resolve to the runtime type’s implementation.
+- Prefer composition over deep inheritance hierarchies; inheritance exposes brittle base-class contracts.
 
 ```java
 // Compile: javac --release 22 …
@@ -89,11 +88,11 @@ static void greet(Animal animal) {
 ```
 
 
-## 4. 抽象クラスとインターフェイス
-- **抽象クラス**: 部分的な実装。直接インスタンス化することはできません。
-- **`interface`**: 行動契約を定義します。 Java 8 以降、メソッドは本体を備えた `default` または `static` になる可能性があります。
-- クラスは複数のインターフェースを実装できます。機能 (「比較できる」、「シリアル化できる」) のために使用します。
-- **Sealed** クラス/インターフェイスは、拡張/実装できるユーザーを制限します。これは徹底的なモデリングに役立ちます。
+## 4. Abstract classes and interfaces
+- **Abstract class**: partial implementation; cannot be instantiated directly.
+- **`interface`**: defines behavior contracts; methods may be `default` or `static` with bodies since Java 8.
+- A class may implement multiple interfaces; use them for capability (“can compare”, “can serialize”).
+- **Sealed** classes/interfaces restrict who may extend/implement — useful for exhaustive modeling.
 
 ```java
 // Compile: javac --release 22 …
@@ -111,10 +110,10 @@ record User(String id, String name) implements Identifiable, Auditable {}
 ```
 
 
-## 5. `Object` 必需品
-- `equals` / `hashCode` は一致する必要があります: 等しいオブジェクト → 同じハッシュ コード。
-- `toString` はデバッグとログに役立ちます。 `clone` は壊れやすいため、多くの場合、コピー コンストラクターまたはファクトリーが好まれます。
-- 不変データキャリア (自動 `equals`、`hashCode`、`toString`、アクセサ) には **`record`** (Java 16+) を優先します。
+## 5. `Object` essentials
+- `equals` / `hashCode` must agree: equal objects → same hash codes.
+- `toString` aids debugging and logs; `clone` is fragile — often prefer copy constructors or factories.
+- Prefer **`record`** (Java 16+) for immutable data carriers — auto `equals`, `hashCode`, `toString`, accessors.
 
 ```java
 // Compile: javac --release 22 …
@@ -129,10 +128,10 @@ static void demo() {
 ```
 
 
-## 6. パッケージとモジュール (概要)
-- **`package`** は名前空間を宣言します。 **インポート** 短縮名。明確さが損なわれる場合は、大規模なコードベースでのワイルドカードのインポートを避けてください。
-- **`java.base`** とその友人は JDK に同梱されています。 **`java.lang`** は暗黙的であることを知っています。
-- **JPMS** (`module-info.java`) は、プレーン パッケージを超えてコンパイル時の境界を追加します。ライブラリを構築するときや階層化を強制するときに採用されます。
+## 6. Packages and modules (overview)
+- **`package`** declares namespace; **imports** shorten names; avoid wildcard imports in large codebases when clarity suffers.
+- **`java.base`** and friends ship with the JDK; know **`java.lang`** is implicit.
+- **JPMS** (`module-info.java`) adds compile-time boundaries beyond plain packages — adopt when building libraries or enforcing layering.
 
 ```java
 // Compile: javac --release 22 …
@@ -159,4 +158,4 @@ public final class Money {
 }
 ```
 
-ツリー状のデータ (BST、ヒープ) については、言語の基本からアルゴリズムに移行するときに、**CS101 → データ構造**を参照してください。
+For tree-shaped data (BST, heaps), see **CS101 → Data structures** when you move from language basics to algorithms.

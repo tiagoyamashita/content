@@ -1,16 +1,15 @@
 ---
 label: "III"
-subtitle: "データ構造とキー"
-group: "レディス"
+subtitle: "Data structures & keys"
+group: "Redis"
 order: 3
 ---
-Redis — データ構造とキー
+Redis — data structures & keys
+Redis values are not only strings — pick the **type** that matches your access pattern. **Key design** and **TTL** matter as much as in [Key-value stores](../../CS101/databases/iii-key-value.md).
 
-Redis 値は文字列だけではありません。アクセス パターンに一致する **タイプ** を選択してください。 **キー設計** と **TTL** は、[Key-value ストア](../../CS101/databases/iii-key-value.md) と同じくらい重要です。
+## 1. Key naming
 
-## 1. キーの命名
-
-**名前空間** プレフィックスを使用します。ログ内で読みやすく、grep に適しています。
+Use a **namespace** prefix — readable, grep-friendly in logs:
 
 ```text
 cache:product:8812
@@ -19,17 +18,17 @@ ratelimit:api:192.168.1.1:2026051914
 user:42:profile
 ```
 
-|大会 |例 |
-|-----------|-----------|
-| **`:` セパレーター** |ネストされたフォルダーのない階層 |
-| **安定した ID** |電子メールが変更された場合、`user:ada` ではなく `user:42` |
-| **バージョンの接尾辞** | `cache:product:v2:8812` キャッシュの形状が変化するとき |
+| Convention | Example |
+|------------|---------|
+| **`:` separator** | Hierarchy without nested folders |
+| **Stable ids** | `user:42`, not `user:ada` if email changes |
+| **Version suffix** | `cache:product:v2:8812` when cache shape changes |
 
-あいまいな名前 (`data`、`temp`、`x`) を持つ 1 つの巨大なキースペースは避けてください。
+Avoid one giant keyspace with ambiguous names (`data`, `temp`, `x`).
 
-## 2. 文字列
+## 2. Strings
 
-デフォルトのタイプ — JSON BLOB、カウンター、フラグ:
+Default type — JSON blobs, counters, flags:
 
 ```text
 SET feature:dark_mode "on"
@@ -40,21 +39,21 @@ INCR stats:pageviews:home
 INCRBY stats:bytes:served 4096
 ```
 
-**`SET` オプション:**
+**`SET` options:**
 
-|オプション |意味 |
-|--------|--------|
+| Option | Meaning |
+|--------|---------|
 | **`EX seconds`** | TTL |
-| **`NX`** |キーが見つからない場合にのみ設定 (ロック、重複排除) |
-| **`XX`** |キーが存在する場合にのみ設定 |
+| **`NX`** | Set only if key missing (lock, dedupe) |
+| **`XX`** | Set only if key exists |
 
 ```text
 SET lock:job:import worker-1 NX EX 30
 ```
 
-## 3. ハッシュ
+## 3. Hashes
 
-1 つのキーの下のフィールド マップ — コンパクトなユーザー/セッション オブジェクト:
+Field map under one key — compact user/session objects:
 
 ```text
 HSET user:42 name Ada email ada@example.com plan pro
@@ -64,11 +63,11 @@ HMGET user:42 name email
 HINCRBY cart:42 item_count 1
 ```
 
-BLOB 全体を解析せずに個々のフィールドを更新する場合は、JSON 文字列よりも **ハッシュ** を優先します。
+Prefer **hash** over JSON string when you update individual fields without parsing whole blob.
 
-## 4. リスト
+## 4. Lists
 
-リンクされたリスト — キュー、最近のアイテム (境界付き):
+Linked list — queues, recent items (bounded):
 
 ```text
 LPUSH events:recent "login" "purchase"
@@ -76,11 +75,11 @@ LRANGE events:recent 0 9
 LTRIM events:recent 0 99    # keep last 100
 ```
 
-**`BLPOP`** - 単純なワーカー キューのポップをブロックします (コンシューマ グループの **Streams** を考慮してください)。
+**`BLPOP`** — blocking pop for simple worker queues (consider **Streams** for consumer groups).
 
-## 5. セットとソートされたセット
+## 5. Sets and sorted sets
 
-**セット** — 一意のメンバー、タグ、プレゼンス:
+**Set** — unique members, tags, presence:
 
 ```text
 SADD online:users 42 99 101
@@ -88,7 +87,7 @@ SISMEMBER online:users 42
 SMEMBERS online:users
 ```
 
-**ソートセット (ZSET)** — スコア + メンバー — リーダーボード、時間順のランク:
+**Sorted set (ZSET)** — score + member — leaderboards, time-ordered ranks:
 
 ```text
 ZADD leaderboard 9850 "player:ada"
@@ -97,12 +96,12 @@ ZREVRANGE leaderboard 0 9 WITHSCORES
 ZRANK leaderboard "player:ada"
 ```
 
-|タイプ |使用 |
+| Type | Use |
 |------|-----|
-| **設定** |独自タグ、相互フォロー（注意） |
-| **ZSET** |タイムスタンプ スコア別の遅延ジョブのランキング |
+| **Set** | Unique tags, mutual followers (with care) |
+| **ZSET** | Rankings, delayed jobs by timestamp score |
 
-## 6. TTL と有効期限
+## 6. TTL and expiry
 
 ```text
 SET session:tok EX 3600
@@ -111,27 +110,27 @@ PERSIST session:tok          # remove TTL
 TTL session:tok              # seconds remaining; -1 no TTL; -2 missing
 ```
 
-**遅延 + 定期的** 有効期限 — 削除の正確な秒数に依存しないでください。キーが短時間残っても安全になるようにキーを設計します。
+**Lazy + periodic** expiry — do not rely on exact second of deletion for correctness; design keys to be safe if they linger briefly.
 
-## 7. その他のタイプ (認識)
+## 7. Other types (awareness)
 
-|タイプ |使用 |
+| Type | Use |
 |------|-----|
-| **ストリーム** |ログ、コンシューマ グループ — [パターンと使用例](iv-patterns-and-use-cases.md) を参照してください。
-| **ハイパーログログ** |おおよその一意のカウント |
-| **ビットマップ** |ユーザー ID ごとの機能フラグ、毎日のアクティブ ビット |
-| **地理** |位置半径のクエリ |
+| **Stream** | Log, consumer groups — see [Patterns & use cases](iv-patterns-and-use-cases.md) |
+| **HyperLogLog** | Approx unique counts |
+| **Bitmap** | Feature flags per user id, daily active bits |
+| **GEO** | Location radius queries |
 
-## 8. シリアル化
+## 8. Serialization
 
-アプリがすでに JSON を話す場合は、**JSON** を文字列に保存します。
+Store **JSON** in strings when the app already speaks JSON:
 
 ```text
 SET cache:product:8812 "{\"title\":\"Keyboard\",\"price\":129.99}"
 ```
 
-部分的な更新には **ハッシュ** を使用します。サイズが重要な場合は **MessagePack** を使用してください。サービス レイヤーでエンコーディングを必ず文書化してください。
+Use **hash** for partial updates; **MessagePack** if size matters — always document encoding in your service layer.
 
-＃＃ 次
+## Next
 
-キャッシュアサイド、セッション、およびレート制限については、[パターンと使用例](iv-patterns-and-use-cases.md) に進みます。
+Continue with [Patterns & use cases](iv-patterns-and-use-cases.md) for cache-aside, sessions, and rate limiting.

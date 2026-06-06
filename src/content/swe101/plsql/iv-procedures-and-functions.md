@@ -1,14 +1,13 @@
 ---
 label: "IV"
-subtitle: "手順と機能"
+subtitle: "Procedures & functions"
 group: "PL/SQL"
 order: 4
 ---
-PL/SQL — プロシージャとファンクション
+PL/SQL — procedures & functions
+Store reusable units as **procedures** (no return value in the signature) and **functions** (return one value). Call them from SQL, other PL/SQL, or application code.
 
-再利用可能なユニットを **プロシージャ** (シグネチャに戻り値なし) および **関数** (1 つの値を返す) として保存します。 SQL、他のPL/SQL、またはアプリケーション・コードから呼び出します。
-
-## 1. 手順
+## 1. Procedure
 
 ```sql
 CREATE OR REPLACE PROCEDURE raise_salary (
@@ -27,7 +26,7 @@ END raise_salary;
 /
 ```
 
-実行する：
+Execute:
 
 ```sql
 BEGIN
@@ -37,7 +36,7 @@ END;
 /
 ```
 
-## 2. 機能
+## 2. Function
 
 ```sql
 CREATE OR REPLACE FUNCTION dept_avg_salary (
@@ -52,14 +51,14 @@ END dept_avg_salary;
 /
 ```
 
-SQL からの呼び出し (**`DETERMINISTIC`** であるか、一部のコンテキストの純粋性ルールを満たす必要があります):
+Call from SQL (must be **`DETERMINISTIC`** or satisfy purity rules for some contexts):
 
 ```sql
 SELECT department_id, dept_avg_salary(department_id) AS avg_sal
 FROM departments;
 ```
 
-PL/SQLからの呼び出し:
+Call from PL/SQL:
 
 ```sql
 DECLARE
@@ -71,13 +70,13 @@ END;
 /
 ```
 
-## 3. パラメータモード
+## 3. Parameter modes
 
-|モード |発信者は通過できます |内部手順 |
-|------|---------------|------|
-| **`IN`** |リテラル、変数 |読み取り専用入力 |
-| **`OUT`** |変数のみ |返却前に割り当てます。呼び出し側は結果を確認します |
-| **`IN OUT`** |初期化された変数 |読んで置き換える |
+| Mode | Caller can pass | Inside procedure |
+|------|-----------------|------------------|
+| **`IN`** | Literal, variable | Read-only input |
+| **`OUT`** | Variable only | Assign before return; caller sees result |
+| **`IN OUT`** | Initialized variable | Read and replace |
 
 ```sql
 CREATE OR REPLACE PROCEDURE swap (
@@ -93,15 +92,15 @@ END;
 /
 ```
 
-多くの **`OUT`** パラメータよりも **`IN`** のデフォルトを優先します。複数の値に対して **`RECORD`** または参照カーソルを返すことを検討してください。
+Prefer **`IN`** defaults over many **`OUT`** parameters — consider returning a **`RECORD`** or ref cursor for multiple values.
 
-## 4. SQL における関数の戻りの制限
+## 4. Function return restrictions in SQL
 
-**`SELECT`** で使用される関数は、変更テーブルに対してコミット/ロールバックまたは DML を実行してはなりません (**純粋性** ルール)。結果が入力のみに依存する場合 (同じ引数 → 同じ結果) にのみ **`DETERMINISTIC`** をマークします。
+Functions used in **`SELECT`** must not commit/rollback or execute DML on mutating tables (historical **purity** rules). Mark **`DETERMINISTIC`** only when results depend solely on inputs (same args → same result).
 
-副作用を考慮して、クエリ内の関数ではなく、アプリから呼び出される **プロシージャ** を使用してください。
+For side effects, use a **procedure** invoked from the app, not a function in a query.
 
-## 5. Java (JDBC) からの呼び出し
+## 5. Calling from Java (JDBC)
 
 ```java
 try (var conn = dataSource.getConnection();
@@ -113,7 +112,7 @@ try (var conn = dataSource.getConnection();
 }
 ```
 
-手順には **`{ call name(?, ?) }`** を使用します。ドライバーによっては、関数で **`? = call func(?)`** が使用される場合があります。
+Use **`{ call name(?, ?) }`** for procedures; functions may use **`? = call func(?)`** depending on driver.
 
 ## 6. `AUTHID DEFINER` vs `AUTHID CURRENT_USER`
 
@@ -128,14 +127,14 @@ END;
 /
 ```
 
-| | **`DEFINER`** (デフォルト) | **`CURRENT_USER`** |
-|---|------------------------|----------|
-| **として実行** |コンパイルしたオーナー |発信者 |
-| **リスク** |所有者がスキーマ管理者の場合、過剰な権限が与えられます。マルチテナント アプリの安全性を高める |
+| | **`DEFINER`** (default) | **`CURRENT_USER`** |
+|---|-------------------------|---------------------|
+| **Runs as** | Owner who compiled it | Caller |
+| **Risk** | Over-privileged if owner is schema admin | Safer for multi-tenant apps |
 
-**`DEFINER`** プロシージャを慎重に監査します。プロシージャは呼び出し元の権限をバイパスします。
+Audit **`DEFINER`** procedures carefully — they bypass caller permissions.
 
-## 7. 削除して置き換える
+## 7. Drop and replace
 
 ```sql
 DROP PROCEDURE raise_salary;
@@ -143,8 +142,8 @@ DROP PROCEDURE raise_salary;
 CREATE OR REPLACE PROCEDURE raise_salary ...  -- keeps grants if signature unchanged
 ```
 
-パラメータリストを変更すると、依存オブジェクトが無効になる可能性があります。依存オブジェクトを再コンパイルするか、**`ALTER … COMPILE`** を使用してください。
+Changing parameter list may invalidate dependent objects — recompile dependents or use **`ALTER … COMPILE`**.
 
-＃＃ 次
+## Next
 
-グループ化された API とイベント駆動型ロジックについては、[パッケージとトリガー](v-packages-and-triggers.md) に進みます。
+Continue with [Packages & triggers](v-packages-and-triggers.md) for grouped APIs and event-driven logic.

@@ -1,41 +1,40 @@
 ---
 label: "I"
-subtitle: "概要"
+subtitle: "Overview"
 group: "GitHub"
 order: 1
 ---
-GitHub — 概要
+GitHub — overview
+**GitHub** hosts Git repositories and adds **pull requests**, **reviews**, **Actions**, **Issues**, and **project** tooling. Git itself runs locally — GitHub is the social and automation layer.
 
-**GitHub** は Git リポジトリをホストし、**プル リクエスト**、**レビュー**、**アクション**、**問題**、**プロジェクト** ツールを追加します。 Git 自体はローカルで実行されます。GitHub はソーシャル層と自動化層です。
+## Map of this topic
 
-## このトピックのマップ
+| Note | Focus |
+|------|--------|
+| **Git → Essentials** | Local Git commands, branches, remotes |
+| [Repositories & pull requests](ii-repositories-and-pull-requests.md) | Repos, forks, PRs, reviews |
+| [Actions, issues & settings](iii-actions-issues-and-settings.md) | CI, issues, branch protection, tokens |
+| [Contribution graph](activity-contribution-graph.md) | This site's contribution grid demo |
 
-|注 |フォーカス |
-|------|----------|
-| **Git → Essentials** |ローカル Git コマンド、ブランチ、リモート |
-| [リポジトリとプルリクエスト](ii-repositories-and-pull-requests.md) |リポジトリ、フォーク、PR、レビュー |
-| [アクション、問題、設定](iii-actions-issues-and-settings.md) | CI、問題、ブランチ保護、トークン |
-| [寄与グラフ](activity-contribution-graph.md) |このサイトの投稿グリッドのデモ |
-
-## Git + GitHub フロー
+## Git + GitHub flow
 
 ```text
 local:  branch → commit → push
 GitHub: Pull Request → review → merge → Actions CI
 ```
 
-## アカウントの必需品
+## Account essentials
 
-|タスク |どこ |
-|------|----------|
-| SSH キー |設定 → SSH および GPG キー |
-|パーソナルアクセストークン |設定 → 開発者設定 (きめ細かい設定を推奨) |
-|コミットの電子メール |設定 → 電子メール (`git config user.email` と一致) |
-| 2FA |設定 → パスワードと認証 |
+| Task | Where |
+|------|--------|
+| SSH keys | Settings → SSH and GPG keys |
+| Personal access token | Settings → Developer settings (prefer fine-grained) |
+| Email for commits | Settings → Emails (match `git config user.email`) |
+| 2FA | Settings → Password and authentication |
 
-## リハーサル
+## Rehearsal
 
-- **Git** と **GitHub** の違いは何ですか?
-- PR の **マージ**では何が起こりますか?
+- Difference between **Git** and **GitHub**?
+- What happens on **merge** of a PR?
 
-**関連:** **Git** トラック、CI/CD **GitHub アクション**、セットアップの開始 (メモ アプリの OAuth)。
+**Related:** **Git** track, CI/CD **GitHub Actions**, Getting started setup (OAuth for notes app).

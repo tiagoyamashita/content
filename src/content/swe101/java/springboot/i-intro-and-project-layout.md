@@ -1,25 +1,24 @@
 ---
 label: "I"
-subtitle: "イントロとプロジェクトのレイアウト"
-group: "スプリングブーツ"
+subtitle: "Intro & project layout"
+group: "Spring Boot"
 groupOrder: 2
 order: 1
 ---
-Spring Boot — パート I
+Spring Boot — Part I
+What Boot adds on top of Spring, how the entrypoint bootstraps the container, and how to lay out packages so scanning and auto-configuration behave predictably.
 
-Boot が Spring に何を追加するか、エントリポイントがコンテナをブートストラップする方法、スキャンと自動構成が予測どおりに動作するようにパッケージをレイアウトする方法。
+**How this section is organized:** finish the **Java** intro track (`intro/`, Parts I–VI) first, then work through these **Spring Boot** pages in order. The **Example (Web MVC)** copy-paste layout lives under **`springboot/`**; **Security basics** follows REST before operations topics.
 
-**このセクションの構成:** 最初に **Java** イントロ トラック (`intro/`、パート I ～ VI) を完了してから、これらの **Spring Boot** ページを順番に実行してください。 **例 (Web MVC)** のコピー＆ペースト レイアウトは **`springboot/`** に存在します。 **セキュリティの基本**は、操作前の REST トピックの後に続きます。
+**JDK / Java language level:** examples in this **Spring Boot** track assume **Java SE 22** — use **`javac --release 22`** or set language level **22** in your build (`pom.xml` / `build.gradle`). The same snippets compile on **JDK 21 LTS** unless a file calls out a newer feature. For services in production, prefer a supported **LTS** JDK unless your organization standardizes on a newer release.
 
-**JDK / Java 言語レベル:** この **Spring Boot** トラックの例は **Java SE 22** を前提としています。**`javac --release 22`** を使用するか、ビルドで言語レベル **22** を設定します (`pom.xml` / `build.gradle`)。ファイルが新しい機能を呼び出さない限り、同じスニペットが **JDK 21 LTS** でコンパイルされます。運用環境のサービスについては、組織が新しいリリースで標準化している場合を除き、サポートされている **LTS** JDK を優先してください。
+## 1. Problems Boot solves
+- **Classpath hell**: starters (e.g. `spring-boot-starter-web`) pin compatible versions of servlet API, Jackson, Tomcat.
+- **Embedded server**: run `java -jar app.jar` without installing Tomcat separately.
+- **Auto-configuration**: if Hibernate + datasource are on the classpath, JPA set-up appears unless you opt out — driven by **`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`** (Boot 3.x).
 
-## 1. ブートによって解決される問題
-- **クラスパス地獄**: スターター (例: `spring-boot-starter-web`) は、サーブレット API、Jackson、Tomcat の互換性のあるバージョンをピン留めします。
-- **組み込みサーバー**: Tomcat を個別にインストールせずに `java -jar app.jar` を実行します。
-- **自動構成**: Hibernate + データソースがクラスパス上にある場合、オプトアウトしない限り、**`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`** (ブート 3.x) によって JPA セットアップが表示されます。
-
-## 2. 最小限のアプリケーション エントリポイント
-`@SpringBootApplication` は、宣言クラスのパッケージの **`@SpringBootConfiguration`** (特殊化された `@Configuration`)、**`@EnableAutoConfiguration`**、および **`@ComponentScan`** の短縮形です。
+## 2. Minimal application entrypoint
+`@SpringBootApplication` is shorthand for **`@SpringBootConfiguration`** (specialized `@Configuration`), **`@EnableAutoConfiguration`**, and **`@ComponentScan`** on the declaring class’s package.
 
 ```java
 // Compile: javac --release 22 …
@@ -37,11 +36,11 @@ public class DemoApplication {
 }
 ```
 
-- **`SpringApplication.run`** は **`ApplicationContext`** を構築し、**`ApplicationRunner`** / **`CommandLineRunner`** Bean を実行し、**`spring-boot-starter-web`** が存在する場合に Web サーバーを起動します。
+- **`SpringApplication.run`** builds the **`ApplicationContext`**, runs **`ApplicationRunner`** / **`CommandLineRunner`** beans, and starts the web server when **`spring-boot-starter-web`** is present.
 
-## 3. コンポーネントのスキャン規則
-- **`com.example.demo`** および **サブパッケージ** の下のタイプのみがデフォルトでスキャンされます (`@SpringBootApplication` と同じパッケージ)。
-- **`@SpringBootApplication`** を **`com.example.demo`** に配置したが、コントローラが **`com.example.api`** に存在する場合、**`@ComponentScan("com.example.api")`** を追加するか、**`demo`** の下にコードを移動しない限り、それらは **Bean になりません**。
+## 3. Component scanning rules
+- Only types under **`com.example.demo`** and **sub-packages** are scanned by default (same package as `@SpringBootApplication`).
+- If you put **`@SpringBootApplication`** in **`com.example.demo`** but controllers live in **`com.example.api`**, they **won’t** be beans unless you add **`@ComponentScan("com.example.api")`** or move code under **`demo`**.
 
 ```java
 // Compile: javac --release 22 …
@@ -50,8 +49,8 @@ public class DemoApplication {
 public class DemoApplication { /* ... */ }
 ```
 
-## 4. 典型的な Maven 座標 (概念的)
-通常、`pom.xml` は **`spring-boot-starter-parent`** (または **`spring-boot-dependencies`** による BOM) とスターターを宣言します。
+## 4. Typical Maven coordinates (conceptual)
+Your `pom.xml` usually declares **`spring-boot-starter-parent`** (or the BOM via **`spring-boot-dependencies`**) plus starters:
 
 ```xml
 <dependency>
@@ -64,7 +63,7 @@ public class DemoApplication { /* ... */ }
 </dependency>
 ```
 
-**グラドル (`build.gradle.kts`):**
+**Gradle (`build.gradle.kts`):**
 
 ```kotlin
 plugins {
@@ -80,10 +79,10 @@ dependencies {
 }
 ```
 
-Maven と同じアーティファクト ID を使用します。 Spring Boot Gradle プラグインは、調整されたバージョンの BOM を適用します。
+Use the same artifact IDs as Maven; the Spring Boot Gradle plugin applies the BOM for aligned versions.
 
-## 5. 階層化パッケージ（推奨形状）
-共通のレイアウトにより、**Web**、**アプリケーション/サービス**、**永続性**に関する懸念が分離されます。
+## 5. Layered packages (recommended shape)
+A common layout keeps **web**, **application/service**, and **persistence** concerns apart:
 
 ```
 com.example.demo
@@ -95,10 +94,10 @@ com.example.demo
   persistence/     ← @Repository, JPA adapters
 ```
 
-コントローラーはサービスに依存します。サービスはリポジトリまたはポートに依存します。ビジネス ルールが増大する場合、コントローラがリポジトリを直接挿入することは**避けてください**。
+Controllers depend on services; services depend on repositories or ports — **avoid** controllers injecting repositories directly when business rules grow.
 
-## 6. 自動構成のスライスを無効にする
-移行またはテスト中に自動構成が邪魔になる場合:
+## 6. Disabling a slice of auto-configuration
+When auto-config gets in the way during migration or tests:
 
 ```java
 // Compile: javac --release 22 …
@@ -106,5 +105,4 @@ com.example.demo
 public class DemoApplication { /* ... */ }
 ```
 
-最初にクラスパス/プロパティを修正することをお勧めします。 **`exclude`** は意図的な避難ハッチです。
-�
+Prefer fixing classpath / properties first; **`exclude`** is a deliberate escape hatch.

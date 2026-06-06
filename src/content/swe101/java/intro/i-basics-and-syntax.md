@@ -1,23 +1,22 @@
 ---
 label: "I"
-subtitle: "基本と構文"
-group: "ジャワ"
+subtitle: "Basics & syntax"
+group: "Java"
 groupOrder: 1
 order: 1
 ---
-Java — パート I
+Java — Part I
+JDK, program shape, types, control flow, methods, and arrays.
 
-JDK、プログラムの形状、型、制御フロー、メソッド、配列。
+**How this section is organized:** **`intro/`** (this group) covers core language through Part VI. The **`springboot/`** submenu holds hands-on examples; sibling pages at **`java/`** root with **`group: "Spring Boot"`** cover the main track after you are comfortable with classes, collections, and tests.
 
-**このセクションの構成:** **`intro/`** (このグループ) はパート VI までの主要な言語をカバーします。 **`springboot/`** サブメニューには実践的な例が含まれています。クラス、コレクション、テストに慣れてきたら、**`java/`** ルートにある **`group: "Spring Boot"`** の兄弟ページがメイン トラックをカバーします。
+**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
-**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
-
-## 1. JDK、JVM、および最初のプログラム
-- **JDK** = コンパイラ (`javac`)、標準ライブラリ、ツール。 **JVM** = バイトコードを実行するランタイム。
-- ソース `.java` → `javac` → バイトコード `.class` → `java` は JVM を起動し、エントリ クラスをロードします。
-- すべての実行可能なプログラムには、エントリ ポイントとして `public static void main(String[] args)` が必要です。
-- パッケージ (`package com.example.app;`) はフォルダー パスにマップされます。実際のプロジェクトではデフォルトのパッケージを避けてください。
+## 1. JDK, JVM, and your first program
+- **JDK** = compiler (`javac`), standard libraries, tooling; **JVM** = runtime that executes bytecode.
+- Source `.java` → `javac` → bytecode `.class` → `java` launches JVM and loads the entry class.
+- Every runnable program needs `public static void main(String[] args)` as an entry point.
+- Packages (`package com.example.app;`) map to folder paths; avoid default package for real projects.
 
 ```java
 // Compile: javac --release 22 App.java && java App
@@ -36,7 +35,7 @@ java com.example.app.App Ada
 ```
 
 
-<figure class="notes-diagram"><svg xmlns="62 viewBox="0 0 420 120" role="img" aria-label="From Java source to JVM execution">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="From Java source to JVM execution">
   <text x="110" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif">Edit → compile → run</text>
   <rect x="28" y="36" width="88" height="36" rx="6" fill="rgba(34,197,94,0.12)" stroke="#86efac"/>
   <text x="44" y="58" fill="#e4e4e7" font-size="10">App.java</text>
@@ -52,11 +51,11 @@ java com.example.app.App Ada
 </svg></figure>
 
 
-## 2. プリミティブ型と参照
-- プリミティブ: `byte`、`short`、`int`、`long`、`float`、`double`、`char`、`boolean` — プリミティブとして宣言された場合、ローカルおよびフィールドに値によって格納されます。
-- それ以外はすべて **参照型** (オブジェクト): 変数は参照を保持します。 `null`は「オブジェクトなし」を意味します。
-- ラッパー型 (`Integer`、`Double`、…) コレクションおよび null 許容 API のボックス プリミティブ。ホットでヌルでないプリミティブを優先します。
-- `var` (Java 10+) はイニシャライザからローカル型を推論します - 静的に型付けされたままです。
+## 2. Primitive types and references
+- Primitives: `byte`, `short`, `int`, `long`, `float`, `double`, `char`, `boolean` — stored by value in locals and fields when declared as primitives.
+- Everything else is a **reference type** (objects): variables hold references; `null` means “no object”.
+- Wrapper types (`Integer`, `Double`, …) box primitives for collections and nullable APIs; prefer primitives where hot and non-null.
+- `var` (Java 10+) infers local type from the initializer — still statically typed.
 
 ```java
 // Compile: javac --release 22 …
@@ -67,11 +66,11 @@ int again = boxed;             // unboxing
 ```
 
 
-## 3. 演算子と制御フロー
-- 算術演算 (`+`、`-`、`*`、`/`、`%`)、比較、論理 `&&`、`||`、`!`、短絡動作。
-- `if / else`、`switch` (`->` と enum/sealed 型の網羅性を備えたクラシックおよびモダンな **スイッチ式**)。
-- ループ: `while`、`do-while`、`for`、**拡張版** (`for (String s : items)`)。
-- `break` / `continue` ネストされたループのオプションのラベル付き。
+## 3. Operators and control flow
+- Arithmetic (`+`, `-`, `*`, `/`, `%`), comparisons, logical `&&`, `||`, `!`, short-circuit behavior.
+- `if / else`, `switch` (classic and modern **switch expressions** with `->` and exhaustiveness on enums/sealed types).
+- Loops: `while`, `do-while`, `for`, **enhanced for** (`for (String s : items)`).
+- `break` / `continue` with optional labels for nested loops.
 
 ```java
 // Compile: javac --release 22 …
@@ -94,10 +93,10 @@ static int sum(int[] values) {
 ```
 
 
-## 4. メソッドとパラメータ
-- 署名: 修飾子、戻り値の型、名前、パラメータリスト、オプションの `throws`;パラメータのタイプ/数による **オーバーロード**。
-- **値渡し**: プリミティブはビットをコピーします。参照はポインタをコピーします。オブジェクトの変更は呼び出し元に表示されますが、パラメータの再割り当ては表示されません。
-- `final` パラメータにより、メソッド内での再代入が防止されます (オブジェクトの状態は依然として変更可能です)。
+## 4. Methods and parameters
+- Signature: modifiers, return type, name, parameter list, optional `throws`; **overloading** by parameter types/count.
+- **Pass-by-value**: primitives copy bits; references copy the pointer — mutating the object is visible to caller, reassigning the parameter is not.
+- `final` parameters prevent reassignment inside the method (still mutable object state).
 
 ```java
 // Compile: javac --release 22 …
@@ -115,13 +114,13 @@ static int max(int a, int b) {
 ```
 
 
-## 5. 配列と `String`
-- 配列は固定サイズで、インデックスは `0` から付けられます。 `length`フィールド;多次元配列は配列の配列です。
-- `java.util.Arrays` は、並べ替え、バイナリ検索、フィル、コピー ヘルパーを提供します。
-- `String` は不変です。ループ内で繰り返し連結する場合は、`StringBuilder` / `StringBuffer` を使用します。
-- テキストブロック (`""" ... """`) は複数行リテラルを簡略化します。
+## 5. Arrays and `String`
+- Arrays are fixed-size, indexed from `0`; `length` field; multi-dimensional arrays are arrays of arrays.
+- `java.util.Arrays` provides sort, binary search, fill, copy helpers.
+- `String` is immutable; use `StringBuilder` / `StringBuffer` for repeated concatenation in loops.
+- Text blocks (`""" ... """`) simplify multiline literals.
 
-可変引数、`ArrayList`、および CS101 クロスリンクについては、**パート V (配列、可変引数およびリスト)** を参照してください。
+See **Part V (Arrays, varargs & lists)** for varargs, `ArrayList`, and CS101 cross-links.
 
 ```java
 // Compile: javac --release 22 …
@@ -140,7 +139,7 @@ for (char c : json.toCharArray()) {
 ```
 
 
-## 6. スタイルと読みやすさ
-- 命名: `camelCase` メソッド/ローカル、`PascalCase` 型、`SCREAMING_SNAKE` 定数。
-- コードを繰り返すコメントよりも、小さなメソッド、早期リターン、意味のある名前を優先します。
-- 一貫してフォーマットします (IDE フォーマッタ)。意図が明らかではない 61 の API を文書化してください。
+## 6. Style and readability
+- Naming: `camelCase` methods/locals, `PascalCase` types, `SCREAMING_SNAKE` constants.
+- Prefer small methods, early returns, meaningful names over comments that repeat the code.
+- Format consistently (IDE formatter); keep `public` APIs documented where intent is non-obvious.

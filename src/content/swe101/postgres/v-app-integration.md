@@ -1,26 +1,25 @@
 ---
 label: "V"
-subtitle: "アプリの統合"
-group: "ポストグレ"
+subtitle: "App integration"
+group: "Postgres"
 order: 5
 ---
-Postgres — アプリの統合
+Postgres — app integration
+Applications talk to Postgres through a **driver**, usually via a **connection pool**. This note covers JDBC/Spring patterns that match the [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) track.
 
-アプリケーションは **ドライバー** (通常は **接続プール**) を介して Postgres と通信します。このノートでは、[Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) トラックに一致する JDBC/Spring パターンについて説明します。
-
-## 1. レイヤー
+## 1. Layers
 
 ```text
 Controller  →  Service  →  Repository  →  JDBC / JPA  →  Pool  →  Postgres
 ```
 
-|レイヤー |責任 |
-|------|----------------|
-| **リポジトリ** | SQL または ORM クエリ。 HTTP の心配はありません |
-| **プール** | TCP 接続を再利用します。同時 DB 使用量の上限 |
-| **トランザクション** | `@Transactional` 境界 — コミットまたはロールバック |
+| Layer | Responsibility |
+|-------|----------------|
+| **Repository** | SQL or ORM queries; no HTTP concerns |
+| **Pool** | Reuse TCP connections; cap concurrent DB usage |
+| **Transaction** | `@Transactional` boundary — commit or rollback |
 
-## 2. JDBC (最小限の例)
+## 2. JDBC (minimal example)
 
 ```java
 // Java SE 22 — try-with-resources
@@ -37,11 +36,11 @@ try (var conn = DriverManager.getConnection(url, "myapp", "secret");
 }
 ```
 
-常に **`PreparedStatement`** を使用します。パラメーター バインドにより SQL インジェクションが防止され、プラン キャッシュの再利用が可能になります。
+Always use **`PreparedStatement`** — parameter binding prevents SQL injection and enables plan cache reuse.
 
-## 3. コネクションプーリング(HikariCP)
+## 3. Connection pooling (HikariCP)
 
-Spring Boot のデフォルトは **HikariCP** です。 「可能な限り大きく」ではなく、**予想される同時リクエスト**に基づいてプール サイズを構成します。
+Spring Boot defaults to **HikariCP**. Configure pool size from **expected concurrent requests**, not “as high as possible”:
 
 ```yaml
 # application.yml
@@ -55,15 +54,15 @@ spring:
       connection-timeout: 5000
 ```
 
-|ガイドライン |経験則 |
-|----------|------|
-| **プールのサイズ** |多くの場合、数百ではなく数十 — Postgres の接続には制限があります。
-| **タイムアウト** |スレッドをハングさせるのではなく、プールが使い果たされたときに高速に失敗します。
-| **サービスごとに 1 つのプール** |プールせずにリクエストごとに新しい接続を開かないでください。
+| Guideline | Rule of thumb |
+|-----------|---------------|
+| **Pool size** | Often tens, not hundreds — Postgres has limited connections |
+| **Timeout** | Fail fast when pool exhausted instead of hanging threads |
+| **One pool per service** | Do not open a new connection per request without pooling |
 
-Postgres **`max_connections`** (デフォルトは ~100) が共有されます - アプリ インスタンスの数 × プール サイズ + 管理オーバーヘッド。
+Postgres **`max_connections`** (default ~100) is shared — count app instances × pool size + admin overhead.
 
-## 4. Spring Data JPA エンティティのスケッチ
+## 4. Spring Data JPA entity sketch
 
 ```java
 @Entity
@@ -95,11 +94,11 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 }
 ```
 
-トランザクション境界と遅延読み込みの落とし穴については、[JPA とトランザクション](../java/springboot/v-jpa-and-transactional.md) を参照してください。
+See [JPA & transactional](../java/springboot/v-jpa-and-transactional.md) for transaction boundaries and lazy-loading pitfalls.
 
-## 5. Spring Boot での移行
+## 5. Migrations in Spring Boot
 
-一般的なセットアップ: **Flyway** は JPA が開始する前に実行されます。
+Typical setup: **Flyway** runs before JPA starts:
 
 ```yaml
 spring:
@@ -111,21 +110,21 @@ spring:
       ddl-auto: validate   # never 'update' in production
 ```
 
-**`ddl-auto: validate`** — Hibernate はエンティティが DB と一致することをチェックします。 Flyway はスキーマ変更を所有します。
+**`ddl-auto: validate`** — Hibernate checks entities match DB; Flyway owns schema changes.
 
-## 6. 読み取りと書き込みの分割 (プレビュー)
+## 6. Read vs write splitting (preview)
 
-大規模な場合は、**読み取り専用** クエリをレプリカにルーティングします。
+At scale, route **read-only** queries to replicas:
 
 ```text
 Primary (writes)  ──replication──►  Replica (reads)
 ```
 
-ORM と接続ルーティングには、単一の JDBC URL から自動的に設定されるものではなく、明示的なリードレプリカ データソース設定が必要です。
+ORM and connection routing need explicit read-replica datasource config — not automatic from a single JDBC URL.
 
-## 7. Testcontainers を使用したローカル開発
+## 7. Local dev with Testcontainers
 
-統合テストは Docker で実際の Postgres を起動します。
+Integration tests spin up real Postgres in Docker:
 
 ```java
 @Container
@@ -139,8 +138,8 @@ static void dbProps(DynamicPropertyRegistry registry) {
 }
 ```
 
-運用環境と同じ SQL 言語 - Postgres 固有の機能 (`JSONB`、制約) を考慮すると H2 よりも望ましい。
+Same SQL dialect as production — preferable to H2 for Postgres-specific features (`JSONB`, constraints).
 
-＃＃ 次
+## Next
 
-役割、ダンプ、およびリカバリの基本については、[操作とバックアップ](vi-operations-and-backups.md) に進みます。
+Continue with [Operations & backups](vi-operations-and-backups.md) for roles, dumps, and recovery basics.

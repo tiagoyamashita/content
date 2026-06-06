@@ -1,14 +1,13 @@
 ---
 label: "VI"
-subtitle: "セットアップとプロバイダー"
-group: "APIゲートウェイ"
+subtitle: "Setup & providers"
+group: "API Gateway"
 order: 6
 ---
-API ゲートウェイ — セットアップとプロバイダー
+API gateway — setup & providers
+Concrete patterns for **AWS API Gateway**, **Kong**, and **NGINX** — plus how they pair with [CDN](../cdn/i-overview.md) origins.
 
-**AWS API Gateway**、**Kong**、**NGINX** の具体的なパターン、および [CDN](../cdn/i-overview.md) オリジンとのペアリング方法。
-
-## 1. AWS: CloudFront + API ゲートウェイ + Lambda
+## 1. AWS: CloudFront + API Gateway + Lambda
 
 ```text
 CloudFront
@@ -16,7 +15,7 @@ CloudFront
   /api/*     → API Gateway (HTTP API) → Lambda
 ```
 
-HTTP API (v2) — Lambda プロキシの REST API よりもレイテンシー/コストが低い:
+HTTP API (v2) — lower latency/cost than REST API for Lambda proxy:
 
 ```yaml
 # Conceptual SAM / CloudFormation idea
@@ -32,17 +31,17 @@ Resources:
       PayloadFormatVersion: "2.0"
 ```
 
-カスタム ドメイン: **ACM cert** + **`api.example.com`** → API Gateway ステージ → 単一ホスト SPA の CloudFront オリジン。
+Custom domain: **ACM cert** + **`api.example.com`** → API Gateway stage → CloudFront origin for single-host SPA.
 
-## 2. AWS: API ゲートウェイ + ALB + ECS/K8s
+## 2. AWS: API Gateway + ALB + ECS/K8s
 
 ```text
 API Gateway (VPC Link) → ALB → target group → pods
 ```
 
-サービスが Lambda ではなく、存続期間の長いコンテナである場合に使用します。
+Use when services are long-lived containers, not Lambda.
 
-## 3. Kubernetes 上の Kong
+## 3. Kong on Kubernetes
 
 ```text
 Internet → LoadBalancer → Kong → Ingress → services
@@ -70,9 +69,9 @@ spec:
                   number: 80
 ```
 
-Kong **Admin API** はルートを管理します。または **Ingress コントローラー** CRD。
+Kong **Admin API** manages routes; or **Ingress Controller** CRDs.
 
-## 4. リバースプロキシ/ゲートウェイとしてのNGINX
+## 4. NGINX as reverse proxy / gateway
 
 ```nginx
 upstream orders {
@@ -93,36 +92,36 @@ server {
 }
 ```
 
-JWT 検証のために **lua** または **OpenResty** を追加するか、別の OIDC プロキシ (oauth2-proxy) で認証を終了します。
+Add **lua** or **OpenResty** for JWT validation, or terminate auth at separate OIDC proxy (oauth2-proxy).
 
-## 5. マネージド API 管理
+## 5. Managed API management
 
-|製品 |こんな方に最適 |
-|----------|----------|
-| **Azure API 管理** | XML のポリシー、開発者ポータル |
-| **Google Apigee** |エンタープライズ API 製品 |
-| **AWS REST API** | API キー、使用プラン、SDK の生成 |
+| Product | Best for |
+|---------|----------|
+| **Azure API Management** | Policies in XML, developer portal |
+| **Google Apigee** | Enterprise API products |
+| **AWS REST API** | API keys, usage plans, SDK generation |
 
-単純なルーティングを超えた、開発者ポータル、収益化、ライフサイクル。
+Developer portal, monetization, and lifecycle — beyond simple routing.
 
-## 6. 地域開発
+## 6. Local development
 
-|アプローチ |メモ |
-|----------|----------|
-| **サービスへ直接** | `localhost:8080` — ゲートウェイをローカルでスキップする |
-| **Docker Compose Kong** | prod ルートとのパリティ |
-| **傾斜/足場** |開発クラスタの K8s ゲートウェイ |
+| Approach | Notes |
+|----------|-------|
+| **Direct to service** | `localhost:8080` — skip gateway locally |
+| **Docker Compose Kong** | Parity with prod routes |
+| **Tilt / Skaffold** | K8s gateway in dev cluster |
 
-**ルート設定を git** で維持します。可能な場合は、OpenAPI 仕様と同じリポジトリを維持します。
+Maintain **route config in git** — same repo as OpenAPI spec when possible.
 
-## 7. 可観測性フック
+## 7. Observability hooks
 
-ゲートウェイで有効にする:
+Enable at gateway:
 
-- **アクセス ログ** (パス、ステータス、遅延、クライアント IP)
-- **メトリクス** (4xx/5xx レート、p99 レイテンシー)
-- **トレース伝播** — W3C `traceparent` ヘッダー ([大規模な可観測性](../sysdesign/scalable-patterns/viii-observability-at-scale.md))
+- **Access logs** (path, status, latency, client IP)
+- **Metrics** (4xx/5xx rate, p99 latency)
+- **Trace propagation** — W3C `traceparent` header ([Observability at scale](../sysdesign/scalable-patterns/viii-observability-at-scale.md))
 
-＃＃ 次
+## Next
 
-ログ、502 デバッグ、および Runbook については、[操作とトラブルシューティング](vii-operations-and-troubleshooting.md) に進みます。
+Continue with [Operations & troubleshooting](vii-operations-and-troubleshooting.md) for logs, 502 debug, and runbooks.

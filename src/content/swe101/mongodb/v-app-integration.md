@@ -1,28 +1,27 @@
 ---
 label: "V"
-subtitle: "アプリの統合"
-group: "モンゴDB"
+subtitle: "App integration"
+group: "MongoDB"
 order: 5
 ---
-MongoDB — アプリの統合
+MongoDB — app integration
+Connect from applications via **official drivers** or ODMs. Examples align with the [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) and [Python](../python/i-basics-and-syntax.md) tracks.
 
-**公式ドライバー**または ODM を介してアプリケーションから接続します。例は、[Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) および [Python](../python/i-basics-and-syntax.md) トラックに沿っています。
-
-## 1. レイヤー
+## 1. Layers
 
 ```text
 Controller  →  Service  →  Repository  →  Driver / ODM  →  MongoDB
 ```
 
-|レイヤー |責任 |
-|------|----------------|
-| **リポジトリ** |クエリ、インデックスが想定されます。 HTTPなし |
-| **サービス** |ビジネス ルール、コレクションにまたがるトランザクション |
-| **DTO / ドキュメント** | BSON ↔ アプリの種類をマップ |
+| Layer | Responsibility |
+|-------|----------------|
+| **Repository** | Queries, indexes assumed; no HTTP |
+| **Service** | Business rules, transactions spanning collections |
+| **DTO / document** | Map BSON ↔ app types |
 
 ## 2. Spring Boot + Spring Data MongoDB
 
-**依存関係** (概念):
+**Dependency** (conceptual):
 
 ```xml
 <dependency>
@@ -31,7 +30,7 @@ Controller  →  Service  →  Repository  →  Driver / ODM  →  MongoDB
 </dependency>
 ```
 
-**構成：**
+**Configuration:**
 
 ```yaml
 spring:
@@ -41,7 +40,7 @@ spring:
       # or mongodb+srv://... for Atlas
 ```
 
-**ドキュメントエンティティ:**
+**Document entity:**
 
 ```java
 @Document(collection = "products")
@@ -56,7 +55,7 @@ public class Product {
 }
 ```
 
-**リポジトリ:**
+**Repository:**
 
 ```java
 public interface ProductRepository extends MongoRepository<Product, String> {
@@ -64,14 +63,14 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 }
 ```
 
-**`@Query`** を使用したカスタム クエリ:
+Custom queries with **`@Query`**:
 
 ```java
 @Query("{ 'tags': ?0, 'price': { $lt: ?1 } }")
 List<Product> cheapByTag(String tag, double maxPrice);
 ```
 
-**トランザクション** (レプリカ セットが必要):
+**Transactions** (replica set required):
 
 ```java
 @Transactional
@@ -80,7 +79,7 @@ public void transfer(String fromId, String toId, double amount) {
 }
 ```
 
-**`@EnableMongoRepositories`** および **`MongoTransactionManager`** Bean で有効にします。
+Enable with **`@EnableMongoRepositories`** and **`MongoTransactionManager`** bean.
 
 ## 3. Python (PyMongo)
 
@@ -107,37 +106,37 @@ for doc in cursor:
     print(doc["title"], doc["price"])
 ```
 
-非同期 FastAPI アプリには **Motor** を使用します。
+Use **Motor** for async FastAPI apps.
 
-## 4. 接続プーリング
+## 4. Connection pooling
 
-ドライバーはデフォルトで接続をプールします。多くのアプリ インスタンスが Atlas に接続するときに調整します。
+Drivers pool connections by default. Tune when many app instances connect to Atlas:
 
-|ノブ |ガイダンス |
+| Knob | Guidance |
 |------|----------|
-| **`maxPoolSize`** |多くの場合、プロセスごとに 50 ～ 100 — 数千の接続を避ける |
-| **`serverSelectionTimeoutMS`** |クラスターに到達できない場合はフェイルファスト |
-| **`retryWrites`** | Atlas のデフォルトは true — 冪等書き込みの安全な再試行 |
+| **`maxPoolSize`** | Often 50–100 per process — avoid thousands of connections |
+| **`serverSelectionTimeoutMS`** | Fail fast if cluster unreachable |
+| **`retryWrites`** | Default true on Atlas — safe retries for idempotent writes |
 
-リクエストごとではなく、プロセスごとに 1 つの **`MongoClient`** (または Spring シングルトン)。
+One **`MongoClient`** (or Spring singleton) per process — not per request.
 
-## 5. ODM と生のドライバーの比較
+## 5. ODM vs raw driver
 
-| | **生のドライバー** | **Spring データ / Mongoose (ノード)** |
-|---|----------------|-------------------------------------|
-| **コントロール** |完全な BSON コントロール |従来の定型文を削減 |
-| **クエリ** |明示的な JSON |メソッド名/スキーマ |
-| **移行** |あなたのスクリプト |あなたのスクリプト |
+| | **Raw driver** | **Spring Data / Mongoose (Node)** |
+|---|----------------|-----------------------------------|
+| **Control** | Full BSON control | Convention, less boilerplate |
+| **Queries** | Explicit JSON | Method names / schemas |
+| **Migrations** | Your scripts | Your scripts |
 
-N+1 を回避します。**`$lookup`** を集約して関連データをフェッチするか、**`@DocumentReference`** でモデル化する場合は埋め込みます。これは SQL ORM と同じクラスのバグです。
+Avoid N+1: fetch related data with **`$lookup`** in aggregation, **`@DocumentReference`**, or embed when modeled that way — same class of bug as SQL ORMs.
 
-## 6. テスト
+## 6. Testing
 
-|アプローチ |メモ |
-|----------|----------|
-| **テストコンテナ** (`mongodb` モジュール) |統合テスト用の Docker の実サーバー |
-| **Flapdoodle が埋め込まれています** |インプロセス — バージョンは慎重に一致します |
-| **インメモリモック** |単体テストのみ - インデックス/クエリ動作が欠落します。
+| Approach | Notes |
+|----------|-------|
+| **Testcontainers** (`mongodb` module) | Real server in Docker for integration tests |
+| **Flapdoodle embedded** | In-process — version match carefully |
+| **In-memory mock** | Unit tests only — misses index/query behavior |
 
 ```java
 @Container
@@ -149,15 +148,15 @@ static void mongoProps(DynamicPropertyRegistry registry) {
 }
 ```
 
-**トランザクション**をテストする場合は、レプリカ セット URL を使用します。
+Use replica-set URL when testing **transactions**.
 
-## 7. セキュリティの基本
+## 7. Security basics
 
-- Atlas 認証情報を決してコミットしないでください。環境変数 / シークレット マネージャーを使用してください。
-- アプリユーザー: **`readWrite`** 1 つの DB のみ。
-- **TLS** を有効にします (Atlas では `mongodb+srv`)。
-- 必要に応じて、機密性の高い PII に対するフィールド レベルの暗号化またはアプリ層の暗号化。
+- Never commit Atlas credentials — use env vars / secrets manager.
+- App user: **`readWrite`** on one DB only.
+- Enable **TLS** (`mongodb+srv` on Atlas).
+- Field-level encryption or app-layer crypto for highly sensitive PII if required.
 
-＃＃ 次
+## Next
 
-レプリカセットとリストアの訓練については、[操作とバックアップ](vi-operations-and-backups.md) に進みます。
+Continue with [Operations & backups](vi-operations-and-backups.md) for replica sets and restore drills.

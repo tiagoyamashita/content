@@ -1,22 +1,21 @@
 ---
 label: "IV"
-subtitle: "データベース、認証、ストレージ"
-group: "スタートアップ"
+subtitle: "Database, auth & storage"
+group: "Startups"
 order: 4
 ---
-データベース、認証、ストレージ
+Database, auth & storage
+Skip installing Postgres on a VM. **Managed free tiers** give you database, authentication, and file storage with backups and TLS.
 
-VM への Postgres のインストールをスキップします。 **管理された無料枠** により、データベース、認証、バックアップと TLS を備えたファイル ストレージが提供されます。
+## 1. Database + backend-as-a-service
 
-## 1. データベース + サービスとしてのバックエンド
-
-|プロバイダー |無料利用枠 (通常) |含まれるもの |
-|----------|----------|----------|
-| **[スーパーベース](3)** |プロジェクトの制限 | Postgres、認証、ストレージ、リアルタイム |
-| **[Firebase](4)** |スパークプラン | Firestore/リアルタイム DB、認証、ホスティング |
-| **[ネオン](5)** |サーバーレス Postgres |分岐、ゼロまでスケール |
-| **[プラネットスケール](6)** |趣味 | MySQL 互換 (現在の製品を確認してください) |
-| **[MongoDB アトラス](7)** | M0クラスター |ドキュメントDB |
+| Provider | Free tier (typical) | Includes |
+|----------|---------------------|----------|
+| **[Supabase](https://supabase.com)** | Project limits | Postgres, auth, storage, realtime |
+| **[Firebase](https://firebase.google.com)** | Spark plan | Firestore/Realtime DB, auth, hosting |
+| **[Neon](https://neon.tech)** | Serverless Postgres | Branching, scale-to-zero |
+| **[PlanetScale](https://planetscale.com)** | Hobby | MySQL-compatible (check current offering) |
+| **[MongoDB Atlas](https://www.mongodb.com/atlas)** | M0 cluster | Document DB |
 
 ```text
 Supabase quick mental model:
@@ -25,39 +24,39 @@ Supabase quick mental model:
   Storage   ←  S3-like buckets with policies
 ```
 
-## 2. 認証
+## 2. Authentication
 
-|オプション |いつ |
-|------|------|
-| **Supabase / Firebase 認証** | BaaS はすでに選択されています |
-| **[事務員](8)** |洗練された UI コンポーネント。無料の MAU キャップ |
-| **[認証0](9)** |開発者向けの無料枠。後でエンタープライズ |
-| **NextAuth / Auth.js** |アプリ内のセルフホスト型 OAuth |
+| Option | When |
+|--------|------|
+| **Supabase / Firebase Auth** | BaaS already chosen |
+| **[Clerk](https://clerk.com)** | Polished UI components; free MAU cap |
+| **[Auth0](https://auth0.com)** | Free tier for dev; enterprise later |
+| **NextAuth / Auth.js** | Self-hosted OAuth in your app |
 
-**OAuth** (Google/GitHub でサインイン) を使用して、早期にパスワードを保存しないようにします。
+Use **OAuth** (Sign in with Google/GitHub) to avoid password storage early.
 
-## 3. ファイルとオブジェクトのストレージ
+## 3. File & object storage
 
-|サービス |無料ノート |
-|-----------|-----------|
-| **スーパーベース ストレージ** |プロジェクトにバンドルされています |
-| **Cloudflare R2** |無料のストレージ。 Cloudflare への下り料金なし |
-| **AWS S3** | 5 GB の無料枠 (新規アカウントの場合は 12 か月) |
-| **Firebase ストレージ** |スパーク制限 |
+| Service | Free notes |
+|---------|------------|
+| **Supabase Storage** | Bundled with project |
+| **Cloudflare R2** | Free storage; no egress fee to Cloudflare |
+| **AWS S3** | 5 GB free tier (12 months for new accounts) |
+| **Firebase Storage** | Spark limits |
 
-アップロードをサーバーレス **一時ディスク**に保存しないでください。署名された URL を持つオブジェクト ストレージを使用してください。
+Never store uploads on serverless **ephemeral disk** — use object storage with signed URLs.
 
-## 4. 秘密
+## 4. Secrets
 
-|アプローチ | MVP |
+| Approach | MVP |
 |----------|-----|
-|プラットフォーム環境変数 | Vercel / レンダリング ダッシュボード |
-| **GitHub の秘密** | CI のみ |
-| **ドップラー / 非フィジカル** |同期用の無料チーム層 |
+| Platform env vars | Vercel / Render dashboard |
+| **GitHub Secrets** | CI only |
+| **Doppler / Infisical** | Free team tiers for sync |
 
-実稼働キーを使用して `.env` をコミットしないでください。
+Do not commit `.env` with production keys.
 
-## 5. 環境レイアウトの例
+## 5. Example env layout
 
 ```bash
 DATABASE_URL=postgresql://...
@@ -67,12 +66,12 @@ SUPABASE_SERVICE_ROLE_KEY=...     # server only — never expose to browser
 RESEND_API_KEY=re_...
 ```
 
-## 6. 無料の BaaS をやめるべき場合
+## 6. When to leave free BaaS
 
-|信号 |検討してください |
-|----------|----------|
-|接続プールの制限 |専用 Postgres (RDS、Neon 有料) |
-|複雑なクエリ / RLS の痛み |独自のバックエンド + ORM |
-|ベンダーロックインの懸念 |データをエクスポートします。標準の Postgres が役立つ |
+| Signal | Consider |
+|--------|----------|
+| Connection pool limits | Dedicated Postgres (RDS, Neon paid) |
+| Complex queries / RLS pain | Own backend + ORM |
+| Vendor lock-in concern | Export data; standard Postgres helps |
 
-**関連:** CS101 **データベース** サブメニュー、RLS/認証深度の Supabase スキル。
+**Related:** CS101 **databases** submenu, Supabase skill for RLS/auth depth.

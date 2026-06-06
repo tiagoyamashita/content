@@ -1,21 +1,20 @@
 ---
 label: "VI"
-subtitle: "操作とバックアップ"
-group: "モンゴDB"
+subtitle: "Operations & backups"
+group: "MongoDB"
 order: 6
 ---
-MongoDB — 操作とバックアップ
+MongoDB — operations & backups
+Production MongoDB runs as a **replica set** (minimum three members for fault tolerance) or **Atlas** (managed). Plan **backups**, **monitoring**, and **restore tests** before you need them.
 
-実稼働 MongoDB は、**レプリカ セット** (フォールト トレランスのため少なくとも 3 つのメンバー) または **Atlas** (管理対象) として実行されます。 **バックアップ**、**監視**、**復元テスト**を必要になる前に計画してください。
+## 1. Deployment shapes
 
-## 1. 展開の形状
-
-|形状 |使用 |
-|------|-----|
-| **スタンドアロン** |ローカル開発のみ |
-| **レプリカセット** |実稼働 HA、トランザクション、oplog |
-| **シャード クラスター** | 1 つのレプリカ セットを超えるデータまたはスループット |
-| **アトラス** |マネージド レプリカ セット / シャード クラスター |
+| Shape | Use |
+|-------|-----|
+| **Standalone** | Local dev only |
+| **Replica set** | Production HA, transactions, oplog |
+| **Sharded cluster** | Data or throughput beyond one replica set |
+| **Atlas** | Managed replica set / sharded cluster |
 
 ```text
 Replica set (conceptual)
@@ -24,9 +23,9 @@ Replica set (conceptual)
        └──────────replication──────►  Secondary 2
 ```
 
-書き込みは **プライマリ** に送られます。セカンダリは **oplog** を複製します。セカンダリからの読み取りには遅延が生じる可能性があります。
+Writes go to **primary**; secondaries replicate the **oplog**. Reads from secondaries may lag.
 
-## 2. 役割と認証
+## 2. Roles and auth
 
 ```javascript
 use myapp_dev
@@ -43,17 +42,17 @@ db.createUser({
 })
 ```
 
-|役割 |範囲 |
-|------|------|
-| **`read` / `readWrite`** |データベースレベルのアプリアクセス |
-| **`dbAdmin`** |インデックス、統計 — 移行ジョブのみ |
-| **`clusterAdmin`** |ガラス破り作戦 — アプリ向けではない |
+| Role | Scope |
+|------|-------|
+| **`read` / `readWrite`** | Database-level app access |
+| **`dbAdmin`** | Indexes, stats — migration job only |
+| **`clusterAdmin`** | Break-glass ops — not for apps |
 
-Atlas IAM + データベース ユーザーは、クラウド上での手動セットアップを置き換えます。
+Atlas IAM + database users replace manual setup on cloud.
 
-## 3. `mongodump` / `mongorestore` でバックアップする
+## 3. Backup with `mongodump` / `mongorestore`
 
-論理バックアップ (BSON + メタデータ):
+Logical backup (BSON + metadata):
 
 ```bash
 mongodump --uri="mongodb://localhost:27017/myapp_dev" --out=./backup-2026-05-19
@@ -61,57 +60,57 @@ mongodump --uri="mongodb://localhost:27017/myapp_dev" --out=./backup-2026-05-19
 mongorestore --uri="mongodb://localhost:27017/myapp_dev_restored" ./backup-2026-05-19/myapp_dev
 ```
 
-|方法 |長所 |短所 |
-|------|------|------|
-| **`mongodump`** |ポータブル、コレクションレベル |大規模なデータセットはスナップショットよりも遅い |
-| **Atlas の継続的なバックアップ** |ポイントインタイム復元 |ベンダー固有 |
-| **ボリューム スナップショット** |大規模に高速 |ファイルシステムのスナップショット API と連携する必要があります |
+| Method | Pros | Cons |
+|--------|------|------|
+| **`mongodump`** | Portable, collection-level | Large datasets slower than snapshots |
+| **Atlas continuous backup** | Point-in-time restore | Vendor-specific |
+| **Volume snapshot** | Fast at scale | Must coordinate with filesystem snapshot API |
 
-**スケジュールに従ってリストアをテスト** - テストされていないバックアップは重要なときに失敗します。
+**Test restores** on a schedule — untested backups fail when it matters.
 
-## 4. 信号の監視
+## 4. Monitoring signals
 
-|信号 |アクション |
-|----------|----------|
-| **レプリケーションの遅延** |セカンダリが遅れている - 負荷、ネットワーク、インデックスの構築を確認する |
-| **オプカウンター / QPS** |キャパシティプランニング |
-| **遅いクエリ ログ** | `operationProfiling` または Atlas Performance Advisor を有効にする |
-| **ディスク使用量** | TTL、アーカイブ、コンパクション (WiredTiger) |
-| **接続** |プールのサイジング - クライアントが多すぎる |
+| Signal | Action |
+|--------|--------|
+| **Replication lag** | Secondary falls behind — check load, network, index builds |
+| **Opcounters / QPS** | Capacity planning |
+| **Slow query log** | Enable `operationProfiling` or Atlas Performance Advisor |
+| **Disk usage** | TTL, archival, compaction (WiredTiger) |
+| **Connections** | Pool sizing — too many clients |
 
-アトラス: **メトリクス**、**アラート**、**パフォーマンス アドバイザー** (インデックスの提案)。
+Atlas: **Metrics**, **Alerts**, **Performance Advisor** (index suggestions).
 
-## 5. 運用環境でのインデックスの構築
+## 5. Index builds in production
 
-大規模なインデックス作成により、古いバージョンへの書き込みがブロックされます。好む：
+Large index creation blocks writes on older versions; prefer:
 
 ```javascript
 db.products.createIndex({ sku: 1 }, { background: true })  // legacy option; behavior varies by version
 ```
 
-最近の MongoDB では、インデックスのビルドはより同時実行され、依然として負荷の高いビルドはオフピークにスケジュールされます。ステージングデータ量を確認します。
+On recent MongoDB, index builds are more concurrent — still schedule heavy builds off-peak. Verify with staging data volume.
 
-## 6. シャーディング (認識)
+## 6. Sharding (awareness)
 
-単一のレプリカ セットで CPU/RAM/ディスクが最大になる場合:
+When a single replica set maxes CPU/RAM/disk:
 
-- 高いカーディナリティと均等な分散を備えた **シャード キー**を選択します。**後から変更するのは困難**です。
-- 不正なキー: 1 つのシャードのみで単調 `_id` → ホット シャード。
-- 適切なキー: テナント ID + 時間を含む複合、またはハッシュ化された `_id`。
+- Choose a **shard key** with high cardinality and even distribution — **hard to change later**.
+- Bad key: monotonic `_id` only on one shard → hot shard.
+- Good key: compound including tenant id + time, or hashed `_id`.
 
-ほとんどのアプリは、メトリクスによって必要性が証明されるまで、**シャードなし**で開始されます。
+Most apps start **unsharded** until metrics prove the need.
 
-## 7. 生産前のチェックリスト
+## 7. Checklist before production
 
-- [ ] **レプリカ セット** または Atlas (スタンドアロンではない)
-- [ ] 認証が有効です。アプリは最小権限のユーザーを使用します
-- [ ] バックアップ + 文書化された復元ランブック
-- [ ] 本番クエリパターンのインデックス
-- [ ] すべてのアプリ インスタンスにわたる接続プールのサイズ
-- [ ] ディスク上のアラート、レプリケーション ラグ、プライマリ フェールオーバー
+- [ ] **Replica set** or Atlas (not standalone)
+- [ ] Auth enabled; app uses least-privilege user
+- [ ] Backups + documented restore runbook
+- [ ] Indexes for production query patterns
+- [ ] Connection pools sized across all app instances
+- [ ] Alerts on disk, replication lag, primary failover
 
-## 関連メモ
+## Related notes
 
-- [データベースの最適化](vii-database-optimizations.md) — 遅いクエリの優先順位付け
-- [データベースのボトルネック](../sysdesign/bottleneck-analysis/vi-database.md) — キャッシュ、読み取りスケーリング
-- [Postgres 操作](../postgres/vi-operations-and-backups.md) — 多言語スタックの並列操作の考え方
+- [Database optimizations](vii-database-optimizations.md) — slow query triage
+- [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md) — caching, read scaling
+- [Postgres operations](../postgres/vi-operations-and-backups.md) — parallel ops mindset for polyglot stacks

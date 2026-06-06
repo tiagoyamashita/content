@@ -1,14 +1,13 @@
 ---
 label: "II"
-subtitle: "ブロックと変数"
+subtitle: "Blocks & variables"
 group: "PL/SQL"
 order: 2
 ---
-PL/SQL — ブロックと変数
+PL/SQL — blocks & variables
+Anonymous blocks, scalar variables, **anchor types** (`%TYPE`, `%ROWTYPE`), and assignment — the foundation for every procedure and package.
 
-匿名ブロック、スカラー変数、**アンカー タイプ** (`%TYPE`、`%ROWTYPE`)、および割り当て - すべてのプロシージャとパッケージの基礎。
-
-## 1. 匿名ブロック
+## 1. Anonymous block
 
 ```sql
 DECLARE
@@ -20,26 +19,26 @@ END;
 /
 ```
 
-|セクション |目的 |
-|----------|----------|
-| **`DECLARE`** |変数、定数、カーソル、ネストされたプロシージャ |
-| **`BEGIN`** |実行可能ステートメント |
-| **`EXCEPTION`** |セッション全体を中止せずにエラーを処理する |
-| **`END`** |ブロックを閉じます |
+| Section | Purpose |
+|---------|---------|
+| **`DECLARE`** | Variables, constants, cursors, nested procedures |
+| **`BEGIN`** | Executable statements |
+| **`EXCEPTION`** | Handle errors without aborting the whole session |
+| **`END`** | Closes the block |
 
-SQL*Plus/SQLcl: **`SET SERVEROUTPUT ON`** で出力を有効にします。
+Enable output in SQL*Plus/SQLcl: **`SET SERVEROUTPUT ON`**.
 
-## 2. 一般的なスカラー型
+## 2. Common scalar types
 
-| PL/SQL タイプ | SQL にマップ |メモ |
-|---------------|---------------|----------|
-| **`NUMBER`** | `NUMBER` |整数と小数 |
-| **`VARCHAR2(n)`** | `VARCHAR2` |可変長テキスト |
-| **`DATE` / `TIMESTAMP`** |同じ |必要に応じて `TIMESTAMP WITH TIME ZONE` を使用します。
-| **`BOOLEAN`** | *(なし)* | PL/SQL のみ - テーブルの列には格納できません。
-| **`CLOB` / `BLOB`** |大きな物体 |ループ内のストリームまたはチャンク |
+| PL/SQL type | Maps to SQL | Notes |
+|-------------|-------------|-------|
+| **`NUMBER`** | `NUMBER` | Integers and decimals |
+| **`VARCHAR2(n)`** | `VARCHAR2` | Variable-length text |
+| **`DATE` / `TIMESTAMP`** | Same | Use `TIMESTAMP WITH TIME ZONE` when needed |
+| **`BOOLEAN`** | *(none)* | PL/SQL only — not storable in a table column |
+| **`CLOB` / `BLOB`** | Large objects | Stream or chunk in loops |
 
-定数:
+Constants:
 
 ```sql
 DECLARE
@@ -50,9 +49,9 @@ END;
 /
 ```
 
-## 3. アンカー タイプ (スキーマとの同期を維持)
+## 3. Anchor types (stay in sync with schema)
 
-**`%TYPE`** — 列タイプ:
+**`%TYPE`** — column type:
 
 ```sql
 DECLARE
@@ -63,7 +62,7 @@ END;
 /
 ```
 
-**`%ROWTYPE`** — 行全体:
+**`%ROWTYPE`** — whole row:
 
 ```sql
 DECLARE
@@ -75,9 +74,9 @@ END;
 /
 ```
 
-列の型が変更されると、アンカーされた変数も追従するため、移行後のサイレントな不一致が少なくなります。
+When a column type changes, anchored variables follow — fewer silent mismatches after migrations.
 
-## 4. 代入と式
+## 4. Assignment and expressions
 
 ```sql
 DECLARE
@@ -90,14 +89,14 @@ END;
 /
 ```
 
-|演算子 / 構成体 |例 |
-|---------------------|----------|
-| **連結** | 「こんにちは」 \|\|名前 |
-| **比較** | `=`、`<>`、`IS NULL`、`BETWEEN` |
-| **ケース** | `CASE dept WHEN 10 THEN … END` |
-| **`SELECT … INTO`** |単一行フェッチ。行がゼロの場合、**`NO_DATA_FOUND`** が発生します。
+| Operator / construct | Example |
+|----------------------|---------|
+| **Concatenation** | `'Hi ' \|\| name |
+| **Comparison** | `=`, `<>`, `IS NULL`, `BETWEEN` |
+| **CASE** | `CASE dept WHEN 10 THEN … END` |
+| **`SELECT … INTO`** | Single-row fetch; raises **`NO_DATA_FOUND`** if zero rows |
 
-## 5. `SELECT … INTO` ルール
+## 5. `SELECT … INTO` rules
 
 ```sql
 DECLARE
@@ -110,15 +109,15 @@ END;
 /
 ```
 
-|返された行 |結果 |
-|--------------|----------|
+| Rows returned | Result |
+|---------------|--------|
 | **0** | `NO_DATA_FOUND` |
-| **1** |成功 |
+| **1** | Success |
 | **>1** | `TOO_MANY_ROWS` |
 
-オプションの単一行の場合は、カーソルまたは `SELECT … INTO … WHERE …` と例外ハンドラを使用します ([例外と一括 SQL](vi-exceptions-and-bulk-sql.md) を参照)。
+For optional single row, use a cursor or `SELECT … INTO … WHERE …` with exception handler (see [Exceptions & bulk SQL](vi-exceptions-and-bulk-sql.md)).
 
-## 6. ネストされたブロックとスコープ
+## 6. Nested blocks and scope
 
 ```sql
 DECLARE
@@ -134,9 +133,9 @@ END;
 /
 ```
 
-複雑なスクリプトで **`<<exit_block>>`** ジャンプが必要な場合は、ブロックにラベルを付けます (アプリケーション コードではまれです)。
+Label blocks when you need **`<<exit_block>>`** jumps in complex scripts (rare in application code).
 
-## 7. NULL セマンティクス
+## 7. NULL semantics
 
 ```sql
 DECLARE
@@ -153,8 +152,8 @@ END;
 /
 ```
 
-`= NULL`ではなく、**`IS NULL` / `IS NOT NULL`**を使用してください。
+Use **`IS NULL` / `IS NOT NULL`**, not `= NULL`.
 
-＃＃ 次
+## Next
 
-[制御フローとカーソル](iii-control-flow-and-cursors.md) `IF`、ループ、および行ごとの処理に進みます。
+Continue with [Control flow & cursors](iii-control-flow-and-cursors.md) for `IF`, loops, and row-by-row processing.

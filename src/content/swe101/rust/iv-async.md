@@ -1,26 +1,25 @@
 ---
 label: "IV"
-subtitle: "非同期Rust"
-group: "さび"
+subtitle: "Async Rust"
+group: "Rust"
 groupOrder: 1
 order: 4
 ---
-Rust — パート IV: 非同期 Rust
+Rust — Part IV: Async Rust
+How **`async`/`await`** works, what **`Future`**s and a **runtime** do, which **problems** show up in real code, and **practical fixes**. Assumes **Part I** (ownership, **`trait`**) and basic **`cargo`** (**Part II**).
 
-**`async`/`await`** がどのように動作するか、**`Future`** と **ランタイム** が行うこと、実際のコードで現れる**問題**、および **実践的な修正**。 **パート I** (所有権、**`trait`**) および基本的な **`cargo`** (**パート II**) を想定します。
+## 1. What “async” means in Rust
 
-## 1. Rustにおける「非同期」の意味
+**Goal:** run **many I/O-bound tasks** (network, disk, timers) on **few OS threads** without blocking each thread while waiting.
 
-**目標:** 待機中に各スレッドをブロックすることなく、**少数の OS スレッド** で **多くの I/O バウンド タスク** (ネットワーク、ディスク、タイマー) を実行します。
+| Model | Good for | Rust piece |
+|-------|----------|------------|
+| **OS threads** | CPU-heavy parallel work | **`std::thread`**, **`rayon`** |
+| **Async tasks** | Lots of concurrent waits on I/O | **`async fn`**, **`Future`**, **runtime** |
 
-|モデル |良いこと |錆びた部分
-|----------|----------|---------------|
-| **OS スレッド** | CPU を大量に使用する並列作業 | **`std::thread`**、**`rayon`** |
-| **非同期タスク** | I/O での大量の同時待機 | **`async fn`**、**`Future`**、**実行時間** |
+Rust does **not** ship a full async runtime in **`std`** — only the **`Future`** trait and **`async`/`await`** syntax. You pick a runtime (**[Tokio](https://tokio.rs/)**, **[async-std](https://async.rs/)**, **smol**, …). **Tokio** is the default choice for servers and most learning material.
 
-Rust は **`std`** で完全な非同期ランタイムを**提供していません**。**`Future`** トレイトと **`async`/`await`** 構文のみです。ランタイム (**[Tokio](162)**、**[async-std](163)**、**smol**、…) を選択します。 **Tokio** は、サーバーとほとんどの学習教材のデフォルトの選択です。
-
-### 同期と非同期 (心の中のイメージ)
+### Sync vs async (mental picture)
 
 ```text
 Sync server (thread per request):
@@ -33,15 +32,15 @@ Async server (few threads, many tasks):
   Thread 2 ██ task D ██ task E ██
 ```
 
-**非同期によって CPU の動作が高速化されるわけではありません**。そうでなければスレッドが I/O を待って **スリープ**する場合に役立ちます。
+**Async does not make CPU work faster** — it helps when threads would otherwise **sleep** waiting on I/O.
 
-## 2. コアピース
+## 2. Core pieces
 
-### `async fn`および`Future`
+### `async fn` and `Future`
 
-**`async fn`** は **`Future<Output = T>`** を実装するもの、つまり **まだ完了していない作業**を返します。 **`async_fn()`** を呼び出しても本体は**実行されません**。それは**未来を構築**します。
+An **`async fn`** returns something that implements **`Future<Output = T>`** — work that **is not finished yet**. Calling **`async_fn()`** does **not** run the body; it **constructs** a future.
 
-**`await`** は、別のフューチャーが完了するまで現在の非同期関数を一時停止します。** 実行スレッドをブロックすることはありません** (適切な処理を待っている場合)。
+**`await`** suspends the current async function until another future completes, **without** blocking the executor thread (if you await the right things).
 
 ```rust
 async fn fetch_label() -> String {
@@ -55,19 +54,19 @@ async fn run() {
 }
 ```
 
-### エグゼキュータとランタイム
+### Executor and runtime
 
-**`Poll::Ready`** が返されるまで、何かが先物を**ポーリング**する必要があります。 **ランタイム** (例: **Tokio**) は以下を提供します:
+Something must **poll** futures until they return **`Poll::Ready`**. A **runtime** (e.g. **Tokio**) provides:
 
-- **スケジューラー** (スレッド プールでタスクを実行)
-- **I/O ドライバー** (epoll/kqueue/IOCP) により、ソケット/タイマーはウェイク タスクを待機します
-- **タイマー**、**TCP/UDP**、**チャネル**、**`spawn`**など。
+- A **scheduler** (run tasks on a thread pool)
+- **I/O driver** (epoll/kqueue/IOCP) so socket/timer waits wake tasks
+- **Timers**, **TCP/UDP**, **channels**, **`spawn`**, etc.
 
 ```text
 your async fn  →  Future  →  runtime polls it  →  .await points register wakers
 ```
 
-### ミニマルトキオプログラム
+### Minimal Tokio program
 
 **`Cargo.toml`:**
 
@@ -95,16 +94,16 @@ async fn main() {
 }
 ```
 
-**`#[tokio::main]`** は、ビルド ランタイム → **`block_on`** 非同期 **`main`** に展開されます。
+**`#[tokio::main]`** expands to: build runtime → **`block_on`** your async **`main`**.
 
-## 3. 同時非同期作業の実行
+## 3. Running concurrent async work
 
-| API |使用 |
+| API | Use |
 |-----|-----|
-| **`tokio::spawn`** |ファイアアンドフォーゲットまたはパラレルブランチ (**`'static`** または所有データが必要) |
-| **`tokio::join!(a(), b())`** | **すべて**を待ちます。 1 つが失敗した場合はフェイルファスト (非同期 fn の `?` を使用) |
-| **`tokio::select!`** | **最初**の準備完了ブランチを待ちます。他をキャンセルする |
-| **`FuturesUnordered`** / ストリーム |制限のある同種のタスクが多数ある |
+| **`tokio::spawn`** | Fire-and-forget or parallel branch (needs **`'static`** or owned data) |
+| **`tokio::join!(a(), b())`** | Wait for **all**; fail fast if one fails (with `?` in async fn) |
+| **`tokio::select!`** | Wait for **first** ready branch; cancel others |
+| **`FuturesUnordered`** / streams | Many homogeneous tasks with limits |
 
 ```rust
 use tokio::time::{sleep, Duration};
@@ -124,19 +123,19 @@ async fn both() -> (u32, u32) {
 }
 ```
 
-## 4. 発生する問題 (およびその解決方法)
+## 4. Problems that arise (and how to solve them)
 
-### 4.1 エグゼキューターのブロック (「非同期は遅い」)
+### 4.1 Blocking the executor (“async is slow”)
 
-**問題:** **`std::thread::sleep`**、重い CPU ループ、または **`async fn`** 内の **同期** ファイル/DB API がランタイム スレッドをブロックします**。そのスレッド上の他のタスクはすべて停止します。
+**Problem:** **`std::thread::sleep`**, heavy CPU loops, or **sync** file/DB APIs inside **`async fn`** **block the runtime thread**. Every other task on that thread stalls.
 
-**症状:** 遅延のスパイク、CPU は低いがスループットが低い、「非同期により状況が悪化」。
+**Symptoms:** latency spikes, low CPU but poor throughput, “async made it worse”.
 
-**修正:**
+**Fixes:**
 
-- **非同期** API を使用します: **`tokio::time::sleep`**、**`tokio::fs`**、**`reqwest`**、**`sqlx`**、**`hyper`** など。
-- **ブロッキング**作業のオフロード: **`tokio::task::spawn_blocking(|| { ... })`**。
-- **CPU** 作業のオフロード: 専用スレッド プール (**`rayon`**、**`spawn_blocking`**)。
+- Use **async** APIs: **`tokio::time::sleep`**, **`tokio::fs`**, **`reqwest`**, **`sqlx`**, **`hyper`**, etc.
+- Offload **blocking** work: **`tokio::task::spawn_blocking(|| { ... })`**.
+- Offload **CPU** work: dedicated thread pool (**`rayon`**, **`spawn_blocking`**).
 
 ```rust
 // Bad in async context
@@ -157,15 +156,15 @@ async fn offload() -> Result<String, std::io::Error> {
 }
 ```
 
-### 4.2 `.await` 全体でロックを保持する
+### 4.2 Holding locks across `.await`
 
-**問題:** **`mutex.lock().await`** は **`std::sync::Mutex`** に存在しません。 **`std::sync::Mutex`** をロックしてから **`.await`** をロックすると、サスペンド中にロックが保持されることになり、**デッドロック**と長いクリティカル セクションが発生します。
+**Problem:** **`mutex.lock().await`** does not exist on **`std::sync::Mutex`**. If you lock **`std::sync::Mutex`** and then **`.await`**, you hold the lock while suspended → **deadlocks** and long critical sections.
 
-**修正:**
+**Fixes:**
 
-- **ロックスコープ**を小さく保ちます: 必要なものを計算し、ガードを**ドロップ**してから** `.await`。
-- 非同期タスクで **のみ**共有されるデータには **`tokio::sync::Mutex`** / **`RwLock`** を優先します (非同期対応、同期専用コードの場合は遅くなります)。
-- 待機する前に、**所有データ**をロックから渡します。
+- Keep **lock scope** tiny: compute what you need, **drop** the guard, **then** `.await`.
+- Prefer **`tokio::sync::Mutex`** / **`RwLock`** for data shared **only** in async tasks (async-aware, slower for sync-only code).
+- Pass **owned data** out of the lock before awaiting.
 
 ```rust
 // Risky pattern
@@ -187,15 +186,15 @@ async fn safer(flag: std::sync::Arc<std::sync::Mutex<bool>>) {
 }
 ```
 
-### 4.3 `Send` および `Sync` と `.await`
+### 4.3 `Send` and `Sync` across `.await`
 
-**問題:** コンパイラは、将来別のスレッドに移動できるように、**`.await`** の **`.await`** に保持される型を **`Send`** にする必要があります。 **`Send`** 以外の型 (**`Rc`**、生のポインタ、一部の GUI ハンドル) は、*「将来はスレッド間で安全に送信できません」* のようなエラーを引き起こします。
+**Problem:** The compiler requires types held **across** an **`.await`** to be **`Send`** so the future can move to another thread. Non-**`Send`** types (**`Rc`**, raw pointers, some GUI handles) cause errors like *“future cannot be sent between threads safely”*.
 
-**修正:**
+**Fixes:**
 
-- マルチスレッド ランタイムでの共有所有権には、**`Rc`** ではなく **`Arc`** を使用します。
-- **`RefCell`** / **`Rc`** ガードを **`.await`** にわたって保持しないでください。
-- **`tokio::spawn`** には **`Send + 'static`** が必要です — **`Arc`** データのクローンをタスクに作成します。
+- Use **`Arc`** instead of **`Rc`** for shared ownership in multi-threaded runtimes.
+- Don’t hold **`RefCell`** / **`Rc`** guards across **`.await`**.
+- **`tokio::spawn`** requires **`Send + 'static`** — clone **`Arc`** data into the task.
 
 ```rust
 use std::sync::Arc;
@@ -210,14 +209,14 @@ async fn worker(data: Arc<Vec<u8>>) {
 }
 ```
 
-### 4.4 ランタイムなし / 同期コードからの非同期呼び出し
+### 4.4 No runtime / calling async from sync code
 
-**問題:** **`my_async_fn().await`** は **`async`** コンテキスト内でのみ機能します。同期 **`main`** またはコールバックから、*「await は `async` 関数内でのみ許可されます」* を取得します。
+**Problem:** **`my_async_fn().await`** only works inside **`async`** context. From sync **`main`** or a callback you get *“await is only allowed inside `async` functions”*.
 
-**修正:**
+**Fixes:**
 
-- 最上位レベルの場合は **`#[tokio::main]`** または **`Runtime::block_on`**。
-- ライブラリは **`block_on`** をエッジでのみ公開します。ランタイムのネストを避けます。
+- **`#[tokio::main]`** or **`Runtime::block_on`** for the top level.
+- Libraries expose **`block_on`** only at the edge — avoid nesting runtimes.
 
 ```rust
 fn sync_entry() {
@@ -228,16 +227,16 @@ fn sync_entry() {
 }
 ```
 
-### 4.5 先物のキャンセルとドロップ
+### 4.5 Cancellation and dropped futures
 
-**問題:** Future が **ドロップ**されると (タイムアウト、**`select!`**、クライアントの切断)、実行は次の **`.await`** で停止します。部分的な作業では、シャットダウンを処理しない限り、リソースに不整合が残る可能性があります。
+**Problem:** When a future is **dropped** (timeout, **`select!`**, client disconnect), execution stops at the next **`.await`**. Partial work may leave resources inconsistent unless you handle shutdown.
 
-**修正:**
+**Fixes:**
 
-- **`tokio::select!`** を **`biased`** / 明示的なシャットダウン ブランチとともに使用します。
-- **`tokio::time::timeout`** 運営に関すること。
-- **`Drop`** ガード、**`defer`** パターン、またはクリーンナップ用 **`scopeguard`**。
-- **冪等**ハンドラーを設計します。 DB レイヤーで **トランザクション** を使用します。
+- Use **`tokio::select!`** with **`biased`** / explicit shutdown branches.
+- **`tokio::time::timeout`** around operations.
+- **`Drop`** guards, **`defer`** patterns, or **`scopeguard`** for cleanup.
+- Design **idempotent** handlers; use **transactions** in DB layers.
 
 ```rust
 async fn with_timeout() -> Result<String, tokio::time::error::Elapsed> {
@@ -249,15 +248,15 @@ async fn with_timeout() -> Result<String, tokio::time::error::Elapsed> {
 }
 ```
 
-### 4.6 無制限の同時実行性 (メモリ / 過負荷)
+### 4.6 Unbounded concurrency (memory / overload)
 
-**問題:** 数百万のアイテムで **`for item in items { tokio::spawn(...) }`** すると、RAM とファイル記述子が使い果たされます。
+**Problem:** **`for item in items { tokio::spawn(...) }`** on millions of items exhausts RAM and file descriptors.
 
-**修正:**
+**Fixes:**
 
-- **`Semaphore`** で飛行中の作業を制限します。
-- **`buffer_unordered(n)`** / **`FuturesUnordered`** 制限あり。
-- 固定ワーカー プール (プロデューサー/コンシューマー) を備えた **チャネル**。
+- **`Semaphore`** to cap in-flight work.
+- **`buffer_unordered(n)`** / **`FuturesUnordered`** with a limit.
+- **Channels** with fixed worker pool (producer/consumer).
 
 ```rust
 use tokio::sync::Semaphore;
@@ -284,47 +283,47 @@ async fn fetch(url: &str) {
 }
 ```
 
-### 4.7 ピン留めと自己参照先物
+### 4.7 Pinning and self-referential futures
 
-**問題:** 一部の Future (および Rust 1.75 より前のトレイトの **`async fn`**) は、ポインタを独自のスタック フレームに保持するため、**固定**する必要があります。エラーには **`Unpin`** または **`Pin`** が記載されています。
+**Problem:** Some futures (and **`async fn`** in traits before Rust 1.75) need to be **pinned** because they hold pointers into their own stack frame. Errors mention **`Unpin`** or **`Pin`**.
 
-**修正:**
+**Fixes:**
 
-- サポートされている場合は、最新の Rust の特性**で **`async fn` を優先するか、**`Pin<Box<dyn Future + Send>>`** を使用してください。
-- 手動先物を書くときは **`pin_project`** / **`pin-project-lite`** を使用します。
-- **`async fn`** マクロと Tokio マクロに固定を処理させます。固定された値では **`mem::swap`** を避けてください。
+- Prefer **`async fn` in traits** on modern Rust where supported, or use **`Pin<Box<dyn Future + Send>>`**.
+- Use **`pin_project`** / **`pin-project-lite`** when writing manual futures.
+- Let **`async fn`** and Tokio macros handle pinning; avoid **`mem::swap`** on pinned values.
 
-ほとんどのアプリケーション コードはカスタム **`Future`** を書き込むことはありません。**`Pin`** に到達した場合は、型システムと戦う前にエラーとトレイトのドキュメントを読んでください。
+Most application code never writes custom **`Future`**s — if you hit **`Pin`**, read the error and the trait’s docs before fighting the type system.
 
-### 4.8 「非同期特性」と動的ディスパッチ
+### 4.8 “async trait” and dynamic dispatch
 
-**問題:** **`dyn SomeAsyncTrait`** はぎこちなかった。特性の async メソッドには余分な定型文がありました。
+**Problem:** **`dyn SomeAsyncTrait`** was awkward; async methods in traits had extra boilerplate.
 
-**修正:**
+**Fixes:**
 
-- **Rust 1.75+**: 多くの場合、特性に **`async fn`** (**`use`** 脱糖あり)。
-- **`async-trait`** 古いコードベース用のクレート (マクロ)。
-- 必要に応じて特性オブジェクトの **`Pin<Box<dyn Future<Output = ...> + Send>>`**。
+- **Rust 1.75+**: **`async fn`** in traits (with **`use`** desugaring) for many cases.
+- **`async-trait`** crate (macro) for older codebases.
+- **`Pin<Box<dyn Future<Output = ...> + Send>>`** for trait objects when needed.
 
-### 4.9 ランタイムの混合またはネストされた `block_on`
+### 4.9 Mixing runtimes or nested `block_on`
 
-**問題:** 1 つのプロセス内に 2 つのランタイムがある、または非同期タスク内で **`block_on`** → デッドロックまたはパニックが発生します。
+**Problem:** Two runtimes in one process, or **`block_on`** inside an async task → deadlocks or panics.
 
-**修正:**
+**Fixes:**
 
-- **ルートにプロセスごとに 1 つのランタイム**。
-- **同じ**ランタイム上の非同期コード内では決して**`block_on`**しないでください。 **`.await`** を使用してください。
-- 同期ライブラリが async を呼び出す必要がある場合は、**専用スレッド** + チャネルを使用して分離します。
+- **One runtime per process** at the root.
+- Never **`block_on`** inside async code on the **same** runtime; use **`.await`**.
+- If a sync library must call async, isolate with a **dedicated thread** + channel.
 
-### 4.10 非同期コードでのエラー処理
+### 4.10 Error handling in async code
 
-**問題:** **`async fn`** の **`?`** は、スレッドからではなく **将来**から **`Result`** を返します。**`spawn`** と混同しやすいです (**`await`** を **`JoinHandle`** にしない限り、生成されたタスク内のエラーは失われます)。
+**Problem:** **`?`** in **`async fn`** returns **`Result`** from the **future**, not from a thread — easy to confuse with **`spawn`** (errors inside spawned tasks are lost unless you **`await`** the **`JoinHandle`**).
 
-**修正:**
+**Fixes:**
 
-- **`await`** ハンドルを結合し、**`Result`** を伝播します。
-- **`tokio::try_join!`** 複数の **`Result`** 先物をショートする場合。
-- タスクにパニックを記録します。スパンには **`tracing`** + **`Instrument`** を考慮してください。
+- **`await`** join handles and propagate **`Result`**.
+- **`tokio::try_join!`** for short-circuiting multiple **`Result`** futures.
+- Log panics in tasks; consider **`tracing`** + **`Instrument`** for spans.
 
 ```rust
 async fn fallible() -> Result<(), std::io::Error> {
@@ -333,21 +332,21 @@ async fn fallible() -> Result<(), std::io::Error> {
 }
 ```
 
-## 5. 共有状態パターン
+## 5. Shared state patterns
 
-|パターン |いつ |
-|-------|------|
-| **`Arc<T>`** + 不変データ |ほとんど読み取り専用の構成 |
-| **`Arc<tokio::sync::Mutex<T>>`** |非同期タスクにおける変更可能な共有状態 |
-| **`tokio::sync::mpsc`** |タスク間でのメッセージの受け渡し |
-| **`tokio::sync::broadcast`** |多くの購読者 (イベント) |
-| **チャネル + ワーカー プール** |バックプレッシャーに優しいパイプライン |
+| Pattern | When |
+|---------|------|
+| **`Arc<T>`** + immutable data | Read-mostly config |
+| **`Arc<tokio::sync::Mutex<T>>`** | Mutable shared state in async tasks |
+| **`tokio::sync::mpsc`** | Message passing between tasks |
+| **`tokio::sync::broadcast`** | Many subscribers (events) |
+| **Channels + worker pool** | Backpressure-friendly pipelines |
 
-ロック期間が **わずか**で **`.await`** にまたがらない場合を除き、**`Arc<Mutex<T>>`** と **`std::sync::Mutex`** は避けてください。
+Avoid **`Arc<Mutex<T>>`** with **`std::sync::Mutex`** unless lock duration is **tiny** and never spans **`.await`**.
 
-## 6. 可観測性
+## 6. Observability
 
-トレースしないと、非同期バグはランダムに見えます。
+Without tracing, async bugs look random.
 
 ```toml
 tracing = "0.1"
@@ -362,38 +361,38 @@ async fn handle_request(id: u64) {
 }
 ```
 
-**`RUST_LOG=info`** (またはフィルター) を使用して実行します。タスクレベルのイントロスペクションが必要な場合は、**Tokio コンソール** (`tokio-console`) と組み合わせてください。
+Run with **`RUST_LOG=info`** (or your filter). Pair with **Tokio console** (`tokio-console`) when you need task-level introspection.
 
-## 7. 非同期を使用しない**場合
+## 7. When **not** to use async
 
-- **CLI ツール** は 1 つのことを実行して終了するため、同期がより簡単になります。
-- **CPU バウンドのバッチ ジョブ** → スレッド / **`rayon`**、非同期。
-- **同時 I/O のない小さなスクリプト** → **`std::fs`** と **142​​** (必要な場合) の同期は問題ありません。
-- チームにランタイムの専門知識がない → 同期 + スレッド プールにより可動部分が少なくなります。
+- **CLI tool** that does one thing and exits → sync is simpler.
+- **CPU-bound batch job** → threads / **`rayon`**, not async.
+- **Small script** with no concurrent I/O → sync **`std::fs`** and **`reqwest::blocking`** (if you must) are fine.
+- Team has no runtime expertise → fewer moving parts with sync + a thread pool.
 
-**多数の同時 I/O 待機**があり、いくつかのコアで拡張できる **1 つのバイナリ**が必要な場合は、async を使用します。
+Use async when you have **many concurrent I/O waits** and want **one binary** that scales on a few cores.
 
-## 8. 学習パス
+## 8. Learning path
 
-1. **パート I** — 所有権、**`Send`**、借用 (コンパイラ エラーの半分を説明)。
-2. **[非同期ブック](164)** — 公式メンタルモデル。
-3. **[Tokio チュートリアル](165)** — 実用的な TCP、タイマー、チャネル。
-4. 構築: 小さな HTTP サーバー → **`Semaphore`** を追加 → **`tracing`** を追加 → **`thread::sleep`** で壊して修正します。
+1. **Part I** — ownership, **`Send`**, borrows (explains half the compiler errors).
+2. **[Async Book](https://rust-lang.github.io/async-book/)** — official mental model.
+3. **[Tokio tutorial](https://tokio.rs/tokio/tutorial)** — practical TCP, timers, channels.
+4. Build: tiny HTTP server → add **`Semaphore`** → add **`tracing`** → break it with **`thread::sleep`** and fix.
 
-## 9. 迅速なトラブルシューティング
+## 9. Quick troubleshooting
 
-|エラー/症状 |考えられる原因 |修正 |
+| Error / symptom | Likely cause | Fix |
 |-----------------|--------------|-----|
-| `await`は`async`のみ |同期コードから呼び出されます | `#[tokio::main]` / `block_on` エッジ |
-|未来ではない `Send` | `Rc`、待機中のロックガード | `Arc`、シュリンク ロック スコープ |
-|すべてがハングします |非同期でのブロック | `spawn_blocking`、非同期 I/O |
-|スポーンには `'static` が必要です |タスク内のスタック データを借用 | `Arc`、`move`、所有クローン |
-|デッドロック | `std::Mutex` + 待つ |ロックを押したまま待機しないでください |
-|負荷がかかっている OOM |無制限 `spawn` | `Semaphore`、境界付きチャネル |
+| `await` only in `async` | Called from sync code | `#[tokio::main]` / `block_on` at edge |
+| future not `Send` | `Rc`, lock guard across await | `Arc`, shrink lock scope |
+| everything hangs | Blocking in async | `spawn_blocking`, async I/O |
+| spawn requires `'static` | Borrowed stack data in task | `Arc`, `move`, owned clones |
+| deadlock | `std::Mutex` + await | Don’t await while holding lock |
+| OOM under load | Unbounded `spawn` | `Semaphore`, bounded channels |
 
-## 10. 関連
+## 10. Related
 
-- **パート I** — 組織、所有権 [基本とツールチェーン](i-basics-and-toolchain.md)
-- **パート II** — `Cargo.toml`、依存関係 [貨物および共有可能なクレート](ii-cargo-and-shareable-crates.md)
-- [Rustでの非同期プログラミング](166)
-- [Tokio](167) — ランタイム、チュートリアル、ドキュメント
+- **Part I** — organization, ownership [Basics & toolchain](i-basics-and-toolchain.md)
+- **Part II** — `Cargo.toml`, dependencies [Cargo & shareable crates](ii-cargo-and-shareable-crates.md)
+- [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
+- [Tokio](https://tokio.rs/) — runtime, tutorials, docs

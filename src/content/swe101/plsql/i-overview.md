@@ -1,39 +1,38 @@
 ---
 label: "I"
-subtitle: "概要"
+subtitle: "Overview"
 group: "PL/SQL"
 order: 1
 ---
-PL/SQL — 概要
+PL/SQL — overview
+**PL/SQL** (Procedural Language/SQL) is Oracle’s procedural extension to **SQL**. You run it inside the **Oracle Database** — anonymous blocks, stored **procedures**, **functions**, **packages**, and **triggers** — close to the data for batch jobs, legacy enterprise apps, and rules that must hold regardless of which client connects.
 
-**PL/SQL** (手続き型言語/SQL) は、**SQL** に対する Oracle の手続き型拡張機能です。これは、**Oracle Database** (匿名ブロック、ストアド **プロシージャ**、**関数**、**パッケージ**、**トリガー**) 内で実行されます。これらは、バッチ ジョブ、レガシー エンタープライズ アプリ、および接続するクライアントに関係なく保持する必要があるルールのデータに近いものです。
+This track assumes you know relational basics from [Relational (SQL)](../../CS101/databases/ii-relational.md). For open-source Postgres patterns, see the [Postgres](../postgres/i-overview.md) track — syntax differs, but procedural-in-the-DB tradeoffs are similar.
 
-このトラックは、[リレーショナル (SQL)](../../CS101/databases/ii-relational.md) でリレーショナルの基本を理解していることを前提としています。オープンソースの Postgres パターンについては、[Postgres](../postgres/i-overview.md) トラックを参照してください。構文は異なりますが、DB 内手続きのトレードオフは似ています。
+## Map of this track
 
-## このトラックの地図
+| Part | Focus |
+|------|--------|
+| **I — Overview** | When PL/SQL, Oracle tooling, block structure |
+| **II — Blocks & variables** | `DECLARE`/`BEGIN`/`END`, types, `%TYPE`, `%ROWTYPE` |
+| **III — Control flow & cursors** | `IF`, loops, implicit and explicit cursors |
+| **IV — Procedures & functions** | Parameters, return values, calling from SQL |
+| **V — Packages & triggers** | Spec/body, state, `BEFORE`/`AFTER` triggers |
+| **VI — Exceptions & bulk SQL** | `EXCEPTION`, `BULK COLLECT`, `FORALL`, pragmas |
+| **VII — Database optimizations** | Set-based SQL, plans, binds, bulk tuning checklist |
 
-|パート |フォーカス |
-|------|----------|
-| **I — 概要** | PL/SQL、Oracle ツール、ブロック構造の場合 |
-| **II — ブロックと変数** | `DECLARE`/`BEGIN`/`END`、タイプ、`%TYPE`、`%ROWTYPE` |
-| **III — 制御フローとカーソル** | `IF`、ループ、暗黙的および明示的カーソル |
-| **IV — プロシージャと関数** |パラメータ、戻り値、SQL からの呼び出し |
-| **V — パッケージとトリガー** |仕様/本体、状態、`BEFORE`/`AFTER` トリガー |
-| **VI — 例外と一括 SQL** | `EXCEPTION`、`BULK COLLECT`、`FORALL`、プラグマ |
-| **VII — データベースの最適化** |セットベースの SQL、プラン、バインド、一括チューニングのチェックリスト |
+## When PL/SQL makes sense
 
-## PL/SQL が意味をなす場合
+| Use PL/SQL in the DB | Prefer application code |
+|----------------------|-------------------------|
+| Complex multi-step SQL on large sets (ETL, reporting) | HTTP APIs, UI, orchestration |
+| Rules that every client must obey (constraints + triggers) | Business logic that changes often |
+| Nightly batch close / ledger posting | Microservices with separate deploy cycles |
+| Legacy Oracle Forms, EBS, custom ERP modules | Greenfield cloud-native services |
 
-| DB で PL/SQL を使用する |アプリケーション コードを優先する |
-|----------------------|----------------------|
-|大規模なセットに対する複雑なマルチステップ SQL (ETL、レポート) | HTTP API、UI、オーケストレーション |
-|すべてのクライアントが従わなければならないルール (制約 + トリガー) |頻繁に変更されるビジネス ロジック |
-|夜間のバッチクローズ/元帳転記 |個別のデプロイサイクルを持つマイクロサービス |
-|レガシー Oracle Forms、EBS、カスタム ERP モジュール |グリーンフィールドのクラウドネイティブ サービス |
+**Default for new services:** keep most logic in the app; use PL/SQL where Oracle is the system of record and teams already maintain packages.
 
-**新しいサービスのデフォルト:** ほとんどのロジックをアプリ内に保持します。 Oracle が記録システムであり、チームがすでにパッケージを保守している場合は、PL/SQL を使用します。
-
-## コードが実行される場所
+## Where code runs
 
 ```text
 Client (Java, Python, SQL*Plus, SQL Developer)
@@ -46,18 +45,18 @@ Client (Java, Python, SQL*Plus, SQL Developer)
                     └── Shared buffer cache & undo — same transaction as SQL
 ```
 
-PL/SQL と SQL はセッション内で **1 つのトランザクション**を共有します。`COMMIT`/`ROLLBACK` は両方に適用されます。
+PL/SQL and SQL share **one transaction** in a session — `COMMIT`/`ROLLBACK` apply to both.
 
-## ツーリング
+## Tooling
 
-|ツール |役割 |
+| Tool | Role |
 |------|------|
-| **SQL 開発者** |無料の GUI — スクリプトの実行、デバッグ、オブジェクトの参照 |
-| **SQL*Plus / SQLcl** | CLI — スクリプト、CI、DBA タスク |
-| **Oracle ライブ SQL** |ブラウザサンドボックス (oracle.com/livesql) |
-| **JDBC / OCI** |アプリ呼び出し: `{ call pkg.proc(?) }` |
+| **SQL Developer** | Free GUI — run scripts, debug, browse objects |
+| **SQL*Plus / SQLcl** | CLI — scripts, CI, DBA tasks |
+| **Oracle Live SQL** | Browser sandbox (oracle.com/livesql) |
+| **JDBC / OCI** | App calls: `{ call pkg.proc(?) }` |
 
-SQL DeveloperまたはSQLclの匿名ブロックの例:
+Example anonymous block in SQL Developer or SQLcl:
 
 ```sql
 SET SERVEROUTPUT ON
@@ -67,9 +66,9 @@ END;
 /
 ```
 
-## ブロックの解剖学 (プレビュー)
+## Block anatomy (preview)
 
-すべての PL/SQL ユニットは次のようになります。
+Every PL/SQL unit follows:
 
 ```text
 [DECLARE   -- optional declarations]
@@ -81,19 +80,19 @@ END;
 /
 ```
 
-スラッシュ (`/`) は SQL*Plus/SQLcl にブロックを実行するよう指示します。 SQL Developerでは、**スクリプトの実行** (F5)と**ステートメントの実行** (Ctrl+Enter)をよく使用します。
+The slash (`/`) tells SQL*Plus/SQLcl to execute the block; SQL Developer often uses **Run Script** (F5) vs **Run Statement** (Ctrl+Enter).
 
-## Oracle と Postgres 手続き型 SQL
+## Oracle vs Postgres procedural SQL
 
-| |オラクルPL/SQL | Postgres PL/pgSQL |
-|---|---------------|----|
-| **言語** |独自の、Oracle スタックで成熟 |オープンソース、Postgres ネイティブ |
-| **パッケージ** |はい (`SPEC` + `BODY`) |スキーマ + 関数、パッケージ キーワードなし |
-| **トリガー構文** | `:NEW` / `:OLD` 行トリガー | `NEW` / `OLD` 記録 |
-| **典型的な雇用主の状況** |銀行、ERP、政府機関のオラクル資産 |スタートアップ、クラウドネイティブ、Supabase/Neon |
+| | Oracle PL/SQL | Postgres PL/pgSQL |
+|---|---------------|-------------------|
+| **Language** | Proprietary, mature in Oracle stack | Open source, Postgres-native |
+| **Packages** | Yes (`SPEC` + `BODY`) | Schemas + functions, no package keyword |
+| **Trigger syntax** | `:NEW` / `:OLD` row triggers | `NEW` / `OLD` record |
+| **Typical employer context** | Banking, ERP, government Oracle estates | Startups, cloud-native, Supabase/Neon |
 
-PL/SQL を理解すると、Oracle システムの保守に役立ちます。 SQL とアプリ スタックの学習に代わるものではありません。
+Knowing PL/SQL helps you maintain Oracle systems; it does not replace learning SQL and your app stack.
 
-＃＃ 次
+## Next
 
-[ブロックと変数](ii-blocks-and-variables.md) に進み、宣言、アンカー、代入を行います。
+Continue with [Blocks & variables](ii-blocks-and-variables.md) for declarations, anchors, and assignment.

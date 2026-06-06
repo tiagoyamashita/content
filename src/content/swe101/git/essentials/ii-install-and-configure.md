@@ -1,55 +1,54 @@
 ---
 label: "II"
-subtitle: "インストールと設定"
+subtitle: "Install & configure"
 group: "Git"
 order: 2
 ---
-インストールと設定
+Install & configure
+Install Git once per machine, set identity, and prefer **SSH** (or HTTPS with credential helper) for GitHub/GitLab.
 
-マシンごとに Git を 1 回インストールし、ID を設定し、GitHub/GitLab に対して **SSH** (または資格情報ヘルパーを備えた HTTPS) を優先します。
+## 1. Install
 
-## 1. インストール
-
-| OS |コマンド/ソース |
-|----|------|
-| **Windows** | [git-scm.com](18) または `winget install Git.Git` |
-| **macOS** | Xcode CLT または `brew install git` |
+| OS | Command / source |
+|----|------------------|
+| **Windows** | [git-scm.com](https://git-scm.com) or `winget install Git.Git` |
+| **macOS** | Xcode CLT or `brew install git` |
 | **Linux** | `sudo apt install git` / `dnf install git` |
 
-確認する：
+Verify:
 
 ```bash
 git --version
 ```
 
-## 2. ID (コミットに必要)
+## 2. Identity (required for commits)
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-プロファイルにコミットをリンクしたい場合は、GitHub アカウントと**同じメールアドレス**を使用してください。
+Use the **same email** as your GitHub account if you want commits linked on your profile.
 
-設定を表示:
+View settings:
 
 ```bash
 git config --global --list
 ```
 
-|範囲 |旗 |使用 |
-|------|------|-----|
-|システム | `--system` |すべてのユーザー |
-|グローバル | `--global` |あなたのユーザー (`~/.gitconfig`) |
-|ローカル | `--local` |現在のリポジトリのみ (グローバルをオーバーライド) |
+| Scope | Flag | Use |
+|-------|------|-----|
+| System | `--system` | All users |
+| Global | `--global` | Your user (`~/.gitconfig`) |
+| Local | `--local` | Current repo only (overrides global) |
 
-## 3. デフォルトのブランチ名
+## 3. Default branch name
 
 ```bash
 git config --global init.defaultBranch main
 ```
 
-## 4. GitHub の SSH キー
+## 4. SSH key for GitHub
 
 ```bash
 ssh-keygen -t ed25519 -C "you@example.com"
@@ -59,21 +58,21 @@ cat ~/.ssh/id_ed25519.pub   # paste into GitHub → Settings → SSH keys
 ssh -T git@github.com
 ```
 
-SSH を使用してクローンを作成します。
+Clone with SSH:
 
 ```bash
 git clone git@github.com:owner/repo.git
 ```
 
-## 5. HTTPS の代替手段
+## 5. HTTPS alternative
 
 ```bash
 git clone https://github.com/owner/repo.git
 ```
 
-**資格情報マネージャー** (Git for Windows には資格情報マネージャーが含まれています) または **きめ細かい PAT** を使用します。URL にパスワードを埋め込むのは避けてください。
+Use **credential manager** (Git for Windows includes one) or **fine-grained PAT** — avoid embedding passwords in URLs.
 
-## 6. 便利なグローバルデフォルト
+## 6. Useful global defaults
 
 ```bash
 git config --global pull.rebase false    # merge on pull (default); see v-remotes
@@ -82,7 +81,7 @@ git config --global color.ui auto
 git config --global core.editor "code --wait"   # VS Code / Cursor
 ```
 
-## 7. 最初のリポジトリ
+## 7. First repo
 
 ```bash
 mkdir myproject && cd myproject
@@ -92,11 +91,11 @@ git add README.md
 git commit -m "Initial commit"
 ```
 
-GitHub へのリンク (サイトで空のリポジトリを作成した後):
+Link to GitHub (after creating empty repo on site):
 
 ```bash
 git remote add origin git@github.com:you/myproject.git
 git push -u origin main
 ```
 
-**関連:** [日常コマンド](iii-everyday-commands.md)、**GitHub** → リポジトリのメモ。
+**Related:** [Everyday commands](iii-everyday-commands.md), **GitHub** → repositories note.

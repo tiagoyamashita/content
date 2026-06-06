@@ -1,16 +1,15 @@
 ---
 label: "VIII"
-subtitle: "CDN と API ゲートウェイの併用"
+subtitle: "CDN & API gateway together"
 group: "CDN"
 order: 8
 ---
-CDN と API ゲートウェイ — それらがどのように連携するか
+CDN & API gateway — how they work together
+**CDN** and **API gateway** sit at the **edge** of your system but solve different problems. Production stacks often use **both**: CDN for cacheable bytes, gateway for **dynamic API traffic**. Full gateway detail is in the [API gateway](../api-gateway/i-overview.md) track.
 
-**CDN** と **API ゲートウェイ** はシステムの **エッジ** に位置しますが、さまざまな問題を解決します。運用スタックでは、キャッシュ可能なバイトには CDN、**動的 API トラフィック**にはゲートウェイの**両方**を使用することがよくあります。ゲートウェイの完全な詳細は、[API ゲートウェイ](../api-gateway/i-overview.md) トラックに記載されています。
+For cloud-architecture framing (north-south vs mesh), see [API Gateway & service mesh](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md).
 
-クラウド アーキテクチャのフレーム構成 (ノース-サウス vs メッシュ) については、[API ゲートウェイとサービス メッシュ](../../sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md) を参照してください。
-
-## 1. 2 つのレイヤー、1 つのクライアント リクエスト
+## 1. Two layers, one client request
 
 ```text
 Browser / mobile app
@@ -28,18 +27,18 @@ Browser / mobile app
    ALB / K8s Ingress / Lambda / microservices
 ```
 
-|コンポーネント |主な仕事 |典型的なパス |
-|----------|---------------|----------|
-| **CDN** | **応答をユーザーの近くにキャッシュします | `*.js`、`*.css`、画像、キャッシュ可能な GET |
-| **API ゲートウェイ** |動的リクエストの **ルート + ポリシー** | `/api/v1/*`、パートナー Webhook |
-| **オリジン / サービス** |ビジネスロジック、データベース |ゲートウェイの背後のみ |
+| Component | Primary job | Typical paths |
+|-----------|-------------|---------------|
+| **CDN** | **Cache** responses close to user | `*.js`, `*.css`, images, cacheable GET |
+| **API gateway** | **Route + policy** on dynamic requests | `/api/v1/*`, partner webhooks |
+| **Origin / services** | Business logic, database | Behind gateway only |
 
-CDN は次のように答えます。「**保存されたコピー** を提供できますか?」  
-ゲートウェイは、「**このクライアントは誰**ですか、**許可されています**、**どのサービス**がそれを処理しますか?」と答えます。
+CDN answers: “Can I serve a **stored copy**?”  
+Gateway answers: “**Who** is this client, are they **allowed**, and **which service** handles it?”
 
-## 2. 一般的な組み合わせトポロジー
+## 2. Common combined topologies
 
-### Web アプリ + REST API (AWS スタイル)
+### Web app + REST API (AWS-style)
 
 ```text
 CloudFront (CDN)
@@ -48,18 +47,18 @@ CloudFront (CDN)
   └── /api/*        → API Gateway → Lambda or ALB → services
 ```
 
-1 つのホスト名 (`app.example.com`) または分割 (`cdn.` 対 `api.`)。
+One hostname (`app.example.com`) or split (`cdn.` vs `api.`).
 
-### SPA + 別個の API ドメイン
+### SPA + separate API domain
 
 ```text
 cdn.example.com   → CDN → S3 (static only)
 api.example.com   → API Gateway → services (no CDN cache on authenticated routes)
 ```
 
-明確な分離 — プライベート JSON でのキャッシュミスが減少します。
+Clear separation — fewer cache mistakes on private JSON.
 
-### Cloudflare はすべてをプロキシします
+### Cloudflare proxy everything
 
 ```text
 Orange-cloud DNS → CDN/WAF edge
@@ -67,32 +66,32 @@ Orange-cloud DNS → CDN/WAF edge
   └── /api/* → bypass cache → origin or Workers → upstream
 ```
 
-ゲートウェイ機能は、**Cloudflare API シールド**、**Workers**、またはオリジン **Kong/NGINX** です。
+Gateway features may be **Cloudflare API shield**, **Workers**, or origin **Kong/NGINX**.
 
-## 3. 各層が行うべきこと
+## 3. What each layer should do
 
-|懸念事項 | CDN | APIゲートウェイ |
-|----------|-----|---------------|
-| **TLS** |はい — 公開証明書 |多くの場合、はい (または CDN が最初に終了します)。
-| **キャッシュGET** |はい — ヘッダーで許可されている場合 |認証された API をほとんどキャッシュしない |
-| **JWT / API キーの検証** |回避 — ゲートウェイを使用 |はい |
-| **レート制限** |基本 (プロバイダー WAF) |プライマリ — キー/ユーザーごと ([レート制限](../sysdesign/scalable-patterns/iv-rate-limiting.md)) |
-| **パスルーティング** |パスによる原点選択 |サービスルーティング`/orders`→orders-svc |
-| **WAF / DDoS** | CDNエッジ |ゲートウェイ + CDN の組み合わせ |
-| **リクエスト ID / トレース** |エッジではオプション | `X-Request-Id` を挿入、コンテキストをトレース |
+| Concern | CDN | API gateway |
+|---------|-----|-------------|
+| **TLS** | Yes — public cert | Often yes (or CDN terminates first) |
+| **Cache GET** | Yes — when headers allow | Rarely cache auth’d API |
+| **JWT / API key validation** | Avoid — use gateway | Yes |
+| **Rate limiting** | Basic (provider WAF) | Primary — per key/user ([Rate limiting](../sysdesign/scalable-patterns/iv-rate-limiting.md)) |
+| **Path routing** | Origin selection by path | Service routing `/orders` → orders-svc |
+| **WAF / DDoS** | CDN edge | Gateway + CDN together |
+| **Request ID / tracing** | Optional at edge | Inject `X-Request-Id`, trace context |
 
-**シン ゲートウェイ:** 検証、ルーティング、制限 — ゲートウェイ構成のビジネス ルールではありません。
+**Thin gateway:** validate, route, limit — not business rules in gateway config.
 
-## 4. リクエストのウォークスルー
+## 4. Request walkthrough
 
-**静的アセット (キャッシュ ヒット):**
+**Static asset (cache hit):**
 
 ```text
 GET /assets/main.a1b2.js
   → CDN edge HIT → 200 (origin never touched)
 ```
 
-**ログイン API (CDN キャッシュなし):**
+**Login API (no CDN cache):**
 
 ```text
 POST /api/v1/auth/login
@@ -102,7 +101,7 @@ POST /api/v1/auth/login
   → Cache-Control: no-store on response
 ```
 
-**パブリック構成 GET (オプションの CDN キャッシュ):**
+**Public config GET (optional CDN cache):**
 
 ```text
 GET /api/v1/public/config
@@ -111,9 +110,9 @@ GET /api/v1/public/config
   → CDN stores; next user in region HIT
 ```
 
-`/api/me` がキャッシュしないように CDN **動作**を構成します。[API と動的コンテンツ](vi-apis-and-dynamic-content.md) を参照してください。
+Configure CDN **behaviors** so `/api/me` never caches — see [APIs & dynamic content](vi-apis-and-dynamic-content.md).
 
-## 5. TLS とホスト名のフロー
+## 5. TLS and hostname flow
 
 ```text
 Client ──HTTPS──► CDN (cert: app.example.com)
@@ -122,31 +121,31 @@ Client ──HTTPS──► CDN (cert: app.example.com)
                                       └── HTTPS → internal ALB
 ```
 
-**CDN** および **ゲートウェイ** の証明書は、クライアントが使用するホスト名と一致する必要があります。 Origin は VPC 内のプライベート CA を使用できます。
+Certificates at **CDN** and **gateway** must match hostnames clients use. Origin can use private CA inside VPC.
 
-## 6. 1 つだけ必要な場合
+## 6. When you need only one
 
-|セットアップ | | いつでも十分です。
-|------|-----------|
-| **CDN のみ** |静的サイト、パブリック API なし |
-| **ゲートウェイのみ** |内部 API、グローバル静的アセットなし |
-| **両方** |典型的な SaaS — SPA + 認証済み API + グローバル ユーザー |
+| Setup | Enough when |
+|-------|-------------|
+| **CDN only** | Static site, no public API |
+| **Gateway only** | Internal API, no global static assets |
+| **Both** | Typical SaaS — SPA + authenticated API + global users |
 
-## 7. 組み合わせる際の落とし穴
+## 7. Pitfalls when combining
 
-|落とし穴 |修正 |
-|----------|-----|
-| CDN キャッシュ `/api/user` |バイパスまたは `no-store`;別の `api.` ホスト |
-|ゲートウェイのタイムアウト < CDN タイムアウト |タイムアウトを調整します。 CDN が待機し、クライアントがハングします。
-| CORS はゲートウェイのみ | CDN は `Origin` を転送する必要があります。どちらも一貫して CORS ヘッダーを発行します。
-|アプリ内のみのレート制限 |最初にゲートウェイで強制します — アプリは最後の行です |
-|ダブルgzip | 1 つのレイヤーのみで圧縮 |
+| Pitfall | Fix |
+|---------|-----|
+| CDN caches `/api/user` | Bypass or `no-store`; separate `api.` host |
+| Gateway timeout &lt; CDN timeout | Align timeouts; CDN waits, client hangs |
+| CORS only on gateway | CDN must forward `Origin`; both emit CORS headers consistently |
+| Rate limit only in app | Enforce at gateway first — app is last line |
+| Double gzip | Compress at one layer only |
 
-## 8. 次にどこへ行くか
+## 8. Where to go next
 
-|トピック |注 |
-|------|------|
-| **API ゲートウェイ トラック** | [概要](../api-gateway/i-overview.md) — ルーティング、認証、プロバイダー |
-| **CDN オペレーション** | [操作とトラブルシューティング](vii-operations-and-troubleshooting.md) |
-| **レート制限** | [レート制限](../sysdesign/scalable-patterns/iv-rate-limiting.md) |
-| **Redis リミッター** | [Redis パターン](../redis/iv-patterns-and-use-cases.md) — アプリ層の補完 |
+| Topic | Note |
+|-------|------|
+| **API gateway track** | [Overview](../api-gateway/i-overview.md) — routing, auth, providers |
+| **CDN operations** | [Operations & troubleshooting](vii-operations-and-troubleshooting.md) |
+| **Rate limiting** | [Rate limiting](../sysdesign/scalable-patterns/iv-rate-limiting.md) |
+| **Redis limiter** | [Redis patterns](../redis/iv-patterns-and-use-cases.md) — app-layer complement |

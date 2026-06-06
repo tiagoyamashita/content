@@ -1,14 +1,13 @@
 ---
 label: "VII"
-subtitle: "分散トランザクション"
-group: "システム設計"
+subtitle: "Distributed transactions"
+group: "System design"
 order: 7
 ---
-分散トランザクション
+Distributed transactions
+When one business action touches **multiple services** or **databases**, you cannot rely on a single local `COMMIT` — you need **coordination patterns**.
 
-1 つのビジネス アクションが **複数のサービス** または **データベース**に関わる場合、単一のローカル `COMMIT` に依存することはできません。**調整パターン**が必要です。
-
-## 1. 問題
+## 1. The problem
 
 ```text
 Order service (DB A)     Payment service (DB B)
@@ -16,36 +15,36 @@ Order service (DB A)     Payment service (DB B)
         └──── both must succeed or neither ────┘
 ```
 
-ネットワークの分断と独立した障害により、単純な「A を呼び出してから B を呼び出す」フローが破壊されます。
+Network partitions and independent failures break naive “call A then B” flows.
 
-## 2. 2 フェーズコミット (2PC)
+## 2. Two-phase commit (2PC)
 
-|フェーズ |アクション |
-|------|----------|
-| **準備** |コーディネーターは参加者に「コミットできますか?」と尋ねます。 |
-| **コミット** |すべてはい → すべてコミットします。任意 いいえ → すべて中止 |
+| Phase | Action |
+|-------|--------|
+| **Prepare** | Coordinator asks participants: “Can you commit?” |
+| **Commit** | All yes → commit all; any no → abort all |
 
-|長所 |短所 |
+| Pros | Cons |
 |------|------|
-|クラスター内の強力な原子性 | **コーディネーターが死亡した場合はブロック** |
-| RDBMS についてよく理解されています | **マイクロサービス間の適合性が低い** |
-| |レイテンシ + 可用性コスト |
+| Strong atomicity within cluster | **Blocking** if coordinator dies |
+| Well understood in RDBMS | **Poor fit** across microservices |
+| | Latency + availability cost |
 
-1 つのデータベース クラスターまたは密結合ストアの **内部** を使用します。10 個のマイクロサービス全体でデフォルトとして**使用することはできません**。
+Use **inside** one database cluster or tightly coupled store — **not** as default across 10 microservices.
 
-##3.サーガパターン
+## 3. Saga pattern
 
-**サガ** = **ローカル トランザクション**のシーケンス;各ステップで成功が公開されます。失敗した場合は、**補償**の手順を逆に実行します。
+**Saga** = sequence of **local transactions**; each step publishes success; on failure run **compensating** steps in reverse.
 
-例: **注文の作成 → 支払いの請求 → 在庫の予約**
+Example: **Create order → Charge payment → Reserve inventory**
 
-|ステップ |進む |補償 |
-|-----|--------|--------------|
-| 1 |注文の作成 (保留中) |注文をキャンセル |
-| 2 |チャージカード |払い戻し |
-| 3 |在庫を予約 |在庫をリリース |
+| Step | Forward | Compensation |
+|------|---------|--------------|
+| 1 | Create order (pending) | Cancel order |
+| 2 | Charge card | Refund |
+| 3 | Reserve stock | Release stock |
 
-<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 460 120" role="img" aria-label="Saga forward steps and compensating rollback">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" role="img" aria-label="Saga forward steps and compensating rollback">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Orchestration saga</text>
   <rect x="12" y="36" width="72" height="28" rx="3" fill="rgba(34,197,94,0.15)" stroke="#86efac"/>
   <text x="24" y="54" fill="#e4e4e7" font-size="8">1. Order OK</text>
@@ -60,35 +59,35 @@ Order service (DB A)     Payment service (DB B)
   <path d="M108 90 H36" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
 </svg></figure>
 
-### 振り付けとオーケストレーション
+### Choreography vs orchestration
 
-| |振付 |オーケストレーション |
-|---|--------------|--------------|
-|コントロール |各サービスは **イベント** に反応します。 **中央オーケストレーター** がコマンドを送信します |
-|長所 | SPOF コーディネーターが 1 人もいない |ステート マシンをクリアし、デバッグを容易にする |
-|短所 |グローバルな状態が見えにくい |オーケストレーターの可用性は重要です |
-|フィット |少ないステップで成熟したイベント文化 |複雑なフロー、可視性が必要 |
+| | Choreography | Orchestration |
+|---|--------------|---------------|
+| Control | Each service reacts to **events** | **Central orchestrator** sends commands |
+| Pros | No single coordinator SPOF | Clear state machine, easier debug |
+| Cons | Hard to see global state | Orchestrator availability matters |
+| Fit | Few steps, mature event culture | Complex flows, visibility needed |
 
-## 4. 冪等性キー
+## 4. Idempotency keys
 
-クライアントは POST で **`Idempotency-Key: uuid`** を送信します。サービスはキー→応答のマッピングを保存します。
+Clients send **`Idempotency-Key: uuid`** on POST; service stores key → response mapping.
 
-|再試行 |行動 |
-|------|----------|
-|同じキー、進行中 |待つか同じ結果を返す |
-|同じキー、完了 |キャッシュされた応答を返す |
-|新しいキー |新しい操作 |
+| Retry | Behavior |
+|-------|----------|
+| Same key, in progress | Wait or return same result |
+| Same key, completed | Return cached response |
+| New key | New operation |
 
-**少なくとも 1 回** メッセージングと HTTP 再試行を二重料金なしで有効にします。
+Enables **at-least-once** messaging and HTTP retries without double charge.
 
-## 5. パターンの選択
+## 5. Pattern selection
 
-|状況 |パターン |
-|----------|----------|
-|単一の Postgres トランザクション |ローカルACID |
-|同じ DB、複数のテーブル |ローカルACID |
-|マイクロサービス、長期実行 | **佐賀** + 送信ボックス |
-| 1 つの DB で強力なクロスシャード | 2PC / XA (アプリ層ではまれ) |
-|モデルを読む |結果整合性 + CDC |
+| Situation | Pattern |
+|-----------|---------|
+| Single Postgres transaction | Local ACID |
+| Same DB, multiple tables | Local ACID |
+| Microservices, long-running | **Saga** + outbox |
+| Strong cross-shard in one DB | 2PC / XA (rare at app layer) |
+| Read models | Eventual consistency + CDC |
 
-**関連:** [メッセージキューと非同期](iii-message-queues-and-async.md) (送信ボックス、イベント)、[API 設計](ii-api-design.md) (冪等性キー)。
+**Related:** [Message queues & async](iii-message-queues-and-async.md) (outbox, events), [API design](ii-api-design.md) (Idempotency-Key).

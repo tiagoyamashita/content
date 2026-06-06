@@ -1,27 +1,26 @@
 ---
 label: "II"
-subtitle: "貨物と共有可能なクレート"
-group: "さび"
+subtitle: "Cargo & shareable crates"
+group: "Rust"
 groupOrder: 1
 order: 2
 ---
-Rust — パート II: カーゴと共有可能なクレート
+Rust — Part II: Cargo & shareable crates
+**Cargo** is Rust’s **package manager and build tool**. It downloads dependencies, compiles your code, runs tests, and publishes **crates** (Rust packages) others can reuse.
 
-**Cargo** は、Rust の **パッケージ マネージャーおよびビルド ツール**です。依存関係をダウンロードし、コードをコンパイルし、テストを実行し、他の人が再利用できる **クレート** (Rust パッケージ) を公開します。
+See **Part I** [Basics & toolchain](i-basics-and-toolchain.md) for **`rustup`**, **`rustc`**, and Windows **MSVC** linker setup.
 
-**`rustup`**、**`rustc`**、および Windows **MSVC** リンカーのセットアップについては、**パート I** [基本とツールチェーン](i-basics-and-toolchain.md) を参照してください。
+## 1. What Cargo is
 
-## 1. 貨物とは何か
-
-|ツール |役割 |
+| Tool | Role |
 |------|------|
-| **`rustup`** | Rust のバージョンとターゲットをインストールします。
-| **`rustc`** | `.rs` ファイルをバイナリまたはライブラリにコンパイルします。
-| **`cargo`** |プロジェクトのワークフロー: deps、ビルド、テスト、実行、公開 |
+| **`rustup`** | Installs Rust versions and targets |
+| **`rustc`** | Compiles `.rs` files to binaries or libraries |
+| **`cargo`** | Project workflow: deps, build, test, run, publish |
 
-実際のプロジェクトで **`rustc`** を手動で呼び出すことはほとんどありません。**`cargo`** は適切なフラグを渡し、依存関係をリンクします。
+You almost never invoke **`rustc`** by hand on a real project — **`cargo`** passes the right flags and links dependencies.
 
-すべての Cargo プロジェクトには、ルートに **`Cargo.toml`** マニフェストがあります (オプションで **ワークスペース**にさらにマニフェストがあります)。
+Every Cargo project has a **`Cargo.toml`** manifest at the root (and optionally more in a **workspace**).
 
 ```toml
 [package]
@@ -34,28 +33,28 @@ rust-version = "1.85"
 serde = { version = "1", features = ["derive"] }
 ```
 
-|セクション |目的 |
-|----------|----------|
-| **`[package]`** |名前、バージョン、エディション、ライセンス、説明 |
-| **`[dependencies]`** | **crates.io**、**git**、または **path** の他のクレート |
-| **`[dev-dependencies]`** |テスト/サンプル/ベンチのみ |
-| **`[[bin]]`** |追加のバイナリ (オプション、デフォルトは `src/main.rs`) |
+| Section | Purpose |
+|---------|---------|
+| **`[package]`** | Name, version, edition, license, description |
+| **`[dependencies]`** | Other crates from **crates.io**, **git**, or **path** |
+| **`[dev-dependencies]`** | Only for tests / examples / benches |
+| **`[[bin]]`** | Extra binaries (optional; default is `src/main.rs`) |
 
-## 2. クレートの種類
+## 2. Crate kinds
 
-**クレート** は 1 つのコンパイル単位であり、次のいずれかです。
+A **crate** is one compilation unit — either:
 
-- **バイナリ クレート** — 実行可能ファイルを生成します。 `src/main.rs` (または宣言された `[[bin]]`) には **`fn main()`** が必要です。
-- **ライブラリクレート** — 他のリンクに対する **`rlib`** を生成します。ルートは **`src/lib.rs`** です。 **いいえ** `main`。
+- **Binary crate** — produces an executable; needs **`fn main()`** in `src/main.rs` (or a declared `[[bin]]`).
+- **Library crate** — produces **`rlib`** others link against; root is **`src/lib.rs`**; **no** `main`.
 
-**共有可能な** コードは、ほとんどの場合、**ライブラリ クレート** (または **ワークスペース** を介して 1 つのリポジトリ内の複数のライブラリ) 内に存在します。
+**Shareable** code almost always lives in a **library crate** (or several libs in one repo via a **workspace**).
 
 ```text
 cargo new my_app --bin      # executable
 cargo new my_utils --lib    # shareable library
 ```
 
-## 3. 日常の貨物コマンド
+## 3. Everyday Cargo commands
 
 ```text
 cargo new NAME --lib          # create library project
@@ -69,9 +68,9 @@ cargo fmt                   # format (rustfmt)
 cargo clippy                # lints (needs clippy component)
 ```
 
-## 4. 例: 独自の共有可能なライブラリを構築する
+## 4. Example: build your own shareable library
 
-### ステップ 1 — ライブラリクレートを作成する
+### Step 1 — create the library crate
 
 ```text
 cargo new greeter_utils --lib
@@ -91,7 +90,7 @@ license = "MIT"
 [dependencies]
 ```
 
-**`src/lib.rs`** — **`pub`** 項目のみがパブリック API の一部です。
+**`src/lib.rs`** — only **`pub`** items are part of the public API:
 
 ```rust
 /// Build a greeting for `name`. Empty names become "world".
@@ -115,22 +114,22 @@ mod tests {
 }
 ```
 
-確認する：
+Verify:
 
 ```text
 cargo test
 ```
 
-### ステップ 2 — 別のプロジェクトから使用します (ローカル パス)
+### Step 2 — use it from another project (local path)
 
-**ディスク上**のライブラリに依存するバイナリを作成します (まだ公開されていません)。
+Create a binary that depends on your library **on disk** (no publish yet):
 
 ```text
 cd ..
 cargo new hello_app --bin
 ```
 
-**`hello_app/Cargo.toml`** — **パスの依存関係**:
+**`hello_app/Cargo.toml`** — **path dependency**:
 
 ```toml
 [package]
@@ -156,13 +155,13 @@ cargo run
 # Hello, Rust!
 ```
 
-**`path = "../greeter_utils"`** はモノリポジトリと学習に最適です。 Cargo は、依存関係グラフの一部としてライブラリをコンパイルします。
+**`path = "../greeter_utils"`** is ideal for monorepos and learning; Cargo compiles the library as part of the dependency graph.
 
-### ステップ 3 — ワークスペース (複数のクレート、1 つのリポジトリ)
+### Step 3 — workspace (multiple crates, one repo)
 
-**1 つの** リポジトリ内の複数の共有可能なクレートとアプリの場合は、**ワークスペース**を使用します。
+For several shareable crates plus apps in **one** repository, use a **workspace**:
 
-**ルート `Cargo.toml`:**
+**Root `Cargo.toml`:**
 
 ```toml
 [workspace]
@@ -173,22 +172,22 @@ members = [
 ]
 ```
 
-各メンバーは独自の **`Cargo.toml`** を保持します。 **`hello_app/Cargo.toml`** では、パスは次のようになります。
+Each member keeps its own **`Cargo.toml`**. In **`hello_app/Cargo.toml`**, path becomes:
 
 ```toml
 greeter_utils = { path = "../greeter_utils" }
 ```
 
-ワークスペースのルートから:
+From the workspace root:
 
 ```text
 cargo test --workspace
 cargo run -p hello_app
 ```
 
-## 5. ライブラリクレート内のモジュール
+## 5. Modules inside a library crate
 
-ファイル間で実装を分割します。クレートのルート **`lib.rs`** はモジュールを宣言します。
+Split implementation across files; the crate root **`lib.rs`** declares modules:
 
 ```text
 greeter_utils/
@@ -218,32 +217,32 @@ pub fn formal_greet(name: &str) -> String {
 }
 ```
 
-消費者には **`greeter_utils::greet`** および **`greeter_utils::formal_greet`** が表示されます。 **`formal`** は、**`pub mod formal`** しない限り非公開のままです。
+Consumers see **`greeter_utils::greet`** and **`greeter_utils::formal_greet`**; **`formal`** stays private unless you **`pub mod formal`**.
 
-## 6. マシンを超えた共有
+## 6. Sharing beyond your machine
 
-|方法 | `Cargo.toml` スニペット |いつ |
-|------|----------------------|------|
-| **パス** | `foo = { path = "../foo" }` |同じリポジトリ/ローカル開発 |
-| **Git** | `foo = { git = "https://github.com/you/foo", branch = "main" }` |プライベートまたは未公開のコード |
-| **crates.io** | `foo = "0.2"` または `foo = { version = "0.2", features = ["serde"] }` |公開されたリリース |
+| Method | `Cargo.toml` snippet | When |
+|--------|----------------------|------|
+| **Path** | `foo = { path = "../foo" }` | Same repo / local dev |
+| **Git** | `foo = { git = "https://github.com/you/foo", branch = "main" }` | Private or unreleased code |
+| **crates.io** | `foo = "0.2"` or `foo = { version = "0.2", features = ["serde"] }` | Published releases |
 
-### crates.io に公開する (概要)
+### Publish to crates.io (outline)
 
-1. [https://crates.io](88) でアカウントを作成し、API トークンを使用して **`cargo login`** を実行します。
-2. **`Cargo.toml`**に**`description`**、**`license`**、**`repository`**を入力します。
-3. ライブラリクレートディレクトリから **`cargo publish --dry-run`**、次に **`cargo publish`**。
-4. 新しいリリースごとに **`version`** とバンプします (セムバー: 速報→メジャー、機能→マイナー、修正→パッチ)。
+1. Create an account at [https://crates.io](https://crates.io) and run **`cargo login`** with an API token.
+2. Fill **`description`**, **`license`**, **`repository`** in **`Cargo.toml`**.
+3. **`cargo publish --dry-run`** then **`cargo publish`** from the library crate directory.
+4. Bump **`version`** for every new release (semver: breaking → major, features → minor, fixes → patch).
 
-さらに他の人は次のように付け加えます。
+Others then add:
 
 ```toml
 greeter_utils = "0.1.0"
 ```
 
-## 7. 機能 (オプションの API サーフェス)
+## 7. Features (optional API surface)
 
-依存関係のコンパイル時オプションを有効にします。
+Enable compile-time options for dependents:
 
 ```toml
 [features]
@@ -264,28 +263,28 @@ pub fn greet_json(name: &str) -> String {
 }
 ```
 
-扶養家族のオプトイン: **`greeter_utils = { version = "0.1", features = ["extra"] }`**。
+Dependents opt in: **`greeter_utils = { version = "0.1", features = ["extra"] }`**.
 
-## 8. 共有可能な箱に何を入れるか
+## 8. What to put in a shareable crate
 
-- **`pub`** 発信者が必要とするもののみ。ヘルパーを非公開にしてください。
-- **`///`** の **ドキュメント** パブリック アイテム — **`cargo doc`** に表示されます。
-- 同じファイル内の **テスト** (`#[cfg(test)]`) または **`tests/*.rs`** 統合テスト。
-- **`examples/*.rs`** の **例** — **`cargo run --example demo`** で実行します。
-- 公開する前に **README** と **LICENSE** を適用してください。
+- **`pub`** only what callers need; keep helpers private.
+- **Document** public items with **`///`** — shows up in **`cargo doc`**.
+- **Tests** in the same file (`#[cfg(test)]`) or **`tests/*.rs`** integration tests.
+- **Examples** in **`examples/*.rs`** — run with **`cargo run --example demo`**.
+- **README** and **LICENSE** before publishing.
 
-## 9. 迅速なトラブルシューティング
+## 9. Quick troubleshooting
 
-|問題 |チェック |
-|----------|----------|
-| `linker not found` (Windows) |パート I — MSVC ビルド ツール |
-| `failed to resolve` 依存関係 |クレート名のスペル。ネットワーク; git URL / パス |
-|パブリック API の `private` タイプ |タイプ **`pub`** をマークするか、**`pub fn`** の後ろに隠します |
-|同じクレートの 2 つのバージョン | **`cargo tree`** — ワークスペース内のバージョンを統合する |
+| Problem | Check |
+|---------|--------|
+| `linker not found` (Windows) | Part I — MSVC Build Tools |
+| `failed to resolve` dependency | Crate name spelling; network; git URL / path |
+| `private` type in public API | Mark types **`pub`** or hide them behind **`pub fn`** |
+| Two versions of same crate | **`cargo tree`** — unify versions in workspace |
 
-## 10. 関連
+## 10. Related
 
-- **パート I** — 所有権、**`match`**、基本 [基本とツールチェーン](i-basics-and-toolchain.md)
-- **パート III** — **Rustlings** を使った実践練習 [Rustlings で学ぶ](iii-learn-with-rustlings.md)
-- **パート IV** — **`async`/`await`**、ランタイム、一般的な落とし穴 [Async Rust](iv-async.md)
-- [The Cargo Book](89) — マニフェスト、ワークスペース、出版に関する公式リファレンス
+- **Part I** — ownership, **`match`**, basics [Basics & toolchain](i-basics-and-toolchain.md)
+- **Part III** — hands-on practice with **Rustlings** [Learn with Rustlings](iii-learn-with-rustlings.md)
+- **Part IV** — **`async`/`await`**, runtimes, common pitfalls [Async Rust](iv-async.md)
+- [The Cargo Book](https://doc.rust-lang.org/cargo/) — official reference for manifests, workspaces, publishing

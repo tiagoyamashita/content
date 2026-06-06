@@ -1,18 +1,17 @@
 ---
 label: "II"
-subtitle: "ボトルネックの特定"
-group: "システム設計"
+subtitle: "Identifying bottlenecks"
+group: "System design"
 order: 2
 ---
-ボトルネックの特定
+Identifying bottlenecks
+Find the **one resource** limiting throughput before optimizing random layers.
 
-ランダム レイヤーを最適化する前に、スループットを制限する **1 つのリソース**を見つけます。
+## 1. Definition
 
-## 1. 定義
+**Bottleneck** = component at **~100% utilisation** while others have headroom — adding capacity elsewhere does not raise system throughput until this resource is relieved.
 
-**ボトルネック** = コンポーネントの使用率は **~100%** ですが、他のコンポーネントには余裕があります。他の場所に容量を追加しても、このリソースが解放されるまでシステムのスループットは向上しません。
-
-## 2. リトルの法則
+## 2. Little's Law
 
 ```text
 L = λ × W
@@ -22,13 +21,13 @@ L = average requests in system (queue + in-flight)
 W = average time in system (seconds)
 ```
 
-|観察 |意味 |
-|-----------|-----------|
-| **W** は定数 **λ** で上昇します。バックアップ — キューが増大中 |
-| **L** が上昇 |遅延または同時実行の増加 |
-|固定容量、より高い **λ** |最終的に **W** は爆発します |
+| Observation | Meaning |
+|-------------|---------|
+| **W** rises at constant **λ** | Backing up — queue growing |
+| **L** rises | Latency or concurrency increasing |
+| Fixed capacity, higher **λ** | Eventually **W** explodes |
 
-<figure class="notes-diagram"><svg xmlns="3 viewBox="0 0 400 90" role="img" aria-label="Queue grows when service time exceeds capacity">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 90" role="img" aria-label="Queue grows when service time exceeds capacity">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Saturation → queue</text>
   <rect x="12" y="32" width="120" height="20" rx="2" fill="rgba(248,113,113,0.2)" stroke="#f87171"/>
   <text x="24" y="46" fill="#e4e4e7" font-size="8">waiting requests ↑</text>
@@ -37,60 +36,60 @@ W = average time in system (seconds)
   <text x="12" y="72" fill="#71717a" font-size="9">λ &gt; service capacity → W and L grow without bound</text>
 </svg></figure>
 
-## 3. ユニバーサル スケーラビリティ法 (USL)
+## 3. Universal Scalability Law (USL)
 
 ```text
 X(N) = N / (1 + α(N−1) + βN(N−1))
 ```
 
-|用語 |意味 |
-|-----|----------|
-| **α** |競合 — シリアルセクション (ロック、単一ライター) |
-| **β** |コヒーレンシ — キャッシュの無効化、ゴシップコスト |
-| **N** |ワーカー/ノード |
+| Term | Meaning |
+|------|---------|
+| **α** | Contention — serial sections (locks, single writer) |
+| **β** | Coherency — cache invalidation, gossip cost |
+| **N** | Workers / nodes |
 
-「完璧な」水平スケールであっても、連続分数では **アムダール** の制限に達します。
+Even “perfect” horizontal scale hits **Amdahl** limits from serial fractions.
 
-## 4. 体系的な探索 (5 つのステップ)
+## 4. Systematic hunt (5 steps)
 
-|ステップ |アクション |
-|------|----------|
-| 1 |有害な指標の定義: レイテンシー、スループット、エラー |
-| 2 | **エンドツーエンド プロファイル** — APM トレース、スパン ウォーターフォール |
-| 3 | **使用率**を確認します: CPU、メモリ、ディスク、ネットワーク、DB |
-| 4 | **100%** に最も近いリソースが持続 → ボトルネックの可能性がある |
-| 5 |修正 → **再測定** — 次のボトルネック表面 |
+| Step | Action |
+|------|--------|
+| 1 | Define hurting metric: latency, throughput, errors |
+| 2 | **End-to-end profile** — APM trace, span waterfall |
+| 3 | Check **utilisation**: CPU, memory, disk, network, DB |
+| 4 | Resource nearest **100%** sustained → likely bottleneck |
+| 5 | Fix → **re-measure** — next bottleneck surfaces |
 
-## 5. USE方法（インフラストラクチャ）
+## 5. USE method (infrastructure)
 
-**各リソース** (CPU、ディスク、NIC、DB 接続):
+For **each resource** (CPU, disk, NIC, DB connections):
 
-|手紙 |質問 |
-|----------|----------|
-| **U** — 使用率 | % ビジー (例: CPU > 70% が継続 = 警告) |
-| **S** — 彩度 |キューの深さ、待機時間 > 0? |
-| **E** — エラー |再試行、タイムアウト、パケットのドロップ |
+| Letter | Question |
+|--------|----------|
+| **U** — Utilisation | % busy (e.g. CPU > 70% sustained = warning) |
+| **S** — Saturation | Queue depth, wait time > 0? |
+| **E** — Errors | Retries, timeouts, dropped packets |
 
-## 6. RED メソッド (サービス)
+## 6. RED method (services)
 
-|手紙 |メトリック |
-|----------|----------|
-| **R** — レート | 1 秒あたりのリクエスト |
-| **E** — エラー |エラー率 |
-| **D** — 期間 |レイテンシー分布 (p50/p95/p99) |
+| Letter | Metric |
+|--------|--------|
+| **R** — Rate | Requests per second |
+| **E** — Errors | Error rate |
+| **D** — Duration | Latency distribution (p50/p95/p99) |
 
-**組み合わせ:** インフラでの USE + 各サービス境界での RED。
+**Combine:** USE on infra + RED on each service boundary.
 
-## 7. トレースファーストのワークフロー
+## 7. Trace-first workflow
 
 ```text
 Slow request → trace_id → waterfall → longest span → USE/RED on that hop
 ```
 
-|スパンタイプ |次のドリル |
-|----------|---------------|
-| DBクエリ | [データベース](vi-database.md) |
-| HTTPクライアント | [ネットワーク](v-network.md)、[アプリケーションレベル](vii-application-level.md) |
-| CPU バウンドのコンピューティング | [CPUとメモリ](iii-cpu-and-memory.md) |
+| Span type | Next drill |
+|-----------|------------|
+| DB query | [Database](vi-database.md) |
+| HTTP client | [Network](v-network.md), [Application-level](vii-application-level.md) |
+| CPU-bound compute | [CPU & memory](iii-cpu-and-memory.md) |
 
-**関連:** [エリミネーション プレイブック](viii-elimination-playbook.md)、スケーラブルなパターンの可観測性。
+**Related:** [Elimination playbook](viii-elimination-playbook.md), scalable patterns observability.

@@ -1,19 +1,18 @@
 ---
 label: "VI"
-subtitle: "ラムダと最新の Java"
-group: "ジャワ"
+subtitle: "Lambdas & modern Java"
+group: "Java"
 groupOrder: 1
 order: 6
 ---
-Java — パート VI
+Java — Part VI
+Functional interfaces, lambdas, switch expressions, sealed types, and virtual threads.
 
-関数インターフェイス、ラムダ、スイッチ式、シール型、仮想スレッド。
+**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
 
-**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
+## 1. Lambdas and method references
 
-## 1. ラムダとメソッドの参照
-
-**ラムダ** は **機能インターフェイス**、つまり 1 つの抽象メソッド (`Comparator`、`Runnable`、`Predicate` など) を備えたインターフェイスを実装します。
+A **lambda** implements a **functional interface** — an interface with exactly one abstract method (`Comparator`, `Runnable`, `Predicate`, …).
 
 ```java
 // Compile: javac --release 22 …
@@ -25,11 +24,11 @@ names.sort(Comparator.comparing(String::length)); // method reference
 names.sort((a, b) -> a.compareToIgnoreCase(b)); // lambda
 ```
 
-**メソッド参照**形式: **`Type::staticMethod`**、**`instance::method`**、**`Type::new`**。
+**Method reference** forms: **`Type::staticMethod`**, **`instance::method`**, **`Type::new`**.
 
-## 2. 式の切り替え
+## 2. Switch expressions
 
-最新の **`switch`** は値を返し、フォールスルーすることなく **`->`** を使用できます。
+Modern **`switch`** can return a value and use **`->`** without fall-through:
 
 ```java
 // Compile: javac --release 22 …
@@ -44,11 +43,11 @@ static String label(Role role) {
 }
 ```
 
-**シールド** 階層を使用すると、コンパイラは網羅性を検証できます (以下を参照)。
+With **sealed** hierarchies the compiler can verify exhaustiveness (see below).
 
-## 3. シールされたクラスとパターンマッチング
+## 3. Sealed classes and pattern matching
 
-**Sealed** タイプは、拡張できる人を制限します。ドメイン モデルや包括的な **`switch`** に役立ちます。
+**Sealed** types restrict who may extend them — useful for domain models and exhaustive **`switch`**:
 
 ```java
 // Compile: javac --release 22 …
@@ -65,9 +64,9 @@ static double area(Shape shape) {
 }
 ```
 
-## 4. 仮想スレッド (Java 21 以降)
+## 4. Virtual threads (Java 21+)
 
-**仮想スレッド** は軽量です。リクエストごとに 1 つのプラットフォーム スレッドを使用しない、I/O バウンドの作業 (HTTP、DB) に最適です。
+**Virtual threads** are lightweight — ideal for I/O-bound work (HTTP, DB) without one platform thread per request:
 
 ```java
 // Compile: javac --release 22 …
@@ -79,9 +78,9 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 } // waits for tasks when executor closes
 ```
 
-CPU に依存する作業には、制限されたプラットフォーム プールで **`ExecutorService`** を使用します。モデルを混合する前に測定してください。
+Use **`ExecutorService`** with a bounded platform pool for CPU-bound work; measure before mixing models.
 
-## 5. 次にどこへ行くか
+## 5. Where to go next
 
-- **コレクションとストリームの詳細** — パート III; **CS101 → アルゴリズム → JDK による解決** 実稼働用 **`HashMap`**、**`PriorityQueue`**、ソート。
-- **ビルドとテスト** - パート IV、Web サービスの準備ができたら、**Spring Boot** トラック (同じ **`src/content/java/`** フォルダー、**`groupOrder: 2`**) に進みます。
+- **Collections & streams in depth** — Part III; **CS101 → Algorithms → Solving with the JDK** for production **`HashMap`**, **`PriorityQueue`**, sorts.
+- **Build & tests** — Part IV, then the **Spring Boot** track (same **`src/content/java/`** folder, **`groupOrder: 2`**) when you are ready for web services.

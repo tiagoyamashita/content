@@ -1,14 +1,13 @@
 ---
 label: "IV"
-subtitle: "分岐とマージ"
+subtitle: "Branching & merging"
 group: "Git"
 order: 4
 ---
-分岐とマージ
+Branching & merging
+**Branches** are cheap pointers — use them for every feature or fix. **Merge** combines histories; resolve **conflicts** when the same lines changed.
 
-**ブランチ**は安価なポインタです。すべての機能や修正に使用してください。 **マージ** は履歴を結合します。同じ行が変更された場合に **競合** を解決します。
-
-## 1. ブランチの基本
+## 1. Branch basics
 
 ```bash
 git branch                    # list local branches
@@ -21,9 +20,9 @@ git merge feature/login       # merge into current branch
 git branch -d feature/login   # delete after merge
 ```
 
-レガシー: `git checkout -b feature/login` — `switch -c`と同じ。
+Legacy: `git checkout -b feature/login` — same as `switch -c`.
 
-## 2. 分岐図
+## 2. Branch diagram
 
 ```text
 main:     A --- B --- C ----------- M
@@ -33,21 +32,21 @@ feature/login:         D --- E ---
 merge M combines E into main
 ```
 
-## 3. マージタイプ
+## 3. Merge types
 
-|タイプ |いつ |結果 |
-|------|------|----------|
-| **早送り** |ブランチ以降、メインに新しいコミットはありません |線形履歴 |
-| **3 者間マージ** |両方とも移動しました | 2 つの親とコミットをマージ |
+| Type | When | Result |
+|------|------|--------|
+| **Fast-forward** | No new commits on main since branch | Linear history |
+| **Three-way merge** | Both moved | Merge commit with two parents |
 
 ```bash
 git merge feature/login
 # if conflicts → edit files → git add → git commit
 ```
 
-## 4. 競合の解決
+## 4. Resolving conflicts
 
-ファイル内の競合マーカー:
+Conflict markers in file:
 
 ```text
 <<<<<<< HEAD
@@ -57,21 +56,21 @@ const timeout = 10000;
 >>>>>>> feature/login
 ```
 
-手順:
+Steps:
 
-1. 最終的に必要なコードに編集します (マーカーを削除します)。
+1. Edit to final desired code (remove markers)
 2. `git add conflicted-file`
-3. `git commit` (またはマージを続行)
+3. `git commit` (or continue merge)
 
-マージを中止します:
+Abort merge:
 
 ```bash
 git merge --abort
 ```
 
-## 5. リベース (線形履歴)
+## 5. Rebase (linear history)
 
-更新されたメインに加えてコミットを再生します。
+Replay your commits on top of updated main:
 
 ```bash
 git switch feature/login
@@ -89,30 +88,30 @@ After rebase onto C:
   feature: A - B - C - D' - E'
 ```
 
-**黄金律:** すでに **プッシュ**され共有されているコミットをリベースしないでください。履歴が書き換えられます。ローカルのみ、または PR マージ前の機能ブランチの場合は OK。
+**Golden rule:** do not rebase commits already **pushed** and shared — rewrites history. OK for local-only or your feature branch before PR merge.
 
-## 6. PR でのマージとリベース
+## 6. Merge vs rebase on PR
 
-|戦略 |歴史 |使用 |
-|----------|-----------|-----|
-| **コミットをマージ** |正確な枝の形状を保持 | GitHub のデフォルト「マージ コミットの作成」 |
-| **スカッシュマージ** |メインで 1 つのコミット |メインログをクリーンアップ |
-| **リベースマージ** |リニアコミットのリプレイ |リニアメイン |
+| Strategy | History | Use |
+|----------|---------|-----|
+| **Merge commit** | Preserves exact branch shape | Default on GitHub "Create merge commit" |
+| **Squash merge** | One commit on main | Clean main log |
+| **Rebase merge** | Linear commits replayed | Linear main |
 
-チームは 1 つの規則を選択します。[ワークフローと規則](vii-workflows-and-conventions.md) の文書です。
+Team picks one convention — document in [Workflows & conventions](vii-workflows-and-conventions.md).
 
-## 7. ヘッドの取り外し
+## 7. Detached HEAD
 
-(ブランチではなく) コミットを直接チェックアウトすると、**切り離された HEAD** 状態になり、コミットが失われる可能性があります。修理：
+Checking out a commit directly (not a branch) puts you in **detached HEAD** — commits can be lost. Fix:
 
 ```bash
 git switch -c recover-work
 ```
 
-## 8. リハーサルの答え
+## 8. Rehearsal answers
 
-- **ブランチ** — コミットへのポインタ。新しいコミットごとに移動します。
-- **早送り** — メインは単純にブランチの先端に進みます。マージコミットはありません。
-- **競合** — 同じ領域が別々に編集されました。 Git は自動選択できません。
+- **Branch** — pointer to a commit; moves on each new commit.
+- **Fast-forward** — main simply moves forward to branch tip; no merge commit.
+- **Conflict** — same region edited differently; Git cannot auto-pick.
 
-**関連:** [リモートとコラボレーション](v-remotes-and-collaboration.md)、**GitHub** PR のメモ。
+**Related:** [Remotes & collaboration](v-remotes-and-collaboration.md), **GitHub** PRs note.

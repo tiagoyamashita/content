@@ -1,30 +1,29 @@
 ---
 label: "IV"
-subtitle: "索引とEXPLAIN"
-group: "ポストグレ"
+subtitle: "Indexes & EXPLAIN"
+group: "Postgres"
 order: 4
 ---
-Postgres — インデックスと EXPLAIN
+Postgres — indexes & EXPLAIN
+Slow queries are normal until you **measure**. Use **`EXPLAIN (ANALYZE, BUFFERS)`** to read plans, add the right **indexes**, and avoid common foot-guns.
 
-**測定**するまでは、クエリが遅いのは正常です。 **`EXPLAIN (ANALYZE, BUFFERS)`** を使用して計画を読み、適切な**インデックス**を追加し、一般的なフットガンを避けてください。
+## 1. How indexes help
 
-## 1. インデックスがどのように役立つか
-
-Postgres のデフォルト **B ツリー** インデックスは以下をサポートしています。
+Postgres default **B-tree** index supports:
 
 - `WHERE id = 42`
 - `WHERE email = 'a@example.com'`
-- `WHERE created_at > '2026-01-01'` (範囲スキャン)
-- `ORDER BY created_at DESC` (インデックス順と互換性がある場合)
+- `WHERE created_at > '2026-01-01'` (range scans)
+- `ORDER BY created_at DESC` (when compatible with index order)
 
-一致するインデックスがないと、Postgres は **Seq Scan** — テーブル内のすべての行を読み取る可能性があります。小さなテーブルには最適です。数百万行になるとコストがかかります。
+Without a matching index, Postgres may **Seq Scan** — read every row in the table. Fine for small tables; costly at millions of rows.
 
 ```sql
 CREATE INDEX posts_account_created_idx
   ON posts (account_id, created_at DESC);
 ```
 
-サポート:
+Supports:
 
 ```sql
 SELECT * FROM posts
@@ -33,85 +32,85 @@ ORDER BY created_at DESC
 LIMIT 20;
 ```
 
-## 2. `EXPLAIN` 読書ガイド
+## 2. `EXPLAIN` reading guide
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM posts WHERE account_id = 7 ORDER BY created_at DESC LIMIT 20;
 ```
 
-|ノード |意味 |
-|-----|----------|
-| **シーケンススキャン** |テーブル全体の読み取り — 行数とフィルターを確認する |
-| **インデックス スキャン / インデックスのみのスキャン** |インデックスを使用します。可視性マップが許可する場合、「スキャンのみ」はヒープをスキップします。
-| **ビットマップ インデックス スキャン** |複数のインデックス条件を組み合わせる |
-| **入れ子になったループ** | A の各行について、B を検索します。B のインデックスがあれば問題ありません。
-| **ハッシュ結合 / マージ結合** |大規模なセットの結合戦略 |
+| Node | Meaning |
+|------|---------|
+| **Seq Scan** | Full table read — check row count and filters |
+| **Index Scan / Index Only Scan** | Uses index; "only scan" skips heap if visibility map allows |
+| **Bitmap Index Scan** | Combines multiple index conditions |
+| **Nested Loop** | For each row in A, lookup in B — good with index on B |
+| **Hash Join / Merge Join** | Join strategies for larger sets |
 
-焦点を当てる：
+Focus on:
 
-- **実際の時間** (ミリ秒) 対 **計画時間**
-- **行** 推定値と **実際** — 大きな不一致 → 実行 **`ANALYZE table`**
-- **バッファ: 共有ヒット/読み取り** — 高 `read` → キャッシュ コールドまたはテーブルがメモリより大きい
+- **Actual time** (ms) vs **Planning time**
+- **Rows** estimate vs **actual** — large mismatch → run **`ANALYZE table`**
+- **Buffers: shared hit/read** — high `read` → cache cold or table bigger than memory
 
-## 3. インデックスの種類（B-treeでは不十分な場合）
+## 3. Index types (when B-tree is not enough)
 
-|インデックス |使用例 |
-|------|----------|
-| **B ツリー** (デフォルト) |等価性、範囲、並べ替え |
-| **ジン** | `JSONB`、配列、フルテキスト |
-| **GiST** |ジオメトリ (PostGIS)、最近傍 |
-| **ハッシュ** |レア;等価性のみ、すべての操作に対して WAL セーフではない |
+| Index | Use case |
+|-------|----------|
+| **B-tree** (default) | Equality, range, sorting |
+| **GIN** | `JSONB`, arrays, full-text |
+| **GiST** | Geometry (PostGIS), nearest-neighbor |
+| **Hash** | Rare; equality only, not WAL-safe for all ops |
 
-部分インデックス — サブセットのインデックスを作成します。
+Partial index — index a subset:
 
 ```sql
 CREATE INDEX posts_unpublished_idx ON posts (account_id)
   WHERE NOT published;
 ```
 
-## 4. 書き込みをブロックせずにインデックスを作成する
+## 4. Create indexes without blocking writes
 
 ```sql
 CREATE INDEX CONCURRENTLY posts_body_trgm_idx ON posts USING GIN (body gin_trgm_ops);
 ```
 
-**`CONCURRENTLY`** は長時間の書き込みロックを回避しますが、次のとおりです。
+**`CONCURRENTLY`** avoids long write locks but:
 
-- トランザクションブロック内では実行できません
-- 失敗した場合は **INVALID** インデックスが残ります - 削除して再試行してください
+- Cannot run inside a transaction block
+- Fails leave an **INVALID** index — drop and retry
 
-## 5. よくある問題
+## 5. Common problems
 
-|症状 |考えられる原因 |修正 |
-|----------|--------------|-----|
-|遅い `WHERE lower(email) = …` |列の関数 |式インデックス: `(lower(email))` または正規化された列を格納 |
-|遅い `LIKE '%foo%'` |先頭のワイルドカード |全文/トリグラム (`pg_trgm`) |
-|計画では間違ったインデックスが使用されています |古い統計 | `ANALYZE posts;` |
-|インデックスは未使用 |選択性が低く、テーブルが小さい | Seq スキャンは正しい可能性があります — 測定 |
-|インデックスが多すぎます |書き込みが遅い |未使用のままドロップします。多くのシングルの代わりにコンポジット |
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| Slow `WHERE lower(email) = …` | Function on column | Expression index: `(lower(email))` or store normalized column |
+| Slow `LIKE '%foo%'` | Leading wildcard | Full-text / trigram (`pg_trgm`) |
+| Plan uses wrong index | Stale stats | `ANALYZE posts;` |
+| Index unused | Low selectivity, small table | Seq scan may be correct — measure |
+| Too many indexes | Slow writes | Drop unused; composite instead of many singles |
 
-## 6. N+1 クエリ (アプリケーション層)
+## 6. N+1 queries (application layer)
 
-一度に 1 行ずつクエリを実行する ORM ループ:
+ORM loops that query one row at a time:
 
 ```text
 Bad:  SELECT * FROM posts WHERE account_id = $1  (×1000 accounts)
 Good: SELECT * FROM posts WHERE account_id = ANY($1)  or JOIN in one query
 ```
 
-アプリ コードまたは **`JOIN FETCH`** (JPA) で修正します。インデックスだけでは N+1 を修正できません。
+Fix in app code or with **`JOIN FETCH`** (JPA) — indexes alone do not fix N+1.
 
-## 7. 遅いクエリの監視
+## 7. Monitoring slow queries
 
-開発/ステージングで **`log_min_duration_statement`** を有効にします。
+Enable **`log_min_duration_statement`** in dev/staging:
 
 ```conf
 log_min_duration_statement = 200ms
 ```
 
-マネージド サービス (RDS など) は、合計時間の上位クエリに関する **Performance Insights** または **`pg_stat_statements`** を公開します。完全なチューニングワークフローについては、「データベースの最適化」(vii-database-optimizations.md)を参照してください。
+Managed services (RDS, etc.) expose **Performance Insights** or **`pg_stat_statements`** for top queries by total time. For the full tuning workflow, see [Database optimizations](vii-database-optimizations.md).
 
-＃＃ 次
+## Next
 
-Postgres に対する JDBC、プール、および Spring Data JPA の [アプリ統合](v-app-integration.md) に進みます。
+Continue with [App integration](v-app-integration.md) for JDBC, pools, and Spring Data JPA against Postgres.

@@ -1,33 +1,32 @@
 ---
 label: "I"
-subtitle: "概要"
-group: "スタートアップ"
+subtitle: "Overview"
+group: "Startups"
 order: 1
 ---
-スタートアップ — 概要
+Startups — overview
+Practical notes for **building a company on a budget**: free tiers, sensible defaults, and when to pay. Assumes you can write code and deploy — not legal or fundraising advice.
 
-**予算内で会社を設立する**ための実践的なメモ: 無料利用枠、賢明なデフォルト、支払い時期。コードを書いてデプロイできることを前提としています。法的アドバイスや資金調達に関するアドバイスではありません。
+## Map of this track
 
-## このトラックの地図
+| Submenu / note | Focus |
+|----------------|--------|
+| **Free services** | Email, hosting, DB, auth, monitoring on $0 tiers |
+| *(future)* | Incorporation checklist, MVP scope, go-to-market |
 
-|サブメニュー/メモ |フォーカス |
-|-----|----------|
-| **無料サービス** |電子メール、ホスティング、DB、認証、$0 レベルのモニタリング |
-| *(将来)* |組み込みチェックリスト、MVP 範囲、市場投入 |
+Start here: **Free services** → [Overview](free-services/i-overview.md).
 
-ここから始めてください: **無料サービス** → [概要](free-services/i-overview.md)。
+## Principles
 
-## 原則
+| Principle | Why |
+|-----------|-----|
+| **Don't self-host email on day one** | Deliverability (SPF/DKIM/DMARC) is hard; use a transactional provider |
+| **Use managed free tiers** | Your time is the scarce resource |
+| **Tag resources by project** | Know what to delete when an experiment ends |
+| **Read ToS and limits** | "Free" often means caps, not unlimited production |
+| **Plan the upgrade path** | Pick services that scale without a rewrite |
 
-|原則 |なぜ |
-|----------|-----|
-| **初日からメールを自己ホストしないでください** |到達性 (SPF/DKIM/DMARC) は困難です。トランザクションプロバイダーを使用する |
-| **管理された無料利用枠を使用する** |あなたの時間は希少なリソースです |
-| **プロジェクトごとにリソースにタグを付ける** |実験の終了時に何を削除するかを知っておく |
-| **利用規約と制限を読む** | 「無料」とは多くの場合、無制限の生産ではなく、上限を意味します。
-| **アップグレード パスを計画する** |書き換えなしで拡張できるサービスを選択する |
-
-## 一般的なゼロコスト MVP スタック
+## Typical zero-cost MVP stack
 
 ```text
 Domain (paid ~$10/yr) + Cloudflare DNS (free)
@@ -38,15 +37,15 @@ Domain (paid ~$10/yr) + Cloudflare DNS (free)
   → Sentry / UptimeRobot (free errors + uptime)
 ```
 
-**ドメイン名**の料金を支払うことになります。それ以外のほとんどのものは 0 ドルから開始できます。
+You still pay for a **domain name**; almost everything else can start at $0.
 
-## 無料枠が切れたとき
+## When free tiers break
 
-|信号 |アクション |
-|----------|----------|
-|電子メールのバウンスまたはスパム フォルダー | DNS レコードを検証します。ウォームドメイン。アップグレードプラン |
-| DB サイズまたは接続制限 |有料レベルまたは専用インスタンス |
-| SLA またはサポートが必要 |有料/エンタープライズへの移行 |
-|コンプライアンス（HIPAAなど） |通常、無料利用枠では除外されます。準拠したベンダーを選択してください。
+| Signal | Action |
+|--------|--------|
+| Email bounces or spam folder | Verify DNS records; warm domain; upgrade plan |
+| DB size or connection limits | Paid tier or dedicated instance |
+| Need SLA or support | Move to paid / enterprise |
+| Compliance (HIPAA, etc.) | Free tiers usually exclude — pick compliant vendors |
 
-**関連:** CI/CD **ツールとプラットフォーム**、クラウド **Foundations**、後のインフラ用 **Terraform**。
+**Related:** CI/CD **Tools & platforms**, cloud **Foundations**, **Terraform** for later infra.

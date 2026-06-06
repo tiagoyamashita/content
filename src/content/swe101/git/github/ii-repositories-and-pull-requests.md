@@ -1,27 +1,26 @@
 ---
 label: "II"
-subtitle: "リポジトリとプルリクエスト"
+subtitle: "Repositories & pull requests"
 group: "GitHub"
 order: 2
 ---
-リポジトリとプルリクエスト
+Repositories & pull requests
+A **repository** holds your code and history on GitHub. **Pull requests (PRs)** propose merging one branch into another with review and checks.
 
-**リポジトリ** には、GitHub 上のコードと履歴が保存されます。 **プル リクエスト (PR)** は、レビューとチェックを使用して、あるブランチを別のブランチにマージすることを提案します。
+## 1. Create a repository
 
-## 1. リポジトリを作成する
-
-|オプション |ステップ |
-|----------|----------|
-| **GitHub 上の新しいリポジトリ** | `+` → 新しいリポジトリ → README を追加（オプション） |
-| **既存のローカルをプッシュ** | `git remote add origin …` → `git push -u origin main` |
-| **テンプレート/フォーク** |組織テンプレートまたはフォーク ボタンを使用する |
+| Option | Steps |
+|--------|--------|
+| **New repo on GitHub** | `+` → New repository → add README optional |
+| **Push existing local** | `git remote add origin …` → `git push -u origin main` |
+| **Template / fork** | Use org template or Fork button |
 
 ```bash
 git clone git@github.com:org/myapp.git
 cd myapp
 ```
 
-## 2. リポジトリのレイアウト
+## 2. Repository layout
 
 ```text
 myapp/
@@ -33,9 +32,9 @@ myapp/
   LICENSE
 ```
 
-**README** — 訪問者が最初に目にするもの。ドキュメントのセットアップと環境変数。
+**README** — first thing visitors see; document setup and env vars.
 
-## 3. プル リクエストのライフサイクル
+## 3. Pull request lifecycle
 
 ```text
 1. Create branch locally:  git switch -c feature/oauth
@@ -48,7 +47,7 @@ myapp/
 8. Local: git switch main && git pull
 ```
 
-## 4. PR 説明テンプレート
+## 4. PR description template
 
 ```markdown
 ## Summary
@@ -62,60 +61,60 @@ myapp/
 (if UI)
 ```
 
-## 5. コードレビュー
+## 5. Code review
 
-|査読者はそうする |著者はそうします |
-|--------------|---------------|
-| diff を読み取り、必要に応じてテストします。応答して修正をプッシュ |
-|承認、変更リクエスト、またはコメント |会話を解決する |
-| CI ステータスを確認する | PR は小規模かつ集中的に行う |
+| Reviewer does | Author does |
+|---------------|-------------|
+| Read diff, test if needed | Respond, push fixes |
+| Approve, request changes, or comment | Resolve conversations |
+| Check CI status | Keep PR small and focused |
 
-**必要な承認** — ブランチ保護 [アクション、問題、設定](iii-actions-issues-and-settings.md) で設定します。
+**Required approvals** — set in branch protection [Actions, issues & settings](iii-actions-issues-and-settings.md).
 
-## 6. マージオプション
+## 6. Merge options
 
-|ボタン |結果 |
-|----------|----------|
-| **マージコミットを作成** |ベースブランチでコミットをマージ |
-| **スカッシュとマージ** |ベースで 1 つのコミット |
-| **リベースとマージ** |コミットのリニアリプレイ |
+| Button | Result |
+|--------|--------|
+| **Create merge commit** | Merge commit on base branch |
+| **Squash and merge** | One commit on base |
+| **Rebase and merge** | Linear replay of commits |
 
-チームはリポジトリ設定のデフォルトを選択します。一貫性が重要です。
+Team picks default in repo settings — consistency matters.
 
-## 7. フォークの貢献
+## 7. Fork contributing
 
-オープンソースのパターン:
+Open source pattern:
 
-1. アカウントにリポジトリをフォークする
-2. フォークのクローンを作成し、`upstream` リモートを追加します
-3. フォークで分岐、プッシュ、PR **上流へ**
+1. Fork repo to your account
+2. Clone fork, add `upstream` remote
+3. Branch on fork, push, PR **to upstream**
 
-メンテナはフォークからの PR を確認します。大きな変更の前にアップストリームと同期します。
+Maintainers see PR from your fork; you sync with upstream before big changes.
 
-## 8. 問題とリンク
+## 8. Issues and linking
 
 ```text
 PR description: Fixes #123
 Commit message:  fix: handle timeout (#123)
 ```
 
-終了キーワード (`Fixes`、`Closes`) はマージ時に問題を自動的に終了します。
+Closing keywords (`Fixes`, `Closes`) auto-close issues on merge.
 
-## 9. リリース
+## 9. Releases
 
-**リリース** ページ → **新しいリリースのドラフト** → タグ `v1.0.0`、メモを選択し、バイナリを添付します。
+**Releases** page → **Draft new release** → choose tag `v1.0.0`, notes, attach binaries.
 
-[リモートとコラボレーション](../essentials/v-remotes-and-collaboration.md) の Git タグとペアリングします。
+Pairs with Git tags from [Remotes & collaboration](../essentials/v-remotes-and-collaboration.md).
 
-## 10. 権限 (組織リポジトリ)
+## 10. Permissions (org repos)
 
-|役割 |一般的なアクセス |
+| Role | Typical access |
 |------|----------------|
-| **読む** |プライベート リポジトリのクローンを作成する |
-| **書く** |ブランチをプッシュする (保護されていない場合) |
-| **メンテナンス** |問題、一部の設定を管理する |
-| **管理者** |ブランチ保護、秘密 |
+| **Read** | Clone private repo |
+| **Write** | Push branches (if not protected) |
+| **Maintain** | Manage issues, some settings |
+| **Admin** | Branch protection, secrets |
 
-全員を個別に管理するのではなく、組織内で **チーム** を使用します。
+Use **teams** in orgs — not individual admin for everyone.
 
-**関連:** **Git** ブランチとリモート、CI/CD GitHub アクションに関するメモ。
+**Related:** **Git** branching and remotes, CI/CD GitHub Actions note.

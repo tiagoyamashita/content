@@ -1,38 +1,37 @@
 ---
 label: "I"
-subtitle: "概要"
-group: "レディス"
+subtitle: "Overview"
+group: "Redis"
 order: 1
 ---
-Redis — 概要
+Redis — overview
+**Redis** is an **in-memory data store** with optional persistence. It excels at **low-latency key access**, **TTL-based expiry**, and **atomic primitives** — cache, sessions, rate limits, pub/sub, and lightweight queues. It is usually **not** your system of record; pair it with [Postgres](../postgres/i-overview.md) or [MongoDB](../mongodb/i-overview.md).
 
-**Redis** は、オプションの永続性を備えた **インメモリ データ ストア**です。 **低レイテンシのキー アクセス**、**TTL ベースの有効期限**、**アトミック プリミティブ** (キャッシュ、セッション、レート制限、パブリッシュ/サブスクライブ、軽量キュー) に優れています。通常、これはあなたの記録システムではありません**。 [Postgres](../postgres/i-overview.md) または [MongoDB](../mongodb/i-overview.md) と組み合わせます。
+For key-value concepts (cache-aside, sessions, when not to use KV alone), see [Key-value stores](../../CS101/databases/iii-key-value.md).
 
-Key-Value の概念 (キャッシュ アサイド、セッション、KV のみを使用しない場合) については、「Key-Value ストア」(../../CS101/databases/iii-key-value.md) を参照してください。
+## Map of this track
 
-## このトラックの地図
+| Part | Focus |
+|------|--------|
+| **I — Overview** | Role in the stack, vocabulary, when to use Redis |
+| **II — Install & redis-cli** | Docker, connection URI, shell basics |
+| **III — Data structures & keys** | Strings, hashes, sets, TTL, naming |
+| **IV — Patterns & use cases** | Cache-aside, sessions, rate limits, pub/sub |
+| **V — App integration** | Lettuce, Spring Data Redis, redis-py |
+| **VI — Operations & persistence** | RDB, AOF, replication, memory limits |
+| **VII — Performance & optimizations** | Pipelines, memory, hot keys, checklist |
 
-|パート |フォーカス |
-|------|----------|
-| **I — 概要** |スタック内の役割、語彙、Redis をいつ使用するか |
-| **II — インストールと redis-cli** | Docker、接続 URI、シェルの基本 |
-| **III — データ構造とキー** |文字列、ハッシュ、セット、TTL、命名 |
-| **IV — パターンと使用例** |キャッシュアサイド、セッション、レート制限、パブリッシュ/サブスクライブ |
-| **V — アプリの統合** |レタス、Spring Data Redis、redis-py |
-| **VI — 操作と永続性** | RDB、AOF、レプリケーション、メモリ制限 |
-| **VII — パフォーマンスと最適化** |パイプライン、メモリ、ホットキー、チェックリスト |
+## Why Redis (for apps)
 
-## Redis を使用する理由 (アプリの場合)
+| Strength | What it means in practice |
+|----------|---------------------------|
+| **Sub-ms reads/writes** | Hot data in RAM — offload Postgres/MongoDB |
+| **TTL built in** | Sessions and cache entries expire automatically |
+| **Atomic ops** | `INCR`, `SET NX`, lists — no read-modify-write races |
+| **Rich types** | Not only strings — hashes, sorted sets, streams |
+| **Simple ops model** | Easy to reason about vs full document/SQL query |
 
-|強さ |実際の意味 |
-|----------|--------------------------|
-| **サブミリ秒の読み取り/書き込み** | RAM 内のホット データ — Postgres/MongoDB のオフロード |
-| **TTL 内蔵** |セッションとキャッシュ エントリは自動的に期限切れになります。
-| **原子作戦** | `INCR`、`SET NX`、リスト - 読み取り、変更、書き込みの競合なし |
-| **豊富な種類** |文字列だけでなく、ハッシュ、ソートセット、ストリームも可能です。
-| **単純な運用モデル** |完全なドキュメント/SQL クエリと比較するのが簡単 |
-
-## 主要な語彙
+## Core vocabulary
 
 ```text
 Redis server
@@ -40,33 +39,33 @@ Redis server
         └── Key  →  Value (string, hash, list, set, …)
 ```
 
-|用語 |役割 |
+| Term | Role |
 |------|------|
-| **キー** |文字列識別子 - 命名はあなたが設計します (`user:42:session`) |
-| **値** |アプリ (または Redis タイプ) によって解釈されるバイト |
-| **TTL / 期限切れ** |キーは数秒後に自動削除されます |
-| **立ち退き** |メモリがいっぱいになると、ポリシーはキーを削除します (例: `allkeys-lru`)。
-| **レプリカ** |読み取りコピー + フェイルオーバー ターゲット |
-| **クラスター** |ノード間でシャード化されたキー (ハッシュ スロット) |
+| **Key** | String identifier — you design naming (`user:42:session`) |
+| **Value** | Bytes interpreted by your app (or Redis type) |
+| **TTL / EXPIRE** | Key auto-deletes after seconds |
+| **Eviction** | When memory full, policy drops keys (e.g. `allkeys-lru`) |
+| **Replica** | Read copy + failover target |
+| **Cluster** | Sharded keys across nodes (hash slots) |
 
-## Redis が適合する場合
+## When Redis fits
 
-|良いフィット感 |悪いデフォルト |
+| Good fit | Poor default |
 |----------|--------------|
-| SQL/ドキュメント DB の前にキャッシュ |注文/元帳の主要ストア |
-|ステートレス Web 層のセッション ストア |大規模な全文検索 (OpenSearch/ES を使用) |
-|レート制限、機能フラグ |複雑なリレーショナル レポート |
-|リーダーボード (`sorted set`) |大きな値 (キーごとに >512 MB - 設計ミス) |
-|パブリッシュ/サブスクライブ、ストリーム (ライトキュー) |耐久性の高い重いジョブ キュー単独 (多くの場合、Kafka/SQS を追加) |
+| Cache in front of SQL/document DB | Primary store for orders/ledger |
+| Session store for stateless web tier | Full-text search at scale (use OpenSearch/ES) |
+| Rate limiting, feature flags | Complex relational reporting |
+| Leaderboards (`sorted set`) | Large values (>512 MB per key — design mistake) |
+| Pub/sub, Streams (light queues) | Durable heavy job queue alone (often add Kafka/SQS) |
 
-**ルール:** Postgres/MongoDB は真実を保持します。 Redis は加速または調整します。
+**Rule:** Postgres/MongoDB holds truth; Redis accelerates or coordinates.
 
-## メモリと耐久性 (プレビュー)
+## Memory and durability (preview)
 
-- データは **RAM** に存在します — 容量と **maxmemory** ポリシーを計画します。
-- **RDB** スナップショットと **AOF** 追加ログ トレードの耐久性と速度 - [操作と永続性](vi-operations-and-persistence.md) を参照してください。
-- キャッシュを ** 使い捨て ** として扱います — 常にデータベースから再構築できます。
+- Data lives in **RAM** — plan capacity and **maxmemory** policy.
+- **RDB** snapshots and **AOF** append log trade durability vs speed — see [Operations & persistence](vi-operations-and-persistence.md).
+- Treat cache as ** disposable** — always be able to rebuild from the database.
 
-＃＃ 次
+## Next
 
-[インストールと redis-cli](ii-install-and-redis-cli.md) に進み、Redis をローカルで実行し、コマンドを試してください。
+Continue with [Install & redis-cli](ii-install-and-redis-cli.md) to run Redis locally and try commands.

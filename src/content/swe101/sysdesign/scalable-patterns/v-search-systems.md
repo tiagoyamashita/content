@@ -1,28 +1,27 @@
 ---
 label: "V"
-subtitle: "検索システム"
-group: "システム設計"
+subtitle: "Search systems"
+group: "System design"
 order: 5
 ---
-検索システム
+Search systems
+**Full-text** and **semantic** search need indexes optimized for lookup by **term** or **vector**, not row-by-row table scans.
 
-**全文**検索と**セマンティック**検索には、行ごとのテーブル スキャンではなく、**用語**または**ベクトル**による検索用に最適化されたインデックスが必要です。
+## 1. Inverted index
 
-## 1. 転置インデックス
-
-各 **トークン** → `(document_id, positions)` のリストをマップします。
+Maps each **token** → list of `(document_id, positions)`.
 
 ```text
 "quick"  → [(doc1, [0]), (doc7, [3])]
 "brown"  → [(doc1, [1]), (doc9, [0])]
 ```
 
-|リレーショナルDB |検索インデックス |
-|--------------|--------------|
-| `WHERE body LIKE '%foo%'` | O(n) スキャン |投稿リスト検索 |
-|正確な PK ルックアップに適しています。関連性ランキングに最適 |
+| Relational DB | Search index |
+|---------------|--------------|
+| `WHERE body LIKE '%foo%'` | O(n) scan | Posting list lookup |
+| Good for exact PK lookups | Good for relevance ranking |
 
-<figure class="notes-diagram"><svg xmlns="4 viewBox="0 0 440 130" role="img" aria-label="Inverted index from documents to term postings">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 130" role="img" aria-label="Inverted index from documents to term postings">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Inverted index</text>
   <rect x="12" y="36" width="80" height="36" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="24" y="58" fill="#e4e4e7" font-size="9">doc1: quick brown</text>
@@ -34,33 +33,33 @@ order: 5
   <text x="12" y="100" fill="#a1a1aa" font-size="9">Query "quick brown" → intersect posting lists → score (BM25)</text>
 </svg></figure>
 
-## 2. 書き込みパスと読み取りパス
+## 2. Write and read paths
 
-**書き込みパス**
+**Write path**
 
-1. ドキュメントが到着します (JSON、行)。
-2. **トークン化** — テキストを分割し、ストップワードを削除します (オプション)。
-3. **正規化** — 小文字、語幹 (「running」→「run」)。
-4. インデックスの **シャード** (Elasticsearch プライマリ シャード + レプリカ) を更新します。
+1. Document arrives (JSON, row).
+2. **Tokenise** — split text, remove stop words (optional).
+3. **Normalise** — lowercase, stem (“running” → “run”).
+4. Update **shards** of the index (Elasticsearch primary shard + replicas).
 
-**読み取りパス**
+**Read path**
 
-1. クエリを解析します (ブール値、フレーズ、ファジー)。
-2. 学期ごとに投稿リストを取得します。
-3. **スコア** — BM25 / TF-IDF (+ ブースト、フィルター)。
-4. ランク付けされたヒット + ハイライトを返します。
+1. Parse query (boolean, phrase, fuzzy).
+2. Fetch posting lists per term.
+3. **Score** — BM25 / TF-IDF (+ boosts, filters).
+4. Return ranked hits + highlights.
 
-## 3. DB とインデックスの同期を維持する
+## 3. Keeping DB and index in sync
 
-|戦略 |フロー |リスク |
+| Strategy | Flow | Risk |
 |----------|------|------|
-| **二重書き込み** |アプリは DB + ES を並行して書き込みます |部分故障→ドリフト |
-| **CDC** | DB binlog → Kafka → インデクサー |最終的な遅れ。業界標準 |
-| **バッチリビルド** |夜間の完全なインデックスの再作成 |ジョブが完了するまで古い |
+| **Dual-write** | App writes DB + ES in parallel | Partial failure → drift |
+| **CDC** | DB binlog → Kafka → indexer | Eventual lag; industry standard |
+| **Batch rebuild** | Nightly full reindex | Stale until job completes |
 
-**CDC スタック (共通):** Debezium は、Postgres/MySQL WAL → Kafka トピック → Elasticsearch シンク コネクタを読み取ります。
+**CDC stack (common):** Debezium reads Postgres/MySQL WAL → Kafka topic → Elasticsearch sink connector.
 
-<figure class="notes-diagram"><svg xmlns="5 viewBox="0 0 460 100" role="img" aria-label="CDC from database to search index">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="CDC from database to search index">
   <rect x="12" y="40" width="64" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="28" y="60" fill="#e4e4e7" font-size="9">OLTP DB</text>
   <path d="M76 56 H120" stroke="#a1a1aa" stroke-width="1.5"/>
@@ -74,30 +73,30 @@ order: 5
   <text x="348" y="60" fill="#e4e4e7" font-size="9">Elasticsearch</text>
 </svg></figure>
 
-## 4. Elasticsearch の概念 (概要)
+## 4. Elasticsearch concepts (brief)
 
-|コンセプト |役割 |
-|-------|------|
-| **インデックス** |論理名前空間 (DB など) |
-| **シャード** |インデックスの水平パーティション |
-| **レプリカ** |読み取りスケール + フェイルオーバー用のコピー |
-| **ほぼリアルタイム** |検索が表示されるまでの更新間隔 (デフォルトは約 1 秒) |
+| Concept | Role |
+|---------|------|
+| **Index** | Logical namespace (like a DB) |
+| **Shard** | Horizontal partition of index |
+| **Replica** | Copy for read scale + failover |
+| **Near-real-time** | Refresh interval (~1s default) before search visible |
 
-## 5. ベクトル/セマンティック検索
+## 5. Vector / semantic search
 
-|ステップ |アクション |
-|------|----------|
-|インデックス時間 |ドキュメントテキストを埋め込む → ベクター + メタデータを保存 |
-|クエリ時間 |クエリを埋め込む → **ANN** 検索 (HNSW、IVF) |
-|ハイブリッド | **BM25** キーワード + ベクトル スコア → **RRF** 融合 |
+| Step | Action |
+|------|--------|
+| Index time | Embed document text → store vector + metadata |
+| Query time | Embed query → **ANN** search (HNSW, IVF) |
+| Hybrid | **BM25** keyword + vector score → **RRF** fusion |
 
-製品: pgvector、Pinecone、OpenSearch k-NN、Elasticsearchdensity_vector。
+Products: pgvector, Pinecone, OpenSearch k-NN, Elasticsearch dense_vector.
 
-## 6. 面接チェックリスト
+## 6. Interview checklist
 
-- なぜ逆インデックスが規模で `LIKE` を上回るのでしょうか?
-- 二重書き込み障害モード?
-- CDC は削除と更新をどのように処理しますか?
-- ハイブリッド検索が純粋なベクトルを上回るとき?
+- Why inverted index beats `LIKE` at scale?
+- Dual-write failure modes?
+- How CDC handles deletes and updates?
+- When hybrid search beats pure vector?
 
-**関連:** [メッセージ キューと非同期](iii-message-queues-and-async.md) (Kafka)、パート I (SQL と検索ストア)。
+**Related:** [Message queues & async](iii-message-queues-and-async.md) (Kafka), Part I (SQL vs search store).

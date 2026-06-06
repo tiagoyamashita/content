@@ -1,35 +1,34 @@
 ---
 label: "II"
-subtitle: "redis-cli のインストールと"
-group: "レディス"
+subtitle: "Install & redis-cli"
+group: "Redis"
 order: 2
 ---
-Redis — インストールと redis-cli
+Redis — install & redis-cli
+Run Redis locally or use a **managed** service (ElastiCache, Redis Cloud, Upstash). Connect with **`redis-cli`** or driver URI.
 
-Redis をローカルで実行するか、**マネージド** サービス (ElastiCache、Redis Cloud、Upstash) を使用します。 **`redis-cli`** またはドライバー URI で接続します。
+## 1. Install options
 
-## 1. オプションのインストール
+| Method | When to use |
+|--------|-------------|
+| **Docker** | Dev, CI, quick reset |
+| **Native package** | `brew install redis`, Linux packages |
+| **Managed** | Production HA without running your own failover |
 
-|方法 |いつ使用するか |
-|----------|---------------|
-| **ドッカー** |開発、CI、クイック リセット |
-| **ネイティブ パッケージ** | `brew install redis`、Linux パッケージ |
-| **管理** |独自のフェイルオーバーを実行せずに実稼働 HA |
-
-### ドッカー
+### Docker
 
 ```bash
 docker run --name redis-dev -p 6379:6379 -d redis:7
 docker exec -it redis-dev redis-cli
 ```
 
-永続ボリュームの場合:
+With persistence volume:
 
 ```bash
 docker run --name redis-dev -p 6379:6379 -v redisdata:/data -d redis:7 redis-server --appendonly yes
 ```
 
-## 2. 接続 URI
+## 2. Connection URI
 
 ```text
 redis://localhost:6379/0
@@ -37,13 +36,13 @@ redis://:PASSWORD@host:6379/0
 rediss://user:PASSWORD@host:6380/0   # TLS (managed clouds)
 ```
 
-|パート |意味 |
-|-----|----------|
-| **`redis://` / `rediss://`** |プレーン / TLS |
-| **`/0`** |データベース番号 (デフォルトでは 0 ～ 15、クラスターは 1 つの論理 DB を使用します) |
-| **パスワード** | `requirepass` または ACL ユーザー |
+| Part | Meaning |
+|------|---------|
+| **`redis://` / `rediss://`** | Plain / TLS |
+| **`/0`** | Database number (0–15 by default; cluster uses one logical DB) |
+| **Password** | `requirepass` or ACL user |
 
-## 3. `redis-cli` の必需品
+## 3. `redis-cli` essentials
 
 ```bash
 redis-cli -h localhost -p 6379
@@ -64,36 +63,36 @@ KEYS user:*             # dev only — O(N), blocks on large DBs
 SCAN 0 MATCH user:* COUNT 100   # production-safe iteration
 ```
 
-|コマンド |アクション |
-|----------|----------|
-| **`SET` / `GET`** |文字列の読み取り/書き込み |
-| **`SET key val EX seconds`** | TTLで設定 |
-| **`INCR` / `DECR`** |アトミック整数 |
-| **`EXPIRE` / `TTL`** |有効期限の管理 |
-| **`DEL` / `UNLINK`** |削除 (`UNLINK` 非同期なし) |
-| **`INFO memory`** |メモリ統計 |
-| **`MONITOR`** |すべてのコマンドをストリーミングします — デバッグのみ、本番では実行しません |
-| **`FLUSHDB`** |現在の DB を削除します — 開発のみ |
+| Command | Action |
+|---------|--------|
+| **`SET` / `GET`** | String read/write |
+| **`SET key val EX seconds`** | Set with TTL |
+| **`INCR` / `DECR`** | Atomic integer |
+| **`EXPIRE` / `TTL`** | Manage expiry |
+| **`DEL` / `UNLINK`** | Delete (`UNLINK` async free) |
+| **`INFO memory`** | Memory stats |
+| **`MONITOR`** | Stream all commands — debug only, never prod |
+| **`FLUSHDB`** | Delete current DB — dev only |
 
-## 4. ACL ユーザー (Redis 6 以降)
+## 4. ACL user (Redis 6+)
 
 ```text
 ACL SETUSER myapp on >local-secret ~myapp:* +get +set +del +incr +expire
 AUTH myapp local-secret
 ```
 
-**最小権限**を優先 — アプリユーザーは必要なコマンドとキーパターンのみを取得します (`~cache:*`)。
+Prefer **least privilege** — app user gets only needed commands and key patterns (`~cache:*`).
 
-## 5. GUI クライアント (オプション)
+## 5. GUI clients (optional)
 
-|ツール |メモ |
-|------|------|
-| **Redis インサイト** |公式 GUI — ブラウザ キー、CLI、プロファイラ |
-| **別の Redis デスクトップ マネージャー** |クロスプラットフォームのキーブラウザ |
+| Tool | Notes |
+|------|-------|
+| **Redis Insight** | Official GUI — browser keys, CLI, profiler |
+| **Another Redis Desktop Manager** | Cross-platform key browser |
 
 `redis-cli` remains essential for production debugging.
 
-## 6. 発煙試験
+## 6. Smoke test
 
 ```text
 SET counter 0
@@ -108,6 +107,6 @@ EXPIRE user:42 300
 TTL user:42
 ```
 
-＃＃ 次
+## Next
 
-タイプと命名規則については、[データ構造とキー](iii-data-structures-and-keys.md) に進みます。
+Continue with [Data structures & keys](iii-data-structures-and-keys.md) for types and naming conventions.

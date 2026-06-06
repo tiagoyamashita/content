@@ -1,14 +1,13 @@
 ---
 label: "IV"
-subtitle: "認証"
-group: "APIゲートウェイ"
+subtitle: "Authentication"
+group: "API Gateway"
 order: 4
 ---
-APIゲートウェイ - 認証
+API gateway — authentication
+Validate **who** is calling before traffic hits your services — **JWT**, **API keys**, **OAuth**, or **mTLS**. Gateway rejects bad credentials early (401/403) and forwards trusted context to upstream.
 
-トラフィックがサービス (**JWT**、**API キー**、**OAuth**、または **mTLS**) に到達する前に、**誰** が電話をかけているかを検証します。ゲートウェイは不正な認証情報を早期に拒否し (401/403)、信頼されたコンテキストを上流に転送します。
-
-## 1. 認証が実行される場所
+## 1. Where auth runs
 
 ```text
 Client ──Authorization: Bearer …──► Gateway validates
@@ -17,26 +16,26 @@ Client ──Authorization: Bearer …──► Gateway validates
                                          └── valid → upstream (+ optional identity headers)
 ```
 
-|レイヤー |責任 |
-|------|----------------|
-| **ゲートウェイ** |トークンの形式、署名、有効期限、API キーの検索 |
-| **サービス** |認可 (このユーザーはこのアクションを実行できますか?) |
+| Layer | Responsibility |
+|-------|----------------|
+| **Gateway** | Token format, signature, expiry, API key lookup |
+| **Service** | Authorization (can this user do this action?) |
 
-ゲートウェイ **認証**;サービス **承認** (RBAC、所有権チェック)。
+Gateway **authentication**; service **authorization** (RBAC, ownership checks).
 
-## 2. JWT (ベアラートークン)
+## 2. JWT (Bearer token)
 
-SPA とモバイルに共通:
+Common for SPA and mobile:
 
 ```http
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
 ```
 
-ゲートウェイのチェック:
+Gateway checks:
 
-- 署名 (IdP からの JWKS)
-- `exp`、`iss`、`aud`
-- オプションのクレーム (`scope`、`roles`)
+- Signature (JWKS from IdP)
+- `exp`, `iss`, `aud`
+- Optional claims (`scope`, `roles`)
 
 ```yaml
 # Conceptual plugin config
@@ -47,11 +46,11 @@ plugins:
       key_claim_name: kid
 ```
 
-アップストリームはヘッダーでデコードされたクレームを受信するか (構成されている場合)、JWT を再検証します — **二重作業を回避します**。信頼境界を 1 つ選択します。
+Upstream receives decoded claims in header (if configured) or re-validates JWT — **avoid double work**; pick one trust boundary.
 
-## 3. API キー
+## 3. API keys
 
-パートナーと脚本:
+Partners and scripts:
 
 ```http
 X-Api-Key: sk_live_abc123
@@ -59,48 +58,48 @@ X-Api-Key: sk_live_abc123
 ?api_key=...   (avoid in URLs — logs leak)
 ```
 
-ゲートウェイは、キー → **コンシューマ** → レート制限層をマップします。ダッシュボードでキーを回転します。 git には決してコミットしないでください。
+Gateway maps key → **consumer** → rate limit tier. Rotate keys in dashboard; never commit to git.
 
 ## 4. OAuth 2.0 / OpenID Connect
 
-ブラウザのログイン フローは **認証サービス** で終了します。 API 呼び出しでは **アクセス トークン**を使用します。
+Browser login flows terminate at **auth service**; API calls use **access token**:
 
 ```text
 User → Login (OAuth) → Auth server → access token
 Client → API Gateway (Bearer access token) → services
 ```
 
-ゲートウェイは、認証サーバーからのアクセス トークン イントロスペクションまたは JWT を検証します。
+Gateway validates access token introspection or JWT from auth server.
 
-## 5. mTLS (相互 TLS)
+## 5. mTLS (mutual TLS)
 
-クライアントが証明書を提示します — **B2B** API に共通:
+Client presents certificate — common for **B2B** APIs:
 
 ```text
 Partner client cert → Gateway verifies CA → route to upstream
 ```
 
-強いアイデンティティ。運用の負担が大きくなります (証明書のローテーション、パートナーのオンボーディング)。
+Strong identity; higher ops burden (cert rotation, partner onboarding).
 
-## 6. CDN でキャッシュしないもの
+## 6. What not to cache at CDN
 
-認証された応答では以下を使用する必要があります。
+Authenticated responses must use:
 
 ```http
 Cache-Control: private, no-store
 ```
 
-または、**CDN キャッシュなし** で `api.example.com` をルーティングします。[CDN API と動的コンテンツ](../cdn/vi-apis-and-dynamic-content.md) を参照してください。
+Or route `api.example.com` **without CDN cache** — see [CDN APIs & dynamic content](../cdn/vi-apis-and-dynamic-content.md).
 
-## 7. セキュリティチェックリスト
+## 7. Security checklist
 
-- [ ] HTTPS のみ。 CDN/ゲートウェイのHSTS
-- [ ] 署名だけでなく、API の JWT `aud` を検証します
-- クエリ文字列ではなく、ヘッダー内の [ ] API キー
-- [ ] キー/ユーザーごとのレート制限 ([レート制限と復元力](v-rate-limiting-and-resilience.md))
-- [ ] インターネットからの `X-User-Id` を信頼しません。プライベート リンク上のゲートウェイからのみ信頼します。
-- [ ] 認証失敗をログに記録します — 資格情報スタッフィングを検出します
+- [ ] HTTPS only; HSTS at CDN/gateway
+- [ ] Validate JWT `aud` for your API — not just signature
+- [ ] API keys in headers, not query strings
+- [ ] Rate limit per key/user ([Rate limiting & resilience](v-rate-limiting-and-resilience.md))
+- [ ] Do not trust `X-User-Id` from internet — only from gateway on private link
+- [ ] Log auth failures — detect credential stuffing
 
-＃＃ 次
+## Next
 
-[レート制限と復元力](v-rate-limiting-and-resilience.md) に進み、スロットルと障害の処理を行います。
+Continue with [Rate limiting & resilience](v-rate-limiting-and-resilience.md) for throttling and failure handling.

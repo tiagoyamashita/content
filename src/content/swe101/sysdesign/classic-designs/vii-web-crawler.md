@@ -1,24 +1,23 @@
 ---
 label: "VII"
-subtitle: "ウェブクローラー"
-group: "システム設計"
+subtitle: "Web crawler"
+group: "System design"
 order: 7
 ---
-ウェブクローラー
+Web crawler
+**Search-engine-style** crawler: discover URLs, fetch HTML, feed **index pipeline**, respect **politeness** rules.
 
-**検索エンジン スタイル** クローラー: URL を検出し、HTML を取得し、**インデックス パイプライン** をフィードし、**礼儀正しさ** ルールを尊重します。
+## 1. Components
 
-## 1. コンポーネント
-
-|コンポーネント |役割 |
+| Component | Role |
 |-----------|------|
-| **URL フロンティア** |取得する URL の優先キュー |
-| **フェッチャー** | HTTP GET; robots.txt、レート制限 |
-| **パーサー** |リンク、テキスト、メタデータを抽出 |
-| **重複フィルター** |表示された URL / 重複したコンテンツをスキップする |
-| **ストレージ** |生の HTML → オブジェクト ストア。テキスト → 検索インデックス |
+| **URL frontier** | Priority queue of URLs to fetch |
+| **Fetcher** | HTTP GET; robots.txt, rate limits |
+| **Parser** | Extract links, text, metadata |
+| **Dupe filter** | Skip seen URLs / duplicate content |
+| **Storage** | Raw HTML → object store; text → search index |
 
-<figure class="notes-diagram"><svg xmlns="2 viewBox="0 0 480 120" role="img" aria-label="Web crawler pipeline frontier fetch parse index">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="Web crawler pipeline frontier fetch parse index">
   <rect x="12" y="44" width="64" height="32" rx="3" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
   <text x="24" y="64" fill="#e4e4e7" font-size="9">Frontier</text>
   <path d="M76 60 H116" stroke="#a1a1aa" stroke-width="1.5"/>
@@ -36,47 +35,47 @@ order: 7
   <text x="12" y="96" fill="#71717a" font-size="9">New links → frontier · Bloom filter skips revisits</text>
 </svg></figure>
 
-## 2. 規模の見積もり
+## 2. Scale estimate
 
-|メトリック |値 |
-|------|------|
-|インデックス付けされたページ | 1B |
-|平均ページ サイズ | 100KB |
-|ストレージ | ~100 TB の生の HTML |
-|持続的なクロール | 1B / (30×86400) ≈ **400 ページ/秒** |
+| Metric | Value |
+|--------|-------|
+| Pages indexed | 1 B |
+| Avg page size | 100 KB |
+| Storage | ~100 TB raw HTML |
+| Sustained crawl | 1B / (30×86400) ≈ **400 pages/s** |
 
-## 3. 礼儀正しさ
+## 3. Politeness
 
-|ルール |実装 |
+| Rule | Implementation |
 |------|----------------|
-| **robots.txt** |ホストごとのキャッシュ。名誉 `Disallow` |
-| **クロール遅延** |同じホストへのリクエスト間の最小間隔 |
-| **ドメインごとの制限** |ドメインによってキー指定されたトークン バケット |
+| **robots.txt** | Cache per host; honor `Disallow` |
+| **Crawl-delay** | Min interval between requests to same host |
+| **Per-domain limit** | Token bucket keyed by domain |
 
-## 4. 分散フロンティア
+## 4. Distributed frontier
 
-**ドメイン上の一貫したハッシュ** → 1 人のワーカーが `example.com` を所有します。
+**Consistent hash on domain** → one worker owns `example.com`:
 
-|メリット | |
-|----------|----------|
-|ホストごとの集中レート制限 | |
-|同じホストへの重複した同時フェッチはありません | |
+| Benefit | |
+|---------|--------|
+| Centralized per-host rate limit | |
+| No duplicate concurrent fetch to same host | |
 
-優先順位: サイトマップ URL、PageRank、再クロールの鮮度シグナル。
+Priority: sitemap URLs, PageRank, recrawl freshness signals.
 
-## 5. 重複排除
+## 5. De-duplication
 
-|レイヤー |構造 |トレードオフ |
-|------|-----------|-----------|
-| **表示された URL** | **ブルーム フィルター** |小さな記憶。小さな誤検知 → フェッチされていない URL をまれにスキップします。
-| **内容はほぼ重複** | **シムハッシュ** |テンプレートの多いミラーを検出する |
+| Layer | Structure | Trade-off |
+|-------|-----------|-----------|
+| **URL seen** | **Bloom filter** | Tiny memory; small false-positive → skip unfetched URL rarely |
+| **Content near-dup** | **Simhash** | Detect template-heavy mirrors |
 
-ブルーム フィルター: 「絶対に見られない」または「おそらく見られる」 - 偽陰性なし。
+Bloom filter: “definitely not seen” or “probably seen” — no false negatives.
 
-## 6. 障害対応
+## 6. Failure handling
 
-- **429/503** → バックオフ + フロンティアの再キュー。
-- **リダイレクト チェーン** → キャップの深さ;最終URLを正規化します。
-- **有害な URL** → 最大サイズ、タイムアウト、MIME ホワイトリスト。
+- **429/503** → backoff + re-queue frontier.
+- **Redirect chains** → cap depth; normalize final URL.
+- **Poison URLs** → max size, timeout, MIME allowlist.
 
-**関連:** [検索システム](../scalable-patterns/v-search-systems.md)、[レート制限](../scalable-patterns/iv-rate-limiting.md)。
+**Related:** [Search systems](../scalable-patterns/v-search-systems.md), [Rate limiting](../scalable-patterns/iv-rate-limiting.md).

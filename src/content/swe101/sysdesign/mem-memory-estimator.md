@@ -1,33 +1,32 @@
 ---
 label: "Mem"
-subtitle: "メモリ推定器"
-group: "システム設計"
+subtitle: "Memory Estimator"
+group: "System design"
 order: 5
 ---
-システム設計 - メモリの見積もり
+System Design — Memory Estimation
+Back-of-envelope **RAM** sizing for sessions, caches, and app heaps — essential for interviews and capacity planning before you buy instances or hit **OOM**.
 
-セッション、キャッシュ、アプリ ヒープの **RAM** の基本的なサイジング。インスタンスを購入したり **OOM** に達する前のインタビューや容量計画に不可欠です。
+**Interactive sliders:** see **[Memory Estimator](memory-estimator.md)** (Preview / graph mode).
 
-**対話型スライダー:** **[メモリ推定](memory-estimator.md)** (プレビュー/グラフ モード) を参照してください。
+## 1. Why estimate memory?
 
-## 1. なぜメモリを見積もるのでしょうか?
+| Question | Memory estimate answers |
+|----------|-------------------------|
+| How many **Redis** nodes? | Hot data set + overhead |
+| App **heap** size / pod limit? | Sessions + objects in flight |
+| Will we **OOM** at peak? | Concurrent users × bytes per user |
+| Scale **vertical** or **horizontal**? | Working set vs single-node RAM cap |
 
-|質問 |メモリ推定の答え |
-|----------|----------------------|
-| **Redis** ノードはいくつですか? |ホット データ セット + オーバーヘッド |
-|アプリの**ヒープ**サイズ/ポッド制限? |セッション + 飛行中のオブジェクト |
-|ピーク時には **OOM** になるでしょうか? |同時ユーザー数 × ユーザーあたりのバイト数 |
-|スケールは**垂直**ですか、**水平**ですか? |ワーキング セットとシングルノード RAM の上限 |
+Memory is often the first hard limit after you fix obvious CPU bottlenecks — see **Bottleneck analysis → CPU & memory**.
 
-多くの場合、明らかな CPU ボトルネックを修正した後の最初のハード制限はメモリです。**ボトルネック分析→ CPU とメモリ**を参照してください。
-
-## 2. コアフォーミュラ
+## 2. Core formula
 
 ```text
 RAM_working_set ≈ concurrent_users × bytes_per_active_user
 ```
 
-**DAU ではありません** - ピーク時に **同時にアクティブになる**ユーザーのみです。
+**Not DAU** — only users **active at the same time** during peak.
 
 ```text
 concurrent_users = DAU × concurrency_factor
@@ -36,7 +35,7 @@ Example:
   10_000_000 DAU × 0.08 × 50 KB ≈ 40 GB working set (sessions/cache only)
 ```
 
-<figure class="notes-diagram"><svg xmlns="13 viewBox="0 0 440 110" role="img" aria-label="DAU to concurrent users to RAM">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 110" role="img" aria-label="DAU to concurrent users to RAM">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Peak memory chain</text>
   <rect x="12" y="36" width="80" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="28" y="54" fill="#e4e4e7" font-size="9">DAU</text>
@@ -51,25 +50,25 @@ Example:
   <text x="12" y="88" fill="#71717a" font-size="9">Add 2× headroom before dividing by node RAM (§6).</text>
 </svg></figure>
 
-## 3. 同時実行係数 (ピーク)
+## 3. Concurrency factor (peak)
 
-|アプリの種類 | DAU の % としてのピーク同時実行率 |メモ |
-|----------|----------------------------|----------|
-|ウェブ/電子商取引全般 | **5 ～ 10%** |昼食 + 夕方のピーク |
-|ソーシャル / フィード (モバイル) | **10 ～ 20%** |長いセッション |
-|リアルタイム (チャット、ゲーム、コラボ) | **20–40%** | WebSocket は開いたまま |
-| B2B SaaS（営業時間） | **WAU** の **15 ～ 25%** | DAU がまばらな場合は毎週アクティブを使用します。
-|バッチ / API のみ | **無視できるセッション RAM** |代わりにリクエストバッファあたりのサイズ |
+| App type | Peak concurrent as % of DAU | Notes |
+|----------|----------------------------|--------|
+| General web / e-commerce | **5–10%** | Lunch + evening peaks |
+| Social / feed (mobile) | **10–20%** | Long sessions |
+| Real-time (chat, game, collab) | **20–40%** | WebSocket stays open |
+| B2B SaaS (business hours) | **15–25%** of **WAU** | Use weekly active if DAU sparse |
+| Batch / API-only | **negligible session RAM** | Size per request buffer instead |
 
-**インタビューのヒント:** あなたの仮定を明確に述べてください — 「1,000 万 DAU、ピーク時の同時 8% → 同時 800,000 と仮定します。」
+**Interview tip:** state your assumption explicitly — “Assume 10 M DAU, 8% concurrent at peak → 800 K concurrent.”
 
-## 4. アクティブ ユーザーあたりのバイト数 (カウントする内容)
+## 4. Bytes per active user (what to count)
 
-|インメモリ項目 |典型的なサイズ | | の場合にカウントします。
-|--|--------------|-----------|
-| HTTP セッション (サーバー側) | 1 ～ 20 KB |スティッキーセッション、カート |
-|メモリ内の JWT (解析されたクレーム) | < 1 KB | Usually stateless — **don’t** multiply by DAU |
-| Cached user profile | 5–50 KB | Redis 3 |
+| In-memory item | Typical size | Count when |
+|----------------|--------------|------------|
+| HTTP session (server-side) | 1–20 KB | Sticky sessions, cart |
+| JWT in memory (parsed claims) | < 1 KB | Usually stateless — **don’t** multiply by DAU |
+| Cached user profile | 5–50 KB | Redis `user:{id}` |
 | Home feed / timeline slice | 50–500 KB | Push model precomputed feed |
 | Full page HTML fragment | 100 KB – 2 MB | Edge/page cache |
 | WebSocket connection buffers | 4–16 KB+ | Chat, live updates |
@@ -81,7 +80,7 @@ Example:
 
 | Field | Size |
 |-------|------|
-| 4, roles | 200 B |
+| `user_id`, roles | 200 B |
 | Cart (10 line items) | 8 KB |
 | Recent views | 12 KB |
 | CSRF + flash messages | 2 KB |
@@ -94,26 +93,26 @@ One region at peak — allocate **per layer**:
 
 | Component | What to size | Rule of thumb |
 |-----------|--------------|---------------|
-| **App servers** | Heap + native + threads | 5 heap overhead (JVM/Go) |
-| **Redis / Memcached** | Hot keys | Data + **~25%** fragmentation (6) |
-| **PostgreSQL** | Buffer cache | 7 ≈ **25%** of DB instance RAM |
+| **App servers** | Heap + native + threads | `working_set × 1.3` heap overhead (JVM/Go) |
+| **Redis / Memcached** | Hot keys | Data + **~25%** fragmentation (`mem_fragmentation_ratio`) |
+| **PostgreSQL** | Buffer cache | `shared_buffers` ≈ **25%** of DB instance RAM |
 | **OS + kernel** | — | Reserve **512 MB – 2 GB** per node |
 | **Sidecars / agents** | mesh, logs | 128–512 MB each |
 
-<figure class="notes-diagram"><svg xmlns="14 viewBox="0 0 460 160" role="img" aria-label="Tiered memory from hot RAM to cold disk">
-  <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">階層化データ温度</text>
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 160" role="img" aria-label="Tiered memory from hot RAM to cold disk">
+  <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Tiered data temperature</text>
   <rect x="12" y="36" width="120" height="32" rx="3" fill="rgba(248,113,113,0.15)" stroke="#f87171"/>
-  <text x="24" y="56" fill="#e4e4e7" font-size="9">ホット — Redis RAM</text>
+  <text x="24" y="56" fill="#e4e4e7" font-size="9">Hot — Redis RAM</text>
   <rect x="12" y="76" width="120" height="32" rx="3" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
-  <text x="24" y="96" fill="#e4e4e7" font-size="9">ウォーム — SSDキャッシュ</text>
+  <text x="24" y="96" fill="#e4e4e7" font-size="9">Warm — SSD cache</text>
   <rect x="12" y="116" width="120" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
-  <text x="24" y="136" fill="#e4e4e7" font-size="9">コールド — DB ディスク</text>
-  <text x="148" y="56" fill="#a1a1aa" font-size="9">同時実行時のサイズ × バイト (§2)</text>
-  <text x="148" y="96" fill="#a1a1aa" font-size="9">アクセス頻度の低いキー</text>
-  <text x="148" y="136" fill="#a1a1aa" font-size="9">真実の情報源 — セッションRAMにない</text>
+  <text x="24" y="136" fill="#e4e4e7" font-size="9">Cold — DB disk</text>
+  <text x="148" y="56" fill="#a1a1aa" font-size="9">Size with concurrent × bytes (§2)</text>
+  <text x="148" y="96" fill="#a1a1aa" font-size="9">Less frequently accessed keys</text>
+  <text x="148" y="136" fill="#a1a1aa" font-size="9">Source of truth — not in session RAM</text>
 </svg></figure>
 
-## 6. ヘッドルームとノード数
+## 6. Headroom and node count
 
 ```text
 total_RAM_required = working_set × 2        # GC, spikes, fragmentation
@@ -122,22 +121,22 @@ nodes              = ceil(total_RAM / RAM_per_node_usable)
 usable_per_node    = node_RAM − OS_reserve − other_daemons
 ```
 
-|活用 |ガイダンス |
-|---------------|----------|
+| Utilisation | Guidance |
+|-------------|----------|
 | **< 70%** steady | Healthy — room for spikes |
 | **70–80%** | Plan scale event |
-| **> 80%** | OOM リスク — Linux キラーは高速です |
+| **> 80%** | OOM risk — Linux killer is fast |
 
-**例 — Redis クラスター**
+**Example — Redis cluster**
 
-|入力 |値 |
-|------|------|
-|ワーキングセット | 40GB |
-| 2倍のヘッドルーム付き | 80GB |
-|ノードサイズ | 32 GB RAM、2 GB OS → **30 GB 使用可能** |
-|ノード | `ceil(80 / 30)` = **3** Redis シャード/レプリカ |
+| Input | Value |
+|-------|-------|
+| Working set | 40 GB |
+| With 2× headroom | 80 GB |
+| Node size | 32 GB RAM, 2 GB OS → **30 GB usable** |
+| Nodes | `ceil(80 / 30)` = **3** Redis shards/replicas |
 
-<figure class="notes-diagram"><svg xmlns="15 viewBox="0 0 400 90" role="img" aria-label="Split working set across three nodes">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 90" role="img" aria-label="Split working set across three nodes">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">80 GB target → 3 × ~27 GB shards</text>
   <rect x="12" y="36" width="100" height="36" rx="3" fill="rgba(34,197,94,0.15)" stroke="#86efac"/>
   <text x="36" y="58" fill="#e4e4e7" font-size="9">Node A</text>
@@ -147,82 +146,82 @@ usable_per_node    = node_RAM − OS_reserve − other_daemons
   <text x="252" y="58" fill="#e4e4e7" font-size="9">Node C</text>
 </svg></figure>
 
-## 7. 成功したシナリオ
+## 7. Worked scenarios
 
-### A — セッション ストア (Redis)
+### A — Session store (Redis)
 
-|仮定 |値 |
-|-----------|----------|
-|ダウ | 5分 |
-|同時実行性 | 10% → **500,000** |
-|セッションサイズ | 8KB |
-|生 | 500K × 8KB = **4GB** |
-| +25% Redis オーバーヘッド | **5 GB** |
-| ×2 ヘッドルーム | **10 GB** Redis フリート |
+| Assumption | Value |
+|------------|-------|
+| DAU | 5 M |
+| Concurrency | 10% → **500 K** |
+| Session size | 8 KB |
+| Raw | 500 K × 8 KB = **4 GB** |
+| +25% Redis overhead | **5 GB** |
+| ×2 headroom | **10 GB** Redis fleet |
 
-### B — 事前計算されたニュース フィード (クラシック デザイン)
+### B — Precomputed news feed (classic design)
 
-|仮定 |値 |
-|-----------|----------|
-|ダウ | 20M |
-|ファンアウト キャッシュ: 30% のユーザーがプッシュ フィードを取得 | 600 万件のフィードが保存されました (DAU がいっぱいではありません) |
-| Redis のフィード スライスあたり 200 KB | 6M × 200KB ≈ **1.2TB** |
-|緩和 |上位 500 件の投稿をトリミングします。圧縮する。引くべき階層の有名人 |
+| Assumption | Value |
+|------------|-------|
+| DAU | 20 M |
+| Fan-out cache: 30% users get push feed | 6 M feeds stored (not full DAU) |
+| 200 KB per feed slice in Redis | 6 M × 200 KB ≈ **1.2 TB** |
+| Mitigation | Trim to top 500 posts; compress; tier celebrities to pull |
 
-**書き込み時のファンアウト**は書き込み増幅だけではなく**メモリ**の問題であることを示しています。
+Shows **fan-out on write** is a **memory** problem, not just write amplification.
 
-### C — JVM API ポッド
+### C — JVM API pods
 
-|仮定 |値 |
-|-----------|----------|
-| 800 K 同時 | |
-| 50 KB の有効な状態を Redis にオフロード |ヒープは主にバッファを要求します。
-| 200 MB ベースライン + 2 KB × インフライト (5 K/ポッド) |ステートレスの場合、ポッドあたりヒープのサイズ **512 MB ～ 1 GB**
-| QPS からのポッド数 |セッションRAMから分離 |
+| Assumption | Value |
+|------------|-------|
+| 800 K concurrent | |
+| 50 KB effective state offloaded to Redis | Heap mostly request buffers |
+| 200 MB baseline + 2 KB × in-flight (5 K/pod) | Size heap **512 MB–1 GB** per pod if stateless |
+| Pod count from QPS | Separate from session RAM |
 
-## 8. メモリがいっぱいの場合のエビクション
+## 8. Eviction when memory is full
 
-|ポリシー |立ち退き |最適な時期 |
-|----------|----------|----------|
-| **LRU** |最も最近使用されていない |均一なアクセス。セッション |
-| **LFU** |最も使用頻度の低い |べき乗則ホットキー |
-| **TTL** |アイドルタイムアウト後 |予測可能なセッションの有効期限 |
-| **maxmemory-policy** | Redis: `allkeys-lru`、`volatile-lru` など |マッチキー TTL 戦略 |
+| Policy | Evicts | Best when |
+|--------|--------|-----------|
+| **LRU** | Least recently used | Uniform access; sessions |
+| **LFU** | Least frequently used | Power-law hot keys |
+| **TTL** | After idle timeout | Predictable session expiry |
+| **maxmemory-policy** | Redis: `allkeys-lru`, `volatile-lru`, etc. | Match key TTL strategy |
 
-**TTL + LRU のペア:** アイドル状態のセッションは期限切れになります。 LRU は `maxmemory` のときにバーストを処理します。
+**Pair TTL + LRU:** expire idle sessions; LRU handles bursts when at `maxmemory`.
 
-## 9. スケーリング戦略
+## 9. Scaling strategies
 
-|戦略 |メモリー効果 |
-|----------|--------------|
-| **垂直** |ノードあたりの RAM の増加 — ハードウェアの上限に達するまで迅速 |
-| **水平** | `user_id` ハッシュによるシャード — ワーキング セットをスプレッドする |
-| **一貫性のあるハッシュ リング** |ノードの追加 → 最小限のキーの再マッピング |
-| **階層型キャッシュ** |ホット用RAM。ウォーム用SSD |
-| **値を圧縮** | Redis の Snappy/LZ4 — CPU ↔ RAM トレード |
-| **クライアントへのオフロード** | JWT ステートレス — サーバー RAM の削減、その他のトレードオフ |
+| Strategy | Memory effect |
+|----------|---------------|
+| **Vertical** | Bigger RAM per node — quick until hardware cap |
+| **Horizontal** | Shard by `user_id` hash — spreads working set |
+| **Consistent hash ring** | Add node → minimal key remapping |
+| **Tiered cache** | RAM for hot; SSD for warm |
+| **Compress values** | Snappy/LZ4 in Redis — CPU ↔ RAM trade |
+| **Offload to client** | JWT stateless — less server RAM, other trade-offs |
 
-## 10. よくある間違い
+## 10. Common mistakes
 
-|間違い |修正 |
-|----------|-----|
-| **同時**の代わりに**DAU**を使用してください。同時実行係数を適用する |
-| DB 全体のサイズを「必要なメモリ」としてカウントする |キャッシュ内のホット/ワーキング セットのみ |
-| **レプリケーション**を無視する |プライマリとレプリカはそれぞれデータを保持します - 両方を計画する |
-| 100% の RAM 使用率目標 | **30%+** を無料で維持 |
-| Web と WebSocket で同じバイト |存続期間の長い接続にはバッファ バジェットが必要です。
+| Mistake | Fix |
+|---------|-----|
+| Use **DAU** instead of **concurrent** | Apply concurrency factor |
+| Count entire DB size as “memory need” | Only hot/working set in cache |
+| Ignore **replication** | Primary + replica each hold data — plan both |
+| 100% RAM utilisation target | Keep **30%+** free |
+| Same bytes for web and WebSocket | Long-lived connections need buffer budget |
 
-## 11. 面接チェックリスト
+## 11. Interview checklist
 
-- [ ] DAU の状態、同時実行率、同時ユーザーの導出
-- [ ] ユーザーごとのバイト数の項目 (セッション、キャッシュ、フィード)
-- [ ] 乗算 → ワーキングセットGB
-- [ ] ×2 ヘッドルーム;使用可能なノードRAMで割る
-- [ ] TB 規模の場合、エビクション (LRU/TTL) とシャーディングについて言及
-- [ ] RAM に**ない**ものに注意してください (ディスク上の完全な DB)
+- [ ] State DAU, concurrency %, derive concurrent users
+- [ ] Itemise bytes per user (session, cache, feed)
+- [ ] Multiply → working set GB
+- [ ] ×2 headroom; divide by usable node RAM
+- [ ] Mention eviction (LRU/TTL) and sharding if TB-scale
+- [ ] Note what is **not** in RAM (full DB on disk)
 
-## 12. 対話型推定器
+## 12. Interactive estimator
 
-プレビューで **[メモリ見積もり](memory-estimator.md)** を開き、**セッション サイズ**、**ノード数**、**ノードあたりの RAM** を調整すると、容量の変化がすぐに確認できます。
+Open **[Memory Estimator](memory-estimator.md)** in Preview to adjust **session size**, **node count**, and **RAM per node** and see capacity change instantly.
 
-**関連:** パート I の容量見積もり、**クラシックな設計** (フィード、URL 短縮機能)、**ボトルネック分析 → CPU とメモリ**。
+**Related:** Part I capacity estimation, **Classic designs** (feed, URL shortener), **Bottleneck analysis → CPU & memory**.

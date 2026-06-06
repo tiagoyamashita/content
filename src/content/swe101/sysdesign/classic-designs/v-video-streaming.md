@@ -1,21 +1,20 @@
 ---
 label: "V"
-subtitle: "ビデオストリーミング"
-group: "システム設計"
+subtitle: "Video streaming"
+group: "System design"
 order: 5
 ---
-ビデオストリーミング
+Video streaming
+**YouTube / Netflix-style** systems split **upload + transcoding** (write-heavy, batch) from **playback** (read-heavy, CDN).
 
-**YouTube / Netflix スタイル** システムは、**アップロード + トランスコーディング** (書き込みが多い、バッチ) と **再生** (読み取りが多い、CDN) を分割します。
+## 1. Two paths
 
-## 1. 2 つのパス
+| Path | Dominant concern | Components |
+|------|------------------|------------|
+| **Upload / transcode** | CPU, queue depth, storage | S3, SQS, workers |
+| **Playback** | Bandwidth, latency | CDN, HLS/DASH |
 
-|パス |主要な懸念事項 |コンポーネント |
-|------|-------|-----------|
-| **アップロード/トランスコード** | CPU、キューの深さ、ストレージ | S3、SQS、ワーカー |
-| **再生** |帯域幅、遅延 | CDN、HLS/ダッシュ |
-
-<figure class="notes-diagram"><svg xmlns="1 viewBox="0 0 500 140" role="img" aria-label="Video upload pipeline and CDN playback">
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 140" role="img" aria-label="Video upload pipeline and CDN playback">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Upload pipeline</text>
   <rect x="12" y="32" width="48" height="24" rx="2" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="20" y="48" fill="#e4e4e7" font-size="8">Upload</text>
@@ -40,45 +39,45 @@ order: 5
   <text x="188" y="106" fill="#a1a1aa" font-size="8">segments + manifest · ABR switches 360p–4K</text>
 </svg></figure>
 
-## 2. パイプラインのアップロード (ステップバイステップ)
+## 2. Upload pipeline (step by step)
 
-|ステップ |アクション |
-|------|----------|
-| 1 |クライアントは **署名済み URL** をリクエスト → **オブジェクト ストレージ**に未加工ファイルをアップロード |
-| 2 |アップロード完了イベント → **ジョブ キュー** (SQS、Kafka) |
-| 3 | **トランスコード ワーカー** (GPU スポット インスタンス) がレンディションを生成します |
-| 4 | **HLS** セグメント + `master.m3u8` マニフェストをストレージに出力 |
-| 5 |メタデータ行: タイトル、所有者、期間、ステータス=準備完了 |
+| Step | Action |
+|------|--------|
+| 1 | Client requests **pre-signed URL** → upload raw file to **object storage** |
+| 2 | Upload complete event → **job queue** (SQS, Kafka) |
+| 3 | **Transcode workers** (GPU spot instances) produce renditions |
+| 4 | Output **HLS** segments + `master.m3u8` manifest to storage |
+| 5 | Metadata row: title, owner, duration, status=ready |
 
-**レンディション（例）**
+**Renditions (example)**
 
-|階層 |解像度 |ビットレート |
-|------|-----------|----------|
-| 360p | 640×360 | ～800kbps |
-| 720p | 1280×720 | ～2.5Mbps |
-| 1080p | 1920×1080 | ～5Mbps |
+| Tier | Resolution | Bitrate |
+|------|------------|---------|
+| 360p | 640×360 | ~800 kbps |
+| 720p | 1280×720 | ~2.5 Mbps |
+| 1080p | 1920×1080 | ~5 Mbps |
 
-## 3. 再生パス
+## 3. Playback path
 
-1. クライアントは **CDN** からマニフェストを読み込みます。
-2. プレーヤーが帯域幅を測定 → **ABR** (アダプティブ ビットレート) によってセグメントの品質が選択されます。
-3. **99%+** リクエストはエッジから処理されます。ミス時のみの原点。
+1. Client loads manifest from **CDN**.
+2. Player measures bandwidth → **ABR** (adaptive bitrate) picks segment quality.
+3. **99%+** requests served from edge; origin on miss only.
 
-## 4. メタデータ ストア
+## 4. Metadata store
 
-|データ |ストア |
-|------|------|
-|動画のタイトル、アップローダー、再生回数 | PostgreSQL または DynamoDB |
-|閲覧数 (高い QPS) |カウンターキャッシュ + 非同期フラッシュ |
-|コメント |シャード SQL または NoSQL |
+| Data | Store |
+|------|-------|
+| Video title, uploader, views | PostgreSQL or DynamoDB |
+| View counts (high QPS) | Counter cache + async flush |
+| Comments | Sharded SQL or NoSQL |
 
-## 5. 規模とコスト
+## 5. Scale and cost
 
-|レバー |なぜ |
-|------|-----|
-| CDN |バイトをオフロードします。グローバルレイテンシ |
-|セグメントキャッシュ |小さなファイルは適切にキャッシュされます。
-| GPU トランスコード フリート |並列化します。費用のスポット |
-|個別の読み取り/書き込みパス |再生リクエスト時にトランスコードしない |
+| Lever | Why |
+|-------|-----|
+| CDN | Offloads bytes; global latency |
+| Segment caching | Small files cache well |
+| GPU transcode fleet | Parallelize; spot for cost |
+| Separate read/write paths | Don’t transcode on play request |
 
-**関連:** [CDN とエッジ キャッシング](../scalable-patterns/vi-cdn-and-edge-caching.md)、クラシックなデザインの Web クローラー (大規模なオブジェクト ストレージ)。
+**Related:** [CDN & edge caching](../scalable-patterns/vi-cdn-and-edge-caching.md), classic designs web crawler (object storage at scale).

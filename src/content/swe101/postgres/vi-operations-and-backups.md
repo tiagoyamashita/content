@@ -1,21 +1,20 @@
 ---
 label: "VI"
-subtitle: "操作とバックアップ"
-group: "ポストグレ"
+subtitle: "Operations & backups"
+group: "Postgres"
 order: 6
 ---
-Postgres — 操作とバックアップ
+Postgres — operations & backups
+Production Postgres needs **role separation**, **regular backups**, and a plan for **restore** and **failover**. You do not need to be a DBA on day one — but you should know these defaults.
 
-実稼働 Postgres には、**役割の分離**、**定期的なバックアップ**、**復元**と**フェイルオーバー**の計画が必要です。初日から DBA である必要はありませんが、これらのデフォルトを知っておく必要があります。
+## 1. Roles and permissions
 
-## 1. 役割と権限
-
-|役割の種類 |典型的な権限 |
-|----------|----------|
-| **`postgres` スーパーユーザー** |ブレークガラス管理者のみ — アプリは対象外 |
-| **アプリの役割** |スキーマの `CONNECT`、`USAGE`、アプリ テーブルの DML |
-| **移行の役割** |ユーザー/CI を展開するための DDL |
-| **読み取り専用分析** |特定のテーブルまたはビューに関する `SELECT` |
+| Role type | Typical permissions |
+|-----------|---------------------|
+| **`postgres` superuser** | Break-glass admin only — not for apps |
+| **App role** | `CONNECT`, `USAGE` on schema, DML on app tables |
+| **Migration role** | DDL for deploy user / CI |
+| **Read-only analytics** | `SELECT` on specific tables or views |
 
 ```sql
 CREATE ROLE app_reader NOINHERIT;
@@ -26,11 +25,11 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
   GRANT SELECT ON TABLES TO app_reader;
 ```
 
-管理コンソールまたは**`ALTER ROLE … PASSWORD`**を介してパスワードをローテーションします。
+Rotate passwords via managed-console or **`ALTER ROLE … PASSWORD`**.
 
-## 2. `pg_dump` を使用したバックアップ
+## 2. Backup with `pg_dump`
 
-論理バックアップ - 移植可能な SQL またはカスタム形式:
+Logical backup — portable SQL or custom format:
 
 ```bash
 # Plain SQL (human-readable, slower restore)
@@ -40,50 +39,50 @@ pg_dump -h localhost -U postgres -d myapp -F p -f myapp-$(date +%F).sql
 pg_dump -h localhost -U postgres -d myapp -F c -f myapp.dump
 ```
 
-復元する：
+Restore:
 
 ```bash
 pg_restore -h localhost -U postgres -d myapp_restored -F c myapp.dump
 ```
 
-|方法 |長所 |短所 |
-|------|------|------|
-| **`pg_dump`** |シンプル、バージョン移植可能 |ポイントインタイムには WAL アーカイブも必要です。
-| **ボリューム スナップショット** |巨大な DB では高速 |クラッシュ整合性があるか、PG API を使用する必要があります。
-| **管理された自動バックアップ** | PITR、保持ポリシー |ベンダーロックイン、コスト |
+| Method | Pros | Cons |
+|--------|------|------|
+| **`pg_dump`** | Simple, version-portable | Point-in-time needs WAL archiving too |
+| **Volume snapshot** | Fast for huge DBs | Must be crash-consistent or use PG APIs |
+| **Managed auto-backup** | PITR, retention policies | Vendor lock-in, cost |
 
-**四半期ごとにリストアをテストします** - テストされていないバックアップは推測です。
+**Test restores** quarterly — an untested backup is a guess.
 
-## 3. ポイントインタイムリカバリ (概念)
+## 3. Point-in-time recovery (concept)
 
 ```text
 Base backup (pg_dump or physical)  +  continuous WAL archive  →  restore to any second
 ```
 
-マネージド Postgres (RDS、Cloud SQL、Neon) はコンソールで PITR を公開します。セルフホストには **`archive_mode`** と WAL 配送の構成が必要です。
+Managed Postgres (RDS, Cloud SQL, Neon) exposes PITR in the console. Self-hosted needs **`archive_mode`** and WAL shipping configured.
 
-## 4. レプリケーションの基本
+## 4. Replication basics
 
-|モード |目的 |
-|-----|----------|
-| **ストリーミング レプリケーション** |フェイルオーバーと読み取りスケールのためのホット スタンバイ |
-| **論理レプリケーション** |選択テーブル、クロスバージョンアップグレード |
+| Mode | Purpose |
+|------|---------|
+| **Streaming replication** | Hot standby for failover and read scale |
+| **Logical replication** | Selective tables, cross-version upgrades |
 
-アプリケーションは書き込み用に 1 つの **プライマリ** を認識します。レプリカはミリ秒から数秒まで遅れる場合があります。書き込み後にそれに応じて UI を設計してください。
+Application sees one **primary** for writes; replicas may lag by milliseconds to seconds — design UI accordingly after writes.
 
-## 5.真空と膨満感
+## 5. Vacuum and bloat
 
-Postgres は **MVCC** を使用します。**VACUUM** がスペースを再利用するまで、`UPDATE`/`DELETE` は無効な行を残します。
+Postgres uses **MVCC** — `UPDATE`/`DELETE` leave dead rows until **VACUUM** reclaims space.
 
-|コマンド |誰が運営しているのか |
-|----------|---------------|
-| **自動バキューム** |バックグラウンド ワーカー (デフォルト オン) |
-| **`VACUUM ANALYZE`** |大規模な削除後の手動 |
-| **`VACUUM FULL`** |テーブルを書き換えます - 重度にロックします。珍しい |
+| Command | Who runs it |
+|---------|-------------|
+| **Autovacuum** | Background worker (default on) |
+| **`VACUUM ANALYZE`** | Manual after large deletes |
+| **`VACUUM FULL`** | Rewrites table — locks heavily; rare |
 
-テーブルが理由もなく増大する場合は、**`pg_stat_user_tables`** (`n_dead_tup`、最後の自動バキューム) に注意してください。
+Watch **`pg_stat_user_tables`** (`n_dead_tup`, last autovacuum) if tables grow without reason.
 
-## 6. ヘルスチェック
+## 6. Health checks
 
 ```sql
 SELECT count(*) FROM pg_stat_activity WHERE state = 'active';
@@ -94,35 +93,35 @@ ORDER BY seq_scan DESC
 LIMIT 10;
 ```
 
-|信号 |アクション |
-|----------|----------|
-| **`max_connections`** 付近の接続数 |プール サイズを減らすか、PgBouncer を追加します。
-|大きなテーブルでは高い **`seq_scan`** |クエリとインデックスを確認する |
-|ディスクの増加 |肥大化、WAL、ログ — ディレクトリごとに調査 |
-|レプリケーションの遅延 |レプリカをスケールし、プライマリでの遅いクエリを修正します。
+| Signal | Action |
+|--------|--------|
+| Connection count near **`max_connections`** | Reduce pool size or add PgBouncer |
+| High **`seq_scan`** on large tables | Review queries and indexes |
+| Disk growth | Bloat, WAL, logs — investigate per directory |
+| Replication lag | Scale replica, fix slow queries on primary |
 
-## 7. PgBouncer (接続多重化)
+## 7. PgBouncer (connection multiplexing)
 
-多くのアプリ インスタンスがそれぞれプールを保持する場合:
+When many app instances each hold a pool:
 
 ```text
 Apps (many pools)  →  PgBouncer  →  Postgres (fewer real connections)
 ```
 
-**トランザクション プーリング** モードは慎重に使用してください。構成されていない場合、セッション機能 (準備されたステートメント、一時テーブル) が機能しなくなる可能性があります。
+Use **transaction pooling** mode carefully — session features (prepared statements, temp tables) may break unless configured.
 
-## 8. 生産前のチェックリスト
+## 8. Checklist before production
 
-- [ ] アプリは最小権限の DB ロールを使用します
-- [ ] デプロイパイプラインで自動化された移行
-- [ ] スケジュールされたバックアップ + テスト済みの復元
-- [ ] 接続制限のサイズ (アプリ × プール + 管理者)
-- [ ] 低速クエリ ログまたは APM が有効になっています
-- [ ] env / vault のシークレット — git にはありません
+- [ ] App uses least-privilege DB role
+- [ ] Migrations automated in deploy pipeline
+- [ ] Backups scheduled + restore tested
+- [ ] Connection limits sized (app × pool + admin)
+- [ ] Slow query logging or APM enabled
+- [ ] Secrets in env / vault — not in git
 
-## 関連メモ
+## Related notes
 
-- [リレーショナル (SQL)](../../CS101/databases/ii-relational.md) — SQL とトランザクション理論
-- [データベース最適化](vii-database-optimizations.md) — 完全なチューニングワークフローとチェックリスト
-- [データベースのボトルネック](../sysdesign/bottleneck-analysis/vi-database.md) — スケーリング読み取り、キャッシュ、シャーディング
-- [JPA & トランザクション](../java/springboot/v-jpa-and-transactional.md) — ORM トランザクション境界
+- [Relational (SQL)](../../CS101/databases/ii-relational.md) — SQL and transaction theory
+- [Database optimizations](vii-database-optimizations.md) — full tuning workflow and checklist
+- [Database bottlenecks](../sysdesign/bottleneck-analysis/vi-database.md) — scaling reads, caching, sharding
+- [JPA & transactional](../java/springboot/v-jpa-and-transactional.md) — ORM transaction boundaries

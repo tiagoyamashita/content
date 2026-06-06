@@ -1,22 +1,21 @@
 ---
 label: "VI"
-subtitle: "AI と ML の必需品"
-group: "パイソン"
+subtitle: "AI & ML essentials"
+group: "Python"
 groupOrder: 1
 order: 6
 ---
-Python — パート VI
+Python — Part VI
+How Python is used for **machine learning** and **applied AI**: numerical computing, classical ML, deep-learning stacks, notebooks, and reproducibility.
 
-**機械学習**と**応用 AI** に Python がどのように使用されるか: 数値計算、古典的な ML、深層学習スタック、ノートブック、再現性。
-
-## 1. Python が適している場所
-- **研究と生産の接着剤**: ノートブックの実験からの同じ言語 → パッケージ化されたサービス (多くの場合、FastAPI、バッチ ジョブ、または Spark の背後にあります)。
-- **エコシステム**: テンソル/テーブルの場合は **`numpy`** / **`pandas`**、古典的なアルゴリズムの場合は **`scikit-learn`**、ディープネットの場合は **`torch`** または **`tensorflow`** / **`jax`**、ディープネットの場合は **`transformers`** + **`datasets`**事前トレーニングされたモデル。
-- **魔法ではありません**: モデルは統計や学習されたパターンをエンコードします。不要なラベル、漏洩、または偏ったデータは、有害または脆弱なシステムを生み出します。
+## 1. Where Python fits
+- **Research & production glue**: same language from notebook experiments → packaged services (often behind FastAPI, batch jobs, or Spark).
+- **Ecosystem**: heavily **`numpy`** / **`pandas`** for tensors/tables, **`scikit-learn`** for classical algorithms, **`torch`** or **`tensorflow`** / **`jax`** for deep nets, **`transformers`** + **`datasets`** for pretrained models.
+- **Not magic**: models encode statistics or learned patterns — garbage labels, leakage, or biased data produce harmful or brittle systems.
 
 
-## 2. `numpy`: 連続した数値配列
-配列は **型付き**、**固定形状**、**ベクトル化**です。数百万のスカラーを超える Python のループは、その下の C/Fortran カーネルに負けます。
+## 2. `numpy`: contiguous numerical arrays
+Arrays are **typed**, **fixed-shape**, and **vectorized** — loops in Python over millions of scalars lose to C/Fortran kernels underneath.
 
 ```python
 import numpy as np
@@ -32,11 +31,11 @@ rng = np.random.default_rng(42)
 sample = rng.normal(size=(1000, 2))
 ```
 
-ブロードキャスト ルールにより、明示的なループを使用せずに、異なる形状の配列を組み合わせることができます。形状が一致しない場合は、エラー メッセージを注意深く読んでください。
+Broadcasting rules let differently shaped arrays combine without explicit loops — read error messages carefully when shapes disagree.
 
 
-## 3. `pandas`: ラベル付きテーブル
-**CSV/Parquet** の探索、結合、グループ化、時系列インデックス付けに最適です。生ファイルと **`sklearn`** をブリッジします。
+## 3. `pandas`: labeled tables
+Ideal for **CSV/Parquet** exploration, joins, group-by, time series indexing — bridges raw files and **`sklearn`**.
 
 ```python
 import pandas as pd
@@ -54,8 +53,8 @@ y = df["label"]
 ```
 
 
-## 4. `scikit-learn` を使用したクラシック ML
-一般的なパターン: **データの分割 → 前処理 → 適合 → 評価** — 漏れを避けるために、**トレーニング データのみ**に変換器を適合させます。
+## 4. Classical ML with `scikit-learn`
+Common pattern: **split data → preprocess → fit → evaluate** — keep transformers fit **only on training data** to avoid leakage.
 
 ```python
 from sklearn.datasets import load_iris
@@ -82,14 +81,14 @@ print(classification_report(y_test, pred))
 ```
 
 
-## 5. 深層学習スタック (概要)
-|図書館 |典型的なスイートスポット |
-|----------|--------|
-| **PyTorch** |研究の柔軟性、動的なグラフ、大規模な業界での採用 |
-| **TensorFlow / Keras** |導入ツール、TF 提供履歴 |
-| **ジャックス** |関数変換 (`jit`、`grad`、`vmap`) — 研究の増加 |
+## 5. Deep learning stacks (overview)
+| Library | Typical sweet spot |
+|---------|-------------------|
+| **PyTorch** | Research flexibility, dynamic graphs, huge industry adoption |
+| **TensorFlow / Keras** | Deployment tooling, TF Serving history |
+| **JAX** | Functional transforms (`jit`, `grad`, `vmap`) — rising in research |
 
-最小限の **PyTorch** トレーニング ループ形状 (概念的 - 実際のプロジェクトではデータローダー、AMP、チェックポイントが追加されます):
+Minimal **PyTorch** training loop shape (conceptual — real projects add dataloaders, AMP, checkpoints):
 
 ```python
 import torch
@@ -112,8 +111,8 @@ opt.zero_grad(set_to_none=True)
 ```
 
 
-## 6. 応用 AI: 事前トレーニング済みモデル (`transformers`)
-**Hugging Face** は、統合 API の背後にある数千のモデルを公開します。NLP/ビジョンのデモに最適です。出荷前に **ライセンス**、**レイテンシー**、**PII** に注意してください。
+## 6. Applied AI: pretrained models (`transformers`)
+**Hugging Face** exposes thousands of models behind a unified API — great for NLP/vision demos; mind **licenses**, **latency**, and **PII** before shipping.
 
 ```python
 # pip install transformers torch  (also needs a sane PyTorch install)
@@ -127,22 +126,22 @@ print(cls("Shipping new AI notes today!"))
 ```
 
 
-## 7. ノートブックと実稼働モジュールの比較
-- **`jupyter` / VS Code ノートブック** は反復とプロットを高速化します。パターンが安定したら、安定したコードを **`src/`** パッケージにエクスポートします。
-- 長時間実行トレーニングは **GPU** (PyTorch では `cuda`、**`.to(device)`**) またはクラウド TPU に属します - 最適化する前にプロファイルします。
+## 7. Notebooks vs production modules
+- **`jupyter` / VS Code notebooks** accelerate iteration and plots — export stable code into **`src/`** packages once patterns stabilize.
+- Long-running training belongs on **GPUs** (`cuda`, **`.to(device)`** in PyTorch) or cloud TPUs — profile before optimizing.
 
 
-## 8. 再現性チェックリスト
-- **`random.seed`**、**`np.random.default_rng`**、**`torch.manual_seed`** を修正し、フレームワークで許可されている場合は決定論的アルゴリズムを有効にします (パフォーマンスに悪影響を与えることがよくあります)。
-- ピン **`pip-tools` / `uv lock`** — アップグレードは、deps が変更されるとサイレントにメトリクスを変更します。
-- バージョン **データセット** (DVC、lakeFS、または不変バケット) - 「最新の CSV」は再現できません。
+## 8. Reproducibility checklist
+- Fix **`random.seed`**, **`np.random.default_rng`**, **`torch.manual_seed`**, and enable deterministic algorithms where frameworks allow (often hurts perf).
+- Pin **`pip-tools` / `uv lock`** — upgrades silently change metrics when deps shift.
+- Version **datasets** (DVC, lakeFS, or immutable buckets) — “latest CSV” is not reproducible.
 
 
-## 9. 評価衛生 (短いリスト)
-- チューニングには **検証** セットを使用し、正直なスコアを得るには **テスト** セットを一度使用します。
-- **クラスの不均衡**、**共変量シフト**、**時間的漏洩** (特徴に忍び込む将来の列) を監視します。
-- 偏った問題では、精度だけよりもドメインに適したメトリクス (**ROC-AUC**、**F1**、キャリブレーション) を優先します。
+## 9. Evaluation hygiene (short list)
+- Hold out a **validation** set for tuning and a **test** set touched once for honest scores.
+- Watch **class imbalance**, **covariate shift**, and **temporal leakage** (future columns sneaking into features).
+- Prefer domain-appropriate metrics (**ROC-AUC**, **F1**, calibration) over accuracy alone on skewed problems.
 
 
-## 10. Python だけでは不十分な場合
-大量のオンライン推論は、**C++/Rust ランタイム**、**ONNX ランタイム**、**TensorRT**、またはマネージド エンドポイントに移行することがよくあります。Python は、レイテンシー クリティカルなパスがコンパイル ダウンされる間、オーケストレーションと実験を維持します。
+## 10. When Python is not enough
+Heavy online inference often moves to **C++/Rust runtimes**, **ONNX Runtime**, **TensorRT**, or managed endpoints — Python stays orchestration + experimentation while latency-critical paths compile down.
