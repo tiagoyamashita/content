@@ -1,32 +1,33 @@
 ---
 label: "II"
-subtitle: "Deep Learning & LLMs"
-group: "Artificial intelligence"
+subtitle: "ディープラーニングとLLM"
+group: "人工知能"
 order: 2
 ---
-Artificial Intelligence — Part II: Deep Learning & LLMs
-Neural nets, transformers, large language models, prompting.
+人工知能 — パート II: 深層学習と LLM
 
-## 1. Neural networks
-Inspired loosely by biological neurons.
+ニューラル ネットワーク、トランスフォーマー、大規模な言語モデル、プロンプト。
 
-Neuron (perceptron):
-output = activation( w·x + b )
-- w = weights, b = bias — the learnable parameters.
-- activation introduces non-linearity.
+## 1. ニューラルネットワーク
+生物学的ニューロンから大まかにインスピレーションを受けています。
 
-Common activation functions:
-- ReLU(x)    = max(0, x)     — default for hidden layers; fast, sparse.
-- Sigmoid(x) = 1/(1+e⁻ˣ)   — squashes to (0,1); used in binary output.
-- Softmax    = eˣᵢ/Σeˣʲ     — multi-class probabilities (sum to 1).
-- GELU       ≈ x·Φ(x)       — smooth ReLU; used in transformers.
+ニューロン (パーセプトロン):
+出力 = 活性化( w・x + b )
+- w = 重み、b = バイアス — 学習可能なパラメータ。
+- アクティベーションにより非線形が導入されます。
 
-Fully-connected (dense) layer: every input connected to every output neuron.
-Stack layers: input → [hidden ×N] → output.
-More layers = deeper network = richer representations.
+一般的なアクティベーション関数:
+- ReLU(x) = max(0, x) — 隠れ層のデフォルト。速く、まばら。
+- Sigmoid(x) = 1/(1+e⁻ˣ) — (0,1) に圧縮します。バイナリ出力で使用されます。
+- Softmax = eˣᵢ/Σeˣʲ — マルチクラス確率 (合計が 1)。
+- GELU ≈ x・Φ(x) — スムーズな ReLU。変圧器に使用されます。
+
+完全に接続された (高密度) 層: すべての入力がすべての出力ニューロンに接続されます。
+スタックレイヤー：入力→[非表示×N]→出力。
+より多くのレイヤー = より深いネットワーク = より豊かな表現。
 
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 130" role="img" aria-label="Neural network diagram">
+<figure class="notes-diagram"><svg xmlns="0 viewBox="0 0 440 130" role="img" aria-label="Neural network diagram">
   <text x="30" y="18" fill="#71717a" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle">Input</text>
   <circle cx="30" cy="35" r="8" fill="#27272a" stroke="#52525b" stroke-width="1.5"/>
   <circle cx="30" cy="65" r="8" fill="#27272a" stroke="#52525b" stroke-width="1.5"/>
@@ -54,133 +55,133 @@ More layers = deeper network = richer representations.
 </svg></figure>
 
 
-## 2. Training deep networks
-Backpropagation: chain rule applied layer by layer to compute ∂Loss/∂w.
-Gradient descent: w ← w − η·∂Loss/∂w  (η = learning rate).
+## 2. ディープネットワークのトレーニング
+バックプロパゲーション: ∂Loss/∂w を計算するために層ごとに適用されるチェーン ルール。
+勾配降下法: w ← w − η・∂Loss/∂w (η = 学習率)。
 
-Optimisers:
-- SGD + momentum: smooths gradient noise; needs careful lr tuning.
-- Adam: adaptive per-parameter lr; combines momentum + RMSProp; default choice.
-- AdamW: Adam + weight decay (fixes L2 regularization in Adam).
+オプティマイザー:
+- SGD + 運動量: 勾配ノイズを滑らかにします。慎重なlrチューニングが必要です。
+- アダム: パラメータごとの適応型 lr;運動量 + RMSProp を組み合わせます。デフォルトの選択。
+- AdamW: Adam + 重み減衰 (Adam の L2 正則化を修正)。
 
-Mini-batch training:
-- Full batch: stable but slow on large data.
-- Mini-batch (32–512 samples): GPU-efficient; noisy gradient is actually helpful.
-- 1 epoch = one full pass through the training data.
+ミニバッチトレーニング:
+- フルバッチ: 安定していますが、大規模なデータでは速度が遅くなります。
+- ミニバッチ (32 ～ 512 サンプル): GPU 効率が高い。ノイズの多いグラデーションは実際に役立ちます。
+- 1 エポック = トレーニング データの 1 回の完全なパス。
 
-Learning rate schedule:
-- Warm-up: start small → ramp up → decay (cosine or step).
-- Too high lr → diverge; too low → very slow convergence.
+学習速度スケジュール:
+- ウォームアップ: 小さく開始→ランプアップ→減衰(コサインまたはステップ)。
+- 高すぎる lr → 発散;低すぎる → 収束が非常に遅い。
 
-## 3. CNNs & RNNs
-CNN (Convolutional Neural Network) — images & spatial data:
-- Convolution: slide a filter (kernel) over the input → detect local patterns.
-- Pooling: downsample (max pool) → translation invariance, fewer params.
-- Architecture: [Conv→ReLU→Pool] × N → Flatten → Dense → Output.
-- Landmark models: LeNet, VGG, ResNet (skip connections cure vanishing gradient).
+## 3. CNN と RNN
+CNN (畳み込みニューラル ネットワーク) — 画像と空間データ:
+- コンボリューション: フィルター (カーネル) を入力上でスライドさせて、ローカル パターンを検出します。
+- プーリング: ダウンサンプリング (最大プール) → 変換の不変性、パラメータの減少。
+- アーキテクチャ: [Conv→ReLU→Pool] × N → Flatten → Dense → Output。
+- ランドマーク モデル: LeNet、VGG、ResNet (スキップ接続により消失勾配が解消)。
 
-RNN (Recurrent Neural Network) — sequences:
-- Hidden state hₜ = f(hₜ₋₁, xₜ) — carries memory across time steps.
-- Vanishing gradient problem: gradients shrink over long sequences.
-- LSTM: gated cells (forget, input, output gates) → learn long-range deps.
-- GRU: simplified LSTM (2 gates); faster; often comparable accuracy.
-- Largely replaced by transformers for NLP tasks.
+RNN (リカレント ニューラル ネットワーク) — シーケンス:
+- 隠れ状態 hₜ = f(hₜ₋₁, xₜ) — タイム ステップ全体でメモリを保持します。
+- 勾配消失の問題: 勾配は長いシーケンスにわたって縮小します。
+- LSTM: ゲートセル (忘れ、入力、出力ゲート) → 長距離の深度を学習します。
+- GRU: 簡素化された LSTM (2 ゲート)。もっと早く;多くの場合、同等の精度です。
+- NLP タスクのほとんどがトランスフォーマーに置き換えられました。
 
-## 4. Transformers & attention
-"Attention is All You Need" (Vaswani et al., 2017) — foundation of modern NLP.
+## 4. トランスフォーマーと注意点
+「必要なのは注意だけです」 (Vaswani et al.、2017) — 現代の NLP の基礎。
 
-Self-attention:
-- Each token attends to every other token in the sequence.
-- Q (query), K (key), V (value) projections of the input.
-- Attention(Q,K,V) = softmax(QKᵀ/√dₖ) · V
-- Output: weighted sum of values; weight = similarity of query to each key.
+自己注意:
+- 各トークンは、シーケンス内の他のすべてのトークンに対応します。
+- 入力の Q (クエリ)、K (キー)、V (値) の投影。
+- アテンション(Q,K,V) = ソフトマックス(QKᵀ/√dₖ) · V
+- 出力: 値の加重合計。重み = 各キーに対するクエリの類似度。
 
-Multi-head attention:
-- Run h attention heads in parallel with different projections.
-- Captures different relationship types simultaneously.
+複数の頭の注意:
+- h 個の注意ヘッドを異なる投影と並行して実行します。
+- さまざまなタイプの関係を同時にキャプチャします。
 
-Transformer block:
-Multi-head attention → Add & Norm → Feed-forward → Add & Norm
+変圧器ブロック:
+マルチヘッドアテンション → 加算とノルム → フィードフォワード → 加算とノルム
 
-Positional encoding:
-- Attention has no built-in sequence order → inject position info.
-- Fixed sine/cosine (original) or learned positional embeddings (GPT).
+位置エンコーディング:
+- アテンションには組み込みのシーケンス順序がありません → 位置情報を挿入します。
+- サイン/コサイン (オリジナル) または学習された位置埋め込み (GPT) を修正しました。
 
-Encoder-decoder (BERT / T5 style) vs decoder-only (GPT style).
+エンコーダ-デコーダ (BERT / T5 スタイル) とデコーダのみ (GPT スタイル)。
 
-## 5. Large language models
-LLM = very large decoder-only transformer trained on massive text corpora.
+## 5. 大規模な言語モデル
+LLM = 大量のテキスト コーパスでトレーニングされた非常に大規模なデコーダ専用のトランスフォーマー。
 
-Pre-training objective — next token prediction (causal LM):
-Given tokens [t₁, t₂, …, tₙ], predict tₙ₊₁.
-Trained on trillions of tokens → emergent capabilities.
+トレーニング前の目標 — 次のトークンの予測 (因果的 LM):
+トークン [t₁, t₂, …, tₙ] が与えられた場合、tₙ₊₁ を予測します。
+数兆のトークンに基づいてトレーニングされた → 新たな機能。
 
-Scale laws (Kaplan et al.):
-Performance improves predictably with more params, data, and compute.
+スケールの法則 (Kaplan et al.):
+より多くのパラメータ、データ、コンピューティングを使用すると、パフォーマンスが予想通り向上します。
 
-Alignment — making the model helpful & safe:
-- SFT (Supervised Fine-Tuning): fine-tune on curated instruction-response pairs.
-- RLHF (Reinforcement Learning from Human Feedback):
-– Human raters rank model outputs.
-– Train a reward model on rankings.
-– Fine-tune LLM with PPO to maximise reward.
-- DPO (Direct Preference Optimisation): simpler RLHF alternative; trains on
-(chosen, rejected) pairs without a separate reward model.
+アライメント — モデルを有用かつ安全なものにする:
+- SFT (教師付き微調整): 厳選された命令と応答のペアを微調整します。
+- RLHF (人間のフィードバックからの強化学習):
+– 人間の評価者がモデルの出力をランク付けします。
+– ランキングに基づいて報酬モデルをトレーニングします。
+– 報酬を最大化するために PPO を使用して LLM を微調整します。
+- DPO (Direct Preference Optimization): よりシンプルな RLHF の代替手段。電車で
+個別の報酬モデルを持たない (選択、拒否) ペア。
 
-Tokenisation:
-- BPE (Byte-Pair Encoding): merge frequent byte pairs → subword vocabulary.
-- Context window: max tokens the model can attend to at once (4K–1M+).
+トークン化:
+- BPE (バイトペアエンコーディング): 頻繁に使用されるバイトペア→サブワード語彙をマージします。
+- コンテキスト ウィンドウ: モデルが一度に対応できる最大トークン (4K ～ 1M+)。
 
-## 6. Prompt engineering
-The model is frozen; we steer behaviour through the input prompt alone.
+## 6. 迅速なエンジニアリング
+モデルはフリーズしています。入力プロンプトのみを通じて動作を制御します。
 
-Basic techniques:
-- Zero-shot: just describe the task. Works for simple, well-known tasks.
-- Few-shot:  provide 2–5 examples in the prompt before the query.
-- Chain-of-thought (CoT): ask the model to 'think step by step'.
-→ Dramatically improves multi-step reasoning & math.
+基本的なテクニック:
+- ゼロショット: タスクを説明するだけです。単純でよく知られたタスクに適しています。
+- 少数のショット: クエリの前のプロンプトに 2 ～ 5 個の例を提供します。
+- 思考連鎖 (CoT): モデルに「段階的に考える」ように依頼します。
+→ 多段階の推論と数学が劇的に向上します。
 
-Structured output:
-- Ask for JSON / Markdown tables; use system prompt to enforce format.
-- Constrained decoding (grammar sampling) guarantees valid structure.
+構造化された出力:
+- JSON / Markdown テーブルを要求します。システムプロンプトを使用してフォーマットを強制します。
+- 制約付きデコード (文法サンプリング) により、有効な構造が保証されます。
 
-System / user / assistant roles:
-- System prompt: persistent instruction (persona, format, guardrails).
-- User: the human turn.
-- Assistant: the model's previous response (in multi-turn chat).
+システム/ユーザー/アシスタントの役割:
+- システム プロンプト: 永続的な指示 (ペルソナ、フォーマット、ガードレール)。
+- ユーザー: 人間の番です。
+- アシスタント: モデルの以前の応答 (マルチターン チャットで)。
 
-Prompt injection risk: untrusted user input embedded in a prompt can
-override system instructions. Sanitise and isolate untrusted content.
+プロンプト挿入のリスク: プロンプトに埋め込まれた信頼できないユーザー入力により、
+システム命令をオーバーライドします。信頼できないコンテンツをサニタイズして隔離します。
 
-## 7. RAG & fine-tuning
-Two main ways to add domain knowledge to an LLM:
+## 7. RAG と微調整
+LLM にドメイン知識を追加するには、主に 2 つの方法があります。
 
-RAG (Retrieval-Augmented Generation):
-1. Embed documents into a vector store (pgvector, Pinecone, Weaviate).
-2. At query time: embed the question → nearest-neighbour search.
-3. Inject retrieved chunks into the prompt as context.
-+ No model retraining; knowledge is updated by changing the store.
-+ Source citations are natural.
-− Quality depends on retrieval quality.
+RAG (検索拡張生成):
+1. ドキュメントをベクター ストア (pgvector、Pinecone、Weaviate) に埋め込みます。
+2. クエリ時: 質問を埋め込み → 最近傍検索。
+3. 取得したチャンクをコンテキストとしてプロンプトに挿入します。
++ モデルの再トレーニングはありません。店舗を変えることで知識も更新されます。
++ 出典の引用は自然です。
+− 品質は取得の品質に依存します。
 
-Fine-tuning:
-- Continue training on domain-specific (instruction, response) pairs.
-- LoRA (Low-Rank Adaptation): inject small trainable rank-decomposition
-matrices into attention layers — trains <1% of params; cheap & fast.
-+ Bakes knowledge / style into weights; no retrieval latency.
-− Requires curated dataset; can forget general knowledge (catastrophic forgetting).
+微調整:
+- ドメイン固有の (命令、応答) ペアに関するトレーニングを継続します。
+- LoRA (低ランク適応): 小さなトレーニング可能なランク分解を注入します。
+行列をアテンション層に追加 — パラメータの 1% 未満をトレーニングします。安くて早い。
++ 知識/スタイルを重みに焼き付けます。取得遅延はありません。
+− 厳選されたデータセットが必要です。一般知識を忘れる可能性があります（壊滅的な忘却）。
 
-When to use which:
-- Dynamic knowledge / long documents → RAG.
-- Fixed style / format / domain vocabulary → fine-tuning.
-- Both combined is often the best approach for production systems.
+いつどれを使用するか:
+- 動的知識 / 長い文書 → RAG。
+- スタイル/フォーマット/ドメイン語彙を修正 → 微調整。
+- 多くの場合、両方を組み合わせることが実稼働システムにとって最良のアプローチです。
 
-## 8. Remember & rehearse
-- What does a single neuron compute? What is the role of the activation function?
-- Explain backpropagation in one sentence.
-- What problem do LSTMs solve compared to vanilla RNNs?
-- Describe self-attention: what are Q, K, and V?
-- What is the pre-training objective of a GPT-style LLM?
-- What is RLHF and why is it used?
-- Compare RAG vs fine-tuning — when would you choose each?
-- What is prompt injection and how do you mitigate it?
+## 8. 覚えてリハーサルする
+- 単一のニューロンは何を計算しますか?活性化関数の役割は何ですか?
+- 逆伝播を一文で説明します。
+- 通常の RNN と比較して、LSTM はどのような問題を解決しますか?
+- 自己注意について説明します。Q、K、V とは何ですか?
+- GPT スタイル LLM の事前トレーニングの目的は何ですか?
+- RLHF とは何ですか?なぜ使用されるのですか?
+- RAG と微調整を比較します。それぞれをいつ選択しますか?
+- 即時注入とは何ですか?また、それをどのように軽減しますか?

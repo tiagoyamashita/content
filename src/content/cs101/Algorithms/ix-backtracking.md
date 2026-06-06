@@ -1,20 +1,21 @@
 ---
 label: "IX"
-subtitle: "Backtracking"
-group: "Data structures & algorithms"
+subtitle: "後戻り"
+group: "データ構造とアルゴリズム"
 order: 9
 ---
-Backtracking
-**Systematic trial and error:** build a candidate solution step by step; when a choice leads to a dead end, **undo** (backtrack) and try the next option.
+後戻り
 
-Same idea as **DFS** on an implicit **state tree** of decisions.
+**体系的な試行錯誤:** 候補となるソリューションを段階的に構築します。選択が行き止まりになった場合は、**元に戻し** (バックトラック)、次のオプションを試してください。
 
-## 1. Template
-1. **Choose** — make a decision.
-2. **Recurse** — solve the rest.
-3. **Unchoose** — restore state (backtrack).
+暗黙的な決定の**状態ツリー**に関する**DFS**と同じ考え方。
 
-Often prune branches early with **constraints** (invalid partial solutions).
+## 1. テンプレート
+1. **選択** — 決定を下します。
+2. **再帰** — 残りを解決します。
+3. **選択を解除** — 状態を復元します (バックトラック)。
+
+多くの場合、**制約** (無効な部分ソリューション) を使用してブランチを早期にプルーニングします。
 
 ```java
 // Compile: javac --release 22 …
@@ -32,18 +33,18 @@ public static void subsets(int n, int start, List<Integer> cur, List<List<Intege
 }
 ```
 
-## 2. Classic problems
+## 2. 典型的な問題
 
-| Problem | State | Pruning |
-|---------|-------|---------|
-| **Subsets / combinations** | Include or skip each element | None or size limit |
-| **Permutations** | Used flags on elements | — |
-| **N-queens** | Row-by-row column placement | No two queens attack |
-| **Sudoku** | Empty cell choices | Row/col/box conflicts |
-| **Graph coloring** | Color next vertex | Adjacent colors differ |
+|問題 |状態 |剪定 |
+|----------|-------|----------|
+| **サブセット/組み合わせ** |各要素を含めるかスキップする |なし、またはサイズ制限あり |
+| **順列** |要素で使用されるフラグ | — |
+| **N-クイーン** |行ごとの列の配置 | 2 人の女王が攻撃することはありません。
+| **数独** |空のセルの選択肢 |行/列/ボックスの競合 |
+| **グラフの色分け** |次の頂点に色を付ける |隣り合う色が違う |
 
-## 3. N-queens (sketch)
-Place queens row by row; in row **r**, try each column **c** not attacked by prior queens.
+## 3. N-クイーン (スケッチ)
+クイーンを一行ずつ配置します。行 **r** では、前の女王によって攻撃されていない各列 **c** を試します。
 
 ```java
 // Compile: javac --release 22 …
@@ -70,16 +71,16 @@ private static boolean safe(int[] cols, int row, int col) {
 }
 ```
 
-## 4. Complexity
-Worst case is often **exponential** in branching factor × depth — backtracking is for **small** search spaces or **heavy pruning**.
+## 4. 複雑さ
+最悪のケースは、多くの場合、分岐係数 × 深さにおいて **指数関数的**です。バックトラッキングは、**小さな**検索スペースまたは**重度の枝刈り**の場合に行われます。
 
-## 5. Backtracking vs DP
-- **Backtracking:** enumerate **all** valid configurations (or count them).
-- **DP:** when subproblems **overlap** and you need **optimal value**, not every solution listing.
+## 5. バックトラッキング vs DP
+- **バックトラッキング:** 有効な構成を**すべて**列挙します (またはそれらをカウントします)。
+- **DP:** 部分問題が**重複**しており、すべての解決策リストではなく**最適値**が必要な場合。
 
-## 6. Solving with the JDK (already implemented)
+## 6. JDK を使用した解決 (実装済み)
 
-Backtracking is **custom recursion**; the JDK helps with **containers** and **bookkeeping**:
+バックトラッキングは**カスタム再帰**です。 JDK は **コンテナ** と **ブックキーピング** に役立ちます。
 
 ```java
 // Compile: javac --release 22 …
@@ -99,11 +100,11 @@ List<Integer> candidates = new ArrayList<>(List.of(1, 2, 3));
 Collections.shuffle(candidates); // needs Random seed for reproducibility
 ```
 
-| Backtracking need | JDK |
-|-------------------|-----|
-| Current path | `ArrayList` |
-| All solutions | `List<List<T>>` |
-| Used flags | `boolean[]`, `HashSet` |
-| Copy state | `new ArrayList<>(path)`, `Arrays.copyOf` |
+|バックトラッキングの必要性 | JDK |
+|---------------------|-----|
+|現在のパス | `ArrayList` |
+|すべてのソリューション | `List<List<T>>` |
+|使用されるフラグ | `boolean[]`、`HashSet` |
+|状態をコピー | `new ArrayList<>(path)`、`Arrays.copyOf` |
 
-**Permutations / combinations** for tiny **n** only: libraries exist, but interviews expect the **recursive** template in §1.
+小さな **n** のみの **順列 / 組み合わせ**: ライブラリは存在しますが、インタビューでは §1 の **再帰的** テンプレートが必要です。

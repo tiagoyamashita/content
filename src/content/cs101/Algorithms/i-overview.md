@@ -1,56 +1,57 @@
 ---
 label: "I"
-subtitle: "Algorithms overview"
-group: "Data structures & algorithms"
+subtitle: "アルゴリズムの概要"
+group: "データ構造とアルゴリズム"
 order: 1
 ---
-Algorithms — overview
-An **algorithm** is a finite, step-by-step procedure that takes **input** and produces **output**. In CS101 you care about three questions: **Is it correct?** **How much time?** **How much memory?**
+アルゴリズム — 概要
 
-**Java baseline:** code snippets use **Java SE 22** (`javac --release 22`); they also run on **JDK 21 LTS**.
+**アルゴリズム**は、**入力**を受け取り**出力**を生成する、有限の段階的な手順です。 CS101 では、次の 3 つの質問に関心があります: **それは正しいですか?** **時間はどれくらいですか?** **メモリの量はどれくらいですか?**
 
-## 1. Correctness vs efficiency
-- **Correctness:** for every valid input, the output matches the problem definition (often proved by **invariant** or **induction**).
-- **Efficiency:** measured with **asymptotic notation** — **O**, **Θ**, **Ω** — ignoring constant factors and lower-order terms for large **n**.
-- **Worst case** is the usual default in coursework unless the problem asks for **average** or **amortized** cost.
+**Java ベースライン:** コード スニペットは **Java SE 22** (`javac --release 22`) を使用します。これらは **JDK 21 LTS** でも実行されます。
 
-| Symbol | Meaning (informal) |
-|--------|-------------------|
-| **O(f(n))** | Grows no faster than **f** (upper bound) |
-| **Θ(f(n))** | Tight bound — same order as **f** |
-| **Ω(f(n))** | Grows at least as fast as **f** (lower bound) |
+## 1. 正確さと効率性
+- **正確性:** すべての有効な入力について、出力は問題定義と一致します (多くの場合、**不変** または **帰納法** によって証明されます)。
+- **効率:** 漸近表記**で測定 — **O**、**Θ**、**Ω** – 大きな **n** の定数因数と低次項を無視します。
+- **平均**または**償却**費用が問題で要求されない限り、**最悪の場合**がコースワークの通常のデフォルトです。
 
-## 2. Common algorithm families (map)
+|記号 |意味 (非公式) |
+|--------|--------|
+| **O(f(n))** | **f** (上限) より速く成長しない |
+| **Θ(f(n))** |タイトバウンド — **f** | と同じ順序
+| **Ω(f(n))** |少なくとも **f** (下限) と同じ速度で成長します。
 
-| Family | Idea | Examples in this submenu |
-|--------|------|-------------------------|
-| **Sorting** | Arrange keys in order | merge sort, quicksort, heapsort |
-| **Searching** | Find a target | linear search, binary search |
-| **Divide & conquer** | Split, solve, combine | merge sort, binary search |
-| **Graph** | Traverse or optimize on **V, E** | BFS, DFS, Dijkstra |
-| **Greedy** | Local best choice | activity selection, MST |
-| **Dynamic programming** | Optimal substructure + overlapping subproblems | knapsack, LCS, edit distance |
-| **Backtracking** | Explore choices, undo on failure | N-queens, subsets |
-| **Patterns** | Reuse idioms on arrays/strings | two pointers, sliding window |
+## 2. 一般的なアルゴリズム ファミリ (マップ)
 
-**Data structures** (array, list, stack, queue, heap, hash table, graph storage) live in the **Data structures** submenu; **algorithms** are the **procedures** that use them.
+|家族 |アイデア |このサブメニューの例 |
+|----------|------|--------------------------|
+| **並べ替え** |キーを順番に並べる |マージソート、クイックソート、ヒープソート |
+| **検索中** |ターゲットを見つける |線形探索、二分探索 |
+| **分割統治** |分割、解決、結合 |マージソート、二分探索 |
+| **グラフ** | **V、E** をトラバースまたは最適化する | BFS、DFS、ダイクストラ |
+| **貪欲** |地元のベストチョイス |アクティビティの選択、MST |
+| **動的プログラミング** |最適な部分構造 + 重複する部分問題 |ナップザック、LCS、距離の編集 |
+| **後戻り** |選択肢を検討し、失敗した場合は元に戻します | N クイーン、サブセット |
+| **パターン** |配列/文字列でイディオムを再利用する | 2 つのポインター、スライディング ウィンドウ |
 
-## 3. How to read a complexity claim
-- **O(n log n)** sort comparisons for comparison-based sorts (lower bound for general comparison sorts).
-- **O(n)** BFS/DFS on a graph stored as adjacency lists when **n = |V|**, **m = |E|** — often written **O(n + m)**.
-- **Space** counts **extra** memory beyond the input (output not always counted).
+**データ構造** (配列、リスト、スタック、キュー、ヒープ、ハッシュ テーブル、グラフ ストレージ) は **データ構造** サブメニューにあります。 **アルゴリズム**は、それを使用する**手順**です。
 
-## 4. Learn the algorithm, solve with the JDK
-1. **Study** the hand-rolled version in each note (merge sort, BFS loop, knapsack table).
-2. **Ship** with **`java.util`** / **`Arrays`**: `Arrays.sort`, `Arrays.binarySearch`, `HashMap`, `ArrayDeque`, `PriorityQueue`.
-3. The JDK gives you **O(1) amortized** map ops, **O(log n)** heap ops, and **O(n log n)** sort — you write the **problem-specific loop**, not another heap from scratch.
+## 3. 複雑さの主張の見方
+- **O(n log n)** 比較ベースの並べ替えの並べ替え比較 (一般的な比較並べ替えの下限)。
+- **n = |V|**、**m = |E|** の場合、隣接リストとして保存されるグラフ上の **O(n)** BFS/DFS — 多くの場合 **O(n + m)** と書かれます。
+- **スペース**は、入力を超える**余分な**メモリをカウントします(出力は常にカウントされるわけではありません)。
 
-Full **problem → API** tables and copy-paste examples: **[Solving with the JDK](xi-solving-with-the-jdk.md)**.
+## 4. アルゴリズムを学び、JDK で解決する
+1. 各ノートのハンドローリングバージョン (マージソート、BFS ループ、ナップザックテーブル) を **研究** します。
+2. **`java.util`** / **`Arrays`** で **出荷**: `Arrays.sort`、`Arrays.binarySearch`、`HashMap`、`ArrayDeque`、`PriorityQueue`。
+3. JDK は、**O(1) 償却** マップ操作、**O(log n)** ヒープ操作、および **O(n log n)** ソートを提供します。別のヒープを最初から作成するのではなく、**問題固有のループ** を作成します。
 
-## 5. Pseudocode → Java habit
-1. State **input size** **n** (or **n, m** for graphs).
-2. Name the **loop invariant** or **recurrence**.
-3. Implement with clear types; prefer library structures when teaching ADTs (`Queue`, `PriorityQueue`, `Arrays.sort`).
+完全な **問題 → API** テーブルとコピー＆ペーストの例: **[JDK を使用した解決](xi-solving-with-the-jdk.md)**。
+
+## 5. 疑似コード → Java の習慣
+1. **入力サイズ** **n** (グラフの場合は **n, m**) を記述します。
+2. **ループ不変条件**または**反復**に名前を付けます。
+3. 明確なタイプで実装します。 ADT (`Queue`、`PriorityQueue`、`Arrays.sort`) を教えるときはライブラリ構造を優先します。
 
 ```java
 // Compile: javac --release 22 …
@@ -73,8 +74,8 @@ public static int binarySearch(int[] arr, int target) {
 }
 ```
 
-## 6. Related notes
-- **Solving with the JDK** [Solving with the JDK](xi-solving-with-the-jdk.md) — cheat sheet for production Java.
-- **Data structures** submenu — stacks, queues, heaps, graphs.
-- **Level IV — Paradigms & limits** [Paradigms & limits](../iv-paradigms-and-limits.md) — theory: greedy proofs, DP vs divide & conquer, NP-hardness.
-- **Level III — Graphs** (`iii-graphs.md`) — graph modeling at course level.
+## 6. 関連メモ
+- **JDK を使用した解決** [JDK を使用した解決](xi-solving-with-the-jdk.md) — 実稼働 Java 用のチートシート。
+- **データ構造** サブメニュー — スタック、キュー、ヒープ、グラフ。
+- **レベル IV — パラダイムと限界** [パラダイムと限界](../iv-paradigms-and-limits.md) — 理論: 貪欲な証明、DP 対分割統治、NP 硬度。
+- **レベル III — グラフ** (`iii-graphs.md`) — コース レベルでのグラフ モデリング。

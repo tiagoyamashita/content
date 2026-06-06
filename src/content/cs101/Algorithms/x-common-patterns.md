@@ -1,16 +1,17 @@
 ---
 label: "X"
-subtitle: "Common patterns"
-group: "Data structures & algorithms"
+subtitle: "よくあるパターン"
+group: "データ構造とアルゴリズム"
 order: 10
 ---
-Common algorithmic patterns
-Reusable techniques on **arrays** and **strings** — often **O(n)** or **O(n log n)** after sorting.
+一般的なアルゴリズム パターン
 
-## 1. Two pointers
-Two indices move through a structure toward each other or in the same direction.
+**配列**および**文字列**に対する再利用可能な手法。多くの場合、ソート後に**O(n)**または**O(n log n)**。
 
-**Sorted array pair sum** — find two values with target **T**:
+## 1. 2 つのポインタ
+2 つのインデックスは、構造内を互いに向かって、または同じ方向に移動します。
+
+**ソートされた配列ペアの合計** — ターゲット **T** で 2 つの値を検索します。
 
 ```java
 // Compile: javac --release 22 …
@@ -32,12 +33,12 @@ public static boolean hasPairSum(int[] sorted, int target) {
 }
 ```
 
-**Remove duplicates in-place** (sorted): slow pointer for write position, fast for scan.
+**重複をその場で削除** (並べ替え): 書き込み位置のポインターは遅く、スキャンは高速です。
 
-## 2. Sliding window
-Maintain a **window** `[left, right]` on an array; expand **right**, shrink **left** when a constraint breaks.
+## 2. スライディングウィンドウ
+配列上で **ウィンドウ** `[left, right]` を維持します。制約が壊れると **右** に拡張し、**左** に縮小します。
 
-**Longest substring without repeating characters:**
+**繰り返し文字を含まない最長の部分文字列:**
 
 ```java
 // Compile: javac --release 22 …
@@ -87,18 +88,18 @@ public static int rangeSum(int[] prefix, int lo, int hi) {
 ## 5. Sort then scan
 Sort intervals, merge overlapping; sort pairs by one coordinate for greedy interval scheduling.
 
-## 6. Pattern picker
+## 6. パターンピッカー
 
-| Signal | Try |
+|信号 |試してみる |
 |--------|-----|
-| Sorted input, pair/triplet | Two pointers |
-| Contiguous subarray / substring constraint | Sliding window |
-| Many range sum queries | Prefix sums |
-| "Count ways" / optimal on sequences | DP |
-| All combinations / permutations | Backtracking |
-| Graph reachability | BFS / DFS |
+|ソートされた入力、ペア/トリプレット | 2 つのポインタ |
+|連続部分配列/部分文字列制約 |引き違い窓
+|多くの範囲合計クエリ |プレフィックスの合計 |
+| 「方法を数える」/シーケンスで最適 | DP |
+|すべての組み合わせ/順列 |後戻り |
+|グラフの到達可能性 | BFS / DFS |
 
-## 7. Solving with the JDK (already implemented)
+## 7. JDK を使用した解決 (実装済み)
 
 ```java
 // Compile: javac --release 22 …
@@ -125,12 +126,12 @@ freq.merge(token, 1L, Long::sum);
 int[] sorted = Arrays.stream(nums).sorted().toArray();
 ```
 
-| Pattern | JDK helpers |
-|---------|-------------|
-| Two pointers | indices on array / `List` |
-| Sliding window | `HashMap`, `HashSet` |
-| Prefix sum | `long[]`, `Arrays` |
-| Sort + scan | `Arrays.sort`, `Comparator` |
-| Count | `Map.merge`, `getOrDefault` |
+|パターン | JDK ヘルパー |
+|----------|---------------|
+| 2 つのポインタ |配列のインデックス / `List` |
+|引き違い窓`HashMap`、`HashSet` |
+|プレフィックスの合計 | `long[]`、`Arrays` |
+|並べ替え + スキャン | `Arrays.sort`、`Comparator` |
+|カウント | `Map.merge`、`getOrDefault` |
 
-See **[Solving with the JDK](xi-solving-with-the-jdk.md)** for a full cheat sheet.
+完全なチートシートについては、**[JDK を使用した解決](xi-solving-with-the-jdk.md)** を参照してください。

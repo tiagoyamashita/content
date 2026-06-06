@@ -1,45 +1,46 @@
 ---
 label: "XI"
-subtitle: "Solving with the JDK"
-group: "Data structures & algorithms"
+subtitle: "JDKで解決する"
+group: "データ構造とアルゴリズム"
 order: 11
 ---
-Solving algorithm problems with the JDK
-In coursework you implement algorithms by hand to learn **how** they work. In **real Java**, you compose **already implemented** types from **`java.util`** and **`java.util.Arrays`** — the same ADTs from the **Data structures** submenu, wired for production.
+JDK を使用したアルゴリズムの問​​題の解決
 
-**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
+コースワークでは、アルゴリズムを手動で実装して、アルゴリズムが**どのように機能する**かを学びます。 **実際の Java** では、**`java.util`** および **`java.util.Arrays`** から **すでに実装されている** 型を構成します。これは、運用環境用に接続された **データ構造** サブメニューの同じ ADT です。
 
-## 1. Mindset
+**Java ベースライン:** **Java SE 22** (`javac --release 22`); **JDK 21 LTS** でも問題ありません。
 
-| Goal | Hand-rolled (learning) | JDK (shipping code) |
-|------|------------------------|---------------------|
-| Sort an array | merge / quick sort | `Arrays.sort`, `List.sort` |
-| Find in sorted data | binary search loop | `Arrays.binarySearch` |
-| Find / count fast | linear scan | `HashMap`, `HashSet` |
-| FIFO traversal | linked queue class | `ArrayDeque` + `Queue` |
-| Best-next (Dijkstra, Prim) | heap sift code | `PriorityQueue` |
-| Graph reachability | BFS/DFS loops | `ArrayDeque` + adjacency list you build |
+## 1. 考え方
 
-The **JDK does not** ship a `Graph` class with Dijkstra or MST built in — you still write **short loops**, but you **reuse** queues, heaps, maps, and sorts instead of reimplementing them.
+|目標 |手巻き（学習） | JDK (出荷コード) |
+|-----|--------------------------|----------|
+|配列をソートする |マージ/クイックソート | `Arrays.sort`、`List.sort` |
+|並べ替えられたデータ内で検索 |二分探索ループ | `Arrays.binarySearch` |
+|素早く検索/数える |リニアスキャン | `HashMap`、`HashSet` |
+| FIFO トラバーサル |リンクされたキュー クラス | `ArrayDeque` + `Queue` |
+| Best-next (ダイクストラ、プリム) | エクスペディアヒープシフトコード | `PriorityQueue` |
+|グラフの到達可能性 | BFS/DFS ループ | `ArrayDeque` + 構築する隣接リスト |
 
-## 2. Cheat sheet: problem → API
+**JDK にはダイクストラまたは MST が組み込まれた `Graph` クラスは同梱されていません**。**短いループ**を作成することはできますが、キュー、ヒープ、マップ、ソートを再実装する代わりに**再利用**します。
 
-| Problem type | Primary JDK tools |
+## 2. チートシート: 問題 → API
+
+|問題の種類 |主要な JDK ツール |
 |--------------|-------------------|
-| Sort keys | `Arrays.sort`, `Collections.sort`, `Comparator` |
-| Search sorted array | `Arrays.binarySearch`, `Collections.binarySearch` |
-| Lookup / dedupe | `HashMap`, `HashSet`, `Map.computeIfAbsent` |
-| Queue (BFS) | `ArrayDeque`, `Queue.offer` / `poll` |
-| Stack (DFS iterative) | `ArrayDeque` as `Deque`, `push` / `pop` |
-| Min / max next | `PriorityQueue` (min-heap by default) |
-| Top-k largest | `PriorityQueue` (min-heap size k) or `stream().sorted().limit(k)` |
-| Stable sort objects | `Arrays.sort(Object[])` (TimSort) |
-| Merge intervals | `Arrays.sort` by start + scan |
-| Count frequencies | `HashMap.merge`, `getOrDefault` |
-| Range sum queries | prefix array (manual) or `long[]` + loops |
-| Permutations / subsets (small n) | backtrack yourself; optional `Stream` helpers |
+|ソートキー | `Arrays.sort`、`Collections.sort`、`Comparator` |
+|ソートされた配列を検索 | `Arrays.binarySearch`、`Collections.binarySearch` |
+|ルックアップ / 重複排除 | `HashMap`、`HashSet`、`Map.computeIfAbsent` |
+|キュー (BFS) | `ArrayDeque`、`Queue.offer` / `poll` |
+|スタック (DFS 反復) | `ArrayDeque`を`Deque`、`push` / `pop`として |
+|次の最小/最大 | `PriorityQueue` (デフォルトの最小ヒープ) |
+|トップ k 最大 | `PriorityQueue` (最小ヒープ サイズ k) または `stream().sorted().limit(k)` |
+|安定したソートオブジェクト | `Arrays.sort(Object[])` (ティムソート) |
+|マージ間隔 |スタート + スキャンによる `Arrays.sort` |
+|周波数を数える | `HashMap.merge`、`getOrDefault` |
+|範囲合計クエリ |プレフィックス配列 (手動) または `long[]` + ループ |
+|順列 / サブセット (小さい n) |自分自身を後戻りさせます。オプションの `Stream` ヘルパー |
 
-## 3. Sorting and searching
+## 3. 並べ替えと検索
 
 ```java
 // Compile: javac --release 22 …
@@ -64,9 +65,9 @@ Arrays.sort(jobs, Comparator.comparingInt(Job::deadline));
 int idx = Arrays.binarySearch(nums, 4); // >= 0 if found
 ```
 
-**`Arrays.binarySearch`** returns **≥ 0** if found, else **`-(insertionPoint) - 1`**. Array must be **sorted** first.
+**`Arrays.binarySearch`** は、見つかった場合は **≥ 0** を返し、それ以外の場合は **`-(insertionPoint) - 1`** を返します。配列は最初に**ソート**する必要があります。
 
-## 4. Maps and sets
+## 4. マップとセット
 
 ```java
 // Compile: javac --release 22 …
@@ -86,7 +87,7 @@ if (seen.add(x)) {
 }
 ```
 
-## 5. Queues, stacks, heaps (graphs and greedy)
+## 5. キュー、スタック、ヒープ (グラフと貪欲)
 
 ```java
 // Compile: javac --release 22 …
@@ -113,7 +114,7 @@ for (int x : nums) {
 }
 ```
 
-## 6. Collections utilities
+## 6. コレクションユーティリティ
 
 ```java
 // Compile: javac --release 22 …
@@ -127,9 +128,9 @@ Collections.swap(list, i, j);
 int freq = Collections.frequency(list, target);
 ```
 
-## 7. Streams (optional, same complexity class)
+## 7. ストリーム (オプション、同じ複雑さのクラス)
 
-Use when readability wins; know the underlying algorithm (sort is **O(n log n)**).
+可読性が優先される場合に使用します。基礎となるアルゴリズムを知っている (ソートは **O(n log n)**)。
 
 ```java
 // Compile: javac --release 22 …
@@ -141,21 +142,21 @@ int sum = Arrays.stream(a).sum();
 int[] sorted = Arrays.stream(a).sorted().toArray();
 ```
 
-## 8. What you still implement yourself
+## 8. まだ自分で実装しているもの
 
-- **Graph** storage (adjacency list / matrix).
-- **BFS / DFS / Dijkstra / MST** control loops (using JDK queues/heaps).
-- **DP** table fill (arrays + loops, sometimes `HashMap` memo keys).
-- **Backtracking** recursion with choose / unchoose.
+- **グラフ** ストレージ (隣接リスト/行列)。
+- **BFS / DFS / Dijkstra / MST** 制御ループ (JDK キュー/ヒープを使用)。
+- **DP** テーブルフィル (配列 + ループ、場合によっては `HashMap` メモ キー)。
+- **選択/選択解除による**バックトラッキング**再帰。
 
-## 9. Per-topic pointers
+## 9. トピックごとのポインター
 
-| Note | JDK focus |
+|注 | JDK の焦点 |
 |------|-----------|
-| [Sorting](ii-sorting.md) | `Arrays.sort`, `Comparator` |
-| [Searching](iii-searching.md) | `binarySearch`, `HashMap` |
-| [Graph traversal](v-graph-traversal.md) | `ArrayDeque`, `Queue` |
-| [Shortest paths & MST](vi-shortest-paths-and-mst.md) | `PriorityQueue`, sort edges for Kruskal |
-| [Greedy](vii-greedy.md) | sort + `PriorityQueue` |
-| [Dynamic programming](viii-dynamic-programming.md) | `int[][]`, `HashMap` memo |
-| [Common patterns](x-common-patterns.md) | `HashMap`, `Arrays.sort`, streams |
+| [並べ替え](ii-sorting.md) | `Arrays.sort`、`Comparator` |
+| [検索中](iii-searching.md) | `binarySearch`、`HashMap` |
+| [グラフ走査](v-graph-traversal.md) | `ArrayDeque`、`Queue` |
+| [最短パスとMST](vi-shortest-paths-and-mst.md) | `PriorityQueue`、Kruskal のエッジを並べ替える |
+| [貪欲](vii-greedy.md) |並べ替え + `PriorityQueue` |
+| [動的計画法](viii-dynamic-programming.md) | `int[][]`、`HashMap`メモ |
+| [よくあるパターン](x-common-patterns.md) | `HashMap`、`Arrays.sort`、ストリーム |

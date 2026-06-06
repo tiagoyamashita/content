@@ -1,21 +1,22 @@
 ---
 label: "I"
-subtitle: "Array"
-group: "Data structures & algorithms"
+subtitle: "配列"
+group: "データ構造とアルゴリズム"
 order: 1
 ---
-Array (static)
-Contiguous indexed storage in the RAM model.
+配列（静的）
 
-An **array** stores elements in consecutive memory words. In Java, when you declare an array, you must always specify its size explicitly (for example, `int[] arr = new int[5];`). There is **no default size** for arrays in Java—if you simply write `int[] arr;`, the variable `arr` just points to null and no array is actually allocated. You must use `new` and provide the exact length. Once created, a Java array's length cannot change.
+RAM モデル内の連続したインデックス付きストレージ。
 
-Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the address is `base + i × wordSize`.
+**配列** は、要素を連続したメモリ ワードに格納します。 Java では、配列を宣言するときは、常にそのサイズを明示的に指定する必要があります (例: `int[] arr = new int[5];`)。 Java の配列には**デフォルトのサイズ**はありません。単純に `int[] arr;` と記述すると、変数 `arr` は null を指すだけで、実際には配列は割り当てられません。 `new` を使用し、正確な長さを指定する必要があります。 Java 配列の長さは、作成後に変更することはできません。
 
-- **Strengths:** random access, cache-friendly scans, simple layout.
-- **Limits:** fixed length (static array); inserting in the middle requires shifting **O(n)** elements to keep indices dense.
-- **Related:** see **Dynamic array** in this submenu for growable vectors; the full complexity and ADT context live in **Level I — Foundations** [Foundations](../i-foundations.md).
+アドレスが `base + i × wordSize` であるため、標準 RAM モデルではインデックス `i` は **O(1)** 時間で `A[i]` に達します。
 
-<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
+- **長所:** ランダム アクセス、キャッシュに優しいスキャン、シンプルなレイアウト。
+- **制限:** 固定長 (静的配列)。中央に挿入するには、インデックスの密度を保つために **O(n)** 要素をシフトする必要があります。
+- **関連:** 拡張可能なベクトルについては、このサブメニューの **動的配列** を参照してください。完全な複雑さと ADT コンテキストは **レベル I — 基礎** [基礎](../i-foundations.md) にあります。
+
+<figure class="notes-diagram"><svg xmlns="7 viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
   <defs>
     <marker id="ds-arr-mk" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#86efac"/></marker>
   </defs>

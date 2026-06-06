@@ -1,22 +1,23 @@
 ---
 label: "VI"
-subtitle: "Shortest paths & MST"
-group: "Data structures & algorithms"
+subtitle: "最短パスとMST"
+group: "データ構造とアルゴリズム"
 order: 6
 ---
-Shortest paths & minimum spanning trees
-Weighted graphs: edges carry **cost** or **distance**.
+最短パスと最小スパニングツリー
 
-## 1. Single-source shortest paths
+重み付けされたグラフ: エッジは **コスト** または **距離** を伝えます。
 
-| Algorithm | Graph | Weights | Time (typical) |
-|-----------|-------|---------|----------------|
-| **BFS** | Any | All equal (unweighted) | O(n + m) |
-| **Dijkstra** | Directed/undirected | **Non-negative** | O((n + m) log n) with binary heap |
-| **Bellman–Ford** | Any | Allows negative (no neg cycles) | O(nm) |
+## 1. 単一ソースの最短パス
 
-### Dijkstra (non-negative weights)
-Greedy: always settle the **closest** unsettled vertex using a **min-priority queue** [Priority queue](../data-structures/ix-priority-queue.md).
+|アルゴリズム |グラフ |重み |時間 (通常) |
+|----------|----------|----------|-----|
+| **BFS*​​ |任意 |すべて等しい (加重なし) | O(n + m) |
+| **ディクストラ** |有向/無向 | **非ネガティブ** | O((n + m) log n) バイナリ ヒープ |
+| **ベルマン – フォード** |任意 |負のサイクルを許可します (負のサイクルは禁止) | O(nm) |
+
+### ダイクストラ (非負の重み)
+貪欲: **最小優先順位キュー** [優先順位キュー](../data-structures/ix-priority-queue.md) を使用して、**最も近い**未解決の頂点を常に解決します。
 
 ```java
 // Compile: javac --release 22 …
@@ -52,30 +53,30 @@ public static int[] dijkstra(List<List<int[]>> adj, int source) {
 }
 ```
 
-**Do not** run Dijkstra on graphs with **negative** edge weights without adjustment — use **Bellman–Ford** instead.
+**負**のエッジ重みを調整せずにグラフに対してダイクストラを実行しないでください**。代わりに**ベルマン-フォード**を使用してください。
 
-## 2. All-pairs shortest paths (names only)
-- **Floyd–Warshall:** **O(n³)**, dynamic programming on triples — dense graphs, small **n**.
-- **Johnson:** reweight + Dijkstra from each vertex — sparse graphs with possible negatives (advanced).
+## 2. すべてのペアの最短パス (名前のみ)
+- **フロイド–ウォーシャル:** **O(n³)**、トリプルの動的計画法 - 密なグラフ、小さい **n**。
+- **Johnson:** 各頂点からの重み付け + ダイクストラ — 否定的な可能性のあるスパース グラフ (上級)。
 
-## 3. Minimum spanning tree (MST)
-**Undirected**, connected, weighted: pick **n − 1** edges connecting all vertices with **minimum total weight**, **no cycles**.
+## 3. ミニマムスパニングツリー (MST)
+**無向**、接続、重み付け: **最小総重み**、**サイクルなし**ですべての頂点を接続する**n − 1** エッジを選択します。
 
-| Algorithm | Idea | Time |
+|アルゴリズム |アイデア |時間 |
 |-----------|------|------|
-| **Kruskal** | Sort edges; add if no cycle (union–find) | O(m log m) |
-| **Prim** | Grow tree from a start; always add cheapest edge to tree | O((n + m) log n) with heap |
+| **クラスカル** |エッジを並べ替えます。サイクルがない場合は追加 (union–find) | O(m log m) |
+| **プリム** |最初から木を育てます。常に最も安いエッジをツリーに追加します。 O((n + m) log n) ヒープあり |
 
-Both are **greedy**; correctness proofs use **cut property** / **exchange argument** [Greedy](vii-greedy.md).
+どちらも**貪欲**です。正しさの証明には **カット プロパティ** / **交換引数** [貪欲](vii-greedy.md) を使用します。
 
-## 4. When to use what
-- **Maps / routing (non-negative):** Dijkstra.
-- **Currency arbitrage (negative cycle detection):** Bellman–Ford.
-- **Network design (connect all sites cheaply):** MST (Kruskal or Prim).
+## 4. いつ何を使用するか
+- **マップ/ルーティング (非ネガティブ):** ダイクストラ。
+- **通貨裁定取引 (マイナスサイクル検出):** ベルマン-フォード。
+- **ネットワーク設計 (すべてのサイトを安価に接続):** MST (Kruskal または Prim)。
 
-## 5. Solving with the JDK (already implemented)
+## 5. JDK で解決する (実装済み)
 
-**Dijkstra** and **Prim** use **`PriorityQueue`** (binary heap in the JDK). **Kruskal** uses **`Arrays.sort`** on edges + **union–find** (you still implement UF, or use a small helper class).
+**Dijkstra** と **Prim** は **`PriorityQueue`** (JDK のバイナリ ヒープ) を使用します。 **Kruskal** は、エッジ + **union–find** で **`Arrays.sort`** を使用します (UF を実装するか、小さなヘルパー クラスを使用します)。
 
 ```java
 // Compile: javac --release 22 …
@@ -95,11 +96,11 @@ Arrays.sort(edges, Comparator.comparingInt(Edge::w));
 // Multi-source BFS (unweighted) — one Queue per wave or one BFS with Queue
 ```
 
-| Algorithm | JDK building blocks |
-|-----------|---------------------|
-| BFS (unweighted shortest) | `ArrayDeque`, `Queue` |
-| Dijkstra / Prim | `PriorityQueue`, `Comparator` |
-| Kruskal | `Arrays.sort`, union–find (custom ~20 lines) |
-| Non-negative edge relax | `Math.min` on `int[] dist` |
+|アルゴリズム | JDK ビルディング ブロック |
+|----------|----------|
+| BFS (重み付けされていない最短) | `ArrayDeque`、`Queue` |
+|ディクストラ / プリム | `PriorityQueue`、`Comparator` |
+|クラスカル | `Arrays.sort`、union–find (カスタム ~20 行) |
+|非ネガティブエッジリラックス | `int[] dist`の`Math.min` |
 
-Third-party libraries (e.g. JGraphT) add full graph algorithms; **CS101** and interviews expect you to write the **short loop** using **`PriorityQueue`**.
+サードパーティのライブラリ (JGraphT など) は完全なグラフ アルゴリズムを追加します。 **CS101** と面接では、**`PriorityQueue`** を使用して **短いループ**を作成することが求められます。
