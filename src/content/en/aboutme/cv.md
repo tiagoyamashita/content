@@ -1,9 +1,9 @@
 <p class="hero__cv-name">TIAGO YAMASHITA</p>
 <p class="hero__cv-role">Full Stack Software Engineer</p>
 <ul class="hero__cv-links">
-  <li><a href="https://www.linkedin.com/in/tiagoyamashita" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/in/tiagoyamashita__SEG7____SEG8__
-  <li><a href="https://tiagoyamashita.com" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://tiagoyamashita.com__SEG11____SEG12__
-  <li><a href="https://www.globallybooked.com" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://www.globallybooked.com__SEG15____SEG16__
+  <li><a href="https://www.linkedin.com/in/tiagoyamashita" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/in/tiagoyamashita/</a>
+  <li><a href="https://tiagoyamashita.com" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://tiagoyamashita.com</a>
+  <li><a href="https://www.globallybooked.com" class="hero__cv-link" target="_blank" rel="noopener noreferrer">https://www.globallybooked.com</a>
 </ul>
 
 <div class="hero__cv-divider"></div>
