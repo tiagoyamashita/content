@@ -27,7 +27,7 @@ program ->> output : Output
 
 input ->> model : ML
 model ->> output : Prediction
-model <-<- examples : Training
+model <-- examples : Training
 @enduml
 ```
 
