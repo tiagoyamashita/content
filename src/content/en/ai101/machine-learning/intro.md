@@ -14,12 +14,21 @@ Machine learning — introduction
 | Engineer writes `if` / `else` logic | Model learns patterns from data |
 | Behavior changes when **code** changes | Behavior changes when **data** or **training** changes |
 | Works when rules are simple and known | Works when rules are too complex to specify (vision, language, fraud) |
+```plantuml
+@startuml
+participant input as "Input"
+participant program as "Program (Rules)"
+participant model as "Model (Learned)"
+participant output as "Output/Prediction"
+participant examples as "Trained on (Input, Label) Examples"
 
-```text
-Traditional:  input  +  program (rules)  →  output
-ML:           input  +  model (learned)  →  prediction
-                     ▲
-                     └── trained on (input, label) examples
+input ->> program : Traditional
+program ->> output : Output
+
+input ->> model : ML
+model ->> output : Prediction
+model <-<- examples : Training
+@enduml
 ```
 
 ML is not magic — it needs **representative data**, a **clear objective**, and **evaluation** so you know whether the model generalises or merely memorises.
