@@ -66,3 +66,39 @@ You can commit offline; sync with **`git push`** / **`git pull`** when connected
 - What is the difference between **working tree**, **staging**, and **commit**?
 - What does a **branch** point to?
 - Why is Git **distributed**?
+
+
+
+```plantuml
+@startuml
+!theme plain
+skinparam backgroundColor #FEFEFE
+
+title Simple Client-Server Architecture
+
+actor "User" as User
+rectangle "Client" as Client {
+    component "Web Browser" as Browser
+}
+rectangle "Server" as Server {
+    component "API Gateway" as Gateway
+    component "Application" as App
+    database "Database" as DB
+}
+
+User --> Browser : HTTP/HTTPS
+Browser --> Gateway : REST API
+Gateway --> App : Route Request
+App --> DB : SQL Queries
+DB --> App : Query Results
+App --> Gateway : JSON Response
+Gateway --> Browser : HTTP Response
+Browser --> User : Render Page
+
+note right of DB
+    PostgreSQL 15
+    Primary + Replica
+end note
+
+@enduml
+```
