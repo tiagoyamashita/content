@@ -11,7 +11,7 @@ Deep dive on **agents & agentic workflows** — split into focused notes below.
 
 | Note | Focus |
 |------|--------|
-| [Chat, assistant & agent](ii-chat-assistant-agent.md) | Part of agents & agentic workflows track |
+| [Chat, assistant & agent](ii-chat-assistant-agent.md) | Modes compared; tools (built-ins, MCP, skills + scripts e.g. Translate API) |
 | [Directing agents](iii-directing-agents.md) | Part of agents & agentic workflows track |
 | [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) | Part of agents & agentic workflows track |
 
