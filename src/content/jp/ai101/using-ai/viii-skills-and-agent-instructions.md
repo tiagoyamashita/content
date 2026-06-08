@@ -23,10 +23,11 @@ Think of skills as **onboarding docs for the agent** — short, actionable, trig
 
 | Artifact | Product | Scope |
 |----------|---------|--------|
-| **Skill (`SKILL.md`)** | Cursor | Task-specific workflows (review, deploy, SQL) |
+| **Skill (`SKILL.md`)** | Cursor, **Claude Code**, Codex (configured) | Task-specific workflows (review, deploy, SQL) |
 | **Rules (`.mdc`)** | Cursor | Always-on or file-pattern coding standards |
-| **`AGENTS.md`** | Cursor / many repos | Repo-wide agent briefing at root |
-| **Project instructions** | Claude Projects | Tone, format, attached knowledge |
+| **`AGENTS.md`** | Cursor, **Codex**, Claude Code, Copilot, many others | Repo-wide agent briefing at root |
+| **`CLAUDE.md`** | Claude Code | Project memory / standing instructions |
+| **Project instructions** | Claude Projects (web) | Tone, format, attached knowledge |
 | **Custom GPT instructions** | ChatGPT | Persona + process for one assistant |
 | **Context `.md` in repo** | Any IDE agent | `docs/agent-context.md`, architecture notes |
 
@@ -37,7 +38,58 @@ You (once)  →  write SKILL.md / rules / AGENTS.md
 Agent (each task)  →  loads matching instructions  →  fewer retries
 ```
 
-## 3. Cursor skills — layout
+## 3. Cross-tool: Cursor, Claude Code, Codex
+
+**Short answer:** yes — the **same idea** works across tools, but **folder paths differ**. The **`SKILL.md` format** is an open pattern ([Agent Skills](https://agentskills.io)); **`AGENTS.md`** is the cross-tool “README for agents.”
+
+| Tool | Skills folder | Project context | Notes |
+|------|---------------|-----------------|-------|
+| **Cursor** | `.cursor/skills/name/SKILL.md` or `~/.cursor/skills/` | `AGENTS.md`, `.cursor/rules/*.mdc` | Rules (`.mdc`) are Cursor-only |
+| **Claude Code** | `.claude/skills/name/SKILL.md` or `~/.claude/skills/` | `CLAUDE.md`, `AGENTS.md` | Invoke with `/skill-name`; same YAML frontmatter |
+| **OpenAI Codex** | Skills via Codex config / discovery | `AGENTS.md` (root + nested), `~/.codex/AGENTS.md` | Loads `AGENTS.md` chain automatically; 32 KiB default cap |
+| **GitHub Copilot** | Agent Skills (evolving) | `AGENTS.md`, `.github/copilot-instructions.md` | Prefer `AGENTS.md` for portability |
+| **Windsurf, Aider, others** | Varies | Often reads **`AGENTS.md`** | Check tool docs |
+
+### Portable setup (one repo, many agents)
+
+```text
+repo/
+  AGENTS.md                 ← everyone reads this (stack, commands, layout)
+  .cursor/skills/           ← Cursor
+    pr-review/SKILL.md
+  .claude/skills/           ← Claude Code (can symlink or duplicate)
+    pr-review/SKILL.md
+```
+
+| Strategy | Detail |
+|----------|--------|
+| **Same body, two folders** | Copy or symlink `SKILL.md` into `.cursor/skills/` and `.claude/skills/` |
+| **AGENTS.md only** | One file for baseline; tool-specific skills for heavy workflows |
+| **Single source in `docs/skills/`** | Copy into each tool folder in CI or manually when updating |
+
+Content in `SKILL.md` (name, description, checklist, templates) transfers well — only the **parent directory** changes.
+
+### What does *not* port directly
+
+| Cursor-only | Use elsewhere as |
+|-------------|------------------|
+| `.cursor/rules/*.mdc` | Paste into `AGENTS.md` or `CLAUDE.md` |
+| `disable-model-invocation` in frontmatter | Claude Code: similar flags; Codex: manual skill config |
+| `@file` Cursor mentions | Claude Code `@` imports; Codex: paths in `AGENTS.md` |
+
+### Codex specifics
+
+- **`AGENTS.md`** at repo root (and nested dirs) is loaded **automatically** each run — closest to “always-on” context.
+- **Skills** in Codex are a separate layer (metadata + instructions); configure per [Codex docs](https://developers.openai.com/codex/guides/agents-md).
+- Run `codex /init` to scaffold `AGENTS.md`; keep under the size limit or raise `project_doc_max_bytes`.
+
+### Claude Code specifics
+
+- Same **`SKILL.md`** shape as Cursor: `name`, `description`, markdown body.
+- **`/skill-name`** runs a skill manually; good description → auto-load when relevant.
+- Long procedures belong in skills; stable facts in **`CLAUDE.md`** or **`AGENTS.md`**.
+
+## 4. Cursor skills — layout
 
 Skills live in a **folder** with a required **`SKILL.md`**:
 
@@ -95,7 +147,7 @@ description: Generate commit messages from staged diffs using conventional commi
 description: Helps with git.
 ```
 
-## 4. Cursor rules vs skills
+## 5. Cursor rules vs skills
 
 | | **Rules** (`.cursor/rules/*.mdc`) | **Skills** (`SKILL.md`) |
 |---|-----------------------------------|-------------------------|
@@ -118,7 +170,7 @@ alwaysApply: false
 
 Use **rules** for “how code should look”; use **skills** for “how to run a process.”
 
-## 5. AGENTS.md and project context files
+## 6. AGENTS.md and project context files
 
 **`AGENTS.md`** at repo root (or paths your team documents) gives agents a **map of the repo**:
 
@@ -148,7 +200,7 @@ See `.cursor/skills/pr-review-team-standards/SKILL.md` for reviews.
 
 Any **`docs/*.md`** can play the same role if you `@`-mention or index it in Cursor.
 
-## 6. Writing instructions agents actually follow
+## 7. Writing instructions agents actually follow
 
 ### Be concise
 
@@ -188,7 +240,7 @@ Mention filenames, tools, and user phrases: “PR”, “`.xlsx`”, “conventi
 
 If you care about exact phrasing (legal disclaimer, brand voice), paste it **verbatim** in the skill — do not let the agent paraphrase.
 
-## 7. Example skills (starter ideas)
+## 8. Example skills (starter ideas)
 
 | Skill name | Triggers in description |
 |------------|-------------------------|
@@ -199,7 +251,7 @@ If you care about exact phrasing (legal disclaimer, brand voice), paste it **ver
 | `weekly-status` | status report, standup summary |
 | `content-notes` | swe101, frontmatter, `_meta.json` (this repo) |
 
-## 8. ChatGPT / Claude equivalents
+## 9. ChatGPT / Claude (web) equivalents
 
 | Cursor skill | Non-Cursor |
 |--------------|------------|
@@ -210,7 +262,7 @@ If you care about exact phrasing (legal disclaimer, brand voice), paste it **ver
 
 You can **maintain one markdown source** and copy sections into each product.
 
-## 9. Team workflow
+## 10. Team workflow
 
 | Practice | Why |
 |----------|-----|
@@ -221,7 +273,7 @@ You can **maintain one markdown source** and copy sections into each product.
 
 Start with **one** high-friction workflow (PR review or commits); expand when it works.
 
-## 10. Maintenance checklist
+## 11. Maintenance checklist
 
 - [ ] Description says **what** and **when** with trigger terms
 - [ ] Main file scannable (headings, checklists)
@@ -230,10 +282,11 @@ Start with **one** high-friction workflow (PR review or commits); expand when it
 - [ ] Long content split into `reference.md`
 - [ ] Linked from `AGENTS.md` or README if repo-wide
 
-## 11. Rehearsal questions
+## 12. Rehearsal questions
 
 - Skill vs rule — which for “always use Prettier defaults”?
 - What two things belong in a skill `description`?
 - Why keep `SKILL.md` short and put details elsewhere?
+- Same skill in Cursor and Claude Code — what changes, what stays the same?
 
 **Related:** [Agents & agentic workflows](iii-agents-and-agentic-workflows.md), [Tools & orchestration](iv-tools-and-orchestration.md), [Custom assistants](v-custom-assistants-and-knowledge.md), [Effective prompting](ii-effective-prompting.md).

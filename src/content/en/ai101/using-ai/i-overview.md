@@ -21,6 +21,7 @@ If you want how models work under the hood, see [Machine learning](../machine-le
 | **VI — Multimodal & files** | PDFs, images, spreadsheets, voice |
 | **VII — Trust, privacy & verify** | Hallucinations, sensitive data, fact-checking |
 | **VIII — Skills & agent instructions** | `SKILL.md`, rules, `AGENTS.md` for Cursor and agents |
+| **IX — How MCP works** | JSON-RPC, stdio vs HTTP — not gRPC; how connectors reach APIs |
 
 ## Mental model (user view)
 

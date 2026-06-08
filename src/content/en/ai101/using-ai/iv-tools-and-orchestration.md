@@ -52,16 +52,16 @@ ChatGPT / Claude / Copilot **connectors** read Google Drive, Slack, GitHub, etc.
 | Small, scoped tasks | Easier review |
 | Use `@file` / mentions | Pin exact context |
 
-### MCP (Model Context Protocol) — user view
+### MCP (Model Context Protocol)
 
-**MCP** lets an AI client plug into **tools and data sources** (databases, issue trackers, custom APIs) through standard connectors — like USB for AI tools.
+**MCP** plugs the agent into **live systems** (GitHub, Postgres, Sentry) via **MCP servers**. Wire format is **JSON-RPC** over **stdio** (local) or **HTTP** (remote) — **not gRPC**. The server then calls each product’s normal **REST/HTTPS API**.
 
 | You see | Under the hood |
 |---------|----------------|
-| “Search our Linear tickets” in Cursor/Claude Desktop | MCP server talks to Linear |
-| One-time admin setup | IT or power user enables servers |
+| “Search our Linear tickets” in Cursor | Host → MCP server → Linear HTTPS API |
+| MCP settings / `mcp.json` | Spawns or connects to connector process |
 
-You **use** MCP through products that support it; you rarely “write MCP” unless you’re automating at work.
+**Deep dive:** [How MCP works](ix-how-mcp-works.md) — transports, roles, security, vs skills.
 
 ### Automation chains
 
@@ -109,6 +109,6 @@ Put **human approval** steps before external sends (email to customers, public p
 
 - Name two orchestration patterns besides copy-paste.
 - When is a “mini” model enough?
-- What is MCP in one sentence for a PM?
+- Is MCP gRPC or HTTP? ([How MCP works](ix-how-mcp-works.md))
 
-**Related:** [Agents](iii-agents-and-agentic-workflows.md), [Custom assistants](v-custom-assistants-and-knowledge.md).
+**Related:** [How MCP works](ix-how-mcp-works.md), [Agents](iii-agents-and-agentic-workflows.md), [Custom assistants](v-custom-assistants-and-knowledge.md).
