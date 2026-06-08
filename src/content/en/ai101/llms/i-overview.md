@@ -9,7 +9,7 @@ LLMs — overview
 
 Prerequisites: [Transformers & attention](../deep-learning/iv-transformers-and-attention.md), [Machine learning evaluation](../machine-learning/iv-model-evaluation-and-metrics.md).
 
-**Using ChatGPT/Claude daily?** See [Using AI](../using-ai/i-overview.md) for practical prompting, agents, and trust — this submenu is **how LLMs work and ship in products**.
+**Using ChatGPT/Claude daily?** See [AI Applied](../ai-applied/i-overview.md) for practical prompting, agents, and trust — this submenu is **how LLMs work and ship in products**.
 
 ## Map of this submenu
 

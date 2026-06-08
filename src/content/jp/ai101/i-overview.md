@@ -11,7 +11,7 @@ AI101 — overview
 
 | Submenu | Focus | Audience |
 |---------|--------|----------|
-| [**Using AI**](using-ai/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
+| [**AI Applied**](ai-applied/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
 | [Machine learning](machine-learning/i-overview.md) | Supervised/unsupervised, evaluation, features | Builders & curious readers |
 | [Deep learning](deep-learning/i-overview.md) | Neural nets, CNNs, RNNs, transformers | Technical depth |
 | [LLMs](llms/i-overview.md) | Pre-training, alignment, RAG, fine-tuning | Engineers integrating LLMs |
@@ -19,14 +19,14 @@ AI101 — overview
 ## Which path to take
 
 ```text
-Use AI at work (no training models)     →  Using AI
+Use AI at work (no training models)     →  AI Applied
 Understand ML / build models          →  Machine learning → Deep learning
 Ship LLM products                     →  LLMs (+ System design RAG patterns)
 ```
 
 | You want to… | Start here |
 |--------------|------------|
-| Write better prompts, use agents, stay safe | [Using AI overview](using-ai/i-overview.md) |
+| Write better prompts, use agents, stay safe | [AI Applied overview](ai-applied/i-overview.md) |
 | Learn sklearn, metrics, workflows | [Machine learning overview](machine-learning/i-overview.md) |
 | Understand transformers and GPT | [Deep learning](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
 
@@ -36,7 +36,7 @@ Ship LLM products                     →  LLMs (+ System design RAG patterns)
 Machine learning → Deep learning → LLMs
 ```
 
-Use **Using AI** in parallel or first if you mainly interact with products, not train models.
+Use **AI Applied** in parallel or first if you mainly interact with products, not train models.
 
 ## How this relates to other tracks
 
@@ -46,4 +46,4 @@ Use **Using AI** in parallel or first if you mainly interact with products, not 
 | [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
 | [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
 
-**Related:** [Using AI — skills & agent instructions](using-ai/viii-skills-and-agent-instructions.md), [Using AI — effective prompting](using-ai/ii-effective-prompting.md), [Agents & agentic workflows](using-ai/iii-agents-and-agentic-workflows.md).
+**Related:** [Skills & agent instructions](ai-applied/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-applied/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-applied/agents-and-agentic-workflows/i-overview.md).

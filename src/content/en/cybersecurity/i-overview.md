@@ -18,7 +18,7 @@ This track is practical: threat thinking, identity, application and network cont
 | [Application & network security](iv-application-and-network-security.md) | OWASP, TLS, segmentation, zero trust basics |
 | [Incident response & operations](v-incident-response-and-operations.md) | Detection, IR phases, logging, tabletop drills |
 
-**Related in this repo:** [CI/CD security](../sre101/cicd/security-and-best-practices/i-overview.md), [Networking](../cs101/networking/i-tcp-udp-and-transport-basics.md), [Trust & verify (AI)](../ai101/using-ai/vii-trust-privacy-and-verify.md).
+**Related in this repo:** [CI/CD security](../sre101/cicd/security-and-best-practices/i-overview.md), [Networking](../cs101/networking/i-tcp-udp-and-transport-basics.md), [Trust & verify (AI)](../ai101/ai-applied/trust-privacy-and-verify/i-overview.md).
 
 ## 1. The CIA triad
 

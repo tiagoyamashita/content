@@ -18,7 +18,7 @@ Cybersecurity — 概要
 | [アプリケーションとネットワークセキュリティ](iv-application-and-network-security.md) | OWASP、TLS、セグメンテーション、ゼロトラスト入門 |
 | [インシデント対応と運用](v-incident-response-and-operations.md) | 検知、IR フェーズ、ログ、卓上演習 |
 
-**このリポジトリ内の関連:** [CI/CD セキュリティ](../sre101/cicd/security-and-best-practices/i-overview.md)、[ネットワーク](../CS101/networking/i-tcp-udp-and-transport-basics.md)、[AI の信頼と検証](../ai101/using-ai/vii-trust-privacy-and-verify.md)。
+**このリポジトリ内の関連:** [CI/CD セキュリティ](../sre101/cicd/security-and-best-practices/i-overview.md)、[ネットワーク](../CS101/networking/i-tcp-udp-and-transport-basics.md)、[AI の信頼と検証](../ai101/ai-applied/trust-privacy-and-verify/i-overview.md)。
 
 ## 1. CIA トライアド
 

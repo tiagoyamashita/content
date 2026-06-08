@@ -7,7 +7,7 @@ order: 4
 Prompt engineering
 The model weights are **fixed** at inference; **prompting** steers behaviour through input text — system instructions, examples, and output format.
 
-**Using AI at work?** See [Effective prompting (user guide)](../using-ai/ii-effective-prompting.md) — templates, iteration, and product settings without API detail.
+**AI Applied at work?** See [Effective prompting (user guide)](../ai-applied/effective-prompting/i-overview.md) — templates, iteration, and product settings without API detail.
 
 ## 1. Basic techniques
 
