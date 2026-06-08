@@ -17,7 +17,10 @@ CJK_RE = re.compile(r"[\u3040-\u30ff\u3400-\u9fff]")
 FALLBACK_LABELS: dict[str, str] = {
     "_meta.json": "Notes",
     "ai101/_meta.json": "AI",
+    "ai101/deep-learning/_meta.json": "Deep learning",
+    "ai101/llms/_meta.json": "LLMs",
     "ai101/machine-learning/_meta.json": "Machine learning",
+    "ai101/using-ai/_meta.json": "Using AI",
     "CS101/_meta.json": "CS101",
     "CS101/algorithms/_meta.json": "Algorithms",
     "CS101/data-structures/_meta.json": "Data structures",

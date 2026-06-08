@@ -71,7 +71,7 @@ order: 1
 
 例:
 
-- ラベル **`I`**、サブタイトル **`ML Foundations`** → **`i-ml-foundations.md`**
+- ラベル **`I`**、サブタイトル **`Overview`** → **`i-overview.md`** (例: **`ai101/machine-learning/i-overview.md`**)
 - ラベル **`III`**、サブタイトル **`Beans & dependency injection`** → **`iii-beans-and-dependency-injection.md`**
 
 **`subtitle` がない**場合は、**`{label-slug}.md`** のみを使用してください (例: **`memory-estimator.md`**)。

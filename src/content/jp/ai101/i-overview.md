@@ -1,0 +1,49 @@
+﻿---
+label: "I"
+subtitle: "概要"
+group: "Artificial intelligence"
+order: 1
+---
+AI101 — overview
+**Artificial intelligence** in this track covers **using AI in daily work**, **machine learning**, **deep learning**, and **LLMs** — from practical prompting through how models work.
+
+## Map of AI101
+
+| Submenu | Focus | Audience |
+|---------|--------|----------|
+| [**Using AI**](using-ai/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
+| [Machine learning](machine-learning/i-overview.md) | Supervised/unsupervised, evaluation, features | Builders & curious readers |
+| [Deep learning](deep-learning/i-overview.md) | Neural nets, CNNs, RNNs, transformers | Technical depth |
+| [LLMs](llms/i-overview.md) | Pre-training, alignment, RAG, fine-tuning | Engineers integrating LLMs |
+
+## Which path to take
+
+```text
+Use AI at work (no training models)     →  Using AI
+Understand ML / build models          →  Machine learning → Deep learning
+Ship LLM products                     →  LLMs (+ System design RAG patterns)
+```
+
+| You want to… | Start here |
+|--------------|------------|
+| Write better prompts, use agents, stay safe | [Using AI overview](using-ai/i-overview.md) |
+| Learn sklearn, metrics, workflows | [Machine learning overview](machine-learning/i-overview.md) |
+| Understand transformers and GPT | [Deep learning](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
+
+## Study order (technical track)
+
+```text
+Machine learning → Deep learning → LLMs
+```
+
+Use **Using AI** in parallel or first if you mainly interact with products, not train models.
+
+## How this relates to other tracks
+
+| Track | Overlap |
+|-------|---------|
+| [Python](../../swe101/python/i-basics-and-syntax.md) | pandas, scikit-learn, PyTorch |
+| [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
+| [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
+
+**Related:** [Using AI — skills & agent instructions](using-ai/viii-skills-and-agent-instructions.md), [Using AI — effective prompting](using-ai/ii-effective-prompting.md), [Agents & agentic workflows](using-ai/iii-agents-and-agentic-workflows.md).

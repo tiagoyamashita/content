@@ -70,7 +70,7 @@ Filenames follow:
 
 Examples:
 
-- label **`I`**, subtitle **`ML Foundations`** → **`i-ml-foundations.md`**
+- label **`I`**, subtitle **`Overview`** → **`i-overview.md`** (e.g. **`ai101/machine-learning/i-overview.md`**)
 - label **`III`**, subtitle **`Beans & dependency injection`** → **`iii-beans-and-dependency-injection.md`**
 
 If there is **no** `subtitle`, use **`{label-slug}.md`** only (e.g. **`memory-estimator.md`**).
