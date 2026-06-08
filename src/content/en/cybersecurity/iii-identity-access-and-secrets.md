@@ -50,6 +50,14 @@ Never confuse them: a valid login does **not** mean access to every resource.
 
 ## 4. Authorization models
 
+**RBAC** = **R**ole-**B**ased **A**ccess **C**ontrol. The shared tail **BAC** means **Based Access Control** — access decisions follow a **rule** (role, attribute, or relationship), not ad-hoc per-user checks in every endpoint.
+
+| Acronym | Full name | The “B” word |
+|---------|-----------|--------------|
+| **RBAC** | Role-**Based** Access Control | **Role** (e.g. `editor`, `admin`) |
+| **ABAC** | Attribute-**Based** Access Control | **Attribute** (department, clearance, time of day) |
+| **ReBAC** | Relationship-**Based** Access Control | **Relationship** (owner of doc, member of team) |
+
 | Model | Idea | Example |
 |-------|------|---------|
 | **RBAC** | Roles → permissions | `billing_admin` can refund |

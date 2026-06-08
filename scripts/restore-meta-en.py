@@ -26,6 +26,7 @@ FALLBACK_LABELS: dict[str, str] = {
     "CS101/data-structures/_meta.json": "Data structures",
     "CS101/databases/_meta.json": "Databases",
     "CS101/networking/_meta.json": "Networking",
+    "cybersecurity/_meta.json": "Cybersecurity",
     "getting-started/_meta.json": "Getting started",
     "getting-started/intro/_meta.json": "Intro",
     "sre101/_meta.json": "SRE",
