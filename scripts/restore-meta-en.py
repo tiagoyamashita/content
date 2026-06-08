@@ -53,6 +53,7 @@ FALLBACK_LABELS: dict[str, str] = {
     "swe101/java/springboot/_meta.json": "Spring Boot",
     "swe101/mongodb/_meta.json": "MongoDB",
     "swe101/plsql/_meta.json": "PL/SQL",
+    "swe101/plantuml/_meta.json": "PlantUML",
     "swe101/postgres/_meta.json": "Postgres",
     "swe101/python/_meta.json": "Python",
     "swe101/redis/_meta.json": "Redis",
