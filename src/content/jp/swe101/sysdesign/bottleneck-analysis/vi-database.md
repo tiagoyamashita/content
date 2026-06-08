@@ -74,4 +74,4 @@ order: 6
 |シャーディング |書き込みスケールが単一プライマリを超える |
 |非正規化 |読み取りパスが安くなります。複雑さを書き出す |
 
-**Related:** Part I (replication, sharding), [Application-level](vii-application-level.md) (hot partition).
+**Related:** [Core building blocks](../i-core-building-blocks.md) (replication), [Database sharding](../scalable-patterns/ix-database-sharding.md), [Application-level](vii-application-level.md) (hot partition).

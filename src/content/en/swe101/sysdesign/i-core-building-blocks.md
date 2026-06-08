@@ -143,6 +143,8 @@ Consistent hashing:
 - Adding/removing a node only remaps keys from one neighbour — minimal reshuffling.
 - Used in: DynamoDB, Cassandra, Memcached clusters.
 
+**Deep dive:** [Database sharding](scalable-patterns/ix-database-sharding.md) — routing layer, shard key selection, cross-shard queries, hot shards, re-sharding.
+
 ## 7. CAP theorem & consistency
 CAP theorem: a distributed system can guarantee at most two of:
 - Consistency (C):  every read returns the most recent write.

@@ -18,6 +18,7 @@ Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN
 | [CDN & edge caching](vi-cdn-and-edge-caching.md) | CDN, cache invalidation | How do you serve static and cacheable content globally? |
 | [Distributed transactions](vii-distributed-transactions.md) | Saga, 2PC, idempotency | How do you coordinate writes across services? |
 | [Observability at scale](viii-observability-at-scale.md) | SLOs, tracing, chaos | How do you know when scale breaks something? |
+| [Database sharding](ix-database-sharding.md) | Shard keys, routing, re-sharding | How do you scale writes past one primary? |
 
 ## Where these sit in a typical architecture
 

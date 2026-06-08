@@ -144,6 +144,8 @@ NoSQL — 4 つの主要なファミリー:
 - ノードの追加/削除では、1 つの隣接ノードからのキーのみが再マッピングされます。つまり、再シャッフルは最小限です。
 - 使用場所: DynamoDB、Cassandra、Memcached クラスター。
 
+**Deep dive:** [Database sharding](scalable-patterns/ix-database-sharding.md) — routing layer, shard key selection, cross-shard queries, hot shards, re-sharding.
+
 ## 7. CAP の定理と一貫性
 CAP 定理: 分散システムは次のうち最大 2 つを保証できます。
 - 一貫性 (C): すべての読み取りは最新の書き込みを返します。
