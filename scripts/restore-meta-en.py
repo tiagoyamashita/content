@@ -61,6 +61,7 @@ FALLBACK_LABELS: dict[str, str] = {
     "swe101/sysdesign/_meta.json": "System design",
     "swe101/sysdesign/bottleneck-analysis/_meta.json": "Bottleneck analysis",
     "swe101/sysdesign/classic-designs/_meta.json": "Classic designs",
+    "swe101/sysdesign/examples/_meta.json": "Examples",
     "swe101/sysdesign/scalable-patterns/_meta.json": "Scalable patterns",
 }
 

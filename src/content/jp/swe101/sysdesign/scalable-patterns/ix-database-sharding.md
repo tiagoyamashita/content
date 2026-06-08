@@ -314,7 +314,90 @@ Re-shard phases (typical)
 | **Connection pools** | Pool **per shard**; total conns = shards × pool size |
 | **Global IDs** | Snowflake / ULID / UUID — avoid auto-increment collisions across shards |
 
-## 12. Technology examples
+## 12. Bottlenecks of sharded databases
+
+Sharding removes the **single-primary ceiling** (writes, disk, connections on one machine). It **trades** that limit for bottlenecks in routing, query shape, coordination, and operations — especially when the shard key or access patterns are wrong.
+
+```text
+Single DB bottleneck          Sharded DB — bottlenecks move to:
+  one primary maxed out    →    hot shard, scatter-gather, router, N× pools, re-shard, ops
+```
+
+| Bottleneck | What breaks | Mitigation (see also) |
+|------------|-------------|------------------------|
+| **Hot shard / skew** | One partition gets most traffic despite many shards | Sub-shard buckets, cache, queue, celebrity read model — §8, [Application-level](../bottleneck-analysis/vii-application-level.md) |
+| **Scatter-gather** | Queries without shard key hit **every** shard; cost ∝ shard count | Lookup table, GSI, API requires tenant/user id — §7 |
+| **Cross-shard JOINs** | No single query plan; N round trips + merge in app | Co-locate by shard key, denormalize, CQRS — §7 |
+| **Cross-shard transactions** | 2PC is fragile; latency and availability suffer | Single-shard tx per business action; saga + outbox — §10, [Distributed transactions](vii-distributed-transactions.md) |
+| **Router / coordinator** | Extra hop, SPOF, routing bugs → wrong shard | HA proxy tier, pinned topology, integration tests per route — §3 |
+| **Connection pool explosion** | `pods × pool × shards` vs per-shard `max_connections` | PgBouncer per shard, smaller pools, right-size fleet — §11 |
+| **Re-sharding** | Dual-write, backfill, cutover risk during topology change | Consistent hashing, planned headroom, managed resharding — §9 |
+| **Operational drag** | Migrations, backups, monitoring × N shards | Automation, per-shard dashboards, skew alerts — §11 |
+| **Global consistency** | Strong per shard; cross-shard reads often eventual | Design around single-shard writes; async read models — §10 |
+
+### Hot shards — you moved the bottleneck, not removed it
+
+Even with hash sharding, **skew** concentrates load on one physical shard:
+
+| Cause | Example |
+|-------|---------|
+| **Celebrity** | One `user_id` with outsized fan-out |
+| **Tenant whale** | One SaaS customer is a large share of rows |
+| **Range + time** | New users or events land on the “latest” range shard |
+| **Bad cardinality** | Shard key `status` or `country` with uneven distribution |
+
+Mitigations match §8: split hot keys (`user_id#0…#k`), read replicas on that shard only, write queues, or offload hot data to cache/KV.
+
+### Scatter-gather — the hidden tax on “flexible” queries
+
+The fast path requires the **shard key in the predicate** (§7). Without it:
+
+```sql
+-- login by email: every shard queried unless you add a route
+SELECT * FROM users WHERE email = 'ada@example.com';
+```
+
+| Symptom | Why it hurts |
+|---------|--------------|
+| Latency p99 rises with shard count | Router waits for slowest shard |
+| CPU on **all** shards for one lookup | Admin search, email login, global counts |
+| Fan-out amplifies incidents | One sick shard slows the merged response |
+
+Fixes: `email → user_id → shard` in Redis, global secondary index, or require `user_id` / `tenant_id` in every API path.
+
+### Cross-shard work — coordination becomes the limit
+
+| Pattern | Bottleneck |
+|---------|------------|
+| JOIN across shard keys | App-side merge; memory and latency |
+| Checkout on `customer_id` + inventory on `sku` | Two shards → saga, not one ACID tx |
+| Global `COUNT(*)` or `SUM` | Parallel aggregate + merge, or warehouse |
+
+**Design rule:** keep one business transaction on **one shard** when possible; push cross-shard reporting to OLAP/search.
+
+### Router and connections
+
+<figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Connection pools multiply per shard">
+  <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Pools scale with shard count</text>
+  <text x="12" y="40" fill="#a1a1aa" font-size="9">100 pods × 10 conns/pod × 8 shards = 8 000 logical slots</text>
+  <text x="12" y="58" fill="#f87171" font-size="9">Each shard still has max_connections (e.g. 500)</text>
+  <text x="12" y="76" fill="#86efac" font-size="9">Mitigate: pooler per shard, fewer conns per pod, fewer pods</text>
+</svg></figure>
+
+The **router** adds latency and can be a blast-radius point (misroute = wrong data). Directory-based sharding adds a **lookup hot spot** unless cached.
+
+### What sharding does and does not fix
+
+| Sharding helps | Sharding does not fix |
+|----------------|----------------------|
+| Write throughput past one primary | Queries that ignore the shard key |
+| Storage past one disk | Hot keys / celebrities without key design |
+| Blast radius per shard (partial) | Cross-shard ACID without saga complexity |
+| Regional placement by shard key | Cheap global SQL JOINs or ad-hoc analytics |
+
+**Summary:** treat shard key choice and access patterns as part of the schema — adding shards without fixing skew or scatter-gather only spreads the problem across more bills.
+
+## 13. Technology examples
 
 | System | Sharding model |
 |--------|----------------|
@@ -325,7 +408,7 @@ Re-shard phases (typical)
 | **Cassandra** | Partition key determines node; wide-column per partition |
 | **Spanner / Cockroach** | Automatic sharding under SQL facade (different ops model) |
 
-## 13. End-to-end write path (reference)
+## 14. End-to-end write path (reference)
 
 ```plantuml
 @startuml
@@ -347,7 +430,7 @@ note over DB,IDX: search is eventual;\norder read from shard is strong
 @enduml
 ```
 
-## 14. Checklist before you shard
+## 15. Checklist before you shard
 
 - [ ] Measured primary **write** and **disk** limits — not just CPU
 - [ ] Shard key on **every** hot query path documented
@@ -356,12 +439,13 @@ note over DB,IDX: search is eventual;\norder read from shard is strong
 - [ ] Re-sharding runbook or managed alternative chosen
 - [ ] Per-shard dashboards and backup drills scheduled
 
-## 15. Rehearsal questions
+## 16. Rehearsal questions
 
 - Why is `hash(user_id) % 10` painful when scaling from 10 to 11 shards?
 - Design shard keys for a multi-tenant B2B SaaS with heavy reporting per tenant.
 - How do you implement `login by email` without scanning every shard?
 - What breaks if checkout touches `inventory` and `orders` on different shard keys?
 - When is Postgres **partitioning** enough without Citus/Vitess?
+- Name three bottlenecks that **appear after** sharding even when the old single primary was healthy.
 
 **Related:** [Core building blocks](../i-core-building-blocks.md), [Message queues & async](iii-message-queues-and-async.md), [Postgres indexes](../../postgres/iv-indexes-and-explain.md), [MongoDB sharding](../../mongodb/i-overview.md).

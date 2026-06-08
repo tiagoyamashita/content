@@ -90,4 +90,6 @@ Enables **at-least-once** messaging and HTTP retries without double charge.
 | Strong cross-shard in one DB | 2PC / XA (rare at app layer) |
 | Read models | Eventual consistency + CDC |
 
+**Worked examples:** [Examples overview](../examples/i-overview.md) — checkout saga, choreography, local ACID, outbox, idempotency, cache-aside, search CDC, sharding, workflow engine.
+
 **Related:** [Message queues & async](iii-message-queues-and-async.md) (outbox, events), [API design](ii-api-design.md) (Idempotency-Key).

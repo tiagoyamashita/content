@@ -7,8 +7,6 @@ order: 5
 System Design — Memory Estimation
 Back-of-envelope **RAM** sizing for sessions, caches, and app heaps — essential for interviews and capacity planning before you buy instances or hit **OOM**.
 
-**Interactive sliders:** see **[Memory Estimator](memory-estimator.md)** (Preview / graph mode).
-
 ## 1. Why estimate memory?
 
 | Question | Memory estimate answers |
@@ -219,9 +217,5 @@ Shows **fan-out on write** is a **memory** problem, not just write amplification
 - [ ] ×2 headroom; divide by usable node RAM
 - [ ] Mention eviction (LRU/TTL) and sharding if TB-scale
 - [ ] Note what is **not** in RAM (full DB on disk)
-
-## 12. Interactive estimator
-
-Open **[Memory Estimator](memory-estimator.md)** in Preview to adjust **session size**, **node count**, and **RAM per node** and see capacity change instantly.
 
 **Related:** Part I capacity estimation, **Classic designs** (feed, URL shortener), **Bottleneck analysis → CPU & memory**.

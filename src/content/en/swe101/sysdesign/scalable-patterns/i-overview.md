@@ -46,7 +46,7 @@ Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN
   <path d="M440 52 H452" stroke="#a1a1aa" stroke-width="1.5"/>
   <text x="12" y="92" fill="#71717a" font-size="10">Rate limiting usually sits at API gateway. Async work fans out via queue. Search index syncs from DB (CDC).</text>
   <text x="12" y="120" fill="#d4d4d8" font-size="10" font-weight="600">Study order</text>
-  <text x="12" y="138" fill="#a1a1aa" font-size="9">Part I → this submenu → Classic designs submenu → bottleneck analysis</text>
+  <text x="12" y="138" fill="#a1a1aa" font-size="9">Part I → this submenu → Examples → Classic designs → bottleneck analysis</text>
 </svg></figure>
 
 ## Rehearsal questions
