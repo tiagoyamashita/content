@@ -14,12 +14,21 @@ Machine learning — introduction
 | Engineer writes `if` / `else` logic | Model learns patterns from data |
 | Behavior changes when **code** changes | Behavior changes when **data** or **training** changes |
 | Works when rules are simple and known | Works when rules are too complex to specify (vision, language, fraud) |
+```plantuml
+@startuml
+participant input as "Input"
+participant program as "Program (Rules)"
+participant model as "Model (Learned)"
+participant output as "Output/Prediction"
+participant examples as "Trained on (Input, Label) Examples"
 
-```text
-Traditional:  input  +  program (rules)  →  output
-ML:           input  +  model (learned)  →  prediction
-                     ▲
-                     └── trained on (input, label) examples
+input ->> program : Traditional
+program ->> output : Output
+
+input ->> model : ML
+model ->> output : Prediction
+model <-- examples : Training
+@enduml
 ```
 
 ML is not magic — it needs **representative data**, a **clear objective**, and **evaluation** so you know whether the model generalises or merely memorises.
@@ -118,7 +127,6 @@ model = RandomForestClassifier()
 model.fit(X_train, y_train)
 print(classification_report(y_test, model.predict(X_test)))
 ```
-
 ## 9. ML vs adjacent topics
 
 | Topic | Focus |
@@ -133,3 +141,83 @@ print(classification_report(y_test, model.predict(X_test)))
 Start here for vocabulary and workflow. Add follow-up notes on specific algorithms, feature engineering, and frameworks as you build projects. Always tie theory to a **dataset** and a **metric** — ML is learned by doing, not only by reading.
 
 **Related:** **AI → ML Foundations** for deeper coverage of supervised/unsupervised methods and evaluation metrics.
+
+### 10.1 Key Concepts to Focus On
+
+* **Supervised Learning**: Learning from labeled data to make predictions
+* **Unsupervised Learning**: Discovering patterns in unlabeled data
+* **Model Evaluation**: Assessing the performance of ML models using metrics such as accuracy, precision, and recall
+* **Hyperparameter Tuning**: Adjusting model parameters to optimize performance
+
+### 10.2 Building a Strong Foundation
+
+* Start with the basics: linear regression, logistic regression, decision trees, and clustering
+* Practice with popular datasets: Iris, MNIST, CIFAR-10
+* Explore different frameworks: scikit-learn, TensorFlow, PyTorch
+* Stay up-to-date with industry trends and advancements in ML research
+
+### 10.3 Additional Resources
+
+* **Books**:
+	+ "Python Machine Learning" by Sebastian Raschka
+	+ "Deep Learning" by Ian Goodfellow, Yoshua Bengio, and Aaron Courville
+* **Courses**:
+	+ Andrew Ng's Machine Learning course on Coursera
+	+ Stanford University's CS231n: Convolutional Neural Networks for Visual Recognition
+* **Communities**:
+	+ Kaggle: a platform for ML competitions and hosting datasets
+	+ Reddit's r/MachineLearning and r/AskScience: communities for discussing ML and AI-related topics
+## 9. ML vs adjacent topics
+
+| Topic | Focus |
+|-------|--------|
+| **Machine learning** (this track) | Algorithms, data, training, evaluation |
+| **MLOps** | Pipelines, versioning, deployment, monitoring |
+| **AI / deep learning** | Larger models, LLMs, generative AI — see **AI** submenu ([ML Foundations](../ai/i-ml-foundations.md), [Deep Learning & LLMs](../ai/ii-deep-learning-and-llms.md)) |
+| **Data science** | Exploration, storytelling, experiments — overlaps heavily with ML |
+
+## 10. How to use this track
+
+Start here for vocabulary and workflow. Add follow-up notes on specific algorithms, feature engineering, and frameworks as you build projects. Always tie theory to a **dataset** and a **metric** — ML is learned by doing, not only by reading.
+
+**Related:** **AI → ML Foundations** for deeper coverage of supervised/unsupervised methods and evaluation metrics.
+
+### 10.1 Key Concepts to Focus On
+
+* **Supervised Learning**: Learning from labeled data to make predictions
+* **Unsupervised Learning**: Discovering patterns in unlabeled data
+* **Model Evaluation**: Assessing the performance of ML models using metrics such as accuracy, precision, and recall
+* **Hyperparameter Tuning**: Adjusting model parameters to optimize performance
+
+### 10.2 Building a Strong Foundation
+
+* Start with the basics: linear regression, logistic regression, decision trees, and clustering
+* Practice with popular datasets: Iris, MNIST, CIFAR-10
+* Explore different frameworks: scikit-learn, TensorFlow, PyTorch
+* Stay up-to-date with industry trends and advancements in ML research
+
+### 10.3 Additional Resources
+
+* **Books**:
+	+ "Python Machine Learning" by Sebastian Raschka
+	+ "Deep Learning" by Ian Goodfellow, Yoshua Bengio, and Aaron Courville
+* **Courses**:
+	+ Andrew Ng's Machine Learning course on Coursera
+	+ Stanford University's CS231n: Convolutional Neural Networks for Visual Recognition
+* **Communities**:
+	+ Kaggle: a platform for ML competitions and hosting datasets
+	+ Reddit's r/MachineLearning and r/AskScience: communities for discussing ML and AI-related topics
+
+### 10.4 ML Workflow
+```plantuml
+@startuml
+participant Data as "Data"
+participant Model as "Model"
+participant Evaluation as "Evaluation"
+
+Data ->> Model: Training
+Model ->> Evaluation: Prediction
+Evaluation ->> Model: Feedback
+Model ->> Data: Improvement
+@enduml
+```
