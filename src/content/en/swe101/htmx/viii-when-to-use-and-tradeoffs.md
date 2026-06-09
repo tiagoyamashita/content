@@ -105,6 +105,10 @@ Do not force one paradigm for the entire product.
 
 If most answers are yes, HTMX is a strong default for internal and B2B web apps.
 
+## Next
+
+Copy and run the [Examples](ix-examples.md) — hello swap, todo CRUD, live search, and Spring inline edit.
+
 ## Further reading
 
 - [htmx.org documentation](https://htmx.org/docs/) — authoritative attribute reference

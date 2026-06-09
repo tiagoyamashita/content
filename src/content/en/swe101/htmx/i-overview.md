@@ -21,6 +21,7 @@ For REST and server-side rendering context, see [REST controllers](../java/sprin
 | **VI — Events & extensions** | `htmx:*` events, SSE, WebSockets |
 | **VII — Patterns & app integration** | Pagination, modals, Spring/Flask/FastAPI |
 | **VIII — When to use & tradeoffs** | vs React/Vue, limits, team fit |
+| **IX — Examples** | Runnable mini-apps — file tree + commented source |
 
 ## Hypermedia-driven apps
 

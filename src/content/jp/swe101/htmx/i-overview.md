@@ -22,6 +22,7 @@ For REST and server-side rendering context, see [REST controllers](../java/sprin
 | **VI — イベントと拡張** | `htmx:*` イベント、SSE、WebSocket |
 | **VII — パターンとアプリ統合** | ページネーション、モーダル、Spring/Flask/FastAPI |
 | **VIII — 使い分けとトレードオフ** | React/Vue との比較、限界、チーム適性 |
+| **IX — 例** | 実行可能なミニアプリ — ファイルツリー + コメント付きソース |
 
 ## ハイパーメディア駆動アプリ
 

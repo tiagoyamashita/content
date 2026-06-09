@@ -28,6 +28,10 @@ Collaborative editing (OT/CRDT), media/CAD/games, native mobile shells, strict A
 
 [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md), [Python](../python/i-basics-and-syntax.md), [Postgres](../postgres/i-overview.md), [CDN](../cdn/i-overview.md), [API gateway](../api-gateway/i-overview.md).
 
+## Next
+
+Copy and run the [Examples](ix-examples.md) — hello swap, todo CRUD, live search, and Spring inline edit.
+
 ## Further reading
 
 - [htmx.org documentation](https://htmx.org/docs/)
