@@ -46,7 +46,7 @@ DEL session:sess_abc123    # logout
 
 Benefits: **horizontal scale** without sticky sessions; instant logout via **DEL**.
 
-Spring Session Redis and similar libraries handle serialization and cookie wiring — see [App integration](v-app-integration.md).
+Multiple apps (SPA + API + admin): [Shared sessions across apps](viii-shared-sessions-across-apps.md). Spring Session Redis and similar libraries handle serialization and cookie wiring — see [App integration](v-app-integration.md).
 
 ## 3. Rate limiting
 

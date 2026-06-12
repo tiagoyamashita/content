@@ -90,7 +90,7 @@ public void update(Product product) {
 
 Enable with **`@EnableCaching`** and Redis cache manager bean.
 
-**Spring Session:**
+**Spring Session** (shared across Spring apps — see [Shared sessions across apps](viii-shared-sessions-across-apps.md)):
 
 ```xml
 <dependency>

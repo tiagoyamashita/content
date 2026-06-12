@@ -20,6 +20,7 @@ For key-value concepts (cache-aside, sessions, when not to use KV alone), see [K
 | **V — App integration** | Lettuce, Spring Data Redis, redis-py |
 | **VI — Operations & persistence** | RDB, AOF, replication, memory limits |
 | **VII — Performance & optimizations** | Pipelines, memory, hot keys, checklist |
+| **VIII — Shared sessions across apps** | Subdomain cookies + Redis; SSO when domains differ |
 
 ## Why Redis (for apps)
 
