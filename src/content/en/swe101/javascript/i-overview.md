@@ -12,8 +12,8 @@ JavaScript — overview
 | Submenu | Focus |
 |---------|--------|
 | **jQuery** | DOM selection, events, AJAX — legacy and maintenance codebases |
-| **React** | Components, hooks, ecosystem — most common SPA choice today |
-| **Angular** | TypeScript-first framework, modules, RxJS — enterprise SPAs |
+| **React** | Components, hooks, ecosystem — setup, rendering, auth, forms (5 parts) |
+| **Angular** | TypeScript-first framework — setup, rendering, auth, forms (5 parts) |
 | **Bootstrap** | CSS + JS plugins — modals, collapse, dropdowns (vanilla JS in v5+) |
 
 ## Where JS fits in the stack

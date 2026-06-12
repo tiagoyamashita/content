@@ -7,7 +7,17 @@ order: 1
 React — overview
 **React** is a **component-based UI library** from Meta. You describe UI as **functions of state** (JSX), React updates the DOM efficiently, and the ecosystem (Vite, Next.js, React Router) covers routing, SSR, and data fetching.
 
-Parent track: [JavaScript overview](../i-overview.md). Contrast with [HTMX](../htmx/i-overview.md) when most UI can stay server-rendered.
+Parent track: [JavaScript overview](../i-overview.md). Contrast with [HTMX](../../htmx/i-overview.md) when most UI can stay server-rendered.
+
+## Map of this track
+
+| Part | Focus |
+|------|--------|
+| **I — Overview** | Components, JSX, hooks, when to use React |
+| **II — Project setup & structure** | Vite, folders, what file goes where |
+| **III — Rendering & server requests** | Mount → render cycle, `fetch`, loading/error UI |
+| **IV — Authentication** | Tokens, cookies, protected routes, auth context |
+| **V — Forms & validation** | Controlled inputs, client validation, server errors |
 
 ## Core ideas
 
@@ -35,45 +45,14 @@ export function Counter() {
 }
 ```
 
-## Typical project shape
-
-```text
-src/
-  main.jsx          # mount <App /> to #root
-  App.jsx           # layout, routes
-  components/       # presentational pieces
-  pages/            # route-level screens
-  hooks/            # shared use* logic
-  api/              # fetch wrappers
-package.json
-vite.config.js      # or Next.js / CRA
-```
-
-## Tooling you will meet
-
-| Tool | Role |
-|------|------|
-| **Vite** | Fast dev server + production build |
-| **Next.js** | React + routing + SSR/SSG |
-| **React Router** | Client-side routes in SPAs |
-| **TanStack Query** | Server state, cache, refetch |
-| **TypeScript** | Optional but common for large apps |
-
 ## When React fits
 
 | Good fit | Consider alternatives |
 |----------|------------------------|
-| Rich client UX (editors, wizards, dashboards) | Mostly CRUD + forms → HTMX or server templates |
+| Rich client UX (editors, wizards, dashboards) | Mostly CRUD + forms → [HTMX](../../htmx/i-overview.md) |
 | Mobile/web shared component thinking (React Native) | Content site → static/SSR without heavy client state |
 | Large frontend team, component library | Small internal tool → simpler stack |
 
-## Data flow (preview)
+## Next
 
-```text
-User action  →  setState / dispatch  →  re-render component  →  React commits DOM changes
-Async fetch  →  useEffect or Query  →  set state with response  →  UI updates
-```
-
-## Next steps (future notes)
-
-Create app with Vite, props vs state, lists and keys, forms, routing, and testing with React Testing Library.
+Continue with [Project setup & structure](ii-project-setup-and-structure.md).
