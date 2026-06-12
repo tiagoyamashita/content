@@ -50,7 +50,8 @@ export function Counter() {
 | Good fit | Consider alternatives |
 |----------|------------------------|
 | Rich client UX (editors, wizards, dashboards) | Mostly CRUD + forms → [HTMX](../../htmx/i-overview.md) |
-| Mobile/web shared component thinking (React Native) | Content site → static/SSR without heavy client state |
+| Mobile/web shared component thinking | Content site → static/SSR without heavy client state |
+| Same React skills on iOS/Android | → [React Native track](../react-native/i-overview.md) (5 parts) |
 | Large frontend team, component library | Small internal tool → simpler stack |
 
 ## Next

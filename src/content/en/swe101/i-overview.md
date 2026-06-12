@@ -13,7 +13,7 @@ SWE101 — overview
 |------|-------------------------|
 | **Version control** | [Git](git/i-overview.md) |
 | **Languages** | [Java](java/intro/i-basics-and-syntax.md), [Python](python/i-basics-and-syntax.md), [Rust](rust/i-basics-and-toolchain.md), [JavaScript](javascript/i-overview.md) |
-| **Frameworks** | [Spring Boot](java/springboot/i-intro-and-project-layout.md), [React](javascript/react/i-overview.md), [Angular](javascript/angular/i-overview.md), [jQuery](javascript/jquery/i-overview.md), [HTMX](htmx/i-overview.md), [Bootstrap](javascript/bootstrap/i-overview.md) |
+| **Frameworks** | [Spring Boot](java/springboot/i-intro-and-project-layout.md), [React](javascript/react/i-overview.md), [Angular](javascript/angular/i-overview.md), [React Native](javascript/react-native/i-overview.md), [Flutter](flutter/i-overview.md), [jQuery](javascript/jquery/i-overview.md), [HTMX](htmx/i-overview.md), [Bootstrap](javascript/bootstrap/i-overview.md) |
 | **Web UI & styling** | [HTMX](htmx/i-overview.md), [CSS](css/i-overview.md), [Sass/Less](css/sass/i-overview.md) |
 | **Backend & data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md), [PL/SQL](plsql/i-overview.md) |
 | **Infrastructure & delivery** | [CDN](cdn/i-overview.md), [API gateway](api-gateway/i-overview.md) |
@@ -26,7 +26,7 @@ Software is grouped by **who uses it**, **where it runs**, and **how it is sold*
 | Type | Runs on | Typical examples | Common frameworks | Key constraints |
 |------|---------|------------------|-------------------|-----------------|
 | **Web application** | Browser + server | SaaS dashboards, e-commerce, admin tools | [React](javascript/react/i-overview.md), [Angular](javascript/angular/i-overview.md), [Spring Boot](java/springboot/i-intro-and-project-layout.md), [HTMX](htmx/i-overview.md), Django, Next.js | Latency, auth, SEO (public sites), responsive UI |
-| **Mobile app** | Phone/tablet (iOS, Android) | Banking, social, field service | React Native, Flutter, SwiftUI, Jetpack Compose | App store rules, offline, push notifications |
+| **Mobile app** | Phone/tablet (iOS, Android) | Banking, social, field service | [React Native](javascript/react-native/i-overview.md), [Flutter](flutter/i-overview.md), SwiftUI, Jetpack Compose | App store rules, offline, push notifications |
 | **Desktop application** | Windows, macOS, Linux | IDEs, creative tools, point-of-sale | Electron, .NET WPF/MAUI, Qt, Tauri | Installers, auto-update, local file access |
 | **API / backend service** | Servers, containers | REST/GraphQL microservices, webhooks | [Spring Boot](java/springboot/i-intro-and-project-layout.md), FastAPI, Express, NestJS, ASP.NET Core | Uptime, scaling, versioning, idempotency |
 | **Embedded / firmware** | Microcontrollers, devices | Appliances, sensors, automotive ECU | FreeRTOS, Zephyr, Arduino (sketch model) | Memory limits, real-time, safety |

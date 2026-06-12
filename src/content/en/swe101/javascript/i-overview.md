@@ -5,7 +5,7 @@ group: "JavaScript"
 order: 1
 ---
 JavaScript — overview
-**JavaScript** runs in the browser, on servers (Node.js), and in mobile/desktop shells. In SWE101 this track covers **common UI stacks** — DOM helpers, CSS frameworks, and SPA libraries. For server-rendered HTML with less client JS, see [HTMX](../htmx/i-overview.md).
+**JavaScript** runs in the browser, on servers (Node.js), and on **mobile** ([React Native](react-native/i-overview.md)). For cross-platform mobile with **Dart**, see [Flutter](../flutter/i-overview.md) (5 parts). For server-rendered HTML with less client JS, see [HTMX](../htmx/i-overview.md).
 
 ## Map of this track
 
@@ -15,11 +15,13 @@ JavaScript — overview
 | **React** | Components, hooks, ecosystem — setup, rendering, auth, forms (5 parts) |
 | **Angular** | TypeScript-first framework — setup, rendering, auth, forms (5 parts) |
 | **Bootstrap** | CSS + JS plugins — modals, collapse, dropdowns (vanilla JS in v5+) |
+| **React Native** | iOS/Android apps with React — setup, rendering, auth, forms (5 parts) |
 
 ## Where JS fits in the stack
 
 ```text
 Browser  →  HTML/CSS  →  JavaScript (jQuery / Bootstrap / React / Angular / vanilla)
+Mobile   →  React Native  →  iOS / Android apps  (or [Flutter](../flutter/i-overview.md) with Dart)
 Server   →  Node.js, bundlers (Vite, webpack), npm
 ```
 
@@ -35,6 +37,7 @@ Server   →  Node.js, bundlers (Vite, webpack), npm
 | Situation | Reasonable default |
 |-----------|-------------------|
 | Greenfield SPA, large team | **React** or **Angular** (team preference) |
+| Mobile iOS + Android app | **React Native** (Expo), [Flutter](../flutter/i-overview.md), or native Swift/Kotlin |
 | Existing jQuery site | Maintain with **jQuery**; migrate incrementally |
 | Forms, dashboards, mostly server HTML | **[HTMX](../htmx/i-overview.md)** + templates, or **Bootstrap** plugins |
 | Small widget on one page | **Vanilla JS**, **Bootstrap** `data-bs-*`, or Alpine.js |
@@ -55,3 +58,4 @@ Server   →  Node.js, bundlers (Vite, webpack), npm
 - [React overview](react/i-overview.md) — components, JSX, hooks
 - [Angular overview](angular/i-overview.md) — modules, services, TypeScript
 - [Bootstrap overview](bootstrap/i-overview.md) — modals, collapse, `data-bs-*` plugins
+- [React Native overview](react-native/i-overview.md) — mobile apps, Expo, `View`/`Text`
