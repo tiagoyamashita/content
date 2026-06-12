@@ -56,7 +56,7 @@ Redis server
 | Session store for stateless web tier | Full-text search at scale (use OpenSearch/ES) |
 | Rate limiting, feature flags | Complex relational reporting |
 | Leaderboards (`sorted set`) | Large values (>512 MB per key — design mistake) |
-| Pub/sub, Streams (light queues) | Durable heavy job queue alone (often add Kafka/SQS) |
+| Pub/sub, Streams (light queues) | Durable heavy job queue alone (often add [Kafka](../kafka/i-overview.md)/SQS) |
 
 **Rule:** Postgres/MongoDB holds truth; Redis accelerates or coordinates.
 

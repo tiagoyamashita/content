@@ -65,7 +65,7 @@ Customer -> OS: search (via Search API)
 | **Debezium CDC** | Reads Postgres WAL; all column changes |
 | **Outbox / domain events** | `OrderConfirmed` payload — explicit schema |
 
-Both land on Kafka; indexer logic is similar. Outbox aligns with [Choreography](iii-ecommerce-checkout-choreography.md); CDC indexes **any** column change without app publishing.
+Both land on Kafka; indexer logic is similar. Outbox aligns with [Choreography](iii-ecommerce-checkout-choreography.md); CDC indexes **any** column change without app publishing. Kafka basics: [SWE101 Kafka track](../../kafka/i-overview.md).
 
 ## 4. Indexer — idempotent upsert
 
