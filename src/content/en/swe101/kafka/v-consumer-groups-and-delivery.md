@@ -54,6 +54,8 @@ T -> IDX: all partitions (own offsets)
 
 Each service maintains **its own offset** per partition — slow email does not block payments.
 
+**Not sequential pipelines:** if **Shipping must run only after Payment succeeds**, do not put both on the same topic with different groups — they start **in parallel**. Use [Sequential pipelines & sagas](viii-sequential-pipelines-and-sagas.md) (choreographed chain or orchestrator).
+
 ## 3. Rebalance
 
 When a consumer **joins**, **leaves**, or **crashes**, the group **rebalances** — partitions reassigned.

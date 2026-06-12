@@ -22,6 +22,7 @@ Diagram syntax: [PlantUML sequence diagrams](../plantuml/iii-sequence-diagrams.m
 | **V — Consumer groups & delivery** | Scaling consumers, offsets, at-least-once |
 | **VI — Patterns & integration** | Outbox, CDC, event-driven, Spring Kafka |
 | **VII — Operations** | Retention, compaction, monitoring, pitfalls |
+| **VIII — Sequential pipelines & sagas** | A→B→C on success only; not parallel consumer groups |
 
 ## What problem Kafka solves
 

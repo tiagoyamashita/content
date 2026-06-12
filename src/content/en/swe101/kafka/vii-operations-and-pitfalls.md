@@ -125,4 +125,4 @@ Many teams start local (Docker) → managed service for production.
 
 ## Track complete
 
-Return to [Kafka overview](i-overview.md). Related: [System design examples](../sysdesign/examples/i-overview.md), [PlantUML](../plantuml/i-overview.md).
+Return to [Kafka overview](i-overview.md). **Sequential workflows:** [Sequential pipelines & sagas](viii-sequential-pipelines-and-sagas.md). Related: [System design examples](../sysdesign/examples/i-overview.md), [PlantUML](../plantuml/i-overview.md).

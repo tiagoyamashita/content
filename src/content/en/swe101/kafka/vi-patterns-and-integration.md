@@ -30,29 +30,128 @@ S -> S: create shipment
 
 No central orchestrator — each service reacts to events. Tradeoffs: [Checkout choreography](../sysdesign/examples/iii-ecommerce-checkout-choreography.md) vs saga orchestrator.
 
+**Strict A → B → C on success only?** Parallel consumer groups on one topic are the wrong tool — see [Sequential pipelines & sagas](viii-sequential-pipelines-and-sagas.md).
+
 ## 2. Transactional outbox
 
 **Problem:** DB commit and Kafka send are two systems — one can succeed without the other.
 
-**Fix:** write the event to an **`outbox` table** in the **same DB transaction** as the business row; a relay publishes to Kafka.
+**Fix:** your **application service** (e.g. **Order API**) writes the business row **and** an **`outbox_events` row** in **one database transaction**. A separate process — the **outbox relay** — reads unpublished rows and calls `kafka.send`. The HTTP handler **never** talks to Kafka directly.
+
+### Who is who?
+
+| Component | What it is | Talks to Kafka? |
+|-----------|------------|-----------------|
+| **Order API** (or any domain service) | **Your** Spring Boot / service — handles `POST /orders` | **No** — only SQL in a transaction |
+| **Order DB** (Postgres) | That service’s database — `orders` + `outbox_events` tables | No |
+| **Outbox relay** | Background publisher — **not** in the request path | **Yes** — producer only |
+| **Kafka** | Event bus | — |
+| **Downstream consumers** | Payment, email, search, … | Consume only |
+
+The relay is **logically separate** from the API even if you deploy it different ways (below).
+
+### Request path vs relay path
 
 ```plantuml
 @startuml
-title Transactional outbox
-participant API
-database Postgres as DB
-participant "Outbox relay" as R
-queue Kafka as K
+title Transactional outbox — two processes
+actor Client
+participant "Order API\n(your service)" as API
+database "Order Postgres\norders + outbox_events" as DB
+participant "Outbox relay\n(separate concern)" as R
+queue "order-events" as K
+participant "Payment svc" as PAY
 
+Client -> API: POST /orders
 API -> DB: BEGIN
-API -> DB: INSERT order
-API -> DB: INSERT outbox (payload)
+API -> DB: INSERT INTO orders …
+API -> DB: INSERT INTO outbox_events\n(type, payload, published_at NULL)
 API -> DB: COMMIT
-R -> DB: poll outbox (or CDC)
-R -> K: publish
-R -> DB: mark published
+API --> Client: 201 Created
+
+note over API,K: API returns here — Kafka not called yet
+
+loop every 500ms or on CDC
+  R -> DB: SELECT … WHERE published_at IS NULL
+  R -> K: produce OrderCreated
+  R -> DB: UPDATE outbox SET published_at = now()
+end
+
+K -> PAY: consume OrderCreated
 @enduml
 ```
+
+### What the Order API does (your code)
+
+```java
+// Order API — same JVM as REST controllers, but no KafkaTemplate in this transaction
+@Transactional
+public Order createOrder(CreateOrderRequest req) {
+  Order order = orderRepo.save(Order.pending(req));
+  outboxRepo.save(OutboxEvent.builder()
+      .aggregateId(order.getId())
+      .type("OrderCreated")
+      .payload(toJson(order))
+      .build());
+  return order;  // COMMIT writes both rows atomically
+}
+```
+
+**Wrong:** `kafka.send()` inside `@Transactional` without outbox — broker ack and DB commit can still diverge on crash.
+
+### What the outbox relay does
+
+Reads **its service’s** `outbox_events` table and publishes. **Yes — this is often a second deployable**, but not always.
+
+| Relay deployment | Description | When |
+|------------------|-------------|------|
+| **Separate microservice** | Small `outbox-relay` app (or one relay per domain DB) polls Postgres, produces to Kafka | Clear separation, scale relay independently |
+| **`@Scheduled` in same Order API app** | Second thread pool in the **same** Spring Boot JAR | Small teams, low volume — simplest start |
+| **Dedicated worker process** | Same repo, different `main()` / k8s Deployment | Middle ground — separate pod, shared code |
+| **Debezium CDC** | No polling — connector reads Postgres **WAL**, streams `outbox_events` inserts to Kafka | Near real-time; more ops ([CDC](viii-order-search-cdc.md) style) |
+
+```text
+Typical microservice layout:
+
+  order-service/          ← your API (HTTP + outbox INSERT)
+  order-outbox-relay/     ← optional separate service (poll + Kafka producer)
+
+  Both connect to the SAME Order Postgres — relay only needs SELECT/UPDATE on outbox_events.
+```
+
+### Relay implementation sketch (polling service)
+
+```java
+// Can live in order-outbox-relay OR @Scheduled in order-service
+@Scheduled(fixedDelay = 500)
+public void publishPendingEvents() {
+  List<OutboxEvent> batch = outboxRepo.findUnpublished(100);
+  for (OutboxEvent e : batch) {
+    kafka.send("order-events", e.getAggregateId(), e.getPayload())
+        .get();  // wait for broker ack
+    outboxRepo.markPublished(e.getId());
+  }
+}
+```
+
+| Step | Owner |
+|------|--------|
+| Insert `orders` + `outbox_events` | **Order API** (your service) |
+| Poll / CDC / read WAL | **Outbox relay** (separate service, scheduler, or Debezium) |
+| `kafka.produce` | **Outbox relay** only |
+| `UPDATE published_at` | **Outbox relay** after successful ack |
+
+### One outbox per service database
+
+Payment service has **its own** `outbox_events` in **Payment DB** when it publishes `PaymentCaptured`. Order relay only reads Order DB — not a global shared outbox table for the whole company (unless you deliberately centralize, which is uncommon).
+
+### Failure behavior
+
+| Crash when | Result |
+|------------|--------|
+| Before `COMMIT` | No order, no outbox row — client retries |
+| After `COMMIT`, before relay runs | Row sits in outbox; relay publishes later |
+| After Kafka send, before `markPublished` | Duplicate on Kafka — **idempotent consumers** |
 
 Deep dive: [Transactional outbox example](../sysdesign/examples/v-ecommerce-checkout-transactional-outbox.md).
 

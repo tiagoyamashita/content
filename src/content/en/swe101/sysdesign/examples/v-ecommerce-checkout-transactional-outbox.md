@@ -73,19 +73,31 @@ public void relayOutbox() {
 
 ```plantuml
 @startuml
-participant "Order Svc" as ORD
-database "Order DB" as DB
-participant "Outbox relay" as R
-queue Kafka
-participant "Payment Svc" as PAY
+title Transactional outbox — Order API + relay (separate process)
+actor Client
+participant "Order API\n(your service)" as ORD
+database "Order Postgres\norders + outbox_events" as DB
+participant "Outbox relay\n(separate service or @Scheduled)" as R
+queue "order-events" as K
+participant "Payment svc" as PAY
 
-ORD -> DB: BEGIN; INSERT order; INSERT outbox; COMMIT
-R -> DB: poll unpublished
-R -> Kafka: OrderCreated
-Kafka -> PAY: consume
+Client -> ORD: POST /orders
+ORD -> DB: BEGIN; INSERT order; INSERT outbox_events; COMMIT
+ORD --> Client: 201 Created
+note over ORD,K: Order API does not call Kafka
+
+loop poll or CDC
+  R -> DB: SELECT unpublished outbox rows
+  R -> K: produce OrderCreated
+  R -> DB: mark published_at
+end
+
+K -> PAY: consume
 PAY -> PAY: capture + local tx
 @enduml
 ```
+
+**Order API** = your HTTP service (writes DB only). **Outbox relay** = second deployable, `@Scheduled` job in same app, or Debezium — see [Kafka outbox §2](../../kafka/vi-patterns-and-integration.md).
 
 Works with [Choreography](iii-ecommerce-checkout-choreography.md): every publisher (Order, Payment, Inventory) uses its **own** outbox in its **own** DB.
 
