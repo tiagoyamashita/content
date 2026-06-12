@@ -14,8 +14,8 @@ Parent track: [JavaScript overview](../i-overview.md). Contrast with [HTMX](../.
 | Part | Focus |
 |------|--------|
 | **I — Overview** | Components, JSX, hooks, when to use React |
-| **II — Project setup & structure** | Vite, folders, what file goes where |
-| **III — Rendering & server requests** | Mount → render cycle, `fetch`, loading/error UI |
+| **II — Project setup & structure** | Vite, folders, `pages` vs `views`, `lib`, `api/lib`, when to use each pattern |
+| **III — Rendering & server requests** | Mount/render cycle, `useEffect` fetch timeline, stale-data guards, TanStack Query |
 | **IV — Authentication** | Tokens, cookies, protected routes, auth context |
 | **V — Forms & validation** | Controlled inputs, client validation, server errors |
 
