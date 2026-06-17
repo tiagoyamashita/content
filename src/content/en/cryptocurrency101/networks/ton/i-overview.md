@@ -157,4 +157,4 @@ Use [TON viewer](https://tonviewer.com/) on testnet to inspect deploy transactio
 
 ## Next
 
-[Cardano (ADA)](../ada/i-overview.md) — UTXO / Aiken, or [overview](../../i-overview.md).
+[Cardano (ADA)](../ada/i-overview.md) — UTXO / Aiken, [Examples — TON 2% deploy](../../examples/iii-ton-two-percent-fee-split.md), or [overview](../../i-overview.md).

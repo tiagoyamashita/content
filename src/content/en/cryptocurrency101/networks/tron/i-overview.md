@@ -151,4 +151,4 @@ TronIDE / TronBox often show **estimated energy** before confirm. Check [Tronsca
 
 ## Next
 
-[TON](../ton/i-overview.md) — Tact, or [Cryptocurrency101 overview](../../i-overview.md).
+[TON](../ton/i-overview.md) — Tact, [Examples — Tron 2% deploy](../../examples/ii-tron-two-percent-fee-split.md), or [Cryptocurrency101 overview](../../i-overview.md).
