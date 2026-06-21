@@ -93,7 +93,7 @@ L --> P: offset committed
 |--------|----------|
 | **`0`** | Fire-and-forget — fastest, may lose data |
 | **`1`** | Leader ack — follower loss can lose unreplicated data |
-| **`all`** | ISR ack — durable default for important events |
+| **`all`** | ISR ack — durable default for important events — [full acks guide](ix-acks-and-how-they-work.md) |
 
 ## 5. Consumer read path
 

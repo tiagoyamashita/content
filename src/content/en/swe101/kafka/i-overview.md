@@ -20,9 +20,11 @@ Diagram syntax: [PlantUML sequence diagrams](../plantuml/iii-sequence-diagrams.m
 | **III — Core concepts** | Brokers, topics, partitions, offsets, replication |
 | **IV — Producers & consumers** | Publish/subscribe flow, keys, serializers |
 | **V — Consumer groups & delivery** | Scaling consumers, offsets, at-least-once |
+| **IX — Acks & how they work** | Producer `acks`, consumer offset commit, Spring manual ack |
 | **VI — Patterns & integration** | Outbox, CDC, event-driven, Spring Kafka |
 | **VII — Operations** | Retention, compaction, monitoring, pitfalls |
 | **VIII — Sequential pipelines & sagas** | A→B→C on success only; not parallel consumer groups |
+| **Example — Spring Boot + Stripe** | Hold & capture via Kafka — full checkout walkthrough |
 
 ## What problem Kafka solves
 
@@ -105,4 +107,4 @@ See [Patterns & integration](vi-patterns-and-integration.md) and [Order search C
 
 ## Next
 
-Continue with [Install & local dev](ii-install-and-local-dev.md) to run a cluster locally and produce your first message.
+Continue with [Install & local dev](ii-install-and-local-dev.md) to run a cluster locally and produce your first message. **Worked example:** [Spring Boot + Stripe hold & capture](examples.md).

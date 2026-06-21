@@ -37,7 +37,7 @@ PAY -> PAY: charge / reserve inventory
 |----------|---------|
 | **`bootstrap.servers`** | `host1:9092,host2:9092` |
 | **`key.serializer` / `value.serializer`** | String, JSON, Avro |
-| **`acks`** | `all` for durability |
+| **`acks`** | `all` for durability — see [Acks & how they work](ix-acks-and-how-they-work.md) |
 | **`enable.idempotence`** | `true` — dedupe retries (exactly-once **produce** to partition) |
 | **`compression.type`** | `lz4` or `zstd` — less network/disk |
 
@@ -75,7 +75,7 @@ try (KafkaProducer<String, String> producer = new KafkaProducer<>(props)) {
 |----------|---------|
 | **`group.id`** | Consumer group name — required for scalable consumption |
 | **`auto.offset.reset`** | `earliest` (read from start) or `latest` (only new) when no offset |
-| **`enable.auto.commit`** | `false` in production — commit after successful processing |
+| **`enable.auto.commit`** | `false` in production — commit after successful processing ([acks deep dive](ix-acks-and-how-they-work.md)) |
 | **`max.poll.records`** | Batch size per poll — tune with processing time |
 
 ## 5. Java consumer example

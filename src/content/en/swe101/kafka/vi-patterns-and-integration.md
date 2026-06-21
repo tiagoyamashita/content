@@ -252,7 +252,78 @@ C -> DLT: publish original + error metadata
 @enduml
 ```
 
-Fix the bug or bad payload offline; replay from DLT after correction.
+The consumer **commits the offset** on the main topic after routing to DLT — the poison message will **not** block the partition forever.
+
+### What is stored in the DLT
+
+| Part | Contents |
+|------|----------|
+| **Value** | Original record payload (unchanged) |
+| **Key** | Original partition key (e.g. `orderId`) |
+| **Headers** | Error metadata — exception type, message, stack trace snippet, original topic/partition/offset, consumer group |
+
+Spring `@RetryableTopic` and `DefaultErrorHandler` + `DeadLetterPublishingRecoverer` both follow this pattern. Check app logs during retries for the same exception before the record reaches DLT.
+
+### Runbook after retries are exhausted
+
+```text
+1. Alert fires          → DLT topic has new messages (monitor count / lag)
+2. Inspect DLT record   → read headers + payload; find correlation-id in logs
+3. Classify root cause  → bug, bad data, or transient outage that outlasted backoff
+4. Fix                  → deploy code, repair data, or restore downstream dependency
+5. Replay or skip       → republish to main topic only when safe; otherwise compensate manually
+```
+
+| Root cause | Fix | Replay? |
+|------------|-----|---------|
+| **Bug in handler** (NPE, wrong schema parse) | Deploy fixed code | **Yes** — replay from DLT |
+| **Bad payload** (invalid amount, missing field) | Fix upstream producer or patch data | Republish **corrected** event; do not replay poison as-is |
+| **Downstream down too long** (DB, payment API) | Restore dependency; tune retry count/backoff if needed | **Yes** once dependency is healthy |
+| **Business rejection** (card declined) | Not a poison message — publish a **failure** event instead | **No** DLT replay; handle in domain flow |
+
+**Do not** auto-replay DLT → main topic on a timer without fixing the cause — you will loop the same failure and fill DLT again.
+
+### Replay from DLT
+
+After the fix is deployed, republish the original payload to the **main topic** (same key preserves per-order ordering):
+
+```bash
+# Read one DLT record (local Docker — see Install & local dev)
+docker exec -it <kafka-container> /opt/kafka/bin/kafka-console-consumer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic order-events.DLT \
+  --from-beginning --max-messages 1
+
+# Republish to the main topic (key = orderId)
+docker exec -it <kafka-container> /opt/kafka/bin/kafka-console-producer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic order-events \
+  --property parse.key=true \
+  --property key.separator=:
+# then type:  ord_42:{"type":"OrderPlaced",...}
+```
+
+In production, prefer a **controlled replay tool** — a one-off consumer on DLT that publishes to the main topic (or a dedicated `order-events-replay` topic), with rate limits and an audit log of what was replayed.
+
+```java
+// Minimal replay listener — run only during an approved replay window
+@KafkaListener(topics = "order-events.DLT", groupId = "dlt-replay-admin")
+public void replay(ConsumerRecord<String, String> dlt) {
+  kafka.send("order-events", dlt.key(), dlt.value());  // handler must be idempotent (§4)
+}
+```
+
+Because delivery is **at-least-once**, replay is safe only when the handler checks an **idempotency key** (`eventId`) — see [§4 Idempotent consumers](#4-idempotent-consumers-required).
+
+### Monitoring
+
+| Signal | Action |
+|--------|--------|
+| **DLT message count** rises | Page on-call; triage within SLA |
+| **Consumer lag** on main topic stalls then drops | Likely poison routed to DLT — check DLT around same timestamp |
+| **App error logs** during retries | Same stack trace as DLT headers — use `correlation-id` to trace the order |
+
+See [Operations checklist](vii-operations-and-pitfalls.md) — “DLQ for poison messages” and lag alerts.
 
 ## 7. Kafka vs job queue
 

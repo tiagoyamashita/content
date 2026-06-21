@@ -143,4 +143,4 @@ Hot keys → one partition overloaded (“hot partition”) — split domain or 
 
 ## Next
 
-Continue with [Patterns & integration](vi-patterns-and-integration.md) — outbox, CDC, Spring Kafka.
+Continue with [Acks & how they work](ix-acks-and-how-they-work.md) — producer and consumer acknowledgments in depth. Then [Patterns & integration](vi-patterns-and-integration.md) — outbox, CDC, Spring Kafka.
