@@ -161,9 +161,16 @@ Feed actions back into [threat model](ii-threat-modeling-and-risk.md) and [CI/CD
 
 ## 11. Rehearsal questions
 
-- Name the five IR phases after detection.
-- Why snapshot disks before eradication?
-- What belongs in a security log line for a failed login?
-- Why run tabletop exercises if you already have monitoring?
+- Name the five IR phases after detection?  
+  **Answer:** Containment, Eradication, Recovery, Lessons Learned, and Preparation (note: Preparation generally comes first in the IR lifecycle, but after detection the typical steps are Containment, Eradication, Recovery, and Lessons Learned).
+
+- Why snapshot disks before eradication?  
+  **Answer:** To preserve forensic evidence that can be analyzed later; taking a snapshot ensures you retain a record of the compromised system before any changes are made during incident response.
+
+- What belongs in a security log line for a failed login?  
+  **Answer:** Include timestamp (in UTC), username attempted, source IP address, reason for failure, user agent, request ID or session ID, and possibly geographic location. Avoid logging sensitive data like passwords.
+
+- Why run tabletop exercises if you already have monitoring?  
+  **Answer:** Tabletop exercises test the human and process aspects of incident response—roles, communications, decision making, runbook clarity—not just whether monitoring detects problems. They help identify process gaps before a real incident occurs.
 
 **Related:** [Overview](i-overview.md), [Application & network security](iv-application-and-network-security.md), [Pipeline observability](../sre101/cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md).

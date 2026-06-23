@@ -126,9 +126,65 @@ Use framework middleware or reverse proxy defaults; tune CSP without breaking le
 
 ## 9. Rehearsal questions
 
+**Practice questions:**
+
 - What is IDOR and how do you prevent it?
 - Why doesn’t TLS alone stop SQL injection?
 - Draw three network tiers from internet to database.
 - Name two differences between “VPN trust” and zero trust.
+- What is the purpose of a content security policy (CSP) header?
+- Why are short-lived credentials preferred over long-lived ones?
+- How can you mitigate mass assignment vulnerabilities in APIs?
+- What is the risk of excessive data exposure in APIs, and how can it be avoided?
+- What’s the role of mutual TLS (mTLS) in microservice communication?
+- What does “least privilege” mean in application/network security design?
+
+**Sample answers:**
+
+- **What is IDOR and how do you prevent it?**  
+  IDOR (Insecure Direct Object Reference) occurs when access to data objects (like user IDs or document IDs) isn't properly restricted, allowing unauthorized users to access data by guessing or manipulating IDs.  
+  *Prevention*: Always perform authorization checks on every object access, ensuring users can only access their permitted resources. Scope object IDs to users/tenants so IDs cannot be guessed.
+
+- **Why doesn’t TLS alone stop SQL injection?**  
+  TLS encrypts data in transit between client and server, preventing eavesdropping. However, SQL injection exploits flaws in how the application processes user input at the database—TLS offers no protection once the data arrives at your backend.
+
+- **Draw three network tiers from internet to database.**  
+  1. **Internet** (user/browser)  
+  2. **Web/Application Server** (handles business logic)  
+  3. **Database Server** (stores data; not directly exposed to internet)
+
+- **Name two differences between “VPN trust” and zero trust.**  
+  1. VPN trust treats being “on the VPN” as sufficient trust for access; zero trust re-authenticates and re-authorizes every request.  
+  2. VPN sessions are often long-lived; zero trust grants ephemeral access tied to short-lived device and user context.
+
+- **What is the purpose of a content security policy (CSP) header?**  
+  The CSP header controls which sources of content (scripts, styles, etc.) are allowed to load in the browser, helping to prevent XSS and other script injection attacks.
+
+- **Why are short-lived credentials preferred over long-lived ones?**  
+  Short-lived credentials limit the impact window if credentials are leaked. Attackers have less time to use them, reducing exposure and making compromise detection and recovery easier.
+
+- **How can you mitigate mass assignment vulnerabilities in APIs? Give an example.**  
+  By allowlisting fields that are allowed to be updated, rather than accepting all user-supplied fields.
+
+  *Example:*  
+  ```python
+  # BAD: Accepts all fields in incoming request—dangerous!
+  user.update(request.json)
+  
+  # GOOD: Only updates explicitly allowed fields
+  allowed_fields = ['email', 'display_name']
+  data = {k: v for k, v in request.json.items() if k in allowed_fields}
+  user.update(data)
+  ```
+
+- **What is the risk of excessive data exposure in APIs, and how can it be avoided?**  
+  Exposing entire internal models may reveal sensitive or unintended data (e.g., passwords, internal notes).  
+  *Prevention*: Use Data Transfer Objects (DTOs) or serializers to return only required/expected fields.
+
+- **What’s the role of mutual TLS (mTLS) in microservice communication?**  
+  mTLS provides authentication between both parties in a connection (not just the server), ensuring only authorized clients and services can communicate with each other—this is especially useful for service-to-service trust within internal networks.
+
+- **What does “least privilege” mean in application/network security design?**  
+  Every user, device, process, or service should be granted the minimum set of permissions required to perform its job, and no more. This limits the potential blast radius if an account is compromised.
 
 **Related:** [Identity & secrets](iii-identity-access-and-secrets.md), [Incident response](v-incident-response-and-operations.md), [Threat modeling](ii-threat-modeling-and-risk.md).
