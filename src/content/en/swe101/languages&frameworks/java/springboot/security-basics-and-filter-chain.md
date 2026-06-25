@@ -65,7 +65,10 @@ public class SecurityConfig {
 ```
 
 - **`oauth2ResourceServer().jwt()`** validates JWTs when **`spring-boot-starter-oauth2-resource-server`** is present and **`spring.security.oauth2.resourceserver.jwt.issuer-uri`** (or JWK set) is configured.
-- Issue tokens with your IdP (Auth0, Keycloak, Cognito) or a dedicated auth service — Boot focuses on **validation**, not minting tokens, in this pattern.
+- Issue tokens with your IdP (e.g., AWS Cognito, Auth0, Keycloak, or Google Cloud Identity Platform) or a dedicated auth service. 
+- **AWS Example:** With **AWS Cognito**, users authenticate via Cognito's hosted UI or a custom UI, and Cognito issues JWT access tokens. In Spring Boot, set `spring.security.oauth2.resourceserver.jwt.issuer-uri` to your Cognito user pool's issuer URL (like `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`) to enable JWT validation. You can also use **AWS API Gateway** to validate Cognito tokens and forward only authenticated requests to your backend service.
+- **Google Cloud Example:** With **Google Cloud Identity Platform** or **Firebase Authentication**, Google issues JWTs (ID or access tokens) after users log in. Set your Spring Boot application's `issuer-uri` to your Identity Platform's issuer (e.g., `https://securetoken.google.com/{project-id}` for Firebase) to validate these tokens. You can optionally use **Google Cloud Endpoints** to perform JWT validation before requests reach your service.
+- In this pattern, Spring Boot focuses on **validating** JWTs, not minting them.
 
 ## 3. Development-only HTTP Basic
 
