@@ -243,3 +243,4 @@ For **`app.cache.enabled=false`**, use **`spring.cache.type=none`** or a **`NoOp
 - **Beans & profiles** — Part III [Beans & dependency injection](iii-beans-and-dependency-injection.md)
 - **JPA & transactions** — Part V [JPA & @Transactional](v-jpa-and-transactional.md) — cache sits **outside** the DB transaction; evict **after** successful commit when consistency matters
 - **Security** — [Basics & filter chain](security-basics-and-filter-chain.md) (Redis passwords, TLS, network exposure)
+- **Distributed transactions** — Part IX [Distributed transactions & microservices](ix-distributed-transactions-and-microservices.md) — cache invalidation vs cross-service consistency
