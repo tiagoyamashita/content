@@ -135,21 +135,139 @@ public void importOrders(InputStream csv) throws IOException {
 }
 ```
 
-## 5. Propagation patterns
-| Value | Typical use |
-|-------|-------------|
-| **`REQUIRED`** (default) | Join caller’s transaction or start a new one |
-| **`REQUIRES_NEW`** | Always new tx — audit logging independent of outer rollback |
-| **`NOT_SUPPORTED`** | Suspend tx — rare, for integrations that misbehave inside a tx |
+## 5. Propagation patterns & rollbacks: When to use REQUIRES_NEW?
+
+| Value                     | Typical use                                                                              |
+|---------------------------|------------------------------------------------------------------------------------------|
+| **`REQUIRED`** (default)  | Join caller’s transaction or start a new one; most business logic and data operations    |
+| **`REQUIRES_NEW`**        | Always starts a new tx — useful for audit logging or side records that **must persist** even if the outer transaction rolls back (e.g., you want an audit trail of attempted changes, including failed ones) |
+| **`NOT_SUPPORTED`**       | Suspend tx — unusual; sometimes needed for integrations that fail inside a transaction   |
+
+**Best practice:**  
+- For almost all business/service/database methods, stick with the default (**`REQUIRED`**).
+- Use **`REQUIRES_NEW`** **sparingly** — mostly for *secondary actions* like audit or notification events that should be saved independently, regardless of whether the main transaction commits or rolls back.
+- **Rollback:** By default, Spring only rolls back on unchecked exceptions inside any transaction (including `REQUIRES_NEW`). You rarely want your audit log to roll back just because the business operation failed — **that’s the main use for `REQUIRES_NEW`**.
+
+**Example:** Audit entries should usually be saved with `REQUIRES_NEW` to guarantee persistence, even if the original business transaction fails and rolls back.
+
+### Pitfall: Full rollback with multiple service calls
+
+If your controller coordinates several service calls and you want **all** of them to roll back as a unit if any one fails (i.e., you want *atomicity*), make sure:
+- The controller method itself is annotated with `@Transactional` *or*
+- There is a service "orchestrator" method annotated with `@Transactional` that invokes all needed services
+
+**Why?**  
+If each service runs in its own transaction (e.g., each has `REQUIRES_NEW`, or you don't have a shared transaction at the top), you can’t roll back **everything** if something fails—some changes may persist even when others fail.
+
+**Best practice for full rollback:**  
+- Ensure a single outer transaction covers all needed service calls (`REQUIRED`, the default), and only use `REQUIRES_NEW` for actions that *must* commit regardless of outcome.
+
+**Example:**
+```java
+// All-or-nothing flow: a rollback in one service undoes all changes
+@Transactional  // at controller or service orchestrator level
+public void placeOrderAndSendInvoice(...) {
+  orderService.placeOrder(...);   // runs in shared tx
+  invoiceService.sendInvoice(...); // runs in same tx
+  // if any throws, all is rolled back
+}
+```
+
+**Avoid:**  
+Using `REQUIRES_NEW` on main service methods when you want truly atomic multi-step operations. `REQUIRES_NEW` isolates transactions and prevents full rollback.
 
 ```java
 // Compile: javac --release 22 …
+
+// Example 1: Service method with default REQUIRED propagation calling another REQUIRED transactional method.
+// Both participate in the same transaction. If an exception is thrown and not handled inside either, the entire transaction is rolled back.
+@Transactional  // default is Propagation.REQUIRED
+public void doBusinessOperation() {
+  serviceA.stepOne();           // @Transactional(REQUIRED)
+  serviceB.stepTwo();           // @Transactional(REQUIRED)
+  // If either step throws (and isn't caught), everything rolls back: one transaction for all.
+}
+
+// Example 2: Outer @Transactional(REQUIRED) calls inner @Transactional(REQUIRES_NEW). 
+// The inner REQUIRES_NEW method runs in a separate transaction, which commits or rolls back independently of the outer transaction.
+@Transactional  // default REQUIRED
+public void updateUserAndAudit(String user) {
+  userService.updateUser(user);       // runs in the current transaction
+  auditService.saveAuditEntry("edit"); // runs in a new, independent transaction
+  // If updateUser fails & throws, user changes roll back—BUT audit log may still be committed!
+}
+
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public void saveAuditEntry(String action) {
   // commits even if outer business tx rolls back (when exceptions handled carefully)
 }
 ```
 
+Notes for clarity:
+- If you call a @Transactional method in another service, and both use Propagation.REQUIRED (the default), the callee joins the caller's transaction—commit or rollback affects both together.
+- If the inner method uses Propagation.REQUIRES_NEW, it suspends the caller's transaction and uses its own, committing changes regardless of what happens to the outer transaction (unless an unhandled exception in the audit method itself causes it to roll back).
+- This behavior allows you to, for example, persist an audit event even if the main business operation fails and is rolled back.
+
+**UML Sequence Diagrams:**
+
+<details>
+<summary>REQUIRED &rarr; REQUIRED (Single Transaction)</summary>
+
+```plantuml
+@startuml
+actor User
+participant Controller
+participant ServiceA as "Service A (@Transactional REQUIRED)"
+participant ServiceB as "Service B (@Transactional REQUIRED)"
+participant Database
+
+User -> Controller: HTTP request
+Controller -> ServiceA: doBusinessOperation()
+activate ServiceA
+ServiceA -> ServiceB: stepTwo()
+activate ServiceB
+ServiceB -> Database: DB Operation
+deactivate ServiceB
+ServiceA -> Database: DB Operation
+deactivate ServiceA
+Database --> Controller: Commit/Rollback as one unit
+@enduml
+```
+</details>
+
+<details>
+<summary>REQUIRED &rarr; REQUIRES_NEW (Nested, Independent Transactions)</summary>
+
+```plantuml
+@startuml
+actor User
+participant Controller
+participant BusinessService as "Business Service (@Transactional REQUIRED)"
+participant AuditService as "Audit Service (@Transactional REQUIRES_NEW)"
+participant Database
+
+User -> Controller: HTTP request
+Controller -> BusinessService: updateUserAndAudit()
+activate BusinessService
+BusinessService -> Database: Update user (TX1)
+BusinessService -> AuditService: saveAuditEntry()
+activate AuditService
+AuditService -> Database: Insert audit log (TX2, commits now)
+deactivate AuditService
+BusinessService -> Database: [If exception...] Rollback TX1 (audit already committed)
+deactivate BusinessService
+@enduml
+```
+</details>
+
 ## 6. Pitfalls
-- **`@Transactional`** on **`private`** methods or self-invocations (`this.markPaid`) **does not** start AOP proxies — extract to another bean or call through the injected proxy if you truly need it (better: keep boundaries coarse).
+- **`@Transactional`** uses Spring AOP (Aspect-Oriented Programming) proxies to manage transactions. These proxies only work on public methods called from outside the class. If you put **`@Transactional`** on a **`private`** method or you call a transactional method from within the same class (like `this.markPaid()`), the proxy is bypassed, so the transaction won't start as expected.
+
+  - **AOP proxies**
+    - They are Spring's way of adding extra behavior (like starting or committing a transaction) "around" your code, typically by wrapping your beans.
+  - **Self-invocation**
+    - When a method in the class calls another method in the same class using `this` the call doesn't go through the proxy, the transactional logic doesn't kick in.
+  - To ensure transactions work, put `@Transactional` on **public methods** and call them from other beans (services, controllers), not from inside the same bean.
+  - **Keep boundaries coarse**
+    - Try to annotate larger, public business methods with `@Transactional`, not lots of tiny methods. This results in fewer, clearer transaction boundaries and less confusion about where a transaction actually starts and ends.
 - **`readOnly = true`** hints Hibernate/JDBC drivers for optimizations — pair with **`@Transactional`** on query-heavy service methods.
