@@ -67,6 +67,52 @@ public class SecurityConfig {
 - **`oauth2ResourceServer().jwt()`** validates JWTs when **`spring-boot-starter-oauth2-resource-server`** is present and **`spring.security.oauth2.resourceserver.jwt.issuer-uri`** (or JWK set) is configured.
 - Issue tokens with your IdP (e.g., AWS Cognito, Auth0, Keycloak, or Google Cloud Identity Platform) or a dedicated auth service. 
 - **AWS Example:** With **AWS Cognito**, users authenticate via Cognito's hosted UI or a custom UI, and Cognito issues JWT access tokens. In Spring Boot, set `spring.security.oauth2.resourceserver.jwt.issuer-uri` to your Cognito user pool's issuer URL (like `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`) to enable JWT validation. You can also use **AWS API Gateway** to validate Cognito tokens and forward only authenticated requests to your backend service.
+
+```plantuml
+@startuml
+actor User
+
+participant "Amazon Cognito\nUser Pool" as Cognito
+participant "Amazon API Gateway" as APIGateway
+participant "AWS Lambda (optional trigger)" as Lambda
+database "Amazon DynamoDB\n(User Database)" as DynamoDB
+participant "Spring Boot API\n(EC2/ECS/Lambda)" as Backend
+
+User -> Cognito: Sign up / Sign in
+Cognito --> User: JWT Access Token
+
+User -> APIGateway: API Request\n(Authorization: Bearer <JWT>)
+APIGateway -> Cognito: Verify JWT Token (optional Custom Authorizer)
+APIGateway -> Backend: Forward authenticated request
+
+Backend -> DynamoDB: Fetch user data (using JWT sub claim)
+DynamoDB --> Backend: User profile/records
+Backend --> APIGateway: API Response
+APIGateway --> User: HTTP Response
+
+' Optional: Cognito Triggers
+Cognito -> Lambda: Trigger (e.g., Post Confirmation)
+Lambda -> DynamoDB: Sync user to DB
+Lambda --> Cognito: Confirmation
+@enduml
+```
+
+How do I connect Cognito to my user database list?
+- **Option 1:** Use Cognito's built-in user pool to manage users (Cognito stores and manages all accounts).
+  - *Pros:* No infrastructure or sync to maintain; easy integration with AWS ecosystem; managed security and scaling.
+  - *Cons:* Vendor lock-in (migrating users out can be difficult and may require data export/egress costs); limited customization for attributes/storage; users live only in Cognito.
+- **Option 2:** Sync users with your custom user database (e.g., DynamoDB, RDS) using Cognito Triggers (AWS Lambda functions).
+  - *Pros:* Full control over user records; easy integration with custom logic or legacy systems; can use AWS managed databases.
+  - *Cons:* Adds operational complexity (must maintain triggers and handle sync edge cases); still some vendor lock-in via triggers; data egress cost if migrating large datasets outside AWS; potential for out-of-sync states.
+- **Option 3:** Use Cognito federation to external identity providers (Google, SAML, etc.).
+  - *Pros:* Your app supports multiple login providers; avoids storing passwords in Cognito; users stay in their provider's database.
+  - *Cons:* Complexity in managing multiple IdPs and attribute mapping; risk of vendor lock-in to AWS federation patterns; user profile sync may require extra handling.
+
+**Summary:**  
+For simple projects inside AWS, Cognito User Pools are easy and safe. Custom databases (via triggers) offer more freedom with extra work, but create risks of lock-in or data egress costs. Federated logins support bring-your-own-identity but can tie your solution to AWS if not carefully architected.
+When building for long-term or multi-cloud flexibility, consider the impact of data migration, possible costs to extract user records, and dependency on AWS-specific features.
+  
+If your service needs to look up user records, use the `sub` (subject) claim in the JWT token from Cognito as the unique user identifier to query your user database.
 - **Google Cloud Example:** With **Google Cloud Identity Platform** or **Firebase Authentication**, Google issues JWTs (ID or access tokens) after users log in. Set your Spring Boot application's `issuer-uri` to your Identity Platform's issuer (e.g., `https://securetoken.google.com/{project-id}` for Firebase) to validate these tokens. You can optionally use **Google Cloud Endpoints** to perform JWT validation before requests reach your service.
 - In this pattern, Spring Boot focuses on **validating** JWTs, not minting them.
 
@@ -142,4 +188,4 @@ Enable with **`@EnableMethodSecurity`** on a **`@Configuration`** class.
 
 - **REST controllers** — [REST controllers](iv-rest-controllers.md) (validation, Problem Details)
 - **YAML & profiles** — [YAML & external config](ii-yaml-and-external-config.md)
-- **Testing** — use **`@SpringBootTest`** + **`@AutoConfigureMockMvc`** with **`@WithMockUser`** or test JWT fixtures; **`@WebMvcTest`** alone does not load the full security chain unless configured
+- **Testing** — use **`@SpringBootTest`** + **`@AutoConfigureMockMvc`** with **`@WithMockUser`** or test JWT fixtures; **`@WebMvcTest`** alone does not load the full security chain unless configured. See [Testing & operations](vi-testing-and-operations.md) for details.
