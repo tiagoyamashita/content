@@ -170,11 +170,17 @@ Flags decouple **deploy** (safe, frequent) from **release** (business decision).
 
 ## 9. Checklist before first prod deploy
 
-- [ ] Branch protection + required CI checks
-- [ ] Production environment requires approval
-- [ ] Deploy uses immutable tag/digest
-- [ ] Health check / smoke test post-deploy
-- [ ] Rollback command documented and rehearsed
-- [ ] On-call notified on deploy failure
+- [ ] Branch protection + required CI checks  
+  <sub>Examples: Require pull request review before merging, enforce passing status checks, enable signed commits, restrict direct pushes to `main`.</sub>
+- [ ] Production environment requires approval  
+  <sub>Examples: GitHub **Settings → Environments → production → Required reviewers**; GitLab **Protected environments** with `when: manual` on `deploy_prod`; Jenkins `input message: 'Deploy to production?'` gate before the deploy stage.</sub>
+- [ ] Deploy uses immutable tag/digest  
+  <sub>Examples: `kubectl set image deploy/api api=registry.example.com/myapp:${{ github.sha }}`; promote `myapp:1.4.2` or `@sha256:abc…` — never `myapp:latest`; CI builds and pushes the exact image digest that prod pulls.</sub>
+- [ ] Health check / smoke test post-deploy  
+  <sub>Examples: `kubectl rollout status deploy/api --timeout=5m`; `curl -f https://app.example.com/health`; CI job hits `/api/health` and one critical user path (login or checkout) before marking deploy green.</sub>
+- [ ] Rollback command documented and rehearsed  
+  <sub>Examples: Runbook entry `kubectl rollout undo deployment/api` + `kubectl rollout status`; redeploy job pinned to last known-good tag `v1.4.1`; quarterly game day restores previous version in staging and verifies SLOs.</sub>
+- [ ] On-call notified on deploy failure  
+  <sub>Examples: PagerDuty/Opsgenie alert when the deploy workflow fails; Slack `#incidents` post from GitHub Actions `if: failure()`; GitLab `on_failure` notify to on-call rotation.</sub>
 
 **Related:** [Testing strategy](v-testing-strategy.md), [Supply chain & SLSA](ii-supply-chain-and-slsa.md) (signed images), [Secrets & OIDC](iii-secrets-and-oidc.md).
