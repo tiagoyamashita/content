@@ -3,7 +3,7 @@ label: "Security"
 subtitle: "Basics & filter chain"
 group: "Spring Boot"
 groupOrder: 2
-order: 7
+order: 11
 ---
 Spring Boot — Security basics
 Add **Spring Security** to protect HTTP endpoints, expose a minimal login or JWT flow, and lock down Actuator in production.

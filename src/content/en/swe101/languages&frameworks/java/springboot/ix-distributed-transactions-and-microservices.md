@@ -3,7 +3,7 @@ label: "IX"
 subtitle: "Distributed transactions & microservices"
 group: "Spring Boot"
 groupOrder: 2
-order: 11
+order: 12
 ---
 Spring Boot — Part IX: Distributed transactions & microservices
 **`@Transactional`** wraps **one database** inside **one service**. In microservices, a single business action often spans several services (order → payment → inventory). There is no built-in ACID transaction across them unless you add something extra — and that extra is usually **not** what you want.
