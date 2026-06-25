@@ -152,3 +152,85 @@ public class WarmCacheRunner {
 ```
 
 For startup tasks that need the context fully ready, prefer **`ApplicationRunner`** or **`CommandLineRunner`** beans instead of abusing **`@PostConstruct`** for heavy work.
+
+## 7. Startup runners
+**`CommandLineRunner`** and **`ApplicationRunner`** execute **after** the context is up and the web server (if any) has started. Both are regular beans — inject collaborators via constructor injection.
+
+| Interface | Arguments | Typical use |
+|-----------|-----------|-------------|
+| **`CommandLineRunner`** | Raw **`String... args`** from the JVM | Simple seed scripts, quick CLI-style tasks |
+| **`ApplicationRunner`** | Typed **`ApplicationArguments`** | Option flags (`--dry-run`), non-option args, source names |
+
+Seed demo data when the database is empty:
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo.startup;
+
+import com.example.demo.domain.Customer;
+import com.example.demo.persistence.CustomerRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(1)
+public class DemoDataLoader implements CommandLineRunner {
+
+  private final CustomerRepository customers;
+
+  public DemoDataLoader(CustomerRepository customers) {
+    this.customers = customers;
+  }
+
+  @Override
+  public void run(String... args) {
+    if (customers.count() > 0) {
+      return;
+    }
+    customers.save(new Customer("Acme Corp"));
+    customers.save(new Customer("Globex"));
+  }
+}
+```
+
+Use **`ApplicationRunner`** when you need structured access to command-line options:
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo.startup;
+
+import com.example.demo.service.ReportService;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(2)
+public class ReportExportRunner implements ApplicationRunner {
+
+  private final ReportService reports;
+
+  public ReportExportRunner(ReportService reports) {
+    this.reports = reports;
+  }
+
+  @Override
+  public void run(ApplicationArguments args) {
+    if (!args.containsOption("export-reports")) {
+      return;
+    }
+    boolean dryRun = args.containsOption("dry-run");
+    reports.exportAll(dryRun);
+  }
+}
+```
+
+Trigger the export runner from the command line (other runners still execute; this one no-ops unless **`--export-reports`** is present):
+
+```bash
+java -jar billing-service.jar --export-reports --dry-run
+```
+
+**`DemoDataLoader`** runs before **`ReportExportRunner`** because **`@Order(1)`** sorts ahead of **`@Order(2)`** — seed data exists before export. Add **`@Order`** only when sequence matters; otherwise omit it and Boot runs runners in an undefined but stable order.

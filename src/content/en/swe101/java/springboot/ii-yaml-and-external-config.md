@@ -154,12 +154,61 @@ public class MailNotificationService {
 }
 ```
 
-## 6. Relaxed binding reminders
+## 6. `Environment` for dynamic lookups
+Inject Spring’s **`Environment`** when the property key is not known at compile time (e.g. per-tenant flags) or when you need profile checks without scattering **`@Value`** fields:
+
+```yaml
+# application.yml
+app:
+  banner:
+    message: Welcome to billing-service
+  features:
+    tenant:
+      acme:
+        enabled: true
+      globex:
+        enabled: false
+```
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo.config;
+
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TenantFeatureGate {
+
+  private final Environment env;
+
+  public TenantFeatureGate(Environment env) {
+    this.env = env;
+  }
+
+  /** Resolve app.features.tenant.{tenantId}.enabled at runtime. */
+  public boolean isEnabledFor(String tenantId) {
+    String key = "app.features.tenant." + tenantId + ".enabled";
+    return Boolean.TRUE.equals(env.getProperty(key, Boolean.class));
+  }
+
+  public String bannerMessage() {
+    if (env.acceptsProfiles("prod")) {
+      return "Production billing-service";
+    }
+    return env.getProperty("app.banner.message", "Welcome");
+  }
+}
+```
+
+Use **`Environment`** for framework-style code and one-off dynamic keys; prefer **`@ConfigurationProperties`** when the shape is fixed and you want validation.
+
+## 7. Relaxed binding reminders
 `from-address` in YAML binds to **`fromAddress`** in Java; env vars use **`APP_NOTIFICATION_FROMADDRESS`** style upper snake case for prefix **`app.notification`**.
 
-## 7. Type-safe config summary
+## 8. Type-safe config summary
 | Approach | Best for |
 |----------|----------|
 | **`@Value`** | One-off flags / legacy integration |
 | **`@ConfigurationProperties`** | Structured settings with validation |
-| **`Environment` / `@Environment`** | Dynamic lookups or framework code |
+| **`Environment`** | Dynamic lookups or framework code |
