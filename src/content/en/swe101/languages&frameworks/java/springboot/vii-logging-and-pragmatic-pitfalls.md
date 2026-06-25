@@ -57,7 +57,98 @@ Common surprises (full detail in **Part V — JPA & `@Transactional`**):
 - **`spring.jpa.show-sql=true`** — tolerable in dev only; prefer **`logging.level.org.hibernate.SQL=DEBUG`** + parameter logging sparingly — noisy and easy to leak data in shared logs.
 - **DevTools** optional auto-restart — fast feedback; turn off in perf-sensitive profiling.
 - **Don’t swallow exceptions** — **`catch (Exception e) { log.error(...); }`** without **`throw`** may **commit** a transaction you thought failed.
+
+  **Example:**
+  ```java
+  @Transactional
+  public void updateOrder(OrderDto dto) {
+    try {
+      // ... update some entities ...
+    } catch (Exception e) {
+      log.error("Failed to update order {}", dto.id(), e);
+      // BUG: Exception is logged, but not rethrown!
+      // Transaction may commit despite the error.
+      // throw e; // <-- SHOULD be here!
+    }
+  }
+  ```
+
+  **Rollback on any exception:**
+  ```java
+  @Transactional(rollbackFor = Exception.class)
+  public void updateOrderStrongly(OrderDto dto) throws Exception {
+    // ... update some entities ...
+    // any Exception (checked or unchecked) will trigger rollback
+  }
+  ```
 - **Secure Actuator and admin paths** — see **Security basics & filter chain** and **Part VI (Testing & operations)**.
+
+## 4. Centralized Logging for @Transactional Methods with Spring AOP
+
+You can centralize logging for methods annotated with **`@Transactional`** using Spring's **AOP (Aspect-Oriented Programming)** capabilities. This allows you to log the entry, exit, and execution time of any transactional method—without cluttering your service classes with repetitive code.
+
+**How it works:**
+- Define an **`@Aspect`** class with a pointcut that targets methods annotated with **`@Transactional`**.
+- Implement `@Around` advice to perform logging before and after method execution, capturing information such as method name, arguments, result, and execution duration.
+
+**Advantages:**
+- No need to add manual logging to each method.
+- Consistent logging for all transactional operations.
+- Easy to extend or modify logging behavior in one place.
+
+### Example: Logging Aspect for @Transactional Methods
+
+```java
+package com.example.demo.logging;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Aspect
+@Component
+public class TransactionalLoggingAspect {
+
+  private static final Logger log = LoggerFactory.getLogger(TransactionalLoggingAspect.class);
+
+  // Pointcut: any method annotated with @Transactional
+  @Around("@annotation(transactional)")
+  public Object logTransactionalMethod(ProceedingJoinPoint pjp, Transactional transactional) throws Throwable {
+    MethodSignature signature = (MethodSignature) pjp.getSignature();
+    String methodName = signature.getDeclaringType().getSimpleName() + "." + signature.getName();
+    long start = System.nanoTime();
+
+    log.info("START @Transactional: {} with args {}", methodName, pjp.getArgs());
+    try {
+      Object result = pjp.proceed();
+      long ms = (System.nanoTime() - start) / 1_000_000;
+      log.info("END @Transactional: {} -> {} ({} ms)", methodName, result, ms);
+      return result;
+    } catch (Throwable t) {
+      long ms = (System.nanoTime() - start) / 1_000_000;
+      log.error("EXCEPTION @Transactional: {} threw {} ({} ms)", methodName, t.getClass().getSimpleName(), ms);
+      throw t; // Spring's exception handling (@RestControllerAdvice) can handle it globally so make sure to implement it the appropriate exception or catch it from the method its calling it.
+     }
+  }
+}
+```
+
+**How to use:**
+1. Make sure you have [spring-boot-starter-aop](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop) on your classpath.
+2. The aspect above will automatically log entry/exit for all `@Transactional` methods in your application.
+
+**Sample log output:**
+```
+INFO  ... START @Transactional: CustomerService.register with args [Alice, alice@email.com]
+INFO  ... END @Transactional: CustomerService.register -> CustomerResponse{id=...} (28 ms)
+```
+
+This way, you gain insight into all transactional operations, their inputs, outputs, and performance, with no clutter in your business logic.
 
 ## 4. Related notes
 
