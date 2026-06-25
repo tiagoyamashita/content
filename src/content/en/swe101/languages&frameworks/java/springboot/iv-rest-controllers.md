@@ -142,6 +142,67 @@ public class ApiExceptionHandler {
 }
 ```
 
+### Multiple `@RestControllerAdvice` beans
+You may register **more than one** advice class in the same app — each is a normal Spring bean picked up by component scan. They do **not** scope per package unless you configure that explicitly.
+
+**Default (no attributes)** — every **`@RestControllerAdvice`** applies **globally** to all controllers:
+
+```java
+// Compile: javac --release 22 …
+@RestControllerAdvice
+public class ApiExceptionHandler { /* … */ }
+
+@RestControllerAdvice  // also global — not limited to its own package
+public class LegacyExceptionHandler { /* … */ }
+```
+
+**Optional scoping** — limit an advice bean to certain controllers:
+
+| Attribute | Effect |
+|-----------|--------|
+| **`basePackages`** | Controllers in that package and subpackages |
+| **`basePackageClasses`** | Package of the given class |
+| **`assignableTypes`** | Only listed controller types |
+| **`annotations`** | Controllers carrying the annotation (e.g. **`RestController.class`**) |
+
+```java
+// Compile: javac --release 22 …
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice(basePackages = "com.example.demo.api")
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class ApiExceptionHandler { /* … */ }
+
+@RestControllerAdvice(basePackages = "com.example.demo.admin")
+public class AdminExceptionHandler { /* … */ }
+```
+
+A controller in **`com.example.demo.api.web`** uses **`ApiExceptionHandler`** (scoped) plus any **global** advice with no **`basePackages`**. Overlapping scopes are allowed — use **`@Order`** (lower number = higher priority) when two beans both handle the same exception type.
+
+**How Spring picks a handler** when an exception leaves a controller:
+
+1. **Filter** — keep advice beans whose scope includes the throwing controller (global advice always applies).
+2. **Match** — collect **`@ExceptionHandler`** methods whose exception parameter type fits (subtypes count).
+3. **Resolve** — more specific exception types beat generic ones; **`@Order`** breaks ties between advice classes.
+
+| Pattern | When to use |
+|---------|-------------|
+| **One global advice** | Most apps — single handler for validation, domain errors, and a catch-all |
+| **Global + scoped** | Shared defaults plus a module that needs a different error envelope |
+| **Multiple globals + `@Order`** | Layered handlers (e.g. domain-specific at **`HIGHEST_PRECEDENCE`**, fallback at **`LOWEST_PRECEDENCE`**) |
+
+**Multiple globals without `@Order`** — each advice bean defaults to **`Ordered.LOWEST_PRECEDENCE`**, so they all tie at the same priority. That is fine when each bean handles **different** exception types (Spring routes by type match). If two global beans both declare **`@ExceptionHandler`** for the **same** exception type, Spring picks one handler — not both, and not a chain — but **which** bean wins depends on registration order (often component-scan / classpath order) and can change after refactors. Do not rely on that; use **`@Order`** or remove duplicate handlers.
+
+| Situation | Without `@Order` |
+|-----------|------------------|
+| Different exception types per advice | Safe |
+| Same exception type in multiple globals | Unstable — assign **`@Order`** or consolidate |
+| Overlapping global + scoped handlers | Scoped alone does not break the tie — still need **`@Order`** or dedupe |
+
+**`@RestControllerAdvice`** vs **`@ControllerAdvice`** — **`@RestControllerAdvice`** adds **`@ResponseBody`** to every handler return value (JSON via Jackson). Use plain **`@ControllerAdvice`** when handlers return view names or **`ModelAndView`**.
+
 ## 6. CORS (when browsers call your API)
 For simple demos only — tighten origins in production:
 
@@ -359,3 +420,120 @@ public ResponseEntity<ProblemDetail> handleNotFound(
 ```
 
 **`problem.setProperty("customerId", …)`** adds custom fields beside the RFC core keys — useful for machine-readable error codes without breaking the standard envelope. Prefer stable **`type`** URIs (or registered codes) over free-text **`title`** values when clients branch on error kind.
+
+## 9. Automatic request logging
+Do not add **`log.info`** to every controller method — register a **servlet filter** once and log method, path, status, and duration for **all** HTTP requests. Controllers from §1 stay unchanged.
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo.web;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class RequestLoggingFilter extends OncePerRequestFilter {
+
+  private static final Logger log = LoggerFactory.getLogger(RequestLoggingFilter.class);
+
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+      throws ServletException, IOException {
+    long start = System.nanoTime();
+    try {
+      chain.doFilter(request, response);
+    } finally {
+      long ms = (System.nanoTime() - start) / 1_000_000;
+      log.info("{} {} -> {} ({} ms)",
+          request.getMethod(), request.getRequestURI(), response.getStatus(), ms);
+    }
+  }
+}
+```
+
+**`OncePerRequestFilter`** runs once per dispatch (including forwards) — safer than a raw **`Filter`**. **`@Component`** registers the bean; **`@Order(Ordered.HIGHEST_PRECEDENCE)`** runs it early so the elapsed time covers the full controller + service stack.
+
+### Alternative: `@WebFilter` (Servlet API)
+Spring Boot has **no** general **`@Filter`** annotation for HTTP filters. **`@WebFilter`** comes from **Jakarta Servlet** — it marks the class as a filter and sets URL patterns. Boot does **not** pick it up unless you add **`@ServletComponentScan`** on the application class. Do **not** also annotate the same class with **`@Component`** — that can register the filter twice.
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo.web;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+@WebFilter(urlPatterns = "/api/*")
+public class RequestLoggingFilter extends OncePerRequestFilter {
+
+  private static final Logger log = LoggerFactory.getLogger(RequestLoggingFilter.class);
+
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+      throws ServletException, IOException {
+    long start = System.nanoTime();
+    try {
+      chain.doFilter(request, response);
+    } finally {
+      long ms = (System.nanoTime() - start) / 1_000_000;
+      log.info("{} {} -> {} ({} ms)",
+          request.getMethod(), request.getRequestURI(), response.getStatus(), ms);
+    }
+  }
+}
+```
+
+```java
+// Compile: javac --release 22 …
+package com.example.demo;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+
+@SpringBootApplication
+@ServletComponentScan
+public class DemoApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(DemoApplication.class, args);
+  }
+}
+```
+
+| | **`@Component` + `@Order`** | **`@WebFilter` + `@ServletComponentScan`** |
+|--|------------------------------|--------------------------------------------|
+| **Registered by** | Spring Boot | Servlet container scan |
+| **URL patterns** | All requests by default; narrow with **`FilterRegistrationBean`** | **`urlPatterns`** on **`@WebFilter`** |
+| **Dependency injection** | Constructor injection works cleanly | Awkward — filter may be created before the Spring context |
+| **Typical in Boot apps** | Preferred | Legacy / WAR-style deployments |
+
+Do not confuse **`@WebFilter`** with **`@ComponentScan(… includeFilters …)`** — that controls which **classes become beans**, not HTTP request filtering. Spring Security filters are registered separately via a **`SecurityFilterChain`** bean.
+
+Sample line in the console:
+
+```text
+GET /api/customers/550e8400-e29b-41d4-a716-446655440000 -> 200 (12 ms)
+```
+
+- Log at **`INFO`** for request summaries; tune **`logging.level.com.example.demo.web.RequestLoggingFilter`** in YAML if it is too chatty.
+- Do **not** log bodies, headers, or query strings here — easy to leak tokens and PII. For correlation across service logs, add a trace ID to **`MDC`** in the same filter (see [Logging & pragmatic pitfalls](vii-logging-and-pragmatic-pitfalls.md)).
