@@ -537,3 +537,5 @@ GET /api/customers/550e8400-e29b-41d4-a716-446655440000 -> 200 (12 ms)
 
 - Log at **`INFO`** for request summaries; tune **`logging.level.com.example.demo.web.RequestLoggingFilter`** in YAML if it is too chatty.
 - Do **not** log bodies, headers, or query strings here — easy to leak tokens and PII. For correlation across service logs, add a trace ID to **`MDC`** in the same filter (see [Logging & pragmatic pitfalls](vii-logging-and-pragmatic-pitfalls.md)).
+
+For **non-blocking** APIs (`Mono` / `Flux`, streaming, R2DBC), see [WebFlux & reactive APIs](xii-webflux.md).

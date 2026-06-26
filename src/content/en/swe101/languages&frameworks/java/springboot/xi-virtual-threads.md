@@ -112,7 +112,7 @@ public class OrderController {
 
 With **`spring.threads.virtual.enabled=true`**, Boot’s default **`applicationTaskExecutor`** uses virtual threads for **`@Async`** methods.
 
-For explicit control:
+If you want explicit control over which executor is used for async methods, you can define your own `TaskExecutor` bean using a virtual thread-per-task executor, like this:
 
 ```java
 // Compile: javac --release 22 …
@@ -136,15 +136,109 @@ public class AsyncConfig {
 }
 ```
 
+### Example: Using `@Async` with Virtual Threads
+
+Here's a simple example of how you can use `@Async` in a Spring service. With virtual threads enabled (as above), each async method call will run on a separate virtual thread:
+
+```java
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailService {
+
+  @Async
+  public void sendEmail(String to, String subject, String body) {
+    // Simulate sending email
+    System.out.printf("Sending email to %s with subject '%s'%n", to, subject);
+    // ... email sending logic (blocking, if necessary) ...
+  }
+}
+```
+
+You can call this method from any Spring bean, and it will execute asynchronously on a virtual thread—scaling much more easily than platform threads for blocking tasks like outbound HTTP or SMTP.
+
 Fire-and-forget work (email, webhooks) can scale concurrency without a fixed **`corePoolSize`** — still cap outbound rate to external systems.
 
 ## 6. Pitfalls (pragmatic)
 
 - **Pinning:** long **`synchronized`** blocks or native code on the hot path can **pin** a virtual thread to its carrier and reduce gains. Prefer **`ReentrantLock`** for new code on hot paths; fix libraries that pin when profiling shows it.
-- **Connection pools:** 10k concurrent virtual threads ≠ 10k DB connections. Pool size stays a **capacity** knob; virtual threads remove the **thread** bottleneck, not datastore limits.
-- **`ThreadLocal` / MDC:** modern SLF4J + Logback propagate **MDC** across virtual threads when you set correlation IDs in a servlet filter — same pattern as platform threads (see [Logging & pragmatic pitfalls](vii-logging-and-pragmatic-pitfalls.md)).
-- **CPU-bound `@Async`:** route CPU-heavy tasks to a **bounded platform-thread** `ExecutorService`, not **`newVirtualThreadPerTaskExecutor()`**.
-- **Not WebFlux:** need backpressure and non-blocking end-to-end? **WebFlux** / reactive drivers are still the right tool. Virtual threads are for **keeping blocking code** at scale.
+- **Connection pools:** 10k concurrent virtual threads ≠ 10k DB connections. Pool size remains a **capacity** knob; virtual threads remove the **thread** bottleneck, not datastore limits. **To edit datastore limits:** adjust your connection pool settings (for example, `maximumPoolSize` for HikariCP in `application.yaml`), matching what your database can actually handle—databases usually have a hard max for open connections. Increase `maxPoolSize` only after testing database health and connection usage under load.
+
+- **`ThreadLocal` / MDC:** Modern SLF4J + Logback propagate **MDC** (Mapped Diagnostic Context) across virtual threads and async tasks when you set correlation IDs in a servlet filter. This lets you trace a request across log lines, even as execution hops threads. [Logging & pragmatic pitfalls](vii-logging-and-pragmatic-pitfalls.md)).
+  **Example: setting correlation ID in a filter**:
+
+  ```java
+  import jakarta.servlet.Filter;
+  import jakarta.servlet.FilterChain;
+  import jakarta.servlet.ServletRequest;
+  import jakarta.servlet.ServletResponse;
+  import jakarta.servlet.http.HttpServletRequest;
+  import org.slf4j.MDC;
+  import org.springframework.stereotype.Component;
+  import java.io.IOException;
+  import java.util.UUID;
+
+  @Component
+  public class CorrelationIdFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+      throws IOException, jakarta.servlet.ServletException {
+      String correlationId = UUID.randomUUID().toString();
+      MDC.put("correlationId", correlationId);
+      try {
+        chain.doFilter(request, response);
+      } finally {
+        MDC.remove("correlationId");
+      }
+    }
+  }
+  ```
+
+  Configure your log pattern to include `[%X{correlationId}]`. With virtual threads and recent SLF4J/Logback, this works as expected, just like with platform threads.
+
+- **CPU-bound `@Async`:** For tasks that are **CPU-bound**—that is, tasks whose throughput is limited by how much CPU your server has (such as heavy number crunching, image processing, data compression, or cryptographic operations)—you should **not** use `newVirtualThreadPerTaskExecutor()`. Virtual threads are designed for scaling **blocking I/O**, not intensive computation. For CPU-heavy work, use a **bounded platform-thread** `ExecutorService`.
+
+  **What does "CPU-bound" mean?**
+  > "CPU-bound" means the task spends nearly all its time using the CPU. The main limit is the number of CPU cores: running too many CPU-bound tasks at once just slows everything (including your service) down as they compete for CPU time.
+
+  **How do I prevent running too many at once?**
+  Use a **bounded pool**—a fixed-size thread pool tied to your number of CPU cores (e.g. via `ThreadPoolTaskExecutor` in Spring). If too many CPU-bound tasks are submitted, the pool will queue extra tasks and only let as many run as there are threads (so at most as many as your CPU can handle). The rest will **wait** until a thread is free, avoiding overload.
+
+  **Spring example:**
+  ```yaml
+  # Example configuration for a bounded thread pool, recommended for CPU-bound tasks:
+
+  # application.yaml
+  spring:
+    task:
+      execution:
+        pool:
+          core-size: ${cpu.cores:#{T(java.lang.Runtime).getRuntime().availableProcessors()}}
+             # Dynamically use the number of CPU cores
+          max-size: ${cpu.cores:#{T(java.lang.Runtime).getRuntime().availableProcessors()}}
+             # Same as above to match physical cores
+          queue-capacity: 100
+        thread-name-prefix: "cpu-bound-"
+  ```
+  ```java
+  // With this YAML config, if you just use @Async on a method,
+  // Spring will route those methods to the default taskExecutor, and you'll see "cpu-bound-" in the thread names.
+
+  // If you want to define a custom executor bean for more control or for multiple executors,
+  // be sure to match the @Async annotation parameter with your bean name:
+
+  @Async("cpuBoundExecutor")  // This must match the bean name if you define a custom executor
+  public void crunchLargePrimeNumbers() {
+      // ... heavy computation ...
+  }
+
+  // For most apps, if you're using only one main executor and letting Spring Boot autoconfigure,
+  // just using @Async (no value) works fine—the thread name prefix in your logs will confirm which pool is being used.
+  ```
+
+  This way, you prevent your system from attempting to run more CPU-bound tasks than your hardware can physically support—all additional work waits in the queue.
+- **Not WebFlux:** need **backpressure** or **non-blocking end-to-end** (streaming, R2DBC, reactive `WebClient` only)? Use the reactive stack — see [WebFlux & reactive APIs](xii-webflux.md). Virtual threads scale **blocking** code; they do not replace Reactor.
 
 ## 7. Observability
 
@@ -167,3 +261,4 @@ Load-test before/after: compare p99 latency and error rate at the same RPS, not 
 - **Transactions on services** — [JPA & @Transactional](v-jpa-and-transactional.md)
 - **YAML toggles per profile** — [YAML & external config](ii-yaml-and-external-config.md)
 - **Pool exhaustion at scale** — [Application-level bottlenecks](../../../sysdesign/bottleneck-analysis/vii-application-level.md)
+- **Reactive alternative** — [WebFlux & reactive APIs](xii-webflux.md)
