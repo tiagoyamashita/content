@@ -80,6 +80,8 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 
 Use **`ExecutorService`** with a bounded platform pool for CPU-bound work; measure before mixing models.
 
+In **Spring Boot 3.2+**, enable the same model for Tomcat with **`spring.threads.virtual.enabled=true`** — see [Virtual threads](../springboot/xi-virtual-threads.md).
+
 ## 5. Where to go next
 
 - **Collections & streams in depth** — Part III; **CS101 → Algorithms → Solving with the JDK** for production **`HashMap`**, **`PriorityQueue`**, sorts.

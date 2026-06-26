@@ -106,3 +106,46 @@ public class DemoApplication { /* ... */ }
 ```
 
 Prefer fixing classpath / properties first; **`exclude`** is a deliberate escape hatch.
+
+## 7. Java & Spring Boot versions (Java 8 → today)
+
+This track targets **Spring Boot 3.x** on **Java 21+** (examples often use **Java 22**). Use the tables below when upgrading JDKs, picking a Boot line, or migrating legacy services.
+
+### Spring Boot release → Java range & what changed
+
+| Spring Boot | Min Java | Tested up to | Headline changes for app code |
+|-------------|----------|--------------|-------------------------------|
+| **2.0** | 8 | 9 | Boot 2 baseline; **`javax.*`** servlet/JPA namespaces; embedded Tomcat 8.5 |
+| **2.1 – 2.3** | 8 | 15 | Incremental starters, actuator, test slices mature on **`javax`** stack |
+| **2.4 – 2.6** | 8 | 19 | Config import, layered jars; still **`javax`**; Java 11+ recommended for new 2.x work |
+| **2.7** | 8 | **21** | **Last 2.x line** — bridge JDK for teams moving 8/11 → 17 before Boot 3 |
+| **3.0** | **17** | 21 | **`jakarta.*`** rename (`javax.servlet` → `jakarta.servlet`, JPA, validation); **Spring Framework 6**; **Servlet 6** / Tomcat 10; native-image focus; **no Java 8/11** |
+| **3.1** | 17 | 21 | Dev services (Docker Compose), Testcontainers integration; SSL bundle config |
+| **3.2** | 17 | 21 | **`spring.threads.virtual.enabled`** (needs **Java 21**); **`RestClient`**; JDBC client auto-config — see [Virtual threads](xi-virtual-threads.md) |
+| **3.3** | 17 | 23 | Broader JDK 22/23 support; CDS / AOT tweaks; observability property clean-up |
+| **3.4** | 17 | 24 | Structured logging (`logging.structured.format.*`); dependency bumps (Jackson, Tomcat) |
+| **3.5+** | 17 | 25+ | Current 3.x maintenance — check [spring.io](https://spring.io/projects/spring-boot) for latest patch and JDK ceiling |
+
+**Big migration jumps:** **2.7 → 3.0** (Java **17** + **Jakarta** package renames + Spring Security 6). **3.0 → 3.2+** is mostly dependency bumps unless you adopt **virtual threads** (Java **21**). Patch upgrades within 3.x are usually days, not weeks.
+
+### Java release → Spring Boot lines & language features
+
+| Java | Spring Boot you can run | Features that matter in Boot apps |
+|------|------------------------|-----------------------------------|
+| **8** | **2.0 – 2.7** only | Lambdas, streams, `Optional`, `java.time` — typical legacy monolith baseline |
+| **11** | **2.1 – 2.7** | LTS; `var` (10+) if you move past 8; still **`javax`** era |
+| **17** | **2.7**, **3.0+** | LTS; **records**, sealed classes, pattern matching — **minimum for Boot 3** |
+| **21** | **2.7**, **3.0+** | LTS; **virtual threads**, sequenced collections — enable Boot virtual-thread mode on **3.2+** |
+| **22** | **3.3+** (3.2 on 21) | Language level used in many examples here (`javac --release 22`) |
+| **23 – 25+** | **3.3+** / **3.4+** / **3.5+** | Pick a Boot patch that lists your JDK in [system requirements](https://docs.spring.io/spring-boot/docs/current/reference/html/system-requirements.html) |
+
+### Quick picks (new projects)
+
+| Goal | Sensible default |
+|------|------------------|
+| Greenfield service in this course | **Boot 3.4+** (or latest 3.x patch) + **Java 21 LTS** |
+| Blocking MVC + high concurrency | Same + **`spring.threads.virtual.enabled: true`** on **3.2+** |
+| Stuck on Java 8/11 | Stay on **Boot 2.7** until JDK **17** is available — plan Jakarta migration before **3.0** |
+| Library still on **`javax.*`** | Upgrade the library or stay **2.7** — Boot 3 will not start with old servlet/JPA APIs on the classpath |
+
+Pin the Boot version in **`spring-boot-starter-parent`** or the Gradle plugin (see §4); let the BOM align Tomcat, Hibernate, and Jackson with that Boot release.
