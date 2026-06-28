@@ -33,4 +33,6 @@ Put **stable** rules in system/project instructions; put **this task’s** conte
 - When is chain-of-thought worth the extra tokens?
 - Why save prompts that worked?
 
+**Next:** [Loop prompting — Overview](../loop-prompting/i-overview.md).
+
 **Related:** [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Custom assistants](../custom-assistants-and-knowledge/i-overview.md).

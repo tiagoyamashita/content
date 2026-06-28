@@ -46,4 +46,4 @@ Use **AI Applied** in parallel or first if you mainly interact with products, no
 | [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
 | [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
 
-**Related:** [Skills & agent instructions](ai-applied/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-applied/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-applied/agents-and-agentic-workflows/i-overview.md).
+**Related:** [Loop prompting](ai-applied/loop-prompting/i-overview.md), [Skills & agent instructions](ai-applied/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-applied/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-applied/agents-and-agentic-workflows/i-overview.md).

@@ -20,6 +20,8 @@ Effective prompting
 
 For API-level detail (roles, JSON mode), see [LLM prompt engineering](../../llms/iv-prompt-engineering.md). This note is for **everyday use**.
 
+Once a prompt works repeatedly, promote it to persistent instructions — see [Loop prompting](../loop-prompting/i-overview.md).
+
 ## Study order
 
-[Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) → [Iteration & templates](iii-iteration-and-templates.md) → [System instructions & mistakes](iv-system-instructions-and-mistakes.md)
+[Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) → [Iteration & templates](iii-iteration-and-templates.md) → [System instructions & mistakes](iv-system-instructions-and-mistakes.md) → [Loop prompting](../loop-prompting/i-overview.md)

@@ -15,6 +15,7 @@ If you want how models work under the hood, see [Machine learning](../machine-le
 |------|--------|
 | **I — Overview** | Who this is for, mental model, pick your path |
 | **[Effective prompting](effective-prompting/i-overview.md)** | Prompt structure, techniques, templates |
+| **[Loop prompting](loop-prompting/i-overview.md)** | Set up once, iterate in loops — not re-prompt every time |
 | **[Agents & agentic workflows](agents-and-agentic-workflows/i-overview.md)** | Multi-step AI, tools, guardrails |
 | **[Tools & orchestration](tools-and-orchestration/i-overview.md)** | Chat apps, IDE agents, automations, MCP intro |
 | **[Custom assistants & knowledge](custom-assistants-and-knowledge/i-overview.md)** | Projects, custom GPTs, RAG for users |
@@ -32,7 +33,10 @@ You  →  prompt + context  →  AI model  →  answer / action
         instructions          may use tools
         examples              (search, code, files)
         attached files
+        (persistent: projects, skills, rules)
 ```
+
+**Loop prompting:** store instructions once, then send **short deltas** in the same session or on a schedule — see [Loop prompting](loop-prompting/i-overview.md).
 
 | You control | AI controls |
 |-------------|-------------|
@@ -44,16 +48,17 @@ You  →  prompt + context  →  AI model  →  answer / action
 
 | Your job | Start with |
 |----------|------------|
-| Knowledge worker (PM, analyst, writer) | [Effective prompting](effective-prompting/i-overview.md) → [Custom assistants](custom-assistants-and-knowledge/i-overview.md) |
-| Developer using Cursor/Copilot | [Agents](agents-and-agentic-workflows/i-overview.md) → [Skills & instructions](skills-and-agent-instructions/i-overview.md) |
+| Knowledge worker (PM, analyst, writer) | [Effective prompting](effective-prompting/i-overview.md) → [Loop prompting](loop-prompting/i-overview.md) → [Custom assistants](custom-assistants-and-knowledge/i-overview.md) |
+| Developer using Cursor/Copilot | [Loop prompting](loop-prompting/i-overview.md) → [Agents](agents-and-agentic-workflows/i-overview.md) → [Skills & instructions](skills-and-agent-instructions/i-overview.md) |
 | Manager rolling out AI to a team | [Trust & privacy](trust-privacy-and-verify/i-overview.md) → [Custom assistants](custom-assistants-and-knowledge/i-overview.md) |
 | Power user chaining tools | [Orchestration](tools-and-orchestration/i-overview.md) → [Agents](agents-and-agentic-workflows/i-overview.md) |
 
-## 2024–2026 shift: from chat to agents
+## 2024–2026 shift: from chat to loops and agents
 
 | Era | Interaction | Example |
 |-----|-------------|---------|
 | **Chat** | One question → one answer | “Summarise this email” |
+| **Loop prompting** | Stored instructions + short deltas | Project rules + “fix table 2” / `/loop 5m check CI` |
 | **Assistants** | Saved instructions + files | Claude Project, Custom GPT |
 | **Agents** | Goal → many steps + tools | “Research competitors and draft a table” |
 | **Orchestration** | Several AIs or automations wired together | CRM → AI summary → Slack |
@@ -62,6 +67,6 @@ You do not need to build any of this — products expose it in the UI. You **do*
 
 ## Next
 
-Continue with [Effective prompting](effective-prompting/i-overview.md).
+Continue with [Effective prompting](effective-prompting/i-overview.md), then [Loop prompting](loop-prompting/i-overview.md).
 
 **Related:** [LLM prompt engineering (technical)](../llms/iv-prompt-engineering.md), [RAG for users](custom-assistants-and-knowledge/i-overview.md).

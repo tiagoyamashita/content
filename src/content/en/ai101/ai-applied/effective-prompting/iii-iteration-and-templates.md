@@ -64,3 +64,5 @@ Relationship: [client / manager / peer].
 Goal: [what should reader do after reading].
 Facts only from below — do not invent names or dates.
 ```
+
+**Next:** [System instructions & mistakes](iv-system-instructions-and-mistakes.md).
