@@ -63,6 +63,14 @@ Trust only **trusted** proxies when interpreting these (spoofing otherwise).
 
 Ingress must support **HTTP/2** for **gRPC**, and **Upgrade** / long-lived connections for **WebSockets**. Not every default annotation supports both; verify controller docs.
 
+| Protocol | LB must… |
+|----------|----------|
+| **WebSocket** | Allow **101 Switching Protocols**, long timeouts, often **session affinity** |
+| **SSE** | Disable response buffering; long-lived **GET** |
+| **gRPC** | **HTTP/2** end-to-end or grpc-aware proxy |
+
+Deep dive: [WebSockets, SSE, and gRPC](vii-websockets-sse-grpc-and-realtime.md). Layer placement: [L4/L7 layers and where to balance](vi-l4-l7-layers-and-where-to-balance.md).
+
 ## 6. DNS + Ingress together
 
 1. **DNS** `A`/`AAAA` or `CNAME` → **load balancer** IP or hostname provided by the cloud or bare-metal LB.
@@ -254,4 +262,7 @@ Ingress sends traffic to the regional API; the API resolves tenant/user → **sh
 
 ## 7. Study order recap
 
-**TCP/UDP** → **HTTP** → **TLS** → **DNS** (name → address) → **Ingress/LB** (HTTP routing and TLS at the edge). Together they describe how a browser request reaches a pod.
+**TCP/UDP** → **HTTP** → **TLS** → **DNS** (name → address) → **Ingress/LB** (HTTP routing and TLS at the edge) → **L4/L7 placement** → **WebSockets / SSE / gRPC**. Together they describe how a browser request reaches a pod — and stays connected when the app is realtime.
+
+- [L4/L7 layers and where to balance](vi-l4-l7-layers-and-where-to-balance.md)
+- [WebSockets, SSE, and gRPC](vii-websockets-sse-grpc-and-realtime.md)

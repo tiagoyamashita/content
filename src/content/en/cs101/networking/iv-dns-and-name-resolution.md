@@ -233,4 +233,4 @@ Full REST + Hostinger + regional examples: **Part V — Ingress** [Ingress, edge
 - **Split-horizon DNS** — different answers inside corp vs internet (debugging surprises).
 - **DNSSEC** — authenticity chain for DNS itself (adoption varies).
 
-Next: **Ingress** and edge routing (HTTP routing on top of names and IPs).
+Next: **Ingress** and edge routing (HTTP routing on top of names and IPs). Then **L4/L7 placement** and **realtime protocols** ([L4/L7 layers and where to balance](vi-l4-l7-layers-and-where-to-balance.md), [WebSockets, SSE, and gRPC](vii-websockets-sse-grpc-and-realtime.md)).

@@ -51,4 +51,6 @@ HTTP is an **application-layer** protocol: **methods**, **URLs**, **headers**, a
 
 **Reverse proxies** and **ingress controllers** terminate HTTP(S), route by **Host** and path, and forward to backends. Understanding **Host**, **X-Forwarded-For**, and **TLS termination** at the edge is essential for correct logging and security headers.
 
+For **where** to place L4 vs L7 balancers, see [L4/L7 layers and where to balance](vi-l4-l7-layers-and-where-to-balance.md). For **WebSockets, SSE, and gRPC**, see [WebSockets, SSE, and gRPC](vii-websockets-sse-grpc-and-realtime.md).
+
 Next: **TLS handshake** and certificates.

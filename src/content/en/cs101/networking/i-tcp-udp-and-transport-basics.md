@@ -179,10 +179,10 @@ A **socket** is the API boundary your program uses: bind/listen/accept on server
   <text x="108" y="166" fill="#e4e4e7" font-size="10">Application — HTTP, DNS message format</text>
   <rect x="80" y="184" width="280" height="32" rx="4" fill="rgba(34,197,94,0.2)" stroke="#86efac" stroke-width="2"/>
   <text x="108" y="204" fill="#86efac" font-size="10" font-weight="600">Transport — TCP, UDP, ports  ← Part I</text>
-  <text x="368" y="52" fill="#71717a" font-size="9">Part V</text>
+  <text x="368" y="52" fill="#71717a" font-size="9">Part V–VII</text>
   <text x="368" y="90" fill="#71717a" font-size="9">Part IV</text>
   <text x="368" y="128" fill="#71717a" font-size="9">Part III</text>
   <text x="368" y="166" fill="#71717a" font-size="9">Part II</text>
 </svg></figure>
 
-Next: **HTTP** (application semantics), then **TLS** (encryption and identity on the wire).
+Next: **HTTP** (application semantics), then **TLS** (encryption and identity on the wire). Later parts cover **DNS**, **Ingress/LB**, **L4/L7 placement**, and **WebSockets / gRPC** ([L4/L7 layers and where to balance](vi-l4-l7-layers-and-where-to-balance.md)).
