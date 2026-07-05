@@ -101,6 +101,8 @@ Not required for basic GitHub use.
 
 Enable **2FA** on account; orgs can require it.
 
+**Secret scanning & push protection:** Settings → **Code security and analysis** — blocks or alerts on leaked keys in commits. If `.env` was pushed, rotate secrets and rewrite history — [Secrets in history](../essentials/viii-secrets-and-sensitive-files-in-history.md).
+
 Getting started **Setup** note covers OAuth scopes for this notes app.
 
 ## 7. Notifications

@@ -101,7 +101,7 @@ Git works the same — org choice, not Git feature.
 
 | Never | Instead |
 |-------|---------|
-| `.env`, API keys | Env vars, secret manager |
+| `.env`, API keys | Env vars, secret manager — if committed, [Secrets in history](viii-secrets-and-sensitive-files-in-history.md) |
 | `node_modules/`, `target/` | `.gitignore` + CI install |
 | Large binaries | Git LFS or object storage |
 | Generated build output | CI builds artifacts |

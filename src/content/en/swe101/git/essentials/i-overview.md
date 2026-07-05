@@ -17,6 +17,7 @@ Day-to-day Git: configure once, then **add → commit → push**, branch for fea
 | [Remotes & collaboration](v-remotes-and-collaboration.md) | push, pull, fetch, pull with rebase |
 | [Undo & history](vi-undo-and-history.md) | restore, reset, revert, stash |
 | [Workflows & conventions](vii-workflows-and-conventions.md) | GitHub flow, commits, `.gitignore` |
+| [Secrets in history](viii-secrets-and-sensitive-files-in-history.md) | Find `.env` in history, `git filter-repo`, force push |
 
 **Related:** **GitHub** topic (PRs, hosting), CI/CD fundamentals (triggers on push).
 

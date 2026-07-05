@@ -73,7 +73,7 @@ target/
 .idea/
 ```
 
-If a file was committed by mistake, see [Undo & history](vi-undo-and-history.md) — removing from `.gitignore` alone is not enough.
+If a file was committed by mistake, see [Secrets in history](viii-secrets-and-sensitive-files-in-history.md) — removing from `.gitignore` alone is not enough.
 
 ## 6. Show one commit
 

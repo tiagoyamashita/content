@@ -75,15 +75,17 @@ git switch -c recover abc1234  # branch at lost commit
 
 Reflog saves you after wrong **`reset --hard`** (locally).
 
-## 7. Remove file from history (secrets)
+## 7. Remove secrets from history
 
-If you committed a **password**:
+If you committed **`.env`**, keys, or passwords:
 
-1. Rotate the secret immediately
-2. Remove from history: `git filter-repo` or BFG Repo-Cleaner
-3. Force push (coordinate with team)
+1. **Rotate / revoke** the secret immediately — history rewrites do not undo exposure.
+2. **Find** what leaked — [Secrets in history](viii-secrets-and-sensitive-files-in-history.md) (`git log --all -- .env`, `git grep`, gitleaks).
+3. **Rewrite** history — `git filter-repo` or BFG, then **`git push --force-with-lease`** (coordinate with team).
 
-Prevention: `.gitignore`, pre-commit hooks, secret scanning on GitHub.
+Adding **`.gitignore`** alone is **not** enough once a file was pushed.
+
+Prevention: pre-commit hooks, GitHub secret scanning, never commit `.env`.
 
 ## 8. Decision guide
 
@@ -96,5 +98,6 @@ Prevention: `.gitignore`, pre-commit hooks, secret scanning on GitHub.
 | Undo pushed commit on main | `git revert` |
 | Pause work | `git stash` |
 | Find lost commit | `git reflog` |
+| Secret in Git history | [Secrets in history](viii-secrets-and-sensitive-files-in-history.md) |
 
-**Related:** [Workflows & conventions](vii-workflows-and-conventions.md), CI/CD security (no secrets in repo).
+**Related:** [Workflows & conventions](vii-workflows-and-conventions.md), [Secrets in history](viii-secrets-and-sensitive-files-in-history.md), CI/CD security (no secrets in repo).
