@@ -11,9 +11,10 @@ GitHub — overview
 
 | Note | Focus |
 |------|--------|
-| **Git → Essentials** | Local Git commands, branches, remotes |
+| **Git → Essentials** | Local Git commands, branches, remotes, **`~/.ssh/config`** |
 | [Repositories & pull requests](ii-repositories-and-pull-requests.md) | Repos, forks, PRs, reviews |
 | [Actions, issues & settings](iii-actions-issues-and-settings.md) | CI, issues, branch protection, tokens |
+| [SSH keys](iv-ssh-keys.md) | Add keys on GitHub, test `ssh -T`, deploy keys, SSO |
 | [Contribution graph](activity-contribution-graph.md) | This site's contribution grid demo |
 
 ## Git + GitHub flow
@@ -27,7 +28,7 @@ GitHub: Pull Request → review → merge → Actions CI
 
 | Task | Where |
 |------|--------|
-| SSH keys | Settings → SSH and GPG keys |
+| SSH keys | [SSH keys](iv-ssh-keys.md) · Settings → SSH and GPG keys |
 | Personal access token | Settings → Developer settings (prefer fine-grained) |
 | Email for commits | Settings → Emails (match `git config user.email`) |
 | 2FA | Settings → Password and authentication |

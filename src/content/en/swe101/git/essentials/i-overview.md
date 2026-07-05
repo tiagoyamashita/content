@@ -11,7 +11,7 @@ Day-to-day Git: configure once, then **add → commit → push**, branch for fea
 
 | Note | Focus |
 |------|--------|
-| [Install & configure](ii-install-and-configure.md) | Install, `user.name`, SSH keys |
+| [Install & configure](ii-install-and-configure.md) | Install, `user.name`, SSH keys, **`~/.ssh/config`** |
 | [Everyday commands](iii-everyday-commands.md) | init, clone, add, commit, status, log |
 | [Branching & merging](iv-branching-and-merging.md) | branch, merge, conflicts |
 | [Remotes & collaboration](v-remotes-and-collaboration.md) | push, pull, fetch, pull with rebase |

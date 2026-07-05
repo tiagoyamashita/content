@@ -120,7 +120,7 @@ GitHub **Releases** attach binaries and notes to tags.
 | Error | Fix |
 |-------|-----|
 | `rejected (non-fast-forward)` | Pull/rebase first, then push |
-| `permission denied` | SSH key or token |
+| `permission denied` | SSH key or token — check [SSH config](ii-install-and-configure.md#5-ssh-config-for-git-remotes) and [GitHub SSH keys](../github/iv-ssh-keys.md) |
 | `protected branch` | Use PR; cannot push directly to `main` |
 
 **Related:** [Branching & merging](iv-branching-and-merging.md), CI/CD (workflows on `push`).
