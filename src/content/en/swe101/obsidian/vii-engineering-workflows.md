@@ -131,7 +131,7 @@ Summarize in **your own notes**; link to canonical course paths — do not paste
 | **Separate vault, link out** | Notes link to GitHub paths and PRs |
 | **Snippets** | Store reusable `curl` / SQL in reference notes; link from code comments sparingly |
 
-Align with [Mermaid](../languages&frameworks/mermaid/vi-docs-repos-and-ci.md) and [PlantUML](../languages&frameworks/plantuml/vi-docs-repos-and-ci.md) when diagrams live in the same tree.
+Align with [Docs, repos & CI](../languages&frameworks/mermaid/vi-docs-repos-and-ci.md) (Mermaid) and [Docs, repos & CI](../languages&frameworks/plantuml/vi-docs-repos-and-ci.md) (PlantUML) when diagrams live in the same tree.
 
 ## 7. Anti-patterns
 
@@ -150,4 +150,4 @@ Align with [Mermaid](../languages&frameworks/mermaid/vi-docs-repos-and-ci.md) an
 
 ## Next
 
-You have the full Obsidian track — pair it with [Git essentials](../git/essentials/i-overview.md) and diagram tracks ([Mermaid](../languages&frameworks/mermaid/i-overview.md), [PlantUML](../languages&frameworks/plantuml/i-overview.md)) for a docs workflow that stays in version control.
+You have the full Obsidian track — pair it with **Git** essentials — [Overview](../git/essentials/i-overview.md) and diagram tracks (**Mermaid** — [Overview](../languages&frameworks/mermaid/i-overview.md), **PlantUML** — [Overview](../languages&frameworks/plantuml/i-overview.md)) for a docs workflow that stays in version control.

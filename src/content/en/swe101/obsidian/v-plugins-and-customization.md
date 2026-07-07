@@ -31,7 +31,7 @@ Install via **Settings → Community plugins → Browse** (requires Restricted m
 
 | Plugin | Use case |
 |--------|----------|
-| **Obsidian Git** | Commit, pull, push vault from inside the app — see [Git sync](vi-git-sync-and-team-workflows.md) |
+| **Obsidian Git** | Commit, pull, push vault from inside the app — see [Git sync & team workflows](vi-git-sync-and-team-workflows.md) |
 | **Templater** | Dynamic templates (`<% tp.date.now() %>`) — ADRs, meeting notes |
 | **Dataview** | Query notes like a table: `TABLE status FROM #adr` |
 | **Calendar** | UI for daily notes |
@@ -101,7 +101,7 @@ Community plugins run with access to your vault files.
 | Prefer **popular, maintained** plugins | Reduces abandoned-code risk |
 | Review plugin **GitHub repo** for work vaults | Supply-chain awareness |
 | Separate **work / personal** vaults | Limits blast radius |
-| Do not store **secrets** in notes | Use a password manager; see [Secrets in Git history](../git/essentials/viii-secrets-and-sensitive-files-in-history.md) |
+| Do not store **secrets** in notes | Use a password manager; see [Secrets in history](../git/essentials/viii-secrets-and-sensitive-files-in-history.md) |
 
 ## Rehearsal
 

@@ -7,7 +7,7 @@ order: 6
 Obsidian — Part VI
 Because a vault is a **folder of Markdown files**, **Git** is a natural sync and collaboration layer. The **Obsidian Git** plugin automates commit/pull/push; teams treat the vault like a small docs repo.
 
-For Git basics, see [Everyday commands](../git/essentials/iii-everyday-commands.md). For `.gitignore` conventions, see [Workflows & conventions](../git/essentials/vii-workflows-and-conventions.md).
+For Git basics, see [Everyday commands](../git/essentials/iii-everyday-commands.md). For `.gitignore` conventions, see [Workflows & conventions](../git/essentials/vii-workflows-and-conventions.md). For CI on a docs repo, see [Fundamentals](../../sre101/cicd/i-fundamentals.md).
 
 ## 1. Vault as a Git repository
 
@@ -26,7 +26,7 @@ my-product/
   .git/
 ```
 
-Same [Git](../git/i-overview.md) rules apply: meaningful commits, branches for large restructures, PRs for team vaults.
+Same **Git** track — [Overview](../git/i-overview.md) rules apply: meaningful commits, branches for large restructures, PRs for team vaults.
 
 ## 2. Obsidian Git plugin
 

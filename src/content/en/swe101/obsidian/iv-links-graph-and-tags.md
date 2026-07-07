@@ -85,7 +85,7 @@ Avoid tag explosion — prefer a **controlled vocabulary** on team vaults (e.g. 
 
 ## 5. MOCs (maps of content)
 
-A **MOC** is an index note that curates links — not a folder listing:
+A **MOC** is an index note that curates links — not a folder listing. In a personal vault, use **wikilinks**; in **this curriculum repo**, use **markdown links** with relative paths:
 
 ```markdown
 # MOC — System design
@@ -96,11 +96,11 @@ A **MOC** is an index note that curates links — not a folder listing:
 - [[Saga pattern]]
 
 ## Course track
-- [[sysdesign/scalable-patterns/i-overview]]
-
-## External
-- [SWE101 scalable patterns](../sysdesign/scalable-patterns/i-overview.md)
+- **Scalable patterns** — [Overview](../sysdesign/scalable-patterns/i-overview.md)
+- See [Docker in CI](../../sre101/cicd/tools-and-platforms/v-docker-in-ci.md) for image builds in pipelines.
 ```
+
+**Link text** should match the target note’s **`subtitle`** (e.g. “Docker in CI”, “Overview”). **Same submenu** — filename only is enough: `[Plugins & customization](v-plugins-and-customization.md)`.
 
 Use MOCs for **onboarding** ("start here") and **topic hubs** too large for one folder.
 

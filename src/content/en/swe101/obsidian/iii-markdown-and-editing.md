@@ -7,7 +7,7 @@ order: 3
 Obsidian — Part III
 **Markdown** is the source format for every note. Obsidian adds **wikilinks**, **callouts**, **embeds**, and **YAML frontmatter** on top of common Markdown — all stored as plain text.
 
-For Mermaid diagrams in notes, see [Mermaid overview](../languages&frameworks/mermaid/i-overview.md).
+For Mermaid diagrams in notes, see **Mermaid** — [Overview](../languages&frameworks/mermaid/i-overview.md).
 
 ## 1. Standard Markdown
 
@@ -40,7 +40,17 @@ Obsidian supports typical Markdown:
 
 Toggle with the editor icon or command palette: **Toggle Live Preview / Source mode**.
 
-## 2. Wikilinks and embeds
+## 2. Markdown links vs wikilinks
+
+| Context | Syntax | Example |
+|---------|--------|---------|
+| **Obsidian vault** | Wikilink | `[[ADR-003 idempotency]]` |
+| **This curriculum repo** (Cursor Notes) | Markdown + relative path | `See [Docker in CI](../../sre101/cicd/tools-and-platforms/v-docker-in-ci.md).` |
+| **Same Obsidian submenu** | Filename only | `[Install & vault setup](ii-install-and-vault-setup.md)` |
+
+In **this repository**, cross-links use the target note’s **`subtitle`** as link text — see [Topics and folders](../../getting-started/guide-topics-and-folders.md). Do not use bare backtick paths; use markdown links.
+
+## 3. Wikilinks and embeds
 
 Internal links use double brackets:
 
@@ -65,7 +75,7 @@ Link with alias: [[redis/i-overview|Redis track]].
 
 Broken links show as unresolved until you create the target note — useful for **stub-first** knowledge graphs.
 
-## 3. Callouts
+## 4. Callouts
 
 Obsidian callouts extend blockquotes:
 
@@ -87,7 +97,7 @@ Obsidian callouts extend blockquotes:
 
 Common types: `note`, `tip`, `warning`, `info`, `question`, `failure`, `bug`, `example`, `quote`. Foldable callouts: `> [!note]-` (collapsed) or `> [!note]+` (expanded).
 
-## 4. YAML frontmatter
+## 5. YAML frontmatter
 
 Metadata at the top of a file:
 
@@ -104,7 +114,7 @@ status: accepted
 
 Frontmatter powers **templates**, **Dataview** queries (plugin), and sorting — keep keys consistent across note types.
 
-## 5. Code blocks
+## 6. Code blocks
 
 Fenced blocks with language tags for syntax highlighting:
 
@@ -130,12 +140,12 @@ sequenceDiagram
 
 Mermaid renders natively when the **Mermaid** core plugin is enabled (default).
 
-## 6. Math and diagrams
+## 7. Math and diagrams
 
 - **LaTeX math:** `$inline$` and `$$block$$` with the core **Math** plugin.
 - **Excalidraw:** community plugin for hand-drawn sketches stored as `.md` or `.excalidraw` — popular for whiteboard-style architecture.
 
-## 7. Editing habits for Git-friendly notes
+## 8. Editing habits for Git-friendly notes
 
 | Habit | Why |
 |-------|-----|
