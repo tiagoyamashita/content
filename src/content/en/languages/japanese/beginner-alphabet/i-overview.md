@@ -18,7 +18,7 @@ Structured path from scripts to your first useful kanji. Work through the chapte
 
 After chapter 3 you can read calendar UI, dates, weekdays, and design-doc titles without guessing every character.
 
-**Related material:** [Frequent IT kanji](../i-frequent-it-kanji.md) · [Common words](../ii-common-words.md) · [Verbs & office replies](./iii-beginner.md) (in this folder)
+**Related material:** [Frequent IT kanji](./iv-frequent-it-kanji.md) · [Common words](../vocabulary/i-common-words.md) · [Corporate structure](../vocabulary/ii-corporate-structure.md) · [Keigo](../vocabulary/iii-keigo.md) · [Email templates](../vocabulary/iv-email-templates.md) · [Verbs & office replies](../day2day/i-beginner.md)
 
 ---
 
@@ -142,7 +142,7 @@ Key document names to recognize:
 
 - 基本設計書 (きほんせっけいしょ — basic design document)
 - 詳細設計書 (しょうさいせっけいしょ — detailed design document)
-- 要件定義書 · 仕様書 · テスト仕様書 (see [Common words](../ii-common-words.md))
+- 要件定義書 · 仕様書 · テスト仕様書 (see [Common words](../vocabulary/i-common-words.md))
 
 ---
 
@@ -150,7 +150,7 @@ Key document names to recognize:
 
 The beginner track **ends after chapter 3**. Done: [Katakana](./ii-katakana.md), [Hiragana](./iii-hiragana.md). Still planned:
 - Chapter 3 lesson file (kanji tables with readings)
-- Verbs, particles, and office replies — [Verbs & office replies](./iii-beginner.md)
+- Verbs, particles, and office replies — [Verbs & office replies](../day2day/i-beginner.md)
 - Full IT kanji and domain vocabulary
 
 Master chapters 1 → 3 first; then continue to the rest of the Japanese folder.

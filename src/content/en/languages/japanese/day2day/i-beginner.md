@@ -5,9 +5,9 @@ group: "Beginner"
 order: 1
 ---
 Verbs & office replies — connect your words
-You already know **nouns** from [Frequent IT kanji](../i-frequent-it-kanji.md) and [Common words](../ii-common-words.md). This page shows how to attach **simple verbs** in **〜します** form — the polite style used in tickets, email, Slack, and docs at work.
+You already know **nouns** from [Frequent IT kanji](../beginner-alphabet/iv-frequent-it-kanji.md) and [Common words](../vocabulary/i-common-words.md). This page shows how to attach **simple verbs** in **〜します** form — the polite style used in tickets, email, Slack, and docs at work.
 
-Previous: [Hiragana](./iii-hiragana.md) · [Overview](./i-overview.md)
+Previous: [Hiragana](../beginner-alphabet/iii-hiragana.md) · [Overview](../beginner-alphabet/i-overview.md)
 
 Each table includes **katakana** beside Japanese so you can read phrases aloud even if hiragana is still new.
 
@@ -155,7 +155,7 @@ Japanese offices often **soften “no”**. Listen for these instead of a blunt 
 
 ## Practice drill
 
-Pick any noun from [Common words](../ii-common-words.md), then:
+Pick any noun from [Common words](../vocabulary/i-common-words.md), then:
 
 1. Add **します** — シマス → verb (`承認` → 承認します — ショウニンシマス).
 2. Wrap in **してください** — シテクダサイ → polite request (`確認してください` — カクニンシテクダサイ).
@@ -167,6 +167,9 @@ If the sentence still makes sense in English, you are reading real Japanese IT t
 ## Next steps
 
 Combine this page with domain vocabulary: read a 基本設計書 heading, identify nouns, then ask *what verb would attach here?*
+
+- [Keigo](../vocabulary/iii-keigo.md) — honorific email, phone, and client-facing phrases
+- [Email templates](../vocabulary/iv-email-templates.md) — copy-ready Japanese business mail
 
 - 概要を確認します — ガイヨウヲカクニンシマス (confirm the overview)
 - 範囲を定義します — ハンイヲテイギシマス (define the scope)
@@ -232,7 +235,7 @@ A typical written reply follows this skeleton:
 3. **Body** — facts, します / しました verbs, linked to your vocab
 4. **Close** — よろしくお願いします。 — ヨロシクオネガイシマス / 以上、よろしくお願いいたします。 — イジョウ、ヨロシクオネガイイタシマス
 
-You do not need perfect keigo — **consistent polite ます form** plus **承知しました** / **申し訳ありません** goes a long way.
+You do not need perfect keigo on day one — **consistent polite ます form** plus **承知しました** / **申し訳ありません** goes a long way. For client email, phone, and 尊敬語・謙譲語 tables, see [Keigo](../vocabulary/iii-keigo.md). For full 件名 and 本文 templates, see [Email templates](../vocabulary/iv-email-templates.md).
 
 ### 6. One-line cheat sheet
 

@@ -1,8 +1,8 @@
 ---
-label: "II"
+label: "I"
 subtitle: "Common words"
 group: "Japanese"
-order: 2
+order: 1
 ---
 Common IT words — by domain
 Compound words you will see daily in Japanese software: menus, tickets, logs, and documentation. Each entry includes the reading and the domain where it appears most often.
@@ -11,7 +11,8 @@ Compound words you will see daily in Japanese software: menus, tickets, logs, an
 
 1. Skim by **domain** that matches your work (DevOps, security, database, **development phase & docs**, …).
 2. Read the **word** aloud using the **reading** column — on-yomi dominates in formal IT text.
-3. Cross-check unknown kanji against [Frequent IT kanji](./i-frequent-it-kanji.md) and split compounds before memorizing whole words.
+3. Cross-check unknown kanji against [Frequent IT kanji](../beginner-alphabet/iv-frequent-it-kanji.md) and split compounds before memorizing whole words.
+4. For org charts and HR email, see [Corporate structure](ii-corporate-structure.md).
 
 ## General & UI
 
@@ -296,4 +297,7 @@ Words from the **software delivery lifecycle** — document titles, phase names,
 
 ## Next steps
 
-Future lessons will drill full sentences from real UI copy, log lines, and incident tickets — one domain at a time.
+- [Corporate structure](ii-corporate-structure.md) — titles, departments, employment, 稟議・報連相.
+- [Keigo](iii-keigo.md) — 尊敬語・謙譲語・business email and phone phrases.
+- [Email templates](iv-email-templates.md) — copy-ready 件名 and 本文 for internal and client mail.
+- Future lessons will drill full sentences from real UI copy, log lines, and incident tickets — one domain at a time.
