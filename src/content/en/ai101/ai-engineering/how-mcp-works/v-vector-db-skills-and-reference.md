@@ -70,6 +70,8 @@ Your app or a custom MCP server wraps the vector store:
 LLM → host → MCP tool "search_handbook" → vector DB (similarity) → chunks → tool result → LLM
 ```
 
+**Local stack example:** [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md) — no managed vector service; files and index on disk.
+
 Same JSON-RPC path as any other MCP tool; the server runs embed + k-NN, returns text chunks.
 
 **C) Your backend does RAG before the agent**
@@ -147,4 +149,4 @@ Skills = **playbook**. Vector DB = **semantic memory over documents**. MCP = **l
 - stdio vs Streamable HTTP — when is each used?
 - Who calls Linear’s API — the LLM or the MCP server?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md).
+**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md), [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md).

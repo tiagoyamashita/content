@@ -23,7 +23,7 @@ If you want how models work under the hood, see [Machine learning](../machine-le
 | **[Trust, privacy & verify](trust-privacy-and-verify/i-overview.md)** | Hallucinations, sensitive data, fact-checking |
 | **[Skills & agent instructions](skills-and-agent-instructions/i-overview.md)** | `SKILL.md`, rules, `AGENTS.md` |
 | **[How MCP works](how-mcp-works/i-overview.md)** | JSON-RPC, stdio vs HTTP, vector DB vs MCP; [custom MCP](how-mcp-works/how-to-create-your-custom-mcp/i-overview.md) |
-| **[Implementation examples](implementation-example/i-overview.md)** | Hugging Face downloads, local runtimes, RAM sizing, CPU runners |
+| **[Implementation examples](implementation-example/i-overview.md)** | Hugging Face downloads, local runtimes, RAM sizing, CPU runners; [TurboVec RAG](implementation-example/vii-turbovec-ollama-local-files.md) |
 
 
 ## Mental model (user view)
