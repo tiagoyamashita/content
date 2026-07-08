@@ -170,6 +170,7 @@ Combine this page with domain vocabulary: read a 基本設計書 heading, identi
 
 - [Keigo](../vocabulary/iii-keigo.md) — honorific email, phone, and client-facing phrases
 - [Email templates](../vocabulary/iv-email-templates.md) — copy-ready Japanese business mail
+- [Daily conversations](../vocabulary/daily-conversations/i-overview.md) — office dialogues with keigo notes
 
 - 概要を確認します — ガイヨウヲカクニンシマス (confirm the overview)
 - 範囲を定義します — ハンイヲテイギシマス (define the scope)

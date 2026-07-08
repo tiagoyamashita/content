@@ -18,7 +18,7 @@ Structured path from scripts to your first useful kanji. Work through the chapte
 
 After chapter 3 you can read calendar UI, dates, weekdays, and design-doc titles without guessing every character.
 
-**Related material:** [Frequent IT kanji](./iv-frequent-it-kanji.md) · [Common words](../vocabulary/i-common-words.md) · [Corporate structure](../vocabulary/ii-corporate-structure.md) · [Keigo](../vocabulary/iii-keigo.md) · [Email templates](../vocabulary/iv-email-templates.md) · [Verbs & office replies](../day2day/i-beginner.md)
+**Related material:** [Frequent IT kanji](./iv-frequent-it-kanji.md) · [Common words](../vocabulary/i-common-words.md) · [Corporate structure](../vocabulary/ii-corporate-structure.md) · [Keigo](../vocabulary/iii-keigo.md) · [Email templates](../vocabulary/iv-email-templates.md) · [Daily conversations](../vocabulary/daily-conversations/i-overview.md) · [Verbs & office replies](../day2day/i-beginner.md)
 
 ---
 

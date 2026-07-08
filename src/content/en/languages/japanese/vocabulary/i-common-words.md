@@ -300,4 +300,5 @@ Words from the **software delivery lifecycle** — document titles, phase names,
 - [Corporate structure](ii-corporate-structure.md) — titles, departments, employment, 稟議・報連相.
 - [Keigo](iii-keigo.md) — 尊敬語・謙譲語・business email and phone phrases.
 - [Email templates](iv-email-templates.md) — copy-ready 件名 and 本文 for internal and client mail.
+- [Daily conversations](daily-conversations/i-overview.md) — situational dialogues with keigo annotations.
 - Future lessons will drill full sentences from real UI copy, log lines, and incident tickets — one domain at a time.

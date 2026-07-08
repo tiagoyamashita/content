@@ -5,7 +5,7 @@ group: "Japanese"
 order: 3
 ---
 Keigo — honorific Japanese for work
-**敬語 (keigo)** is honorific language used with **clients**, **senior staff**, **vendors**, and in **formal email**. At Japanese IT companies you will hear it in meetings, phone calls, and customer-facing tickets. This page is a **reference list with examples** — pair with [Verbs & office replies](../day2day/i-beginner.md) for daily ます-form patterns and [Corporate structure](ii-corporate-structure.md) for titles (部長, 課長).
+**敬語 (keigo)** is honorific language used with **clients**, **senior staff**, **vendors**, and in **formal email**. At Japanese IT companies you will hear it in meetings, phone calls, and customer-facing tickets. This page is a **reference list with examples** — pair with [Verbs & office replies](../day2day/i-beginner.md) for daily ます-form patterns, [Daily conversations](daily-conversations/i-overview.md) for full situational scripts, and [Corporate structure](ii-corporate-structure.md) for titles (部長, 課長).
 
 ## The three types
 
@@ -433,3 +433,4 @@ Who is the subject of the verb?
 - Titles on org charts: [Corporate structure](ii-corporate-structure.md)
 - Document nouns: [Common words](i-common-words.md) — **Development phase & docs**
 - Full mail bodies: [Email templates](iv-email-templates.md)
+- Situational dialogues: [Daily conversations](daily-conversations/i-overview.md)

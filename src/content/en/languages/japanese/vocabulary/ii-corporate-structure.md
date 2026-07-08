@@ -195,3 +195,4 @@ Japanese titles do not align cleanly with Western job grades. Use context — **
 - Practice email closings in [Verbs & office replies](../day2day/i-beginner.md).
 - Full honorific reference: [Keigo](iii-keigo.md).
 - Copy-ready mail: [Email templates](iv-email-templates.md).
+- Spoken scenes: [Daily conversations](daily-conversations/i-overview.md).

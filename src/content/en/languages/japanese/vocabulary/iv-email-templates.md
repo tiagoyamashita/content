@@ -517,3 +517,4 @@ Email：name@example.com
 - One-line chat replies: [Verbs & office replies](../day2day/i-beginner.md)
 - Document names in attachments: [Common words](i-common-words.md) — **Development phase & docs**
 - Titles in 宛名: [Corporate structure](ii-corporate-structure.md)
+- Spoken practice: [Daily conversations](daily-conversations/i-overview.md)
