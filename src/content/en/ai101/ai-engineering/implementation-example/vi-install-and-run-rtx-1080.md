@@ -37,11 +37,12 @@ If `nvidia-smi` fails, fix the driver before any runtime below.
 
 | Model | Format | Fits fully on GPU? |
 |-------|--------|-------------------|
-| `llama3.2:3b` (Ollama) | Ollama bundle | Yes — fastest start |
-| `mistral:7b` / `llama3.1:8b` | Ollama / Q4 GGUF | Yes at Q4, 4k context |
-| `qwen2.5:7b` | Ollama / Q4 GGUF | Yes at Q4 |
-| `llama3.1:8b` + long context | Q4 GGUF | Tight — lower `-c` or offload layers |
-| `codellama:7b` | Ollama | Yes — coding tasks |
+| **`qwen2.5-coder:7b`** (Ollama) | Ollama bundle | **Yes — best open coder for 8 GB** |
+| `qwen2.5-coder:3b` | Ollama / Q4 GGUF | Yes — faster, lighter |
+| `llama3.2:3b` (Ollama) | Ollama bundle | Yes — general chat, not code-tuned |
+| `qwen2.5:7b` | Ollama / Q4 GGUF | Yes at Q4 — general chat |
+| `qwen2.5-coder:14b` | Q4 GGUF | Tight — partial offload on 1080 |
+| `qwen2.5-coder:32b` | Q4 GGUF | No — needs 24 GB+ VRAM |
 
 ---
 
@@ -58,7 +59,7 @@ Windows/macOS: download from [ollama.com/download](https://ollama.com/download).
 ### Verify GPU
 
 ```bash
-ollama run llama3.2:3b "Say hello in one sentence."
+ollama run qwen2.5-coder:7b "Write hello world in Python."
 # In another terminal while generating:
 ollama ps
 ```
@@ -68,17 +69,21 @@ ollama ps
 ### Pull and run models
 
 ```bash
-# Small + fast on 1080
-ollama pull llama3.2:3b
-ollama run llama3.2:3b
+# Best coding model for 8 GB VRAM (recommended)
+ollama pull qwen2.5-coder:7b
+ollama run qwen2.5-coder:7b
 
-# General chat / code (7–8B — good default on 8 GB)
+# Faster / lighter coding
+ollama pull qwen2.5-coder:3b
+ollama run qwen2.5-coder:3b
+
+# General chat (not code-specialized)
 ollama pull qwen2.5:7b
 ollama run qwen2.5:7b
 
-# Alternative 7B
-ollama pull mistral:7b
-ollama run mistral:7b
+# Small general model
+ollama pull llama3.2:3b
+ollama run llama3.2:3b
 ```
 
 ### OpenAI-compatible API (Cursor, Continue, etc.)
@@ -92,15 +97,15 @@ ollama serve
 curl http://localhost:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "qwen2.5:7b",
-    "messages": [{"role": "user", "content": "Hello"}]
+    "model": "qwen2.5-coder:7b",
+    "messages": [{"role": "user", "content": "Write a bash script to list large files"}]
   }'
 ```
 
 | Cursor / IDE setting | Value |
 |----------------------|-------|
 | Base URL | `http://localhost:11434/v1` |
-| Model | `qwen2.5:7b` (or whatever you pulled) |
+| Model | **`qwen2.5-coder:7b`** (coding) or `qwen2.5:7b` (general chat) |
 | API key | any placeholder (e.g. `ollama`) |
 
 ### Run a custom GGUF
@@ -108,11 +113,11 @@ curl http://localhost:11434/v1/chat/completions \
 ```bash
 # After hf download (see Hugging Face note)
 cat > Modelfile <<'EOF'
-FROM ./models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+FROM ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf
 PARAMETER temperature 0.7
 EOF
-ollama create my-local -f Modelfile
-ollama run my-local
+ollama create qwen-coder-local -f Modelfile
+ollama run qwen-coder-local
 ```
 
 ---
@@ -141,8 +146,8 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 ```bash
 pip install -U "huggingface_hub[cli]"
-hf download bartowski/Llama-3.2-3B-Instruct-GGUF \
-  Llama-3.2-3B-Instruct-Q4_K_M.gguf \
+hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
+  Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
   --local-dir ./models
 ```
 
@@ -150,10 +155,10 @@ hf download bartowski/Llama-3.2-3B-Instruct-GGUF \
 
 ```bash
 ./build/bin/llama-cli \
-  -m ./models/Llama-3.2-3B-Instruct-Q4_K_M.gguf \
+  -m ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
   -ngl 99 \
   -c 4096 \
-  -p "You are a helpful assistant." \
+  -p "You are an expert programmer." \
   --interactive
 ```
 
@@ -168,7 +173,7 @@ hf download bartowski/Llama-3.2-3B-Instruct-GGUF \
 
 ```bash
 ./build/bin/llama-server \
-  -m ./models/Llama-3.2-3B-Instruct-Q4_K_M.gguf \
+  -m ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
   -ngl 99 \
   -c 4096 \
   --host 127.0.0.1 \
@@ -184,7 +189,7 @@ API: `http://localhost:8080` — OpenAI-style endpoints per [llama.cpp server do
 ### Install
 
 1. Download from [lmstudio.ai](https://lmstudio.ai) (`.AppImage` on Linux, installer on Windows).
-2. Run the app; open **Discover** → search model → pick a **4-bit / Q4** **3B–7B** variant.
+2. Run the app; open **Discover** → search **`Qwen2.5-Coder-7B`** → pick **Q4** quant.
 3. **My Models** → load model → **GPU** offload slider to **max** (all layers).
 
 ### Run
@@ -217,7 +222,7 @@ Windows: grab `koboldcpp.exe` CUDA build from the same releases page.
 ### Run
 
 ```bash
-./koboldcpp --model ./models/Llama-3.2-3B-Instruct-Q4_K_M.gguf \
+./koboldcpp --model ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
   --gpulayers 99 \
   --contextsize 4096 \
   --port 5001
@@ -253,7 +258,7 @@ Layer-streaming — fits **13B+** slowly when full GPU load does not fit.
 python3 -m venv ~/airllm-venv
 source ~/airllm-venv/bin/activate
 pip install -U pip airllm torch --index-url https://download.pytorch.org/whl/cu121
-huggingface-cli login
+hf auth login
 ```
 
 ### Run (Python)
@@ -262,11 +267,11 @@ huggingface-cli login
 from airllm import AutoModel
 
 model = AutoModel.from_pretrained(
-    "meta-llama/Llama-3.1-8B-Instruct",
-    compression="4bit",  # or None if RAM allows
+    "Qwen/Qwen2.5-Coder-7B-Instruct",
+    compression="4bit",
 )
 input_tokens = model.tokenizer(
-    ["What is the capital of France?"],
+    ["def fib(n):"],
     return_tensors="pt",
     return_attention_mask=False,
 )
@@ -289,7 +294,7 @@ python3 -m venv ~/vllm-venv
 source ~/vllm-venv/bin/activate
 pip install vllm
 python -m vllm.entrypoints.openai.api_server \
-  --model meta-llama/Llama-3.2-3B-Instruct \
+  --model Qwen/Qwen2.5-Coder-7B-Instruct \
   --dtype half \
   --max-model-len 2048
 ```
@@ -319,12 +324,12 @@ For production APIs on modern hardware, revisit these on a **RTX 3060 12GB+** or
 
 | Goal | Install | Run |
 |------|---------|-----|
-| **Fastest path** | Ollama one-liner | `ollama pull llama3.2:3b && ollama run llama3.2:3b` |
-| **Best 7B daily driver** | Ollama | `ollama pull qwen2.5:7b && ollama run qwen2.5:7b` |
-| **IDE API** | Ollama | `http://localhost:11434/v1` + model name |
-| **Fine-grained GPU/control** | llama.cpp CUDA build | `llama-server -ngl 99 -m …Q4_K_M.gguf` |
-| **Web UI, no terminal** | LM Studio or KoboldCPP | GUI or `http://localhost:5001` |
-| **13B+ experiment** | airLLM | Python layer streaming |
+| **Local coding (recommended)** | Ollama | `ollama pull qwen2.5-coder:7b && ollama run qwen2.5-coder:7b` |
+| **IDE API for code** | Ollama | `http://localhost:11434/v1` + `qwen2.5-coder:7b` |
+| **Fastest general chat** | Ollama | `ollama pull llama3.2:3b && ollama run llama3.2:3b` |
+| **Fine-grained GPU/control** | llama.cpp CUDA build | `llama-server -ngl 99 -m …Qwen2.5-Coder…Q4_K_M.gguf` |
+| **Web UI, no terminal** | LM Studio or KoboldCPP | Search Qwen2.5-Coder-7B in GUI |
+| **13B+ experiment** | airLLM | `Qwen/Qwen2.5-Coder-14B-Instruct` + layer streaming |
 
 ## 11. Troubleshooting
 
@@ -334,7 +339,7 @@ For production APIs on modern hardware, revisit these on a **RTX 3060 12GB+** or
 | **Runs on CPU only** | `nvidia-smi`; reinstall driver; rebuild llama.cpp with `-DGGML_CUDA=ON` |
 | **Slow generation** | Normal for 7B on 1080 (~20–35 tok/s Q4); use 3B for speed |
 | **Model not found** | `ollama pull <name>` or verify GGUF path |
-| **Gated HF model** | `huggingface-cli login` + accept license |
+| **Gated HF model** | `hf auth login` + accept license |
 
 Monitor VRAM during a run:
 

@@ -31,6 +31,8 @@ Hugging Face repo  →  weights on disk  →  runtime (Ollama / llama.cpp / vLLM
 | **Runtime** | Ease of use vs throughput vs GPU requirement |
 | **Hardware** | RAM for weights + KV cache; VRAM if using GPU |
 
+**Default coding pick:** **Qwen2.5-Coder 7B** (`ollama pull qwen2.5-coder:7b`) — open license, no HF gating, fits 8 GB GPUs. See [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+
 ## Study order
 
 [Downloading from Hugging Face](ii-downloading-from-huggingface.md) → [Local run platforms](iii-local-run-platforms.md) → [Model RAM requirements](iv-model-ram-requirements.md) → [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) → [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md)

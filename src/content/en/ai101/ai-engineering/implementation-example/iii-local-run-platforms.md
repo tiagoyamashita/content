@@ -26,6 +26,7 @@ After weights are on disk, a **runtime** loads them and exposes chat — CLI, de
 
 ```text
 "I just want it running tonight"     → Ollama or LM Studio
+"Local coding / Cursor / Continue"   → Ollama + qwen2.5-coder:7b (or 32b if 24 GB VRAM)
 "I have a MacBook"                   → Ollama, MLX, or LM Studio
 "I have a Linux box + NVIDIA GPU"    → vLLM or TGI for APIs; Ollama for simplicity
 "CPU only / 16 GB RAM"               → llama.cpp + small Q4 GGUF (see RAM note)
@@ -48,10 +49,10 @@ Downloading the wrong format means convert or re-download — see [Downloading f
 Most local stacks expose an **OpenAI-compatible** HTTP API so existing clients work:
 
 ```bash
-# Ollama example
+# Ollama + Qwen2.5-Coder (coding)
 curl http://localhost:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"llama3.2","messages":[{"role":"user","content":"Hello"}]}'
+  -d '{"model":"qwen2.5-coder:7b","messages":[{"role":"user","content":"Write a Python fib function"}]}'
 ```
 
 | Platform | Default base URL |
@@ -61,9 +62,21 @@ curl http://localhost:11434/v1/chat/completions \
 | LM Studio | `http://localhost:1234/v1` |
 | vLLM | `http://localhost:8000/v1` |
 
-Point Cursor, Continue, or your app at that URL with a dummy API key if the server does not enforce auth.
+Point Cursor, Continue, or your app at that URL with a dummy API key if the server does not enforce auth. For coding, set model to **`qwen2.5-coder:7b`** (8 GB GPU) or **`qwen2.5-coder:32b`** (24 GB+ GPU).
 
-## 5. Security on local servers
+## 5. Recommended coding model — Qwen2.5-Coder
+
+| Size | Ollama tag | VRAM (Q4, ~4k ctx) | Best for |
+|------|------------|-------------------|----------|
+| 1.5B | `qwen2.5-coder:1.5b` | ~2 GB | Autocomplete / paired with larger chat model |
+| 3B | `qwen2.5-coder:3b` | ~2.5 GB | Fast edits on tight GPUs |
+| **7B** | **`qwen2.5-coder:7b`** | **~5 GB** | **Default for RTX 1080 / 8 GB cards** |
+| 14B | `qwen2.5-coder:14b` | ~9 GB | 12–16 GB VRAM |
+| 32B | `qwen2.5-coder:32b` | ~20 GB | 24 GB VRAM — strongest open coder in family |
+
+Apache 2.0 license; downloads from HF do **not** require Meta-style gating. See [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+
+## 6. Security on local servers
 
 | Risk | Mitigation |
 |------|------------|

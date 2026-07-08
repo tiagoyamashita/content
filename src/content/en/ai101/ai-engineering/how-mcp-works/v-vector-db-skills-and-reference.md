@@ -147,4 +147,4 @@ Skills = **playbook**. Vector DB = **semantic memory over documents**. MCP = **l
 - stdio vs Streamable HTTP — when is each used?
 - Who calls Linear’s API — the LLM or the MCP server?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md).
+**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md).

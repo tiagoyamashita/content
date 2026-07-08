@@ -94,17 +94,18 @@ mlx_lm.generate --model mlx-community/Llama-3.2-3B-Instruct-4bit --prompt "Hello
 If no GPU is detected, Ollama still runs — backed by llama.cpp CPU kernels:
 
 ```bash
-ollama pull llama3.2:3b
-ollama run llama3.2:3b
+ollama pull qwen2.5-coder:7b
+ollama run qwen2.5-coder:7b
 ```
 
-Prefer **smaller** tags (`3b`, `1b`) for CPU. Set `OLLAMA_NUM_GPU=0` to force CPU on hybrid machines when debugging.
+Prefer **smaller** tags (`3b`, `1.5b`) for CPU-only. Set `OLLAMA_NUM_GPU=0` to force CPU on hybrid machines when debugging.
 
 ## 6. When to use which
 
 | Goal | Pick |
 |------|------|
-| Daily local chat, minimal setup | Ollama + small model |
+| Daily local **coding** | Ollama + **`qwen2.5-coder:7b`** |
+| Daily local chat (general) | Ollama + `qwen2.5:7b` or `llama3.2:3b` |
 | Tightest RAM, full control | llama.cpp + Q4_K_M GGUF |
 | MacBook dev machine | MLX or Ollama |
 | 70B on 8 GB VRAM experiment | airLLM |
@@ -115,11 +116,12 @@ Prefer **smaller** tags (`3b`, `1b`) for CPU. Set `OLLAMA_NUM_GPU=0` to force CP
 
 | Model | Rough tokens/sec (modern laptop CPU) |
 |-------|--------------------------------------|
+| qwen2.5-coder 1.5B Q4 | 20–45 |
 | 1–3B Q4 | 15–40 |
-| 7B Q4 | 3–12 |
+| qwen2.5-coder 7B Q4 | 3–12 |
 | 13B Q4 | 1–5 |
 
-Numbers vary wildly by AVX support, core count, and power limits. For coding assistance, **3B–7B on GPU** or a **hosted API** usually beats **13B on CPU**.
+Numbers vary wildly by AVX support, core count, and power limits. For coding assistance, **`qwen2.5-coder:7b` on GPU** or a **hosted API** usually beats **7B on CPU**.
 
 ## Related
 

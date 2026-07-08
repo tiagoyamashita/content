@@ -87,11 +87,22 @@ Assumes **Q4_K_M**, **4k context**, small overhead. Add **4 GB** for OS + browse
 
 | Your hardware | Reasonable starting models |
 |---------------|----------------------------|
-| 8 GB RAM, no GPU | 1–3B Q4 (Phi, Llama 3.2 1B/3B, Qwen2.5 0.5B–1.5B) |
-| 16 GB RAM, no GPU | 7–8B Q4_K_M |
-| 16 GB RAM + 8 GB VRAM | 7B Q4/Q8 on GPU; or 13B partial offload |
-| 32 GB RAM + 24 GB VRAM | 13B full GPU; 32B Q4 with offload |
+| 8 GB RAM, no GPU | 1–3B Q4 (`qwen2.5-coder:1.5b`, Llama 3.2 1B/3B) |
+| 16 GB RAM, no GPU | 7B Q4_K_M (`qwen2.5-coder:7b`) |
+| **8 GB VRAM (RTX 1080)** | **`qwen2.5-coder:7b`** — best open coder for the tier |
+| 16 GB RAM + 8 GB VRAM | 7B Q4/Q8 on GPU (`qwen2.5-coder:7b`); or 13B partial offload |
+| 32 GB RAM + 24 GB VRAM | `qwen2.5-coder:32b` full GPU; or 13B Q4 with headroom |
 | 64 GB+ RAM | 32B–70B with mix of CPU/GPU offload |
+
+### Qwen2.5-Coder family (weight RAM at Q4_K_M)
+
+| Model | ~Weight RAM | Min VRAM (4k ctx) | Notes |
+|-------|-------------|-------------------|-------|
+| 0.5B / 1.5B | under 1 GB | 4 GB | Toy / autocomplete |
+| 3B | ~2 GB | 6 GB | Fast coding on old GPUs |
+| **7B** | **~4.5 GB** | **8 GB** | **Sweet spot for RTX 1080** |
+| 14B | ~8.5 GB | 12 GB | Needs 12 GB+ card or offload |
+| 32B | ~18 GB | 24 GB | Top open coder; matches GPT-4o class on many code benches |
 
 ## 7. Check before you commit
 
