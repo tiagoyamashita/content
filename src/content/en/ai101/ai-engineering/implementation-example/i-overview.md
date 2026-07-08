@@ -17,6 +17,7 @@ This track is for **practitioners** who want to go beyond hosted chat apps. For 
 | [Local run platforms](iii-local-run-platforms.md) | Ollama, llama.cpp, LM Studio, vLLM, and more — pros and cons |
 | [Model RAM requirements](iv-model-ram-requirements.md) | Quantization, context length, and sizing tables |
 | [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) | airLLM, llama.cpp CPU, MLX, and trade-offs |
+| [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) | Per-platform install, GPU verify, and model picks for 8 GB VRAM |
 
 ## Mental model
 
@@ -32,7 +33,7 @@ Hugging Face repo  →  weights on disk  →  runtime (Ollama / llama.cpp / vLLM
 
 ## Study order
 
-[Downloading from Hugging Face](ii-downloading-from-huggingface.md) → [Local run platforms](iii-local-run-platforms.md) → [Model RAM requirements](iv-model-ram-requirements.md) → [CPU & lightweight runners](v-cpu-and-lightweight-runners.md)
+[Downloading from Hugging Face](ii-downloading-from-huggingface.md) → [Local run platforms](iii-local-run-platforms.md) → [Model RAM requirements](iv-model-ram-requirements.md) → [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) → [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md)
 
 ## When to run locally vs use an API
 

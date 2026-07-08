@@ -74,3 +74,5 @@ Point Cursor, Continue, or your app at that URL with a dummy API key if the serv
 ## Next
 
 [Model RAM requirements](iv-model-ram-requirements.md) — size models to your machine before picking quant and context length.
+
+**Hands-on:** [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) — per-platform setup for 8 GB Pascal GPUs.
