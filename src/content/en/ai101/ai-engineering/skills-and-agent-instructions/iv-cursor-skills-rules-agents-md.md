@@ -75,6 +75,100 @@ Frontmatter fields:
 | `description` | Yes | **What** + **when** — drives auto-load |
 | `disable-model-invocation` | No | If `true`, only runs when user invokes explicitly |
 
+### Linking a fixed script
+
+Skills do **not** auto-run scripts. You **bundle** the script in the skill folder and tell the agent in **`SKILL.md`** to **execute** it via the Shell tool when the workflow runs.
+
+```text
+.cursor/skills/deploy-staging/
+  SKILL.md
+  scripts/
+    smoke-test.sh          ← fixed script (committed to git)
+    validate-release.py
+```
+
+| Piece | Role |
+|-------|------|
+| **`scripts/`** | Canonical copy of the script the team maintains |
+| **`SKILL.md`** | When to run, exact command, how to read output |
+| **Agent Shell** | Runs the command you specified — not magic wiring |
+
+**1. Add the script** (executable, repo-relative paths inside):
+
+```bash
+chmod +x .cursor/skills/deploy-staging/scripts/smoke-test.sh
+```
+
+```bash
+#!/usr/bin/env bash
+# .cursor/skills/deploy-staging/scripts/smoke-test.sh
+set -euo pipefail
+curl -fsS "${STAGING_URL:-https://staging.example.com}/health"
+```
+
+**2. Link it in `SKILL.md`** — use imperative language and the path from **repo root**:
+
+```markdown
+---
+name: deploy-staging
+description: Deploy to staging and run smoke checks. Use when the user asks to deploy staging, release to staging, or verify a staging deploy.
+---
+
+# Deploy to staging
+
+## Required steps (in order)
+
+1. `npm run build`
+2. `npm run deploy:staging`
+3. **Always run the smoke script before reporting success:**
+   ```bash
+   .cursor/skills/deploy-staging/scripts/smoke-test.sh
+   ```
+4. Paste the script output in your reply. If non-zero exit, stop — do not claim deploy succeeded.
+
+## Do not
+
+- Reimplement the health check inline — use the script above
+- Skip the script unless the user explicitly says to skip verification
+```
+
+**3. Test** — fresh chat, prompt “deploy to staging”, confirm the agent runs your script path.
+
+#### Path rules
+
+| Do | Avoid |
+|----|-------|
+| Paths from **repo root** in `SKILL.md` | Paths relative to the skill folder only (agent cwd is usually project root) |
+| One clear command per script | “Run something like curl …” (agent may improvise) |
+| `scripts/` under the skill folder | Scattered one-off scripts with no owner |
+| Forward slashes in paths | Backslashes |
+
+#### Alternatives (same idea, different anchor)
+
+| Approach | When |
+|----------|------|
+| **`scripts/` in skill folder** | Team-owned workflow script; versioned with the skill |
+| **`npm run smoke:staging`** in `package.json` | Script already part of app toolchain; skill says `npm run …` |
+| **`AGENTS.md` Commands** | One-liner used across many skills (“tests = `npm test`”) |
+| **MCP tool** | Script wraps a **live API** or DB the agent must call repeatedly — see [How MCP works](../how-mcp-works/i-overview.md) |
+| **Cursor hook** (`.cursor/hooks.json`) | Run **automatically** on events (after edit, before shell) — not skill-triggered |
+
+```text
+Skill + script     → agent runs YOUR file when the TASK matches (deploy, review, …)
+Hook               → Cursor runs YOUR file on EVENTS (afterFileEdit, beforeShellExecution, …)
+MCP server         → agent calls a TOOL (search, create ticket, query API)
+```
+
+Use a **skill-linked script** for repeatable **procedures** (“always run this check”). Use a **hook** when it must fire **without** the user asking. Use **MCP** when the agent needs **live data**, not a fixed local command.
+
+#### Safety
+
+- No secrets in scripts — read from env (`STAGING_URL`, `API_KEY`)
+- Keep scripts short and reviewable; avoid `rm -rf` or broad `git` commands unless intentional
+- For destructive ops, add `disable-model-invocation: true` and require explicit `/deploy-staging` or user confirmation in the skill body
+
+See [Writing & maintaining skills](v-writing-and-maintaining-skills.md) for testing and team ownership.
+
 ## 5. Cursor rules vs skills
 
 | | **Rules** (`.cursor/rules/*.mdc`) | **Skills** (`SKILL.md`) |
