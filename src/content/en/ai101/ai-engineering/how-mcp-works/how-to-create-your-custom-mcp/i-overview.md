@@ -11,13 +11,27 @@ Read [How MCP works](../i-overview.md) first for JSON-RPC, stdio vs HTTP, and th
 
 ## Map of this submenu
 
-| Note | Focus |
-|------|--------|
-| [Plan your server](ii-plan-your-server.md) | Scope, tools vs resources, env vars, one job per server |
-| [Build with the SDK](iii-build-with-the-sdk.md) | TypeScript and Python project setup |
-| [Tools, resources & prompts](iv-tools-resources-and-prompts.md) | Schemas, handlers, error shapes |
-| [Test & wire into Cursor](v-test-and-wire-cursor.md) | MCP Inspector, `mcp.json`, debugging |
-| [Security & distribution](vi-security-and-distribution.md) | Secrets, scopes, npm/pip, team rollout |
+```mermaid
+flowchart TD
+  Root["📁 How to create your custom MCP"]
+  II["📄 Plan your server"]
+  III["📄 Build with the SDK"]
+  IV["📄 Tools, resources & prompts"]
+  V["📄 Test & wire into Cursor"]
+  VI["📄 Security & distribution"]
+  Root --> II
+  Root --> III
+  Root --> IV
+  Root --> V
+  Root --> VI
+  click II "ii-plan-your-server.md" "Open note"
+  click III "iii-build-with-the-sdk.md" "Open note"
+  click IV "iv-tools-resources-and-prompts.md" "Open note"
+  click V "v-test-and-wire-cursor.md" "Open note"
+  click VI "vi-security-and-distribution.md" "Open note"
+```
+
+Click a node to open that note. If clicks are disabled in your viewer, use the sidebar or search.
 
 ## What you are building
 

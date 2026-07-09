@@ -11,13 +11,14 @@
             "id": "4494f94085363cfc",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "opaa.base",
-                "viewName": "Table"
+                "file": "2026-07-08.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "opaa"
+              "icon": "lucide-file",
+              "title": "2026-07-08"
             }
           }
         ]
@@ -185,8 +186,10 @@
   },
   "active": "4494f94085363cfc",
   "lastOpenFiles": [
-    "ai101/ai-engineering/agents-and-agentic-workflows/i-overview.md",
+    "Untitled 2.canvas",
+    "2026-07-08.md",
     "opaa.base",
+    "ai101/ai-engineering/agents-and-agentic-workflows/i-overview.md",
     "languages/japanese/vocabulary/daily-conversations/vi-requests-approval-and-handoffs.md",
     "languages/japanese/vocabulary/daily-conversations/v-incidents-and-escalation.md",
     "languages/japanese/vocabulary/daily-conversations/iv-phone-and-client-calls.md",
