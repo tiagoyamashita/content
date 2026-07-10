@@ -97,6 +97,7 @@ Read [Parameterized script + clarify](ii-parameterized-script-clarify.md) first 
 
 ## Related
 
+- [Using skills, agents & hooks](../using-skills-agents-and-hooks/i-overview.md) — when to use each layer separately
 - [Linking a fixed script](../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script)
 - [Loop prompting](../../loop-prompting/i-overview.md)
 - [How MCP works](../../how-mcp-works/i-overview.md) — live data vs static scripts
