@@ -237,12 +237,13 @@ One skill folder = one workflow. Split large topics (e.g. `pr-review` vs `deploy
 | [Cross-tool portable setup](iii-cross-tool-portable-setup.md) | One repo, Cursor + Claude Code + Codex |
 | [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) | Cursor layout, rules vs skills, `AGENTS.md`, **linking scripts** |
 | [Writing & maintaining skills](v-writing-and-maintaining-skills.md) | Descriptions, progressive disclosure, team workflow |
+| **[Examples](examples/i-overview.md)** | Parameterized scripts, loop on logs, commit hooks, perf scans — all with runtime JSON logs |
 
 **Related loop:** [Persistent instructions](../loop-prompting/iii-persistent-instructions.md) — when to promote chat text into skills.
 
 ## Study order
 
-[Artifacts & why bother](ii-artifacts-why-and-what.md) → [Artifact examples](iia-artifact-examples.md) → [Cross-tool portable setup](iii-cross-tool-portable-setup.md) → [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) → [Writing & maintaining skills](v-writing-and-maintaining-skills.md)
+[Artifacts & why bother](ii-artifacts-why-and-what.md) → [Artifact examples](iia-artifact-examples.md) → [Cross-tool portable setup](iii-cross-tool-portable-setup.md) → [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) → [Writing & maintaining skills](v-writing-and-maintaining-skills.md) → **[Examples](examples/i-overview.md)** when you want copy-paste scripts with logging
 
 ## Start here (15 minutes)
 
