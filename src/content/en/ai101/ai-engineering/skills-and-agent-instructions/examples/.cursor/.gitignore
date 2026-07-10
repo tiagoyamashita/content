@@ -1,0 +1,3 @@
+# Runtime logs — do not commit
+skills/*/logs/
+hooks/logs/

@@ -6,7 +6,7 @@ order: 4
 ---
 Hook — secrets & `.env` scan
 
-**Goal:** A **bot** that runs on **hooks** — before `git commit` or before shell runs `git commit` — and scans for exposed secrets, `.env` files staged, API keys in diffs. Writes a **log**; can **block** the action when `failClosed` is set.
+**Goal:** A **bot** that runs on **hooks** — before shell runs `git commit` — and scans for exposed secrets, `.env` files staged, API keys in diffs. Writes a **log**; can **block** the action when `failClosed` is set.
 
 Hooks run **automatically**; skills run when the user asks. See [Linking a fixed script](../../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script).
 
@@ -16,7 +16,9 @@ Hooks run **automatically**; skills run when the user asks. See [Linking a fixed
 .cursor/
   hooks.json
   hooks/
-    secrets-scan.sh
+    secrets_scan.py
+    lib/
+      scan_staged_secrets.py   ← shared scan logic
     logs/
       secrets-scan-20260710T150001Z.json
 ```
@@ -30,15 +32,13 @@ Add to `.gitignore`:
 
 ## Hook config — `.cursor/hooks.json`
 
-Run before shell executes `git commit` (and optionally after edits):
-
 ```json
 {
   "version": 1,
   "hooks": {
     "beforeShellExecution": [
       {
-        "command": ".cursor/hooks/secrets-scan.sh",
+        "command": "python3 .cursor/hooks/secrets_scan.py",
         "matcher": "git\\s+commit",
         "timeout": 30,
         "failClosed": true
@@ -54,109 +54,179 @@ Run before shell executes `git commit` (and optionally after edits):
 
 The script also filters on `git commit` internally so you can omit the matcher while testing.
 
-## Script — `.cursor/hooks/secrets-scan.sh`
+## Scan logic — `hooks/lib/scan_staged_secrets.py`
 
-`beforeShellExecution` hooks receive JSON on **stdin** and return JSON on **stdout** (`permission`: `allow` | `deny`). This wrapper runs the scan, writes a log, and blocks commits when findings exist.
+Reusable from the Cursor hook and from git `pre-commit`:
 
-```bash
-#!/usr/bin/env bash
-# .cursor/hooks/secrets-scan.sh
-set -euo pipefail
+```python
+"""Scan staged files for .env and obvious secrets."""
+from __future__ import annotations
 
-INPUT="$(cat)"
-COMMAND="$(printf '%s' "$INPUT" | jq -r '.command // empty')"
-LOG_DIR="$(dirname "$0")/logs"
-mkdir -p "$LOG_DIR"
+import re
+import subprocess
+from dataclasses import dataclass, field
 
-STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-START_MS="$(date +%s%3N)"
-FINDINGS=()
-BLOCK=0
 
-add_finding() {
-  FINDINGS+=("$1")
-  BLOCK=1
-}
+SECRET_RE = re.compile(
+    r"(api[_-]?key|secret|password|private[_-]?key)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{8,}",
+    re.IGNORECASE,
+)
 
-# Only scan on git commit (script-side filter — matcher optional)
-if [[ ! "$COMMAND" =~ git[[:space:]]+commit ]]; then
-  echo '{ "permission": "allow" }'
-  exit 0
-fi
 
-# 1) Staged .env files
-while IFS= read -r -d '' f; do
-  add_finding "STAGED_ENV_FILE: $f"
-done < <(git diff --cached --name-only -z 2>/dev/null | grep -zE '\.env$|\.env\.' || true)
+@dataclass
+class ScanResult:
+    findings: list[str] = field(default_factory=list)
 
-# 2) Obvious secret patterns in staged diff
-if git diff --cached -U0 2>/dev/null | grep -qiE \
-  '(api[_-]?key|secret|password|private[_-]?key)\s*[:=]\s*['\''"][a-zA-Z0-9_\-]{8,}'; then
-  add_finding "POSSIBLE_SECRET_IN_STAGED_DIFF"
-fi
+    @property
+    def blocked(self) -> bool:
+        return bool(self.findings)
 
-# 3) .env committed in this commit
-if git diff --cached --name-only 2>/dev/null | grep -qE '^\.env$'; then
-  add_finding "DOT_ENV_IN_COMMIT"
-fi
+    def add(self, message: str) -> None:
+        self.findings.append(message)
 
-END_MS="$(date +%s%3N)"
-FINISHED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-DURATION_MS=$((END_MS - START_MS))
 
-LOG_FILE="$LOG_DIR/secrets-scan-$(date -u +%Y%m%dT%H%M%SZ).json"
-FINDINGS_JSON=$(printf '%s\n' "${FINDINGS[@]:-}" | sed '/^$/d' | jq -R . | jq -s .)
+def _git(*args: str) -> str:
+    return subprocess.run(
+        ["git", *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    ).stdout
 
-cat >"$LOG_FILE" <<EOF
-{
-  "script": "secrets-scan.sh",
-  "command": $(printf '%s' "$COMMAND" | jq -Rs .),
-  "started_at": "$STARTED_AT",
-  "finished_at": "$FINISHED_AT",
-  "duration_ms": $DURATION_MS,
-  "exit_code": $BLOCK,
-  "results": { "findings_count": ${#FINDINGS[@]}, "blocked": $([[ $BLOCK -eq 1 ]] && echo true || echo false) },
-  "messages": $FINDINGS_JSON,
-  "log_file": "$LOG_FILE"
-}
-EOF
 
-if [[ $BLOCK -eq 1 ]]; then
-  MSG=$(printf '%s; ' "${FINDINGS[@]}" | sed 's/; $//')
-  jq -n \
-    --arg msg "$MSG" \
-    --arg log "$LOG_FILE" \
-    '{
-      "permission": "deny",
-      "user_message": ("Commit blocked — secrets scan failed. See " + $log),
-      "agent_message": ("Fix before commit: " + $msg)
-    }'
-  exit 2
-fi
+def scan_staged() -> ScanResult:
+    result = ScanResult()
+    names = _git("diff", "--cached", "--name-only").splitlines()
 
-echo '{ "permission": "allow", "agent_message": "Secrets scan passed." }'
-exit 0
+    for name in names:
+        if re.search(r"\.env(\.|$)", name):
+            result.add(f"STAGED_ENV_FILE: {name}")
+        if name == ".env":
+            result.add("DOT_ENV_IN_COMMIT")
+
+    diff = _git("diff", "--cached", "-U0")
+    if SECRET_RE.search(diff):
+        result.add("POSSIBLE_SECRET_IN_STAGED_DIFF")
+
+    return result
+```
+
+## Hook wrapper — `hooks/secrets_scan.py`
+
+`beforeShellExecution` hooks receive JSON on **stdin** and return JSON on **stdout** (`permission`: `allow` | `deny`).
+
+```python
+#!/usr/bin/env python3
+"""Cursor beforeShellExecution hook — block commits with staged secrets."""
+from __future__ import annotations
+
+import json
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from time import perf_counter
+
+from lib.scan_staged_secrets import scan_staged
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def main() -> int:
+    raw = sys.stdin.read()
+    payload = json.loads(raw) if raw.strip() else {}
+    command = payload.get("command", "")
+
+    if not re.search(r"git\s+commit", command):
+        print(json.dumps({"permission": "allow"}))
+        return 0
+
+    started_at = utc_now()
+    t0 = perf_counter()
+    scan = scan_staged()
+    duration_ms = int((perf_counter() - t0) * 1000)
+
+    log_dir = Path(__file__).resolve().parent / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    log_file = log_dir / f"secrets-scan-{stamp}.json"
+
+    log_payload = {
+        "script": "secrets_scan.py",
+        "command": command,
+        "started_at": started_at,
+        "finished_at": utc_now(),
+        "duration_ms": duration_ms,
+        "exit_code": 1 if scan.blocked else 0,
+        "results": {
+            "findings_count": len(scan.findings),
+            "blocked": scan.blocked,
+        },
+        "messages": scan.findings,
+        "log_file": str(log_file),
+    }
+    log_file.write_text(json.dumps(log_payload, indent=2) + "\n", encoding="utf-8")
+
+    if scan.blocked:
+        msg = "; ".join(scan.findings)
+        print(
+            json.dumps(
+                {
+                    "permission": "deny",
+                    "user_message": f"Commit blocked — secrets scan failed. See {log_file}",
+                    "agent_message": f"Fix before commit: {msg}",
+                }
+            )
+        )
+        return 2
+
+    print(
+        json.dumps(
+            {
+                "permission": "allow",
+                "agent_message": f"Secrets scan passed. Log: {log_file}",
+            }
+        )
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
 ```
 
 ```bash
-chmod +x .cursor/hooks/secrets-scan.sh
+chmod +x .cursor/hooks/secrets_scan.py
 ```
 
 ## Optional: git pre-commit (runs outside Cursor too)
 
-Extract scan logic to `.cursor/hooks/lib/scan-staged-secrets.sh` and call it from both the hook and git:
-
 ```bash
-# .git/hooks/pre-commit (or use pre-commit framework)
+# .git/hooks/pre-commit
 #!/bin/sh
-exec .cursor/hooks/lib/scan-staged-secrets.sh
+cd "$(git rev-parse --show-toplevel)" || exit 1
+python3 .cursor/hooks/lib/scan_staged_secrets_cli.py
 ```
 
-Team members get the gate even without Cursor.
+Minimal CLI wrapper:
+
+```python
+#!/usr/bin/env python3
+# .cursor/hooks/lib/scan_staged_secrets_cli.py
+import sys
+from scan_staged_secrets import scan_staged
+
+result = scan_staged()
+if result.blocked:
+    for line in result.findings:
+        print(line, file=sys.stderr)
+    sys.exit(1)
+print("secrets scan OK")
+```
 
 ## SKILL.md companion (optional)
-
-For when the agent should **explain** a blocked commit:
 
 ```markdown
 ---
@@ -177,8 +247,8 @@ description: Explain secrets-scan hook failures and how to fix staged .env or le
 ```text
 User or agent: git commit -m "…"
   → beforeShellExecution fires
-  → secrets-scan.sh runs → writes log
-  → exit 1 → commit blocked (if failClosed)
+  → secrets_scan.py runs → writes log
+  → exit 2 → commit blocked (if failClosed)
   → Agent reads log → suggests fixes
 ```
 

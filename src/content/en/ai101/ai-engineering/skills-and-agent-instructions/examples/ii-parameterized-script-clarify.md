@@ -14,84 +14,91 @@ Parameterized script + clarify
 .cursor/skills/deploy-check/
   SKILL.md
   scripts/
-    deploy-check.sh
+    lib/
+      run_log.py          ← shared helper (see overview)
+    deploy_check.py
   logs/                    ← gitignore; created at runtime
     run-20260710T120301Z.json
 ```
 
-## Script — `scripts/deploy-check.sh`
+## Script — `scripts/deploy_check.py`
 
-Accepts CLI flags; always writes a log file.
+```python
+#!/usr/bin/env python3
+"""Deploy preflight checks — writes JSON log under ../logs/."""
+from __future__ import annotations
 
-```bash
-#!/usr/bin/env bash
-# .cursor/skills/deploy-check/scripts/deploy-check.sh
-set -euo pipefail
+import argparse
+import os
+import sys
+import urllib.error
+import urllib.request
+from pathlib import Path
 
-ENVIRONMENT=""
-DRY_RUN="false"
-LOG_DIR="$(dirname "$0")/../logs"
-mkdir -p "$LOG_DIR"
+from lib.run_log import Timer, log_path, write_log
 
-usage() {
-  echo "Usage: $0 --environment staging|production [--dry-run]"
-  exit 2
-}
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --environment) ENVIRONMENT="$2"; shift 2 ;;
-    --dry-run) DRY_RUN="true"; shift ;;
-    -h|--help) usage ;;
-    *) echo "Unknown arg: $1"; usage ;;
-  esac
-done
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Deploy preflight checks")
+    parser.add_argument(
+        "--environment",
+        required=True,
+        choices=("staging", "production"),
+        help="Target environment",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate deploy (recommended for production)",
+    )
+    return parser.parse_args()
 
-[[ -z "$ENVIRONMENT" ]] && usage
 
-STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-START_MS="$(date +%s%3N)"
+def main() -> int:
+    args = parse_args()
+    log_dir = Path(__file__).resolve().parent.parent / "logs"
+    timer = Timer()
+    messages: list[str] = []
+    failures = 0
 
-# --- checks (replace with your real logic) ---
-MESSAGES=()
-FAILURES=0
-if [[ "$ENVIRONMENT" == "production" && "$DRY_RUN" != "true" ]]; then
-  MESSAGES+=("WARN: production deploy without dry-run")
-fi
-curl -fsS "${STAGING_URL:-https://staging.example.com}/health" >/dev/null \
-  && MESSAGES+=("Health OK") || { MESSAGES+=("Health FAILED"); FAILURES=$((FAILURES+1)); }
-# --- end checks ---
+    if args.environment == "production" and not args.dry_run:
+        messages.append("WARN: production deploy without dry-run")
 
-END_MS="$(date +%s%3N)"
-FINISHED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-DURATION_MS=$((END_MS - START_MS))
-EXIT_CODE=$FAILURES
+    url = os.environ.get("STAGING_URL", "https://staging.example.com/health")
+    try:
+        with urllib.request.urlopen(url, timeout=10) as resp:
+            if 200 <= resp.status < 300:
+                messages.append("Health OK")
+            else:
+                messages.append(f"Health FAILED: HTTP {resp.status}")
+                failures += 1
+    except (urllib.error.URLError, TimeoutError) as exc:
+        messages.append(f"Health FAILED: {exc}")
+        failures += 1
 
-LOG_FILE="$LOG_DIR/run-$(date -u +%Y%m%dT%H%M%SZ).json"
-cat >"$LOG_FILE" <<EOF
-{
-  "script": "deploy-check.sh",
-  "started_at": "$STARTED_AT",
-  "finished_at": "$FINISHED_AT",
-  "duration_ms": $DURATION_MS,
-  "exit_code": $EXIT_CODE,
-  "parameters": { "environment": "$ENVIRONMENT", "dry_run": $DRY_RUN },
-  "results": { "checks_failed": $FAILURES },
-  "messages": $(printf '%s\n' "${MESSAGES[@]}" | jq -R . | jq -s .),
-  "log_file": "$LOG_FILE"
-}
-EOF
+    log_file = log_path(log_dir)
+    write_log(
+        log_file,
+        script="deploy_check.py",
+        started_at=timer.started_at,
+        duration_ms=timer.duration_ms,
+        exit_code=failures,
+        parameters={"environment": args.environment, "dry_run": args.dry_run},
+        results={"checks_failed": failures},
+        messages=messages,
+    )
+    return failures
 
-echo "Log written: $LOG_FILE"
-cat "$LOG_FILE"
-exit $EXIT_CODE
+
+if __name__ == "__main__":
+    sys.exit(main())
 ```
 
 ```bash
-chmod +x .cursor/skills/deploy-check/scripts/deploy-check.sh
+chmod +x .cursor/skills/deploy-check/scripts/deploy_check.py
 ```
 
-Requires `jq` for JSON array formatting (or simplify `messages` to a plain string).
+Copy `run_log.py` from [Examples overview](i-overview.md#shared-logging-helper-optional).
 
 ## SKILL.md — parameters, clarify, then run
 
@@ -120,7 +127,7 @@ Do **not** guess. Ask the user:
 Restate what you will run and wait for confirmation:
 
 > I will run:
-> `.cursor/skills/deploy-check/scripts/deploy-check.sh --environment staging --dry-run`
+> `python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run`
 > Proceed? (yes/no)
 
 Only run after **yes** or an unambiguous command ("run it", "go ahead").
@@ -128,7 +135,7 @@ Only run after **yes** or an unambiguous command ("run it", "go ahead").
 ## Run
 
 ```bash
-.cursor/skills/deploy-check/scripts/deploy-check.sh \
+python3 .cursor/skills/deploy-check/scripts/deploy_check.py \
   --environment <staging|production> \
   [--dry-run]
 ```

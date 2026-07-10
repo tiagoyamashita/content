@@ -6,7 +6,7 @@ order: 3
 ---
 Loop on script results
 
-**Goal:** Run a script, read its **log file**, and **iterate** on the same data — refine fixes or analysis without re-fetching from scratch each time. Keeps `last_log_file` in the conversation as the source of truth.
+**Goal:** Run a script, read its **log file**, and **iterate** on the same data — refine fixes or analysis without re-fetching from scratch each time. Keeps `current_log_file` in the conversation as the source of truth.
 
 ## Folder layout
 
@@ -14,67 +14,69 @@ Loop on script results
 .cursor/skills/test-flake-hunt/
   SKILL.md
   scripts/
-    run-flaky-tests.sh
+    lib/
+      run_log.py
+    run_flaky_tests.py
   logs/
     run-20260710T143022Z.json
 ```
 
-## Script — `scripts/run-flaky-tests.sh`
+## Script — `scripts/run_flaky_tests.py`
 
-Runs tests (or a subset); logs structured output for the agent to loop on.
+```python
+#!/usr/bin/env python3
+"""Run tests and log structured output for agent iteration."""
+from __future__ import annotations
 
-```bash
-#!/usr/bin/env bash
-# .cursor/skills/test-flake-hunt/scripts/run-flaky-tests.sh
-set -euo pipefail
+import argparse
+import subprocess
+import sys
+from pathlib import Path
 
-PATTERN="${1:-}"
-LOG_DIR="$(dirname "$0")/../logs"
-mkdir -p "$LOG_DIR"
+from lib.run_log import Timer, log_path, write_log
 
-STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-START_MS="$(date +%s%3N)"
 
-# Example: run tests matching pattern (adjust to your runner)
-if [[ -n "$PATTERN" ]]; then
-  TEST_CMD=(npm test -- --testPathPattern="$PATTERN")
-else
-  TEST_CMD=(npm test)
-fi
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run flaky test hunt")
+    parser.add_argument(
+        "pattern",
+        nargs="?",
+        default="",
+        help="Optional test path pattern (passed to npm test)",
+    )
+    return parser.parse_args()
 
-set +e
-OUTPUT="$("${TEST_CMD[@]}" 2>&1)"
-EXIT_CODE=$?
-set -e
 
-END_MS="$(date +%s%3N)"
-FINISHED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-DURATION_MS=$((END_MS - START_MS))
+def main() -> int:
+    args = parse_args()
+    log_dir = Path(__file__).resolve().parent.parent / "logs"
+    timer = Timer()
 
-LOG_FILE="$LOG_DIR/run-$(date -u +%Y%m%dT%H%M%SZ).json"
-# Escape output for JSON (minimal — use jq -Rs for production)
-OUTPUT_JSON=$(printf '%s' "$OUTPUT" | jq -Rs .)
+    cmd = ["npm", "test"]
+    if args.pattern:
+        cmd.extend(["--", "--testPathPattern", args.pattern])
 
-cat >"$LOG_FILE" <<EOF
-{
-  "script": "run-flaky-tests.sh",
-  "started_at": "$STARTED_AT",
-  "finished_at": "$FINISHED_AT",
-  "duration_ms": $DURATION_MS,
-  "exit_code": $EXIT_CODE,
-  "parameters": { "pattern": "$PATTERN" },
-  "results": {
-    "command": "${TEST_CMD[*]}",
-    "output_excerpt": $OUTPUT_JSON
-  },
-  "log_file": "$LOG_FILE"
-}
-EOF
+    completed = subprocess.run(cmd, capture_output=True, text=True)
+    output = (completed.stdout or "") + (completed.stderr or "")
+    excerpt = "\n".join(output.splitlines()[-40:])
 
-echo "Log written: $LOG_FILE"
-echo "exit_code=$EXIT_CODE"
-tail -n 40 <<<"$OUTPUT"
-exit $EXIT_CODE
+    log_file = log_path(log_dir)
+    write_log(
+        log_file,
+        script="run_flaky_tests.py",
+        started_at=timer.started_at,
+        duration_ms=timer.duration_ms,
+        exit_code=completed.returncode,
+        parameters={"pattern": args.pattern},
+        results={"command": " ".join(cmd), "output_excerpt": excerpt},
+        messages=[f"exit_code={completed.returncode}"],
+    )
+    print(excerpt)
+    return completed.returncode
+
+
+if __name__ == "__main__":
+    sys.exit(main())
 ```
 
 ## SKILL.md — loop on the same log
@@ -94,7 +96,7 @@ Keep **`current_log_file`** — path from the latest script run. Do not discard 
 ### Round 1 — run
 
 ```bash
-.cursor/skills/test-flake-hunt/scripts/run-flaky-tests.sh "[optional-test-pattern]"
+python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[optional-test-pattern]"
 ```
 
 Record `current_log_file` from script output (e.g. `logs/run-20260710T143022Z.json`).
