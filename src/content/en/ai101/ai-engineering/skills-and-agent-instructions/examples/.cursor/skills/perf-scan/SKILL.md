@@ -19,12 +19,12 @@ Confirm:
 ## Run
 
 ```bash
-PERF_URL="${PERF_URL:-}" python3 examples/.cursor/skills/perf-scan/scripts/perf_scan.py "<path>"
+PERF_URL="${PERF_URL:-}" python3 .cursor/skills/perf-scan/scripts/perf_scan.py "<path>"
 ```
 
 ## After run
 
-1. Open the log file path from script output.
+1. Open the log file path from script output (under `.cursor/skills/perf-scan/logs/`).
 2. Group findings: **large files**, **sync I/O**, **HTTP timing**, **bundle**.
 3. Prioritize top 3 by likely user impact — not every hit needs a fix.
 4. For each: suggest **one** concrete change (async I/O, split module, cache, index).

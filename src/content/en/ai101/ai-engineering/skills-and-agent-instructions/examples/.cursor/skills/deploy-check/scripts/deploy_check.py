@@ -38,17 +38,23 @@ def main() -> int:
     if args.environment == "production" and not args.dry_run:
         messages.append("WARN: production deploy without dry-run")
 
-    url = os.environ.get("STAGING_URL", "https://staging.example.com/health")
-    try:
-        with urllib.request.urlopen(url, timeout=10) as resp:
-            if 200 <= resp.status < 300:
-                messages.append("Health OK")
-            else:
-                messages.append(f"Health FAILED: HTTP {resp.status}")
-                failures += 1
-    except (urllib.error.URLError, TimeoutError) as exc:
-        messages.append(f"Health FAILED: {exc}")
+    staging_url = os.environ.get("STAGING_URL", "").strip()
+    if args.dry_run and not staging_url:
+        messages.append("DRY_RUN: health check skipped (set STAGING_URL to run a live check)")
+    elif not staging_url:
+        messages.append("Health FAILED: STAGING_URL not set")
         failures += 1
+    else:
+        try:
+            with urllib.request.urlopen(staging_url, timeout=10) as resp:
+                if 200 <= resp.status < 300:
+                    messages.append(f"Health OK: {staging_url}")
+                else:
+                    messages.append(f"Health FAILED: HTTP {resp.status} ({staging_url})")
+                    failures += 1
+        except (urllib.error.URLError, TimeoutError) as exc:
+            messages.append(f"Health FAILED: {exc}")
+            failures += 1
 
     log_file = log_path(log_dir)
     write_log(

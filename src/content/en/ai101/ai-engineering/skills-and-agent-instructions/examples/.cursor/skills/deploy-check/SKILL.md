@@ -22,7 +22,7 @@ Do **not** guess. Ask the user:
 Restate what you will run and wait for confirmation:
 
 > I will run:
-> `python3 examples/.cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run`
+> `python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run`
 > Proceed? (yes/no)
 
 Only run after **yes** or an unambiguous command ("run it", "go ahead").
@@ -30,16 +30,16 @@ Only run after **yes** or an unambiguous command ("run it", "go ahead").
 ## Run
 
 ```bash
-python3 examples/.cursor/skills/deploy-check/scripts/deploy_check.py \
+python3 .cursor/skills/deploy-check/scripts/deploy_check.py \
   --environment <staging|production> \
   [--dry-run]
 ```
 
-When copied to your project root, use `.cursor/skills/deploy-check/scripts/deploy_check.py` instead.
+Set `STAGING_URL` to your health-check endpoint for a **live** check. With `--dry-run` and no `STAGING_URL`, the script skips the HTTP call and exits 0.
 
 ## After run
 
-1. Read the **JSON log** path printed by the script (under `logs/`).
+1. Read the **JSON log** path printed by the script (under `.cursor/skills/deploy-check/logs/`).
 2. Summarize: `duration_ms`, `exit_code`, `messages`.
 3. If `exit_code` != 0, list failures and **do not** claim deploy is ready.
 

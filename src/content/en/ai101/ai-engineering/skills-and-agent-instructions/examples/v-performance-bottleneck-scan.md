@@ -8,180 +8,35 @@ Performance & bottlenecks
 
 **Goal:** A **skill-triggered** bot that scans for **performance issues** — large files, sync I/O heuristics, optional HTTP timing — and logs **runtime + findings** for the agent to summarize and suggest fixes.
 
+## Live files (copy-ready)
+
+| File | Path |
+|------|------|
+| Skill instructions | [`.cursor/skills/perf-scan/SKILL.md`](.cursor/skills/perf-scan/SKILL.md) |
+| Script | [`.cursor/skills/perf-scan/scripts/perf_scan.py`](.cursor/skills/perf-scan/scripts/perf_scan.py) |
+
 ## Folder layout
 
 ```text
 .cursor/skills/perf-scan/
   SKILL.md
-  scripts/
-    lib/
-      run_log.py
-    perf_scan.py
+  scripts/perf_scan.py
   logs/
-    run-20260710T160512Z.json
 ```
-
-## Script — `scripts/perf_scan.py`
-
-```python
-#!/usr/bin/env python3
-"""Heuristic performance scan — writes JSON log."""
-from __future__ import annotations
-
-import argparse
-import os
-import re
-import subprocess
-import sys
-import urllib.error
-import urllib.request
-from pathlib import Path
-
-from lib.run_log import Timer, log_path, write_log
-
-SKIP_DIRS = {"node_modules", ".next", "dist", ".git", "__pycache__"}
-CODE_GLOB = ("*.ts", "*.tsx", "*.js", "*.py")
-SYNC_IO_RE = re.compile(r"readFileSync|writeFileSync|execSync|open\([^)]*\)\.read\(")
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Performance heuristic scan")
-    parser.add_argument("target", nargs="?", default=".", help="Path to scan")
-    return parser.parse_args()
-
-
-def iter_code_files(root: Path) -> list[Path]:
-    files: list[Path] = []
-    for pattern in CODE_GLOB:
-        for path in root.rglob(pattern):
-            if any(part in SKIP_DIRS for part in path.parts):
-                continue
-            files.append(path)
-            if len(files) >= 200:
-                return files
-    return files
-
-
-def scan(target: Path, perf_url: str | None) -> list[str]:
-    findings: list[str] = []
-
-    for path in iter_code_files(target):
-        try:
-            line_count = sum(1 for _ in path.open(encoding="utf-8", errors="ignore"))
-        except OSError:
-            continue
-        if line_count > 500:
-            findings.append(f"LARGE_FILE: {path} ({line_count} lines)")
-
-    for path in iter_code_files(target):
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            continue
-        for match in SYNC_IO_RE.finditer(text):
-            findings.append(f"SYNC_IO_CANDIDATE: {path} ({match.group(0)})")
-            if len(findings) >= 25:
-                break
-
-    analyze = subprocess.run(
-        ["npm", "run", "-s", "analyze"],
-        capture_output=True,
-        text=True,
-        cwd=target if target.is_dir() else target.parent,
-    )
-    if analyze.returncode == 0:
-        findings.append("BUNDLE_ANALYZE: npm run analyze completed — check report")
-
-    if perf_url:
-        try:
-            with urllib.request.urlopen(perf_url, timeout=15) as resp:
-                findings.append(f"HTTP_TIMING: {perf_url} status={resp.status}")
-        except (urllib.error.URLError, TimeoutError) as exc:
-            findings.append(f"HTTP_TIMING: {perf_url} failed: {exc}")
-
-    return findings
-
-
-def main() -> int:
-    args = parse_args()
-    target = Path(args.target).resolve()
-    perf_url = os.environ.get("PERF_URL") or None
-    log_dir = Path(__file__).resolve().parent.parent / "logs"
-    timer = Timer()
-
-    findings = scan(target, perf_url)
-    count = len(findings)
-    severity = "high" if count > 10 else "medium"
-
-    log_file = log_path(log_dir)
-    write_log(
-        log_file,
-        script="perf_scan.py",
-        started_at=timer.started_at,
-        duration_ms=timer.duration_ms,
-        exit_code=0,
-        parameters={"target_path": str(target), "perf_url": perf_url},
-        results={"findings_count": count, "severity_hint": severity},
-        messages=findings,
-    )
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
-```
-
-Extend with your stack: Lighthouse CI, `cProfile`, DB slow-query logs, `ast` for deeper Python analysis.
-
-## SKILL.md
-
-```markdown
----
-name: perf-scan
-description: Scan codebase for performance smells, large files, sync I/O, and bottlenecks. Use when user asks about performance, slow app, optimization, or profiling.
----
-
-# Performance scan
-
-## Before running
-
-Ask if missing:
-
-- **Scope:** whole repo `.` or path (e.g. `src/api/`)?
-- **Runtime check:** optional URL for `PERF_URL` smoke timing?
-
-Confirm:
-
-> I will run perf-scan on `<path>` and summarize findings from the JSON log. Proceed?
 
 ## Run
 
 ```bash
-PERF_URL="${PERF_URL:-}" python3 .cursor/skills/perf-scan/scripts/perf_scan.py "<path>"
+PERF_URL="${PERF_URL:-}" python3 .cursor/skills/perf-scan/scripts/perf_scan.py "."
 ```
 
-## After run
-
-1. Open the log file path from script output.
-2. Group findings: **large files**, **sync I/O**, **HTTP timing**, **bundle**.
-3. Prioritize top 3 by likely user impact — not every hit needs a fix.
-4. For each: suggest **one** concrete change (async I/O, split module, cache, index).
-
-## Loop (optional)
-
-After user applies a fix, re-run the **same path** and compare `findings_count` and `duration_ms` to the previous log. Keep both log paths in the reply.
-
-## Do not
-
-- Claim production metrics without data — this is a **static/heuristic** scan
-- Run load tests against prod URLs without explicit user approval
-```
+Agent flow: ask scope → confirm → run → read log → prioritize top 3 findings.
 
 ## Combine with loop example
 
-Use [Loop on script results](iii-loop-on-script-results.md): first log = baseline, re-run after fixes, compare `messages` arrays.
+[Loop on script results](iii-loop-on-script-results.md) — baseline log, fix, re-run, compare `findings_count`.
 
 ## Related
 
 - [Parameterized script + clarify](ii-parameterized-script-clarify.md)
-- [Examples overview — Python + shared logging](i-overview.md)
+- [Examples overview](i-overview.md)

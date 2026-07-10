@@ -12,10 +12,10 @@ Keep **`current_log_file`** — path from the latest script run. Do not discard 
 ### Round 1 — run
 
 ```bash
-python3 examples/.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[optional-test-pattern]"
+python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[optional-test-pattern]"
 ```
 
-Record `current_log_file` from script output (e.g. `logs/run-20260710T143022Z.json`).
+Record `current_log_file` from script output (e.g. `.cursor/skills/test-flake-hunt/logs/run-20260710T143022Z.json`).
 
 ### Round 2+ — refine (same data)
 
@@ -35,7 +35,7 @@ Record `current_log_file` from script output (e.g. `logs/run-20260710T143022Z.js
 
 ```markdown
 ## Iteration N
-- **Log:** `logs/run-….json`
+- **Log:** `.cursor/skills/test-flake-hunt/logs/run-….json`
 - **Duration:** … ms | **Exit:** …
 - **Finding:** …
 - **Next:** fix X / re-run / ask user
