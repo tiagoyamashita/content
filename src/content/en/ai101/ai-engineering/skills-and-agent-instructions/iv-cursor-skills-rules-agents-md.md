@@ -15,9 +15,11 @@ Skills live in a **folder** with a required **`SKILL.md`**:
 ```text
 .cursor/skills/                    # project — shared in git
   pr-review/
-    SKILL.md                       # required
+    SKILL.md                       # required — instructions only
     reference.md                   # optional deep detail
     examples.md                    # optional
+    scripts/                       # optional — real script files (NOT inside .md)
+      check-scope.sh
 
 ~/.cursor/skills/                  # personal — all your projects
   my-private-skill/
@@ -32,6 +34,7 @@ Do **not** put custom skills in `~/.cursor/skills-cursor/` — that is for Curso
 | `~/.cursor/skills/` (user) | Personal habits across repos |
 | `reference.md` in skill folder | Long checklists, API details |
 | `examples.md` in skill folder | Good/bad output samples |
+| `scripts/` in skill folder | **Executable files** (`.sh`, `.py`) — **not** embedded in `SKILL.md`; skill text points at the path |
 
 ### SKILL.md template (PR review)
 
@@ -76,6 +79,19 @@ Frontmatter fields:
 | `disable-model-invocation` | No | If `true`, only runs when user invokes explicitly |
 
 ### Linking a fixed script
+
+**Scripts are not inside `SKILL.md`.** The markdown file only holds **instructions** (when to run, which path). The actual code lives in **`scripts/`** as separate `.sh`, `.py`, or other files next to `SKILL.md`.
+
+```text
+WRONG — script body pasted in SKILL.md
+  SKILL.md contains:  curl https://staging.example.com/health
+
+RIGHT — script file + pointer in SKILL.md
+  .cursor/skills/deploy-staging/
+    SKILL.md           →  "Run: .cursor/skills/deploy-staging/scripts/smoke-test.sh"
+    scripts/
+      smoke-test.sh    →  #!/usr/bin/env bash … (real file on disk)
+```
 
 Skills do **not** auto-run scripts. You **bundle** the script in the skill folder and tell the agent in **`SKILL.md`** to **execute** it via the Shell tool when the workflow runs.
 

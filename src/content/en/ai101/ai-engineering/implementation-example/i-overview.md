@@ -19,6 +19,7 @@ This track is for **practitioners** who want to go beyond hosted chat apps. For 
 | [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) | airLLM, llama.cpp CPU, MLX, and trade-offs |
 | [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) | Per-platform install, GPU verify, and model picks for 8 GB VRAM |
 | [TurboVec + Ollama + local files](vii-turbovec-ollama-local-files.md) | Local RAG — index your files, compressed vectors, no cloud |
+| [Ollama](../ollama/i-overview.md) | Full Ollama track — install through troubleshooting |
 
 ## Mental model
 

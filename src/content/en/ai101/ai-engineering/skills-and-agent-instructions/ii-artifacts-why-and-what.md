@@ -28,7 +28,8 @@ Agent (each task)  →  loads matching instructions  →  fewer retries
 
 | Artifact | Product | Scope |
 |----------|---------|--------|
-| **Skill (`SKILL.md`)** | Cursor, **Claude Code**, Codex (configured) | Task-specific workflows (review, deploy, SQL) |
+| **Skill (`SKILL.md`)** | Cursor, **Claude Code**, Codex (configured) | Task-specific workflows (review, deploy, SQL) — **instructions in markdown** |
+| **`scripts/` in skill folder** | Cursor (via agent Shell) | **Separate** `.sh` / `.py` files; `SKILL.md` says when and which path to run |
 | **Rules (`.mdc`)** | Cursor | Always-on or file-pattern coding standards |
 | **`AGENTS.md`** | Cursor, **Codex**, Claude Code, Copilot, many others | Repo-wide agent briefing at root |
 | **`CLAUDE.md`** | Claude Code | Project memory / standing instructions |
@@ -75,7 +76,8 @@ Deep domain doc (one feature area) linked from AGENTS.md?
 ```text
 AGENTS.md          ← baseline: stack, commands, layout (always relevant)
   ├── rules/*.mdc  ← style when editing matching files
-  ├── SKILL.md     ← heavy workflows on demand
+  ├── SKILL.md     ← heavy workflows on demand (instructions in markdown)
+  ├── scripts/     ← executable files; SKILL.md points at path — not embedded in .md
   └── docs/*.md    ← optional deep context, linked not pasted
 ```
 

@@ -13,6 +13,8 @@ After weights are on disk, a **runtime** loads them and exposes chat — CLI, de
 | Platform | Best for | GPU | CPU | API | Pros | Cons |
 |----------|----------|-----|-----|-----|------|------|
 | **[Ollama](https://ollama.com)** | Fast local start, dev machines | Yes (CUDA/Metal) | Yes (slow) | OpenAI-compatible `/v1` | One command `ollama pull`; cross-platform; simple UI | Fewer tuning knobs; model catalog curated |
+
+Deep dive: [Ollama track](../ollama/i-overview.md).
 | **[llama.cpp](https://github.com/ggerganov/llama.cpp)** (`llama-server`) | Maximum control, GGUF ecosystem | Yes | **Strong** | HTTP server built-in | Huge quant community; low RAM options; embeddable | CLI-first; you manage models/paths |
 | **[LM Studio](https://lmstudio.ai)** | Desktop users, experimentation | Yes | Yes | Local server | GUI for search/download/chat; easy GPU offload slider | Desktop only; less suited to headless servers |
 | **[vLLM](https://github.com/vllm-project/vllm)** | Production GPU serving, batching | **Required** (NVIDIA) | No | OpenAI-compatible | High throughput; PagedAttention; multi-GPU | Heavy setup; needs Linux + recent GPU |

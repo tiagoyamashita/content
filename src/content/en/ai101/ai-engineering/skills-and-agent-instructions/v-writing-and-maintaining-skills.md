@@ -67,7 +67,7 @@ See [reference.md](reference.md) for DB failover and on-call escalation.
 | Repeatable checklist | `SKILL.md` body | Checkboxes, commands |
 | Rare edge cases | `reference.md` | Long prose, links, history |
 | Good/bad samples | `examples.md` | Optional; reduces format drift |
-| Fixed commands | `scripts/*.sh` | Agent runs via Shell when skill says so — see [linking scripts](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script) |
+| Fixed commands | `scripts/*.sh` | **Separate file** next to `SKILL.md` — agent runs via Shell when skill says so; code is **not** inside the `.md` — see [linking scripts](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script) |
 
 ### Test before you trust it
 
