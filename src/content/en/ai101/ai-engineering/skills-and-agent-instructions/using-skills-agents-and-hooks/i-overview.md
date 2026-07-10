@@ -6,6 +6,8 @@ order: 1
 ---
 Using skills, agents & hooks — overview
 
+**Agent orchestration** at the project level: coordinate **AGENTS.md**, **skills**, **hooks**, and **scripts** so the right workflow runs at the right time. See [Agent orchestration](vi-agent-orchestration.md) for the full stack and patterns.
+
 Three different layers — **do not merge them into one file**. Each has its own trigger and job.
 
 | Layer | File(s) | When it runs | Who starts it |
@@ -37,6 +39,7 @@ User: "why did commit fail?" ► SKILL (hook-failure-help) explains log
 | [AGENTS.md alone](iii-use-agents-md-alone.md) | Standing repo context — no trigger phrase needed |
 | [Hooks on commit](iv-use-hooks-on-commit.md) | Automatic gates before `git commit` |
 | [Combine all three](v-combine-skills-agents-hooks.md) | End-to-end commit flow + when to use which |
+| [Agent orchestration](vi-agent-orchestration.md) | Full stack, patterns, loops, MCP + skills |
 
 **Runnable scripts + full hook implementation:** [Examples](../examples/i-overview.md) (copy `examples/.cursor/` to your project).
 
@@ -53,7 +56,7 @@ User: "why did commit fail?" ► SKILL (hook-failure-help) explains log
 
 ## Study order
 
-[Skills alone](ii-use-skills-alone.md) → [AGENTS.md alone](iii-use-agents-md-alone.md) → [Hooks on commit](iv-use-hooks-on-commit.md) → [Combine all three](v-combine-skills-agents-hooks.md).
+[Skills alone](ii-use-skills-alone.md) → [AGENTS.md alone](iii-use-agents-md-alone.md) → [Hooks on commit](iv-use-hooks-on-commit.md) → [Combine all three](v-combine-skills-agents-hooks.md) → [Agent orchestration](vi-agent-orchestration.md).
 
 ## Related
 

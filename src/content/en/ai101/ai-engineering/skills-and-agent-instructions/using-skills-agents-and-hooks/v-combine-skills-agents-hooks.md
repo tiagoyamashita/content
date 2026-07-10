@@ -107,6 +107,7 @@ sequenceDiagram
 
 ## Related
 
+- [Agent orchestration](vi-agent-orchestration.md) — full stack and advanced patterns
 - [Examples overview](../examples/i-overview.md)
 - [Writing & maintaining skills](../v-writing-and-maintaining-skills.md)
 - [Loop prompting](../../loop-prompting/i-overview.md)
