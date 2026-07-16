@@ -743,7 +743,21 @@ def write_json(path: Path, data: dict[str, Any], indent: int) -> None:
     )
 
 
-def build_note_links_payload(graph: dict[str, Any]) -> dict[str, Any]:
+def read_note_body(rel_path: str) -> str:
+    """Load markdown body (no frontmatter) for embedding in the HTML viewer."""
+    path = CONTENT_ROOT / rel_path
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+    m = FRONTMATTER_RE.match(text)
+    body = text[m.end() :] if m else text
+    return body.strip()
+
+
+def build_note_links_payload(
+    graph: dict[str, Any], *, embed_content: bool = True
+) -> dict[str, Any]:
     """Obsidian-style payload: notes + link edges only, titled from frontmatter."""
     notes = [n for n in graph["nodes"] if n.get("type") == "note"]
     link_edges = [e for e in graph["edges"] if e.get("kind") == "link"]
@@ -762,20 +776,22 @@ def build_note_links_payload(graph: dict[str, Any]) -> dict[str, Any]:
     out_nodes = []
     for n in notes:
         title = n.get("displayTitle") or n.get("subtitle") or n.get("file") or n["id"]
-        out_nodes.append(
-            {
-                "id": n["id"],
-                "title": title,
-                "subtitle": n.get("subtitle"),
-                "label": n.get("label"),
-                "group": n.get("group") or n.get("track") or "other",
-                "track": n.get("track") or "",
-                "path": n.get("path") or n["id"],
-                "locale": n.get("locale"),
-                "order": n.get("order"),
-                "degree": degree.get(n["id"], 0),
-            }
-        )
+        path = n.get("path") or n["id"]
+        entry: dict[str, Any] = {
+            "id": n["id"],
+            "title": title,
+            "subtitle": n.get("subtitle"),
+            "label": n.get("label"),
+            "group": n.get("group") or n.get("track") or "other",
+            "track": n.get("track") or "",
+            "path": path,
+            "locale": n.get("locale"),
+            "order": n.get("order"),
+            "degree": degree.get(n["id"], 0),
+        }
+        if embed_content:
+            entry["content"] = read_note_body(path)
+        out_nodes.append(entry)
 
     return {
         "meta": {
@@ -788,6 +804,7 @@ def build_note_links_payload(graph: dict[str, Any]) -> dict[str, Any]:
             "noteCount": len(out_nodes),
             "linkCount": len(edges),
             "orphanCount": sum(1 for n in out_nodes if n["degree"] == 0),
+            "contentEmbedded": embed_content,
         },
         "nodes": out_nodes,
         "edges": [
@@ -827,7 +844,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   * {{ box-sizing: border-box; }}
   html, body {{ margin: 0; height: 100%; background: var(--bg); color: var(--ink);
     font-family: "IBM Plex Sans", "Segoe UI", sans-serif; }}
-  #app {{ display: grid; grid-template-columns: 280px 1fr; height: 100%; }}
+  #app {{ display: grid; grid-template-columns: 260px 1fr minmax(320px, 42vw); height: 100%; }}
   aside {{
     background: var(--panel); border-right: 1px solid var(--line);
     padding: 1rem; overflow: auto; display: flex; flex-direction: column; gap: .75rem;
@@ -847,7 +864,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   button:hover {{ border-color: var(--accent); color: var(--accent); }}
   #detail {{
     margin-top: auto; padding-top: .75rem; border-top: 1px solid var(--line);
-    font-size: .85rem; line-height: 1.45; min-height: 7rem;
+    font-size: .85rem; line-height: 1.45; min-height: 5rem;
   }}
   #detail strong {{ display: block; font-size: .95rem; margin-bottom: .25rem; }}
   #detail code {{ font-size: .72rem; color: var(--muted); word-break: break-all; }}
@@ -859,9 +876,57 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     font-size: .75rem; pointer-events: none; background: rgba(243,239,230,.85);
     padding: .35rem .55rem; border-radius: 6px;
   }}
+  #reader {{
+    background: var(--panel); border-left: 1px solid var(--line);
+    display: flex; flex-direction: column; min-width: 0; overflow: hidden;
+  }}
+  #reader-header {{
+    padding: .85rem 1rem; border-bottom: 1px solid var(--line);
+    display: flex; gap: .75rem; align-items: flex-start; justify-content: space-between;
+  }}
+  #reader-header h2 {{
+    margin: 0; font-size: 1.05rem; font-weight: 650; line-height: 1.3;
+  }}
+  #reader-meta {{ color: var(--muted); font-size: .75rem; margin-top: .25rem; }}
+  #reader-body {{
+    flex: 1; overflow: auto; padding: 1rem 1.15rem 2rem;
+    font-size: .92rem; line-height: 1.55;
+  }}
+  #reader-body.empty {{ color: var(--muted); display: flex; align-items: center; justify-content: center; }}
+  #reader-body h1, #reader-body h2, #reader-body h3 {{
+    margin: 1.1em 0 .4em; line-height: 1.25; font-weight: 650;
+  }}
+  #reader-body h1 {{ font-size: 1.35rem; }}
+  #reader-body h2 {{ font-size: 1.15rem; }}
+  #reader-body h3 {{ font-size: 1.02rem; }}
+  #reader-body p {{ margin: .55em 0; }}
+  #reader-body ul, #reader-body ol {{ margin: .4em 0 .6em 1.2em; }}
+  #reader-body code {{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .84em; background: #efeae0; padding: .1em .35em; border-radius: 4px;
+  }}
+  #reader-body pre {{
+    background: #1c1917; color: #f5f5f4; padding: .85rem 1rem; border-radius: 8px;
+    overflow: auto; font-size: .8rem; line-height: 1.45;
+  }}
+  #reader-body pre code {{ background: transparent; color: inherit; padding: 0; }}
+  #reader-body a {{ color: var(--accent); }}
+  #reader-body blockquote {{
+    margin: .6em 0; padding: .2em .8em; border-left: 3px solid var(--line); color: #44403c;
+  }}
+  #reader-body table {{ border-collapse: collapse; width: 100%; font-size: .85rem; margin: .7em 0; }}
+  #reader-body th, #reader-body td {{ border: 1px solid var(--line); padding: .35em .5em; text-align: left; }}
+  #close-reader {{ flex-shrink: 0; }}
+  #app.no-reader {{ grid-template-columns: 260px 1fr; }}
+  #app.no-reader #reader {{ display: none; }}
+  @media (max-width: 1100px) {{
+    #app {{ grid-template-columns: 240px 1fr; grid-template-rows: 1fr 42vh; }}
+    #reader {{ grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--line); }}
+    #app.no-reader {{ grid-template-rows: 1fr; }}
+  }}
   @media (max-width: 800px) {{
-    #app {{ grid-template-columns: 1fr; grid-template-rows: auto 1fr; }}
-    aside {{ border-right: none; border-bottom: 1px solid var(--line); max-height: 40vh; }}
+    #app {{ grid-template-columns: 1fr; grid-template-rows: auto 1fr 40vh; }}
+    aside {{ border-right: none; border-bottom: 1px solid var(--line); max-height: 32vh; }}
   }}
 </style>
 </head>
@@ -870,7 +935,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   <aside>
     <h1>Note links</h1>
     <div class="meta">{meta.get("noteCount", 0)} notes · {meta.get("linkCount", 0)} links · {meta.get("orphanCount", 0)} orphans<br/>
-      Labels from frontmatter <code>subtitle</code>; edges from markdown / wikilinks.
+      Click a node to read its note.
     </div>
     <div>
       <label for="q">Search</label>
@@ -892,8 +957,18 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   </aside>
   <main>
     <canvas id="c"></canvas>
-    <div class="hint">Areas = top folders · drag canvas · scroll zoom · click node</div>
+    <div class="hint">Click node to load contents · drag to pan · scroll to zoom</div>
   </main>
+  <section id="reader" aria-label="Note contents">
+    <div id="reader-header">
+      <div>
+        <h2 id="reader-title">Select a note</h2>
+        <div id="reader-meta">Click a node on the graph</div>
+      </div>
+      <button type="button" id="close-reader" title="Hide reader">Hide</button>
+    </div>
+    <div id="reader-body" class="empty">Note contents will appear here.</div>
+  </section>
 </div>
 <script id="graph-data" type="application/json">{data_json}</script>
 <script>
@@ -908,6 +983,11 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   const orphans = document.getElementById("orphans");
   const areas = document.getElementById("areas");
   const labels = document.getElementById("labels");
+  const app = document.getElementById("app");
+  const readerTitle = document.getElementById("reader-title");
+  const readerMeta = document.getElementById("reader-meta");
+  const readerBody = document.getElementById("reader-body");
+  const contentById = Object.fromEntries(DATA.nodes.map(n => [n.id, n]));
 
   const TRACK_TITLES = {{
     "ai101": "AI101",
@@ -1226,15 +1306,62 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   }}
 
   function showDetail(n) {{
-    if (!n) {{ detail.innerHTML = "<em>Click a note</em>"; return; }}
+    if (!n) {{
+      detail.innerHTML = "<em>Click a note</em>";
+      return;
+    }}
     detail.innerHTML = `<strong>${{escapeHtml(n.title)}}</strong>
       <div>${{escapeHtml(n.group || "")}} · <strong>${{escapeHtml(trackTitle(n.track))}}</strong></div>
       <div>degree ${{n.degree}} · order ${{n.order ?? "—"}}</div>
       <code>${{escapeHtml(n.path)}}</code>`;
+    openReader(n);
   }}
+
   function escapeHtml(s) {{
     return String(s).replace(/[&<>"']/g, c => ({{"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#39;"}}[c]));
   }}
+
+  function renderMarkdown(md) {{
+    if (!md) return "<p><em>No content embedded for this note.</em></p>";
+    const fences = [];
+    let text = String(md).replace(/```([\\w.-]*)\\n([\\s\\S]*?)```/g, (_, lang, code) => {{
+      const i = fences.length;
+      fences.push(`<pre><code class="lang-${{escapeHtml(lang || "")}}">${{escapeHtml(code.replace(/\\n$/, ""))}}</code></pre>`);
+      return `\\u0000FENCE${{i}}\\u0000`;
+    }});
+    text = escapeHtml(text);
+    text = text.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+    text = text.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+    text = text.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+    text = text.replace(/^&gt; (.+)$/gm, "<blockquote>$1</blockquote>");
+    text = text.replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>");
+    text = text.replace(/(^|\\s)\\*(.+?)\\*(?=\\s|$)/g, "$1<em>$2</em>");
+    text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
+    text = text.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    text = text.replace(/^(?:- |\\* )(.+)$/gm, "<li>$1</li>");
+    text = text.replace(/(?:<li>[\\s\\S]*?<\\/li>\\n?)+/g, m => `<ul>${{m}}</ul>`);
+    text = text.replace(/^(?!<h\\d|<ul|<li|<pre|<blockquote|<p|\\u0000)(.+)$/gm, (line) => {{
+      if (!line.trim()) return "";
+      return `<p>${{line}}</p>`;
+    }});
+    text = text.replace(/\\u0000FENCE(\\d+)\\u0000/g, (_, i) => fences[Number(i)]);
+    text = text.replace(/\\n{{2,}}/g, "\\n");
+    return text;
+  }}
+
+  function openReader(n) {{
+    app.classList.remove("no-reader");
+    const full = contentById[n.id] || n;
+    readerTitle.textContent = full.title || "Note";
+    readerMeta.textContent = `${{trackTitle(full.track)}} · ${{full.path || ""}}`;
+    readerBody.classList.remove("empty");
+    readerBody.innerHTML = renderMarkdown(full.content || "");
+    readerBody.scrollTop = 0;
+  }}
+
+  document.getElementById("close-reader").onclick = () => {{
+    app.classList.add("no-reader");
+  }};
 
   function loop() {{
     tick();
@@ -1253,14 +1380,18 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     transform.y = sy - before.y * transform.k;
   }}, {{ passive: false }});
 
+  let pointerDownAt = null;
+  let didDrag = false;
+
   canvas.addEventListener("pointerdown", (ev) => {{
     const rect = canvas.getBoundingClientRect();
     const sx = ev.clientX - rect.left, sy = ev.clientY - rect.top;
+    pointerDownAt = {{ x: ev.clientX, y: ev.clientY }};
+    didDrag = false;
     const hit = findNode(sx, sy);
     if (hit) {{
       dragging = hit;
       selected = hit;
-      showDetail(hit);
       canvas.setPointerCapture(ev.pointerId);
     }} else {{
       panning = true;
@@ -1270,6 +1401,10 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     }}
   }});
   canvas.addEventListener("pointermove", (ev) => {{
+    if (pointerDownAt) {{
+      const dx = ev.clientX - pointerDownAt.x, dy = ev.clientY - pointerDownAt.y;
+      if (dx*dx + dy*dy > 16) didDrag = true;
+    }}
     const rect = canvas.getBoundingClientRect();
     const sx = ev.clientX - rect.left, sy = ev.clientY - rect.top;
     if (dragging) {{
@@ -1285,7 +1420,12 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     }}
   }});
   canvas.addEventListener("pointerup", () => {{
+    if (dragging && !didDrag) {{
+      selected = dragging;
+      showDetail(dragging);
+    }}
     dragging = null; panning = false; lastPan = null;
+    pointerDownAt = null; didDrag = false;
     canvas.classList.remove("dragging");
   }});
 
@@ -1333,6 +1473,11 @@ def main() -> int:
         "--html",
         action="store_true",
         help="Also write interactive note-links HTML (implied by --format html)",
+    )
+    parser.add_argument(
+        "--no-embed",
+        action="store_true",
+        help="Do not embed note markdown bodies in the HTML (smaller file, no reader content)",
     )
     parser.add_argument(
         "-o",
@@ -1403,7 +1548,7 @@ def main() -> int:
         )
 
     if want_html:
-        payload = build_note_links_payload(graph)
+        payload = build_note_links_payload(graph, embed_content=not args.no_embed)
         write_note_links_html(args.html_output, payload)
         note_json = args.html_output.with_suffix(".json")
         write_json(note_json, payload, args.indent)
@@ -1411,10 +1556,10 @@ def main() -> int:
         print(
             f"Wrote {args.html_output.relative_to(REPO_ROOT)} — "
             f"{m['noteCount']} notes, {m['linkCount']} links "
-            f"({m['orphanCount']} orphans)"
+            f"({m['orphanCount']} orphans"
+            f"{', content embedded' if m.get('contentEmbedded') else ''})"
         )
         print(f"Wrote {note_json.relative_to(REPO_ROOT)}")
-
     return 0
 
 
