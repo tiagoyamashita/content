@@ -881,16 +881,18 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
       <select id="track"><option value="">All tracks</option></select>
     </div>
     <div class="row"><input type="checkbox" id="orphans" checked/><label for="orphans" style="margin:0">Show orphans</label></div>
-    <div class="row"><input type="checkbox" id="labels" checked/><label for="labels" style="margin:0">Show labels</label></div>
+    <div class="row"><input type="checkbox" id="areas" checked/><label for="areas" style="margin:0">Show folder areas</label></div>
+    <div class="row"><input type="checkbox" id="labels" checked/><label for="labels" style="margin:0">Show note labels</label></div>
     <div class="row">
       <button type="button" id="reset">Reset view</button>
       <button type="button" id="reheat">Reheat</button>
     </div>
+    <div id="legend" class="meta" style="max-height:9rem;overflow:auto"></div>
     <div id="detail"><em>Click a note</em></div>
   </aside>
   <main>
     <canvas id="c"></canvas>
-    <div class="hint">Drag canvas · scroll zoom · click node · drag node</div>
+    <div class="hint">Areas = top folders · drag canvas · scroll zoom · click node</div>
   </main>
 </div>
 <script id="graph-data" type="application/json">{data_json}</script>
@@ -900,15 +902,35 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   const canvas = document.getElementById("c");
   const ctx = canvas.getContext("2d");
   const detail = document.getElementById("detail");
+  const legendEl = document.getElementById("legend");
   const q = document.getElementById("q");
   const trackSel = document.getElementById("track");
   const orphans = document.getElementById("orphans");
+  const areas = document.getElementById("areas");
   const labels = document.getElementById("labels");
+
+  const TRACK_TITLES = {{
+    "ai101": "AI101",
+    "swe101": "SWE101",
+    "sre101": "SRE101",
+    "cs101": "CS101",
+    "cybersecurity": "Cybersecurity",
+    "digital-marketing": "Digital marketing",
+    "cryptocurrency101": "Cryptocurrency101",
+    "startups": "Startups",
+    "food": "Food",
+    "languages": "Languages",
+    "getting-started": "Getting started",
+  }};
+  function trackTitle(t) {{
+    if (!t) return "Other";
+    return TRACK_TITLES[t] || t.replace(/-/g, " ").replace(/\\b\\w/g, c => c.toUpperCase());
+  }}
 
   const tracks = [...new Set(DATA.nodes.map(n => n.track).filter(Boolean))].sort();
   for (const t of tracks) {{
     const o = document.createElement("option");
-    o.value = t; o.textContent = t;
+    o.value = t; o.textContent = trackTitle(t);
     trackSel.appendChild(o);
   }}
 
@@ -919,6 +941,28 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   ];
   const trackColor = {{}};
   tracks.forEach((t,i) => trackColor[t] = palette[i % palette.length]);
+
+  function hexToRgba(hex, a) {{
+    const h = hex.replace("#","");
+    const n = parseInt(h.length === 3 ? h.split("").map(c=>c+c).join("") : h, 16);
+    const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    return `rgba(${{r}},${{g}},${{b}},${{a}})`;
+  }}
+
+  legendEl.innerHTML = tracks.map(t =>
+    `<div style="display:flex;gap:.4rem;align-items:center;margin:.15rem 0">
+      <span style="width:.7rem;height:.7rem;border-radius:2px;background:${{trackColor[t]}};opacity:.55"></span>
+      ${{trackTitle(t)}}
+    </div>`
+  ).join("");
+
+  // Fixed hubs around a ring so each top folder owns a region
+  const trackHub = {{}};
+  tracks.forEach((t, i) => {{
+    const ang = (i / Math.max(tracks.length, 1)) * Math.PI * 2 - Math.PI / 2;
+    const radius = 420;
+    trackHub[t] = {{ x: Math.cos(ang) * radius, y: Math.sin(ang) * radius }};
+  }});
 
   let width = 0, height = 0, dpr = 1;
   let transform = {{ x: 0, y: 0, k: 1 }};
@@ -946,7 +990,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     if (trackSel.value && n.track !== trackSel.value) return false;
     const s = q.value.trim().toLowerCase();
     if (!s) return true;
-    return [n.title, n.group, n.path, n.subtitle, n.label].filter(Boolean)
+    return [n.title, n.group, n.path, n.subtitle, n.label, n.track].filter(Boolean)
       .some(v => String(v).toLowerCase().includes(s));
   }}
 
@@ -954,55 +998,161 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     const visible = new Set(DATA.nodes.filter(matchesFilter).map(n => n.id));
     nodes = DATA.nodes.filter(n => visible.has(n.id));
     links = DATA.edges.filter(e => visible.has(e.source) && visible.has(e.target));
-    const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
-    simNodes = nodes.map(n => ({{
-      ...n,
-      x: n.x ?? (Math.random() - .5) * 400,
-      y: n.y ?? (Math.random() - .5) * 400,
-      vx: 0, vy: 0,
-      r: 4 + Math.min(10, Math.sqrt(n.degree || 0) * 1.8),
-    }}));
+    simNodes = nodes.map(n => {{
+      const hub = trackHub[n.track] || {{ x: 0, y: 0 }};
+      return {{
+        ...n,
+        x: hub.x + (Math.random() - .5) * 160,
+        y: hub.y + (Math.random() - .5) * 160,
+        vx: 0, vy: 0,
+        r: 4 + Math.min(10, Math.sqrt(n.degree || 0) * 1.8),
+      }};
+    }});
     const simById = Object.fromEntries(simNodes.map(n => [n.id, n]));
     simLinks = links.map(e => ({{
       source: simById[e.source],
       target: simById[e.target],
       label: e.label,
     }})).filter(e => e.source && e.target);
-    void byId;
   }}
 
   function tick() {{
     const alpha = 0.08;
-    // repulsion
+    // repulsion (stronger across tracks)
     for (let i = 0; i < simNodes.length; i++) {{
       for (let j = i + 1; j < simNodes.length; j++) {{
         const a = simNodes[i], b = simNodes[j];
         let dx = a.x - b.x, dy = a.y - b.y;
         let dist2 = dx*dx + dy*dy || 0.01;
         let dist = Math.sqrt(dist2);
-        let force = 900 / dist2;
+        const same = a.track === b.track;
+        let force = (same ? 520 : 1400) / dist2;
         let fx = dx / dist * force, fy = dy / dist * force;
         a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
       }}
     }}
-    // springs
+    // link springs (weaker across tracks so areas stay coherent)
     for (const e of simLinks) {{
       const a = e.source, b = e.target;
       let dx = b.x - a.x, dy = b.y - a.y;
       let dist = Math.sqrt(dx*dx + dy*dy) || 0.01;
-      let desired = 90;
-      let force = (dist - desired) * 0.02;
+      const same = a.track === b.track;
+      let desired = same ? 70 : 220;
+      let force = (dist - desired) * (same ? 0.025 : 0.008);
       let fx = dx / dist * force, fy = dy / dist * force;
       a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
     }}
-    // center gravity
+    // pull each note toward its top-folder hub
     for (const n of simNodes) {{
       if (n === dragging) continue;
-      n.vx += -n.x * 0.002;
-      n.vy += -n.y * 0.002;
-      n.vx *= 0.85; n.vy *= 0.85;
+      const hub = trackHub[n.track];
+      if (hub) {{
+        n.vx += (hub.x - n.x) * 0.012;
+        n.vy += (hub.y - n.y) * 0.012;
+      }}
+      n.vx += -n.x * 0.0008;
+      n.vy += -n.y * 0.0008;
+      n.vx *= 0.84; n.vy *= 0.84;
       n.x += n.vx * alpha * 12;
       n.y += n.vy * alpha * 12;
+    }}
+  }}
+
+  function cross(o, a, b) {{
+    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  }}
+
+  function convexHull(pts) {{
+    if (pts.length < 3) return pts.slice();
+    const sorted = pts.slice().sort((a,b) => a.x === b.x ? a.y - b.y : a.x - b.x);
+    const lower = [];
+    for (const p of sorted) {{
+      while (lower.length >= 2 && cross(lower[lower.length-2], lower[lower.length-1], p) <= 0) lower.pop();
+      lower.push(p);
+    }}
+    const upper = [];
+    for (let i = sorted.length - 1; i >= 0; i--) {{
+      const p = sorted[i];
+      while (upper.length >= 2 && cross(upper[upper.length-2], upper[upper.length-1], p) <= 0) upper.pop();
+      upper.push(p);
+    }}
+    upper.pop(); lower.pop();
+    return lower.concat(upper);
+  }}
+
+  function paddedHull(members, pad) {{
+    if (!members.length) return [];
+    const cx = members.reduce((s,n)=>s+n.x,0) / members.length;
+    const cy = members.reduce((s,n)=>s+n.y,0) / members.length;
+    const expanded = members.map(n => {{
+      const dx = n.x - cx, dy = n.y - cy;
+      const d = Math.sqrt(dx*dx + dy*dy) || 1;
+      const extra = pad + n.r;
+      return {{ x: n.x + (dx / d) * extra, y: n.y + (dy / d) * extra }};
+    }});
+    // also pad single / pair with ring points
+    if (members.length < 3) {{
+      for (const n of members) {{
+        for (let i = 0; i < 8; i++) {{
+          const a = (i / 8) * Math.PI * 2;
+          expanded.push({{ x: n.x + Math.cos(a) * (pad + 28), y: n.y + Math.sin(a) * (pad + 28) }});
+        }}
+      }}
+    }}
+    return convexHull(expanded);
+  }}
+
+  function drawAreas() {{
+    if (!areas.checked) return;
+    const byTrack = {{}};
+    for (const n of simNodes) {{
+      const t = n.track || "other";
+      (byTrack[t] ||= []).push(n);
+    }}
+    for (const [t, members] of Object.entries(byTrack)) {{
+      if (members.length < 1) continue;
+      const hull = paddedHull(members, 36);
+      if (hull.length < 3) continue;
+      const color = trackColor[t] || "#78716c";
+      ctx.beginPath();
+      ctx.moveTo(hull[0].x, hull[0].y);
+      for (let i = 1; i < hull.length; i++) ctx.lineTo(hull[i].x, hull[i].y);
+      ctx.closePath();
+      ctx.fillStyle = hexToRgba(color, 0.14);
+      ctx.fill();
+      ctx.strokeStyle = hexToRgba(color, 0.45);
+      ctx.lineWidth = 1.5 / transform.k;
+      ctx.setLineDash([6 / transform.k, 5 / transform.k]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const cx = members.reduce((s,n)=>s+n.x,0) / members.length;
+      const cy = members.reduce((s,n)=>s+n.y,0) / members.length;
+      const title = trackTitle(t);
+      const fontPx = Math.max(14, 18 / Math.sqrt(transform.k));
+      ctx.font = `650 ${{fontPx}}px "IBM Plex Sans", sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const tw = ctx.measureText(title).width;
+      const padX = 10 / transform.k, padY = 6 / transform.k;
+      ctx.fillStyle = "rgba(255,253,248,.82)";
+      ctx.strokeStyle = hexToRgba(color, 0.35);
+      ctx.lineWidth = 1 / transform.k;
+      const bw = tw + padX * 2, bh = fontPx + padY * 2;
+      const bx = cx - bw / 2, by = cy - bh / 2 - 8 / transform.k;
+      const r = 4 / transform.k;
+      ctx.beginPath();
+      if (ctx.roundRect) {{
+        ctx.roundRect(bx, by, bw, bh, r);
+      }} else {{
+        ctx.rect(bx, by, bw, bh);
+      }}
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.fillText(title, cx, by + bh / 2);
+      ctx.textAlign = "start";
+      ctx.textBaseline = "alphabetic";
     }}
   }}
 
@@ -1030,6 +1180,8 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     ctx.translate(transform.x, transform.y);
     ctx.scale(transform.k, transform.k);
 
+    drawAreas();
+
     const neighbor = new Set();
     if (selected) {{
       neighbor.add(selected.id);
@@ -1041,10 +1193,12 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
 
     for (const e of simLinks) {{
       const dim = selected && !(neighbor.has(e.source.id) && neighbor.has(e.target.id));
+      const cross = e.source.track !== e.target.track;
       ctx.beginPath();
       ctx.moveTo(e.source.x, e.source.y);
       ctx.lineTo(e.target.x, e.target.y);
-      ctx.strokeStyle = dim ? "rgba(120,113,108,.12)" : "rgba(68,64,60,.35)";
+      ctx.strokeStyle = dim ? "rgba(120,113,108,.10)"
+        : (cross ? "rgba(68,64,60,.22)" : "rgba(68,64,60,.40)");
       ctx.lineWidth = (selected && !dim ? 1.6 : 1) / transform.k;
       ctx.stroke();
     }}
@@ -1062,10 +1216,10 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
         ctx.lineWidth = 2 / transform.k;
         ctx.stroke();
       }}
-      if (labels.checked && (transform.k > 0.7 || isSel || isHover || n.degree >= 4)) {{
+      if (labels.checked && (transform.k > 0.85 || isSel || isHover || n.degree >= 5)) {{
         ctx.fillStyle = dim ? "rgba(120,113,108,.5)" : "#1c1917";
-        ctx.font = `${{12 / transform.k}}px "IBM Plex Sans", sans-serif`;
-        ctx.fillText(n.title, n.x + n.r + 4 / transform.k, n.y + 4 / transform.k);
+        ctx.font = `${{11 / transform.k}}px "IBM Plex Sans", sans-serif`;
+        ctx.fillText(n.title, n.x + n.r + 4 / transform.k, n.y + 3 / transform.k);
       }}
     }}
     ctx.restore();
@@ -1074,7 +1228,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   function showDetail(n) {{
     if (!n) {{ detail.innerHTML = "<em>Click a note</em>"; return; }}
     detail.innerHTML = `<strong>${{escapeHtml(n.title)}}</strong>
-      <div>${{escapeHtml(n.group || "")}} · track <code>${{escapeHtml(n.track || "")}}</code></div>
+      <div>${{escapeHtml(n.group || "")}} · <strong>${{escapeHtml(trackTitle(n.track))}}</strong></div>
       <div>degree ${{n.degree}} · order ${{n.order ?? "—"}}</div>
       <code>${{escapeHtml(n.path)}}</code>`;
   }}
@@ -1094,7 +1248,7 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
     const sx = ev.clientX - rect.left, sy = ev.clientY - rect.top;
     const before = screenToWorld(sx, sy);
     const factor = Math.exp(-ev.deltaY * 0.0015);
-    transform.k = Math.min(4, Math.max(0.15, transform.k * factor));
+    transform.k = Math.min(4, Math.max(0.12, transform.k * factor));
     transform.x = sx - before.x * transform.k;
     transform.y = sy - before.y * transform.k;
   }}, {{ passive: false }});
@@ -1136,17 +1290,18 @@ def write_note_links_html(path: Path, payload: dict[str, Any]) -> None:
   }});
 
   function resetView() {{
-    transform = {{ x: width / 2, y: height / 2, k: 0.85 }};
+    transform = {{ x: width / 2, y: height / 2, k: 0.55 }};
   }}
 
   document.getElementById("reset").onclick = resetView;
   document.getElementById("reheat").onclick = () => {{
     for (const n of simNodes) {{ n.vx += (Math.random()-.5)*8; n.vy += (Math.random()-.5)*8; }}
   }};
-  for (const el of [q, trackSel, orphans, labels]) {{
+  for (const el of [q, trackSel, orphans]) {{
     el.addEventListener("input", () => {{ rebuild(); }});
     el.addEventListener("change", () => {{ rebuild(); }});
   }}
+  // areas/labels only affect drawing — do not reset layout
 
   window.addEventListener("resize", () => {{ resize(); }});
   resize();

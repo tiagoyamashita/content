@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-07-16T02:22:16.580242+00:00",
+    "generatedAt": "2026-07-16T02:50:12.706662+00:00",
     "kind": "note-links",
     "description": "One node per note; labels from frontmatter subtitle; edges from markdown links and wikilinks",
     "noteCount": 482,
