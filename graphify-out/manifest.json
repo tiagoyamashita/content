@@ -1,0 +1,3082 @@
+{
+  ".obsidian/app.json": {
+    "mtime": 1783494476.9111705,
+    "ast_hash": "99914b932bd37a50b983c5e7c90ae93b",
+    "semantic_hash": "99914b932bd37a50b983c5e7c90ae93b"
+  },
+  ".obsidian/appearance.json": {
+    "mtime": 1783494476.911911,
+    "ast_hash": "99914b932bd37a50b983c5e7c90ae93b",
+    "semantic_hash": "99914b932bd37a50b983c5e7c90ae93b"
+  },
+  ".obsidian/core-plugins.json": {
+    "mtime": 1783494476.494668,
+    "ast_hash": "7c877bea49eaeabb100563bd157b9051",
+    "semantic_hash": "7c877bea49eaeabb100563bd157b9051"
+  },
+  ".obsidian/graph.json": {
+    "mtime": 1783394239.266,
+    "ast_hash": "162abe49cfd6cc61adac7ea17295610b",
+    "semantic_hash": "162abe49cfd6cc61adac7ea17295610b"
+  },
+  ".obsidian/workspace.json": {
+    "mtime": 1783566631.6227741,
+    "ast_hash": "27e50851fd26e5387b57915143650661",
+    "semantic_hash": "27e50851fd26e5387b57915143650661"
+  },
+  "_meta.json": {
+    "mtime": 1780824376.744308,
+    "ast_hash": "2557b77e1b7cdbffbc066c5294b30c8a",
+    "semantic_hash": "2557b77e1b7cdbffbc066c5294b30c8a"
+  },
+  "ai101/_meta.json": {
+    "mtime": 1780824376.7483034,
+    "ast_hash": "8dfcd7a0f51ca7611a8660d68dbf4dfd",
+    "semantic_hash": "8dfcd7a0f51ca7611a8660d68dbf4dfd"
+  },
+  "ai101/ai-engineering/_meta.json": {
+    "mtime": 1783666804.9785774,
+    "ast_hash": "7682167f305caf276c2cca7875be0aaf",
+    "semantic_hash": "7682167f305caf276c2cca7875be0aaf"
+  },
+  "ai101/ai-engineering/agents-and-agentic-workflows/_meta.json": {
+    "mtime": 1782644354.0531108,
+    "ast_hash": "3e0a5c69774e0d93421bf4e2bac78973",
+    "semantic_hash": "3e0a5c69774e0d93421bf4e2bac78973"
+  },
+  "ai101/ai-engineering/custom-assistants-and-knowledge/_meta.json": {
+    "mtime": 1782644354.1304739,
+    "ast_hash": "754abd6a030660934ff2a5436fde8ae1",
+    "semantic_hash": "754abd6a030660934ff2a5436fde8ae1"
+  },
+  "ai101/ai-engineering/effective-prompting/_meta.json": {
+    "mtime": 1780927539.2364848,
+    "ast_hash": "3b1b16a21af59f448e2e73f5d9247407",
+    "semantic_hash": "3b1b16a21af59f448e2e73f5d9247407"
+  },
+  "ai101/ai-engineering/how-mcp-works/_meta.json": {
+    "mtime": 1782644354.5083754,
+    "ast_hash": "98e4280ff469ddfdcf0c8deede9ca5d8",
+    "semantic_hash": "98e4280ff469ddfdcf0c8deede9ca5d8"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/_meta.json": {
+    "mtime": 1783481544.2268338,
+    "ast_hash": "df61178d3c7c397f236b6b18573b9a05",
+    "semantic_hash": "df61178d3c7c397f236b6b18573b9a05"
+  },
+  "ai101/ai-engineering/implementation-example/_meta.json": {
+    "mtime": 1783478751.1451323,
+    "ast_hash": "40d30cae061ea9da3f900007ff2205dd",
+    "semantic_hash": "40d30cae061ea9da3f900007ff2205dd"
+  },
+  "ai101/ai-engineering/loop-prompting/_meta.json": {
+    "mtime": 1782644354.060143,
+    "ast_hash": "baa65388bc467f2310a912c96e7ad0cf",
+    "semantic_hash": "baa65388bc467f2310a912c96e7ad0cf"
+  },
+  "ai101/ai-engineering/multimodal-and-files/_meta.json": {
+    "mtime": 1782644354.443321,
+    "ast_hash": "30790906d45bcaa603ff8065b7570dc6",
+    "semantic_hash": "30790906d45bcaa603ff8065b7570dc6"
+  },
+  "ai101/ai-engineering/ollama/_meta.json": {
+    "mtime": 1783666852.9676454,
+    "ast_hash": "3e55e935bc56a7597d9b482cef5ea567",
+    "semantic_hash": "3e55e935bc56a7597d9b482cef5ea567"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/_meta.json": {
+    "mtime": 1782644354.4503868,
+    "ast_hash": "be86749f68eaabedc3aff3f58d45b2e6",
+    "semantic_hash": "be86749f68eaabedc3aff3f58d45b2e6"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/hooks.json": {
+    "mtime": 1784166041.9585443,
+    "ast_hash": "7a3f5c2720b3eb3a6f673e805d98b83a",
+    "semantic_hash": "7a3f5c2720b3eb3a6f673e805d98b83a"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/hooks/lib/scan_staged_secrets.py": {
+    "mtime": 1783668213.9751747,
+    "ast_hash": "de506cbef002e7c8902fc2a7043fb520",
+    "semantic_hash": "de506cbef002e7c8902fc2a7043fb520"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/hooks/lib/scan_staged_secrets_cli.py": {
+    "mtime": 1783668216.4170332,
+    "ast_hash": "74b080a03460cb83a8fc7533ae24200d",
+    "semantic_hash": "74b080a03460cb83a8fc7533ae24200d"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/hooks/secrets_scan.py": {
+    "mtime": 1783668221.7961223,
+    "ast_hash": "a4f6f000727ee0b17a27ef54acf36207",
+    "semantic_hash": "a4f6f000727ee0b17a27ef54acf36207"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/deploy-check/scripts/deploy_check.py": {
+    "mtime": 1783670329.8359182,
+    "ast_hash": "8817a7cb10752386c83ad07396bf8fbd",
+    "semantic_hash": "8817a7cb10752386c83ad07396bf8fbd"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/deploy-check/scripts/lib/run_log.py": {
+    "mtime": 1783668164.8475688,
+    "ast_hash": "dd1323dd2237205518a642a12eac112a",
+    "semantic_hash": "dd1323dd2237205518a642a12eac112a"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/perf-scan/scripts/lib/run_log.py": {
+    "mtime": 1783668194.522385,
+    "ast_hash": "dd1323dd2237205518a642a12eac112a",
+    "semantic_hash": "dd1323dd2237205518a642a12eac112a"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/perf-scan/scripts/perf_scan.py": {
+    "mtime": 1783668205.0675929,
+    "ast_hash": "6cfcdb0d90bbf22568252c0b6c2032a8",
+    "semantic_hash": "6cfcdb0d90bbf22568252c0b6c2032a8"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/test-flake-hunt/scripts/lib/run_log.py": {
+    "mtime": 1783668175.9229107,
+    "ast_hash": "dd1323dd2237205518a642a12eac112a",
+    "semantic_hash": "dd1323dd2237205518a642a12eac112a"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py": {
+    "mtime": 1783668178.9990063,
+    "ast_hash": "c138e27b5e2e8ff71d8acafd7a3782d5",
+    "semantic_hash": "c138e27b5e2e8ff71d8acafd7a3782d5"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/_meta.json": {
+    "mtime": 1783667434.242769,
+    "ast_hash": "d30c75293b962916a9cc623cd068e77d",
+    "semantic_hash": "d30c75293b962916a9cc623cd068e77d"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/scripts/copy-to-project.sh": {
+    "mtime": 1783669859.4009984,
+    "ast_hash": "14873cb967ece3105ddacefca9f4e0ea",
+    "semantic_hash": "14873cb967ece3105ddacefca9f4e0ea"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/_meta.json": {
+    "mtime": 1783673546.0083284,
+    "ast_hash": "145b160b04189d6627a071dda3f4d0d7",
+    "semantic_hash": "145b160b04189d6627a071dda3f4d0d7"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/_meta.json": {
+    "mtime": 1782644354.0541043,
+    "ast_hash": "36d795b8e1dfa8434c895f45b72012d3",
+    "semantic_hash": "36d795b8e1dfa8434c895f45b72012d3"
+  },
+  "ai101/ai-engineering/trust-privacy-and-verify/_meta.json": {
+    "mtime": 1782644354.443321,
+    "ast_hash": "b81a2585646bdb752793436c73d2e3a6",
+    "semantic_hash": "b81a2585646bdb752793436c73d2e3a6"
+  },
+  "ai101/deep-learning/_meta.json": {
+    "mtime": 1780906952.5751984,
+    "ast_hash": "1545e5e89b19ea21dc48e5c3d5ee67d0",
+    "semantic_hash": "1545e5e89b19ea21dc48e5c3d5ee67d0"
+  },
+  "ai101/llms/_meta.json": {
+    "mtime": 1780906952.5751984,
+    "ast_hash": "353372010f5a8fd885deeb2aed407683",
+    "semantic_hash": "353372010f5a8fd885deeb2aed407683"
+  },
+  "ai101/machine-learning/_meta.json": {
+    "mtime": 1780906952.5718312,
+    "ast_hash": "6841c83762a88e06b6adcd7f1bc1dc41",
+    "semantic_hash": "6841c83762a88e06b6adcd7f1bc1dc41"
+  },
+  "cryptocurrency101/_meta.json": {
+    "mtime": 1781494436.333604,
+    "ast_hash": "e550c44a061e9fcc255d58a504eb0714",
+    "semantic_hash": "e550c44a061e9fcc255d58a504eb0714"
+  },
+  "cryptocurrency101/examples/_meta.json": {
+    "mtime": 1781667968.6384664,
+    "ast_hash": "dbff3bc2389199effe5821c9422dbdb3",
+    "semantic_hash": "dbff3bc2389199effe5821c9422dbdb3"
+  },
+  "cryptocurrency101/networks/_meta.json": {
+    "mtime": 1781494440.3339145,
+    "ast_hash": "605050958b5dba16f2afc1f80c8e0b00",
+    "semantic_hash": "605050958b5dba16f2afc1f80c8e0b00"
+  },
+  "cryptocurrency101/networks/ada/_meta.json": {
+    "mtime": 1781494440.941095,
+    "ast_hash": "695dc8b403559cb9f3d495781e571ecb",
+    "semantic_hash": "695dc8b403559cb9f3d495781e571ecb"
+  },
+  "cryptocurrency101/networks/bnb/_meta.json": {
+    "mtime": 1781494440.417246,
+    "ast_hash": "f928eb9c38802638ce51a00ece860606",
+    "semantic_hash": "f928eb9c38802638ce51a00ece860606"
+  },
+  "cryptocurrency101/networks/ton/_meta.json": {
+    "mtime": 1781494440.9431028,
+    "ast_hash": "810f2d6ba0f2158ea0a4d78a229b2795",
+    "semantic_hash": "810f2d6ba0f2158ea0a4d78a229b2795"
+  },
+  "cryptocurrency101/networks/tron/_meta.json": {
+    "mtime": 1781494440.6583924,
+    "ast_hash": "99b71147895086e3838a7b8bb195ffb3",
+    "semantic_hash": "99b71147895086e3838a7b8bb195ffb3"
+  },
+  "cs101/Algorithms/_meta.json": {
+    "mtime": 1780824376.7553513,
+    "ast_hash": "ac7bc6cfab46d84568410cd133efea9b",
+    "semantic_hash": "ac7bc6cfab46d84568410cd133efea9b"
+  },
+  "cs101/_meta.json": {
+    "mtime": 1780824376.7750072,
+    "ast_hash": "2962056dbf52dcbc3bc598f46f015e2f",
+    "semantic_hash": "2962056dbf52dcbc3bc598f46f015e2f"
+  },
+  "cs101/data-structures/_meta.json": {
+    "mtime": 1780824376.7760096,
+    "ast_hash": "d786cb3e61920f8518afbd1728eca052",
+    "semantic_hash": "d786cb3e61920f8518afbd1728eca052"
+  },
+  "cs101/databases/_meta.json": {
+    "mtime": 1780824376.7915564,
+    "ast_hash": "0875661945ab5b10ae5e48132e2a5472",
+    "semantic_hash": "0875661945ab5b10ae5e48132e2a5472"
+  },
+  "cs101/networking/_meta.json": {
+    "mtime": 1780824376.8114457,
+    "ast_hash": "0135fd49cd1955a0bdf35ae0cfb1963f",
+    "semantic_hash": "0135fd49cd1955a0bdf35ae0cfb1963f"
+  },
+  "cybersecurity/_meta.json": {
+    "mtime": 1780926419.633878,
+    "ast_hash": "45ca17124d911ffc583ac8e8156076c7",
+    "semantic_hash": "45ca17124d911ffc583ac8e8156076c7"
+  },
+  "cybersecurity/hardware-bypass/_meta.json": {
+    "mtime": 1783669271.363926,
+    "ast_hash": "830a0e12d95423429aaa7679a98cada2",
+    "semantic_hash": "830a0e12d95423429aaa7679a98cada2"
+  },
+  "digital-marketing/_meta.json": {
+    "mtime": 1782493613.9827065,
+    "ast_hash": "356fbc5e72c587210df6a61580ba4f43",
+    "semantic_hash": "356fbc5e72c587210df6a61580ba4f43"
+  },
+  "digital-marketing/analytics/_meta.json": {
+    "mtime": 1782494379.159121,
+    "ast_hash": "12e1d1ef8837507571c62bed7250fada",
+    "semantic_hash": "12e1d1ef8837507571c62bed7250fada"
+  },
+  "digital-marketing/content-strategy/_meta.json": {
+    "mtime": 1782494378.6397529,
+    "ast_hash": "73e748d830ccf88e8c766a01ac90ae41",
+    "semantic_hash": "73e748d830ccf88e8c766a01ac90ae41"
+  },
+  "digital-marketing/email-marketing/_meta.json": {
+    "mtime": 1782494379.8764548,
+    "ast_hash": "e08c08fc1025a5a4a82ac7ca99d0b4da",
+    "semantic_hash": "e08c08fc1025a5a4a82ac7ca99d0b4da"
+  },
+  "digital-marketing/foundations/_meta.json": {
+    "mtime": 1782494377.6150556,
+    "ast_hash": "c627fd58f607f55242db2d0b213b8ec2",
+    "semantic_hash": "c627fd58f607f55242db2d0b213b8ec2"
+  },
+  "digital-marketing/link-building/_meta.json": {
+    "mtime": 1782494380.4689324,
+    "ast_hash": "d7bffddd26c5c5cf4f6a36dc6c9ace84",
+    "semantic_hash": "d7bffddd26c5c5cf4f6a36dc6c9ace84"
+  },
+  "digital-marketing/on-page-seo/_meta.json": {
+    "mtime": 1782494378.1099415,
+    "ast_hash": "5ce02b53ad08e4e6520a6546c8579e2c",
+    "semantic_hash": "5ce02b53ad08e4e6520a6546c8579e2c"
+  },
+  "digital-marketing/paid-advertising/_meta.json": {
+    "mtime": 1782494380.263362,
+    "ast_hash": "c204f3b6c41c53ea56c10f40c3f77e01",
+    "semantic_hash": "c204f3b6c41c53ea56c10f40c3f77e01"
+  },
+  "food/_meta.json": {
+    "mtime": 1781241265.4471738,
+    "ast_hash": "f0b469fd1cc97e35ad5775d6564ac5bc",
+    "semantic_hash": "f0b469fd1cc97e35ad5775d6564ac5bc"
+  },
+  "food/baking/_meta.json": {
+    "mtime": 1781241265.4491725,
+    "ast_hash": "ebf4a1200c417665ebecfb89547294e3",
+    "semantic_hash": "ebf4a1200c417665ebecfb89547294e3"
+  },
+  "getting-started/_meta.json": {
+    "mtime": 1780824376.8431509,
+    "ast_hash": "bac633d1494867acb40e4a39c8db09f9",
+    "semantic_hash": "bac633d1494867acb40e4a39c8db09f9"
+  },
+  "getting-started/intro/_meta.json": {
+    "mtime": 1780824376.8457186,
+    "ast_hash": "62959283f77cdf224be0d97e782fd0a1",
+    "semantic_hash": "62959283f77cdf224be0d97e782fd0a1"
+  },
+  "languages/_meta.json": {
+    "mtime": 1782470620.7413547,
+    "ast_hash": "36dfb6e409de7d51f2e42006c93f31f3",
+    "semantic_hash": "36dfb6e409de7d51f2e42006c93f31f3"
+  },
+  "languages/japanese/_meta.json": {
+    "mtime": 1782470620.7413547,
+    "ast_hash": "63899ab05ef84201193d362ad1b841ba",
+    "semantic_hash": "63899ab05ef84201193d362ad1b841ba"
+  },
+  "languages/japanese/beginner-alphabet/_meta.json": {
+    "mtime": 1782474313.8223636,
+    "ast_hash": "a6c00ecd81c8d2be76a99c4dec138b8f",
+    "semantic_hash": "a6c00ecd81c8d2be76a99c4dec138b8f"
+  },
+  "languages/japanese/vocabulary/_meta.json": {
+    "mtime": 1783395547.006505,
+    "ast_hash": "f371453d8b3230079592e6f1a1a57a81",
+    "semantic_hash": "f371453d8b3230079592e6f1a1a57a81"
+  },
+  "languages/japanese/vocabulary/daily-conversations/_meta.json": {
+    "mtime": 1783401924.6050136,
+    "ast_hash": "b92fec5160c7409262ff8c9bff077279",
+    "semantic_hash": "b92fec5160c7409262ff8c9bff077279"
+  },
+  "sre101/_meta.json": {
+    "mtime": 1780824376.8497179,
+    "ast_hash": "e45eb23d1b03d3bbc74fde63780d2031",
+    "semantic_hash": "e45eb23d1b03d3bbc74fde63780d2031"
+  },
+  "sre101/cicd/_meta.json": {
+    "mtime": 1780824376.8522277,
+    "ast_hash": "3e0c92c8290e6c2d7af8cdbff0409e9b",
+    "semantic_hash": "3e0c92c8290e6c2d7af8cdbff0409e9b"
+  },
+  "sre101/cicd/ansible-and-jenkins/_meta.json": {
+    "mtime": 1780824376.8532412,
+    "ast_hash": "61eaf9765d9fafa769be0f152826e694",
+    "semantic_hash": "61eaf9765d9fafa769be0f152826e694"
+  },
+  "sre101/cicd/security-and-best-practices/_meta.json": {
+    "mtime": 1780824376.9031968,
+    "ast_hash": "2463ac274612498e01ada638fd0c1e3c",
+    "semantic_hash": "2463ac274612498e01ada638fd0c1e3c"
+  },
+  "sre101/cicd/terraform/_meta.json": {
+    "mtime": 1780824376.9271262,
+    "ast_hash": "17eb326a18aeabd005958727580acbea",
+    "semantic_hash": "17eb326a18aeabd005958727580acbea"
+  },
+  "sre101/cicd/tools-and-platforms/_meta.json": {
+    "mtime": 1780824376.944254,
+    "ast_hash": "1b36c615465f59aaca9c481c9c6f4df8",
+    "semantic_hash": "1b36c615465f59aaca9c481c9c6f4df8"
+  },
+  "sre101/cloud-architecture/_meta.json": {
+    "mtime": 1780824376.958311,
+    "ast_hash": "5829dd5fec12f5f8e8f101e91adfc4b5",
+    "semantic_hash": "5829dd5fec12f5f8e8f101e91adfc4b5"
+  },
+  "sre101/cloud-architecture/foundations/_meta.json": {
+    "mtime": 1780824376.9650154,
+    "ast_hash": "c627fd58f607f55242db2d0b213b8ec2",
+    "semantic_hash": "c627fd58f607f55242db2d0b213b8ec2"
+  },
+  "sre101/cloud-architecture/patterns-and-design/_meta.json": {
+    "mtime": 1780824376.9770825,
+    "ast_hash": "97981d7a34836c08a38bc9b7fd942a5d",
+    "semantic_hash": "97981d7a34836c08a38bc9b7fd942a5d"
+  },
+  "sre101/tooling/_meta.json": {
+    "mtime": 1780824376.9881024,
+    "ast_hash": "d1b8468f2033628ab4ef14ed88e7cf89",
+    "semantic_hash": "d1b8468f2033628ab4ef14ed88e7cf89"
+  },
+  "sre101/tooling/alertmanager/_meta.json": {
+    "mtime": 1780824376.9891057,
+    "ast_hash": "c4e25ce9e776a9ae6cdfe03a9a7e7ae8",
+    "semantic_hash": "c4e25ce9e776a9ae6cdfe03a9a7e7ae8"
+  },
+  "sre101/tooling/grafana/_meta.json": {
+    "mtime": 1780824376.997392,
+    "ast_hash": "e0861530e1c78187f4c2639120896d1c",
+    "semantic_hash": "e0861530e1c78187f4c2639120896d1c"
+  },
+  "sre101/tooling/kubernetes/_meta.json": {
+    "mtime": 1780824377.003749,
+    "ast_hash": "c56fb89872713e519179ad7099a08e48",
+    "semantic_hash": "c56fb89872713e519179ad7099a08e48"
+  },
+  "sre101/tooling/prometheus/_meta.json": {
+    "mtime": 1780824377.0125225,
+    "ast_hash": "295521f6d9457221c0e47f1040dd5376",
+    "semantic_hash": "295521f6d9457221c0e47f1040dd5376"
+  },
+  "sre101/tooling/terraform/_meta.json": {
+    "mtime": 1780824377.0215385,
+    "ast_hash": "90890ace6e097b152926cae2e61a7962",
+    "semantic_hash": "90890ace6e097b152926cae2e61a7962"
+  },
+  "startups/_meta.json": {
+    "mtime": 1780824377.0305848,
+    "ast_hash": "61a6f998de2780c2e64ad0022d1bf762",
+    "semantic_hash": "61a6f998de2780c2e64ad0022d1bf762"
+  },
+  "startups/free-services/_meta.json": {
+    "mtime": 1780824377.0315871,
+    "ast_hash": "db1900df60558fb0946730bfc4f5407c",
+    "semantic_hash": "db1900df60558fb0946730bfc4f5407c"
+  },
+  "swe101/_meta.json": {
+    "mtime": 1780824377.0415936,
+    "ast_hash": "ac900059b2f016ddd1c1683910308f11",
+    "semantic_hash": "ac900059b2f016ddd1c1683910308f11"
+  },
+  "swe101/api-gateway/_meta.json": {
+    "mtime": 1780824377.0438921,
+    "ast_hash": "05818bf94451981f710d88b4fd7faeda",
+    "semantic_hash": "05818bf94451981f710d88b4fd7faeda"
+  },
+  "swe101/cdn/_meta.json": {
+    "mtime": 1780824377.0529535,
+    "ast_hash": "c13bb03fc496797cd666a93d59314135",
+    "semantic_hash": "c13bb03fc496797cd666a93d59314135"
+  },
+  "swe101/databases/_meta.json": {
+    "mtime": 1782360741.8833077,
+    "ast_hash": "b47d3e761a6b1a877ec7a292ab312b40",
+    "semantic_hash": "b47d3e761a6b1a877ec7a292ab312b40"
+  },
+  "swe101/databases/mongodb/_meta.json": {
+    "mtime": 1780824377.1132646,
+    "ast_hash": "aade42caf8d65d500fc10e6daf7a77e1",
+    "semantic_hash": "aade42caf8d65d500fc10e6daf7a77e1"
+  },
+  "swe101/databases/plsql/_meta.json": {
+    "mtime": 1780824377.1238558,
+    "ast_hash": "797f3018d60e3ffe5c432f367142a36f",
+    "semantic_hash": "797f3018d60e3ffe5c432f367142a36f"
+  },
+  "swe101/databases/postgres/_meta.json": {
+    "mtime": 1780824377.1399014,
+    "ast_hash": "76ead01753ef3116377124f67281e767",
+    "semantic_hash": "76ead01753ef3116377124f67281e767"
+  },
+  "swe101/git/_meta.json": {
+    "mtime": 1780824377.0670025,
+    "ast_hash": "c817bbc3f20984e3c83df480ac3d182f",
+    "semantic_hash": "c817bbc3f20984e3c83df480ac3d182f"
+  },
+  "swe101/git/essentials/_meta.json": {
+    "mtime": 1780824377.069003,
+    "ast_hash": "408d000520e9be14ce3e32408722d6dc",
+    "semantic_hash": "408d000520e9be14ce3e32408722d6dc"
+  },
+  "swe101/git/github/_meta.json": {
+    "mtime": 1780824377.0806003,
+    "ast_hash": "cb4b43e651c388982c9c1b69c31b337f",
+    "semantic_hash": "cb4b43e651c388982c9c1b69c31b337f"
+  },
+  "swe101/kafka/_meta.json": {
+    "mtime": 1781250802.6306481,
+    "ast_hash": "1170d0d9775b0018fedfbaa802210b65",
+    "semantic_hash": "1170d0d9775b0018fedfbaa802210b65"
+  },
+  "swe101/languages&frameworks/_meta.json": {
+    "mtime": 1782360772.0444756,
+    "ast_hash": "fd851bad15194e8e44bf25f66bd50b50",
+    "semantic_hash": "fd851bad15194e8e44bf25f66bd50b50"
+  },
+  "swe101/languages&frameworks/css/_meta.json": {
+    "mtime": 1781241523.4786973,
+    "ast_hash": "adec86cefcfd435fbf5453d65bd1fa36",
+    "semantic_hash": "adec86cefcfd435fbf5453d65bd1fa36"
+  },
+  "swe101/languages&frameworks/css/bootstrap/_meta.json": {
+    "mtime": 1781241524.0167043,
+    "ast_hash": "a2e615882ac745a8b94e98a3b741958e",
+    "semantic_hash": "a2e615882ac745a8b94e98a3b741958e"
+  },
+  "swe101/languages&frameworks/css/less/_meta.json": {
+    "mtime": 1781241523.7740066,
+    "ast_hash": "8143347e3430b64b340eaf421273f60b",
+    "semantic_hash": "8143347e3430b64b340eaf421273f60b"
+  },
+  "swe101/languages&frameworks/css/sass/_meta.json": {
+    "mtime": 1781241523.7740066,
+    "ast_hash": "c917bb8ed39618c9f9930f779e086320",
+    "semantic_hash": "c917bb8ed39618c9f9930f779e086320"
+  },
+  "swe101/languages&frameworks/flutter/_meta.json": {
+    "mtime": 1781249210.8134904,
+    "ast_hash": "688a789be89415c3621685a02e4d68b1",
+    "semantic_hash": "688a789be89415c3621685a02e4d68b1"
+  },
+  "swe101/languages&frameworks/htmx/_meta.json": {
+    "mtime": 1780978319.2249641,
+    "ast_hash": "a49ab2b333dbe9cd4325ed63cea6a8e4",
+    "semantic_hash": "a49ab2b333dbe9cd4325ed63cea6a8e4"
+  },
+  "swe101/languages&frameworks/java/_meta.json": {
+    "mtime": 1780824377.0881174,
+    "ast_hash": "f49784fe3de28d35889dffad8f275845",
+    "semantic_hash": "f49784fe3de28d35889dffad8f275845"
+  },
+  "swe101/languages&frameworks/java/intro/_meta.json": {
+    "mtime": 1780824377.0891168,
+    "ast_hash": "62959283f77cdf224be0d97e782fd0a1",
+    "semantic_hash": "62959283f77cdf224be0d97e782fd0a1"
+  },
+  "swe101/languages&frameworks/java/springboot/_meta.json": {
+    "mtime": 1780824377.09949,
+    "ast_hash": "9e337c34c859f9f063c71f06efd77740",
+    "semantic_hash": "9e337c34c859f9f063c71f06efd77740"
+  },
+  "swe101/languages&frameworks/javascript/_meta.json": {
+    "mtime": 1781241337.9847288,
+    "ast_hash": "1bbed6799c7cae1216d7764f63a58cb9",
+    "semantic_hash": "1bbed6799c7cae1216d7764f63a58cb9"
+  },
+  "swe101/languages&frameworks/javascript/angular/_meta.json": {
+    "mtime": 1781241399.2045596,
+    "ast_hash": "d241efd722430e5d65f5a9c413b294db",
+    "semantic_hash": "d241efd722430e5d65f5a9c413b294db"
+  },
+  "swe101/languages&frameworks/javascript/bootstrap/_meta.json": {
+    "mtime": 1781241724.0741248,
+    "ast_hash": "7f8b5820bdc332276113f1df4fe4adb6",
+    "semantic_hash": "7f8b5820bdc332276113f1df4fe4adb6"
+  },
+  "swe101/languages&frameworks/javascript/jquery/_meta.json": {
+    "mtime": 1781241371.6157098,
+    "ast_hash": "70a6c329056ef0f7418cfd962e2e4ba5",
+    "semantic_hash": "70a6c329056ef0f7418cfd962e2e4ba5"
+  },
+  "swe101/languages&frameworks/javascript/react-native/_meta.json": {
+    "mtime": 1781248180.4175434,
+    "ast_hash": "20f3c5985f4392714f5b182951665e60",
+    "semantic_hash": "20f3c5985f4392714f5b182951665e60"
+  },
+  "swe101/languages&frameworks/javascript/react/_meta.json": {
+    "mtime": 1781241395.7571163,
+    "ast_hash": "ecb4b2eaafccca86b0fe557c2c4471bd",
+    "semantic_hash": "ecb4b2eaafccca86b0fe557c2c4471bd"
+  },
+  "swe101/languages&frameworks/mermaid/_meta.json": {
+    "mtime": 1783241919.3437538,
+    "ast_hash": "c78492f02e662d1ff441a61466c163cb",
+    "semantic_hash": "c78492f02e662d1ff441a61466c163cb"
+  },
+  "swe101/languages&frameworks/plantuml/_meta.json": {
+    "mtime": 1780887277.8502712,
+    "ast_hash": "cecf17e5618a38f5a33ea8b41da75a52",
+    "semantic_hash": "cecf17e5618a38f5a33ea8b41da75a52"
+  },
+  "swe101/languages&frameworks/python/_meta.json": {
+    "mtime": 1780824377.153723,
+    "ast_hash": "31c1376f23f5a2e26265c3af16c835be",
+    "semantic_hash": "31c1376f23f5a2e26265c3af16c835be"
+  },
+  "swe101/languages&frameworks/rust/_meta.json": {
+    "mtime": 1780824377.1746264,
+    "ast_hash": "06ee4d35b295593a2ac6f18dc55d35f9",
+    "semantic_hash": "06ee4d35b295593a2ac6f18dc55d35f9"
+  },
+  "swe101/languages&frameworks/zig/_meta.json": {
+    "mtime": 1781666629.755187,
+    "ast_hash": "55b80dc50e7a0d99c3bb352d08ce2c5b",
+    "semantic_hash": "55b80dc50e7a0d99c3bb352d08ce2c5b"
+  },
+  "swe101/obsidian/_meta.json": {
+    "mtime": 1783339549.260986,
+    "ast_hash": "7ae8b487037b09cb1de35696471bdb9c",
+    "semantic_hash": "7ae8b487037b09cb1de35696471bdb9c"
+  },
+  "swe101/redis/_meta.json": {
+    "mtime": 1780824377.1650536,
+    "ast_hash": "3f0ce38e178d817eeac5f46105230290",
+    "semantic_hash": "3f0ce38e178d817eeac5f46105230290"
+  },
+  "swe101/sysdesign/_meta.json": {
+    "mtime": 1780824377.1816273,
+    "ast_hash": "4c83a5434da67e68d55cd33718e2032f",
+    "semantic_hash": "4c83a5434da67e68d55cd33718e2032f"
+  },
+  "swe101/sysdesign/bottleneck-analysis/_meta.json": {
+    "mtime": 1780824377.1828136,
+    "ast_hash": "79a3fdc4d9f6a0ed5fca86823b4b1ac1",
+    "semantic_hash": "79a3fdc4d9f6a0ed5fca86823b4b1ac1"
+  },
+  "swe101/sysdesign/classic-designs/_meta.json": {
+    "mtime": 1780824377.1954048,
+    "ast_hash": "58e692070bb99e6bb0d4efabce25de28",
+    "semantic_hash": "58e692070bb99e6bb0d4efabce25de28"
+  },
+  "swe101/sysdesign/examples/_meta.json": {
+    "mtime": 1780900742.0082638,
+    "ast_hash": "c766e4d922c475b41db936fa5036d7e8",
+    "semantic_hash": "c766e4d922c475b41db936fa5036d7e8"
+  },
+  "swe101/sysdesign/scalable-patterns/_meta.json": {
+    "mtime": 1780824377.2105618,
+    "ast_hash": "2e26a09a86a560a6398c2bec5672f97b",
+    "semantic_hash": "2e26a09a86a560a6398c2bec5672f97b"
+  },
+  "swe101/systemdesigns/diagram-2026-05-15.json": {
+    "mtime": 1780824377.221392,
+    "ast_hash": "f78017abfcd9ff69016af5253ea56f34",
+    "semantic_hash": "f78017abfcd9ff69016af5253ea56f34"
+  },
+  "2026-07-07.md": {
+    "mtime": 1783393963.3350992,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "ai101/ai-engineering/agents-and-agentic-workflows/i-overview.md": {
+    "mtime": 1783411454.804546,
+    "ast_hash": "e6c93c92787b68982d54c9d5ed0f358d",
+    "semantic_hash": "e6c93c92787b68982d54c9d5ed0f358d"
+  },
+  "ai101/ai-engineering/agents-and-agentic-workflows/ii-chat-assistant-agent.md": {
+    "mtime": 1780928347.5412128,
+    "ast_hash": "ae686f5c429c9a376bf1828dc059e433",
+    "semantic_hash": "ae686f5c429c9a376bf1828dc059e433"
+  },
+  "ai101/ai-engineering/agents-and-agentic-workflows/iii-directing-agents.md": {
+    "mtime": 1780927539.2414825,
+    "ast_hash": "69568f550d1d2299042ba2560bb2b70d",
+    "semantic_hash": "69568f550d1d2299042ba2560bb2b70d"
+  },
+  "ai101/ai-engineering/agents-and-agentic-workflows/iv-products-and-human-in-the-loop.md": {
+    "mtime": 1780927539.2424836,
+    "ast_hash": "a1e9ab1020ab9366929a038aef41f615",
+    "semantic_hash": "a1e9ab1020ab9366929a038aef41f615"
+  },
+  "ai101/ai-engineering/custom-assistants-and-knowledge/i-overview.md": {
+    "mtime": 1780927539.2485273,
+    "ast_hash": "c647622d9979076e5efc69144ac08a66",
+    "semantic_hash": "c647622d9979076e5efc69144ac08a66"
+  },
+  "ai101/ai-engineering/custom-assistants-and-knowledge/ii-products-and-building-assistants.md": {
+    "mtime": 1780927539.2495258,
+    "ast_hash": "4caedcb9bb33d9ee293284554478c3e9",
+    "semantic_hash": "4caedcb9bb33d9ee293284554478c3e9"
+  },
+  "ai101/ai-engineering/custom-assistants-and-knowledge/iii-rag-and-knowledge-libraries.md": {
+    "mtime": 1780927587.6861112,
+    "ast_hash": "7d7b9f5455fe975f3321f8c4b1e4ebe9",
+    "semantic_hash": "7d7b9f5455fe975f3321f8c4b1e4ebe9"
+  },
+  "ai101/ai-engineering/custom-assistants-and-knowledge/iv-memory-and-governance.md": {
+    "mtime": 1780927539.2495258,
+    "ast_hash": "d29d7887039c23176639b183dd94c724",
+    "semantic_hash": "d29d7887039c23176639b183dd94c724"
+  },
+  "ai101/ai-engineering/effective-prompting/i-overview.md": {
+    "mtime": 1782644386.3844976,
+    "ast_hash": "031c38d87a89feb0848ba682c0e94fa4",
+    "semantic_hash": "031c38d87a89feb0848ba682c0e94fa4"
+  },
+  "ai101/ai-engineering/effective-prompting/ii-minimum-prompt-and-techniques.md": {
+    "mtime": 1780927539.237486,
+    "ast_hash": "2d9cf972e73b092df29f2addc144e17f",
+    "semantic_hash": "2d9cf972e73b092df29f2addc144e17f"
+  },
+  "ai101/ai-engineering/effective-prompting/iii-iteration-and-templates.md": {
+    "mtime": 1782644397.320344,
+    "ast_hash": "b392f8465bdf2dc6e993a51b6b34c54f",
+    "semantic_hash": "b392f8465bdf2dc6e993a51b6b34c54f"
+  },
+  "ai101/ai-engineering/effective-prompting/iv-system-instructions-and-mistakes.md": {
+    "mtime": 1782644397.149286,
+    "ast_hash": "cde5890c9f1b3dbbda034bde708929d6",
+    "semantic_hash": "cde5890c9f1b3dbbda034bde708929d6"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/i-overview.md": {
+    "mtime": 1783566631.6244612,
+    "ast_hash": "93a8e92dd216d8471df1659aa2e4ca93",
+    "semantic_hash": "93a8e92dd216d8471df1659aa2e4ca93"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/ii-choose-stack-and-scaffold.md": {
+    "mtime": 1784166041.958482,
+    "ast_hash": "39aaead474db0c8c7bfe2e6406a5b470",
+    "semantic_hash": "39aaead474db0c8c7bfe2e6406a5b470"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/ii-plan-your-server.md": {
+    "mtime": 1783481545.1139097,
+    "ast_hash": "659453ee60d8f5667a48720490903d01",
+    "semantic_hash": "659453ee60d8f5667a48720490903d01"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/iii-build-with-the-sdk.md": {
+    "mtime": 1783481545.4475718,
+    "ast_hash": "864dcb46a20fda00d65fda3dd382cf5c",
+    "semantic_hash": "864dcb46a20fda00d65fda3dd382cf5c"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/iv-tools-resources-and-prompts.md": {
+    "mtime": 1783481554.9670105,
+    "ast_hash": "17d0db7bee7cafa41c4f45615db51d1e",
+    "semantic_hash": "17d0db7bee7cafa41c4f45615db51d1e"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/v-test-and-wire-cursor.md": {
+    "mtime": 1783481564.919183,
+    "ast_hash": "33c814ed3dd9ab08964463b8fd5e53ba",
+    "semantic_hash": "33c814ed3dd9ab08964463b8fd5e53ba"
+  },
+  "ai101/ai-engineering/how-mcp-works/how-to-create-your-custom-mcp/vi-security-and-distribution.md": {
+    "mtime": 1783481580.9864967,
+    "ast_hash": "e1b8a58a7d33d7809dd7a64c4f688d39",
+    "semantic_hash": "e1b8a58a7d33d7809dd7a64c4f688d39"
+  },
+  "ai101/ai-engineering/how-mcp-works/i-overview.md": {
+    "mtime": 1783566631.6249578,
+    "ast_hash": "2bba131207636ca4bd085d35f879c433",
+    "semantic_hash": "2bba131207636ca4bd085d35f879c433"
+  },
+  "ai101/ai-engineering/how-mcp-works/ii-json-rpc-and-transports.md": {
+    "mtime": 1780927539.2640998,
+    "ast_hash": "0d647cb64290c5d057e8ab768701fa82",
+    "semantic_hash": "0d647cb64290c5d057e8ab768701fa82"
+  },
+  "ai101/ai-engineering/how-mcp-works/iii-end-to-end-flow-and-llm.md": {
+    "mtime": 1780927539.2650096,
+    "ast_hash": "67d4085310b92b08a76be3b39b6a0be5",
+    "semantic_hash": "67d4085310b92b08a76be3b39b6a0be5"
+  },
+  "ai101/ai-engineering/how-mcp-works/iv-mcp-vs-connectors-and-security.md": {
+    "mtime": 1780927539.2650096,
+    "ast_hash": "7e7688b6752c69b75f5f6a15e204b2f6",
+    "semantic_hash": "7e7688b6752c69b75f5f6a15e204b2f6"
+  },
+  "ai101/ai-engineering/how-mcp-works/v-vector-db-skills-and-reference.md": {
+    "mtime": 1783482377.2483811,
+    "ast_hash": "40ca84badb889b5873f30b0d74f15f62",
+    "semantic_hash": "40ca84badb889b5873f30b0d74f15f62"
+  },
+  "ai101/ai-engineering/i-overview.md": {
+    "mtime": 1783666940.3120482,
+    "ast_hash": "4a372b13f4b22c4f6470cea2a5347f65",
+    "semantic_hash": "4a372b13f4b22c4f6470cea2a5347f65"
+  },
+  "ai101/ai-engineering/implementation-example/i-overview.md": {
+    "mtime": 1783666943.4955714,
+    "ast_hash": "132475dc4d924b5a235f4f6f128d28c8",
+    "semantic_hash": "132475dc4d924b5a235f4f6f128d28c8"
+  },
+  "ai101/ai-engineering/implementation-example/ii-downloading-from-huggingface.md": {
+    "mtime": 1783480243.900173,
+    "ast_hash": "9e1705dfae5104dd93e4dcda209462d8",
+    "semantic_hash": "9e1705dfae5104dd93e4dcda209462d8"
+  },
+  "ai101/ai-engineering/implementation-example/iii-local-run-platforms.md": {
+    "mtime": 1783666942.5665765,
+    "ast_hash": "b92786af945a69ae6ff61c78fe277ab4",
+    "semantic_hash": "b92786af945a69ae6ff61c78fe277ab4"
+  },
+  "ai101/ai-engineering/implementation-example/iv-model-ram-requirements.md": {
+    "mtime": 1783480214.5386643,
+    "ast_hash": "1a566256ea912c1dd302d8f59ae8b20e",
+    "semantic_hash": "1a566256ea912c1dd302d8f59ae8b20e"
+  },
+  "ai101/ai-engineering/implementation-example/v-cpu-and-lightweight-runners.md": {
+    "mtime": 1783480239.9191258,
+    "ast_hash": "f2af2b40fb4fa678f05008d63f0cc9bb",
+    "semantic_hash": "f2af2b40fb4fa678f05008d63f0cc9bb"
+  },
+  "ai101/ai-engineering/implementation-example/vi-install-and-run-rtx-1080.md": {
+    "mtime": 1783480232.8334863,
+    "ast_hash": "fb60974367b72e2c9078151f51fd2995",
+    "semantic_hash": "fb60974367b72e2c9078151f51fd2995"
+  },
+  "ai101/ai-engineering/implementation-example/vii-turbovec-ollama-local-files.md": {
+    "mtime": 1783482376.1761012,
+    "ast_hash": "4382ba53b80956bacea84e5779f3e69c",
+    "semantic_hash": "4382ba53b80956bacea84e5779f3e69c"
+  },
+  "ai101/ai-engineering/loop-prompting/i-overview.md": {
+    "mtime": 1782644361.1141295,
+    "ast_hash": "e988b5f4f70abe157c0dbed0246c8162",
+    "semantic_hash": "e988b5f4f70abe157c0dbed0246c8162"
+  },
+  "ai101/ai-engineering/loop-prompting/ii-one-shot-vs-loop.md": {
+    "mtime": 1782644364.9954066,
+    "ast_hash": "e89b8b15bb22ec3841f27efe602e550c",
+    "semantic_hash": "e89b8b15bb22ec3841f27efe602e550c"
+  },
+  "ai101/ai-engineering/loop-prompting/iii-persistent-instructions.md": {
+    "mtime": 1782644368.8714497,
+    "ast_hash": "d411f9e2a7c9936978eb363cfb91d30f",
+    "semantic_hash": "d411f9e2a7c9936978eb363cfb91d30f"
+  },
+  "ai101/ai-engineering/loop-prompting/iv-session-and-recurring-loops.md": {
+    "mtime": 1782644373.9543426,
+    "ast_hash": "8483c9556ad2d47cb4ea1bedcbccff44",
+    "semantic_hash": "8483c9556ad2d47cb4ea1bedcbccff44"
+  },
+  "ai101/ai-engineering/loop-prompting/v-hygiene-and-when-to-reset.md": {
+    "mtime": 1782644380.5162368,
+    "ast_hash": "e39b86a0cb5c97303ef871f08ea12731",
+    "semantic_hash": "e39b86a0cb5c97303ef871f08ea12731"
+  },
+  "ai101/ai-engineering/multimodal-and-files/i-overview.md": {
+    "mtime": 1780927539.2515266,
+    "ast_hash": "898ffcc723f284592dbfbfc52055f20c",
+    "semantic_hash": "898ffcc723f284592dbfbfc52055f20c"
+  },
+  "ai101/ai-engineering/multimodal-and-files/ii-pdfs-and-documents.md": {
+    "mtime": 1780927539.2515266,
+    "ast_hash": "e1c61e38043c78510744bd6226edf163",
+    "semantic_hash": "e1c61e38043c78510744bd6226edf163"
+  },
+  "ai101/ai-engineering/multimodal-and-files/iii-images-spreadsheets-data.md": {
+    "mtime": 1780927539.2525263,
+    "ast_hash": "ac3e16135931089febe5d7df3d3085bd",
+    "semantic_hash": "ac3e16135931089febe5d7df3d3085bd"
+  },
+  "ai101/ai-engineering/multimodal-and-files/iv-voice-code-and-limits.md": {
+    "mtime": 1780927539.2525263,
+    "ast_hash": "c6635a1c70658ad9ffaba327957f932f",
+    "semantic_hash": "c6635a1c70658ad9ffaba327957f932f"
+  },
+  "ai101/ai-engineering/ollama/i-overview.md": {
+    "mtime": 1783666866.083122,
+    "ast_hash": "f5ce869f7f471ca088f38b30f5daa07c",
+    "semantic_hash": "f5ce869f7f471ca088f38b30f5daa07c"
+  },
+  "ai101/ai-engineering/ollama/ii-install-and-setup.md": {
+    "mtime": 1783666872.7534204,
+    "ast_hash": "bbb3abdc85189e48304950b63df3c445",
+    "semantic_hash": "bbb3abdc85189e48304950b63df3c445"
+  },
+  "ai101/ai-engineering/ollama/iii-models-pull-and-manage.md": {
+    "mtime": 1783666885.2871978,
+    "ast_hash": "01cd08b8d41ef6faf52a65813ac3b1dd",
+    "semantic_hash": "01cd08b8d41ef6faf52a65813ac3b1dd"
+  },
+  "ai101/ai-engineering/ollama/iv-run-chat-and-parameters.md": {
+    "mtime": 1783666894.2636015,
+    "ast_hash": "359162f4febcf92cb2f93055a60c8457",
+    "semantic_hash": "359162f4febcf92cb2f93055a60c8457"
+  },
+  "ai101/ai-engineering/ollama/v-api-and-ide-integration.md": {
+    "mtime": 1783666906.431868,
+    "ast_hash": "4f6660f213fd6ecccdcd71ab000a9c2e",
+    "semantic_hash": "4f6660f213fd6ecccdcd71ab000a9c2e"
+  },
+  "ai101/ai-engineering/ollama/vi-modelfile-and-custom-gguf.md": {
+    "mtime": 1783666921.2067938,
+    "ast_hash": "7ec4efde3139faa8e0b2b91de2a47745",
+    "semantic_hash": "7ec4efde3139faa8e0b2b91de2a47745"
+  },
+  "ai101/ai-engineering/ollama/vii-gpu-troubleshooting.md": {
+    "mtime": 1783666933.1745088,
+    "ast_hash": "439e8e0df01db1e9eedf7c8a16d5b6e6",
+    "semantic_hash": "439e8e0df01db1e9eedf7c8a16d5b6e6"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/README.md": {
+    "mtime": 1783669856.5227141,
+    "ast_hash": "304c4bb16825e7a8fcfe0955ed5604db",
+    "semantic_hash": "304c4bb16825e7a8fcfe0955ed5604db"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/deploy-check/SKILL.md": {
+    "mtime": 1783670332.6315334,
+    "ast_hash": "7b8a4fbbc9405957f6d31c2b1c74b5f4",
+    "semantic_hash": "7b8a4fbbc9405957f6d31c2b1c74b5f4"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/perf-scan/SKILL.md": {
+    "mtime": 1783669842.6125872,
+    "ast_hash": "8da7f2b94c0da2753f47c299300b8d66",
+    "semantic_hash": "8da7f2b94c0da2753f47c299300b8d66"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/secrets-scan-help/SKILL.md": {
+    "mtime": 1783669843.5675302,
+    "ast_hash": "84569c8c7c1c5e21447955a5e262a3fc",
+    "semantic_hash": "84569c8c7c1c5e21447955a5e262a3fc"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/.cursor/skills/test-flake-hunt/SKILL.md": {
+    "mtime": 1783669842.6130157,
+    "ast_hash": "ee6fe05559939d76898dc3da497f02f9",
+    "semantic_hash": "ee6fe05559939d76898dc3da497f02f9"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/i-overview.md": {
+    "mtime": 1784166041.9605472,
+    "ast_hash": "c5154d28556d0749ec21139f66bc3e36",
+    "semantic_hash": "c5154d28556d0749ec21139f66bc3e36"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/ii-parameterized-script-clarify.md": {
+    "mtime": 1783670050.6789248,
+    "ast_hash": "b314ff9e5ef1eb494249511ee3827e90",
+    "semantic_hash": "b314ff9e5ef1eb494249511ee3827e90"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/iii-loop-on-script-results.md": {
+    "mtime": 1783670056.3333397,
+    "ast_hash": "5b3c9e61ea99014bb2a72667e0c4f394",
+    "semantic_hash": "5b3c9e61ea99014bb2a72667e0c4f394"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/iv-hook-secrets-env-scan.md": {
+    "mtime": 1783670062.2266548,
+    "ast_hash": "fa5f220f941468d236a83cdc6cb0abbb",
+    "semantic_hash": "fa5f220f941468d236a83cdc6cb0abbb"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/examples/v-performance-bottleneck-scan.md": {
+    "mtime": 1783670069.4274826,
+    "ast_hash": "7e5d188c8f8cb6a849952d1da305b09e",
+    "semantic_hash": "7e5d188c8f8cb6a849952d1da305b09e"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/i-overview.md": {
+    "mtime": 1783673695.8727775,
+    "ast_hash": "e0fe6fe30849cac2319c0ebc72719130",
+    "semantic_hash": "e0fe6fe30849cac2319c0ebc72719130"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/ii-artifacts-why-and-what.md": {
+    "mtime": 1783667087.488905,
+    "ast_hash": "b5bc123129bf8b98f0be4a45b73f428d",
+    "semantic_hash": "b5bc123129bf8b98f0be4a45b73f428d"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/iia-artifact-examples.md": {
+    "mtime": 1783241435.5935838,
+    "ast_hash": "3654b9302bf426dd2b2b2107c4fa94f8",
+    "semantic_hash": "3654b9302bf426dd2b2b2107c4fa94f8"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/iii-cross-tool-portable-setup.md": {
+    "mtime": 1783241435.5976915,
+    "ast_hash": "adb306fe7bba91f7b7780ea912fbd026",
+    "semantic_hash": "adb306fe7bba91f7b7780ea912fbd026"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md": {
+    "mtime": 1783667072.9393945,
+    "ast_hash": "2d24605cba081b4817fbd246b3153f2c",
+    "semantic_hash": "2d24605cba081b4817fbd246b3153f2c"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/i-overview.md": {
+    "mtime": 1783673707.9138598,
+    "ast_hash": "c2919e7deec89a1734a610273d1ce3f3",
+    "semantic_hash": "c2919e7deec89a1734a610273d1ce3f3"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/ii-use-skills-alone.md": {
+    "mtime": 1783673563.8291554,
+    "ast_hash": "f8e9fba2f03deab1594fc5dd6325fc57",
+    "semantic_hash": "f8e9fba2f03deab1594fc5dd6325fc57"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/iii-use-agents-md-alone.md": {
+    "mtime": 1783673570.6718926,
+    "ast_hash": "aca917ebc4a35f6c1316edc234639555",
+    "semantic_hash": "aca917ebc4a35f6c1316edc234639555"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/iv-use-hooks-on-commit.md": {
+    "mtime": 1783673579.8194776,
+    "ast_hash": "839e28ba1eed2b7cd44c7adc9e106a02",
+    "semantic_hash": "839e28ba1eed2b7cd44c7adc9e106a02"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/sample/.cursor/README.md": {
+    "mtime": 1784166041.958421,
+    "ast_hash": "413215fd78e17345ea9aa05373187871",
+    "semantic_hash": "413215fd78e17345ea9aa05373187871"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/sample/.cursor/skills/hook-failure-help/SKILL.md": {
+    "mtime": 1784166041.9586196,
+    "ast_hash": "9c4744e7bd9af3236ae0d929a47def15",
+    "semantic_hash": "9c4744e7bd9af3236ae0d929a47def15"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/sample/.cursor/skills/pr-review-lite/SKILL.md": {
+    "mtime": 1784166041.9626977,
+    "ast_hash": "a3885e209fd34e3c46fc018caaba9038",
+    "semantic_hash": "a3885e209fd34e3c46fc018caaba9038"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/sample/AGENTS.md": {
+    "mtime": 1783673599.1278267,
+    "ast_hash": "cc41ea4568bc352cf9037c93fa1c00ed",
+    "semantic_hash": "cc41ea4568bc352cf9037c93fa1c00ed"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/v-combine-skills-agents-hooks.md": {
+    "mtime": 1783673780.3439763,
+    "ast_hash": "96476a8622797e60ce5ee67cbc18c742",
+    "semantic_hash": "96476a8622797e60ce5ee67cbc18c742"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/using-skills-agents-and-hooks/vi-agent-orchestration.md": {
+    "mtime": 1783673690.338543,
+    "ast_hash": "5938aab846e3f5e73e362f4e5f6323d6",
+    "semantic_hash": "5938aab846e3f5e73e362f4e5f6323d6"
+  },
+  "ai101/ai-engineering/skills-and-agent-instructions/v-writing-and-maintaining-skills.md": {
+    "mtime": 1783667078.7384195,
+    "ast_hash": "16f91a8fb43efaa1727c2cc556af3f8a",
+    "semantic_hash": "16f91a8fb43efaa1727c2cc556af3f8a"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/i-overview.md": {
+    "mtime": 1780927539.2439883,
+    "ast_hash": "cba5d799b735b869e228549f7301a843",
+    "semantic_hash": "cba5d799b735b869e228549f7301a843"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/ii-tool-map-and-patterns.md": {
+    "mtime": 1780927539.244994,
+    "ast_hash": "57087e0f3b43ca00f96d8da6d861d5b4",
+    "semantic_hash": "57087e0f3b43ca00f96d8da6d861d5b4"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/iii-orchestration-patterns.md": {
+    "mtime": 1780927539.244994,
+    "ast_hash": "81808102a62cdae3e3b399e4cffde666",
+    "semantic_hash": "81808102a62cdae3e3b399e4cffde666"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/iv-connectors-models-and-teams.md": {
+    "mtime": 1780927539.2459967,
+    "ast_hash": "065bcecf91e0832a7ae0ba8059bdc01e",
+    "semantic_hash": "065bcecf91e0832a7ae0ba8059bdc01e"
+  },
+  "ai101/ai-engineering/tools-and-orchestration/v-antipatterns-and-rehearsal.md": {
+    "mtime": 1780927539.2465208,
+    "ast_hash": "efbec73f28cf82ae9022d11e564a414b",
+    "semantic_hash": "efbec73f28cf82ae9022d11e564a414b"
+  },
+  "ai101/ai-engineering/trust-privacy-and-verify/i-overview.md": {
+    "mtime": 1780927539.2553632,
+    "ast_hash": "b46963447f0e181c08ab36e37b543707",
+    "semantic_hash": "b46963447f0e181c08ab36e37b543707"
+  },
+  "ai101/ai-engineering/trust-privacy-and-verify/ii-hallucinations-and-verification.md": {
+    "mtime": 1780927539.2560513,
+    "ast_hash": "4567d12bc4e3a68faa0725f246ca4cba",
+    "semantic_hash": "4567d12bc4e3a68faa0725f246ca4cba"
+  },
+  "ai101/ai-engineering/trust-privacy-and-verify/iii-privacy-enterprise-data.md": {
+    "mtime": 1780927539.2560513,
+    "ast_hash": "72e98de0bf6f6dc39038b87c148f2bdc",
+    "semantic_hash": "72e98de0bf6f6dc39038b87c148f2bdc"
+  },
+  "ai101/ai-engineering/trust-privacy-and-verify/iv-agents-injection-limits.md": {
+    "mtime": 1780927587.6956809,
+    "ast_hash": "c43f37b1d615ce2758e46cbc52b26e98",
+    "semantic_hash": "c43f37b1d615ce2758e46cbc52b26e98"
+  },
+  "ai101/deep-learning/i-overview.md": {
+    "mtime": 1783393890.4037209,
+    "ast_hash": "acba14fe7a5928c1c2d921974ba5823c",
+    "semantic_hash": "acba14fe7a5928c1c2d921974ba5823c"
+  },
+  "ai101/deep-learning/ii-neural-networks-and-training.md": {
+    "mtime": 1783393961.8768034,
+    "ast_hash": "2d81c9481084c28a2fa3b17057bbac71",
+    "semantic_hash": "2d81c9481084c28a2fa3b17057bbac71"
+  },
+  "ai101/deep-learning/iii-cnns-and-rnns.md": {
+    "mtime": 1780907021.7753222,
+    "ast_hash": "1b3cfee8b68f53314f6817b89dcfc32f",
+    "semantic_hash": "1b3cfee8b68f53314f6817b89dcfc32f"
+  },
+  "ai101/deep-learning/iv-transformers-and-attention.md": {
+    "mtime": 1780907026.9866295,
+    "ast_hash": "038d5a5eaa6cd5d0939415e7c5c7e0b1",
+    "semantic_hash": "038d5a5eaa6cd5d0939415e7c5c7e0b1"
+  },
+  "ai101/i-overview.md": {
+    "mtime": 1782644386.822482,
+    "ast_hash": "7030ad06e3f0e80e1c8524cb28e6d1e5",
+    "semantic_hash": "7030ad06e3f0e80e1c8524cb28e6d1e5"
+  },
+  "ai101/llms/i-overview.md": {
+    "mtime": 1780927520.3276622,
+    "ast_hash": "bb108c81a4032ad106a2b31fdacdc45b",
+    "semantic_hash": "bb108c81a4032ad106a2b31fdacdc45b"
+  },
+  "ai101/llms/ii-pretraining-and-tokenization.md": {
+    "mtime": 1780907037.6400335,
+    "ast_hash": "a72edf6122132a0c544e27a53d542e09",
+    "semantic_hash": "a72edf6122132a0c544e27a53d542e09"
+  },
+  "ai101/llms/iii-alignment-sft-rlhf-dpo.md": {
+    "mtime": 1780907042.4696715,
+    "ast_hash": "76016872279b9dda027aa25bcf8535ad",
+    "semantic_hash": "76016872279b9dda027aa25bcf8535ad"
+  },
+  "ai101/llms/iv-prompt-engineering.md": {
+    "mtime": 1780927521.0389273,
+    "ast_hash": "686e5866354297cac3c3cc5f53d09035",
+    "semantic_hash": "686e5866354297cac3c3cc5f53d09035"
+  },
+  "ai101/llms/v-rag-and-fine-tuning.md": {
+    "mtime": 1780907053.051804,
+    "ast_hash": "387e3ad0a6bb73529f5461f1ddb01117",
+    "semantic_hash": "387e3ad0a6bb73529f5461f1ddb01117"
+  },
+  "ai101/llms/vi-safety-and-production.md": {
+    "mtime": 1780907058.215585,
+    "ast_hash": "554002673ec69cb077890dfd1065351e",
+    "semantic_hash": "554002673ec69cb077890dfd1065351e"
+  },
+  "ai101/machine-learning/i-overview.md": {
+    "mtime": 1780906961.1458678,
+    "ast_hash": "08a3df119e4dbf270dd1236afc38d439",
+    "semantic_hash": "08a3df119e4dbf270dd1236afc38d439"
+  },
+  "ai101/machine-learning/ii-supervised-learning.md": {
+    "mtime": 1780906967.7767408,
+    "ast_hash": "0ea12b5d0d75c43927819e51a830cfae",
+    "semantic_hash": "0ea12b5d0d75c43927819e51a830cfae"
+  },
+  "ai101/machine-learning/iii-unsupervised-learning.md": {
+    "mtime": 1780906977.6152234,
+    "ast_hash": "b04b99619806807bd17d24588155a10c",
+    "semantic_hash": "b04b99619806807bd17d24588155a10c"
+  },
+  "ai101/machine-learning/iv-model-evaluation-and-metrics.md": {
+    "mtime": 1780906982.1682422,
+    "ast_hash": "5ccfcef5e778013a14f1161228cd5d5d",
+    "semantic_hash": "5ccfcef5e778013a14f1161228cd5d5d"
+  },
+  "ai101/machine-learning/v-overfitting-regularization-and-tuning.md": {
+    "mtime": 1780906989.9056284,
+    "ast_hash": "99d5f5a03420997857018da015df66ba",
+    "semantic_hash": "99d5f5a03420997857018da015df66ba"
+  },
+  "ai101/machine-learning/vi-feature-engineering.md": {
+    "mtime": 1780906996.8260295,
+    "ast_hash": "1820e46ea0d0526be4cca4e6a471494f",
+    "semantic_hash": "1820e46ea0d0526be4cca4e6a471494f"
+  },
+  "ai101/machine-learning/vii-ml-workflow-and-deployment.md": {
+    "mtime": 1780907106.3629131,
+    "ast_hash": "255c0ef8b4e7a3065f26dd5b9f0efbce",
+    "semantic_hash": "255c0ef8b4e7a3065f26dd5b9f0efbce"
+  },
+  "cryptocurrency101/examples/i-overview.md": {
+    "mtime": 1781667972.6320014,
+    "ast_hash": "38c1c9befc9c4193b62b8c96f26ad3f3",
+    "semantic_hash": "38c1c9befc9c4193b62b8c96f26ad3f3"
+  },
+  "cryptocurrency101/examples/ii-tron-two-percent-fee-split.md": {
+    "mtime": 1781668323.4538696,
+    "ast_hash": "beb3d2b35ef77637551d25cad07c4395",
+    "semantic_hash": "beb3d2b35ef77637551d25cad07c4395"
+  },
+  "cryptocurrency101/examples/iii-ton-two-percent-fee-split.md": {
+    "mtime": 1781668035.0765798,
+    "ast_hash": "2fc9ec02149ae96aa9766d6d51b535e9",
+    "semantic_hash": "2fc9ec02149ae96aa9766d6d51b535e9"
+  },
+  "cryptocurrency101/i-overview.md": {
+    "mtime": 1781668039.8905754,
+    "ast_hash": "a7943ac096044c7b53f1609663595a9e",
+    "semantic_hash": "a7943ac096044c7b53f1609663595a9e"
+  },
+  "cryptocurrency101/ii-what-is-cryptocurrency.md": {
+    "mtime": 1781666788.8932004,
+    "ast_hash": "748a8c5d6cef6dbb7bf92c5cbee7f80d",
+    "semantic_hash": "748a8c5d6cef6dbb7bf92c5cbee7f80d"
+  },
+  "cryptocurrency101/iii-how-transactions-are-stored.md": {
+    "mtime": 1781666819.8255572,
+    "ast_hash": "12e7c0754381daa758b30e631de05bdf",
+    "semantic_hash": "12e7c0754381daa758b30e631de05bdf"
+  },
+  "cryptocurrency101/iv-types-of-blockchains.md": {
+    "mtime": 1781666843.9476175,
+    "ast_hash": "ce8564f5aefc2ad0ef21b4496949886d",
+    "semantic_hash": "ce8564f5aefc2ad0ef21b4496949886d"
+  },
+  "cryptocurrency101/ix-verify-safe-and-completed.md": {
+    "mtime": 1781666926.6495652,
+    "ast_hash": "8312b5e4b51913fca8ec38df9a2ab27e",
+    "semantic_hash": "8312b5e4b51913fca8ec38df9a2ab27e"
+  },
+  "cryptocurrency101/networks/ada/i-overview.md": {
+    "mtime": 1781494811.3131762,
+    "ast_hash": "99a943ac7c69a351c0b360d349c92a02",
+    "semantic_hash": "99a943ac7c69a351c0b360d349c92a02"
+  },
+  "cryptocurrency101/networks/bnb/i-overview.md": {
+    "mtime": 1781494795.9916487,
+    "ast_hash": "3c3358b6af0b39e6413b8889a8f63af5",
+    "semantic_hash": "3c3358b6af0b39e6413b8889a8f63af5"
+  },
+  "cryptocurrency101/networks/ton/i-overview.md": {
+    "mtime": 1781668046.1712844,
+    "ast_hash": "688d08180e305d718c216602e85b283f",
+    "semantic_hash": "688d08180e305d718c216602e85b283f"
+  },
+  "cryptocurrency101/networks/tron/i-overview.md": {
+    "mtime": 1781668046.9886968,
+    "ast_hash": "9af0a3477e870a9cacfcd820ff352f30",
+    "semantic_hash": "9af0a3477e870a9cacfcd820ff352f30"
+  },
+  "cryptocurrency101/v-fee-split-pattern.md": {
+    "mtime": 1781668043.3969512,
+    "ast_hash": "3965cecf76eddb710c8911404c49e498",
+    "semantic_hash": "3965cecf76eddb710c8911404c49e498"
+  },
+  "cryptocurrency101/vi-deploy-pricing-and-hosting.md": {
+    "mtime": 1781666863.264102,
+    "ast_hash": "b6579907f47b49d2ea9e4d3f24c54ff6",
+    "semantic_hash": "b6579907f47b49d2ea9e4d3f24c54ff6"
+  },
+  "cryptocurrency101/vii-failed-transactions-and-funds.md": {
+    "mtime": 1781666881.7149856,
+    "ast_hash": "7a0b049411ae5aa993d402b61f4e660e",
+    "semantic_hash": "7a0b049411ae5aa993d402b61f4e660e"
+  },
+  "cryptocurrency101/viii-verify-before-broadcast.md": {
+    "mtime": 1781666899.388769,
+    "ast_hash": "e68de5a65aa1fddeec32664ab0c6a42f",
+    "semantic_hash": "e68de5a65aa1fddeec32664ab0c6a42f"
+  },
+  "cs101/Algorithms/i-overview.md": {
+    "mtime": 1780824376.756348,
+    "ast_hash": "0edb3189cc9c6c3e155f3c9cca295103",
+    "semantic_hash": "0edb3189cc9c6c3e155f3c9cca295103"
+  },
+  "cs101/Algorithms/ii-sorting.md": {
+    "mtime": 1780824376.7573438,
+    "ast_hash": "5cf48b5c315126720c8abaf17c80e6a8",
+    "semantic_hash": "5cf48b5c315126720c8abaf17c80e6a8"
+  },
+  "cs101/Algorithms/iii-searching.md": {
+    "mtime": 1780824376.759347,
+    "ast_hash": "4366618198487e337495b4cb1d727d8c",
+    "semantic_hash": "4366618198487e337495b4cb1d727d8c"
+  },
+  "cs101/Algorithms/iv-divide-and-conquer.md": {
+    "mtime": 1780824376.761852,
+    "ast_hash": "929ab118de83e62f6dbaab3d76b3cdd0",
+    "semantic_hash": "929ab118de83e62f6dbaab3d76b3cdd0"
+  },
+  "cs101/Algorithms/ix-backtracking.md": {
+    "mtime": 1780824376.7633696,
+    "ast_hash": "3f61b87093f2f708eb945c3f465ffcc7",
+    "semantic_hash": "3f61b87093f2f708eb945c3f465ffcc7"
+  },
+  "cs101/Algorithms/v-graph-traversal.md": {
+    "mtime": 1780824376.7639642,
+    "ast_hash": "28e70024d65c70b9b3a9ab7e3f168aa7",
+    "semantic_hash": "28e70024d65c70b9b3a9ab7e3f168aa7"
+  },
+  "cs101/Algorithms/vi-shortest-paths-and-mst.md": {
+    "mtime": 1780824376.766973,
+    "ast_hash": "c888a7718f9a5bcce6a510f495b23896",
+    "semantic_hash": "c888a7718f9a5bcce6a510f495b23896"
+  },
+  "cs101/Algorithms/vii-greedy.md": {
+    "mtime": 1780824376.7679741,
+    "ast_hash": "5e4c5c7b434692b2e93a4108c96eac0a",
+    "semantic_hash": "5e4c5c7b434692b2e93a4108c96eac0a"
+  },
+  "cs101/Algorithms/viii-dynamic-programming.md": {
+    "mtime": 1780824376.7689786,
+    "ast_hash": "9199aa7bb3f6dcaeb497b01ad61ff7ba",
+    "semantic_hash": "9199aa7bb3f6dcaeb497b01ad61ff7ba"
+  },
+  "cs101/Algorithms/x-common-patterns.md": {
+    "mtime": 1780824376.771482,
+    "ast_hash": "aaa9212582c03e7f6916508d0cd95d97",
+    "semantic_hash": "aaa9212582c03e7f6916508d0cd95d97"
+  },
+  "cs101/Algorithms/xi-solving-with-the-jdk.md": {
+    "mtime": 1780824376.7737093,
+    "ast_hash": "811bf873271d690d52d538d649f74fa0",
+    "semantic_hash": "811bf873271d690d52d538d649f74fa0"
+  },
+  "cs101/data-structures/i-array.md": {
+    "mtime": 1780824376.777006,
+    "ast_hash": "d5598a6607fc0ac3afb702f30eaa20a8",
+    "semantic_hash": "d5598a6607fc0ac3afb702f30eaa20a8"
+  },
+  "cs101/data-structures/ii-dynamic-array.md": {
+    "mtime": 1780824376.7780051,
+    "ast_hash": "7a15b396c57d7dc9c52cb07172837cdb",
+    "semantic_hash": "7a15b396c57d7dc9c52cb07172837cdb"
+  },
+  "cs101/data-structures/iii-linked-list.md": {
+    "mtime": 1780824376.7800064,
+    "ast_hash": "9cee40c7f51f409e1367242a56f2d038",
+    "semantic_hash": "9cee40c7f51f409e1367242a56f2d038"
+  },
+  "cs101/data-structures/iv-stack.md": {
+    "mtime": 1780824376.7815168,
+    "ast_hash": "28a0830906014e8955f5cf5927189f47",
+    "semantic_hash": "28a0830906014e8955f5cf5927189f47"
+  },
+  "cs101/data-structures/ix-priority-queue.md": {
+    "mtime": 1780824376.7830431,
+    "ast_hash": "6be4a822947187c725b344cb83d54ae7",
+    "semantic_hash": "6be4a822947187c725b344cb83d54ae7"
+  },
+  "cs101/data-structures/v-queue.md": {
+    "mtime": 1780824376.7837634,
+    "ast_hash": "73e72551354b60d2f0dc483b78c76801",
+    "semantic_hash": "73e72551354b60d2f0dc483b78c76801"
+  },
+  "cs101/data-structures/vi-deque.md": {
+    "mtime": 1780824376.7850442,
+    "ast_hash": "eddab99a56a1bf399824ce6e342637c7",
+    "semantic_hash": "eddab99a56a1bf399824ce6e342637c7"
+  },
+  "cs101/data-structures/vii-binary-search-tree.md": {
+    "mtime": 1780824376.7860458,
+    "ast_hash": "dcd2da6cb2db6bfd9887c5ea22651d67",
+    "semantic_hash": "dcd2da6cb2db6bfd9887c5ea22651d67"
+  },
+  "cs101/data-structures/viii-binary-heap.md": {
+    "mtime": 1780824376.7870445,
+    "ast_hash": "9f6a851e7814a86ace5b079c5a3b1877",
+    "semantic_hash": "9f6a851e7814a86ace5b079c5a3b1877"
+  },
+  "cs101/data-structures/x-hash-table.md": {
+    "mtime": 1780824376.7880461,
+    "ast_hash": "e045ae8d4e4f108370202cc0633bf2f4",
+    "semantic_hash": "e045ae8d4e4f108370202cc0633bf2f4"
+  },
+  "cs101/data-structures/xi-graph.md": {
+    "mtime": 1780824376.7890427,
+    "ast_hash": "6ba41f4f8d5bc19f54d032f30e32c5b6",
+    "semantic_hash": "6ba41f4f8d5bc19f54d032f30e32c5b6"
+  },
+  "cs101/databases/i-overview.md": {
+    "mtime": 1780824376.792566,
+    "ast_hash": "32b6ccf2c939a5e86b197e9e76945c80",
+    "semantic_hash": "32b6ccf2c939a5e86b197e9e76945c80"
+  },
+  "cs101/databases/ii-relational.md": {
+    "mtime": 1780824376.794724,
+    "ast_hash": "9b12e70e0e48e1d99a6bfcc38400220f",
+    "semantic_hash": "9b12e70e0e48e1d99a6bfcc38400220f"
+  },
+  "cs101/databases/iii-key-value.md": {
+    "mtime": 1780824376.796234,
+    "ast_hash": "2e0dea22a47b502377efc8b4bea81c37",
+    "semantic_hash": "2e0dea22a47b502377efc8b4bea81c37"
+  },
+  "cs101/databases/iv-document.md": {
+    "mtime": 1780824376.7972438,
+    "ast_hash": "b96dd45995cbbe58300735c98d7c0948",
+    "semantic_hash": "b96dd45995cbbe58300735c98d7c0948"
+  },
+  "cs101/databases/v-wide-column.md": {
+    "mtime": 1780824376.7982447,
+    "ast_hash": "058aa78f15685031f102b93a884ab346",
+    "semantic_hash": "058aa78f15685031f102b93a884ab346"
+  },
+  "cs101/databases/vi-graph.md": {
+    "mtime": 1780824376.8002458,
+    "ast_hash": "391a597e1d9d82a61546c2a70a588264",
+    "semantic_hash": "391a597e1d9d82a61546c2a70a588264"
+  },
+  "cs101/databases/vii-time-series.md": {
+    "mtime": 1780824376.8002458,
+    "ast_hash": "4a014561229480202d1b6b1b04ced1b2",
+    "semantic_hash": "4a014561229480202d1b6b1b04ced1b2"
+  },
+  "cs101/i-core-concepts.md": {
+    "mtime": 1780824376.8022819,
+    "ast_hash": "8641a1ae30f28d383876a52ba14730c4",
+    "semantic_hash": "8641a1ae30f28d383876a52ba14730c4"
+  },
+  "cs101/i-foundations.md": {
+    "mtime": 1780824376.804098,
+    "ast_hash": "f462a2434eb7fd941f124fa363ece4b7",
+    "semantic_hash": "f462a2434eb7fd941f124fa363ece4b7"
+  },
+  "cs101/i-machines-and-memory.md": {
+    "mtime": 1780824376.8064306,
+    "ast_hash": "9eeadf08340e55fe13356d1720716c86",
+    "semantic_hash": "9eeadf08340e55fe13356d1720716c86"
+  },
+  "cs101/iv-paradigms-and-limits.md": {
+    "mtime": 1780824376.8094392,
+    "ast_hash": "e2c82a9d7cda0861a19941a4041b14f2",
+    "semantic_hash": "e2c82a9d7cda0861a19941a4041b14f2"
+  },
+  "cs101/networking/i-tcp-udp-and-transport-basics.md": {
+    "mtime": 1783246718.660811,
+    "ast_hash": "4ce321e114b791798476aabc98a5f9c3",
+    "semantic_hash": "4ce321e114b791798476aabc98a5f9c3"
+  },
+  "cs101/networking/ii-http-semantics-and-versions.md": {
+    "mtime": 1783246718.6624317,
+    "ast_hash": "369ff5c914b0fe2eeb04bf75fa469ecd",
+    "semantic_hash": "369ff5c914b0fe2eeb04bf75fa469ecd"
+  },
+  "cs101/networking/iii-tls-handshake-and-certificates.md": {
+    "mtime": 1780824376.8242683,
+    "ast_hash": "46aa9d321975d58b2707bc89dff15831",
+    "semantic_hash": "46aa9d321975d58b2707bc89dff15831"
+  },
+  "cs101/networking/iv-dns-and-name-resolution.md": {
+    "mtime": 1783246718.6640205,
+    "ast_hash": "a7ead1fb6d6c149d7b02881bd9320fa3",
+    "semantic_hash": "a7ead1fb6d6c149d7b02881bd9320fa3"
+  },
+  "cs101/networking/v-ingress-edge-and-load-balancers.md": {
+    "mtime": 1783246718.665709,
+    "ast_hash": "f1d1eb6b2af2196b296a4c9600626c1b",
+    "semantic_hash": "f1d1eb6b2af2196b296a4c9600626c1b"
+  },
+  "cs101/networking/vi-l4-l7-layers-and-where-to-balance.md": {
+    "mtime": 1783244238.7491925,
+    "ast_hash": "9fc23585cfc5f00a5b0cde40e91ed120",
+    "semantic_hash": "9fc23585cfc5f00a5b0cde40e91ed120"
+  },
+  "cs101/networking/vii-websockets-sse-grpc-and-realtime.md": {
+    "mtime": 1783244253.2734027,
+    "ast_hash": "bdb5a1ae781c1bb98e4b24ea8e0fccb4",
+    "semantic_hash": "bdb5a1ae781c1bb98e4b24ea8e0fccb4"
+  },
+  "cybersecurity/hardware-bypass/i-overview.md": {
+    "mtime": 1783669276.8776636,
+    "ast_hash": "0225e00ae7fe34d77c2673379ab1d036",
+    "semantic_hash": "0225e00ae7fe34d77c2673379ab1d036"
+  },
+  "cybersecurity/hardware-bypass/ii-relay-and-rf-amplification.md": {
+    "mtime": 1783669296.0336764,
+    "ast_hash": "acb74f7ae33e78307d779578f7bbc3b8",
+    "semantic_hash": "acb74f7ae33e78307d779578f7bbc3b8"
+  },
+  "cybersecurity/hardware-bypass/iii-telecom-floods-and-messaging-abuse.md": {
+    "mtime": 1783669314.5310493,
+    "ast_hash": "d1d830e88efff11a627d1abecf6e27a1",
+    "semantic_hash": "d1d830e88efff11a627d1abecf6e27a1"
+  },
+  "cybersecurity/hardware-bypass/iv-jamming-spoofing-and-downgrade.md": {
+    "mtime": 1783669332.5441506,
+    "ast_hash": "17fbb3a13ab95ada4bd3fb5f0e7e8672",
+    "semantic_hash": "17fbb3a13ab95ada4bd3fb5f0e7e8672"
+  },
+  "cybersecurity/hardware-bypass/v-defenses-legal-and-detection.md": {
+    "mtime": 1783669353.6107774,
+    "ast_hash": "d3d1de07a5b30aa1bf1ef2d629e80091",
+    "semantic_hash": "d3d1de07a5b30aa1bf1ef2d629e80091"
+  },
+  "cybersecurity/i-overview.md": {
+    "mtime": 1783669355.0493963,
+    "ast_hash": "647e9a6fe9f5fe1b5c9b7b2ae35bed21",
+    "semantic_hash": "647e9a6fe9f5fe1b5c9b7b2ae35bed21"
+  },
+  "cybersecurity/ii-threat-modeling-and-risk.md": {
+    "mtime": 1780926433.7617753,
+    "ast_hash": "710ba9cb650c7f5792c891aaf5c3d568",
+    "semantic_hash": "710ba9cb650c7f5792c891aaf5c3d568"
+  },
+  "cybersecurity/iv-application-and-network-security.md": {
+    "mtime": 1782184776.8267515,
+    "ast_hash": "c76c44d81a55b702da31a78a2c067c58",
+    "semantic_hash": "c76c44d81a55b702da31a78a2c067c58"
+  },
+  "cybersecurity/v-incident-response-and-operations.md": {
+    "mtime": 1782184773.541602,
+    "ast_hash": "4b91d299881d979c12c53fe227e56be5",
+    "semantic_hash": "4b91d299881d979c12c53fe227e56be5"
+  },
+  "digital-marketing/analytics/i-overview.md": {
+    "mtime": 1782494537.5818672,
+    "ast_hash": "d935524a580118ff23db8f425def604a",
+    "semantic_hash": "d935524a580118ff23db8f425def604a"
+  },
+  "digital-marketing/analytics/ii-search-console-and-rank-tracking.md": {
+    "mtime": 1782494550.5297773,
+    "ast_hash": "4ab260cf10cd398b061630c35f006688",
+    "semantic_hash": "4ab260cf10cd398b061630c35f006688"
+  },
+  "digital-marketing/analytics/iii-ga4-and-events.md": {
+    "mtime": 1782494559.292128,
+    "ast_hash": "835d86a329268718e3c9a46449a652a2",
+    "semantic_hash": "835d86a329268718e3c9a46449a652a2"
+  },
+  "digital-marketing/analytics/iv-conversions-and-attribution.md": {
+    "mtime": 1782494568.0841486,
+    "ast_hash": "86f96bf2a6b4be9f7bd43bcdd48e838c",
+    "semantic_hash": "86f96bf2a6b4be9f7bd43bcdd48e838c"
+  },
+  "digital-marketing/analytics/v-reporting-and-experiments.md": {
+    "mtime": 1782494577.6745012,
+    "ast_hash": "90ae1e3138061593d1b73b5787261bf1",
+    "semantic_hash": "90ae1e3138061593d1b73b5787261bf1"
+  },
+  "digital-marketing/content-strategy/i-overview.md": {
+    "mtime": 1783394113.3129566,
+    "ast_hash": "b4459afb0be724e1c433bf3dd590cd6d",
+    "semantic_hash": "b4459afb0be724e1c433bf3dd590cd6d"
+  },
+  "digital-marketing/content-strategy/ii-pillars-and-topic-clusters.md": {
+    "mtime": 1783394121.6018918,
+    "ast_hash": "f10e46e125bf4a3ddca52c0ec1f4d8a8",
+    "semantic_hash": "f10e46e125bf4a3ddca52c0ec1f4d8a8"
+  },
+  "digital-marketing/content-strategy/iii-formats-and-link-worthy-assets.md": {
+    "mtime": 1782494510.262071,
+    "ast_hash": "2086a7854ae0d6b4544952672cd994e2",
+    "semantic_hash": "2086a7854ae0d6b4544952672cd994e2"
+  },
+  "digital-marketing/content-strategy/iv-editorial-calendar-and-workflow.md": {
+    "mtime": 1782494521.4372272,
+    "ast_hash": "542c174b1913bc5292a2169947a7ec9c",
+    "semantic_hash": "542c174b1913bc5292a2169947a7ec9c"
+  },
+  "digital-marketing/content-strategy/v-distribution-and-repurposing.md": {
+    "mtime": 1782494530.373665,
+    "ast_hash": "fa3d32d9f6637d0947f29a9e07b40b3b",
+    "semantic_hash": "fa3d32d9f6637d0947f29a9e07b40b3b"
+  },
+  "digital-marketing/email-marketing/i-overview.md": {
+    "mtime": 1783394129.994447,
+    "ast_hash": "733d0968fe04b99a02b0b343cf7d6d64",
+    "semantic_hash": "733d0968fe04b99a02b0b343cf7d6d64"
+  },
+  "digital-marketing/email-marketing/ii-list-building-and-forms.md": {
+    "mtime": 1782494595.0097625,
+    "ast_hash": "c41b76538663d22d70b247e5fc9dbbc9",
+    "semantic_hash": "c41b76538663d22d70b247e5fc9dbbc9"
+  },
+  "digital-marketing/email-marketing/iii-campaigns-and-copy.md": {
+    "mtime": 1782494603.243406,
+    "ast_hash": "a3e4efbfcef50861680a3435daaac4ad",
+    "semantic_hash": "a3e4efbfcef50861680a3435daaac4ad"
+  },
+  "digital-marketing/email-marketing/iv-automation-and-lifecycle.md": {
+    "mtime": 1782494610.4435587,
+    "ast_hash": "4b8a12e87790ee4e877cb64da3268b83",
+    "semantic_hash": "4b8a12e87790ee4e877cb64da3268b83"
+  },
+  "digital-marketing/email-marketing/v-deliverability-and-compliance.md": {
+    "mtime": 1782494619.2056687,
+    "ast_hash": "c7d6bd652cf58412d867d458f31346e6",
+    "semantic_hash": "c7d6bd652cf58412d867d458f31346e6"
+  },
+  "digital-marketing/foundations/i-overview.md": {
+    "mtime": 1782494391.7001204,
+    "ast_hash": "8d1c3efde017b95af8284b0d02e29ffb",
+    "semantic_hash": "8d1c3efde017b95af8284b0d02e29ffb"
+  },
+  "digital-marketing/foundations/ii-channels-and-funnel.md": {
+    "mtime": 1782494405.9936025,
+    "ast_hash": "ab2a1d77e0267489e892d4f886c5ee4f",
+    "semantic_hash": "ab2a1d77e0267489e892d4f886c5ee4f"
+  },
+  "digital-marketing/foundations/iii-audience-and-positioning.md": {
+    "mtime": 1782494415.1949353,
+    "ast_hash": "1e6c8c158128b7e17fbd856b4e1f4c2c",
+    "semantic_hash": "1e6c8c158128b7e17fbd856b4e1f4c2c"
+  },
+  "digital-marketing/foundations/iv-goals-and-metrics.md": {
+    "mtime": 1782494425.902614,
+    "ast_hash": "857f6421f37793262a4028996aa054d2",
+    "semantic_hash": "857f6421f37793262a4028996aa054d2"
+  },
+  "digital-marketing/i-overview.md": {
+    "mtime": 1783394237.0589669,
+    "ast_hash": "58fcf3c1f2e79f4b29f3856f1de35213",
+    "semantic_hash": "58fcf3c1f2e79f4b29f3856f1de35213"
+  },
+  "digital-marketing/link-building/i-overview.md": {
+    "mtime": 1782493630.1928904,
+    "ast_hash": "381bf37d3a56bd320f9f29557ae58d22",
+    "semantic_hash": "381bf37d3a56bd320f9f29557ae58d22"
+  },
+  "digital-marketing/link-building/ii-link-quality-and-evaluation.md": {
+    "mtime": 1782493641.1204534,
+    "ast_hash": "36e868e515ecf6f54d08f854964473a4",
+    "semantic_hash": "36e868e515ecf6f54d08f854964473a4"
+  },
+  "digital-marketing/link-building/iii-white-hat-strategies.md": {
+    "mtime": 1782493656.132102,
+    "ast_hash": "bb4fc7195b7f6ba2eb25fdef02b18184",
+    "semantic_hash": "bb4fc7195b7f6ba2eb25fdef02b18184"
+  },
+  "digital-marketing/link-building/iv-outreach-and-templates.md": {
+    "mtime": 1782493667.134758,
+    "ast_hash": "71aab882f10b33a962825d47d5b0396c",
+    "semantic_hash": "71aab882f10b33a962825d47d5b0396c"
+  },
+  "digital-marketing/link-building/v-measurement-and-pitfalls.md": {
+    "mtime": 1782493681.240131,
+    "ast_hash": "7857bf9c078f842a667c1f51d0324d57",
+    "semantic_hash": "7857bf9c078f842a667c1f51d0324d57"
+  },
+  "digital-marketing/on-page-seo/i-overview.md": {
+    "mtime": 1782494437.4768124,
+    "ast_hash": "04adf291abfbcf94cbc1865c0080db93",
+    "semantic_hash": "04adf291abfbcf94cbc1865c0080db93"
+  },
+  "digital-marketing/on-page-seo/ii-titles-meta-and-structure.md": {
+    "mtime": 1782494447.1081116,
+    "ast_hash": "7c3f6bbe3f2e52feaaf9bbe014f11d04",
+    "semantic_hash": "7c3f6bbe3f2e52feaaf9bbe014f11d04"
+  },
+  "digital-marketing/on-page-seo/iii-keywords-and-search-intent.md": {
+    "mtime": 1782494457.822821,
+    "ast_hash": "838f2cff81a4dde9ab64281c9f1dd434",
+    "semantic_hash": "838f2cff81a4dde9ab64281c9f1dd434"
+  },
+  "digital-marketing/on-page-seo/iv-internal-linking-and-schema.md": {
+    "mtime": 1782494468.1910286,
+    "ast_hash": "fd1a3811f8f9d92e2ed8a109195aa8a7",
+    "semantic_hash": "fd1a3811f8f9d92e2ed8a109195aa8a7"
+  },
+  "digital-marketing/on-page-seo/v-technical-checklist.md": {
+    "mtime": 1782494484.352317,
+    "ast_hash": "fe1b41ed78470c228d3f9da4af258b2b",
+    "semantic_hash": "fe1b41ed78470c228d3f9da4af258b2b"
+  },
+  "digital-marketing/paid-advertising/i-overview.md": {
+    "mtime": 1782494629.2433367,
+    "ast_hash": "6d060be3bfd0b982a124557fa149caed",
+    "semantic_hash": "6d060be3bfd0b982a124557fa149caed"
+  },
+  "digital-marketing/paid-advertising/ii-search-ads-basics.md": {
+    "mtime": 1782494638.5558808,
+    "ast_hash": "ffb9489a3a32a41681c2741d43a9bb70",
+    "semantic_hash": "ffb9489a3a32a41681c2741d43a9bb70"
+  },
+  "digital-marketing/paid-advertising/iii-social-and-display.md": {
+    "mtime": 1782494647.813006,
+    "ast_hash": "7b453d7a6bc6e63a5c795cde98479ec7",
+    "semantic_hash": "7b453d7a6bc6e63a5c795cde98479ec7"
+  },
+  "digital-marketing/paid-advertising/iv-budget-bidding-and-roas.md": {
+    "mtime": 1782494657.0551753,
+    "ast_hash": "bc84740298a593e4db311595f67bb658",
+    "semantic_hash": "bc84740298a593e4db311595f67bb658"
+  },
+  "digital-marketing/paid-advertising/v-attribution-and-privacy.md": {
+    "mtime": 1782494666.7370985,
+    "ast_hash": "af7763021cd7fc41395a3f3f6393cac6",
+    "semantic_hash": "af7763021cd7fc41395a3f3f6393cac6"
+  },
+  "food/baking/i-chocolate-banana-bread.md": {
+    "mtime": 1781241265.4539268,
+    "ast_hash": "1e85e004d492ea57e10f73ada587a26b",
+    "semantic_hash": "1e85e004d492ea57e10f73ada587a26b"
+  },
+  "food/baking/ii-cookies.md": {
+    "mtime": 1783478493.9553688,
+    "ast_hash": "ebbbd11000a8e15d0ff7319fae29280e",
+    "semantic_hash": "ebbbd11000a8e15d0ff7319fae29280e"
+  },
+  "getting-started/guide-topics-and-folders.md": {
+    "mtime": 1780907083.8464918,
+    "ast_hash": "cb29f3e5e5df18af4d1ddf9a06fa74be",
+    "semantic_hash": "cb29f3e5e5df18af4d1ddf9a06fa74be"
+  },
+  "getting-started/intro/i-installation.md": {
+    "mtime": 1780824376.8467183,
+    "ast_hash": "59ef0dc6662e04e977c2c3cb08184aa9",
+    "semantic_hash": "59ef0dc6662e04e977c2c3cb08184aa9"
+  },
+  "getting-started/intro/ii-setup.md": {
+    "mtime": 1780824376.8477192,
+    "ast_hash": "28bf06d8826a9b5a9d30f68d2cfb2a81",
+    "semantic_hash": "28bf06d8826a9b5a9d30f68d2cfb2a81"
+  },
+  "languages/japanese/beginner-alphabet/i-overview.md": {
+    "mtime": 1783401996.6345465,
+    "ast_hash": "23533de35790dbfdbf148dfb2551ce68",
+    "semantic_hash": "23533de35790dbfdbf148dfb2551ce68"
+  },
+  "languages/japanese/beginner-alphabet/ii-katakana.md": {
+    "mtime": 1782478846.276666,
+    "ast_hash": "16a34208f1390e717316f1c3d530dd4d",
+    "semantic_hash": "16a34208f1390e717316f1c3d530dd4d"
+  },
+  "languages/japanese/beginner-alphabet/iii-hiragana.md": {
+    "mtime": 1782478838.464334,
+    "ast_hash": "890d7942efea867c3d8d77f9bf0dbfd3",
+    "semantic_hash": "890d7942efea867c3d8d77f9bf0dbfd3"
+  },
+  "languages/japanese/beginner-alphabet/iv-frequent-it-kanji.md": {
+    "mtime": 1782478768.8916254,
+    "ast_hash": "04a5dd5e2a67d11f250c4e4334534b6b",
+    "semantic_hash": "04a5dd5e2a67d11f250c4e4334534b6b"
+  },
+  "languages/japanese/day2day/i-beginner.md": {
+    "mtime": 1783401996.8355458,
+    "ast_hash": "f0b4266680f5e2a68bcf8264a2013e68",
+    "semantic_hash": "f0b4266680f5e2a68bcf8264a2013e68"
+  },
+  "languages/japanese/vocabulary/daily-conversations/i-overview.md": {
+    "mtime": 1783401929.9308016,
+    "ast_hash": "6682c173ebefb98273e5d97a69ae0306",
+    "semantic_hash": "6682c173ebefb98273e5d97a69ae0306"
+  },
+  "languages/japanese/vocabulary/daily-conversations/ii-office-greetings-and-daily.md": {
+    "mtime": 1783402004.7965333,
+    "ast_hash": "e7eea71170573b25c7b1499fac3c620a",
+    "semantic_hash": "e7eea71170573b25c7b1499fac3c620a"
+  },
+  "languages/japanese/vocabulary/daily-conversations/iii-meetings-and-reviews.md": {
+    "mtime": 1783401952.3004992,
+    "ast_hash": "fe978def52d80b47d62d82ba780aa7b6",
+    "semantic_hash": "fe978def52d80b47d62d82ba780aa7b6"
+  },
+  "languages/japanese/vocabulary/daily-conversations/iv-phone-and-client-calls.md": {
+    "mtime": 1783402008.290056,
+    "ast_hash": "cc0c8ea0525ef7292c1b7dfdcf61dae2",
+    "semantic_hash": "cc0c8ea0525ef7292c1b7dfdcf61dae2"
+  },
+  "languages/japanese/vocabulary/daily-conversations/v-incidents-and-escalation.md": {
+    "mtime": 1783401978.0405977,
+    "ast_hash": "790ad9776426f48493d2b8655f068a11",
+    "semantic_hash": "790ad9776426f48493d2b8655f068a11"
+  },
+  "languages/japanese/vocabulary/daily-conversations/vi-requests-approval-and-handoffs.md": {
+    "mtime": 1783401991.264832,
+    "ast_hash": "c998f1a0de405c6a4bc36d5239b8f4e8",
+    "semantic_hash": "c998f1a0de405c6a4bc36d5239b8f4e8"
+  },
+  "languages/japanese/vocabulary/i-common-words.md": {
+    "mtime": 1783401994.5725286,
+    "ast_hash": "9d3ba3a028ea5d56cce3433c5f5e64b4",
+    "semantic_hash": "9d3ba3a028ea5d56cce3433c5f5e64b4"
+  },
+  "languages/japanese/vocabulary/ii-corporate-structure.md": {
+    "mtime": 1783401994.6696465,
+    "ast_hash": "e7ef619dfc704d60fd764325bb5f0d9a",
+    "semantic_hash": "e7ef619dfc704d60fd764325bb5f0d9a"
+  },
+  "languages/japanese/vocabulary/iii-keigo.md": {
+    "mtime": 1783402000.5677674,
+    "ast_hash": "f4838245e8e202cfef2b92fee3425761",
+    "semantic_hash": "f4838245e8e202cfef2b92fee3425761"
+  },
+  "languages/japanese/vocabulary/iv-email-templates.md": {
+    "mtime": 1783401996.299297,
+    "ast_hash": "95d9588a9173c39f6e1bdf968ab22558",
+    "semantic_hash": "95d9588a9173c39f6e1bdf968ab22558"
+  },
+  "sre101/cicd/ansible-and-jenkins/i-overview.md": {
+    "mtime": 1780824376.8552396,
+    "ast_hash": "121ed0540e047efe43bf7733f47feb2c",
+    "semantic_hash": "121ed0540e047efe43bf7733f47feb2c"
+  },
+  "sre101/cicd/ansible-and-jenkins/ii-ansible-fundamentals.md": {
+    "mtime": 1780824376.8853028,
+    "ast_hash": "ecb6eabbdd5442dd3e3e7884d1d7b90f",
+    "semantic_hash": "ecb6eabbdd5442dd3e3e7884d1d7b90f"
+  },
+  "sre101/cicd/ansible-and-jenkins/iii-inventory-and-playbooks.md": {
+    "mtime": 1780824376.8862998,
+    "ast_hash": "c8448748ffec1dd751930a862a3497b8",
+    "semantic_hash": "c8448748ffec1dd751930a862a3497b8"
+  },
+  "sre101/cicd/ansible-and-jenkins/iv-roles-variables-and-vault.md": {
+    "mtime": 1780824376.8873029,
+    "ast_hash": "28942d82b091aab2194b5d82317d940a",
+    "semantic_hash": "28942d82b091aab2194b5d82317d940a"
+  },
+  "sre101/cicd/ansible-and-jenkins/v-dynamic-inventory-and-modules.md": {
+    "mtime": 1780824376.889299,
+    "ast_hash": "6b4abfe405127f3574963ac9d3a333ea",
+    "semantic_hash": "6b4abfe405127f3574963ac9d3a333ea"
+  },
+  "sre101/cicd/ansible-and-jenkins/vi-jenkins-ansible-pipelines.md": {
+    "mtime": 1780824376.8903022,
+    "ast_hash": "6f34207632b83621c7b28fb949d7804f",
+    "semantic_hash": "6f34207632b83621c7b28fb949d7804f"
+  },
+  "sre101/cicd/ansible-and-jenkins/vii-deploy-patterns-and-operations.md": {
+    "mtime": 1780824376.8923419,
+    "ast_hash": "889403c7436bf7dafaf355aadf72cc66",
+    "semantic_hash": "889403c7436bf7dafaf355aadf72cc66"
+  },
+  "sre101/cicd/i-fundamentals.md": {
+    "mtime": 1780824376.8933527,
+    "ast_hash": "de8b98b38c7e903d8c08862a4396f97c",
+    "semantic_hash": "de8b98b38c7e903d8c08862a4396f97c"
+  },
+  "sre101/cicd/security-and-best-practices/i-overview.md": {
+    "mtime": 1780824376.9052072,
+    "ast_hash": "6454879bc3f75c19f13e1883be789e29",
+    "semantic_hash": "6454879bc3f75c19f13e1883be789e29"
+  },
+  "sre101/cicd/security-and-best-practices/ii-supply-chain-and-slsa.md": {
+    "mtime": 1780824376.915261,
+    "ast_hash": "166cdb4b215d66f3c5f995a573c27298",
+    "semantic_hash": "166cdb4b215d66f3c5f995a573c27298"
+  },
+  "sre101/cicd/security-and-best-practices/iii-secrets-and-oidc.md": {
+    "mtime": 1780824376.9182673,
+    "ast_hash": "98f5a5a2c7c796cb6015740a7a536496",
+    "semantic_hash": "98f5a5a2c7c796cb6015740a7a536496"
+  },
+  "sre101/cicd/security-and-best-practices/iv-least-privilege-runners.md": {
+    "mtime": 1780824376.9192677,
+    "ast_hash": "efc50b2056c0cad230d9a7c6de0582ca",
+    "semantic_hash": "efc50b2056c0cad230d9a7c6de0582ca"
+  },
+  "sre101/cicd/security-and-best-practices/v-testing-strategy.md": {
+    "mtime": 1780824376.920265,
+    "ast_hash": "a8e3275ca1e1d42cbdc6565df26de977",
+    "semantic_hash": "a8e3275ca1e1d42cbdc6565df26de977"
+  },
+  "sre101/cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md": {
+    "mtime": 1780824376.9233108,
+    "ast_hash": "11887ac62a376831137095b5d05a2bf7",
+    "semantic_hash": "11887ac62a376831137095b5d05a2bf7"
+  },
+  "sre101/cicd/security-and-best-practices/vii-release-gates-and-rollbacks.md": {
+    "mtime": 1782353562.817533,
+    "ast_hash": "abfa851fc4f905412e8c468730b6272b",
+    "semantic_hash": "abfa851fc4f905412e8c468730b6272b"
+  },
+  "sre101/cicd/terraform/i-overview.md": {
+    "mtime": 1780824376.9291303,
+    "ast_hash": "048ac88487e5e35129d12af9cdb0c1b7",
+    "semantic_hash": "048ac88487e5e35129d12af9cdb0c1b7"
+  },
+  "sre101/cicd/terraform/ii-what-is-terraform.md": {
+    "mtime": 1780824376.9301307,
+    "ast_hash": "dc93864c7a5b27239a2f5a6d2af65a99",
+    "semantic_hash": "dc93864c7a5b27239a2f5a6d2af65a99"
+  },
+  "sre101/cicd/terraform/iii-hcl-resources-and-variables.md": {
+    "mtime": 1780824376.9321666,
+    "ast_hash": "7ab7ea1526bf78aefa370ce59d847536",
+    "semantic_hash": "7ab7ea1526bf78aefa370ce59d847536"
+  },
+  "sre101/cicd/terraform/iv-aws-example-vpc-and-ec2.md": {
+    "mtime": 1780824376.9335167,
+    "ast_hash": "cb3ae4c697e0387507b2cb40894f6491",
+    "semantic_hash": "cb3ae4c697e0387507b2cb40894f6491"
+  },
+  "sre101/cicd/terraform/v-state-and-remote-backends.md": {
+    "mtime": 1780824376.935192,
+    "ast_hash": "c58a926ea61cec67b1165ff8fbed8ac4",
+    "semantic_hash": "c58a926ea61cec67b1165ff8fbed8ac4"
+  },
+  "sre101/cicd/terraform/vi-modules-and-environments.md": {
+    "mtime": 1780824376.9391875,
+    "ast_hash": "296fe945869b90f58a2b2105783eb6a4",
+    "semantic_hash": "296fe945869b90f58a2b2105783eb6a4"
+  },
+  "sre101/cicd/terraform/vii-terraform-in-cicd.md": {
+    "mtime": 1780824376.9416945,
+    "ast_hash": "9dea9b91ee79bb2469a6a33d9d41520c",
+    "semantic_hash": "9dea9b91ee79bb2469a6a33d9d41520c"
+  },
+  "sre101/cicd/tools-and-platforms/i-overview.md": {
+    "mtime": 1780824376.9452562,
+    "ast_hash": "826075e2bbd0ca71efb6277b534edeea",
+    "semantic_hash": "826075e2bbd0ca71efb6277b534edeea"
+  },
+  "sre101/cicd/tools-and-platforms/ii-github-actions.md": {
+    "mtime": 1780824376.9462595,
+    "ast_hash": "28a83048983d7e0eb45fdf0cd3036692",
+    "semantic_hash": "28a83048983d7e0eb45fdf0cd3036692"
+  },
+  "sre101/cicd/tools-and-platforms/iii-gitlab-ci.md": {
+    "mtime": 1780824376.9482596,
+    "ast_hash": "d3fb05728c4edcca31e6a2bb32854ee8",
+    "semantic_hash": "d3fb05728c4edcca31e6a2bb32854ee8"
+  },
+  "sre101/cicd/tools-and-platforms/iv-jenkins.md": {
+    "mtime": 1780824376.9492571,
+    "ast_hash": "691cf5fe504cffc0736879b40ff128e7",
+    "semantic_hash": "691cf5fe504cffc0736879b40ff128e7"
+  },
+  "sre101/cicd/tools-and-platforms/v-docker-in-ci.md": {
+    "mtime": 1780824376.950261,
+    "ast_hash": "a65c86f2a93176f638f0ffab98ac71cf",
+    "semantic_hash": "a65c86f2a93176f638f0ffab98ac71cf"
+  },
+  "sre101/cicd/tools-and-platforms/vi-circleci.md": {
+    "mtime": 1780824376.9522996,
+    "ast_hash": "7fdf1fe4d07f540b2f78ec1c6603eec8",
+    "semantic_hash": "7fdf1fe4d07f540b2f78ec1c6603eec8"
+  },
+  "sre101/cicd/tools-and-platforms/vii-tekton.md": {
+    "mtime": 1780824376.953315,
+    "ast_hash": "2a12176d775cb202685c1b5a78846339",
+    "semantic_hash": "2a12176d775cb202685c1b5a78846339"
+  },
+  "sre101/cicd/tools-and-platforms/viii-choosing-a-platform.md": {
+    "mtime": 1780824376.9563081,
+    "ast_hash": "728b28099f138588df84c2f2c4ff0764",
+    "semantic_hash": "728b28099f138588df84c2f2c4ff0764"
+  },
+  "sre101/cloud-architecture/foundations/i-overview.md": {
+    "mtime": 1780824376.9660265,
+    "ast_hash": "d213713d9366fe3e0edc59c587e2dfd9",
+    "semantic_hash": "d213713d9366fe3e0edc59c587e2dfd9"
+  },
+  "sre101/cloud-architecture/foundations/ii-service-models.md": {
+    "mtime": 1780824376.9670255,
+    "ast_hash": "61383af51131f1e3c2b57f681d0324ba",
+    "semantic_hash": "61383af51131f1e3c2b57f681d0324ba"
+  },
+  "sre101/cloud-architecture/foundations/iii-regions-azs-and-edge.md": {
+    "mtime": 1780824376.9680257,
+    "ast_hash": "9fb8a88c94f00dd8cfd882cc5bf9086a",
+    "semantic_hash": "9fb8a88c94f00dd8cfd882cc5bf9086a"
+  },
+  "sre101/cloud-architecture/foundations/iv-compute-options.md": {
+    "mtime": 1780824376.9690251,
+    "ast_hash": "be106b04bfadf075ddd76e768c118e1f",
+    "semantic_hash": "be106b04bfadf075ddd76e768c118e1f"
+  },
+  "sre101/cloud-architecture/foundations/v-storage-and-databases.md": {
+    "mtime": 1780824376.9700243,
+    "ast_hash": "30bb1df74ea0c0722801abd1c4472aef",
+    "semantic_hash": "30bb1df74ea0c0722801abd1c4472aef"
+  },
+  "sre101/cloud-architecture/foundations/vi-networking-vpc-and-lb.md": {
+    "mtime": 1780824376.9715314,
+    "ast_hash": "965b609de8b39f1e57d80f2760fac964",
+    "semantic_hash": "965b609de8b39f1e57d80f2760fac964"
+  },
+  "sre101/cloud-architecture/foundations/vii-ha-and-disaster-recovery.md": {
+    "mtime": 1780824376.9730537,
+    "ast_hash": "f54ef5d2f388232036fd8489bd9a0ef7",
+    "semantic_hash": "f54ef5d2f388232036fd8489bd9a0ef7"
+  },
+  "sre101/cloud-architecture/foundations/viii-well-architected-framework.md": {
+    "mtime": 1780824376.9740696,
+    "ast_hash": "dcebc48c1863d6cb7421a37e8e6da239",
+    "semantic_hash": "dcebc48c1863d6cb7421a37e8e6da239"
+  },
+  "sre101/cloud-architecture/patterns-and-design/i-overview.md": {
+    "mtime": 1780824376.9790652,
+    "ast_hash": "0739c6b00953f3c62dfaac3f85bbe5c2",
+    "semantic_hash": "0739c6b00953f3c62dfaac3f85bbe5c2"
+  },
+  "sre101/cloud-architecture/patterns-and-design/ii-scalability-and-caching.md": {
+    "mtime": 1780824376.9800625,
+    "ast_hash": "02eb2dc4b5009225a09eaa4d957ac6c7",
+    "semantic_hash": "02eb2dc4b5009225a09eaa4d957ac6c7"
+  },
+  "sre101/cloud-architecture/patterns-and-design/iii-microservices-vs-monolith.md": {
+    "mtime": 1780824376.98157,
+    "ast_hash": "2b1bed6dcaf8a06b7fc17d841f15ae1c",
+    "semantic_hash": "2b1bed6dcaf8a06b7fc17d841f15ae1c"
+  },
+  "sre101/cloud-architecture/patterns-and-design/iv-event-driven-architecture.md": {
+    "mtime": 1780824376.9830935,
+    "ast_hash": "33283ca9a2c90fe60b2b93236688aea2",
+    "semantic_hash": "33283ca9a2c90fe60b2b93236688aea2"
+  },
+  "sre101/cloud-architecture/patterns-and-design/v-api-gateway-and-service-mesh.md": {
+    "mtime": 1780824376.9841015,
+    "ast_hash": "b0247a8e67c621152501043ec1c9589a",
+    "semantic_hash": "b0247a8e67c621152501043ec1c9589a"
+  },
+  "sre101/cloud-architecture/patterns-and-design/vi-observability-slo-and-slis.md": {
+    "mtime": 1780824376.9851015,
+    "ast_hash": "aadc845562ae5bddf1e6fed8ac4bae35",
+    "semantic_hash": "aadc845562ae5bddf1e6fed8ac4bae35"
+  },
+  "sre101/cloud-architecture/patterns-and-design/vii-cost-and-governance.md": {
+    "mtime": 1780824376.9861066,
+    "ast_hash": "fe87fc6ee6d650c32c36d86f858828e3",
+    "semantic_hash": "fe87fc6ee6d650c32c36d86f858828e3"
+  },
+  "sre101/tooling/alertmanager/i-intro.md": {
+    "mtime": 1780824376.9901042,
+    "ast_hash": "4f53ea64232c0043a11cf4667600c03d",
+    "semantic_hash": "4f53ea64232c0043a11cf4667600c03d"
+  },
+  "sre101/tooling/alertmanager/ii-deployment.md": {
+    "mtime": 1780824376.9921496,
+    "ast_hash": "d537dcd89d315f615242d65b4f34217e",
+    "semantic_hash": "d537dcd89d315f615242d65b4f34217e"
+  },
+  "sre101/tooling/alertmanager/iii-configuration-and-receivers.md": {
+    "mtime": 1780824376.9941635,
+    "ast_hash": "2a3d119d2ac2e9e14d3340a3005dc062",
+    "semantic_hash": "2a3d119d2ac2e9e14d3340a3005dc062"
+  },
+  "sre101/tooling/alertmanager/iv-integration-and-practices.md": {
+    "mtime": 1780824376.996161,
+    "ast_hash": "77ad6f91a50e807c44f4784cb9cf9d4d",
+    "semantic_hash": "77ad6f91a50e807c44f4784cb9cf9d4d"
+  },
+  "sre101/tooling/grafana/i-intro.md": {
+    "mtime": 1780824376.9983923,
+    "ast_hash": "2262f026fd3740d59c44b2a1dd0b788c",
+    "semantic_hash": "2262f026fd3740d59c44b2a1dd0b788c"
+  },
+  "sre101/tooling/grafana/ii-installation.md": {
+    "mtime": 1780824376.9993896,
+    "ast_hash": "10b0fcf866753c03a9b31c17c88a5832",
+    "semantic_hash": "10b0fcf866753c03a9b31c17c88a5832"
+  },
+  "sre101/tooling/grafana/iii-tips-and-tricks.md": {
+    "mtime": 1780824377.0003872,
+    "ast_hash": "565555b7fa868d2e7bd34c068461657b",
+    "semantic_hash": "565555b7fa868d2e7bd34c068461657b"
+  },
+  "sre101/tooling/iv-loki.md": {
+    "mtime": 1780824377.0018928,
+    "ast_hash": "7195acc0dd6d77bd7bb3bb86d4375cad",
+    "semantic_hash": "7195acc0dd6d77bd7bb3bb86d4375cad"
+  },
+  "sre101/tooling/kubernetes/i-intro-and-architecture.md": {
+    "mtime": 1780824377.0044234,
+    "ast_hash": "0172a25c707333085e242525b090592f",
+    "semantic_hash": "0172a25c707333085e242525b090592f"
+  },
+  "sre101/tooling/kubernetes/ii-workloads-and-health.md": {
+    "mtime": 1780824377.0064204,
+    "ast_hash": "33e7343b6eb5535e150550e90cf820e5",
+    "semantic_hash": "33e7343b6eb5535e150550e90cf820e5"
+  },
+  "sre101/tooling/kubernetes/iii-networking-and-policy.md": {
+    "mtime": 1780824377.0074217,
+    "ast_hash": "37d100eabab2abf5e2feb08ec3ae40b8",
+    "semantic_hash": "37d100eabab2abf5e2feb08ec3ae40b8"
+  },
+  "sre101/tooling/kubernetes/iv-gitops-and-operations.md": {
+    "mtime": 1780824377.009423,
+    "ast_hash": "0a78bcd770807b823a87fccfbb710f97",
+    "semantic_hash": "0a78bcd770807b823a87fccfbb710f97"
+  },
+  "sre101/tooling/kubernetes/v-dockerizing-apps.md": {
+    "mtime": 1780824377.0114217,
+    "ast_hash": "b84540d551503d398dea0589bf8de4c4",
+    "semantic_hash": "b84540d551503d398dea0589bf8de4c4"
+  },
+  "sre101/tooling/prometheus/i-intro-and-architecture.md": {
+    "mtime": 1780824377.0145352,
+    "ast_hash": "1360f2af07ca604309e46a9eb70925b7",
+    "semantic_hash": "1360f2af07ca604309e46a9eb70925b7"
+  },
+  "sre101/tooling/prometheus/ii-metrics-types-and-promql.md": {
+    "mtime": 1780824377.0155342,
+    "ast_hash": "38818846453243764e102b677e7ec72f",
+    "semantic_hash": "38818846453243764e102b677e7ec72f"
+  },
+  "sre101/tooling/prometheus/iii-instrumentation.md": {
+    "mtime": 1780824377.0165358,
+    "ast_hash": "688fb5945727b1b77ef1c2a78e2d9dbb",
+    "semantic_hash": "688fb5945727b1b77ef1c2a78e2d9dbb"
+  },
+  "sre101/tooling/prometheus/iv-scrape-and-discovery.md": {
+    "mtime": 1780824377.0185344,
+    "ast_hash": "1c5ca6b1a1a6977f94e41856ebb5b016",
+    "semantic_hash": "1c5ca6b1a1a6977f94e41856ebb5b016"
+  },
+  "sre101/tooling/prometheus/v-kubernetes.md": {
+    "mtime": 1780824377.0195332,
+    "ast_hash": "6851433ec07f6c1df89a26a7606e32bf",
+    "semantic_hash": "6851433ec07f6c1df89a26a7606e32bf"
+  },
+  "sre101/tooling/prometheus/vi-rules-and-operations.md": {
+    "mtime": 1780824377.0205364,
+    "ast_hash": "31fa0c9af5304740ed8e534439a41e76",
+    "semantic_hash": "31fa0c9af5304740ed8e534439a41e76"
+  },
+  "sre101/tooling/terraform/i-intro-and-architecture.md": {
+    "mtime": 1780824377.0225747,
+    "ast_hash": "60dbcfa5e639f547f5a8c68bfcc79bb1",
+    "semantic_hash": "60dbcfa5e639f547f5a8c68bfcc79bb1"
+  },
+  "sre101/tooling/terraform/ii-cli-workflow.md": {
+    "mtime": 1780824377.024586,
+    "ast_hash": "406032f02243d0a5b0446f340563f762",
+    "semantic_hash": "406032f02243d0a5b0446f340563f762"
+  },
+  "sre101/tooling/terraform/iii-modules-backends-and-state.md": {
+    "mtime": 1780824377.025586,
+    "ast_hash": "5956e219ea96c51832886df780828f64",
+    "semantic_hash": "5956e219ea96c51832886df780828f64"
+  },
+  "sre101/tooling/terraform/iv-ci-and-practices.md": {
+    "mtime": 1780824377.0275857,
+    "ast_hash": "1164a662a1b89f6c23cdda46f0f79a8f",
+    "semantic_hash": "1164a662a1b89f6c23cdda46f0f79a8f"
+  },
+  "sre101/tooling/terraform/v-real-world-deployment.md": {
+    "mtime": 1780824377.0285833,
+    "ast_hash": "929e726c3ee7bf408db1d6b3acb447a0",
+    "semantic_hash": "929e726c3ee7bf408db1d6b3acb447a0"
+  },
+  "startups/free-services/i-overview.md": {
+    "mtime": 1780824377.0338423,
+    "ast_hash": "58ab473a3b80c2bc36a2686af60637f1",
+    "semantic_hash": "58ab473a3b80c2bc36a2686af60637f1"
+  },
+  "startups/free-services/ii-email-and-mailing.md": {
+    "mtime": 1780824377.0345836,
+    "ast_hash": "aa9e6287e40fd4c55d49609f218620f5",
+    "semantic_hash": "aa9e6287e40fd4c55d49609f218620f5"
+  },
+  "startups/free-services/iii-hosting-domains-and-cdn.md": {
+    "mtime": 1780824377.035596,
+    "ast_hash": "e5bc3bb7084dcfa505f0e571f16ac034",
+    "semantic_hash": "e5bc3bb7084dcfa505f0e571f16ac034"
+  },
+  "startups/free-services/iv-database-auth-and-storage.md": {
+    "mtime": 1780824377.0375965,
+    "ast_hash": "311d1a86a95ca274d80e8d020b840f2a",
+    "semantic_hash": "311d1a86a95ca274d80e8d020b840f2a"
+  },
+  "startups/free-services/v-monitoring-analytics-and-devtools.md": {
+    "mtime": 1780824377.038592,
+    "ast_hash": "be4f7b18b1ebd941d62f2ff856d55ee6",
+    "semantic_hash": "be4f7b18b1ebd941d62f2ff856d55ee6"
+  },
+  "startups/i-overview.md": {
+    "mtime": 1780824377.0405934,
+    "ast_hash": "f2ca7e426d6e4a80b16c2020a9cc7603",
+    "semantic_hash": "f2ca7e426d6e4a80b16c2020a9cc7603"
+  },
+  "swe101/api-gateway/i-overview.md": {
+    "mtime": 1780824377.0449073,
+    "ast_hash": "850834aa5dffc0702bfae9bf463d01f4",
+    "semantic_hash": "850834aa5dffc0702bfae9bf463d01f4"
+  },
+  "swe101/api-gateway/ii-how-api-gateways-work.md": {
+    "mtime": 1780824377.0469012,
+    "ast_hash": "870b952363dc9da8c3b96e6847456ada",
+    "semantic_hash": "870b952363dc9da8c3b96e6847456ada"
+  },
+  "swe101/api-gateway/iii-routing-and-versions.md": {
+    "mtime": 1780824377.0479019,
+    "ast_hash": "ff81d1af6ca3a2e5b50dce2adaa6a550",
+    "semantic_hash": "ff81d1af6ca3a2e5b50dce2adaa6a550"
+  },
+  "swe101/api-gateway/iv-authentication.md": {
+    "mtime": 1780824377.0489013,
+    "ast_hash": "756de961ea29c7aa5be00bc7ec3cf23a",
+    "semantic_hash": "756de961ea29c7aa5be00bc7ec3cf23a"
+  },
+  "swe101/api-gateway/v-rate-limiting-and-resilience.md": {
+    "mtime": 1780824377.0499055,
+    "ast_hash": "88500f8b1c49788a8b2b69213b7385c5",
+    "semantic_hash": "88500f8b1c49788a8b2b69213b7385c5"
+  },
+  "swe101/api-gateway/vi-setup-and-providers.md": {
+    "mtime": 1780824377.0499055,
+    "ast_hash": "e01b5ebed80fe50532d1b0550e4e3f30",
+    "semantic_hash": "e01b5ebed80fe50532d1b0550e4e3f30"
+  },
+  "swe101/api-gateway/vii-operations-and-troubleshooting.md": {
+    "mtime": 1780824377.0514183,
+    "ast_hash": "a01c6b21dcd93971169663fcbee455f1",
+    "semantic_hash": "a01c6b21dcd93971169663fcbee455f1"
+  },
+  "swe101/cdn/i-overview.md": {
+    "mtime": 1780824377.0539627,
+    "ast_hash": "546c792799c7a22623613ddc427c99cf",
+    "semantic_hash": "546c792799c7a22623613ddc427c99cf"
+  },
+  "swe101/cdn/ii-how-cdns-work.md": {
+    "mtime": 1780824377.0549605,
+    "ast_hash": "81fc206e5c99d26b5f73605cb222c3a1",
+    "semantic_hash": "81fc206e5c99d26b5f73605cb222c3a1"
+  },
+  "swe101/cdn/iii-cache-headers-and-ttl.md": {
+    "mtime": 1780824377.056965,
+    "ast_hash": "48d213c919af56043e21e437bd500262",
+    "semantic_hash": "48d213c919af56043e21e437bd500262"
+  },
+  "swe101/cdn/iv-setup-and-origin.md": {
+    "mtime": 1780824377.0579631,
+    "ast_hash": "1f3cf8b5aed0cc9aa7efaf092818c305",
+    "semantic_hash": "1f3cf8b5aed0cc9aa7efaf092818c305"
+  },
+  "swe101/cdn/v-static-assets-and-spas.md": {
+    "mtime": 1780824377.0599637,
+    "ast_hash": "c3cf78637c4d779519f32d0857f1e6dd",
+    "semantic_hash": "c3cf78637c4d779519f32d0857f1e6dd"
+  },
+  "swe101/cdn/vi-apis-and-dynamic-content.md": {
+    "mtime": 1780824377.0614717,
+    "ast_hash": "0bdbef12205827bab4b23711a814d79a",
+    "semantic_hash": "0bdbef12205827bab4b23711a814d79a"
+  },
+  "swe101/cdn/vii-operations-and-troubleshooting.md": {
+    "mtime": 1780824377.0637276,
+    "ast_hash": "c707e72a354e037cfef3a8af11cb686c",
+    "semantic_hash": "c707e72a354e037cfef3a8af11cb686c"
+  },
+  "swe101/cdn/viii-cdn-and-api-gateway-together.md": {
+    "mtime": 1780824377.0650039,
+    "ast_hash": "3d9054d71f1af0e0f52d9ca02727cccf",
+    "semantic_hash": "3d9054d71f1af0e0f52d9ca02727cccf"
+  },
+  "swe101/databases/mongodb/i-overview.md": {
+    "mtime": 1780824377.1156614,
+    "ast_hash": "e18bde477de2c05f495ce09019ff5e6c",
+    "semantic_hash": "e18bde477de2c05f495ce09019ff5e6c"
+  },
+  "swe101/databases/mongodb/ii-install-and-mongosh.md": {
+    "mtime": 1780824377.11667,
+    "ast_hash": "ffde1cd8594a1969837c507b7a97216c",
+    "semantic_hash": "ffde1cd8594a1969837c507b7a97216c"
+  },
+  "swe101/databases/mongodb/iii-schema-and-modeling.md": {
+    "mtime": 1780824377.118178,
+    "ast_hash": "67840b43b1c95c51633056d977df6a84",
+    "semantic_hash": "67840b43b1c95c51633056d977df6a84"
+  },
+  "swe101/databases/mongodb/iv-queries-and-indexes.md": {
+    "mtime": 1780824377.1191797,
+    "ast_hash": "49c77c160293c5eb623cc98d957f15e1",
+    "semantic_hash": "49c77c160293c5eb623cc98d957f15e1"
+  },
+  "swe101/databases/mongodb/v-app-integration.md": {
+    "mtime": 1780824377.1201794,
+    "ast_hash": "6d8be5b201017079d453ce64bfa6a3de",
+    "semantic_hash": "6d8be5b201017079d453ce64bfa6a3de"
+  },
+  "swe101/databases/mongodb/vi-operations-and-backups.md": {
+    "mtime": 1780824377.1201794,
+    "ast_hash": "83c3381d01207f74838731161f346b8b",
+    "semantic_hash": "83c3381d01207f74838731161f346b8b"
+  },
+  "swe101/databases/mongodb/vii-database-optimizations.md": {
+    "mtime": 1780824377.1222143,
+    "ast_hash": "81a507c309a2fa961e93282bebd21414",
+    "semantic_hash": "81a507c309a2fa961e93282bebd21414"
+  },
+  "swe101/databases/plsql/i-overview.md": {
+    "mtime": 1780824377.1248662,
+    "ast_hash": "f927d3856a66afcbbafd5a71e44a2345",
+    "semantic_hash": "f927d3856a66afcbbafd5a71e44a2345"
+  },
+  "swe101/databases/plsql/ii-blocks-and-variables.md": {
+    "mtime": 1780824377.1288657,
+    "ast_hash": "8342f4f10648b38ae0eb9229cf94f459",
+    "semantic_hash": "8342f4f10648b38ae0eb9229cf94f459"
+  },
+  "swe101/databases/plsql/iii-control-flow-and-cursors.md": {
+    "mtime": 1780824377.1313727,
+    "ast_hash": "89a973168ce39b6876a3389614f52143",
+    "semantic_hash": "89a973168ce39b6876a3389614f52143"
+  },
+  "swe101/databases/plsql/iv-procedures-and-functions.md": {
+    "mtime": 1780824377.1337535,
+    "ast_hash": "d1b47ef7a5b5ad5a3780434fc77726fb",
+    "semantic_hash": "d1b47ef7a5b5ad5a3780434fc77726fb"
+  },
+  "swe101/databases/plsql/v-packages-and-triggers.md": {
+    "mtime": 1780824377.1349008,
+    "ast_hash": "4d93c591f0bcd86e2ccf8638acecadff",
+    "semantic_hash": "4d93c591f0bcd86e2ccf8638acecadff"
+  },
+  "swe101/databases/plsql/vi-exceptions-and-bulk-sql.md": {
+    "mtime": 1780824377.1359,
+    "ast_hash": "1f9973672279118af24259110c694e98",
+    "semantic_hash": "1f9973672279118af24259110c694e98"
+  },
+  "swe101/databases/plsql/vii-database-optimizations.md": {
+    "mtime": 1780824377.136902,
+    "ast_hash": "af5274184f5818cff468d8bf33d25a99",
+    "semantic_hash": "af5274184f5818cff468d8bf33d25a99"
+  },
+  "swe101/databases/postgres/i-overview.md": {
+    "mtime": 1780824377.1414163,
+    "ast_hash": "7709cbc09ecc82e87f50ff2fc8885614",
+    "semantic_hash": "7709cbc09ecc82e87f50ff2fc8885614"
+  },
+  "swe101/databases/postgres/ii-install-and-psql.md": {
+    "mtime": 1780824377.1429403,
+    "ast_hash": "14af156012a4cd034019497e7e0586c8",
+    "semantic_hash": "14af156012a4cd034019497e7e0586c8"
+  },
+  "swe101/databases/postgres/iii-schema-and-migrations.md": {
+    "mtime": 1780824377.1469622,
+    "ast_hash": "1a04666a2db1a2824196cbaea93f46eb",
+    "semantic_hash": "1a04666a2db1a2824196cbaea93f46eb"
+  },
+  "swe101/databases/postgres/iv-indexes-and-explain.md": {
+    "mtime": 1780824377.1479628,
+    "ast_hash": "5120ae12dcc4a87321af384083b665e5",
+    "semantic_hash": "5120ae12dcc4a87321af384083b665e5"
+  },
+  "swe101/databases/postgres/v-app-integration.md": {
+    "mtime": 1780824377.1499631,
+    "ast_hash": "c4488408073be1736d801493a886f3e9",
+    "semantic_hash": "c4488408073be1736d801493a886f3e9"
+  },
+  "swe101/databases/postgres/vi-operations-and-backups.md": {
+    "mtime": 1780824377.1499631,
+    "ast_hash": "c27fb66e2b743c3a05aa990a90c31d58",
+    "semantic_hash": "c27fb66e2b743c3a05aa990a90c31d58"
+  },
+  "swe101/databases/postgres/vii-database-optimizations.md": {
+    "mtime": 1780824377.1524897,
+    "ast_hash": "0a2ef2a5f629529f281e625f5c5e1b4b",
+    "semantic_hash": "0a2ef2a5f629529f281e625f5c5e1b4b"
+  },
+  "swe101/git/essentials/i-overview.md": {
+    "mtime": 1783252289.8687909,
+    "ast_hash": "4a1870f89a4f870b9955becbab434807",
+    "semantic_hash": "4a1870f89a4f870b9955becbab434807"
+  },
+  "swe101/git/essentials/ii-install-and-configure.md": {
+    "mtime": 1783251727.491644,
+    "ast_hash": "ff7e8d6a286e7e70014a6f3134fa6ce0",
+    "semantic_hash": "ff7e8d6a286e7e70014a6f3134fa6ce0"
+  },
+  "swe101/git/essentials/iii-everyday-commands.md": {
+    "mtime": 1783252289.5032947,
+    "ast_hash": "ae1d89955a598b32920a7dafe8a0abbd",
+    "semantic_hash": "ae1d89955a598b32920a7dafe8a0abbd"
+  },
+  "swe101/git/essentials/iv-branching-and-merging.md": {
+    "mtime": 1780824377.0746012,
+    "ast_hash": "4c26e63af84986a6584aca1c12480a81",
+    "semantic_hash": "4c26e63af84986a6584aca1c12480a81"
+  },
+  "swe101/git/essentials/v-remotes-and-collaboration.md": {
+    "mtime": 1783251733.0537179,
+    "ast_hash": "2b9f2f2a24a1d21f30e9065faea726e8",
+    "semantic_hash": "2b9f2f2a24a1d21f30e9065faea726e8"
+  },
+  "swe101/git/essentials/vi-undo-and-history.md": {
+    "mtime": 1783252288.8754196,
+    "ast_hash": "73882bc12de19311ed485d21185d446d",
+    "semantic_hash": "73882bc12de19311ed485d21185d446d"
+  },
+  "swe101/git/essentials/vii-workflows-and-conventions.md": {
+    "mtime": 1783252290.5279229,
+    "ast_hash": "beed001964ced77701458ad7c83623c7",
+    "semantic_hash": "beed001964ced77701458ad7c83623c7"
+  },
+  "swe101/git/essentials/viii-secrets-and-sensitive-files-in-history.md": {
+    "mtime": 1783252288.0089593,
+    "ast_hash": "799f995961717447efac52f63bbfb780",
+    "semantic_hash": "799f995961717447efac52f63bbfb780"
+  },
+  "swe101/git/github/activity-contribution-graph.md": {
+    "mtime": 1780824377.082109,
+    "ast_hash": "e82d1dfde17cd364b5005d435d30116d",
+    "semantic_hash": "e82d1dfde17cd364b5005d435d30116d"
+  },
+  "swe101/git/github/i-overview.md": {
+    "mtime": 1783251728.5234995,
+    "ast_hash": "64539d1c125533b79c07cd26aaeb2856",
+    "semantic_hash": "64539d1c125533b79c07cd26aaeb2856"
+  },
+  "swe101/git/github/ii-repositories-and-pull-requests.md": {
+    "mtime": 1780824377.0841167,
+    "ast_hash": "79140ed28fec489c8e49e71fe6c7fe01",
+    "semantic_hash": "79140ed28fec489c8e49e71fe6c7fe01"
+  },
+  "swe101/git/github/iii-actions-issues-and-settings.md": {
+    "mtime": 1783252319.0220532,
+    "ast_hash": "bffa52de2934e3893a934275a714531c",
+    "semantic_hash": "bffa52de2934e3893a934275a714531c"
+  },
+  "swe101/git/github/iv-ssh-keys.md": {
+    "mtime": 1783251720.7785146,
+    "ast_hash": "37be2f7c59c5ee70e4b4688504b1f877",
+    "semantic_hash": "37be2f7c59c5ee70e4b4688504b1f877"
+  },
+  "swe101/git/i-overview.md": {
+    "mtime": 1780887500.172367,
+    "ast_hash": "7551e6c7cdd4759f8d843dececb2b7a2",
+    "semantic_hash": "7551e6c7cdd4759f8d843dececb2b7a2"
+  },
+  "swe101/i-overview.md": {
+    "mtime": 1783394245.5143013,
+    "ast_hash": "4897da1dc9bca3ec0bfc689fc995cd88",
+    "semantic_hash": "4897da1dc9bca3ec0bfc689fc995cd88"
+  },
+  "swe101/kafka/examples.md": {
+    "mtime": 1782022857.823226,
+    "ast_hash": "22aff5a42b44a51c25e920f37d05a1ee",
+    "semantic_hash": "22aff5a42b44a51c25e920f37d05a1ee"
+  },
+  "swe101/kafka/i-overview.md": {
+    "mtime": 1782022857.8242004,
+    "ast_hash": "e4d9219d9a0f2cf8e2bffa193b57b662",
+    "semantic_hash": "e4d9219d9a0f2cf8e2bffa193b57b662"
+  },
+  "swe101/kafka/ii-install-and-local-dev.md": {
+    "mtime": 1781250833.3769763,
+    "ast_hash": "94b4ec35c0294ba45fdea8a717d00798",
+    "semantic_hash": "94b4ec35c0294ba45fdea8a717d00798"
+  },
+  "swe101/kafka/iii-core-concepts-and-architecture.md": {
+    "mtime": 1782022857.8064258,
+    "ast_hash": "5fcbefb8d342a150f68b2df8d7fec1c8",
+    "semantic_hash": "5fcbefb8d342a150f68b2df8d7fec1c8"
+  },
+  "swe101/kafka/iv-producers-and-consumers.md": {
+    "mtime": 1782022857.8242004,
+    "ast_hash": "85f3f68a4e3a54534fe788c7231a13c9",
+    "semantic_hash": "85f3f68a4e3a54534fe788c7231a13c9"
+  },
+  "swe101/kafka/ix-acks-and-how-they-work.md": {
+    "mtime": 1782022857.823226,
+    "ast_hash": "753cd5120083c600ab86bde70210b30f",
+    "semantic_hash": "753cd5120083c600ab86bde70210b30f"
+  },
+  "swe101/kafka/v-consumer-groups-and-delivery.md": {
+    "mtime": 1782022857.7881699,
+    "ast_hash": "1629b0dde05a2f9a1dc64f868beac796",
+    "semantic_hash": "1629b0dde05a2f9a1dc64f868beac796"
+  },
+  "swe101/kafka/vi-patterns-and-integration.md": {
+    "mtime": 1782022857.8242004,
+    "ast_hash": "120ed52ea669d74c89ba31c9b7feb90e",
+    "semantic_hash": "120ed52ea669d74c89ba31c9b7feb90e"
+  },
+  "swe101/kafka/vii-operations-and-pitfalls.md": {
+    "mtime": 1781257441.2927308,
+    "ast_hash": "1bde7b3891772c804848c7f4dcc52051",
+    "semantic_hash": "1bde7b3891772c804848c7f4dcc52051"
+  },
+  "swe101/kafka/viii-sequential-pipelines-and-sagas.md": {
+    "mtime": 1781257436.9891503,
+    "ast_hash": "ec9a571c9678f2de914d055f44209a82",
+    "semantic_hash": "ec9a571c9678f2de914d055f44209a82"
+  },
+  "swe101/languages&frameworks/css/bootstrap/i-overview.md": {
+    "mtime": 1781241533.1467283,
+    "ast_hash": "d9db94d728af314220573f53e39904b7",
+    "semantic_hash": "d9db94d728af314220573f53e39904b7"
+  },
+  "swe101/languages&frameworks/css/i-overview.md": {
+    "mtime": 1781241526.4164188,
+    "ast_hash": "7b8892453a5bd69a4a7a51059f4e8acb",
+    "semantic_hash": "7b8892453a5bd69a4a7a51059f4e8acb"
+  },
+  "swe101/languages&frameworks/css/less/i-overview.md": {
+    "mtime": 1781241530.3373668,
+    "ast_hash": "5a5231d2fba52fbc1ca0c86ae9d78bf3",
+    "semantic_hash": "5a5231d2fba52fbc1ca0c86ae9d78bf3"
+  },
+  "swe101/languages&frameworks/css/sass/i-overview.md": {
+    "mtime": 1781241528.2765596,
+    "ast_hash": "f0e39a592bb3b5aaac83f2c6ed090bd6",
+    "semantic_hash": "f0e39a592bb3b5aaac83f2c6ed090bd6"
+  },
+  "swe101/languages&frameworks/flutter/i-overview.md": {
+    "mtime": 1781250208.740069,
+    "ast_hash": "43b630631e5f1960fe168babccc2efd5",
+    "semantic_hash": "43b630631e5f1960fe168babccc2efd5"
+  },
+  "swe101/languages&frameworks/flutter/ii-project-setup-and-structure.md": {
+    "mtime": 1781250242.5430846,
+    "ast_hash": "2105c24cefcdc80020d5e8abb4cee914",
+    "semantic_hash": "2105c24cefcdc80020d5e8abb4cee914"
+  },
+  "swe101/languages&frameworks/flutter/iii-rendering-and-server-requests.md": {
+    "mtime": 1781250270.508927,
+    "ast_hash": "b64f21cd1f481625a2b8adf0a834a180",
+    "semantic_hash": "b64f21cd1f481625a2b8adf0a834a180"
+  },
+  "swe101/languages&frameworks/flutter/iv-authentication.md": {
+    "mtime": 1781250290.2619731,
+    "ast_hash": "ba6840456d9a16956f28653c39790596",
+    "semantic_hash": "ba6840456d9a16956f28653c39790596"
+  },
+  "swe101/languages&frameworks/flutter/v-forms-and-validation.md": {
+    "mtime": 1781250310.2799501,
+    "ast_hash": "65d75fe71684bd933e3bc78aa25c8c62",
+    "semantic_hash": "65d75fe71684bd933e3bc78aa25c8c62"
+  },
+  "swe101/languages&frameworks/htmx/i-overview.md": {
+    "mtime": 1780981743.4212933,
+    "ast_hash": "1eab8fc22ba98246b6894d008e5f9a4c",
+    "semantic_hash": "1eab8fc22ba98246b6894d008e5f9a4c"
+  },
+  "swe101/languages&frameworks/htmx/ii-install-and-setup.md": {
+    "mtime": 1780978328.950184,
+    "ast_hash": "8fbef3fc78317f6be3324f7e590e8ffa",
+    "semantic_hash": "8fbef3fc78317f6be3324f7e590e8ffa"
+  },
+  "swe101/languages&frameworks/htmx/iii-core-attributes-and-swapping.md": {
+    "mtime": 1780978333.040881,
+    "ast_hash": "31430f9a3cdbe98c10a70f364cd39d4c",
+    "semantic_hash": "31430f9a3cdbe98c10a70f364cd39d4c"
+  },
+  "swe101/languages&frameworks/htmx/iv-forms-and-requests.md": {
+    "mtime": 1780978337.9256494,
+    "ast_hash": "e77e6edf95ac7ed4cdaccb67803b3197",
+    "semantic_hash": "e77e6edf95ac7ed4cdaccb67803b3197"
+  },
+  "swe101/languages&frameworks/htmx/ix-examples.md": {
+    "mtime": 1780982040.6382556,
+    "ast_hash": "d9ebb462e0631d52d07ea1e0713c0a51",
+    "semantic_hash": "d9ebb462e0631d52d07ea1e0713c0a51"
+  },
+  "swe101/languages&frameworks/htmx/v-server-responses-and-templates.md": {
+    "mtime": 1780978341.8825605,
+    "ast_hash": "9198d3798622c94dbbe52530aad2fc6a",
+    "semantic_hash": "9198d3798622c94dbbe52530aad2fc6a"
+  },
+  "swe101/languages&frameworks/htmx/vi-events-and-extensions.md": {
+    "mtime": 1780978345.2487462,
+    "ast_hash": "f9ae6f562a849757a2f769ef4c4a5e15",
+    "semantic_hash": "f9ae6f562a849757a2f769ef4c4a5e15"
+  },
+  "swe101/languages&frameworks/htmx/vii-patterns-and-app-integration.md": {
+    "mtime": 1780978348.7210073,
+    "ast_hash": "d7e12d7ea270d726b4933467334337be",
+    "semantic_hash": "d7e12d7ea270d726b4933467334337be"
+  },
+  "swe101/languages&frameworks/htmx/viii-when-to-use-and-tradeoffs.md": {
+    "mtime": 1780981745.6208982,
+    "ast_hash": "1817c0a0b60fd5f915eaf532b4f6f356",
+    "semantic_hash": "1817c0a0b60fd5f915eaf532b4f6f356"
+  },
+  "swe101/languages&frameworks/java/intro/i-basics-and-syntax.md": {
+    "mtime": 1782363968.9874234,
+    "ast_hash": "a7dd1985b532c9f98ce13807c3d1028c",
+    "semantic_hash": "a7dd1985b532c9f98ce13807c3d1028c"
+  },
+  "swe101/languages&frameworks/java/intro/ii-oop-and-types.md": {
+    "mtime": 1782366601.8232718,
+    "ast_hash": "85d291600af9bd34c2dec975c03d17ca",
+    "semantic_hash": "85d291600af9bd34c2dec975c03d17ca"
+  },
+  "swe101/languages&frameworks/java/intro/iii-exceptions-and-libraries.md": {
+    "mtime": 1780824377.0931797,
+    "ast_hash": "0efbca74464ca32f057de173e1d13aec",
+    "semantic_hash": "0efbca74464ca32f057de173e1d13aec"
+  },
+  "swe101/languages&frameworks/java/intro/iv-testing-and-debugging.md": {
+    "mtime": 1780824377.0949702,
+    "ast_hash": "9f25ad6f764aaf1c5f040cbb6137c783",
+    "semantic_hash": "9f25ad6f764aaf1c5f040cbb6137c783"
+  },
+  "swe101/languages&frameworks/java/intro/v-arrays-varargs-and-lists.md": {
+    "mtime": 1780824377.096479,
+    "ast_hash": "65706ea58cd1d04150d329f74237b31d",
+    "semantic_hash": "65706ea58cd1d04150d329f74237b31d"
+  },
+  "swe101/languages&frameworks/java/intro/vi-lambdas-and-modern-java.md": {
+    "mtime": 1782436291.889611,
+    "ast_hash": "b840018522a6ce2022b12a2a35a83ab8",
+    "semantic_hash": "b840018522a6ce2022b12a2a35a83ab8"
+  },
+  "swe101/languages&frameworks/java/springboot/example-web-mvc-project-layout.md": {
+    "mtime": 1780824377.1005008,
+    "ast_hash": "59ad8347d77534f62d18d257e47cf9c5",
+    "semantic_hash": "59ad8347d77534f62d18d257e47cf9c5"
+  },
+  "swe101/languages&frameworks/java/springboot/i-intro-and-project-layout.md": {
+    "mtime": 1782454700.2851753,
+    "ast_hash": "f3f782fce3078b10d4a9c66b5ee9bef0",
+    "semantic_hash": "f3f782fce3078b10d4a9c66b5ee9bef0"
+  },
+  "swe101/languages&frameworks/java/springboot/ii-yaml-and-external-config.md": {
+    "mtime": 1782351673.241194,
+    "ast_hash": "461a73d9c79d658277b1b0a37ff8a21f",
+    "semantic_hash": "461a73d9c79d658277b1b0a37ff8a21f"
+  },
+  "swe101/languages&frameworks/java/springboot/iii-beans-and-dependency-injection.md": {
+    "mtime": 1782352318.6586347,
+    "ast_hash": "e4415dd3bcf5ed4a154bb41c16beb4a8",
+    "semantic_hash": "e4415dd3bcf5ed4a154bb41c16beb4a8"
+  },
+  "swe101/languages&frameworks/java/springboot/iv-rest-controllers.md": {
+    "mtime": 1782451776.590821,
+    "ast_hash": "28cd072bc87e1fbb59189f97f1567796",
+    "semantic_hash": "28cd072bc87e1fbb59189f97f1567796"
+  },
+  "swe101/languages&frameworks/java/springboot/ix-distributed-transactions-and-microservices.md": {
+    "mtime": 1782377946.471146,
+    "ast_hash": "77238bd7cd9ba1e4127cae4ead4b968b",
+    "semantic_hash": "77238bd7cd9ba1e4127cae4ead4b968b"
+  },
+  "swe101/languages&frameworks/java/springboot/v-jpa-and-transactional.md": {
+    "mtime": 1782372297.1686244,
+    "ast_hash": "a98ac97e3039b9e998b8561c99a3681f",
+    "semantic_hash": "a98ac97e3039b9e998b8561c99a3681f"
+  },
+  "swe101/languages&frameworks/java/springboot/vi-testing-and-operations.md": {
+    "mtime": 1780824377.1087492,
+    "ast_hash": "414dc5ee99c15f6c0e821a5cf11de712",
+    "semantic_hash": "414dc5ee99c15f6c0e821a5cf11de712"
+  },
+  "swe101/languages&frameworks/java/springboot/vii-logging-and-pragmatic-pitfalls.md": {
+    "mtime": 1782374301.4314675,
+    "ast_hash": "11d7cd0e6d72815dbb1d32abbfb1d53c",
+    "semantic_hash": "11d7cd0e6d72815dbb1d32abbfb1d53c"
+  },
+  "swe101/languages&frameworks/java/springboot/viii-distributed-cache.md": {
+    "mtime": 1782377758.4304316,
+    "ast_hash": "c0b280bbdea42c8127956eb5197aaca4",
+    "semantic_hash": "c0b280bbdea42c8127956eb5197aaca4"
+  },
+  "swe101/languages&frameworks/java/springboot/x-security-basics-and-filter-chain.md": {
+    "mtime": 1782378029.1393962,
+    "ast_hash": "8412c07cf578b60825ead6d808911390",
+    "semantic_hash": "8412c07cf578b60825ead6d808911390"
+  },
+  "swe101/languages&frameworks/java/springboot/xi-virtual-threads.md": {
+    "mtime": 1782451775.3602805,
+    "ast_hash": "b608c5ac9350bee590690064880b8f05",
+    "semantic_hash": "b608c5ac9350bee590690064880b8f05"
+  },
+  "swe101/languages&frameworks/java/springboot/xii-webflux.md": {
+    "mtime": 1782452627.685251,
+    "ast_hash": "b241e9d6038a3a4256d45c4b4cc01fc8",
+    "semantic_hash": "b241e9d6038a3a4256d45c4b4cc01fc8"
+  },
+  "swe101/languages&frameworks/javascript/angular/i-overview.md": {
+    "mtime": 1781242600.0085168,
+    "ast_hash": "009f44115dfc7ba9dc60c719da550de2",
+    "semantic_hash": "009f44115dfc7ba9dc60c719da550de2"
+  },
+  "swe101/languages&frameworks/javascript/angular/ii-project-setup-and-structure.md": {
+    "mtime": 1781242607.0482237,
+    "ast_hash": "9985ed047519c41b590396bf6b23f6b8",
+    "semantic_hash": "9985ed047519c41b590396bf6b23f6b8"
+  },
+  "swe101/languages&frameworks/javascript/angular/iii-rendering-and-server-requests.md": {
+    "mtime": 1781242618.6950414,
+    "ast_hash": "8aa35f7ef7a87be0b40100427fbae395",
+    "semantic_hash": "8aa35f7ef7a87be0b40100427fbae395"
+  },
+  "swe101/languages&frameworks/javascript/angular/iv-authentication.md": {
+    "mtime": 1781242628.970723,
+    "ast_hash": "bfee092f461c776e0be52049d1278eff",
+    "semantic_hash": "bfee092f461c776e0be52049d1278eff"
+  },
+  "swe101/languages&frameworks/javascript/angular/v-forms-and-validation.md": {
+    "mtime": 1781242639.7777767,
+    "ast_hash": "ebc1e054d2d05b9ccfcca501031c1c57",
+    "semantic_hash": "ebc1e054d2d05b9ccfcca501031c1c57"
+  },
+  "swe101/languages&frameworks/javascript/bootstrap/i-overview.md": {
+    "mtime": 1781241727.2239115,
+    "ast_hash": "c47c3b8db18bca8b2a22612883e29146",
+    "semantic_hash": "c47c3b8db18bca8b2a22612883e29146"
+  },
+  "swe101/languages&frameworks/javascript/i-overview.md": {
+    "mtime": 1781250311.1030352,
+    "ast_hash": "0ea84722ce9a6c9eedc4e328ecc5f41a",
+    "semantic_hash": "0ea84722ce9a6c9eedc4e328ecc5f41a"
+  },
+  "swe101/languages&frameworks/javascript/jquery/i-overview.md": {
+    "mtime": 1781241395.5667198,
+    "ast_hash": "042cc7f9e4bf42d0650e292ce6b7a2fe",
+    "semantic_hash": "042cc7f9e4bf42d0650e292ce6b7a2fe"
+  },
+  "swe101/languages&frameworks/javascript/react-native/i-overview.md": {
+    "mtime": 1781250312.0289931,
+    "ast_hash": "6f1a96bd59674670f068475bdbcba8ab",
+    "semantic_hash": "6f1a96bd59674670f068475bdbcba8ab"
+  },
+  "swe101/languages&frameworks/javascript/react-native/ii-project-setup-and-structure.md": {
+    "mtime": 1781249874.7513843,
+    "ast_hash": "ff94d814afc8cc75a52569c39eb3ced2",
+    "semantic_hash": "ff94d814afc8cc75a52569c39eb3ced2"
+  },
+  "swe101/languages&frameworks/javascript/react-native/iii-rendering-and-server-requests.md": {
+    "mtime": 1781249530.6740186,
+    "ast_hash": "3cc024ec8e18ebdca5bbdb23dbfaed9a",
+    "semantic_hash": "3cc024ec8e18ebdca5bbdb23dbfaed9a"
+  },
+  "swe101/languages&frameworks/javascript/react-native/iv-authentication.md": {
+    "mtime": 1781249588.4472742,
+    "ast_hash": "d2e16ba50dd94e5cc3d738c245b0aad3",
+    "semantic_hash": "d2e16ba50dd94e5cc3d738c245b0aad3"
+  },
+  "swe101/languages&frameworks/javascript/react-native/v-forms-and-validation.md": {
+    "mtime": 1781249577.454187,
+    "ast_hash": "e05434020bdcca997434175d1dfd379d",
+    "semantic_hash": "e05434020bdcca997434175d1dfd379d"
+  },
+  "swe101/languages&frameworks/javascript/react/i-overview.md": {
+    "mtime": 1781249579.1407673,
+    "ast_hash": "a33cab95291e3f238366c7d8e19f7472",
+    "semantic_hash": "a33cab95291e3f238366c7d8e19f7472"
+  },
+  "swe101/languages&frameworks/javascript/react/ii-project-setup-and-structure.md": {
+    "mtime": 1781244014.627572,
+    "ast_hash": "f86cc133a078c5098a38e1945a3ba895",
+    "semantic_hash": "f86cc133a078c5098a38e1945a3ba895"
+  },
+  "swe101/languages&frameworks/javascript/react/iii-rendering-and-server-requests.md": {
+    "mtime": 1781248015.1442854,
+    "ast_hash": "066682b19de7e7874bb131f4742726cd",
+    "semantic_hash": "066682b19de7e7874bb131f4742726cd"
+  },
+  "swe101/languages&frameworks/javascript/react/iv-authentication.md": {
+    "mtime": 1781242198.817356,
+    "ast_hash": "0045b76776120adc474af85aed255f1d",
+    "semantic_hash": "0045b76776120adc474af85aed255f1d"
+  },
+  "swe101/languages&frameworks/javascript/react/v-forms-and-validation.md": {
+    "mtime": 1781242209.4947858,
+    "ast_hash": "bda1b0efbf18b7554242db09f38e9af0",
+    "semantic_hash": "bda1b0efbf18b7554242db09f38e9af0"
+  },
+  "swe101/languages&frameworks/mermaid/i-overview.md": {
+    "mtime": 1783241922.2153275,
+    "ast_hash": "888cf38b86d000555996fd567e6c0a24",
+    "semantic_hash": "888cf38b86d000555996fd567e6c0a24"
+  },
+  "swe101/languages&frameworks/mermaid/ii-install-and-toolchain.md": {
+    "mtime": 1783241930.810733,
+    "ast_hash": "13d732aa0d9ee78a7e855583d607b668",
+    "semantic_hash": "13d732aa0d9ee78a7e855583d607b668"
+  },
+  "swe101/languages&frameworks/mermaid/iii-sequence-diagrams.md": {
+    "mtime": 1783241936.927396,
+    "ast_hash": "192c6934cb1d5abfa58cdb824b93faeb",
+    "semantic_hash": "192c6934cb1d5abfa58cdb824b93faeb"
+  },
+  "swe101/languages&frameworks/mermaid/iv-flowcharts-and-architecture.md": {
+    "mtime": 1783241941.3697414,
+    "ast_hash": "c68eab1d2f949fd82cf5b3304391e420",
+    "semantic_hash": "c68eab1d2f949fd82cf5b3304391e420"
+  },
+  "swe101/languages&frameworks/mermaid/v-class-state-and-er.md": {
+    "mtime": 1783241944.6472137,
+    "ast_hash": "768fc873d1de49c35969649a513333e8",
+    "semantic_hash": "768fc873d1de49c35969649a513333e8"
+  },
+  "swe101/languages&frameworks/mermaid/vi-docs-repos-and-ci.md": {
+    "mtime": 1783241948.8240633,
+    "ast_hash": "bf1de07d2dd5fe47ae1db5e8cb73c616",
+    "semantic_hash": "bf1de07d2dd5fe47ae1db5e8cb73c616"
+  },
+  "swe101/languages&frameworks/plantuml/i-overview.md": {
+    "mtime": 1780887281.315843,
+    "ast_hash": "ff6607e719eb5d2fef421677601535ab",
+    "semantic_hash": "ff6607e719eb5d2fef421677601535ab"
+  },
+  "swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md": {
+    "mtime": 1780887286.4206,
+    "ast_hash": "6aaf93b1e7e39d91aaf0d1946e3f4722",
+    "semantic_hash": "6aaf93b1e7e39d91aaf0d1946e3f4722"
+  },
+  "swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md": {
+    "mtime": 1780887293.5336528,
+    "ast_hash": "7ebc74a729e015309f1fbf49f7908504",
+    "semantic_hash": "7ebc74a729e015309f1fbf49f7908504"
+  },
+  "swe101/languages&frameworks/plantuml/iv-component-and-deployment.md": {
+    "mtime": 1780887301.4642613,
+    "ast_hash": "93e87682769a728af2326038aaae4188",
+    "semantic_hash": "93e87682769a728af2326038aaae4188"
+  },
+  "swe101/languages&frameworks/plantuml/v-class-activity-and-state.md": {
+    "mtime": 1780887307.5246587,
+    "ast_hash": "8a63bad1d94697c1578af62e944c8d83",
+    "semantic_hash": "8a63bad1d94697c1578af62e944c8d83"
+  },
+  "swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md": {
+    "mtime": 1780887323.1588562,
+    "ast_hash": "ec53df973efaa814debecaee235fa0a8",
+    "semantic_hash": "ec53df973efaa814debecaee235fa0a8"
+  },
+  "swe101/languages&frameworks/python/i-basics-and-syntax.md": {
+    "mtime": 1780824377.1550133,
+    "ast_hash": "5f5b5f9b98103f6c32fa21da08fce160",
+    "semantic_hash": "5f5b5f9b98103f6c32fa21da08fce160"
+  },
+  "swe101/languages&frameworks/python/ii-collections-and-iteration.md": {
+    "mtime": 1780824377.1570127,
+    "ast_hash": "4266379c2dbf059b7d1ba8586546d6e9",
+    "semantic_hash": "4266379c2dbf059b7d1ba8586546d6e9"
+  },
+  "swe101/languages&frameworks/python/iii-oop-modules-and-errors.md": {
+    "mtime": 1780824377.158012,
+    "ast_hash": "4e288868e6fc9550ae676646f42db820",
+    "semantic_hash": "4e288868e6fc9550ae676646f42db820"
+  },
+  "swe101/languages&frameworks/python/iv-types-testing-and-tooling.md": {
+    "mtime": 1780824377.160008,
+    "ast_hash": "fe95a9b1d071c4e893b9f6bec3e8685c",
+    "semantic_hash": "fe95a9b1d071c4e893b9f6bec3e8685c"
+  },
+  "swe101/languages&frameworks/python/v-file-i-o.md": {
+    "mtime": 1780824377.1615193,
+    "ast_hash": "119d3b993bb5a0f19fa594313883fbbf",
+    "semantic_hash": "119d3b993bb5a0f19fa594313883fbbf"
+  },
+  "swe101/languages&frameworks/python/vi-ai-and-ml-essentials.md": {
+    "mtime": 1780824377.163846,
+    "ast_hash": "b8d45fd4783d29b87c25759dc5ba55bd",
+    "semantic_hash": "b8d45fd4783d29b87c25759dc5ba55bd"
+  },
+  "swe101/languages&frameworks/rust/i-basics-and-toolchain.md": {
+    "mtime": 1780824377.1766212,
+    "ast_hash": "3240367623998de03c2f05b810743a8b",
+    "semantic_hash": "3240367623998de03c2f05b810743a8b"
+  },
+  "swe101/languages&frameworks/rust/ii-cargo-and-shareable-crates.md": {
+    "mtime": 1780824377.1786416,
+    "ast_hash": "7235606e5509165d0cdaa4fec7be1377",
+    "semantic_hash": "7235606e5509165d0cdaa4fec7be1377"
+  },
+  "swe101/languages&frameworks/rust/iii-learn-with-rustlings.md": {
+    "mtime": 1780824377.1796217,
+    "ast_hash": "2fd91c68eed814ebd2fe96206255a15a",
+    "semantic_hash": "2fd91c68eed814ebd2fe96206255a15a"
+  },
+  "swe101/languages&frameworks/rust/iv-async.md": {
+    "mtime": 1780824377.1806252,
+    "ast_hash": "7d98163eb76566d53424f3bde352e2d5",
+    "semantic_hash": "7d98163eb76566d53424f3bde352e2d5"
+  },
+  "swe101/languages&frameworks/zig/i-basics-and-toolchain.md": {
+    "mtime": 1781666629.7479382,
+    "ast_hash": "9660616d52ef9a014a3ef12270b47fa4",
+    "semantic_hash": "9660616d52ef9a014a3ef12270b47fa4"
+  },
+  "swe101/languages&frameworks/zig/ii-build-system-and-packages.md": {
+    "mtime": 1781666629.744038,
+    "ast_hash": "08b89514b92d8e265f57ee1585b085a7",
+    "semantic_hash": "08b89514b92d8e265f57ee1585b085a7"
+  },
+  "swe101/languages&frameworks/zig/iii-learn-with-ziglings.md": {
+    "mtime": 1781666629.7425172,
+    "ast_hash": "cbd894bd6044b3211b093dae2adb8622",
+    "semantic_hash": "cbd894bd6044b3211b093dae2adb8622"
+  },
+  "swe101/languages&frameworks/zig/iv-memory-comptime-and-c-interop.md": {
+    "mtime": 1781666629.7425172,
+    "ast_hash": "15e0e22d5e48a322d2950ae22bac6a35",
+    "semantic_hash": "15e0e22d5e48a322d2950ae22bac6a35"
+  },
+  "swe101/languages&frameworks/zig/v-mvc.md": {
+    "mtime": 1781666629.750129,
+    "ast_hash": "53bd8570c1a878574bc4e29a21031091",
+    "semantic_hash": "53bd8570c1a878574bc4e29a21031091"
+  },
+  "swe101/languages&frameworks/zig/vi-tls-and-deployment.md": {
+    "mtime": 1781666629.769507,
+    "ast_hash": "a46eade95fe45acc300d0245f8b964be",
+    "semantic_hash": "a46eade95fe45acc300d0245f8b964be"
+  },
+  "swe101/obsidian/i-overview.md": {
+    "mtime": 1783394555.671061,
+    "ast_hash": "d06b984520eef3c4d08ea8e7cbb9bd5d",
+    "semantic_hash": "d06b984520eef3c4d08ea8e7cbb9bd5d"
+  },
+  "swe101/obsidian/ii-install-and-vault-setup.md": {
+    "mtime": 1783339584.8145368,
+    "ast_hash": "fe39b1a7e2194d7429d83146a637e316",
+    "semantic_hash": "fe39b1a7e2194d7429d83146a637e316"
+  },
+  "swe101/obsidian/iii-markdown-and-editing.md": {
+    "mtime": 1783394586.1623623,
+    "ast_hash": "46e069c38df6ad997ba08c950ac8f608",
+    "semantic_hash": "46e069c38df6ad997ba08c950ac8f608"
+  },
+  "swe101/obsidian/iv-links-graph-and-tags.md": {
+    "mtime": 1783394580.9956794,
+    "ast_hash": "8ff1f86e4a12c81ab6cc159ff4601039",
+    "semantic_hash": "8ff1f86e4a12c81ab6cc159ff4601039"
+  },
+  "swe101/obsidian/v-plugins-and-customization.md": {
+    "mtime": 1783394567.349298,
+    "ast_hash": "a9ce4bd76872c8531148d8c14c4db2a8",
+    "semantic_hash": "a9ce4bd76872c8531148d8c14c4db2a8"
+  },
+  "swe101/obsidian/vi-git-sync-and-team-workflows.md": {
+    "mtime": 1783394569.5018382,
+    "ast_hash": "73efcb586e53429a3f2014f12968d86b",
+    "semantic_hash": "73efcb586e53429a3f2014f12968d86b"
+  },
+  "swe101/obsidian/vii-engineering-workflows.md": {
+    "mtime": 1783394571.8247423,
+    "ast_hash": "5a466ed5d8be5465d64879f580c1c145",
+    "semantic_hash": "5a466ed5d8be5465d64879f580c1c145"
+  },
+  "swe101/redis/i-overview.md": {
+    "mtime": 1781496348.8770962,
+    "ast_hash": "3ea99acbee627cc58cc110d7f112708d",
+    "semantic_hash": "3ea99acbee627cc58cc110d7f112708d"
+  },
+  "swe101/redis/ii-install-and-redis-cli.md": {
+    "mtime": 1780824377.16705,
+    "ast_hash": "bb7e15c69bfa3e4fe43f472bf404d42f",
+    "semantic_hash": "bb7e15c69bfa3e4fe43f472bf404d42f"
+  },
+  "swe101/redis/iii-data-structures-and-keys.md": {
+    "mtime": 1780824377.1680496,
+    "ast_hash": "e534309f7aa51276dd04d3ca0850bf75",
+    "semantic_hash": "e534309f7aa51276dd04d3ca0850bf75"
+  },
+  "swe101/redis/iv-patterns-and-use-cases.md": {
+    "mtime": 1781268366.967563,
+    "ast_hash": "eb9bdbcb48cb3c55ae0b75a00b454fb9",
+    "semantic_hash": "eb9bdbcb48cb3c55ae0b75a00b454fb9"
+  },
+  "swe101/redis/v-app-integration.md": {
+    "mtime": 1781268367.3041708,
+    "ast_hash": "155e5594628247b7176eb82ec3830eed",
+    "semantic_hash": "155e5594628247b7176eb82ec3830eed"
+  },
+  "swe101/redis/vi-operations-and-persistence.md": {
+    "mtime": 1780824377.1725748,
+    "ast_hash": "8d48abf87444ece191342b2307b0ab99",
+    "semantic_hash": "8d48abf87444ece191342b2307b0ab99"
+  },
+  "swe101/redis/vii-performance-and-optimizations.md": {
+    "mtime": 1780824377.1736262,
+    "ast_hash": "cb3e0dcea3d2282b8c2908c711c69e86",
+    "semantic_hash": "cb3e0dcea3d2282b8c2908c711c69e86"
+  },
+  "swe101/redis/viii-shared-sessions-across-apps.md": {
+    "mtime": 1781268849.3580594,
+    "ast_hash": "bdd76fe1b1e535d311e27ab41061dd4a",
+    "semantic_hash": "bdd76fe1b1e535d311e27ab41061dd4a"
+  },
+  "swe101/sysdesign/bottleneck-analysis/i-overview.md": {
+    "mtime": 1780824377.1843631,
+    "ast_hash": "38c96480988a8e38110900be80ffb2c1",
+    "semantic_hash": "38c96480988a8e38110900be80ffb2c1"
+  },
+  "swe101/sysdesign/bottleneck-analysis/ii-identifying-bottlenecks.md": {
+    "mtime": 1780824377.1853733,
+    "ast_hash": "dad7e9f7705e6334b765002d6871ba66",
+    "semantic_hash": "dad7e9f7705e6334b765002d6871ba66"
+  },
+  "swe101/sysdesign/bottleneck-analysis/iii-cpu-and-memory.md": {
+    "mtime": 1780824377.1863742,
+    "ast_hash": "ca63fabaacf9c7b35d3f6aaee5d388d3",
+    "semantic_hash": "ca63fabaacf9c7b35d3f6aaee5d388d3"
+  },
+  "swe101/sysdesign/bottleneck-analysis/iv-io-and-storage.md": {
+    "mtime": 1780824377.1873715,
+    "ast_hash": "7583dfb3d68eeb084d041a461604e3d6",
+    "semantic_hash": "7583dfb3d68eeb084d041a461604e3d6"
+  },
+  "swe101/sysdesign/bottleneck-analysis/v-network.md": {
+    "mtime": 1780824377.188374,
+    "ast_hash": "8da5c81649c322762eccdaf4d81d16c4",
+    "semantic_hash": "8da5c81649c322762eccdaf4d81d16c4"
+  },
+  "swe101/sysdesign/bottleneck-analysis/vi-database.md": {
+    "mtime": 1780897355.9683127,
+    "ast_hash": "8b06056f07a6464fcae5697a8ce52777",
+    "semantic_hash": "8b06056f07a6464fcae5697a8ce52777"
+  },
+  "swe101/sysdesign/bottleneck-analysis/vii-application-level.md": {
+    "mtime": 1780824377.191372,
+    "ast_hash": "9a1131c68ce977ba1e86f76039076571",
+    "semantic_hash": "9a1131c68ce977ba1e86f76039076571"
+  },
+  "swe101/sysdesign/bottleneck-analysis/viii-elimination-playbook.md": {
+    "mtime": 1780824377.1923957,
+    "ast_hash": "e9af73691671ddb06d8e2971cb232121",
+    "semantic_hash": "e9af73691671ddb06d8e2971cb232121"
+  },
+  "swe101/sysdesign/classic-designs/i-overview.md": {
+    "mtime": 1780824377.1964056,
+    "ast_hash": "1a7b8c57b018229313f358b406195897",
+    "semantic_hash": "1a7b8c57b018229313f358b406195897"
+  },
+  "swe101/sysdesign/classic-designs/ii-url-shortener.md": {
+    "mtime": 1780824377.1985357,
+    "ast_hash": "e5310579e8acbcf1a90e3ec45b728f5d",
+    "semantic_hash": "e5310579e8acbcf1a90e3ec45b728f5d"
+  },
+  "swe101/sysdesign/classic-designs/iii-news-feed-timeline.md": {
+    "mtime": 1780824377.199536,
+    "ast_hash": "9526059388438862bdcb6478f02f9621",
+    "semantic_hash": "9526059388438862bdcb6478f02f9621"
+  },
+  "swe101/sysdesign/classic-designs/iv-chat-realtime-messaging.md": {
+    "mtime": 1780824377.2005363,
+    "ast_hash": "31227089fa7a9afef00e424b729cf83d",
+    "semantic_hash": "31227089fa7a9afef00e424b729cf83d"
+  },
+  "swe101/sysdesign/classic-designs/v-video-streaming.md": {
+    "mtime": 1780824377.2020423,
+    "ast_hash": "9ae3ab1cf971927d61cce76eb2e03897",
+    "semantic_hash": "9ae3ab1cf971927d61cce76eb2e03897"
+  },
+  "swe101/sysdesign/classic-designs/vi-ride-sharing-location.md": {
+    "mtime": 1780824377.2025518,
+    "ast_hash": "a30208946ffe82f0b0cdea4424a44120",
+    "semantic_hash": "a30208946ffe82f0b0cdea4424a44120"
+  },
+  "swe101/sysdesign/classic-designs/vii-web-crawler.md": {
+    "mtime": 1780824377.2045598,
+    "ast_hash": "eee770999f24a6c13296a68930729f13",
+    "semantic_hash": "eee770999f24a6c13296a68930729f13"
+  },
+  "swe101/sysdesign/examples/i-overview.md": {
+    "mtime": 1780902096.340345,
+    "ast_hash": "ce54a23cd01b6acd7cc4c96d73b0c28b",
+    "semantic_hash": "ce54a23cd01b6acd7cc4c96d73b0c28b"
+  },
+  "swe101/sysdesign/examples/ii-ecommerce-checkout-saga.md": {
+    "mtime": 1780902100.1747663,
+    "ast_hash": "e1b6e1b0e8037bd17b8e22d8aad8adc3",
+    "semantic_hash": "e1b6e1b0e8037bd17b8e22d8aad8adc3"
+  },
+  "swe101/sysdesign/examples/iii-ecommerce-checkout-choreography.md": {
+    "mtime": 1780902100.411627,
+    "ast_hash": "d1bb3ec5aa6ae4013ba17dab6c610dd1",
+    "semantic_hash": "d1bb3ec5aa6ae4013ba17dab6c610dd1"
+  },
+  "swe101/sysdesign/examples/iv-ecommerce-checkout-local-acid.md": {
+    "mtime": 1780902042.3595595,
+    "ast_hash": "ea23562fc70395e7aa19209931f065ce",
+    "semantic_hash": "ea23562fc70395e7aa19209931f065ce"
+  },
+  "swe101/sysdesign/examples/ix-ecommerce-checkout-sharded.md": {
+    "mtime": 1780902080.5656343,
+    "ast_hash": "6e3308f568c4222cce1a4af280a43719",
+    "semantic_hash": "6e3308f568c4222cce1a4af280a43719"
+  },
+  "swe101/sysdesign/examples/v-ecommerce-checkout-transactional-outbox.md": {
+    "mtime": 1781258315.153108,
+    "ast_hash": "71ae8a9b2a396700605d8abbd99ea509",
+    "semantic_hash": "71ae8a9b2a396700605d8abbd99ea509"
+  },
+  "swe101/sysdesign/examples/vi-ecommerce-checkout-idempotency.md": {
+    "mtime": 1780902054.9451785,
+    "ast_hash": "60e42a58c9dd41e52361dee51a949978",
+    "semantic_hash": "60e42a58c9dd41e52361dee51a949978"
+  },
+  "swe101/sysdesign/examples/vii-product-catalog-cache-aside.md": {
+    "mtime": 1780902058.6982596,
+    "ast_hash": "3a4fd8a618790390a83a8d52e83728a7",
+    "semantic_hash": "3a4fd8a618790390a83a8d52e83728a7"
+  },
+  "swe101/sysdesign/examples/viii-order-search-cdc.md": {
+    "mtime": 1781250925.6029727,
+    "ast_hash": "5e5d13ba4c3d61ca964d431ae6ef8e03",
+    "semantic_hash": "5e5d13ba4c3d61ca964d431ae6ef8e03"
+  },
+  "swe101/sysdesign/examples/x-ecommerce-checkout-workflow-engine.md": {
+    "mtime": 1780902090.8240738,
+    "ast_hash": "a5103ed09b219af8c4969a0787f8f6ed",
+    "semantic_hash": "a5103ed09b219af8c4969a0787f8f6ed"
+  },
+  "swe101/sysdesign/i-core-building-blocks.md": {
+    "mtime": 1780897355.951313,
+    "ast_hash": "3c10adbe136b5ac9f4107c36a72fb406",
+    "semantic_hash": "3c10adbe136b5ac9f4107c36a72fb406"
+  },
+  "swe101/sysdesign/mem-memory-estimator.md": {
+    "mtime": 1780900622.073535,
+    "ast_hash": "5f0fbe99361cf67bbb518a1a3f7556d5",
+    "semantic_hash": "5f0fbe99361cf67bbb518a1a3f7556d5"
+  },
+  "swe101/sysdesign/scalable-patterns/i-overview.md": {
+    "mtime": 1780900775.8697226,
+    "ast_hash": "deb50576e25038d3859d031ce72ee920",
+    "semantic_hash": "deb50576e25038d3859d031ce72ee920"
+  },
+  "swe101/sysdesign/scalable-patterns/ii-api-design.md": {
+    "mtime": 1780824377.2135842,
+    "ast_hash": "a7d5ca6c8036970c1e403f1857ef09f8",
+    "semantic_hash": "a7d5ca6c8036970c1e403f1857ef09f8"
+  },
+  "swe101/sysdesign/scalable-patterns/iii-message-queues-and-async.md": {
+    "mtime": 1780902107.409582,
+    "ast_hash": "dd595433f19f773d52e6cfa91034e1d4",
+    "semantic_hash": "dd595433f19f773d52e6cfa91034e1d4"
+  },
+  "swe101/sysdesign/scalable-patterns/iv-rate-limiting.md": {
+    "mtime": 1780824377.215394,
+    "ast_hash": "10314a705aba689f420a3db0d4abf7f2",
+    "semantic_hash": "10314a705aba689f420a3db0d4abf7f2"
+  },
+  "swe101/sysdesign/scalable-patterns/ix-database-sharding.md": {
+    "mtime": 1780902108.102695,
+    "ast_hash": "dd4c3f5866cc02fffc0fbbbeeaa8f67f",
+    "semantic_hash": "dd4c3f5866cc02fffc0fbbbeeaa8f67f"
+  },
+  "swe101/sysdesign/scalable-patterns/v-search-systems.md": {
+    "mtime": 1780824377.2163942,
+    "ast_hash": "5abf35ef82fa86cd2e77d662f4a2f32f",
+    "semantic_hash": "5abf35ef82fa86cd2e77d662f4a2f32f"
+  },
+  "swe101/sysdesign/scalable-patterns/vi-cdn-and-edge-caching.md": {
+    "mtime": 1780824377.217391,
+    "ast_hash": "086217caf6c900389110b88ddec4f4f7",
+    "semantic_hash": "086217caf6c900389110b88ddec4f4f7"
+  },
+  "swe101/sysdesign/scalable-patterns/vii-distributed-transactions.md": {
+    "mtime": 1780902101.112281,
+    "ast_hash": "3ec3b13d30a144ad46b408c462e4c6f2",
+    "semantic_hash": "3ec3b13d30a144ad46b408c462e4c6f2"
+  },
+  "swe101/sysdesign/scalable-patterns/viii-observability-at-scale.md": {
+    "mtime": 1780824377.2193916,
+    "ast_hash": "3042f3bd230694b4fbaa98b73279458e",
+    "semantic_hash": "3042f3bd230694b4fbaa98b73279458e"
+  }
+}
