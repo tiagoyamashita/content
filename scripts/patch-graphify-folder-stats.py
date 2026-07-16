@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Inject top-folder percentage breakdown into graphify-out/graph.html.
+"""Inject top-folder % panel + click-to-filter into graphify-out/graph.html.
 
-Reads node `source_file` paths from the HTML (or graph.json), groups by the
-first curriculum track folder (ai101, swe101, …), and adds a sidebar panel:
-
-  Top folders
-  SWE101  ████████░░  34.2%
+Clicking a top folder shows only that track's nodes plus one-hop linked pages.
 
 Usage:
   python scripts/patch-graphify-folder-stats.py
-  python scripts/patch-graphify-folder-stats.py --html graphify-out/graph.html
+  # always safe to re-run after: graphify export html
 """
 
 from __future__ import annotations
@@ -70,6 +66,13 @@ PALETTE = [
     "#F1A340",
 ]
 
+MARK_CSS_START = "/* graphify-folder-stats:css */"
+MARK_CSS_END = "/* /graphify-folder-stats:css */"
+MARK_PANEL_START = "<!-- graphify-folder-stats:panel -->"
+MARK_PANEL_END = "<!-- /graphify-folder-stats:panel -->"
+MARK_JS_START = "<!-- graphify-folder-stats:js -->"
+MARK_JS_END = "<!-- /graphify-folder-stats:js -->"
+
 
 def track_of(source_file: str) -> str:
     parts = [p for p in source_file.replace("\\", "/").split("/") if p and p not in (".", "..")]
@@ -96,14 +99,9 @@ def title_of(track: str) -> str:
 def load_source_files(html: str, graph_path: Path) -> list[str]:
     if graph_path.is_file():
         data = json.loads(graph_path.read_text(encoding="utf-8"))
-        files = []
-        for n in data.get("nodes", []):
-            sf = n.get("source_file")
-            if sf:
-                files.append(sf)
+        files = [n["source_file"] for n in data.get("nodes", []) if n.get("source_file")]
         if files:
             return files
-
     m = re.search(r"const RAW_NODES = (\[.*?\]);\s*\nconst RAW_EDGES", html, re.S)
     if not m:
         raise SystemExit("error: could not find RAW_NODES in HTML and no graph.json")
@@ -131,208 +129,279 @@ def folder_stats(source_files: list[str]) -> list[dict]:
 def build_panel_html(rows: list[dict], total: int) -> str:
     items = []
     for r in rows:
-        pct = r["percent"]
         items.append(
-            f"""    <div class="folder-row" data-track="{r['id']}" role="button" tabindex="0"
-         title="Show {r['label']} nodes and linked pages">
+            f"""    <button type="button" class="folder-row" data-track="{r["id"]}"
+            title="Show {r["label"]} + linked pages ({r["count"]} nodes)">
       <div class="folder-head">
-        <span class="folder-dot" style="background:{r['color']}"></span>
-        <span class="folder-label">{r['label']}</span>
-        <span class="folder-pct">{pct}%</span>
+        <span class="folder-dot" style="background:{r["color"]}"></span>
+        <span class="folder-label">{r["label"]}</span>
+        <span class="folder-pct">{r["percent"]}%</span>
       </div>
-      <div class="folder-bar"><div class="folder-fill" style="width:{pct}%;background:{r['color']}"></div></div>
-    </div>"""
+      <div class="folder-bar"><div class="folder-fill" style="width:{r["percent"]}%;background:{r["color"]}"></div></div>
+    </button>"""
         )
     body = "\n".join(items)
-    return f"""  <div id="folder-stats-wrap">
+    return f"""{MARK_PANEL_START}
+  <div id="folder-stats-wrap">
     <h3>Top folders</h3>
-    <div class="folder-meta">{total} nodes by curriculum track · click a folder to focus it + linked pages</div>
+    <div class="folder-meta">{total} nodes · click a folder to show it and linked pages</div>
     <button type="button" id="folder-show-all" class="folder-show-all">Show all</button>
     <div id="folder-stats">
 {body}
     </div>
   </div>
+{MARK_PANEL_END}
 """
 
 
-CSS = """
-  #folder-stats-wrap { padding: 12px 14px; border-bottom: 1px solid #2a2a4e; max-height: 42vh; overflow-y: auto; }
-  #folder-stats-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .folder-meta { font-size: 11px; color: #666; margin-bottom: 8px; line-height: 1.35; }
-  .folder-show-all {
+CSS = f"""
+  {MARK_CSS_START}
+  #folder-stats-wrap {{ padding: 12px 14px; border-bottom: 1px solid #2a2a4e; max-height: 42vh; overflow-y: auto; }}
+  #folder-stats-wrap h3 {{ font-size: 13px; color: #aaa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }}
+  .folder-meta {{ font-size: 11px; color: #666; margin-bottom: 8px; line-height: 1.35; }}
+  .folder-show-all {{
     display: none; width: 100%; margin-bottom: 10px; padding: 6px 8px;
     background: #0f0f1a; border: 1px solid #3a3a5e; color: #ccc;
     border-radius: 6px; cursor: pointer; font-size: 12px;
-  }
-  .folder-show-all:hover { border-color: #4E79A7; color: #fff; }
-  .folder-show-all.visible { display: block; }
-  .folder-row { margin-bottom: 8px; cursor: pointer; padding: 4px 4px 6px; border-radius: 6px; }
-  .folder-row:hover { background: #2a2a4e; }
-  .folder-row.active { background: #243044; outline: 1px solid #3a5a7a; }
-  .folder-row.dimmed { opacity: 0.4; }
-  .folder-head { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 3px; }
-  .folder-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .folder-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .folder-pct { color: #9aa; font-variant-numeric: tabular-nums; font-size: 11px; }
-  .folder-bar { height: 6px; background: #0f0f1a; border-radius: 3px; overflow: hidden; }
-  .folder-fill { height: 100%; border-radius: 3px; opacity: 0.85; }
+  }}
+  .folder-show-all:hover {{ border-color: #4E79A7; color: #fff; }}
+  .folder-show-all.visible {{ display: block; }}
+  button.folder-row {{
+    display: block; width: 100%; margin: 0 0 8px; padding: 6px 6px 8px;
+    background: transparent; border: 1px solid transparent; border-radius: 6px;
+    color: inherit; text-align: left; cursor: pointer; font: inherit;
+  }}
+  button.folder-row:hover {{ background: #2a2a4e; }}
+  button.folder-row.active {{ background: #243044; border-color: #3a5a7a; }}
+  button.folder-row.dimmed {{ opacity: 0.35; }}
+  .folder-head {{ display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 3px; }}
+  .folder-dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+  .folder-label {{ flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+  .folder-pct {{ color: #9aa; font-variant-numeric: tabular-nums; font-size: 11px; }}
+  .folder-bar {{ height: 6px; background: #0f0f1a; border-radius: 3px; overflow: hidden; }}
+  .folder-fill {{ height: 100%; border-radius: 3px; opacity: 0.85; }}
+  {MARK_CSS_END}
 """
 
-FOLDER_FILTER_JS = r"""
-<script id="folder-filter-js">
-(function () {
-  const KNOWN = new Set([
-    "ai101","swe101","sre101","cs101","cybersecurity","digital-marketing",
-    "cryptocurrency101","startups","food","languages","getting-started"
-  ]);
-  const TITLES = {
-    "ai101":"AI101","swe101":"SWE101","sre101":"SRE101","cs101":"CS101",
-    "cybersecurity":"Cybersecurity","digital-marketing":"Digital marketing",
-    "cryptocurrency101":"Cryptocurrency101","startups":"Startups","food":"Food",
-    "languages":"Languages","getting-started":"Getting started",
-    ".obsidian":"Obsidian config","misc":"Other"
-  };
-
-  function trackOf(sf) {
+# JS uses only double-quoted strings for path normalize to avoid regex escape bugs.
+FOLDER_FILTER_JS = f"""
+{MARK_JS_START}
+<script>
+(function () {{
+  function trackOf(sf) {{
     if (!sf) return "misc";
-    const parts = String(sf).replace(/\\/g, "/").split("/").filter(Boolean);
-    for (let i = 0; i < parts.length; i++) {
-      const pl = parts[i].toLowerCase();
-      if (KNOWN.has(pl)) return pl;
-      if ((pl === "en" || pl === "jp") && i + 1 < parts.length) {
-        const nxt = parts[i + 1].toLowerCase();
-        if (KNOWN.has(nxt)) return nxt;
-      }
+    var s = String(sf).split("\\\\").join("/");
+    var parts = s.split("/").filter(Boolean);
+    var known = {{
+      ai101:1, swe101:1, sre101:1, cs101:1, cybersecurity:1,
+      "digital-marketing":1, cryptocurrency101:1, startups:1, food:1,
+      languages:1, "getting-started":1
+    }};
+    for (var i = 0; i < parts.length; i++) {{
+      var pl = parts[i].toLowerCase();
+      if (known[pl]) return pl;
+      if ((pl === "en" || pl === "jp") && i + 1 < parts.length) {{
+        var nxt = parts[i + 1].toLowerCase();
+        if (known[nxt]) return nxt;
+      }}
       if (pl === ".obsidian") return ".obsidian";
-    }
-    for (const p of parts) {
-      const pl = p.toLowerCase();
-      if (pl !== "src" && pl !== "content" && !pl.startsWith(".")) return pl;
-    }
+    }}
+    for (var j = 0; j < parts.length; j++) {{
+      var p = parts[j].toLowerCase();
+      if (p !== "src" && p !== "content" && p.charAt(0) !== ".") return p;
+    }}
     return "misc";
-  }
+  }}
 
-  function titleOf(t) { return TITLES[t] || t; }
+  function titleOf(t) {{
+    var map = {{
+      ai101:"AI101", swe101:"SWE101", sre101:"SRE101", cs101:"CS101",
+      cybersecurity:"Cybersecurity", "digital-marketing":"Digital marketing",
+      cryptocurrency101:"Cryptocurrency101", startups:"Startups", food:"Food",
+      languages:"Languages", "getting-started":"Getting started",
+      ".obsidian":"Obsidian config", misc:"Other"
+    }};
+    return map[t] || t;
+  }}
 
-  // Build adjacency from RAW_EDGES
-  const adj = new Map();
-  function addEdge(a, b) {
-    if (!adj.has(a)) adj.set(a, new Set());
-    if (!adj.has(b)) adj.set(b, new Set());
-    adj.get(a).add(b);
-    adj.get(b).add(a);
-  }
-  for (const e of RAW_EDGES) addEdge(e.from, e.to);
+  if (typeof RAW_NODES === "undefined" || typeof nodesDS === "undefined") {{
+    console.error("[folder-stats] graphify datasets not ready");
+    return;
+  }}
 
-  let activeTrack = null;
-  const showAllBtn = document.getElementById("folder-show-all");
-  const rows = [...document.querySelectorAll(".folder-row[data-track]")];
+  var adj = {{}};
+  function link(a, b) {{
+    if (!adj[a]) adj[a] = [];
+    if (!adj[b]) adj[b] = [];
+    adj[a].push(b);
+    adj[b].push(a);
+  }}
+  for (var ei = 0; ei < RAW_EDGES.length; ei++) {{
+    link(RAW_EDGES[ei].from, RAW_EDGES[ei].to);
+  }}
 
-  function setInfo(html) {
-    const el = document.getElementById("info-content");
+  var activeTrack = null;
+  var wrap = document.getElementById("folder-stats-wrap");
+  var showAllBtn = document.getElementById("folder-show-all");
+
+  function setInfo(html) {{
+    var el = document.getElementById("info-content");
     if (el) el.innerHTML = html;
-  }
+  }}
 
-  function clearFolderFilter() {
+  function nodeUpdates(predicateVisible) {{
+    var out = [];
+    for (var i = 0; i < RAW_NODES.length; i++) {{
+      var n = RAW_NODES[i];
+      var hide = !predicateVisible(n);
+      if (typeof hiddenCommunities !== "undefined" && hiddenCommunities.has(n.community)) {{
+        hide = true;
+      }}
+      out.push({{ id: n.id, hidden: hide }});
+    }}
+    return out;
+  }}
+
+  function edgeUpdates(visibleIds) {{
+    var out = [];
+    for (var i = 0; i < RAW_EDGES.length; i++) {{
+      var e = RAW_EDGES[i];
+      var show = visibleIds[e.from] && visibleIds[e.to];
+      out.push({{ id: i, hidden: !show }});
+    }}
+    return out;
+  }}
+
+  function clearFolderFilter() {{
     activeTrack = null;
-    rows.forEach(r => { r.classList.remove("active", "dimmed"); });
+    var rows = wrap ? wrap.querySelectorAll(".folder-row") : [];
+    for (var i = 0; i < rows.length; i++) {{
+      rows[i].classList.remove("active", "dimmed");
+    }}
     if (showAllBtn) showAllBtn.classList.remove("visible");
-    const updates = RAW_NODES.map(n => ({
-      id: n.id,
-      hidden: hiddenCommunities.has(n.community),
-    }));
-    nodesDS.update(updates);
-    if (typeof network !== "undefined" && network.fit) {
-      network.fit({ animation: true });
-    }
-    setInfo('<span class="empty">Click a node to inspect it</span>');
-  }
 
-  function focusFolder(track) {
-    if (activeTrack === track) {
+    nodesDS.update(nodeUpdates(function () {{ return true; }}));
+    if (typeof edgesDS !== "undefined") {{
+      var all = {{}};
+      for (var i = 0; i < RAW_NODES.length; i++) all[RAW_NODES[i].id] = true;
+      edgesDS.update(edgeUpdates(all));
+    }}
+    if (typeof network !== "undefined") network.fit({{ animation: true }});
+    setInfo('<span class="empty">Click a node to inspect it</span>');
+  }}
+
+  function focusFolder(track) {{
+    if (activeTrack === track) {{
       clearFolderFilter();
       return;
-    }
+    }}
     activeTrack = track;
 
-    const inFolder = new Set();
-    for (const n of RAW_NODES) {
-      if (trackOf(n.source_file) === track) inFolder.add(n.id);
-    }
+    var inFolder = {{}};
+    var inCount = 0;
+    for (var i = 0; i < RAW_NODES.length; i++) {{
+      var n = RAW_NODES[i];
+      if (trackOf(n.source_file) === track) {{
+        inFolder[n.id] = true;
+        inCount++;
+      }}
+    }}
 
-    // Include 1-hop linked neighbors (pages linked to/from this folder)
-    const visible = new Set(inFolder);
-    for (const id of inFolder) {
-      const neighbors = adj.get(id);
-      if (!neighbors) continue;
-      for (const nb of neighbors) visible.add(nb);
-    }
+    var visible = {{}};
+    for (var id in inFolder) {{
+      if (!Object.prototype.hasOwnProperty.call(inFolder, id)) continue;
+      visible[id] = true;
+      var nbs = adj[id] || [];
+      for (var k = 0; k < nbs.length; k++) visible[nbs[k]] = true;
+    }}
 
-    const linkedOnly = [...visible].filter(id => !inFolder.has(id)).length;
+    var linkedOnly = 0;
+    for (var vid in visible) {{
+      if (!Object.prototype.hasOwnProperty.call(visible, vid)) continue;
+      if (!inFolder[vid]) linkedOnly++;
+    }}
 
-    rows.forEach(r => {
-      const t = r.getAttribute("data-track");
-      r.classList.toggle("active", t === track);
-      r.classList.toggle("dimmed", t !== track);
-    });
+    var rows = wrap ? wrap.querySelectorAll(".folder-row") : [];
+    for (var r = 0; r < rows.length; r++) {{
+      var t = rows[r].getAttribute("data-track");
+      rows[r].classList.toggle("active", t === track);
+      rows[r].classList.toggle("dimmed", t !== track);
+    }}
     if (showAllBtn) showAllBtn.classList.add("visible");
 
-    const updates = RAW_NODES.map(n => ({
-      id: n.id,
-      // Respect community toggles too
-      hidden: !visible.has(n.id) || hiddenCommunities.has(n.community),
-    }));
-    nodesDS.update(updates);
+    nodesDS.update(nodeUpdates(function (n) {{ return !!visible[n.id]; }}));
+    if (typeof edgesDS !== "undefined") edgesDS.update(edgeUpdates(visible));
 
-    const fitIds = [...visible].filter(id => {
-      const n = nodesDS.get(id);
-      return n && !n.hidden;
-    });
-    if (fitIds.length && typeof network !== "undefined") {
-      network.fit({ nodes: fitIds, animation: true });
-    }
+    var fitIds = [];
+    for (var fid in visible) {{
+      if (!Object.prototype.hasOwnProperty.call(visible, fid)) continue;
+      var node = nodesDS.get(fid);
+      if (node && !node.hidden) fitIds.push(fid);
+    }}
+    if (fitIds.length && typeof network !== "undefined") {{
+      network.fit({{ nodes: fitIds, animation: true }});
+    }}
 
-    setInfo(`
-      <div class="field"><b>${titleOf(track)}</b></div>
-      <div class="field">${inFolder.size} nodes in folder</div>
-      <div class="field">${linkedOnly} linked pages outside folder</div>
-      <div class="field" style="color:#888;margin-top:6px;font-size:11px">Click the folder again or Show all to reset</div>
-    `);
-  }
+    setInfo(
+      "<div class=\\"field\\"><b>" + titleOf(track) + "</b></div>" +
+      "<div class=\\"field\\">" + inCount + " nodes in folder</div>" +
+      "<div class=\\"field\\">" + linkedOnly + " linked pages outside folder</div>" +
+      "<div class=\\"field\\" style=\\"color:#888;margin-top:6px;font-size:11px\\">Click again or Show all to reset</div>"
+    );
+  }}
 
-  rows.forEach(row => {
-    row.addEventListener("click", () => focusFolder(row.getAttribute("data-track")));
-    row.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        focusFolder(row.getAttribute("data-track"));
-      }
-    });
-  });
-  if (showAllBtn) showAllBtn.addEventListener("click", clearFolderFilter);
+  if (wrap) {{
+    wrap.addEventListener("click", function (ev) {{
+      var btn = ev.target.closest ? ev.target.closest(".folder-row") : null;
+      if (!btn || !wrap.contains(btn)) return;
+      var track = btn.getAttribute("data-track");
+      if (track) focusFolder(track);
+    }});
+  }}
+  if (showAllBtn) {{
+    showAllBtn.addEventListener("click", function (ev) {{
+      ev.stopPropagation();
+      clearFolderFilter();
+    }});
+  }}
 
-  // Expose for debugging
   window.focusGraphifyFolder = focusFolder;
   window.clearGraphifyFolderFilter = clearFolderFilter;
-})();
+  console.info("[folder-stats] ready — click a Top folders row to filter");
+}})();
 </script>
+{MARK_JS_END}
 """
 
 
-def patch_html(html: str, panel: str) -> str:
-    # Remove previous injections if re-run
+def strip_previous(html: str) -> str:
     html = re.sub(
-        r"\s*/\* folder-stats-css \*/.*?/\* /folder-stats-css \*/\s*",
-        "\n",
+        re.escape(MARK_CSS_START) + r".*?" + re.escape(MARK_CSS_END),
+        "",
         html,
         count=1,
         flags=re.S,
     )
     html = re.sub(
-        r'\n?\s*<div id="folder-stats-wrap">[\s\S]*?<div id="folder-stats">[\s\S]*?</div>\s*</div>\s*',
-        "\n",
+        re.escape(MARK_PANEL_START) + r".*?" + re.escape(MARK_PANEL_END),
+        "",
         html,
         count=1,
+        flags=re.S,
+    )
+    html = re.sub(
+        re.escape(MARK_JS_START) + r".*?" + re.escape(MARK_JS_END),
+        "",
+        html,
+        count=1,
+        flags=re.S,
+    )
+    # Legacy leftovers from earlier broken patches
+    html = re.sub(
+        r"\s*/\* folder-stats-css \*/.*?/\* /folder-stats-css \*/\s*",
+        "\n",
+        html,
+        flags=re.S,
     )
     html = re.sub(
         r'\s*<script id="folder-filter-js">[\s\S]*?</script>\s*',
@@ -340,29 +409,31 @@ def patch_html(html: str, panel: str) -> str:
         html,
         count=1,
     )
+    return html
 
-    html = html.replace(
-        "</style>",
-        f"  /* folder-stats-css */{CSS}  /* /folder-stats-css */\n</style>",
-        1,
-    )
 
-    if '<div id="legend-wrap">' in html:
-        html = html.replace(
-            '<div id="legend-wrap">',
-            panel + "  <div id=\"legend-wrap\">",
-            1,
-        )
-    elif '<div id="stats">' in html:
-        html = html.replace('<div id="stats">', panel + '  <div id="stats">', 1)
-    else:
-        raise SystemExit("error: could not find sidebar insertion point")
+def patch_html(html: str, panel: str) -> str:
+    html = strip_previous(html)
 
-    # Inject filter JS after network is created (before </body>)
-    if "</body>" in html:
-        html = html.replace("</body>", FOLDER_FILTER_JS + "\n</body>", 1)
-    else:
-        html += FOLDER_FILTER_JS
+    if "</style>" not in html:
+        raise SystemExit("error: no </style> in HTML")
+    html = html.replace("</style>", CSS + "\n</style>", 1)
+
+    needle = '<div id="legend-wrap">'
+    if needle not in html:
+        raise SystemExit("error: #legend-wrap not found — refusing to patch broken HTML")
+    html = html.replace(needle, panel + "\n  " + needle, 1)
+
+    if "</body>" not in html:
+        raise SystemExit("error: no </body>")
+    html = html.replace("</body>", FOLDER_FILTER_JS + "\n</body>", 1)
+
+    # Sanity: sidebar must still contain legend-wrap
+    side = re.search(r'<div id="sidebar">([\s\S]*?)</div>\s*<script>', html)
+    if not side or 'id="legend-wrap"' not in side.group(1):
+        raise SystemExit("error: patch would break sidebar structure — aborted write")
+    if 'id="folder-stats-wrap"' not in side.group(1):
+        raise SystemExit("error: folder panel not inside sidebar — aborted write")
 
     return html
 
@@ -385,12 +456,15 @@ def main() -> int:
     patched = patch_html(html, panel)
     args.html.write_text(patched, encoding="utf-8")
 
-    print(f"Patched {args.html.relative_to(REPO_ROOT)} — click a top folder to focus it + linked pages")
-    for r in rows[:12]:
+    # Verify structure after write
+    check = args.html.read_text(encoding="utf-8")
+    side = re.search(r'<div id="sidebar">([\s\S]*?)</div>\s*<script>', check)
+    ok = bool(side and "folder-stats-wrap" in side.group(1) and "legend-wrap" in side.group(1))
+    print(f"Patched {args.html.relative_to(REPO_ROOT)} — sidebar OK={ok}")
+    print("Click a Top folders button to filter that track + linked pages.")
+    for r in rows[:8]:
         print(f"  {r['percent']:5.1f}%  {r['label']} ({r['count']})")
-    if len(rows) > 12:
-        print(f"  … +{len(rows) - 12} more")
-    return 0
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":
