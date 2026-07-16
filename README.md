@@ -144,7 +144,7 @@ Python utilities under **`scripts/`** (stdlib + optional deps; run from repo roo
 |--------|---------|
 | **`generate-en-mindmap.py`** | One Mermaid mindmap per `src/content/en/` track → `scripts/output/en-mindmaps/` |
 | **`linkify-content-refs.py`** | Turn bare `` `path/to/note.md` `` references into markdown links |
-| **`build-content-graph.py`** | Export note graph / cluster JSON to `scripts/output/` |
+| **`build-content-graph.py`** | Obsidian-style note graph: nodes from frontmatter `subtitle`/`group`, edges from markdown + `[[wikilinks]]` → JSON + interactive HTML |
 | **`translate-content-ja.py`** | Translate English prose to Japanese under `src/content/jp/` |
 | **`migrate-ai-applied.py`** | One-off migration helpers for AI101 folder moves |
 | **`restore-content-en.py`** | Restore / repair English content from backups |
@@ -154,8 +154,14 @@ Examples:
 ```bash
 python scripts/generate-en-mindmap.py
 python scripts/linkify-content-refs.py
-python scripts/build-content-graph.py --format both --locale en
+python scripts/build-content-graph.py --format both --html --locale en
 ```
+
+Open the interactive graph in a browser:
+
+`scripts/output/note-links-graph.html`
+
+(One node per note; label = frontmatter **`subtitle`**; color by track; edges = relative `.md` links and wikilinks.)
 
 ## Contributing
 

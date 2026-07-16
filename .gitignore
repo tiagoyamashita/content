@@ -3,3 +3,7 @@
 # Cursor skill/hook runtime logs
 .cursor/skills/*/logs/
 .cursor/hooks/logs/
+
+__pycache__/
+*.pyc
+scripts/__pycache__/
