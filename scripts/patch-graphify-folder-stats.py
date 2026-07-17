@@ -272,6 +272,37 @@ FOLDER_FILTER_JS = f"""
     return out;
   }}
 
+  /** Community id → node count for nodes whose source_file is in `track`. */
+  function communitiesInTrack(track) {{
+    var cids = {{}};
+    for (var i = 0; i < RAW_NODES.length; i++) {{
+      var n = RAW_NODES[i];
+      if (trackOf(n.source_file) !== track) continue;
+      cids[n.community] = (cids[n.community] || 0) + 1;
+    }}
+    return cids;
+  }}
+
+  /** Hide Communities legend rows that have no nodes in the active folder. */
+  function syncLegendToFolder(track) {{
+    if (typeof LEGEND === "undefined") return;
+    var legendEl = document.getElementById("legend");
+    if (!legendEl) return;
+    var items = legendEl.querySelectorAll(".legend-item");
+    var cids = track ? communitiesInTrack(track) : null;
+    for (var i = 0; i < LEGEND.length; i++) {{
+      var item = items[i];
+      if (!item) continue;
+      var cid = LEGEND[i].cid;
+      var show = !cids || !!cids[cid];
+      item.style.display = show ? "" : "none";
+      var countEl = item.querySelector(".legend-count");
+      if (countEl) {{
+        countEl.textContent = cids ? String(cids[cid] || 0) : String(LEGEND[i].count);
+      }}
+    }}
+  }}
+
   function clearFolderFilter() {{
     activeTrack = null;
     var rows = wrap ? wrap.querySelectorAll(".folder-row") : [];
@@ -279,6 +310,7 @@ FOLDER_FILTER_JS = f"""
       rows[i].classList.remove("active", "dimmed");
     }}
     if (showAllBtn) showAllBtn.classList.remove("visible");
+    syncLegendToFolder(null);
 
     nodesDS.update(nodeUpdates(function () {{ return true; }}));
     if (typeof edgesDS !== "undefined") {{
@@ -328,6 +360,7 @@ FOLDER_FILTER_JS = f"""
       rows[r].classList.toggle("dimmed", t !== track);
     }}
     if (showAllBtn) showAllBtn.classList.add("visible");
+    syncLegendToFolder(track);
 
     nodesDS.update(nodeUpdates(function (n) {{ return !!visible[n.id]; }}));
     if (typeof edgesDS !== "undefined") edgesDS.update(edgeUpdates(visible));
@@ -342,10 +375,12 @@ FOLDER_FILTER_JS = f"""
       network.fit({{ nodes: fitIds, animation: true }});
     }}
 
+    var communityCount = Object.keys(communitiesInTrack(track)).length;
     setInfo(
       "<div class=\\"field\\"><b>" + titleOf(track) + "</b></div>" +
       "<div class=\\"field\\">" + inCount + " nodes in folder</div>" +
       "<div class=\\"field\\">" + linkedOnly + " linked pages outside folder</div>" +
+      "<div class=\\"field\\">" + communityCount + " communities in folder</div>" +
       "<div class=\\"field\\" style=\\"color:#888;margin-top:6px;font-size:11px\\">Click again or Show all to reset</div>"
     );
   }}

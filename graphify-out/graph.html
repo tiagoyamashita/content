@@ -44,6 +44,9 @@
   #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
   #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
 
+  
+
+
   /* graphify-folder-stats:css */
   #folder-stats-wrap { padding: 12px 14px; border-bottom: 1px solid #2a2a4e; max-height: 42vh; overflow-y: auto; }
   #folder-stats-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -84,6 +87,8 @@
     <h3>Node Info</h3>
     <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
   </div>
+  
+
   <!-- graphify-folder-stats:panel -->
   <div id="folder-stats-wrap">
     <h3>Top folders</h3>
@@ -450,6 +455,9 @@ network.on('afterDrawing', function(ctx) {
 });
 </script>
 
+
+
+
 <!-- graphify-folder-stats:js -->
 <script>
 (function () {
@@ -537,6 +545,37 @@ network.on('afterDrawing', function(ctx) {
     return out;
   }
 
+  /** Community id → node count for nodes whose source_file is in `track`. */
+  function communitiesInTrack(track) {
+    var cids = {};
+    for (var i = 0; i < RAW_NODES.length; i++) {
+      var n = RAW_NODES[i];
+      if (trackOf(n.source_file) !== track) continue;
+      cids[n.community] = (cids[n.community] || 0) + 1;
+    }
+    return cids;
+  }
+
+  /** Hide Communities legend rows that have no nodes in the active folder. */
+  function syncLegendToFolder(track) {
+    if (typeof LEGEND === "undefined") return;
+    var legendEl = document.getElementById("legend");
+    if (!legendEl) return;
+    var items = legendEl.querySelectorAll(".legend-item");
+    var cids = track ? communitiesInTrack(track) : null;
+    for (var i = 0; i < LEGEND.length; i++) {
+      var item = items[i];
+      if (!item) continue;
+      var cid = LEGEND[i].cid;
+      var show = !cids || !!cids[cid];
+      item.style.display = show ? "" : "none";
+      var countEl = item.querySelector(".legend-count");
+      if (countEl) {
+        countEl.textContent = cids ? String(cids[cid] || 0) : String(LEGEND[i].count);
+      }
+    }
+  }
+
   function clearFolderFilter() {
     activeTrack = null;
     var rows = wrap ? wrap.querySelectorAll(".folder-row") : [];
@@ -544,6 +583,7 @@ network.on('afterDrawing', function(ctx) {
       rows[i].classList.remove("active", "dimmed");
     }
     if (showAllBtn) showAllBtn.classList.remove("visible");
+    syncLegendToFolder(null);
 
     nodesDS.update(nodeUpdates(function () { return true; }));
     if (typeof edgesDS !== "undefined") {
@@ -593,6 +633,7 @@ network.on('afterDrawing', function(ctx) {
       rows[r].classList.toggle("dimmed", t !== track);
     }
     if (showAllBtn) showAllBtn.classList.add("visible");
+    syncLegendToFolder(track);
 
     nodesDS.update(nodeUpdates(function (n) { return !!visible[n.id]; }));
     if (typeof edgesDS !== "undefined") edgesDS.update(edgeUpdates(visible));
@@ -607,10 +648,12 @@ network.on('afterDrawing', function(ctx) {
       network.fit({ nodes: fitIds, animation: true });
     }
 
+    var communityCount = Object.keys(communitiesInTrack(track)).length;
     setInfo(
       "<div class=\"field\"><b>" + titleOf(track) + "</b></div>" +
       "<div class=\"field\">" + inCount + " nodes in folder</div>" +
       "<div class=\"field\">" + linkedOnly + " linked pages outside folder</div>" +
+      "<div class=\"field\">" + communityCount + " communities in folder</div>" +
       "<div class=\"field\" style=\"color:#888;margin-top:6px;font-size:11px\">Click again or Show all to reset</div>"
     );
   }
