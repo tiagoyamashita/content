@@ -14,7 +14,7 @@ RAM モデルの連続インデックス付きストレージ。
 
 - **長所:** ランダム アクセス、キャッシュに優しいスキャン、シンプルなレイアウト。
 - **制限:** 固定長 (静的配列)。中央に挿入するには、インデックスの密度を保つために **O(n)** 要素をシフトする必要があります。
-- **関連:** 拡張可能なベクトルについては、このサブメニューの **動的配列** を参照してください。完全な複雑さと ADT コンテキストは **レベル I — 基礎** [基礎](../i-foundations.md）。
+- **関連:** 拡張可能なベクトルについては、このサブメニューの **動的配列** を参照してください。完全な複雑さと ADT コンテキストは **レベル II — 基礎** [基礎](../iii-foundations.md）。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
   <defs>
