@@ -109,7 +109,7 @@ Small teams blur roles; large orgs specialize.
 | **Integrate & ship** | [Git](git/i-overview.md), [API gateway](api-gateway/i-overview.md) |
 | **Scale & operate** | [CDN](cdn/i-overview.md), bottleneck analysis in sysdesign |
 
-For cloud delivery and CI/CD depth, see **SRE101**.
+For cloud delivery and CI/CD depth, see **SRE101**. For markets, market data, and trading systems, see **[Quant SWE](../quant-swe/i-overview.md)**.
 
 ## Next
 
