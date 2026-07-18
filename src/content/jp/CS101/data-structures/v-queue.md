@@ -294,11 +294,11 @@ public class LinkedQueue<E> {
   <path d="M328 64 H380" stroke="#a1a1aa" stroke-width="1.5" marker-end="url(#ds-qcb-mk)"/>
   <path d="M380 64 Q396 64 396 50 Q396 36 380 36 Q364 36 364 50" stroke="#a1a1aa" stroke-width="1.5" fill="none"/>
   <path d="M364 50 H24" stroke="#a1a1aa" stroke-width="1.5" marker-end="url(#ds-qcb-mk)"/>
-  <text x="12" y="112" fill="#71717a" font-size="9">front / back / size track the logical queue inside the ring — see also i-foundations.md</text>
+  <text x="12" y="112" fill="#71717a" font-size="9">front / back / size track the logical queue inside the ring — see also ii-foundations.md</text>
 </svg></figure>
 
 
-**レベル I — 基礎** [基礎](../i-foundations.md) 先頭/末尾のラベルが付いた別の循環バッファ図。
+**レベル II — 基礎** [基礎](../iii-foundations.md) 先頭/末尾のラベルが付いた別の循環バッファ図。
 
 ### Java: 拡張のあるリングバッファキュー
 

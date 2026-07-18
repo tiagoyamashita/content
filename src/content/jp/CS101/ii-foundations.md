@@ -1,10 +1,10 @@
 ---
-label: "I"
+label: "II"
 subtitle: "基礎"
 group: "データ構造とアルゴリズム"
-order: 1
+order: 2
 ---
-レベル I — 基礎
+レベル II — 基礎
 
 複雑さ、RAM モデル、配列、リンクリスト、スタック、キュー。
 

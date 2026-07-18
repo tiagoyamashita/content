@@ -293,11 +293,11 @@ Linked list backing: **no resize** in the array sense — “growth” is **Θ(1
   <path d="M328 64 H380" stroke="#a1a1aa" stroke-width="1.5" marker-end="url(#ds-qcb-mk)"/>
   <path d="M380 64 Q396 64 396 50 Q396 36 380 36 Q364 36 364 50" stroke="#a1a1aa" stroke-width="1.5" fill="none"/>
   <path d="M364 50 H24" stroke="#a1a1aa" stroke-width="1.5" marker-end="url(#ds-qcb-mk)"/>
-  <text x="12" y="112" fill="#71717a" font-size="9">front / back / size track the logical queue inside the ring — see also i-foundations.md</text>
+  <text x="12" y="112" fill="#71717a" font-size="9">front / back / size track the logical queue inside the ring — see also ii-foundations.md</text>
 </svg></figure>
 
 
-See **Level I — Foundations** [Foundations](../i-foundations.md) for another circular-buffer diagram with head/tail labels.
+See **Level II — Foundations** [Foundations](../iii-foundations.md) for another circular-buffer diagram with head/tail labels.
 
 ### Java: ring-buffer queue with grow
 
