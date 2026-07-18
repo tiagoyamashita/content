@@ -208,55 +208,49 @@ Notes for clarity:
 - If the inner method uses Propagation.REQUIRES_NEW, it suspends the caller's transaction and uses its own, committing changes regardless of what happens to the outer transaction (unless an unhandled exception in the audit method itself causes it to roll back).
 - This behavior allows you to, for example, persist an audit event even if the main business operation fails and is rolled back.
 
-**UML Sequence Diagrams:**
+**Mermaid sequence diagrams:**
 
 <details>
 <summary>REQUIRED &rarr; REQUIRED (Single Transaction)</summary>
 
-```plantuml
-@startuml
-actor User
-participant Controller
-participant ServiceA as "Service A (@Transactional REQUIRED)"
-participant ServiceB as "Service B (@Transactional REQUIRED)"
-participant Database
+```mermaid
+sequenceDiagram
+  actor User
+  participant Controller
+  participant ServiceA as Service A (@Transactional REQUIRED)
+  participant ServiceB as Service B (@Transactional REQUIRED)
+  participant Database
 
-User -> Controller: HTTP request
-Controller -> ServiceA: doBusinessOperation()
-activate ServiceA
-ServiceA -> ServiceB: stepTwo()
-activate ServiceB
-ServiceB -> Database: DB Operation
-deactivate ServiceB
-ServiceA -> Database: DB Operation
-deactivate ServiceA
-Database --> Controller: Commit/Rollback as one unit
-@enduml
+  User->>Controller: HTTP request
+  Controller->>+ServiceA: doBusinessOperation()
+  ServiceA->>+ServiceB: stepTwo()
+  ServiceB->>Database: DB Operation
+  deactivate ServiceB
+  ServiceA->>Database: DB Operation
+  deactivate ServiceA
+  Database-->>Controller: Commit/Rollback as one unit
 ```
 </details>
 
 <details>
 <summary>REQUIRED &rarr; REQUIRES_NEW (Nested, Independent Transactions)</summary>
 
-```plantuml
-@startuml
-actor User
-participant Controller
-participant BusinessService as "Business Service (@Transactional REQUIRED)"
-participant AuditService as "Audit Service (@Transactional REQUIRES_NEW)"
-participant Database
+```mermaid
+sequenceDiagram
+  actor User
+  participant Controller
+  participant BusinessService as Business Service (@Transactional REQUIRED)
+  participant AuditService as Audit Service (@Transactional REQUIRES_NEW)
+  participant Database
 
-User -> Controller: HTTP request
-Controller -> BusinessService: updateUserAndAudit()
-activate BusinessService
-BusinessService -> Database: Update user (TX1)
-BusinessService -> AuditService: saveAuditEntry()
-activate AuditService
-AuditService -> Database: Insert audit log (TX2, commits now)
-deactivate AuditService
-BusinessService -> Database: [If exception...] Rollback TX1 (audit already committed)
-deactivate BusinessService
-@enduml
+  User->>Controller: HTTP request
+  Controller->>+BusinessService: updateUserAndAudit()
+  BusinessService->>Database: Update user (TX1)
+  BusinessService->>+AuditService: saveAuditEntry()
+  AuditService->>Database: Insert audit log (TX2, commits now)
+  deactivate AuditService
+  BusinessService->>Database: [If exception...] Rollback TX1 (audit already committed)
+  deactivate BusinessService
 ```
 </details>
 

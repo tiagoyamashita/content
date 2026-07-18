@@ -56,21 +56,19 @@ Tune alerts to **actionable** — alert fatigue means real incidents get missed.
 
 ## 4. Incident response phases (NIST-style)
 
-```plantuml
-@startuml
-start
-:Preparation\n(runbooks, contacts, backups);
-:Detection & Analysis;
-if (Confirmed incident?) then (yes)
-  :Containment\n(isolate, block, revoke creds);
-  :Eradication\n(patch, remove malware);
-  :Recovery\n(restore, monitor);
-  :Post-incident review;
-else (no)
-  :Document false positive;
-endif
-stop
-@enduml
+```mermaid
+flowchart TD
+    start([Start])
+    start --> A[Preparation<br/>runbooks, contacts, backups]
+    A --> B[Detection & Analysis]
+    B --> C{Confirmed incident?}
+    C -->|yes| D[Containment<br/>isolate, block, revoke creds]
+    D --> E[Eradication<br/>patch, remove malware]
+    E --> F[Recovery<br/>restore, monitor]
+    F --> G[Post-incident review]
+    C -->|no| H[Document false positive]
+    G --> stop([Stop])
+    H --> stop
 ```
 
 | Phase | Actions |

@@ -23,19 +23,18 @@ Order DB (Postgres)
 GET /orders/search?q=...&status=SHIPPED
 ```
 
-```plantuml
-@startuml
-database "Order Postgres" as DB
-queue "order-events" as K
-participant "Indexer" as IDX
-database "OpenSearch" as OS
-actor Customer
+```mermaid
+sequenceDiagram
+  participant DB as Order Postgres
+  participant K as order-events
+  participant IDX as Indexer
+  participant OS as OpenSearch
+  actor Customer
 
-DB -> K: CDC / OrderConfirmed events
-K -> IDX: consume
-IDX -> OS: index document
-Customer -> OS: search (via Search API)
-@enduml
+  DB->>K: CDC / OrderConfirmed events
+  K->>IDX: consume
+  IDX->>OS: index document
+  Customer->>OS: search (via Search API)
 ```
 
 ## 2. Document model (search index)

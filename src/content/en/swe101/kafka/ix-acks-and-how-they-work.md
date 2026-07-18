@@ -16,22 +16,21 @@ Previous: [Consumer groups & delivery](v-consumer-groups-and-delivery.md).
 
 ## 1. Two acks, one pipeline
 
-```plantuml
-@startuml
-title Write ack vs read ack
-participant Producer as P
-participant Broker as B
-participant Consumer as C
-database "Postgres" as DB
+```mermaid
+sequenceDiagram
+    title Write ack vs read ack
+    participant P as Producer
+    participant B as Broker
+    participant C as Consumer
+    participant DB as Postgres
 
-P -> B: produce record
-B --> P: **producer ack** (record on log)
+    P->>B: produce record
+    B-->>P: producer ack (record on log)
 
-C -> B: poll(offset)
-B --> C: records
-C -> DB: side effect (charge, booking, …)
-C -> B: **consumer ack** (commit offset)
-@enduml
+    C->>B: poll(offset)
+    B-->>C: records
+    C->>DB: side effect (charge, booking, …)
+    C->>B: consumer ack (commit offset)
 ```
 
 | Ack type | Who sends it | Who receives it | What it means |
@@ -45,18 +44,17 @@ Both are required for reliable event-driven systems. Producer ack without consum
 
 When a producer calls `send()`, the client waits for the broker to respond based on **`acks`**:
 
-```plantuml
-@startuml
-title acks=all (durable default)
-participant Producer as P
-participant "Leader broker" as L
-participant "Follower(s)" as F
+```mermaid
+sequenceDiagram
+    title acks=all (durable default)
+    participant P as Producer
+    participant L as Leader broker
+    participant F as Follower(s)
 
-P -> L: produce batch
-L -> F: replicate to ISR
-F --> L: replicated
-L --> P: ack + offset
-@enduml
+    P->>L: produce batch
+    L->>F: replicate to ISR
+    F-->>L: replicated
+    L-->>P: ack + offset
 ```
 
 | `acks` | Waits for | Speed | Durability | Typical use |
@@ -105,18 +103,17 @@ Partition log:  [0] [1] [2] [3] [4] [5]
 
 **Consumer ack** = **commit offset** — tell the broker “everything before this position is done.”
 
-```plantuml
-@startuml
-title After-process commit (recommended)
-participant Consumer as C
-participant Broker as B
-database DB as DB
+```mermaid
+sequenceDiagram
+    title After-process commit (recommended)
+    participant C as Consumer
+    participant B as Broker
+    participant DB as DB
 
-C -> B: poll → record at offset 42
-C -> DB: process (idempotent)
-C -> B: commit offset 43
-note right of C: Crash before commit → redelivery (duplicate OK)\nCrash after commit → message not reprocessed
-@enduml
+    C->>B: poll → record at offset 42
+    C->>DB: process (idempotent)
+    C->>B: commit offset 43
+    Note over C: Crash before commit → redelivery (duplicate OK)<br/>Crash after commit → message not reprocessed
 ```
 
 ### Delivery semantics — where you commit
@@ -180,22 +177,21 @@ With `@RetryableTopic` or `DefaultErrorHandler` + DLT, the framework commits (or
 
 ## 5. End-to-end: both acks in checkout
 
-```plantuml
-@startuml
-title Outbox relay + payment consumer
-participant "Outbox relay" as R
-participant Broker as K
-participant "Payment consumer" as P
-database "Payment DB" as DB
+```mermaid
+sequenceDiagram
+    title Outbox relay + payment consumer
+    participant R as Outbox relay
+    participant K as Broker
+    participant P as Payment consumer
+    participant DB as Payment DB
 
-R -> K: produce OrderPlaced (acks=all)
-K --> R: producer ack
-R -> R: UPDATE outbox published_at
+    R->>K: produce OrderPlaced (acks=all)
+    K-->>R: producer ack
+    R->>R: UPDATE outbox published_at
 
-K -> P: poll OrderPlaced
-P -> DB: Stripe hold + INSERT payment
-P -> K: commit offset (consumer ack)
-@enduml
+    K->>P: poll OrderPlaced
+    P->>DB: Stripe hold + INSERT payment
+    P->>K: commit offset (consumer ack)
 ```
 
 | Step | Ack type | Failure if missing |

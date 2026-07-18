@@ -13,38 +13,36 @@ Previous: [Patterns & integration](vi-patterns-and-integration.md). Theory: [Che
 
 ## 1. Parallel vs sequential (do not confuse)
 
-```plantuml
-@startuml
-title WRONG for strict sequence — parallel fan-out
-queue "order-events" as T
-participant "Payment\n(group: payments)" as P
-participant "Shipping\n(group: shipping)" as S
-participant "Email\n(group: email)" as E
+```mermaid
+sequenceDiagram
+    title WRONG for strict sequence — parallel fan-out
+    participant T as order-events
+    participant P as Payment<br/>(group: payments)
+    participant S as Shipping<br/>(group: shipping)
+    participant E as Email<br/>(group: email)
 
-T -> P: OrderPlaced
-T -> S: OrderPlaced
-T -> E: OrderPlaced
-note right of S: All three start at once.\nShipping must NOT read OrderPlaced directly.
-@enduml
+    T->>P: OrderPlaced
+    T->>S: OrderPlaced
+    T->>E: OrderPlaced
+    Note over S: All three start at once.<br/>Shipping must NOT read OrderPlaced directly.
 ```
 
-```plantuml
-@startuml
-title RIGHT — sequential pipeline (choreographed chain)
-participant "Order svc" as O
-queue "order-events" as T1
-participant "Payment svc" as P
-queue "payment-events" as T2
-participant "Shipping svc" as S
+```mermaid
+sequenceDiagram
+    title RIGHT — sequential pipeline (choreographed chain)
+    participant O as Order svc
+    participant T1 as order-events
+    participant P as Payment svc
+    participant T2 as payment-events
+    participant S as Shipping svc
 
-O -> T1: OrderPlaced
-T1 -> P: consume
-P -> P: charge — success only
-P -> T2: PaymentCaptured
-T2 -> S: consume
-S -> S: create shipment
-note right of P: On failure: PaymentFailed\n— no PaymentCaptured → Shipping never runs
-@enduml
+    O->>T1: OrderPlaced
+    T1->>P: consume
+    P->>P: charge — success only
+    P->>T2: PaymentCaptured
+    T2->>S: consume
+    S->>S: create shipment
+    Note over P: On failure: PaymentFailed<br/>— no PaymentCaptured → Shipping never runs
 ```
 
 | Goal | Pattern |
@@ -66,34 +64,33 @@ note right of P: On failure: PaymentFailed\n— no PaymentCaptured → Shipping 
 
 A **Checkout / workflow service** stores saga state and drives steps. Participants do not call each other.
 
-```plantuml
-@startuml
-title Orchestrated saga (sync HTTP between steps)
-actor Customer
-participant "Checkout\norchestrator" as ORCH
-database "saga DB" as DB
-participant "Order svc" as O
-participant "Payment svc" as P
-participant "Shipping svc" as S
+```mermaid
+sequenceDiagram
+    title Orchestrated saga (sync HTTP between steps)
+    actor Customer
+    participant ORCH as Checkout<br/>orchestrator
+    participant DB as saga DB
+    participant O as Order svc
+    participant P as Payment svc
+    participant S as Shipping svc
 
-Customer -> ORCH: POST /checkout
-ORCH -> DB: saga STARTED
-ORCH -> O: create order
-O --> ORCH: orderId OK
-ORCH -> DB: step ORDER_CREATED
-ORCH -> P: capture payment
-alt payment OK
-  P --> ORCH: paymentId
-  ORCH -> DB: step PAYMENT_CAPTURED
-  ORCH -> S: create shipment
-  S --> ORCH: shipmentId
-  ORCH -> DB: saga COMPLETED
-else payment failed
-  P --> ORCH: error
-  ORCH -> O: cancel order (compensate)
-  ORCH -> DB: saga FAILED
-end
-@enduml
+    Customer->>ORCH: POST /checkout
+    ORCH->>DB: saga STARTED
+    ORCH->>O: create order
+    O-->>ORCH: orderId OK
+    ORCH->>DB: step ORDER_CREATED
+    ORCH->>P: capture payment
+    alt payment OK
+        P-->>ORCH: paymentId
+        ORCH->>DB: step PAYMENT_CAPTURED
+        ORCH->>S: create shipment
+        S-->>ORCH: shipmentId
+        ORCH->>DB: saga COMPLETED
+    else payment failed
+        P-->>ORCH: error
+        ORCH->>O: cancel order (compensate)
+        ORCH->>DB: saga FAILED
+    end
 ```
 
 Kafka optional: orchestrator publishes **domain events** for **observers** (email, analytics) **after** saga completes — those use parallel groups on `checkout-completed`, not on the critical path.
@@ -113,20 +110,19 @@ Topics:
   payment-replies       → orchestrator consumes
 ```
 
-```plantuml
-@startuml
-participant Orchestrator as ORCH
-queue "order-commands" as OC
-participant "Order svc" as O
-queue "order-replies" as OR
+```mermaid
+sequenceDiagram
+    participant ORCH as Orchestrator
+    participant OC as order-commands
+    participant O as Order svc
+    participant OR as order-replies
 
-ORCH -> OC: CreateOrder
-OC -> O: consume
-O -> O: local TX success
-O -> OR: OrderCreated
-OR -> ORCH: consume
-ORCH -> ORCH: only now send CapturePayment
-@enduml
+    ORCH->>OC: CreateOrder
+    OC->>O: consume
+    O->>O: local TX success
+    O->>OR: OrderCreated
+    OR->>ORCH: consume
+    ORCH->>ORCH: only now send CapturePayment
 ```
 
 **Rule:** orchestrator advances state **only** on success reply; on failure, run **compensations** and stop the forward chain.
@@ -190,20 +186,19 @@ public void onPaymentEvent(ConsumerRecord<String, String> record) {
 }
 ```
 
-```plantuml
-@startuml
-title Event types gate the pipeline
-queue "order-events" as O
-queue "payment-events" as P
-participant Payment as PAY
-participant Shipping as SHIP
+```mermaid
+sequenceDiagram
+    title Event types gate the pipeline
+    participant O as order-events
+    participant PAY as Payment
+    participant P as payment-events
+    participant SHIP as Shipping
 
-O -> PAY: OrderPlaced
-PAY -> PAY: capture OK?
-PAY -> P: PaymentCaptured
-P -> SHIP: consume PaymentCaptured only
-SHIP -> SHIP: ship
-@enduml
+    O->>PAY: OrderPlaced
+    PAY->>PAY: capture OK?
+    PAY->>P: PaymentCaptured
+    P->>SHIP: consume PaymentCaptured only
+    SHIP->>SHIP: ship
 ```
 
 | Topic | Who produces | Who consumes (forward path) |
@@ -223,19 +218,18 @@ SHIP -> SHIP: ship
 | **Duplicate delivery** | Idempotency table keyed by `eventId` |
 | **Partial success** (charged but DB not updated) | Reconcile job; design **idempotent** charge with idempotency key |
 
-```plantuml
-@startuml
-title Failure stops forward pipeline
-participant Payment as P
-queue "payment-events" as PE
-participant Shipping as S
+```mermaid
+sequenceDiagram
+    title Failure stops forward pipeline
+    participant P as Payment
+    participant PE as payment-events
+    participant S as Shipping
 
-P -> P: charge fails
-P -> PE: PaymentFailed
-PE -> S: consume
-S -> S: ignore — not PaymentCaptured
-note right of S: Shipping never runs
-@enduml
+    P->>P: charge fails
+    P->>PE: PaymentFailed
+    PE->>S: consume
+    S->>S: ignore — not PaymentCaptured
+    Note over S: Shipping never runs
 ```
 
 ### Compensating transactions (saga rollback)

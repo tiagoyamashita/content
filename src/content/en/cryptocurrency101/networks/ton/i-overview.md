@@ -25,18 +25,17 @@ Contracts communicate via **messages** (not only external calls). Incoming value
 
 ## Fee split pattern
 
-```plantuml
-@startuml
-title TON — fee split (Tact)
-actor Payer
-participant "FeeSplitter\n(Tact)" as SC
-participant "feeAccount" as FEE
-participant "recipient" as REC
+```mermaid
+sequenceDiagram
+    title TON — fee split (Tact)
+    actor Payer
+    participant SC as FeeSplitter (Tact)
+    participant FEE as feeAccount
+    participant REC as recipient
 
-Payer -> SC: Pay message + TON
-SC -> FEE: send fee
-SC -> REC: send remainder
-@enduml
+    Payer->>SC: Pay message + TON
+    SC->>FEE: send fee
+    SC->>REC: send remainder
 ```
 
 ## Example — Tact

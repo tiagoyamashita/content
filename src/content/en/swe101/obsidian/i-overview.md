@@ -7,7 +7,7 @@ order: 1
 Obsidian — overview
 **Obsidian** is a **local-first** note app built on **plain Markdown files**. Your notes live in a **vault** — a folder on disk — so you own the data, can sync with **Git** essentials — [Overview](../git/essentials/i-overview.md), and open files in any editor. Engineers use it for **personal knowledge bases**, **RFC drafts**, **on-call runbooks**, **learning logs**, and **project wikis** that stay close to the repo without requiring a hosted wiki.
 
-For diagram syntax inside notes, see **Mermaid** — [Overview](../languages&frameworks/mermaid/i-overview.md) and **PlantUML** — [Overview](../languages&frameworks/plantuml/i-overview.md). For version control when the vault is a repo, see **Git** essentials — [Overview](../git/essentials/i-overview.md).
+For diagram syntax inside notes, see **Mermaid** — [Overview](../languages&frameworks/mermaid/i-overview.md). For version control when the vault is a repo, see **Git** essentials — [Overview](../git/essentials/i-overview.md).
 
 ## Map of this track
 

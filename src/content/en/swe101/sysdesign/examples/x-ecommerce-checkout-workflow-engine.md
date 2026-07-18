@@ -28,26 +28,25 @@ POST /checkout
               → Activity tasks → Activity worker → HTTP → Order/Payment/Inventory
 ```
 
-```plantuml
-@startuml
-actor Customer
-participant "Checkout API" as API
-participant "Temporal" as T
-participant "Workflow worker" as W
-participant "Order Svc" as ORD
-participant "Payment Svc" as PAY
-participant "Inventory Svc" as INV
+```mermaid
+sequenceDiagram
+  actor Customer
+  participant API as Checkout API
+  participant T as Temporal
+  participant W as Workflow worker
+  participant ORD as Order Svc
+  participant PAY as Payment Svc
+  participant INV as Inventory Svc
 
-Customer -> API: POST /checkout
-API -> T: start CheckoutWorkflow
-T -> W: workflow task
-W -> ORD: activity: createOrder
-W -> PAY: activity: capture
-W -> INV: activity: reserve
-W -> ORD: activity: confirm
-W -> T: complete workflow
-API --> Customer: 201
-@enduml
+  Customer->>API: POST /checkout
+  API->>T: start CheckoutWorkflow
+  T->>W: workflow task
+  W->>ORD: activity: createOrder
+  W->>PAY: activity: capture
+  W->>INV: activity: reserve
+  W->>ORD: activity: confirm
+  W->>T: complete workflow
+  API-->>Customer: 201
 ```
 
 ## 3. Temporal workflow sketch (Java)

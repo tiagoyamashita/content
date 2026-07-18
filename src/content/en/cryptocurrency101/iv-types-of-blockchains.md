@@ -71,18 +71,16 @@ You do not need to implement consensus to write contracts — but it explains **
 | **TON VM** | **TON** | **FunC**, **Tact**; messages between contracts |
 | **eUTXO** | **Cardano** | **Aiken**, Plutus — validators on outputs |
 
-```plantuml
-@startuml
-title Execution models in this track
-package "Account + bytecode" {
-  [BNB Chain\nEVM / Solidity]
-  [Tron\nTVM / Solidity]
-  [TON\nTVM / Tact]
-}
-package "eUTXO validators" {
-  [Cardano\nAiken / Plutus]
-}
-@enduml
+```mermaid
+flowchart TB
+    subgraph account["Account + bytecode"]
+        BNB["BNB Chain<br/>EVM / Solidity"]
+        TRON["Tron<br/>TVM / Solidity"]
+        TON["TON<br/>TVM / Tact"]
+    end
+    subgraph utxo["eUTXO validators"]
+        ADA["Cardano<br/>Aiken / Plutus"]
+    end
 ```
 
 ### EVM family (BNB, Tron)

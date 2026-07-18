@@ -26,20 +26,19 @@ Checkout orchestrator
 
 ## 2. Happy path — multi-SKU cart
 
-```plantuml
-@startuml
-participant "Checkout\nOrchestrator" as O
-database "Order shard 2" as ORD
-database "Payment shard 2" as PAY
-database "Inv shard 5" as I5
-database "Inv shard 1" as I1
+```mermaid
+sequenceDiagram
+  participant O as Checkout Orchestrator
+  participant ORD as Order shard 2
+  participant PAY as Payment shard 2
+  participant I5 as Inv shard 5
+  participant I1 as Inv shard 1
 
-O -> ORD: create order (customer 42)
-O -> PAY: capture (customer 42)
-O -> I5: reserve SKU-A
-O -> I1: reserve SKU-B
-O -> ORD: confirm
-@enduml
+  O->>ORD: create order (customer 42)
+  O->>PAY: capture (customer 42)
+  O->>I5: reserve SKU-A
+  O->>I1: reserve SKU-B
+  O->>ORD: confirm
 ```
 
 Each box is a **local ACID** transaction on one shard. Orchestrator sequences calls; failure triggers compensations per [Saga](ii-ecommerce-checkout-saga.md).

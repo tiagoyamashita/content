@@ -11,21 +11,20 @@ Assumes **Part II** [What is cryptocurrency?](ii-what-is-cryptocurrency.md).
 
 ## 1. Lifecycle — from wallet to chain
 
-```plantuml
-@startuml
-actor User
-participant "Wallet" as W
-collections "Mempool\n(pending)" as M
-participant "Validator / miner" as V
-database "Blockchain\n(blocks)" as BC
+```mermaid
+sequenceDiagram
+    actor User
+    participant W as Wallet
+    participant M as Mempool (pending)
+    participant V as Validator / miner
+    participant BC as Blockchain (blocks)
 
-User -> W: Create transaction
-W -> W: Sign with private key
-W -> M: Broadcast
-V -> M: Select txs for next block
-V -> BC: Append block (header + txs)
-BC --> User: Confirmations grow over time
-@enduml
+    User->>W: Create transaction
+    W->>W: Sign with private key
+    W->>M: Broadcast
+    V->>M: Select txs for next block
+    V->>BC: Append block (header + txs)
+    BC-->>User: Confirmations grow over time
 ```
 
 | Stage | What is stored | Where |
@@ -120,20 +119,19 @@ Spend = consume whole outputs, create new outputs (change back to self)
 | **Transaction** | Consumes one or more UTXOs as **inputs**, creates new **outputs** |
 | **Balance** | Sum of UTXOs you can unlock — wallet software computes this |
 
-```plantuml
-@startuml
-title UTXO spend (simplified)
-participant "Input UTXO\n(2 ADA)" as IN
-participant "Transaction" as TX
-participant "Output A\n(1.5 ADA recipient)" as OUT1
-participant "Output B\n(0.49 ADA change)" as OUT2
-participant "Fee" as FEE
+```mermaid
+sequenceDiagram
+    title UTXO spend (simplified)
+    participant IN as Input UTXO (2 ADA)
+    participant TX as Transaction
+    participant OUT1 as Output A (1.5 ADA recipient)
+    participant OUT2 as Output B (0.49 ADA change)
+    participant FEE as Fee
 
-IN -> TX: consume
-TX -> OUT1: create
-TX -> OUT2: create (change)
-TX -> FEE: remainder to validators
-@enduml
+    IN->>TX: consume
+    TX->>OUT1: create
+    TX->>OUT2: create (change)
+    TX->>FEE: remainder to validators
 ```
 
 **Cardano** extends this with **eUTXO** — outputs carry **datum** (data) and validators check that the **next** transaction’s outputs are legal. See [Cardano](networks/ada/i-overview.md).
@@ -155,17 +153,16 @@ Global state:
 | **Transaction** | Updates balances and/or runs contract code |
 | **`msg.value`** | Native coin sent with the call (EVM) |
 
-```plantuml
-@startuml
-title Account model — simple transfer
-participant "Account A\n10 BNB" as A
-participant "Transaction" as TX
-participant "Account B\n0 BNB" as B
+```mermaid
+sequenceDiagram
+    title Account model — simple transfer
+    participant A as Account A (10 BNB)
+    participant TX as Transaction
+    participant B as Account B (0 BNB)
 
-A -> TX: signed transfer 3 BNB
-TX -> A: balance := 7 BNB
-TX -> B: balance := 3 BNB
-@enduml
+    A->>TX: signed transfer 3 BNB
+    TX->>A: balance := 7 BNB
+    TX->>B: balance := 3 BNB
 ```
 
 **EVM chains (BNB, Tron)** look almost the same in code — RPC, gas token, and tooling differ. See [BNB](networks/bnb/i-overview.md), [Tron](networks/tron/i-overview.md).

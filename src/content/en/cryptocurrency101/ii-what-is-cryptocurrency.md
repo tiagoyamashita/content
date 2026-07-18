@@ -71,21 +71,20 @@ A **smart contract** is **program code deployed on the blockchain** that runs wh
 - Split payments (see [Fee split pattern](v-fee-split-pattern.md))
 - Implement tokens, swaps, voting, escrow
 
-```plantuml
-@startuml
-actor User
-participant "Wallet" as W
-participant "Blockchain nodes" as N
-participant "Smart contract" as SC
+```mermaid
+sequenceDiagram
+    actor User
+    participant W as Wallet
+    participant N as Blockchain nodes
+    participant SC as Smart contract
 
-User -> W: Build tx (call contract)
-W -> W: Sign with private key
-W -> N: Broadcast signed tx
-N -> N: Validate + execute bytecode
-N -> SC: Run pay(), transfer(), etc.
-SC --> N: state change + events
-N --> User: Receipt (success or revert)
-@enduml
+    User->>W: Build tx (call contract)
+    W->>W: Sign with private key
+    W->>N: Broadcast signed tx
+    N->>N: Validate + execute bytecode
+    N->>SC: Run pay(), transfer(), etc.
+    SC-->>N: state change + events
+    N-->>User: Receipt (success or revert)
 ```
 
 The contract **lives on the chain** — you do not host it on a VPS. You pay **once to deploy**, then **fees per transaction**. See [Deploy & hosting](vi-deploy-pricing-and-hosting.md).

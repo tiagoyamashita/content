@@ -83,30 +83,29 @@ Separate MCP tools for: create_ticket, run_sql, post_slack
 
 Common in production: **RAG for knowledge**, **MCP for actions**.
 
-```plantuml
-@startuml
-participant User
-participant Host
-participant LLM
-database "Vector DB\n(RAG)" as V
-participant "MCP server" as M
-participant "Linear API" as API
+```mermaid
+sequenceDiagram
+    participant User
+    participant Host
+    participant LLM
+    participant V as Vector DB (RAG)
+    participant M as MCP server
+    participant API as Linear API
 
-User -> Host: "Per our policy, open a bug for checkout"
-Host -> LLM: question + tools
-LLM -> Host: tool: search_policy
-Host -> M: JSON-RPC
-M -> V: similarity search
-V --> M: refund policy chunk
-M --> Host: tool result
-LLM -> Host: tool: create_issue
-Host -> M: JSON-RPC
-M -> API: POST /issues
-API --> M: issue #99
-M --> Host: tool result
-LLM --> Host: answer + citation + issue link
-Host --> User
-@enduml
+    User->>Host: "Per our policy, open a bug for checkout"
+    Host->>LLM: question + tools
+    LLM->>Host: tool: search_policy
+    Host->>M: JSON-RPC
+    M->>V: similarity search
+    V-->>M: refund policy chunk
+    M-->>Host: tool result
+    LLM->>Host: tool: create_issue
+    Host->>M: JSON-RPC
+    M->>API: POST /issues
+    API-->>M: issue #99
+    M-->>Host: tool result
+    LLM-->>Host: answer + citation + issue link
+    Host-->>User
 ```
 
 ### Quick decision tree

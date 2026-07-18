@@ -16,20 +16,19 @@ Two ways to add **domain knowledge** and **behaviour** without full pre-training
 4. LLM generates answer grounded in chunks
 ```
 
-```plantuml
-@startuml
-actor User
-participant "App" as A
-database "Vector store" as V
-participant "LLM" as L
+```mermaid
+sequenceDiagram
+    actor User
+    participant A as App
+    participant V as Vector store
+    participant L as LLM
 
-User -> A: question
-A -> V: similarity search
-V --> A: top-k chunks
-A -> L: prompt = system + chunks + question
-L --> A: answer
-A --> User: answer + citations
-@enduml
+    User->>A: question
+    A->>V: similarity search
+    V-->>A: top-k chunks
+    A->>L: prompt = system + chunks + question
+    L-->>A: answer
+    A-->>User: answer + citations
 ```
 
 | Pros | Cons |

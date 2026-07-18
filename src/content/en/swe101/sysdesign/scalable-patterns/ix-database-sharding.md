@@ -7,7 +7,7 @@ order: 9
 Database sharding
 **Sharding** (horizontal partitioning) splits one logical database into **multiple physical databases** so **writes**, **storage**, and **connection load** scale beyond a single primary. It is one of the hardest scaling moves — shard key choice, cross-shard queries, and re-sharding dominate long-term pain.
 
-For replication basics and a short sharding intro, see [Core building blocks](../i-core-building-blocks.md#6-replication--sharding). For write bottlenecks that lead to sharding, see [Database bottlenecks](../bottleneck-analysis/vi-database.md). For diagram tooling, see [PlantUML](../../plantuml/i-overview.md).
+For replication basics and a short sharding intro, see [Core building blocks](../i-core-building-blocks.md#6-replication--sharding). For write bottlenecks that lead to sharding, see [Database bottlenecks](../bottleneck-analysis/vi-database.md). For diagram tooling, see [Mermaid](../../languages&frameworks/mermaid/i-overview.md).
 
 ## 1. When to shard (and when not to)
 
@@ -59,23 +59,22 @@ Scale path (typical SQL app)
 
 Applications rarely connect to shards directly. A **router** picks the shard from the **shard key**.
 
-```plantuml
-@startuml
-actor Client
-participant "API" as API
-participant "Shard router" as R
-database "Shard 0" as S0
-database "Shard 1" as S1
-database "Shard 2" as S2
+```mermaid
+sequenceDiagram
+  actor Client
+  participant API
+  participant R as Shard router
+  participant S0 as Shard 0
+  participant S1 as Shard 1
+  participant S2 as Shard 2
 
-Client -> API: POST /users/42/orders
-API -> R: route(user_id=42)
-R -> R: shard = hash(42) % 3
-R -> S1: INSERT order ...
-S1 --> R: ok
-R --> API: ok
-API --> Client: 201
-@enduml
+  Client->>API: POST /users/42/orders
+  API->>R: route(user_id=42)
+  R->>R: shard = hash(42) % 3
+  R->>S1: INSERT order ...
+  S1-->>R: ok
+  R-->>API: ok
+  API-->>Client: 201
 ```
 
 | Router style | Examples | Notes |
@@ -237,18 +236,17 @@ SQL `JOIN` across shards is **not** one query plan — app or middleware runs **
 | **CQRS / read model** | Async build cross-shard views in search/warehouse |
 | **Saga** | Cross-shard writes as local txs + events — see [Distributed transactions](vii-distributed-transactions.md) |
 
-```plantuml
-@startuml
-participant Router
-database "Shard 0" as S0
-database "Shard 1" as S1
+```mermaid
+sequenceDiagram
+  participant Router
+  participant S0 as Shard 0
+  participant S1 as Shard 1
 
-Router -> S0: SELECT * FROM users WHERE email = ?
-Router -> S1: SELECT * FROM users WHERE email = ?
-S0 --> Router: (empty)
-S1 --> Router: row (user_id=99)
-note over Router: merge + pick first hit;\n2x cost vs ideal route
-@enduml
+  Router->>S0: SELECT * FROM users WHERE email = ?
+  Router->>S1: SELECT * FROM users WHERE email = ?
+  S0-->>Router: (empty)
+  S1-->>Router: row (user_id=99)
+  Note over Router: merge + pick first hit;<br/>2x cost vs ideal route
 ```
 
 ## 8. Hot shards and celebrities
@@ -410,24 +408,23 @@ The **router** adds latency and can be a blast-radius point (misroute = wrong da
 
 ## 14. End-to-end write path (reference)
 
-```plantuml
-@startuml
-actor Client
-participant API
-participant Router
-database "Shard 1" as DB
-queue "Outbox / CDC" as Q
-participant "Search index" as IDX
+```mermaid
+sequenceDiagram
+  actor Client
+  participant API
+  participant Router
+  participant DB as Shard 1
+  participant Q as Outbox / CDC
+  participant IDX as Search index
 
-Client -> API: create order (user_id=42)
-API -> Router: resolve shard(42)
-Router -> DB: BEGIN; INSERT order; INSERT items; COMMIT
-DB --> API: ok
-API -> Q: order.created event
-Q -> IDX: async index update
-API --> Client: 201
-note over DB,IDX: search is eventual;\norder read from shard is strong
-@enduml
+  Client->>API: create order (user_id=42)
+  API->>Router: resolve shard(42)
+  Router->>DB: BEGIN; INSERT order; INSERT items; COMMIT
+  DB-->>API: ok
+  API->>Q: order.created event
+  Q->>IDX: async index update
+  API-->>Client: 201
+  Note over DB,IDX: search is eventual;<br/>order read from shard is strong
 ```
 
 ## 15. Checklist before you shard

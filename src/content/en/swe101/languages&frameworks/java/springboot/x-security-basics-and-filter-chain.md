@@ -68,33 +68,31 @@ public class SecurityConfig {
 - Issue tokens with your IdP (e.g., AWS Cognito, Auth0, Keycloak, or Google Cloud Identity Platform) or a dedicated auth service. 
 - **AWS Example:** With **AWS Cognito**, users authenticate via Cognito's hosted UI or a custom UI, and Cognito issues JWT access tokens. In Spring Boot, set `spring.security.oauth2.resourceserver.jwt.issuer-uri` to your Cognito user pool's issuer URL (like `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`) to enable JWT validation. You can also use **AWS API Gateway** to validate Cognito tokens and forward only authenticated requests to your backend service.
 
-```plantuml
-@startuml
-actor User
+```mermaid
+sequenceDiagram
+  actor User
+  participant Cognito as Amazon Cognito User Pool
+  participant APIGateway as Amazon API Gateway
+  participant Lambda as AWS Lambda (optional trigger)
+  participant DynamoDB as Amazon DynamoDB (User Database)
+  participant Backend as Spring Boot API (EC2/ECS/Lambda)
 
-participant "Amazon Cognito\nUser Pool" as Cognito
-participant "Amazon API Gateway" as APIGateway
-participant "AWS Lambda (optional trigger)" as Lambda
-database "Amazon DynamoDB\n(User Database)" as DynamoDB
-participant "Spring Boot API\n(EC2/ECS/Lambda)" as Backend
+  User->>Cognito: Sign up / Sign in
+  Cognito-->>User: JWT Access Token
 
-User -> Cognito: Sign up / Sign in
-Cognito --> User: JWT Access Token
+  User->>APIGateway: API Request (Authorization: Bearer JWT)
+  APIGateway->>Cognito: Verify JWT Token (optional Custom Authorizer)
+  APIGateway->>Backend: Forward authenticated request
 
-User -> APIGateway: API Request\n(Authorization: Bearer <JWT>)
-APIGateway -> Cognito: Verify JWT Token (optional Custom Authorizer)
-APIGateway -> Backend: Forward authenticated request
+  Backend->>DynamoDB: Fetch user data (using JWT sub claim)
+  DynamoDB-->>Backend: User profile/records
+  Backend-->>APIGateway: API Response
+  APIGateway-->>User: HTTP Response
 
-Backend -> DynamoDB: Fetch user data (using JWT sub claim)
-DynamoDB --> Backend: User profile/records
-Backend --> APIGateway: API Response
-APIGateway --> User: HTTP Response
-
-' Optional: Cognito Triggers
-Cognito -> Lambda: Trigger (e.g., Post Confirmation)
-Lambda -> DynamoDB: Sync user to DB
-Lambda --> Cognito: Confirmation
-@enduml
+  Note over Cognito,Lambda: Optional: Cognito Triggers
+  Cognito->>Lambda: Trigger (e.g., Post Confirmation)
+  Lambda->>DynamoDB: Sync user to DB
+  Lambda-->>Cognito: Confirmation
 ```
 
 How do I connect Cognito to my user database list?

@@ -1,14 +1,14 @@
 {
   "meta": {
-    "generatedAt": "2026-07-16T02:22:16.497414+00:00",
+    "generatedAt": "2026-07-18T03:42:43.931956+00:00",
     "contentRoot": "src/content",
     "script": "scripts/build-content-graph.py",
     "format": "graph",
     "localeCount": 1,
-    "nodeCount": 589,
-    "edgeCount": 2110,
-    "linkEdgeCount": 1522,
-    "containsEdgeCount": 588
+    "nodeCount": 587,
+    "edgeCount": 2130,
+    "linkEdgeCount": 1544,
+    "containsEdgeCount": 586
   },
   "locales": [
     "en"
@@ -72,6 +72,21 @@
                   "parentId": "en/getting-started/intro"
                 }
               ]
+            },
+            {
+              "id": "en/getting-started/i-overview.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/getting-started/i-overview.md",
+              "file": "i-overview.md",
+              "label": "I Overview",
+              "subtitle": null,
+              "group": "Getting started",
+              "order": 0,
+              "groupOrder": null,
+              "displayTitle": "I Overview",
+              "track": "getting-started",
+              "parentId": "en/getting-started"
             },
             {
               "id": "en/getting-started/guide-topics-and-folders.md",
@@ -684,6 +699,21 @@
               ]
             },
             {
+              "id": "en/cs101/i-overview.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/cs101/i-overview.md",
+              "file": "i-overview.md",
+              "label": "I Overview",
+              "subtitle": null,
+              "group": "CS101",
+              "order": 0,
+              "groupOrder": null,
+              "displayTitle": "I Overview",
+              "track": "cs101",
+              "parentId": "en/cs101"
+            },
+            {
               "id": "en/cs101/i-core-concepts.md",
               "type": "note",
               "locale": "en",
@@ -699,21 +729,6 @@
               "parentId": "en/cs101"
             },
             {
-              "id": "en/cs101/i-foundations.md",
-              "type": "note",
-              "locale": "en",
-              "path": "en/cs101/i-foundations.md",
-              "file": "i-foundations.md",
-              "label": "I",
-              "subtitle": "Foundations",
-              "group": "Data structures & algorithms",
-              "order": 1,
-              "groupOrder": null,
-              "displayTitle": "Foundations",
-              "track": "cs101",
-              "parentId": "en/cs101"
-            },
-            {
               "id": "en/cs101/i-machines-and-memory.md",
               "type": "note",
               "locale": "en",
@@ -725,6 +740,21 @@
               "order": 1,
               "groupOrder": null,
               "displayTitle": "Machines & memory",
+              "track": "cs101",
+              "parentId": "en/cs101"
+            },
+            {
+              "id": "en/cs101/ii-foundations.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/cs101/ii-foundations.md",
+              "file": "ii-foundations.md",
+              "label": "II",
+              "subtitle": "Foundations",
+              "group": "Data structures & algorithms",
+              "order": 2,
+              "groupOrder": null,
+              "displayTitle": "Foundations",
               "track": "cs101",
               "parentId": "en/cs101"
             },
@@ -1594,107 +1624,6 @@
                       "displayTitle": "Docs, repos & CI",
                       "track": "swe101",
                       "parentId": "en/swe101/languages&frameworks/mermaid"
-                    }
-                  ]
-                },
-                {
-                  "id": "en/swe101/languages&frameworks/plantuml",
-                  "type": "section",
-                  "locale": "en",
-                  "path": "en/swe101/languages&frameworks/plantuml",
-                  "label": "PlantUML",
-                  "order": 16,
-                  "parentId": "en/swe101/languages&frameworks",
-                  "children": [
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-                      "file": "i-overview.md",
-                      "label": "I",
-                      "subtitle": "Overview",
-                      "group": "PlantUML",
-                      "order": 1,
-                      "groupOrder": null,
-                      "displayTitle": "Overview",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
-                    },
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-                      "file": "ii-install-and-toolchain.md",
-                      "label": "II",
-                      "subtitle": "Install & toolchain",
-                      "group": "PlantUML",
-                      "order": 2,
-                      "groupOrder": null,
-                      "displayTitle": "Install & toolchain",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
-                    },
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-                      "file": "iii-sequence-diagrams.md",
-                      "label": "III",
-                      "subtitle": "Sequence diagrams",
-                      "group": "PlantUML",
-                      "order": 3,
-                      "groupOrder": null,
-                      "displayTitle": "Sequence diagrams",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
-                    },
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-                      "file": "iv-component-and-deployment.md",
-                      "label": "IV",
-                      "subtitle": "Component & deployment",
-                      "group": "PlantUML",
-                      "order": 4,
-                      "groupOrder": null,
-                      "displayTitle": "Component & deployment",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
-                    },
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-                      "file": "v-class-activity-and-state.md",
-                      "label": "V",
-                      "subtitle": "Class, activity & state",
-                      "group": "PlantUML",
-                      "order": 5,
-                      "groupOrder": null,
-                      "displayTitle": "Class, activity & state",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
-                    },
-                    {
-                      "id": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-                      "type": "note",
-                      "locale": "en",
-                      "path": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-                      "file": "vi-docs-repos-and-ci.md",
-                      "label": "VI",
-                      "subtitle": "Docs, repos & CI",
-                      "group": "PlantUML",
-                      "order": 6,
-                      "groupOrder": null,
-                      "displayTitle": "Docs, repos & CI",
-                      "track": "swe101",
-                      "parentId": "en/swe101/languages&frameworks/plantuml"
                     }
                   ]
                 },
@@ -5296,6 +5225,21 @@
                   ]
                 }
               ]
+            },
+            {
+              "id": "en/sre101/i-overview.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/sre101/i-overview.md",
+              "file": "i-overview.md",
+              "label": "I Overview",
+              "subtitle": null,
+              "group": "SRE101",
+              "order": 1,
+              "groupOrder": null,
+              "displayTitle": "I Overview",
+              "track": "sre101",
+              "parentId": "en/sre101"
             }
           ]
         },
@@ -5520,6 +5464,21 @@
                   "parentId": "en/food/baking"
                 }
               ]
+            },
+            {
+              "id": "en/food/i-overview.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/food/i-overview.md",
+              "file": "i-overview.md",
+              "label": "I Overview",
+              "subtitle": null,
+              "group": "Food",
+              "order": 1,
+              "groupOrder": null,
+              "displayTitle": "I Overview",
+              "track": "food",
+              "parentId": "en/food"
             }
           ]
         },
@@ -5785,6 +5744,21 @@
                   ]
                 }
               ]
+            },
+            {
+              "id": "en/languages/i-overview.md",
+              "type": "note",
+              "locale": "en",
+              "path": "en/languages/i-overview.md",
+              "file": "i-overview.md",
+              "label": "I Overview",
+              "subtitle": null,
+              "group": "Languages",
+              "order": 1,
+              "groupOrder": null,
+              "displayTitle": "I Overview",
+              "track": "languages",
+              "parentId": "en/languages"
             }
           ]
         },
@@ -10773,21 +10747,6 @@
       "parentId": "en/cs101"
     },
     {
-      "id": "en/cs101/i-foundations.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/cs101/i-foundations.md",
-      "file": "i-foundations.md",
-      "label": "I",
-      "subtitle": "Foundations",
-      "group": "Data structures & algorithms",
-      "order": 1,
-      "groupOrder": null,
-      "displayTitle": "Foundations",
-      "track": "cs101",
-      "parentId": "en/cs101"
-    },
-    {
       "id": "en/cs101/i-machines-and-memory.md",
       "type": "note",
       "locale": "en",
@@ -10799,6 +10758,36 @@
       "order": 1,
       "groupOrder": null,
       "displayTitle": "Machines & memory",
+      "track": "cs101",
+      "parentId": "en/cs101"
+    },
+    {
+      "id": "en/cs101/i-overview.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/cs101/i-overview.md",
+      "file": "i-overview.md",
+      "label": "I Overview",
+      "subtitle": null,
+      "group": "CS101",
+      "order": 0,
+      "groupOrder": null,
+      "displayTitle": "I Overview",
+      "track": "cs101",
+      "parentId": "en/cs101"
+    },
+    {
+      "id": "en/cs101/ii-foundations.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/cs101/ii-foundations.md",
+      "file": "ii-foundations.md",
+      "label": "II",
+      "subtitle": "Foundations",
+      "group": "Data structures & algorithms",
+      "order": 2,
+      "groupOrder": null,
+      "displayTitle": "Foundations",
       "track": "cs101",
       "parentId": "en/cs101"
     },
@@ -11745,6 +11734,21 @@
       "parentId": "en/food/baking"
     },
     {
+      "id": "en/food/i-overview.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/food/i-overview.md",
+      "file": "i-overview.md",
+      "label": "I Overview",
+      "subtitle": null,
+      "group": "Food",
+      "order": 1,
+      "groupOrder": null,
+      "displayTitle": "I Overview",
+      "track": "food",
+      "parentId": "en/food"
+    },
+    {
       "id": "en/getting-started",
       "type": "section",
       "locale": "en",
@@ -11765,6 +11769,21 @@
       "order": 10,
       "groupOrder": null,
       "displayTitle": "Topics and folders",
+      "track": "getting-started",
+      "parentId": "en/getting-started"
+    },
+    {
+      "id": "en/getting-started/i-overview.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/getting-started/i-overview.md",
+      "file": "i-overview.md",
+      "label": "I Overview",
+      "subtitle": null,
+      "group": "Getting started",
+      "order": 0,
+      "groupOrder": null,
+      "displayTitle": "I Overview",
       "track": "getting-started",
       "parentId": "en/getting-started"
     },
@@ -11815,6 +11834,21 @@
       "label": "Languages",
       "order": 26,
       "parentId": "en"
+    },
+    {
+      "id": "en/languages/i-overview.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/languages/i-overview.md",
+      "file": "i-overview.md",
+      "label": "I Overview",
+      "subtitle": null,
+      "group": "Languages",
+      "order": 1,
+      "groupOrder": null,
+      "displayTitle": "I Overview",
+      "track": "languages",
+      "parentId": "en/languages"
     },
     {
       "id": "en/languages/japanese",
@@ -12817,6 +12851,21 @@
       "displayTitle": "Cost & governance",
       "track": "sre101",
       "parentId": "en/sre101/cloud-architecture/patterns-and-design"
+    },
+    {
+      "id": "en/sre101/i-overview.md",
+      "type": "note",
+      "locale": "en",
+      "path": "en/sre101/i-overview.md",
+      "file": "i-overview.md",
+      "label": "I Overview",
+      "subtitle": null,
+      "group": "SRE101",
+      "order": 1,
+      "groupOrder": null,
+      "displayTitle": "I Overview",
+      "track": "sre101",
+      "parentId": "en/sre101"
     },
     {
       "id": "en/sre101/tooling",
@@ -15423,105 +15472,6 @@
       "parentId": "en/swe101/languages&frameworks/mermaid"
     },
     {
-      "id": "en/swe101/languages&frameworks/plantuml",
-      "type": "section",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml",
-      "label": "PlantUML",
-      "order": 16,
-      "parentId": "en/swe101/languages&frameworks"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "file": "i-overview.md",
-      "label": "I",
-      "subtitle": "Overview",
-      "group": "PlantUML",
-      "order": 1,
-      "groupOrder": null,
-      "displayTitle": "Overview",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-      "file": "ii-install-and-toolchain.md",
-      "label": "II",
-      "subtitle": "Install & toolchain",
-      "group": "PlantUML",
-      "order": 2,
-      "groupOrder": null,
-      "displayTitle": "Install & toolchain",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "file": "iii-sequence-diagrams.md",
-      "label": "III",
-      "subtitle": "Sequence diagrams",
-      "group": "PlantUML",
-      "order": 3,
-      "groupOrder": null,
-      "displayTitle": "Sequence diagrams",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "file": "iv-component-and-deployment.md",
-      "label": "IV",
-      "subtitle": "Component & deployment",
-      "group": "PlantUML",
-      "order": 4,
-      "groupOrder": null,
-      "displayTitle": "Component & deployment",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "file": "v-class-activity-and-state.md",
-      "label": "V",
-      "subtitle": "Class, activity & state",
-      "group": "PlantUML",
-      "order": 5,
-      "groupOrder": null,
-      "displayTitle": "Class, activity & state",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
-      "id": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "type": "note",
-      "locale": "en",
-      "path": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "file": "vi-docs-repos-and-ci.md",
-      "label": "VI",
-      "subtitle": "Docs, repos & CI",
-      "group": "PlantUML",
-      "order": 6,
-      "groupOrder": null,
-      "displayTitle": "Docs, repos & CI",
-      "track": "swe101",
-      "parentId": "en/swe101/languages&frameworks/plantuml"
-    },
-    {
       "id": "en/swe101/languages&frameworks/python",
       "type": "section",
       "locale": "en",
@@ -16638,6 +16588,12 @@
     },
     {
       "source": "en/getting-started",
+      "target": "en/getting-started/i-overview.md",
+      "kind": "contains",
+      "weight": 1.0
+    },
+    {
+      "source": "en/getting-started",
       "target": "en/getting-started/guide-topics-and-folders.md",
       "kind": "contains",
       "weight": 1.0
@@ -16890,19 +16846,25 @@
     },
     {
       "source": "en/cs101",
+      "target": "en/cs101/i-overview.md",
+      "kind": "contains",
+      "weight": 1.0
+    },
+    {
+      "source": "en/cs101",
       "target": "en/cs101/i-core-concepts.md",
       "kind": "contains",
       "weight": 1.0
     },
     {
       "source": "en/cs101",
-      "target": "en/cs101/i-foundations.md",
+      "target": "en/cs101/i-machines-and-memory.md",
       "kind": "contains",
       "weight": 1.0
     },
     {
       "source": "en/cs101",
-      "target": "en/cs101/i-machines-and-memory.md",
+      "target": "en/cs101/ii-foundations.md",
       "kind": "contains",
       "weight": 1.0
     },
@@ -17263,48 +17225,6 @@
     {
       "source": "en/swe101/languages&frameworks",
       "target": "en/swe101/languages&frameworks/mermaid",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml",
-      "target": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "kind": "contains",
-      "weight": 1.0
-    },
-    {
-      "source": "en/swe101/languages&frameworks",
-      "target": "en/swe101/languages&frameworks/plantuml",
       "kind": "contains",
       "weight": 1.0
     },
@@ -18821,6 +18741,12 @@
       "weight": 1.0
     },
     {
+      "source": "en/sre101",
+      "target": "en/sre101/i-overview.md",
+      "kind": "contains",
+      "weight": 1.0
+    },
+    {
       "source": "en",
       "target": "en/sre101",
       "kind": "contains",
@@ -18913,6 +18839,12 @@
     {
       "source": "en/food",
       "target": "en/food/baking",
+      "kind": "contains",
+      "weight": 1.0
+    },
+    {
+      "source": "en/food",
+      "target": "en/food/i-overview.md",
       "kind": "contains",
       "weight": 1.0
     },
@@ -19027,6 +18959,12 @@
     {
       "source": "en/languages",
       "target": "en/languages/japanese",
+      "kind": "contains",
+      "weight": 1.0
+    },
+    {
+      "source": "en/languages",
+      "target": "en/languages/i-overview.md",
       "kind": "contains",
       "weight": 1.0
     },
@@ -20147,6 +20085,110 @@
       "weight": 1.0
     },
     {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/getting-started/guide-topics-and-folders.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Topics and folders**",
+      "href": "guide-topics-and-folders.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/getting-started/intro/i-installation.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Intro**",
+      "href": "intro/i-installation.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/getting-started/intro/ii-setup.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Setup",
+      "href": "intro/ii-setup.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/cs101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`cs101/`",
+      "href": "../cs101/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/swe101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`swe101/`",
+      "href": "../swe101/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/sre101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`sre101/`",
+      "href": "../sre101/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/ai101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`ai101/`",
+      "href": "../ai101/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/cybersecurity/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`cybersecurity/`",
+      "href": "../cybersecurity/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/digital-marketing/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`digital-marketing/`",
+      "href": "../digital-marketing/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/cryptocurrency101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`cryptocurrency101/`",
+      "href": "../cryptocurrency101/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/startups/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`startups/`",
+      "href": "../startups/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/languages/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`languages/`",
+      "href": "../languages/i-overview.md"
+    },
+    {
+      "source": "en/getting-started/i-overview.md",
+      "target": "en/food/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "`food/`",
+      "href": "../food/i-overview.md"
+    },
+    {
       "source": "en/getting-started/guide-topics-and-folders.md",
       "target": "en/sre101/cloud-architecture/foundations/vi-networking-vpc-and-lb.md",
       "kind": "link",
@@ -20345,22 +20387,6 @@
       "weight": 0.12,
       "label": "Common patterns",
       "href": "x-common-patterns.md"
-    },
-    {
-      "source": "en/cs101/data-structures/i-array.md",
-      "target": "en/cs101/i-foundations.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Foundations",
-      "href": "../i-foundations.md"
-    },
-    {
-      "source": "en/cs101/data-structures/v-queue.md",
-      "target": "en/cs101/i-foundations.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Foundations",
-      "href": "../i-foundations.md"
     },
     {
       "source": "en/cs101/data-structures/ix-priority-queue.md",
@@ -20681,6 +20707,94 @@
       "weight": 0.12,
       "label": "Ingress, edge, and load balancers",
       "href": "v-ingress-edge-and-load-balancers.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/i-core-concepts.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Core concepts**",
+      "href": "i-core-concepts.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/ii-foundations.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Foundations**",
+      "href": "ii-foundations.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/i-machines-and-memory.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Machines & memory**",
+      "href": "i-machines-and-memory.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/iv-paradigms-and-limits.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Paradigms & limits**",
+      "href": "iv-paradigms-and-limits.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/data-structures/i-array.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Data structures**",
+      "href": "data-structures/i-array.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/Algorithms/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Algorithms**",
+      "href": "Algorithms/i-overview.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/databases/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Databases**",
+      "href": "databases/i-overview.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cs101/networking/i-tcp-udp-and-transport-basics.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Networking**",
+      "href": "networking/i-tcp-udp-and-transport-basics.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/swe101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "SWE101",
+      "href": "../swe101/i-overview.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/sre101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "SRE101",
+      "href": "../sre101/i-overview.md"
+    },
+    {
+      "source": "en/cs101/i-overview.md",
+      "target": "en/cybersecurity/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Cybersecurity",
+      "href": "../cybersecurity/i-overview.md"
     },
     {
       "source": "en/swe101/git/essentials/i-overview.md",
@@ -21348,14 +21462,6 @@
     },
     {
       "source": "en/swe101/languages&frameworks/mermaid/i-overview.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "PlantUML",
-      "href": "../plantuml/i-overview.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/mermaid/i-overview.md",
       "target": "en/swe101/languages&frameworks/mermaid/ii-install-and-toolchain.md",
       "kind": "link",
       "weight": 0.12,
@@ -21364,11 +21470,11 @@
     },
     {
       "source": "en/swe101/languages&frameworks/mermaid/ii-install-and-toolchain.md",
-      "target": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
+      "target": "en/swe101/languages&frameworks/mermaid/vi-docs-repos-and-ci.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML",
-      "href": "../plantuml/vi-docs-repos-and-ci.md"
+      "label": "Docs, repos & CI",
+      "href": "vi-docs-repos-and-ci.md"
     },
     {
       "source": "en/swe101/languages&frameworks/mermaid/ii-install-and-toolchain.md",
@@ -21436,14 +21542,6 @@
     },
     {
       "source": "en/swe101/languages&frameworks/mermaid/iv-flowcharts-and-architecture.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "PlantUML component & deployment",
-      "href": "../plantuml/iv-component-and-deployment.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/mermaid/iv-flowcharts-and-architecture.md",
       "target": "en/swe101/languages&frameworks/mermaid/v-class-state-and-er.md",
       "kind": "link",
       "weight": 0.12,
@@ -21484,142 +21582,6 @@
     },
     {
       "source": "en/swe101/languages&frameworks/mermaid/vi-docs-repos-and-ci.md",
-      "target": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "PlantUML",
-      "href": "../plantuml/vi-docs-repos-and-ci.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/mermaid/vi-docs-repos-and-ci.md",
-      "target": "en/swe101/sysdesign/classic-designs/ii-url-shortener.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "system design",
-      "href": "../sysdesign/classic-designs/ii-url-shortener.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "target": "en/swe101/sysdesign/i-core-building-blocks.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "System design",
-      "href": "../sysdesign/i-core-building-blocks.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "target": "en/swe101/git/essentials/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Git essentials",
-      "href": "../git/essentials/i-overview.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "target": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Install & toolchain",
-      "href": "ii-install-and-toolchain.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/ii-install-and-toolchain.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Sequence diagrams",
-      "href": "iii-sequence-diagrams.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "target": "en/swe101/cdn/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "CDN overview",
-      "href": "../cdn/i-overview.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "target": "en/swe101/redis/iv-patterns-and-use-cases.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Redis patterns",
-      "href": "../redis/iv-patterns-and-use-cases.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "target": "en/swe101/api-gateway/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "API gateway overview",
-      "href": "../api-gateway/i-overview.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Component & deployment",
-      "href": "iv-component-and-deployment.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "target": "en/swe101/sysdesign/i-core-building-blocks.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Core building blocks",
-      "href": "../sysdesign/i-core-building-blocks.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "target": "en/swe101/sysdesign/classic-designs/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Classic designs",
-      "href": "../sysdesign/classic-designs/i-overview.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/iv-component-and-deployment.md",
-      "target": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Class, activity & state",
-      "href": "v-class-activity-and-state.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "target": "en/swe101/databases/postgres/iii-schema-and-migrations.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Postgres schema notes",
-      "href": "../postgres/iii-schema-and-migrations.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/v-class-activity-and-state.md",
-      "target": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Docs, repos & CI",
-      "href": "vi-docs-repos-and-ci.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "target": "en/swe101/git/essentials/iii-everyday-commands.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Everyday commands",
-      "href": "../git/essentials/iii-everyday-commands.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "target": "en/sre101/cicd/i-fundamentals.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "CI/CD fundamentals",
-      "href": "../../sre101/cicd/i-fundamentals.md"
-    },
-    {
-      "source": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
       "target": "en/swe101/sysdesign/classic-designs/ii-url-shortener.md",
       "kind": "link",
       "weight": 0.12,
@@ -21892,11 +21854,11 @@
     },
     {
       "source": "en/swe101/languages&frameworks/javascript/react/iii-rendering-and-server-requests.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
+      "target": "en/swe101/languages&frameworks/mermaid/iii-sequence-diagrams.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML sequence diagrams",
-      "href": "../../plantuml/iii-sequence-diagrams.md"
+      "label": "Mermaid sequence diagrams",
+      "href": "../../mermaid/iii-sequence-diagrams.md"
     },
     {
       "source": "en/swe101/languages&frameworks/javascript/react/iii-rendering-and-server-requests.md",
@@ -22788,11 +22750,11 @@
     },
     {
       "source": "en/swe101/languages&frameworks/zig/v-mvc.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
+      "target": "en/swe101/languages&frameworks/mermaid/iii-sequence-diagrams.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML — Sequence diagrams",
-      "href": "../plantuml/iii-sequence-diagrams.md"
+      "label": "Mermaid — Sequence diagrams",
+      "href": "../mermaid/iii-sequence-diagrams.md"
     },
     {
       "source": "en/swe101/languages&frameworks/zig/v-mvc.md",
@@ -24124,11 +24086,11 @@
     },
     {
       "source": "en/swe101/sysdesign/scalable-patterns/ix-database-sharding.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
+      "target": "en/swe101/languages&frameworks/mermaid/i-overview.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML",
-      "href": "../../plantuml/i-overview.md"
+      "label": "Mermaid",
+      "href": "../../languages&frameworks/mermaid/i-overview.md"
     },
     {
       "source": "en/swe101/sysdesign/scalable-patterns/ix-database-sharding.md",
@@ -24980,11 +24942,11 @@
     },
     {
       "source": "en/swe101/kafka/i-overview.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
+      "target": "en/swe101/languages&frameworks/mermaid/iii-sequence-diagrams.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML sequence diagrams",
-      "href": "../plantuml/iii-sequence-diagrams.md"
+      "label": "Mermaid sequence diagrams",
+      "href": "../languages&frameworks/mermaid/iii-sequence-diagrams.md"
     },
     {
       "source": "en/swe101/kafka/i-overview.md",
@@ -25084,11 +25046,11 @@
     },
     {
       "source": "en/swe101/kafka/iv-producers-and-consumers.md",
-      "target": "en/swe101/languages&frameworks/plantuml/iii-sequence-diagrams.md",
+      "target": "en/swe101/languages&frameworks/mermaid/iii-sequence-diagrams.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML sequences",
-      "href": "../plantuml/iii-sequence-diagrams.md"
+      "label": "Mermaid sequences",
+      "href": "../languages&frameworks/mermaid/iii-sequence-diagrams.md"
     },
     {
       "source": "en/swe101/kafka/iv-producers-and-consumers.md",
@@ -25244,11 +25206,11 @@
     },
     {
       "source": "en/swe101/kafka/vii-operations-and-pitfalls.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
+      "target": "en/swe101/languages&frameworks/mermaid/i-overview.md",
       "kind": "link",
       "weight": 0.12,
-      "label": "PlantUML",
-      "href": "../plantuml/i-overview.md"
+      "label": "Mermaid",
+      "href": "../languages&frameworks/mermaid/i-overview.md"
     },
     {
       "source": "en/swe101/kafka/viii-sequential-pipelines-and-sagas.md",
@@ -25412,14 +25374,6 @@
     },
     {
       "source": "en/swe101/obsidian/i-overview.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Overview",
-      "href": "../languages&frameworks/plantuml/i-overview.md"
-    },
-    {
-      "source": "en/swe101/obsidian/i-overview.md",
       "target": "en/swe101/obsidian/ii-install-and-vault-setup.md",
       "kind": "link",
       "weight": 0.12,
@@ -25564,14 +25518,6 @@
     },
     {
       "source": "en/swe101/obsidian/vii-engineering-workflows.md",
-      "target": "en/swe101/languages&frameworks/plantuml/vi-docs-repos-and-ci.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Docs, repos & CI",
-      "href": "../languages&frameworks/plantuml/vi-docs-repos-and-ci.md"
-    },
-    {
-      "source": "en/swe101/obsidian/vii-engineering-workflows.md",
       "target": "en/swe101/git/essentials/i-overview.md",
       "kind": "link",
       "weight": 0.12,
@@ -25585,14 +25531,6 @@
       "weight": 0.12,
       "label": "Overview",
       "href": "../languages&frameworks/mermaid/i-overview.md"
-    },
-    {
-      "source": "en/swe101/obsidian/vii-engineering-workflows.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "Overview",
-      "href": "../languages&frameworks/plantuml/i-overview.md"
     },
     {
       "source": "en/swe101/i-overview.md",
@@ -25780,19 +25718,11 @@
     },
     {
       "source": "en/swe101/i-overview.md",
-      "target": "en/swe101/languages&frameworks/plantuml/i-overview.md",
-      "kind": "link",
-      "weight": 0.12,
-      "label": "PlantUML",
-      "href": "plantuml/i-overview.md"
-    },
-    {
-      "source": "en/swe101/i-overview.md",
       "target": "en/swe101/languages&frameworks/mermaid/i-overview.md",
       "kind": "link",
       "weight": 0.12,
       "label": "Mermaid",
-      "href": "mermaid/i-overview.md"
+      "href": "languages&frameworks/mermaid/i-overview.md"
     },
     {
       "source": "en/swe101/i-overview.md",
@@ -26899,6 +26829,134 @@
       "href": "../foundations/viii-well-architected-framework.md"
     },
     {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cicd/i-fundamentals.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**CI/CD**",
+      "href": "cicd/i-fundamentals.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cloud-architecture/foundations/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Cloud architecture**",
+      "href": "cloud-architecture/foundations/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/prometheus/i-intro-and-architecture.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Tooling**",
+      "href": "tooling/prometheus/i-intro-and-architecture.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cicd/tools-and-platforms/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Tools & platforms",
+      "href": "cicd/tools-and-platforms/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cicd/terraform/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Terraform",
+      "href": "cicd/terraform/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cicd/ansible-and-jenkins/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Ansible & Jenkins",
+      "href": "cicd/ansible-and-jenkins/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cicd/security-and-best-practices/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Security & best practices",
+      "href": "cicd/security-and-best-practices/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/cloud-architecture/patterns-and-design/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Patterns & design",
+      "href": "cloud-architecture/patterns-and-design/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/grafana/i-intro.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Grafana",
+      "href": "tooling/grafana/i-intro.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/alertmanager/i-intro.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Alertmanager",
+      "href": "tooling/alertmanager/i-intro.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/iv-loki.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Loki",
+      "href": "tooling/iv-loki.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/kubernetes/i-intro-and-architecture.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Kubernetes",
+      "href": "tooling/kubernetes/i-intro-and-architecture.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/sre101/tooling/terraform/i-intro-and-architecture.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Terraform",
+      "href": "tooling/terraform/i-intro-and-architecture.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/swe101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "SWE101",
+      "href": "../swe101/i-overview.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/cs101/networking/i-tcp-udp-and-transport-basics.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "CS101 networking",
+      "href": "../cs101/networking/i-tcp-udp-and-transport-basics.md"
+    },
+    {
+      "source": "en/sre101/i-overview.md",
+      "target": "en/cybersecurity/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Cybersecurity",
+      "href": "../cybersecurity/i-overview.md"
+    },
+    {
       "source": "en/cybersecurity/hardware-bypass/i-overview.md",
       "target": "en/cybersecurity/hardware-bypass/ii-relay-and-rf-amplification.md",
       "kind": "link",
@@ -27233,6 +27291,22 @@
       "weight": 0.12,
       "label": "Pipeline observability",
       "href": "../sre101/cicd/security-and-best-practices/vi-pipeline-observability-and-dora.md"
+    },
+    {
+      "source": "en/food/i-overview.md",
+      "target": "en/food/baking/i-chocolate-banana-bread.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Baking**",
+      "href": "baking/i-chocolate-banana-bread.md"
+    },
+    {
+      "source": "en/food/i-overview.md",
+      "target": "en/food/baking/ii-cookies.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Chocolate chip cookies",
+      "href": "baking/ii-cookies.md"
     },
     {
       "source": "en/languages/japanese/beginner-alphabet/i-overview.md",
@@ -27625,6 +27699,46 @@
       "weight": 0.12,
       "label": "Daily conversations",
       "href": "daily-conversations/i-overview.md"
+    },
+    {
+      "source": "en/languages/i-overview.md",
+      "target": "en/languages/japanese/beginner-alphabet/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "**Japanese**",
+      "href": "japanese/beginner-alphabet/i-overview.md"
+    },
+    {
+      "source": "en/languages/i-overview.md",
+      "target": "en/languages/japanese/vocabulary/i-common-words.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Vocabulary",
+      "href": "japanese/vocabulary/i-common-words.md"
+    },
+    {
+      "source": "en/languages/i-overview.md",
+      "target": "en/languages/japanese/vocabulary/daily-conversations/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Daily conversations",
+      "href": "japanese/vocabulary/daily-conversations/i-overview.md"
+    },
+    {
+      "source": "en/languages/i-overview.md",
+      "target": "en/languages/japanese/day2day/i-beginner.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "Day-to-day",
+      "href": "japanese/day2day/i-beginner.md"
+    },
+    {
+      "source": "en/languages/i-overview.md",
+      "target": "en/swe101/i-overview.md",
+      "kind": "link",
+      "weight": 0.12,
+      "label": "SWE101",
+      "href": "../swe101/i-overview.md"
     },
     {
       "source": "en/digital-marketing/foundations/i-overview.md",
