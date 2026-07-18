@@ -34,21 +34,20 @@ You often **build the transaction off-chain** (dApp or wallet); the **validator*
 
 ## Fee split pattern
 
-```plantuml
-@startuml
-title Cardano — fee split (UTXO)
-actor Payer
-participant "Tx builder\n(off-chain)" as TB
-participant "fee_split\nvalidator" as V
-participant "fee UTXO" as FEE
-participant "recipient UTXO" as REC
+```mermaid
+sequenceDiagram
+    title Cardano — fee split (UTXO)
+    actor Payer
+    participant TB as Tx builder (off-chain)
+    participant V as fee_split validator
+    participant FEE as fee UTXO
+    participant REC as recipient UTXO
 
-Payer -> TB: build tx (amount, recipient, feeBps)
-TB -> V: submit tx with outputs
-V -> V: check fee + remainder outputs
-V -> FEE: output lovelace = fee
-V -> REC: output lovelace = remainder
-@enduml
+    Payer->>TB: build tx (amount, recipient, feeBps)
+    TB->>V: submit tx with outputs
+    V->>V: check fee + remainder outputs
+    V->>FEE: output lovelace = fee
+    V->>REC: output lovelace = remainder
 ```
 
 ## Example — Aiken validator (sketch)

@@ -56,25 +56,24 @@ The **Java program that receives the HTTP request** is usually the **Order servi
 
 ## 4. Happy path (events)
 
-```plantuml
-@startuml
-participant "Order Svc" as ORD
-queue "Event bus" as BUS
-participant "Payment Svc" as PAY
-participant "Inventory Svc" as INV
+```mermaid
+sequenceDiagram
+  participant ORD as Order Svc
+  participant BUS as Event bus
+  participant PAY as Payment Svc
+  participant INV as Inventory Svc
 
-ORD -> ORD: INSERT order PENDING + outbox
-ORD -> BUS: OrderCreated
-BUS -> PAY: OrderCreated
-PAY -> PAY: capture Stripe + INSERT payment
-PAY -> BUS: PaymentCaptured
-BUS -> INV: PaymentCaptured
-INV -> INV: reserve stock
-INV -> BUS: InventoryReserved
-BUS -> ORD: InventoryReserved
-ORD -> ORD: UPDATE order CONFIRMED
-ORD -> BUS: OrderConfirmed
-@enduml
+  ORD->>ORD: INSERT order PENDING + outbox
+  ORD->>BUS: OrderCreated
+  BUS->>PAY: OrderCreated
+  PAY->>PAY: capture Stripe + INSERT payment
+  PAY->>BUS: PaymentCaptured
+  BUS->>INV: PaymentCaptured
+  INV->>INV: reserve stock
+  INV->>BUS: InventoryReserved
+  BUS->>ORD: InventoryReserved
+  ORD->>ORD: UPDATE order CONFIRMED
+  ORD->>BUS: OrderConfirmed
 ```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100" role="img" aria-label="Choreography event chain OrderCreated PaymentCaptured InventoryReserved">
@@ -99,22 +98,21 @@ Each handler: **idempotent** on `order_id` / `event_id`; **transactional outbox*
 
 Inventory fails after payment succeeded:
 
-```plantuml
-@startuml
-queue "Event bus" as BUS
-participant "Inventory Svc" as INV
-participant "Payment Svc" as PAY
-participant "Order Svc" as ORD
+```mermaid
+sequenceDiagram
+  participant BUS as Event bus
+  participant INV as Inventory Svc
+  participant PAY as Payment Svc
+  participant ORD as Order Svc
 
-INV -> INV: reserve fails
-INV -> BUS: InventoryFailed
-BUS -> PAY: InventoryFailed
-PAY -> PAY: refund
-PAY -> BUS: PaymentRefunded
-BUS -> ORD: PaymentRefunded
-ORD -> ORD: status CANCELLED
-ORD -> BUS: OrderCancelled
-@enduml
+  INV->>INV: reserve fails
+  INV->>BUS: InventoryFailed
+  BUS->>PAY: InventoryFailed
+  PAY->>PAY: refund
+  PAY->>BUS: PaymentRefunded
+  BUS->>ORD: PaymentRefunded
+  ORD->>ORD: status CANCELLED
+  ORD->>BUS: OrderCancelled
 ```
 
 | Event | Consumer action |

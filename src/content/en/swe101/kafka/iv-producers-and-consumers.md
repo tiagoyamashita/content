@@ -7,26 +7,25 @@ order: 4
 Kafka — producers & consumers
 **Producers** serialize records and send batches to brokers. **Consumers** poll, deserialize, and process — then **commit offsets**. This part covers client configuration and a typical request-to-event flow.
 
-Previous: [Core concepts](iii-core-concepts-and-architecture.md). Diagram reference: [PlantUML sequences](../plantuml/iii-sequence-diagrams.md).
+Previous: [Core concepts](iii-core-concepts-and-architecture.md). Diagram reference: [Mermaid sequences](../languages&frameworks/mermaid/iii-sequence-diagrams.md).
 
 ## 1. End-to-end: HTTP → Kafka → handler
 
-```plantuml
-@startuml
-title Order API publishes domain event
-actor Client
-participant "Order API" as API
-database Postgres as DB
-queue "order-events" as K
-participant "Payment consumer" as PAY
+```mermaid
+sequenceDiagram
+    title Order API publishes domain event
+    actor Client
+    participant API as Order API
+    participant DB as Postgres
+    participant K as order-events
+    participant PAY as Payment consumer
 
-Client -> API: POST /orders
-API -> DB: BEGIN; INSERT order; COMMIT
-API -> K: produce OrderPlaced (key=orderId)
-API --> Client: 201 Created
-K -> PAY: poll batch
-PAY -> PAY: charge / reserve inventory
-@enduml
+    Client->>API: POST /orders
+    API->>DB: BEGIN; INSERT order; COMMIT
+    API->>K: produce OrderPlaced (key=orderId)
+    API-->>Client: 201 Created
+    K->>PAY: poll batch
+    PAY->>PAY: charge / reserve inventory
 ```
 
 **Important:** commit the database **before** or **in the same outbox transaction** as the event — never announce success to Kafka if the order row failed (see [Transactional outbox](vi-patterns-and-integration.md)).

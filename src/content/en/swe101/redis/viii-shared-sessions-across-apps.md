@@ -21,31 +21,29 @@ Without a **central session store**, users re-authenticate per app, or you dupli
 
 ## 2. Target architecture
 
-```plantuml
-@startuml
-title Shared Redis session — multiple apps
-actor User
-participant "React SPA\nshop.example.com" as SPA
-participant "Order API\napi.example.com" as API
-participant "Admin app\nadmin.example.com" as ADM
-database "Redis\nsession keys" as R
-database "Postgres\n(users)" as DB
+```mermaid
+sequenceDiagram
+  actor User
+  participant SPA as React SPA
+  participant API as Order API
+  participant ADM as Admin app
+  participant R as Redis
+  participant DB as Postgres
 
-User -> SPA: login
-SPA -> API: POST /auth/login
-API -> DB: verify password
-API -> R: SET session:sess_xyz { userId, roles, … } EX 86400
-API --> SPA: Set-Cookie: SESSION=sess_xyz\nDomain=.example.com
+  User->>SPA: login
+  SPA->>API: POST /auth/login
+  API->>DB: verify password
+  API->>R: SET session:sess_xyz { userId, roles, … } EX 86400
+  API-->>SPA: Set-Cookie: SESSION=sess_xyz<br/>Domain=.example.com
 
-User -> ADM: open admin (same cookie sent)
-ADM -> R: GET session:sess_xyz
-R --> ADM: { userId, roles }
-note right of ADM: Same session — no second login
+  User->>ADM: open admin (same cookie sent)
+  ADM->>R: GET session:sess_xyz
+  R-->>ADM: { userId, roles }
+  Note right of ADM: Same session — no second login
 
-User -> API: POST /orders (Cookie: SESSION=sess_xyz)
-API -> R: GET session:sess_xyz
-API -> API: authorize + handle request
-@enduml
+  User->>API: POST /orders (Cookie: SESSION=sess_xyz)
+  API->>R: GET session:sess_xyz
+  API->>API: authorize + handle request
 ```
 
 | Piece | Role |
@@ -98,19 +96,17 @@ Set-Cookie: SESSION=sess_xyz; Domain=.example.com; Path=/; HttpOnly; Secure; Sam
 
 ## 5. Login flow (shared session)
 
-```plantuml
-@startuml
-title Login creates one Redis session
-actor User
-participant "Any app" as APP
-database Redis as R
+```mermaid
+sequenceDiagram
+  actor User
+  participant APP as Any app
+  participant R as Redis
 
-User -> APP: POST /login (credentials)
-APP -> APP: verify user (DB / LDAP)
-APP -> APP: generate sessionId
-APP -> R: SET session:{id} payload EX ttl
-APP --> User: Set-Cookie SESSION={id}
-@enduml
+  User->>APP: POST /login (credentials)
+  APP->>APP: verify user (DB / LDAP)
+  APP->>APP: generate sessionId
+  APP->>R: SET session:{id} payload EX ttl
+  APP-->>User: Set-Cookie SESSION={id}
 ```
 
 Only **one** service needs to perform login (auth service or primary API). Other apps **trust the cookie** and read Redis — they do not re-verify password on every app.
@@ -290,28 +286,26 @@ The **session blob can still live in Redis** — but each domain gets its **own 
 
 One **Identity Provider (IdP)** at `auth.example.com` (or Keycloak, Auth0, Okta, Azure AD).
 
-```plantuml
-@startuml
-title SSO across different domains
-actor User
-participant "shop.com" as SHOP
-participant "auth.example.com\n(IdP)" as IDP
-database "Redis\n(sessions / tokens)" as R
-participant "partner.io" as PART
+```mermaid
+sequenceDiagram
+  actor User
+  participant SHOP as shop.com
+  participant IDP as auth.example.com (IdP)
+  participant R as Redis
+  participant PART as partner.io
 
-User -> SHOP: visit shop.com
-SHOP --> User: redirect to auth.example.com/login?client=shop
-User -> IDP: login (once)
-IDP -> R: store session / issue tokens
-IDP --> User: redirect shop.com/callback?code=…
-User -> SHOP: callback — exchange code
-SHOP -> R: optional local session
-note right of SHOP: Cookie scoped to shop.com only
+  User->>SHOP: visit shop.com
+  SHOP-->>User: redirect to auth.example.com/login?client=shop
+  User->>IDP: login (once)
+  IDP->>R: store session / issue tokens
+  IDP-->>User: redirect shop.com/callback?code=…
+  User->>SHOP: callback — exchange code
+  SHOP->>R: optional local session
+  Note right of SHOP: Cookie scoped to shop.com only
 
-User -> PART: visit partner.io
-PART --> User: redirect auth.example.com (already logged in)
-IDP --> User: redirect partner.io/callback — no password again
-@enduml
+  User->>PART: visit partner.io
+  PART-->>User: redirect auth.example.com (already logged in)
+  IDP-->>User: redirect partner.io/callback — no password again
 ```
 
 | Piece | Role |

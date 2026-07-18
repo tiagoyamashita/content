@@ -137,7 +137,7 @@ C4Context
 | **Container** | Major apps and data stores (`C4Container`) |
 | **Component** | Modules inside one container (`C4Component`) |
 
-Pin Mermaid version in CI — C4 syntax evolved across releases. For full C4-PlantUML stdlib and pinned includes, see [PlantUML component & deployment](../plantuml/iv-component-and-deployment.md).
+Pin Mermaid version in CI — C4 syntax evolved across releases.
 
 ## 7. Anti-patterns
 

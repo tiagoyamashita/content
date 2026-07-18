@@ -17,7 +17,7 @@ SWE101 — overview
 | **Web UI & styling** | [HTMX](htmx/i-overview.md), [CSS](css/i-overview.md), [Sass/Less](css/sass/i-overview.md) |
 | **Backend & data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md), [Kafka](kafka/i-overview.md), [PL/SQL](plsql/i-overview.md) |
 | **Infrastructure & delivery** | [CDN](cdn/i-overview.md), [API gateway](api-gateway/i-overview.md) |
-| **Design** | [System design](sysdesign/scalable-patterns/i-overview.md), [PlantUML](plantuml/i-overview.md), [Mermaid](mermaid/i-overview.md) |
+| **Design** | [System design](sysdesign/scalable-patterns/i-overview.md), [Mermaid](languages&frameworks/mermaid/i-overview.md) |
 | **Notes & knowledge** | [Obsidian](obsidian/i-overview.md) |
 
 ## 1. Types of software
@@ -103,7 +103,7 @@ Small teams blur roles; large orgs specialize.
 
 | Phase | SWE101 topics that help |
 |-------|-------------------------|
-| **Design** | [System design](sysdesign/classic-designs/i-overview.md), [PlantUML](plantuml/i-overview.md), [Obsidian](obsidian/i-overview.md) |
+| **Design** | [System design](sysdesign/classic-designs/i-overview.md), [Mermaid](languages&frameworks/mermaid/i-overview.md), [Obsidian](obsidian/i-overview.md) |
 | **Implement** | Languages, [Java Spring Boot](java/springboot/i-intro-and-project-layout.md), [React](javascript/react/i-overview.md) |
 | **Store data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md) |
 | **Integrate & ship** | [Git](git/i-overview.md), [API gateway](api-gateway/i-overview.md) |

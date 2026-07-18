@@ -7,7 +7,7 @@ order: 1
 Mermaid — overview
 **Mermaid** turns **text** into **diagrams** inside Markdown — flowcharts, sequence diagrams, class diagrams, state machines, ER models, Gantt charts, and more. Engineers use it in **READMEs**, **GitHub wikis**, **RFCs**, and **docs sites** because many viewers render it **natively** with no Java install or build step.
 
-For system-design vocabulary (services, caches, queues), see [Core building blocks](../sysdesign/i-core-building-blocks.md). For Git workflow when diagrams live in repos, see [Git essentials](../git/essentials/i-overview.md). For UML-heavy diagrams with `!include` trees, see [PlantUML](../plantuml/i-overview.md).
+For system-design vocabulary (services, caches, queues), see [Core building blocks](../sysdesign/i-core-building-blocks.md). For Git workflow when diagrams live in repos, see [Git essentials](../git/essentials/i-overview.md).
 
 ## Map of this track
 
@@ -66,12 +66,11 @@ Rendered inline in GitHub / static site / exported asset
 
 | Tool | Strength | Trade-off |
 |------|----------|-----------|
-| **Mermaid** | Native GitHub rendering; low setup | Fewer UML primitives than PlantUML; layout less tunable |
-| **PlantUML** | Rich UML + `!include` + C4 stdlib | Java + often a build step on GitHub |
+| **Mermaid** | Native GitHub rendering; low setup | Layout less tunable than canvas tools |
 | **draw.io / Excalidraw** | Freeform whiteboarding | Binary or JSON canvas — harder to diff |
 | **ASCII / SVG in notes** | Zero tooling | Manual layout for complex diagrams |
 
-**Rule of thumb:** use **Mermaid** when the viewer already renders it with **no build step**; use **PlantUML** when you need **UML fidelity**, **`!include`**, or **C4-PlantUML** in a repo that already runs Java in CI.
+**Rule of thumb:** use **Mermaid** for README, RFC, and docs-site diagrams that should render with **no build step**.
 
 ## Minimal example
 

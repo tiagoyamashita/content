@@ -9,7 +9,7 @@ Kafka — overview
 
 Kafka is **not** a database for ad-hoc queries — pair it with [Postgres](../postgres/i-overview.md) (system of record), [OpenSearch](../sysdesign/scalable-patterns/v-search-systems.md) (search read models), or stream processors. For low-latency cache, see [Redis](../redis/i-overview.md).
 
-Diagram syntax: [PlantUML sequence diagrams](../plantuml/iii-sequence-diagrams.md).
+Diagram syntax: [Mermaid sequence diagrams](../languages&frameworks/mermaid/iii-sequence-diagrams.md).
 
 ## Map of this track
 
@@ -83,24 +83,20 @@ With Kafka:
 
 ## End-to-end picture (preview)
 
-```plantuml
-@startuml
-!theme plain
-skinparam componentStyle rectangle
+```mermaid
+flowchart LR
+    API["Order API"]
+    T["order-events"]
+    PAY["Payment svc"]
+    EMAIL["Email svc"]
+    IDX["Search indexer"]
+    DB[("Postgres")]
 
-actor "Order API" as API
-queue "order-events" as T
-participant "Payment svc" as PAY
-participant "Email svc" as EMAIL
-participant "Search indexer" as IDX
-database "Postgres" as DB
-
-API -> DB: INSERT order (transaction)
-API -> T: publish OrderPlaced
-T -> PAY: consume (group: payments)
-T -> EMAIL: consume (group: notifications)
-T -> IDX: consume (group: search-index)
-@enduml
+    API -->|INSERT order transaction| DB
+    API -->|publish OrderPlaced| T
+    T -->|consume group: payments| PAY
+    T -->|consume group: notifications| EMAIL
+    T -->|consume group: search-index| IDX
 ```
 
 See [Patterns & integration](vi-patterns-and-integration.md) and [Order search CDC](../sysdesign/examples/viii-order-search-cdc.md).

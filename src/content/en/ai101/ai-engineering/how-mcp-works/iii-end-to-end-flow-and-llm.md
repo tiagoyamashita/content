@@ -8,24 +8,23 @@ End-to-end flow & LLM
 
 ## 5. End-to-end flow
 
-```plantuml
-@startuml
-actor You
-participant "Cursor (host)" as H
-participant "MCP client" as C
-participant "MCP server\n(stdio or HTTP)" as S
-participant "External API\n(REST/HTTPS)" as API
+```mermaid
+sequenceDiagram
+    actor You
+    participant H as Cursor (host)
+    participant C as MCP client
+    participant S as MCP server (stdio or HTTP)
+    participant API as External API (REST/HTTPS)
 
-You -> H: "Find open bugs in Linear"
-H -> H: LLM chooses tool
-H -> C: call tool
-C -> S: JSON-RPC tools/call
-S -> API: GET/POST + API key
-API --> S: JSON data
-S --> C: JSON-RPC result
-C --> H: tool output
-H --> You: natural language answer
-@enduml
+    You->>H: "Find open bugs in Linear"
+    H->>H: LLM chooses tool
+    H->>C: call tool
+    C->>S: JSON-RPC tools/call
+    S->>API: GET/POST + API key
+    API-->>S: JSON data
+    S-->>C: JSON-RPC result
+    C-->>H: tool output
+    H-->>You: natural language answer
 ```
 
 | Step | Protocol |
@@ -59,22 +58,21 @@ So yes: the **data** is usually JSON (issue list, query rows, file contents). Th
 
 The loop can repeat: LLM may call **several** MCP tools before answering you.
 
-```plantuml
-@startuml
-participant You
-participant "Host" as H
-participant "LLM" as L
-participant "MCP server" as S
+```mermaid
+sequenceDiagram
+    participant You
+    participant H as Host
+    participant L as LLM
+    participant S as MCP server
 
-You -> H: question
-H -> L: messages + available tools
-L --> H: tool_call(search_issues)
-H -> S: JSON-RPC
-S --> H: JSON-RPC result (issue data)
-H -> L: tool_result(issue data)
-L --> H: "Here are 3 open bugs…"
-H --> You: reply
-@enduml
+    You->>H: question
+    H->>L: messages + available tools
+    L-->>H: tool_call(search_issues)
+    H->>S: JSON-RPC
+    S-->>H: JSON-RPC result (issue data)
+    H->>L: tool_result(issue data)
+    L-->>H: "Here are 3 open bugs…"
+    H-->>You: reply
 ```
 
 **What you see:** the final prose (and maybe tool-run indicators in the UI). **What you don’t see:** raw JSON-RPC between client and server — unless you debug logs.

@@ -22,25 +22,24 @@ Pre-broadcast checks: [Verify before broadcast](viii-verify-before-broadcast.md)
 | **Pre-sign (safe)** | Is this tx what I intend? | Wallet, dApp, `staticCall` | Usually **no** fee if wallet blocks |
 | **Post-mine (completed)** | Did it succeed on-chain? | Explorer, RPC receipt, balances | Gas **paid** if reverted |
 
-```plantuml
-@startuml
-title After broadcast — confirm completed (all networks)
-actor User
-participant Explorer
-participant "FeeSplitter" as SC
-participant "Fee account" as FEE
-participant Recipient as REC
+```mermaid
+sequenceDiagram
+    title After broadcast — confirm completed (all networks)
+    actor User
+    participant Explorer
+    participant SC as FeeSplitter
+    participant FEE as Fee account
+    participant REC as Recipient
 
-User -> Explorer: open tx by hash
-Explorer --> User: status SUCCESS / FAILED
-alt FAILED / reverted / bounced
-  User -> User: debug revert reason
-else SUCCESS
-  User -> Explorer: internal transfers / events
-  Explorer --> User: fee → feeAccount, remainder → recipient
-  note right of User: Wait N confirmations\nfor large amounts
-end
-@enduml
+    User->>Explorer: open tx by hash
+    Explorer-->>User: status SUCCESS / FAILED
+    alt FAILED / reverted / bounced
+        User->>User: debug revert reason
+    else SUCCESS
+        User->>Explorer: internal transfers / events
+        Explorer-->>User: fee → feeAccount, remainder → recipient
+        Note right of User: Wait N confirmations for large amounts
+    end
 ```
 
 ## 2. Shared checks (FeeSplitter `pay()`)

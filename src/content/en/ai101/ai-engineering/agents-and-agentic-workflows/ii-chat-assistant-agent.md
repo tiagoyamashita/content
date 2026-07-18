@@ -37,21 +37,20 @@ Agent loop:
 
 You design **goals and guardrails**; the product runs the loop.
 
-```plantuml
-@startuml
-actor You
-participant "Agent UI" as A
-participant "LLM" as L
-participant "Tools" as T
+```mermaid
+sequenceDiagram
+    actor You
+    participant A as Agent UI
+    participant L as LLM
+    participant T as Tools
 
-You -> A: goal + constraints
-A -> L: plan next step
-L -> T: search / read file / run code
-T --> L: result
-L -> L: update plan
-L --> A: output or question
-A --> You: deliverable
-@enduml
+    You->>A: goal + constraints
+    A->>L: plan next step
+    L->>T: search / read file / run code
+    T-->>L: result
+    L->>L: update plan
+    L-->>A: output or question
+    A-->>You: deliverable
 ```
 
 ## 3. Adding more tools to your LLM

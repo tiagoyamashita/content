@@ -51,22 +51,15 @@ Classic mnemonic for threat categories — walk each **data flow** or **componen
 | **D** | Denial of service | Can availability be killed cheaply? |
 | **E** | Elevation of privilege | Can a low-priv user become admin? |
 
-```plantuml
-@startuml
-actor User
-participant "API" as API
-database "DB" as DB
+```mermaid
+sequenceDiagram
+    actor User
+    participant API
+    participant DB
 
-User -> API: HTTPS login
-API -> DB: query user
-note right of API
-  STRIDE here:
-  S: fake JWT?
-  T: modify request body?
-  I: error leaks stack trace?
-  E: IDOR on /users/{id}?
-end note
-@enduml
+    User->>API: HTTPS login
+    API->>DB: query user
+    Note right of API: STRIDE here:<br/>S: fake JWT?<br/>T: modify request body?<br/>I: error leaks stack trace?<br/>E: IDOR on /users/{id}?
 ```
 
 ## 4. Lightweight threat-model workshop (60 minutes)

@@ -54,35 +54,34 @@ To call pay(recipient) { value: 1 BNB }:
 | **Balance covers gas only, value = 0** | `require` **revert** | **Yes** if mined |
 | **Deployer balance < deploy gas** | Deploy fails | Usually **no** if wallet simulates |
 
-```plantuml
-@startuml
-title User calls pay() — insufficient funds paths
-actor User
-participant Wallet
-participant Network
-participant "FeeSplitter" as SC
-participant "Fee + recipient" as OUT
+```mermaid
+sequenceDiagram
+    title User calls pay() — insufficient funds paths
+    actor User
+    participant Wallet
+    participant Network
+    participant SC as FeeSplitter
+    participant OUT as Fee + recipient
 
-User -> Wallet: pay(recipient)\nvalue = 1 BNB
-Wallet -> Wallet: balance check
+    User->>Wallet: pay(recipient) value = 1 BNB
+    Wallet->>Wallet: balance check
 
-alt balance < 1 BNB + estimated gas
-  Wallet --> User: "Insufficient funds"\n(often BEFORE broadcast)
-  note right of User: Usually NO chain fee
-else balance OK
-  Wallet -> Network: broadcast tx
-  Network -> SC: pay + 1 BNB attached
-  alt msg.value == 0
-    SC --> Network: revert "no value"
-  else transfers OK
-    SC -> OUT: fee + remainder
-  else recipient rejects
-    SC --> Network: revert "pay failed"
-  end
-  Network --> User: receipt
-  note right of User: If mined, gas paid even on revert
-end
-@enduml
+    alt balance < 1 BNB + estimated gas
+        Wallet-->>User: "Insufficient funds" (often BEFORE broadcast)
+        Note right of User: Usually NO chain fee
+    else balance OK
+        Wallet->>Network: broadcast tx
+        Network->>SC: pay + 1 BNB attached
+        alt msg.value == 0
+            SC-->>Network: revert "no value"
+        else transfers OK
+            SC->>OUT: fee + remainder
+        else recipient rejects
+            SC-->>Network: revert "pay failed"
+        end
+        Network-->>User: receipt
+        Note right of User: If mined, gas paid even on revert
+    end
 ```
 
 ## 3. By network

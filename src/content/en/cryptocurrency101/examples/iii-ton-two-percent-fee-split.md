@@ -229,21 +229,20 @@ npm test
 
 ## 7. Deploy flow
 
-```plantuml
-@startuml
-title TON — deploy TwoPercentFeeSplitter
-actor Developer
-participant Blueprint
-participant "TON testnet" as NET
-participant Contract
+```mermaid
+sequenceDiagram
+    title TON — deploy TwoPercentFeeSplitter
+    actor Developer
+    participant Blueprint
+    participant NET as TON testnet
+    participant Contract
 
-Developer -> Blueprint: npm test (sandbox)
-Developer -> Blueprint: blueprint run deploy --testnet
-Blueprint -> NET: deploy message + TON
-NET --> Contract: code + appAccount + feeBps=200
-NET --> Developer: contract address EQ…
-Developer -> Tonviewer: inspect deploy tx
-@enduml
+    Developer->>Blueprint: npm test (sandbox)
+    Developer->>Blueprint: blueprint run deploy --testnet
+    Blueprint->>NET: deploy message + TON
+    NET-->>Contract: code + appAccount + feeBps=200
+    NET-->>Developer: contract address EQ…
+    Developer->>Tonviewer: inspect deploy tx
 ```
 
 ```text

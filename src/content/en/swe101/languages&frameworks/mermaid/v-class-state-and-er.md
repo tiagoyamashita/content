@@ -126,7 +126,7 @@ Pair with [Postgres schema notes](../postgres/iii-schema-and-migrations.md) when
 
 ## 4. Activity-style flows (alternative)
 
-Mermaid has no separate **activity** diagram type like PlantUML — use **flowchart** with decisions for business workflows, or **stateDiagram-v2** when the focus is lifecycle not steps.
+Mermaid has no separate **activity** diagram type — use **flowchart** with decisions for business workflows, or **stateDiagram-v2** when the focus is lifecycle not steps.
 
 | Need | Diagram |
 |------|---------|
@@ -159,14 +159,6 @@ flowchart TD
 | **State** | Order status, job lifecycle, connection state machines |
 | **ER** | Table relationships before writing migrations |
 | **Flowchart** | Multi-step workflows, ETL pipelines, swimlanes |
-
-## 6. Mermaid vs PlantUML for modeling
-
-| Prefer Mermaid | Prefer PlantUML |
-|----------------|-----------------|
-| ER + state in same README as sequences | Full activity diagrams with swimlane syntax |
-| GitHub-native preview | ER with detailed column types and notes |
-| Small domain sketches | Large class hierarchies with layout control |
 
 ## Next
 

@@ -24,18 +24,17 @@ Parent track: [Cryptocurrency101 overview](../../i-overview.md).
 
 Payer sends **BNB** to the contract; contract sends **fee** to treasury and **remainder** to recipient.
 
-```plantuml
-@startuml
-title BNB — fee split
-actor Payer
-participant "FeeSplitter\n(Solidity)" as SC
-participant "feeAccount" as FEE
-participant "recipient" as REC
+```mermaid
+sequenceDiagram
+    title BNB — fee split
+    actor Payer
+    participant SC as FeeSplitter (Solidity)
+    participant FEE as feeAccount
+    participant REC as recipient
 
-Payer -> SC: pay{value: amount}(recipient)
-SC -> FEE: transfer fee
-SC -> REC: transfer remainder
-@enduml
+    Payer->>SC: pay{value: amount}(recipient)
+    SC->>FEE: transfer fee
+    SC->>REC: transfer remainder
 ```
 
 ## Example — Solidity

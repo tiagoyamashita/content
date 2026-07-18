@@ -11,22 +11,20 @@ Previous: [Patterns & integration](vi-patterns-and-integration.md).
 
 ## 1. Production cluster sketch
 
-```plantuml
-@startuml
-!theme plain
-cloud "AZ 1" {
-  node "Broker 1" as B1
-}
-cloud "AZ 2" {
-  node "Broker 2" as B2
-}
-cloud "AZ 3" {
-  node "Broker 3" as B3
-}
-B1 <--> B2
-B2 <--> B3
-B1 <--> B3
-@enduml
+```mermaid
+flowchart TB
+    subgraph AZ1["AZ 1"]
+        B1["Broker 1"]
+    end
+    subgraph AZ2["AZ 2"]
+        B2["Broker 2"]
+    end
+    subgraph AZ3["AZ 3"]
+        B3["Broker 3"]
+    end
+    B1 <--> B2
+    B2 <--> B3
+    B1 <--> B3
 ```
 
 | Setting | Typical production |
@@ -125,4 +123,4 @@ Many teams start local (Docker) → managed service for production.
 
 ## Track complete
 
-Return to [Kafka overview](i-overview.md). **Sequential workflows:** [Sequential pipelines & sagas](viii-sequential-pipelines-and-sagas.md). Related: [System design examples](../sysdesign/examples/i-overview.md), [PlantUML](../plantuml/i-overview.md).
+Return to [Kafka overview](i-overview.md). **Sequential workflows:** [Sequential pipelines & sagas](viii-sequential-pipelines-and-sagas.md). Related: [System design examples](../sysdesign/examples/i-overview.md), [Mermaid](../languages&frameworks/mermaid/i-overview.md).

@@ -6,7 +6,7 @@ groupOrder: 1
 order: 5
 ---
 Zig — Part V: Web MVC project layout
-Zig has **no built-in web framework** like Spring MVC — you assemble **Model** (data access), **View** (HTML templates), and **Controller** (HTTP handlers) yourself. This page documents a **complete layout** for a small server-rendered + htmx app: folder structure, **creating and reusing templates**, **htmx + Zig wiring**, and logging flow (PlantUML).
+Zig has **no built-in web framework** like Spring MVC — you assemble **Model** (data access), **View** (HTML templates), and **Controller** (HTTP handlers) yourself. This page documents a **complete layout** for a small server-rendered + htmx app: folder structure, **creating and reusing templates**, **htmx + Zig wiring**, and logging flow (Mermaid).
 
 Assumes **Part I** (syntax, errors) and **Part II** (`build.zig`). The structure mirrors production-style Zig web apps (explicit router, embedded templates, structured JSON logs).
 
@@ -543,30 +543,29 @@ pub fn handleCreate(app: *App, request: *std.http.Server.Request) !void {
 
 ### 5.5 Sequence — sidebar click to populated table
 
-```plantuml
-@startuml
-actor User
-participant "htmx\n(browser)" as HX
-participant "router.zig" as Router
-participant "handlers/items.zig" as Ctrl
-participant "html.zig" as View
-database "Postgres" as DB
+```mermaid
+sequenceDiagram
+  actor User
+  participant HX as htmx (browser)
+  participant Router as router.zig
+  participant Ctrl as handlers/items.zig
+  participant View as html.zig
+  participant DB as Postgres
 
-User -> HX: Click "Items"
-HX -> Router: GET /htmx/view/items
-Router -> Ctrl: handleView()
-Ctrl --> HX: 200 templates.items (section HTML)
-HX -> User: swap #main-panel
+  User->>HX: Click "Items"
+  HX->>Router: GET /htmx/view/items
+  Router->>Ctrl: handleView()
+  Ctrl-->>HX: 200 templates.items (section HTML)
+  HX->>User: swap #main-panel
 
-HX -> Router: GET /htmx/items (hx-trigger=load)
-Router -> Ctrl: handleRows()
-Ctrl -> DB: listItems()
-DB --> Ctrl: rows
-Ctrl -> View: renderItemsBody()
-View --> Ctrl: <tbody id="items-body">…
-Ctrl --> HX: 200 HTML
-HX -> User: outerHTML swap #items-body
-@enduml
+  HX->>Router: GET /htmx/items (hx-trigger=load)
+  Router->>Ctrl: handleRows()
+  Ctrl->>DB: listItems()
+  DB-->>Ctrl: rows
+  Ctrl->>View: renderItemsBody()
+  View-->>Ctrl: <tbody id="items-body">…
+  Ctrl-->>HX: 200 HTML
+  HX->>User: outerHTML swap #items-body
 ```
 
 ### 5.6 Zig-specific htmx rules
@@ -633,120 +632,103 @@ Every inbound HTTP request passes through **five logging-related stages** before
 
 ### 6.1 Component diagram
 
-```plantuml
-@startuml
-skinparam componentStyle rectangle
+```mermaid
+flowchart TB
+  subgraph Infrastructure["Infrastructure"]
+    Server[server.zig]
+    Snapshot[request_snapshot.zig]
+    AccessLog[http_access_log.zig]
+  end
 
-package "Infrastructure" {
-  [server.zig] as Server
-  [request_snapshot.zig] as Snapshot
-  [http_access_log.zig] as AccessLog
-}
+  subgraph MVC["MVC"]
+    Router[router.zig]
+    Controller[handlers/*.zig]
+    Model[db.zig]
+    View[templates / html.zig]
+  end
 
-package "MVC" {
-  [router.zig] as Router
-  [handlers/*.zig] as Controller
-  [db.zig] as Model
-  [templates / html.zig] as View
-}
+  subgraph Observability["Observability"]
+    CtrlLog[controller_logging.zig]
+    JsonLog[observability_log.zig]
+    LogFile[(demo-app.json.log)]
+  end
 
-package "Observability" {
-  [controller_logging.zig] as CtrlLog
-  [observability_log.zig] as JsonLog
-  file "demo-app.json.log" as LogFile
-}
-
-Server --> Snapshot : begin()
-Server --> AccessLog : logReceived()
-Server --> Router : handleRequest()
-Router --> Controller
-Controller --> Model
-Controller --> View
-Controller --> CtrlLog : logReceived / logSucceeded
-CtrlLog --> JsonLog
-AccessLog --> JsonLog
-JsonLog --> LogFile
-Server --> AccessLog : logCompleted()
-Server --> Snapshot : end()
-@enduml
+  Server -->|begin| Snapshot
+  Server -->|logReceived| AccessLog
+  Server -->|handleRequest| Router
+  Router --> Controller
+  Controller --> Model
+  Controller --> View
+  Controller -->|logReceived / logSucceeded| CtrlLog
+  CtrlLog --> JsonLog
+  AccessLog --> JsonLog
+  JsonLog --> LogFile
+  Server -->|logCompleted| AccessLog
+  Server -->|end| Snapshot
 ```
 
 ### 6.2 Sequence — one GET `/htmx/items` (full logging path)
 
-```plantuml
-@startuml
-actor Browser
-participant "server.zig" as Server
-participant "request_snapshot" as Snap
-participant "http_access_log" as Access
-participant "router.zig" as Router
-participant "handlers/items.zig" as Ctrl
-participant "db.zig" as Model
-participant "controller_logging" as CtrlLog
-participant "observability_log" as JsonLog
-database "demo-app.json.log" as File
+```mermaid
+sequenceDiagram
+  actor Browser
+  participant Server as server.zig
+  participant Snap as request_snapshot
+  participant Access as http_access_log
+  participant Router as router.zig
+  participant Ctrl as handlers/items.zig
+  participant Model as db.zig
+  participant CtrlLog as controller_logging
+  participant JsonLog as observability_log
+  participant File as demo-app.json.log
 
-Browser -> Server: GET /htmx/items
-activate Server
-Server -> Snap: begin(request)\nrequest_id, headers, body cap
-activate Snap
-Server -> Access: logReceived()
-Access -> JsonLog: phase=received\nlogger=http.request
-JsonLog -> File: JSON line
+  Browser->>+Server: GET /htmx/items
+  Server->>+Snap: begin(request)\nrequest_id, headers, body cap
+  Server->>Access: logReceived()
+  Access->>JsonLog: phase=received\nlogger=http.request
+  JsonLog->>File: JSON line
 
-Server -> Router: handleRequest()
-Router -> Ctrl: handleRows()
-activate Ctrl
-Ctrl -> CtrlLog: logReceived("handleItemsRows", ...)
-CtrlLog -> JsonLog: controller + snapshot fields
-JsonLog -> File: JSON line
+  Server->>Router: handleRequest()
+  Router->>+Ctrl: handleRows()
+  Ctrl->>CtrlLog: logReceived("handleItemsRows", ...)
+  CtrlLog->>JsonLog: controller + snapshot fields
+  JsonLog->>File: JSON line
 
-Ctrl -> Model: listItems()
-activate Model
-Model --> Ctrl: []Item
-deactivate Model
+  Ctrl->>+Model: listItems()
+  Model-->>-Ctrl: []Item
 
-Ctrl -> CtrlLog: logSucceeded("item_count=N")
-CtrlLog -> JsonLog: + response body fragment
-JsonLog -> File: JSON line
-Ctrl --> Router: HTML <tbody>
-deactivate Ctrl
+  Ctrl->>CtrlLog: logSucceeded("item_count=N")
+  CtrlLog->>JsonLog: + response body fragment
+  JsonLog->>File: JSON line
+  Ctrl-->>-Router: HTML <tbody>
 
-Router --> Server: 200 OK
-Server -> Access: logCompleted()\nstatus, ms
-Access -> JsonLog: phase=completed
-JsonLog -> File: JSON line
-Server -> Snap: end()
-deactivate Snap
-Server --> Browser: 200 + X-Request-ID
-deactivate Server
-@enduml
+  Router-->>Server: 200 OK
+  Server->>Access: logCompleted()\nstatus, ms
+  Access->>JsonLog: phase=completed
+  JsonLog->>File: JSON line
+  Server->>Snap: end()
+  Server-->>-Browser: 200 + X-Request-ID
 ```
 
 ### 6.3 Sequence — POST create item (Controller + Model + View)
 
-```plantuml
-@startuml
-actor Browser
-participant "items.zig\n(Controller)" as Ctrl
-participant "controller_logging" as Log
-participant "db.zig\n(Model)" as DB
-participant "html.zig\n(View)" as View
+```mermaid
+sequenceDiagram
+  actor Browser
+  participant Ctrl as items.zig (Controller)
+  participant Log as controller_logging
+  participant DB as db.zig (Model)
+  participant View as html.zig (View)
 
-Browser -> Ctrl: POST /htmx/items\nbody: name=Ada
-activate Ctrl
-Ctrl -> Log: logReceived
-Ctrl -> Ctrl: parseFormName(body)
-Ctrl -> DB: insertItem("Ada")
-activate DB
-DB --> Ctrl: Item{ id, name, created_at }
-deactivate DB
-Ctrl -> View: renderItemsRows(all items)
-View --> Ctrl: <tbody id="items-body">…</tbody>
-Ctrl -> Log: logSucceeded item_count=N
-Ctrl --> Browser: 200 HTML fragment
-deactivate Ctrl
-@enduml
+  Browser->>+Ctrl: POST /htmx/items\nbody: name=Ada
+  Ctrl->>Log: logReceived
+  Ctrl->>Ctrl: parseFormName(body)
+  Ctrl->>+DB: insertItem("Ada")
+  DB-->>-Ctrl: Item{ id, name, created_at }
+  Ctrl->>View: renderItemsRows(all items)
+  View-->>Ctrl: <tbody id="items-body">…</tbody>
+  Ctrl->>Log: logSucceeded item_count=N
+  Ctrl-->>-Browser: 200 HTML fragment
 ```
 
 ### 6.4 Logging layers (reference table)
@@ -811,7 +793,7 @@ For JSON-only APIs, drop **`templates/`** and htmx handlers — keep **`router`*
 - **Part II** — [Build system & packages](ii-build-system-and-packages.md)
 - **Part IV** — allocators in public APIs [Memory, comptime & C interop](iv-memory-comptime-and-c-interop.md)
 - **Part VI** — TLS, reverse proxy, deployment [TLS & deployment](vi-tls-and-deployment.md)
-- [PlantUML — Sequence diagrams](../plantuml/iii-sequence-diagrams.md) — diagram syntax used above
+- [Mermaid — Sequence diagrams](../mermaid/iii-sequence-diagrams.md) — diagram syntax used above
 - [htmx overview](../htmx/i-overview.md) — hypermedia vs SPA
 - [htmx — Core attributes & swapping](../htmx/iii-core-attributes-and-swapping.md) — `hx-target`, `hx-swap`, triggers
 - [htmx — Forms & requests](../htmx/iv-forms-and-requests.md) — `hx-post`, form encoding

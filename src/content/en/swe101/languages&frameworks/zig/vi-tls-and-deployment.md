@@ -140,25 +140,24 @@ deploy/
   .env                    # DB_*, REDIS_*, EXERCISES_WEB_*, LOG_PATH
 ```
 
-```plantuml
-@startuml
-skinparam componentStyle rectangle
+```mermaid
+flowchart LR
+  User([User])
 
-actor User
-node "Edge" {
-  [Caddy / nginx] as Proxy
-}
-node "App network" {
-  [Zig binary\n:8083 HTTP] as Zig
-  database "Postgres" as PG
-  collections "Redis" as Redis
-}
+  subgraph Edge["Edge"]
+    Proxy[Caddy / nginx]
+  end
 
-User --> Proxy : HTTPS :443
-Proxy --> Zig : HTTP
-Zig --> PG : TCP (optional TLS)
-Zig --> Redis : TCP / rediss://
-@enduml
+  subgraph AppNetwork["App network"]
+    Zig[Zig binary<br/>:8083 HTTP]
+    PG[(Postgres)]
+    Redis[(Redis)]
+  end
+
+  User -->|HTTPS :443| Proxy
+  Proxy -->|HTTP| Zig
+  Zig -->|TCP optional TLS| PG
+  Zig -->|TCP / rediss://| Redis
 ```
 
 | Service | TLS typical? |

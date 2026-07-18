@@ -28,48 +28,47 @@ This example ties together [Transactional outbox](vi-patterns-and-integration.md
 | 11 | Booking service | Publish `BookingConfirmed` to `booking-events` |
 | 12 | Order service | Update order status → `BOOKED` (client poll sees terminal state) |
 
-```plantuml
-@startuml
-title Hold, capture, confirm booking
-actor Customer
-participant "Order svc" as O
-database "Order DB" as DB
-queue "order-events" as OE
-participant "Payment svc" as P
-database "Payment DB" as PDB
-participant "Stripe" as S
-queue "payment-events" as PE
-participant "Business logic" as BL
-participant "Booking svc" as B
-database "Booking DB" as BDB
+```mermaid
+sequenceDiagram
+    title Hold, capture, confirm booking
+    actor Customer
+    participant O as Order svc
+    participant DB as Order DB
+    participant OE as order-events
+    participant P as Payment svc
+    participant PDB as Payment DB
+    participant S as Stripe
+    participant PE as payment-events
+    participant BL as Business logic
+    participant B as Booking svc
+    participant BDB as Booking DB
+    participant BE as booking-events
 
-Customer -> O: POST /orders
-O -> DB: INSERT order + outbox OrderPlaced
-O --> Customer: 202 Accepted + statusUrl
+    Customer->>O: POST /orders
+    O->>DB: INSERT order + outbox OrderPlaced
+    O-->>Customer: 202 Accepted + statusUrl
 
-OE -> P: OrderPlaced
-P -> S: PaymentIntent (manual capture, confirm)
-S --> P: requires_capture
-P -> PDB: INSERT payment HELD
-P -> PE: PaymentAuthorized
+    OE->>P: OrderPlaced
+    P->>S: PaymentIntent (manual capture, confirm)
+    S-->>P: requires_capture
+    P->>PDB: INSERT payment HELD
+    P->>PE: PaymentAuthorized
 
-PE -> BL: PaymentAuthorized
-BL -> BL: rules OK (fraud, stock, …)
-BL -> DB: outbox OrderReadyToCapture
+    PE->>BL: PaymentAuthorized
+    BL->>BL: rules OK (fraud, stock, …)
+    BL->>DB: outbox OrderReadyToCapture
 
-OE -> P: OrderReadyToCapture
-P -> S: capture PaymentIntent
-S --> P: succeeded
-P -> PDB: status CAPTURED
-P -> PE: PaymentCaptured
+    OE->>P: OrderReadyToCapture
+    P->>S: capture PaymentIntent
+    S-->>P: succeeded
+    P->>PDB: status CAPTURED
+    P->>PE: PaymentCaptured
 
-PE -> B: PaymentCaptured
-B -> BDB: INSERT booking CONFIRMED
-queue "booking-events" as BE
-B -> BE: BookingConfirmed
-BE -> O: consume
-O -> DB: status BOOKED
-@enduml
+    PE->>B: PaymentCaptured
+    B->>BDB: INSERT booking CONFIRMED
+    B->>BE: BookingConfirmed
+    BE->>O: consume
+    O->>DB: status BOOKED
 ```
 
 **Why hold first?** You verify stock and pick the order before taking money. If the order is cancelled, **release** the hold (`PaymentIntent.cancel()`) instead of refunding a capture.
@@ -126,29 +125,28 @@ docker exec -it <kafka-container> /opt/kafka/bin/kafka-topics.sh \
 
 Use **`orderId`** as the Kafka **record key** on every message so all events for one order stay on one partition.
 
-```plantuml
-@startuml
-title Client feedback — poll until terminal state
-actor Browser
-participant "Order API" as O
-database "Order DB" as DB
+```mermaid
+sequenceDiagram
+    title Client feedback — poll until terminal state
+    actor Browser
+    participant O as Order API
+    participant DB as Order DB
 
-Browser -> O: POST /orders
-O -> DB: status PROCESSING
-O --> Browser: 202 { statusUrl }
+    Browser->>O: POST /orders
+    O->>DB: status PROCESSING
+    O-->>Browser: 202 { statusUrl }
 
-loop every 1s until BOOKED or FAILED or timeout
-  Browser -> O: GET /orders/{id}/status
-  O -> DB: read status
-  O --> Browser: PROCESSING | BOOKED | FAILED
-end
+    loop every 1s until BOOKED or FAILED or timeout
+        Browser->>O: GET /orders/{id}/status
+        O->>DB: read status
+        O-->>Browser: PROCESSING | BOOKED | FAILED
+    end
 
-alt BOOKED
-  Browser -> Browser: redirect /booking-success
-else FAILED or timeout
-  Browser -> Browser: redirect /booking-error
-end
-@enduml
+    alt BOOKED
+        Browser->>Browser: redirect /booking-success
+    else FAILED or timeout
+        Browser->>Browser: redirect /booking-error
+    end
 ```
 
 ## 3. Dependencies

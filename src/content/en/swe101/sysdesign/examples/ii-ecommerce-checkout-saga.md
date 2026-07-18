@@ -146,28 +146,27 @@ Steps 1–4 are **synchronous commands** from the orchestrator (or async with po
 
 ### Happy path (sequence)
 
-```plantuml
-@startuml
-actor Customer
-participant "API GW" as GW
-participant "Checkout\nOrchestrator" as O
-participant "Order Svc" as ORD
-participant "Payment Svc" as PAY
-participant "Inventory Svc" as INV
+```mermaid
+sequenceDiagram
+  actor Customer
+  participant GW as API GW
+  participant O as Checkout Orchestrator
+  participant ORD as Order Svc
+  participant PAY as Payment Svc
+  participant INV as Inventory Svc
 
-Customer -> GW: POST /checkout\nIdempotency-Key: uuid
-GW -> O: start checkout
-O -> ORD: create order (PENDING)
-ORD --> O: order_id
-O -> PAY: capture payment(order_id, amount)
-PAY --> O: payment_id
-O -> INV: reserve(sku, qty)
-INV --> O: reservation_id
-O -> ORD: confirm(order_id)
-ORD --> O: CONFIRMED
-O --> GW: 201 checkout complete
-GW --> Customer: order confirmation
-@enduml
+  Customer->>GW: POST /checkout<br/>Idempotency-Key: uuid
+  GW->>O: start checkout
+  O->>ORD: create order (PENDING)
+  ORD-->>O: order_id
+  O->>PAY: capture payment(order_id, amount)
+  PAY-->>O: payment_id
+  O->>INV: reserve(sku, qty)
+  INV-->>O: reservation_id
+  O->>ORD: confirm(order_id)
+  ORD-->>O: CONFIRMED
+  O-->>GW: 201 checkout complete
+  GW-->>Customer: order confirmation
 ```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="Orchestrated saga forward steps all green">
@@ -195,21 +194,20 @@ If step **3** (inventory) fails after payment succeeded:
 | 1 (undo 2) | **Refund** payment | Payment |
 | 2 (undo 1) | **Cancel** order (`CANCELLED`) | Order |
 
-```plantuml
-@startuml
-participant "Checkout\nOrchestrator" as O
-participant "Payment Svc" as PAY
-participant "Inventory Svc" as INV
-participant "Order Svc" as ORD
+```mermaid
+sequenceDiagram
+  participant O as Checkout Orchestrator
+  participant PAY as Payment Svc
+  participant INV as Inventory Svc
+  participant ORD as Order Svc
 
-O -> INV: reserve(sku, qty)
-INV --> O: OUT_OF_STOCK
-O -> PAY: refund(payment_id)
-PAY --> O: refunded
-O -> ORD: cancel(order_id)
-ORD --> O: CANCELLED
-note over O: saga status = FAILED;\nclient polls or gets 409 + reason
-@enduml
+  O->>INV: reserve(sku, qty)
+  INV-->>O: OUT_OF_STOCK
+  O->>PAY: refund(payment_id)
+  PAY-->>O: refunded
+  O->>ORD: cancel(order_id)
+  ORD-->>O: CANCELLED
+  Note over O: saga status = FAILED;<br/>client polls or gets 409 + reason
 ```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" role="img" aria-label="Saga compensation refund then cancel order">

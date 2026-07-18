@@ -11,21 +11,20 @@ Previous: [Consumer groups & delivery](v-consumer-groups-and-delivery.md).
 
 ## 1. Event-driven microservices
 
-```plantuml
-@startuml
-title Choreography via Kafka
-participant "Order svc" as O
-queue "order-events" as KO
-participant "Payment svc" as P
-queue "payment-events" as KP
-participant "Shipping svc" as S
+```mermaid
+sequenceDiagram
+    title Choreography via Kafka
+    participant O as Order svc
+    participant KO as order-events
+    participant P as Payment svc
+    participant KP as payment-events
+    participant S as Shipping svc
 
-O -> KO: OrderPlaced
-KO -> P: consume
-P -> KP: PaymentCaptured
-KP -> S: consume
-S -> S: create shipment
-@enduml
+    O->>KO: OrderPlaced
+    KO->>P: consume
+    P->>KP: PaymentCaptured
+    KP->>S: consume
+    S->>S: create shipment
 ```
 
 No central orchestrator — each service reacts to events. Tradeoffs: [Checkout choreography](../sysdesign/examples/iii-ecommerce-checkout-choreography.md) vs saga orchestrator.
@@ -52,33 +51,32 @@ The relay is **logically separate** from the API even if you deploy it different
 
 ### Request path vs relay path
 
-```plantuml
-@startuml
-title Transactional outbox — two processes
-actor Client
-participant "Order API\n(your service)" as API
-database "Order Postgres\norders + outbox_events" as DB
-participant "Outbox relay\n(separate concern)" as R
-queue "order-events" as K
-participant "Payment svc" as PAY
+```mermaid
+sequenceDiagram
+    title Transactional outbox — two processes
+    actor Client
+    participant API as Order API<br/>(your service)
+    participant DB as Order Postgres<br/>orders + outbox_events
+    participant R as Outbox relay<br/>(separate concern)
+    participant K as order-events
+    participant PAY as Payment svc
 
-Client -> API: POST /orders
-API -> DB: BEGIN
-API -> DB: INSERT INTO orders …
-API -> DB: INSERT INTO outbox_events\n(type, payload, published_at NULL)
-API -> DB: COMMIT
-API --> Client: 201 Created
+    Client->>API: POST /orders
+    API->>DB: BEGIN
+    API->>DB: INSERT INTO orders …
+    API->>DB: INSERT INTO outbox_events<br/>(type, payload, published_at NULL)
+    API->>DB: COMMIT
+    API-->>Client: 201 Created
 
-note over API,K: API returns here — Kafka not called yet
+    Note over API,K: API returns here — Kafka not called yet
 
-loop every 500ms or on CDC
-  R -> DB: SELECT … WHERE published_at IS NULL
-  R -> K: produce OrderCreated
-  R -> DB: UPDATE outbox SET published_at = now()
-end
+    loop every 500ms or on CDC
+        R->>DB: SELECT … WHERE published_at IS NULL
+        R->>K: produce OrderCreated
+        R->>DB: UPDATE outbox SET published_at = now()
+    end
 
-K -> PAY: consume OrderCreated
-@enduml
+    K->>PAY: consume OrderCreated
 ```
 
 ### What the Order API does (your code)
@@ -159,19 +157,18 @@ Deep dive: [Transactional outbox example](../sysdesign/examples/v-ecommerce-chec
 
 Stream **database row changes** to Kafka without the app calling `producer.send` for every column.
 
-```plantuml
-@startuml
-database Postgres as DB
-participant Debezium as D
-queue "db.public.orders" as K
-participant Indexer as I
-database OpenSearch as OS
+```mermaid
+sequenceDiagram
+    participant DB as Postgres
+    participant D as Debezium
+    participant K as db.public.orders
+    participant I as Indexer
+    participant OS as OpenSearch
 
-DB -> D: WAL / logical replication
-D -> K: change events
-K -> I: consume
-I -> OS: upsert document
-@enduml
+    DB->>D: WAL / logical replication
+    D->>K: change events
+    K->>I: consume
+    I->>OS: upsert document
 ```
 
 Example: [Order search CDC](../sysdesign/examples/viii-order-search-cdc.md).
@@ -240,16 +237,15 @@ Pair with [Spring Boot REST](../java/springboot/iv-rest-controllers.md) — HTTP
 
 ## 6. Dead letter queue (DLQ)
 
-```plantuml
-@startuml
-queue "order-events" as T
-participant Consumer as C
-queue "order-events.DLT" as DLT
+```mermaid
+sequenceDiagram
+    participant T as order-events
+    participant C as Consumer
+    participant DLT as order-events.DLT
 
-T -> C: poison message
-C -> C: fail after N retries
-C -> DLT: publish original + error metadata
-@enduml
+    T->>C: poison message
+    C->>C: fail after N retries
+    C->>DLT: publish original + error metadata
 ```
 
 The consumer **commits the offset** on the main topic after routing to DLT — the poison message will **not** block the partition forever.

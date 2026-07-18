@@ -71,30 +71,28 @@ public void relayOutbox() {
 
 ## 4. Checkout flow with outbox
 
-```plantuml
-@startuml
-title Transactional outbox — Order API + relay (separate process)
-actor Client
-participant "Order API\n(your service)" as ORD
-database "Order Postgres\norders + outbox_events" as DB
-participant "Outbox relay\n(separate service or @Scheduled)" as R
-queue "order-events" as K
-participant "Payment svc" as PAY
+```mermaid
+sequenceDiagram
+  actor Client
+  participant ORD as Order API
+  participant DB as Order Postgres
+  participant R as Outbox relay
+  participant K as order-events
+  participant PAY as Payment svc
 
-Client -> ORD: POST /orders
-ORD -> DB: BEGIN; INSERT order; INSERT outbox_events; COMMIT
-ORD --> Client: 201 Created
-note over ORD,K: Order API does not call Kafka
+  Client->>ORD: POST /orders
+  ORD->>DB: BEGIN; INSERT order; INSERT outbox_events; COMMIT
+  ORD-->>Client: 201 Created
+  Note over ORD,K: Order API does not call Kafka
 
-loop poll or CDC
-  R -> DB: SELECT unpublished outbox rows
-  R -> K: produce OrderCreated
-  R -> DB: mark published_at
-end
+  loop poll or CDC
+    R->>DB: SELECT unpublished outbox rows
+    R->>K: produce OrderCreated
+    R->>DB: mark published_at
+  end
 
-K -> PAY: consume
-PAY -> PAY: capture + local tx
-@enduml
+  K->>PAY: consume
+  PAY->>PAY: capture + local tx
 ```
 
 **Order API** = your HTTP service (writes DB only). **Outbox relay** = second deployable, `@Scheduled` job in same app, or Debezium — see [Kafka outbox §2](../../kafka/vi-patterns-and-integration.md).

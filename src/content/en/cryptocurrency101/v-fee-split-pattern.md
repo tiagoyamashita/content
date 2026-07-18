@@ -21,19 +21,18 @@ Incoming payment (amount)
 | **`feeAccount`** | Treasury / protocol wallet |
 | **`recipient`** | End payee |
 
-```plantuml
-@startuml
-title Fee split (all networks)
-actor Payer
-participant "Smart contract" as SC
-participant "Fee account" as FEE
-participant "Recipient" as REC
+```mermaid
+sequenceDiagram
+    title Fee split (all networks)
+    actor Payer
+    participant SC as Smart contract
+    participant FEE as Fee account
+    participant REC as Recipient
 
-Payer -> SC: pay amount
-SC -> SC: fee = amount × bps / 10000
-SC -> FEE: send fee
-SC -> REC: send remainder
-@enduml
+    Payer->>SC: pay amount
+    SC->>SC: fee = amount × bps / 10000
+    SC->>FEE: send fee
+    SC->>REC: send remainder
 ```
 
 ## 2. How networks implement it

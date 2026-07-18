@@ -112,19 +112,18 @@ For a **fixed 2%** mainnet deploy, constructor uses `_feeBps = 200`.
 5. On-chain forever    pay() reads appAccount for the 2% send
 ```
 
-```plantuml
-@startuml
-title appAccount — set once at deploy
-participant "2_deploy_fee_splitter.js" as MIG
-participant "TronBox deploy tx" as TX
-participant "constructor" as C
-database "Contract storage\n(immutable)" as ST
+```mermaid
+sequenceDiagram
+    title appAccount — set once at deploy
+    participant MIG as 2_deploy_fee_splitter.js
+    participant TX as TronBox deploy tx
+    participant C as constructor
+    participant ST as Contract storage (immutable)
 
-MIG -> TX: deploy(Splitter,\nAPP_ACCOUNT, 200)
-TX -> C: _appAccount = T… treasury\n_feeBps = 200
-C -> ST: appAccount = _appAccount
-note right of ST: Cannot change\nafter deploy
-@enduml
+    MIG->>TX: deploy(Splitter, APP_ACCOUNT, 200)
+    TX->>C: _appAccount = T… treasury, _feeBps = 200
+    C->>ST: appAccount = _appAccount
+    Note right of ST: Cannot change after deploy
 ```
 
 | Step | Code location | What happens |
@@ -217,22 +216,21 @@ module.exports = function (deployer) {
 
 ## 6. Deploy flow
 
-```plantuml
-@startuml
-title Tron — deploy TwoPercentFeeSplitter
-actor Developer
-participant TronLink
-participant TronBox
-participant Nile as "Nile testnet"
-database Contract as "Contract T…"
+```mermaid
+sequenceDiagram
+    title Tron — deploy TwoPercentFeeSplitter
+    actor Developer
+    participant TronLink
+    participant TronBox
+    participant NET as Nile testnet
+    participant Contract as Contract T…
 
-Developer -> TronBox: npm install && tronbox compile
-Developer -> TronBox: tronbox migrate --network nile
-TronBox -> Nile: deploy tx + bytecode
-Nile --> Contract: appAccount + feeBps=200 stored
-Nile --> Developer: contract address
-Developer -> Tronscan: verify creation tx
-@enduml
+    Developer->>TronBox: npm install && tronbox compile
+    Developer->>TronBox: tronbox migrate --network nile
+    TronBox->>NET: deploy tx + bytecode
+    NET-->>Contract: appAccount + feeBps=200 stored
+    NET-->>Developer: contract address
+    Developer->>Tronscan: verify creation tx
 ```
 
 ```text

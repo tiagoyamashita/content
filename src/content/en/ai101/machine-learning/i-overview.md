@@ -27,20 +27,19 @@ Machine learning — overview
 | Behavior changes when **code** changes | Behavior changes when **data** or **training** changes |
 | Works when rules are simple and known | Works when rules are too complex to specify |
 
-```plantuml
-@startuml
-participant "Input"
-participant "Program (rules)" as P
-participant "Model (learned)" as M
-participant "Output"
+```mermaid
+sequenceDiagram
+    participant Input
+    participant P as Program (rules)
+    participant M as Model (learned)
+    participant Output
 
-"Input" -> P : Traditional
-P -> "Output"
+    Input->>P: Traditional
+    P->>Output
 
-"Input" -> M : ML
-M -> "Output" : Prediction
-note right of M : Trained on (input, label) examples
-@enduml
+    Input->>M: ML
+    M->>Output: Prediction
+    Note right of M: Trained on (input, label) examples
 ```
 
 ## Core vocabulary

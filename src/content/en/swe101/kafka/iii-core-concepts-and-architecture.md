@@ -11,22 +11,20 @@ Previous: [Install & local dev](ii-install-and-local-dev.md).
 
 ## 1. Cluster topology
 
-```plantuml
-@startuml
-!theme plain
-node "Broker 1" as B1 {
-  folder "order-events P0" as P0
-  folder "order-events P1 (replica)" as P1r
-}
-node "Broker 2" as B2 {
-  folder "order-events P1" as P1
-  folder "order-events P2" as P2
-}
-node "Broker 3" as B3 {
-  folder "order-events P0 (replica)" as P0r
-  folder "order-events P2 (replica)" as P2r
-}
-@enduml
+```mermaid
+flowchart TB
+    subgraph B1["Broker 1"]
+        P0["order-events P0"]
+        P1r["order-events P1 (replica)"]
+    end
+    subgraph B2["Broker 2"]
+        P1["order-events P1"]
+        P2["order-events P2"]
+    end
+    subgraph B3["Broker 3"]
+        P0r["order-events P0 (replica)"]
+        P2r["order-events P2 (replica)"]
+    end
 ```
 
 | Role | Meaning |
@@ -75,18 +73,17 @@ No key → round-robin or sticky partitioner (batching).
 
 ## 4. Producer write path
 
-```plantuml
-@startuml
-title Producer append to partition
-participant Producer as P
-participant "Broker (leader)" as L
-participant "Followers" as F
+```mermaid
+sequenceDiagram
+    title Producer append to partition
+    participant P as Producer
+    participant L as Broker (leader)
+    participant F as Followers
 
-P -> L: produce(batch, acks=all)
-L -> F: replicate
-F --> L: ack
-L --> P: offset committed
-@enduml
+    P->>L: produce(batch, acks=all)
+    L->>F: replicate
+    F-->>L: ack
+    L-->>P: offset committed
 ```
 
 | `acks` | Behavior |
@@ -99,19 +96,18 @@ L --> P: offset committed
 
 Consumers **pull** — Kafka does not push to apps.
 
-```plantuml
-@startuml
-title Consumer poll loop
-participant Consumer as C
-participant Broker as B
+```mermaid
+sequenceDiagram
+    title Consumer poll loop
+    participant C as Consumer
+    participant B as Broker
 
-loop poll
-  C -> B: fetch(offset, max bytes)
-  B --> C: records + next offset
-  C -> C: process
-  C -> B: commit offset (async/sync)
-end
-@enduml
+    loop poll
+        C->>B: fetch(offset, max bytes)
+        B-->>C: records + next offset
+        C->>C: process
+        C->>B: commit offset (async/sync)
+    end
 ```
 
 | Term | Meaning |

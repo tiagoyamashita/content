@@ -22,20 +22,13 @@ From problem definition to **production inference** — the loop engineers repea
 | **9. Monitor** | Drift, performance, data quality |
 | **10. Retrain** | Scheduled or triggered by drift |
 
-```plantuml
-@startuml
-rectangle "Data" as D
-rectangle "Train" as T
-rectangle "Evaluate" as E
-rectangle "Deploy" as P
-rectangle "Monitor" as M
-
-D --> T
-T --> E
-E --> P : if acceptable
-P --> M
-M --> D : retrain loop
-@enduml
+```mermaid
+flowchart LR
+    D[Data] --> T[Train]
+    T --> E[Evaluate]
+    E -->|if acceptable| P[Deploy]
+    P --> M[Monitor]
+    M -->|retrain loop| D
 ```
 
 ## 2. Batch vs online inference

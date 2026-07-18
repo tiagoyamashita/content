@@ -11,22 +11,19 @@ Previous: [Producers & consumers](iv-producers-and-consumers.md).
 
 ## 1. One group, many consumers
 
-```plantuml
-@startuml
-!theme plain
-queue "order-events" as T {
-  card "P0" as p0
-  card "P1" as p1
-  card "P2" as p2
-}
+```mermaid
+flowchart LR
+    subgraph T["order-events"]
+        p0["P0"]
+        p1["P1"]
+        p2["P2"]
+    end
+    CA["Consumer A<br/>(group: payments)"]
+    CB["Consumer B<br/>(group: payments)"]
 
-participant "Consumer A\n(group: payments)" as CA
-participant "Consumer B\n(group: payments)" as CB
-
-p0 --> CA
-p1 --> CB
-p2 --> CA
-@enduml
+    p0 --> CA
+    p1 --> CB
+    p2 --> CA
 ```
 
 Topic **`order-events`** has 3 partitions; group **`payments`** has 2 consumer instances — one consumer may handle 2 partitions, the other 1. Add a **third** consumer → ideally one partition each.
@@ -39,17 +36,16 @@ Topic **`order-events`** has 3 partitions; group **`payments`** has 2 consumer i
 
 ## 2. Fan-out to multiple services
 
-```plantuml
-@startuml
-queue "order-events" as T
-participant "payments\n(group: payments)" as PAY
-participant "email\n(group: notifications)" as EMAIL
-participant "search\n(group: search-index)" as IDX
+```mermaid
+sequenceDiagram
+    participant T as order-events
+    participant PAY as payments (group: payments)
+    participant EMAIL as email (group: notifications)
+    participant IDX as search (group: search-index)
 
-T -> PAY: all partitions (own offsets)
-T -> EMAIL: all partitions (own offsets)
-T -> IDX: all partitions (own offsets)
-@enduml
+    T->>PAY: all partitions (own offsets)
+    T->>EMAIL: all partitions (own offsets)
+    T->>IDX: all partitions (own offsets)
 ```
 
 Each service maintains **its own offset** per partition — slow email does not block payments.
@@ -60,19 +56,18 @@ Each service maintains **its own offset** per partition — slow email does not 
 
 When a consumer **joins**, **leaves**, or **crashes**, the group **rebalances** — partitions reassigned.
 
-```plantuml
-@startuml
-title Consumer crash → rebalance
-participant C1
-participant C2
-participant "Group coordinator" as G
-participant Broker as B
+```mermaid
+sequenceDiagram
+    title Consumer crash → rebalance
+    participant C1
+    participant C2
+    participant G as Group coordinator
+    participant B as Broker
 
-C2 -> G: heartbeat lost
-G -> G: revoke assignments
-G -> C1: assign P0,P1,P2
-C1 -> B: resume from committed offset
-@enduml
+    C2->>G: heartbeat lost
+    G->>G: revoke assignments
+    G->>C1: assign P0,P1,P2
+    C1->>B: resume from committed offset
 ```
 
 | Practice | Why |

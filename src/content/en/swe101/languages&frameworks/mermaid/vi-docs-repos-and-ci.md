@@ -37,7 +37,7 @@ docs/diagrams/*.svg
 
 ## 2. Markdown embedding
 
-GitHub **natively renders** Mermaid in Markdown (unlike PlantUML). Options:
+GitHub **natively renders** Mermaid in Markdown. Options:
 
 | Method | How |
 |--------|-----|
@@ -88,7 +88,7 @@ done
 |------|--------|
 | **One scenario per file** | Easier review and reuse |
 | **Shared styles in theme fragment** | Prepended, not pasted into every file |
-| **Large include trees** | Consider [PlantUML](../plantuml/vi-docs-repos-and-ci.md) instead |
+| **Large designs** | Split by scenario; concatenate shared preamble in CI |
 
 ## 4. Makefile / npm script (local render)
 
@@ -155,16 +155,6 @@ Use the official **`minlag/mermaid-cli`** Docker image in CI if Puppeteer setup 
 | **Output** | If SVG is committed, was it regenerated? |
 | **Alt paths** | Error and timeout paths shown where relevant? |
 | **GitHub preview** | Does fenced block render in PR description or README preview? |
-
-## 7. Mermaid vs PlantUML in the same repo
-
-| Use Mermaid | Use PlantUML |
-|-------------|--------------|
-| GitHub README and issue diagrams | UML sequence with rich `ref`, create/destroy |
-| Inline flowchart next to code | C4-PlantUML with vendored `!include` |
-| Docs site on Mermaid plugin | Formal architecture repo with `-checkonly` JAR |
-
-Both can coexist — pick per doc audience and renderer. See [PlantUML docs, repos & CI](../plantuml/vi-docs-repos-and-ci.md) for the Java-side pipeline.
 
 ## Track complete
 

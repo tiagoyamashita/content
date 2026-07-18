@@ -24,19 +24,18 @@ fee        = amount × 200 / 10000    → appAccount (2%)
 remainder  = amount - fee            → toAccount (recipient)
 ```
 
-```plantuml
-@startuml
-title Examples — 2% fee split
-actor Payer
-participant "FeeSplitter\n(contract)" as SC
-participant "App account\n(2%)" as APP
-participant "To account\n(98%)" as TO
+```mermaid
+sequenceDiagram
+    title Examples — 2% fee split
+    actor Payer
+    participant SC as FeeSplitter (contract)
+    participant APP as App account (2%)
+    participant TO as To account (98%)
 
-Payer -> SC: pay(toAccount) + amount
-SC -> SC: fee = amount * 200 / 10000
-SC -> APP: send fee
-SC -> TO: send remainder
-@enduml
+    Payer->>SC: pay(toAccount) + amount
+    SC->>SC: fee = amount * 200 / 10000
+    SC->>APP: send fee
+    SC->>TO: send remainder
 ```
 
 ## Before you start

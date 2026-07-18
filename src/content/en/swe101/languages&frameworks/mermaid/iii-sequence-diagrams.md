@@ -46,7 +46,7 @@ sequenceDiagram
 | **`actor`** | Human or external system (stick figure) |
 | **`participant`** | Service, module, queue, cache |
 
-Mermaid does not expose PlantUML's full stereotype set (`boundary`, `control`, `entity`) as separate shapes — use clear **aliases** and **notes** instead.
+There is no separate stereotype set for boundary/control/entity shapes — use clear **aliases** and **notes** instead.
 
 ## 3. Activation bars
 
@@ -156,14 +156,6 @@ Cross-link concepts: [CDN overview](../cdn/i-overview.md), [Redis patterns](../r
 | **Consistent naming** | Match service names in code and Terraform |
 | **One scenario per file** | `checkout-happy.mmd`, `checkout-payment-fail.mmd` |
 | **Use `autonumber` in incidents** | Aligns diagram steps with timeline writeups |
-
-## Mermaid vs PlantUML for sequences
-
-| Prefer Mermaid | Prefer PlantUML |
-|----------------|-----------------|
-| README on GitHub with no CI | `ref over`, create/destroy lifelines, deep `par` |
-| Quick PR diagram inline | C4 sequence overlays, pinned stdlib includes |
-| Docs site already on Mermaid | Pixel-tuned UML for formal architecture repos |
 
 ## Next
 

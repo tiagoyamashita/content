@@ -42,22 +42,21 @@ Logical boundaries in code; **one** connection pool, **one** `COMMIT`.
 
 ## 3. Happy path — one transaction
 
-```plantuml
-@startuml
-actor Customer
-participant "Checkout API" as API
-database Postgres
+```mermaid
+sequenceDiagram
+  actor Customer
+  participant API as Checkout API
+  participant Postgres
 
-Customer -> API: POST /checkout
-API -> Postgres: BEGIN
-API -> Postgres: INSERT order PENDING
-API -> API: stripe.capture()
-API -> Postgres: INSERT payment
-API -> Postgres: UPDATE stock, INSERT reservation
-API -> Postgres: UPDATE order CONFIRMED
-API -> Postgres: COMMIT
-API --> Customer: 201
-@enduml
+  Customer->>API: POST /checkout
+  API->>Postgres: BEGIN
+  API->>Postgres: INSERT order PENDING
+  API->>API: stripe.capture()
+  API->>Postgres: INSERT payment
+  API->>Postgres: UPDATE stock, INSERT reservation
+  API->>Postgres: UPDATE order CONFIRMED
+  API->>Postgres: COMMIT
+  API-->>Customer: 201
 ```
 
 ```java

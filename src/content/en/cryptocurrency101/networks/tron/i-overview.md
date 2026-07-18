@@ -33,18 +33,17 @@ Parent track: [Cryptocurrency101 overview](../../i-overview.md).
 
 Same rule as BNB: **fee** → treasury, **remainder** → recipient.
 
-```plantuml
-@startuml
-title Tron — fee split (TRX)
-actor Payer
-participant "FeeSplitter\n(Solidity / TVM)" as SC
-participant "feeAccount" as FEE
-participant "recipient" as REC
+```mermaid
+sequenceDiagram
+    title Tron — fee split (TRX)
+    actor Payer
+    participant SC as FeeSplitter (Solidity / TVM)
+    participant FEE as feeAccount
+    participant REC as recipient
 
-Payer -> SC: pay(recipient) + TRX
-SC -> FEE: fee (sun)
-SC -> REC: remainder (sun)
-@enduml
+    Payer->>SC: pay(recipient) + TRX
+    SC->>FEE: fee (sun)
+    SC->>REC: remainder (sun)
 ```
 
 ## Example — Solidity (TVM)

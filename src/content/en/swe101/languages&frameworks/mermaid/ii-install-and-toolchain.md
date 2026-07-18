@@ -108,7 +108,7 @@ Mermaid has no first-class **`!include`** in core syntax — reuse fragments via
 - **Build script** that concatenates shared preamble (theme/init) before `mmdc`
 - **Copy shared node IDs** in a `fragments/` folder and document the pattern
 
-For large multi-file UML trees, prefer [PlantUML](../plantuml/vi-docs-repos-and-ci.md) `!include`.
+For large multi-file designs, split by scenario and concatenate a shared preamble in the docs build or `mmdc` script (see [Docs, repos & CI](vi-docs-repos-and-ci.md)).
 
 ## 6. Configuration file (optional)
 

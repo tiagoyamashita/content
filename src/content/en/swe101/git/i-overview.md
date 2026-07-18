@@ -69,36 +69,29 @@ You can commit offline; sync with **`git push`** / **`git pull`** when connected
 
 
 
-```plantuml
-@startuml
-!theme plain
-skinparam backgroundColor #FEFEFE
+```mermaid
+flowchart TB
+  User([User])
 
-title Simple Client-Server Architecture
+  subgraph Client["Client"]
+    Browser[Web Browser]
+  end
 
-actor "User" as User
-rectangle "Client" as Client {
-    component "Web Browser" as Browser
-}
-rectangle "Server" as Server {
-    component "API Gateway" as Gateway
-    component "Application" as App
-    database "Database" as DB
-}
+  subgraph Server["Server"]
+    Gateway[API Gateway]
+    App[Application]
+    DB[(Database)]
+  end
 
-User --> Browser : HTTP/HTTPS
-Browser --> Gateway : REST API
-Gateway --> App : Route Request
-App --> DB : SQL Queries
-DB --> App : Query Results
-App --> Gateway : JSON Response
-Gateway --> Browser : HTTP Response
-Browser --> User : Render Page
+  User -->|HTTP/HTTPS| Browser
+  Browser -->|REST API| Gateway
+  Gateway -->|Route Request| App
+  App -->|SQL Queries| DB
+  DB -->|Query Results| App
+  App -->|JSON Response| Gateway
+  Gateway -->|HTTP Response| Browser
+  Browser -->|Render Page| User
 
-note right of DB
-    PostgreSQL 15
-    Primary + Replica
-end note
-
-@enduml
+  NoteDB["PostgreSQL 15<br/>Primary + Replica"]
+  DB -.-> NoteDB
 ```

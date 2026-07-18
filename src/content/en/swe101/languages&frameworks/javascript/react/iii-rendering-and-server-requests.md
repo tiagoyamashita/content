@@ -176,37 +176,36 @@ Time ─────────────────────────
 8. Paint         user sees items
 ```
 
-```plantuml
-@startuml
-title Happy path — mount + useEffect fetch
-actor User
-participant "ItemsPage" as Page
-participant "React" as React
-participant "DOM" as DOM
-participant "API" as API
+```mermaid
+sequenceDiagram
+  title Happy path — mount + useEffect fetch
+  actor User
+  participant Page as ItemsPage
+  participant React
+  participant DOM
+  participant API
 
-User -> Page: open /items
-activate Page
-Page -> React: mount
-React -> React: render #1\nloading=true, items=[]
-React -> DOM: paint
-DOM --> User: sees "Loading…"
-React -> Page: useEffect (deps [])
-activate Page #Gold
-Page -> API: GET /api/items
-API --> Page: 200 JSON [items]
-Page -> React: setItems + setLoading(false)
-deactivate Page
-React -> React: render #2\nloading=false
-React -> DOM: paint
-DOM --> User: sees item list
-deactivate Page
-@enduml
+  User->>Page: open /items
+  activate Page
+  Page->>React: mount
+  React->>React: render #1\nloading=true, items=[]
+  React->>DOM: paint
+  DOM-->>User: sees "Loading…"
+  React->>Page: useEffect (deps [])
+  activate Page
+  Page->>API: GET /api/items
+  API-->>Page: 200 JSON [items]
+  Page->>React: setItems + setLoading(false)
+  deactivate Page
+  React->>React: render #2\nloading=false
+  React->>DOM: paint
+  DOM-->>User: sees item list
+  deactivate Page
 ```
 
 **Takeaway:** First paint uses **initial state** (`loading: true`, `items: []`). Data appears only after **async** work completes and triggers a **second render**.
 
-See [PlantUML sequence diagrams](../../plantuml/iii-sequence-diagrams.md) for syntax and rendering tools.
+See [Mermaid sequence diagrams](../../mermaid/iii-sequence-diagrams.md) for syntax and rendering tools.
 
 ### 6.2 Race condition — improper data without cleanup
 
@@ -219,29 +218,28 @@ Response #2 arrives   →  setState(item B)     ✓ correct
 Response #1 arrives   →  setState(item A)     ✗ WRONG — stale
 ```
 
-```plantuml
-@startuml
-title Race — no cleanup (stale response wins)
-actor User
-participant "DetailPage" as Page
-participant "API" as API
+```mermaid
+sequenceDiagram
+  title Race — no cleanup (stale response wins)
+  actor User
+  participant Page as DetailPage
+  participant API
 
-User -> Page: select id=1
-Page -> API: GET /api/items/1
-note right of API: slow
+  User->>Page: select id=1
+  Page->>API: GET /api/items/1
+  Note right of API: slow
 
-User -> Page: select id=2
-Page -> API: GET /api/items/2
-note right of API: fast
+  User->>Page: select id=2
+  Page->>API: GET /api/items/2
+  Note right of API: fast
 
-API --> Page: 200 item B
-Page -> Page: setState(item B)
-note right of Page: UI correct ✓
+  API-->>Page: 200 item B
+  Page->>Page: setState(item B)
+  Note right of Page: UI correct ✓
 
-API --> Page: 200 item A
-Page -> Page: setState(item A)
-note right of Page #Pink: UI wrong ✗\nuser wanted id=2
-@enduml
+  API-->>Page: 200 item A
+  Page->>Page: setState(item A)
+  Note right of Page: UI wrong ✗\nuser wanted id=2
 ```
 
 ### 6.3 Correct pattern — effect cleanup + dependency
@@ -288,35 +286,32 @@ Response 1 → cancelled → ignore
 Response 2 → setState(item B) → user sees correct data
 ```
 
-```plantuml
-@startuml
-title With cleanup — stale response ignored
-actor User
-participant "DetailPage" as Page
-participant "useEffect" as FX
-participant "API" as API
+```mermaid
+sequenceDiagram
+  title With cleanup — stale response ignored
+  actor User
+  participant Page as DetailPage
+  participant FX as useEffect
+  participant API
 
-User -> Page: select id=1
-Page -> FX: effect A [itemId=1]
-activate FX
-FX -> API: GET /api/items/1
+  User->>Page: select id=1
+  Page->>+FX: effect A [itemId=1]
+  FX->>API: GET /api/items/1
 
-User -> Page: select id=2
-Page -> FX: cleanup A\ncancelled = true
-deactivate FX
-Page -> FX: effect B [itemId=2]
-activate FX
-FX -> API: GET /api/items/2
+  User->>Page: select id=2
+  Page->>FX: cleanup A\ncancelled = true
+  deactivate FX
+  Page->>+FX: effect B [itemId=2]
+  FX->>API: GET /api/items/2
 
-API --> Page: item B
-Page -> Page: setState(B)\n!cancelled
-note right of Page #LightGreen: UI shows item B ✓
+  API-->>Page: item B
+  Page->>Page: setState(B)\n!cancelled
+  Note right of Page: UI shows item B ✓
 
-API --> Page: item A
-Page -> Page: skip setState\n(cancelled)
-note right of Page: stale response ignored
-deactivate FX
-@enduml
+  API-->>Page: item A
+  Page->>Page: skip setState\n(cancelled)
+  Note right of Page: stale response ignored
+  deactivate FX
 ```
 
 ### 6.4 AbortController (alternative)
@@ -340,22 +335,20 @@ useEffect(() => {
 }, [itemId]);
 ```
 
-```plantuml
-@startuml
-title AbortController — cancel HTTP on cleanup
-participant "useEffect" as FX
-participant "fetch" as F
-participant "API" as API
+```mermaid
+sequenceDiagram
+  title AbortController — cancel HTTP on cleanup
+  participant FX as useEffect
+  participant F as fetch
+  participant API
 
-FX -> F: fetch(/items/1, signal)
-activate F
-F -> API: GET /api/items/1
+  FX->>+F: fetch(/items/1, signal)
+  F->>API: GET /api/items/1
 
-FX -> FX: cleanup()\nctrl.abort()
-FX -> F: abort signal
-deactivate F
-note right of API: browser drops\nin-flight request
-@enduml
+  FX->>FX: cleanup()\nctrl.abort()
+  FX->>F: abort signal
+  deactivate F
+  Note right of API: browser drops\nin-flight request
 ```
 
 ### 6.5 Rules so users never see improper data
@@ -455,31 +448,30 @@ User clicks Add
   → onSuccess → invalidate → refetch list → UI updates
 ```
 
-```plantuml
-@startuml
-title TanStack Query — list load + create
-actor User
-participant "ItemsPage" as Page
-participant "React Query" as RQ
-participant "API" as API
+```mermaid
+sequenceDiagram
+  title TanStack Query — list load + create
+  actor User
+  participant Page as ItemsPage
+  participant RQ as React Query
+  participant API
 
-User -> Page: open /items
-Page -> RQ: useQuery(['items'])
-RQ -> API: GET /api/items
-API --> RQ: JSON
-RQ -> Page: data + isLoading=false
-Page --> User: render list
+  User->>Page: open /items
+  Page->>RQ: useQuery(['items'])
+  RQ->>API: GET /api/items
+  API-->>RQ: JSON
+  RQ->>Page: data + isLoading=false
+  Page-->>User: render list
 
-User -> Page: click Add
-Page -> RQ: mutate(createItem)
-RQ -> API: POST /api/items
-API --> RQ: 201 created
-RQ -> RQ: invalidateQueries(['items'])
-RQ -> API: GET /api/items
-API --> RQ: updated list
-RQ -> Page: re-render
-Page --> User: new row visible
-@enduml
+  User->>Page: click Add
+  Page->>RQ: mutate(createItem)
+  RQ->>API: POST /api/items
+  API-->>RQ: 201 created
+  RQ->>RQ: invalidateQueries(['items'])
+  RQ->>API: GET /api/items
+  API-->>RQ: updated list
+  RQ->>Page: re-render
+  Page-->>User: new row visible
 ```
 
 Backend is often [Spring Boot REST](../../java/springboot/iv-rest-controllers.md), FastAPI, or Node — React only sees HTTP + JSON.

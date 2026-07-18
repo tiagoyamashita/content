@@ -20,25 +20,24 @@ GET /products/{sku}
       MISS → SELECT from Postgres → SET Redis TTL 300s → return
 ```
 
-```plantuml
-@startuml
-actor Customer
-participant "Catalog API" as API
-collections Redis
-database Postgres
+```mermaid
+sequenceDiagram
+  actor Customer
+  participant API as Catalog API
+  participant Redis
+  participant Postgres
 
-Customer -> API: GET /products/SKU-42
-API -> Redis: GET product:SKU-42
-alt cache hit
-  Redis --> API: JSON
-  API --> Customer: 200
-else cache miss
-  API -> Postgres: SELECT ...
-  Postgres --> API: row
-  API -> Redis: SETEX product:SKU-42 300
-  API --> Customer: 200
-end
-@enduml
+  Customer->>API: GET /products/SKU-42
+  API->>Redis: GET product:SKU-42
+  alt cache hit
+    Redis-->>API: JSON
+    API-->>Customer: 200
+  else cache miss
+    API->>Postgres: SELECT ...
+    Postgres-->>API: row
+    API->>Redis: SETEX product:SKU-42 300
+    API-->>Customer: 200
+  end
 ```
 
 ## 2. Java sketch
