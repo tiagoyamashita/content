@@ -35,5 +35,6 @@ Foundations / core concepts
 | Track | Overlap |
 |-------|---------|
 | [SWE101](../swe101/i-overview.md) | Languages, frameworks, system design that *use* these ideas |
+| [Quant SWE](../quant-swe/i-overview.md) | Time series, numerics, and trading-system shapes on top of CS basics |
 | [SRE101](../sre101/i-overview.md) | Load balancers, DNS, observability on top of networking |
 | [Cybersecurity](../cybersecurity/i-overview.md) | TLS, identity, network controls |

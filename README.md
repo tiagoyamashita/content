@@ -20,6 +20,7 @@ Each locale has top-level **tracks** (sidebar sections), for example:
 | **Getting started** | How this repo is organized |
 | **CS101** | Algorithms, data structures, databases, networking |
 | **SWE101** | Languages, Git, system design, databases, Kafka, CDN, … |
+| **Quant SWE** | Markets, market data, microstructure, backtesting, trading systems, risk |
 | **SRE101** | CI/CD, cloud architecture, Kubernetes, Terraform, observability |
 | **AI101** | LLMs, ML, deep learning, AI engineering |
 | **Digital marketing** | SEO, content strategy, analytics, email, paid ads |
