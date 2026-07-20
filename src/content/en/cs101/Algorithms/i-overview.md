@@ -76,5 +76,5 @@ public static int binarySearch(int[] arr, int target) {
 ## 6. Related notes
 - **Solving with the JDK** [Solving with the JDK](xi-solving-with-the-jdk.md) — cheat sheet for production Java.
 - **Data structures** submenu — stacks, queues, heaps, graphs.
-- **Level IV — Paradigms & limits** [Paradigms & limits](../iv-paradigms-and-limits.md) — theory: greedy proofs, DP vs divide & conquer, NP-hardness.
+- **Level V — Paradigms & limits** [Paradigms & limits](../v-paradigms-and-limits.md) — theory: greedy proofs, DP vs divide & conquer, NP-hardness.
 - **Level III — Graphs** (`iii-graphs.md`) — graph modeling at course level.

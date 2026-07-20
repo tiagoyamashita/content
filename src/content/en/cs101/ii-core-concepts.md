@@ -1,10 +1,10 @@
 ---
-label: "I"
+label: "II"
 subtitle: "Core concepts"
-group: "Data structures & algorithms"
+group: "CS101"
 order: 1
 ---
-Level I — Core concepts
+Level II — Core concepts
 Bits and bytes, how data sits in memory, and the memory hierarchy from CPU to disk.
 
 ## 1. Bit and byte

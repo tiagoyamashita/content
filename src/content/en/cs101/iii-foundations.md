@@ -1,10 +1,10 @@
 ---
-label: "II"
+label: "III"
 subtitle: "Foundations"
-group: "Data structures & algorithms"
+group: "CS101"
 order: 2
 ---
-Level II — Foundations
+Level III — Foundations
 Complexity, RAM model, arrays, linked lists, stacks, queues.
 
 ## 1. What we measure
