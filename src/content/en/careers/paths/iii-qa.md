@@ -30,13 +30,18 @@ flowchart TD
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| Test design | Coverage without infinite cases |
-| One language + test frameworks | Playwright, JUnit, pytest, etc. |
-| API + browser tooling | Modern products are API-heavy |
-| CI/CD literacy | Quality is a pipeline property |
-| Japanese (sometimes) | Domestic product UX/copy issues |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| Test design / risk analysis | Core | What to cover vs what to skip |
+| Exploratory testing | Core | Find what scripts miss |
+| One language + test framework | Core | pytest, JUnit, Playwright, Cypress… |
+| API testing | Core | Contracts, auth, edge payloads |
+| CI literacy | Core | Gates, flakes, artifacts |
+| Clear bug reports | Core | Steps, expected/actual, env |
+| Automation architecture | Stretch | Page objects, shared fixtures, parallelization |
+| Performance / a11y basics | Stretch | Smoke for CWV, keyboard, screen readers |
+| Security smoke checks | Stretch | AuthZ gaps, injection basics |
+| Japanese | Market | Useful for domestic UX/copy issues |
 
 ## Japan notes
 

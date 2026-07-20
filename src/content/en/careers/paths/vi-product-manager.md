@@ -27,13 +27,18 @@ flowchart LR
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| Communication | Your output is alignment |
-| Technical literacy | Earn eng trust; scope realistically |
-| Metrics | Separate vibes from outcomes |
-| Writing | Specs people can build from |
-| Japanese | Critical for domestic product / stakeholders |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| Discovery (interviews, data) | Core | Find real problems |
+| Prioritization | Core | Roadmaps and “not now” |
+| Spec writing | Core | Acceptance criteria eng can build |
+| Metrics / experimentation | Core | Outcomes over output |
+| Stakeholder communication | Core | Align eng, design, sales, execs |
+| Technical literacy | Core | Read diagrams; respect constraints |
+| Japanese (business) | Market | Often required for domestic product |
+| Delivery facilitation | Stretch | Unblock without becoming project manager |
+| Pricing / packaging sense | Stretch | Especially B2B SaaS |
+| Writing for executives | Stretch | One-pagers and decision memos |
 
 ## Japan notes
 

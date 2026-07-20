@@ -28,13 +28,18 @@ flowchart TB
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| One language deeply | Interviews + daily work |
-| SQL + data modeling | Most bugs are data bugs |
-| HTTP / auth / idempotency | Correct APIs |
-| Concurrency & failure modes | Production |
-| System design | Mid → senior bar |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| One server language deeply | Core | Go, Java/Kotlin, Python, Node, Ruby… |
+| SQL + data modeling | Core | Migrations, indexes, transactions |
+| API design | Core | Auth, validation, versioning, idempotency |
+| Git + code review | Core | Daily collaboration |
+| Testing (unit/integration) | Core | Confidence to ship |
+| Concurrency & failure modes | Stretch | Timeouts, retries, partial failure |
+| Caching / messaging | Stretch | Redis, Kafka — see SWE101 |
+| System design | Stretch | Mid → senior interview + real design |
+| Observability | Stretch | Structured logs, metrics, traces |
+| Security basics | Stretch | AuthZ, secrets, injection awareness |
 
 ## Japan notes
 

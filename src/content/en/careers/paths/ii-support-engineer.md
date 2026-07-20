@@ -28,13 +28,17 @@ flowchart LR
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| Product depth | Faster answers than “checking with eng” |
-| HTTP / logs / basic SQL | Real debugging |
-| Writing | Trust; fewer back-and-forths |
-| Empathy under pressure | Angry customers still need help |
-| Japanese | Often required for domestic B2B |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| Product depth | Core | Know happy path, limits, billing/auth quirks |
+| Ticket triage | Core | Severity, impact, duplicate detection |
+| HTTP / browser / logs | Core | Status codes, HAR, app logs |
+| Basic SQL / admin tools | Core | Read-only checks when product allows |
+| Clear written updates | Core | Status, repro, next step — EN and often JP |
+| Empathy under pressure | Core | De-escalate without over-promising |
+| Bug report quality | Stretch | Minimal repro eng can run |
+| Light scripting | Stretch | Python/JS to batch checks or parse logs |
+| Japanese (business) | Market | Often required for domestic B2B support |
 
 ## Japan notes
 

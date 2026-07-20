@@ -29,13 +29,18 @@ flowchart TB
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| Linux + networking | Everything runs on this |
-| Cloud (AWS/GCP) | Default substrate |
-| Containers / K8s | Common runtime |
-| IaC (Terraform) | Reproducible infra |
-| Coding | Automation is software |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| Linux + networking | Core | Debug hosts and traffic |
+| Cloud (AWS or GCP) | Core | Default substrate |
+| Containers / Kubernetes | Core | Common runtime |
+| CI/CD | Core | Safe, repeatable releases |
+| IaC (Terraform) | Core | Reproducible environments |
+| Observability | Core | Metrics, logs, traces, alerts |
+| Coding for automation | Core | Python/Go/etc. — platforms are software |
+| Incident response | Stretch | Command, timelines, postmortems |
+| Security baselines | Stretch | IAM, secrets, network policy |
+| Developer experience | Stretch | Golden paths, self-serve platforms |
 
 ## Japan notes
 
