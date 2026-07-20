@@ -14,10 +14,12 @@ Deep dives: [Spring REST controllers](../../languages&frameworks/java/springboot
 ```mermaid
 flowchart LR
   Client --> MW[Middleware]
-  MW --> Controller
+  MW --> Filt[Filters]
+  Filt --> Controller
   Controller --> DTO[DTOs]
   Controller --> Service
   Service --> Repo[Repository]
+  Service --> Out[HTTP client out]
   Repo --> DB[(Data)]
   Controller --> Client
 ```
@@ -26,9 +28,11 @@ flowchart LR
 |----------------|------------------------|
 | Path / method / status | Yes |
 | DTO parse + validation | Yes — see [DTOs](../dtos/i-overview.md) |
-| Authn check (often) | [Middleware](../middleware/i-overview.md) |
+| Authn / request ID | [Middleware](../middleware/i-overview.md) |
+| Rate limit / body limits | [Filters](../filters/i-overview.md) |
 | Business rules | **No** — [Services](../services/i-overview.md) |
 | SQL | **No** — [Repositories](../repositories/i-overview.md) |
+| Call other APIs | **No** — [HTTP clients](../http-clients/i-overview.md) from the service |
 | Error → HTTP status | Map via [Errors](../errors/i-overview.md) |
 
 ## Language templates
