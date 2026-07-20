@@ -225,4 +225,4 @@ client_id=…
 
 ## Next
 
-Return to [External APIs overview](i-overview.md). For putting auth in front of *your* APIs, see [API gateway authentication](../api-gateway/iv-authentication.md).
+[GitHub OAuth](iii-github-oauth.md) and [GitLab OAuth](iv-gitlab-oauth.md) use the same authorization-code pattern for git forges. Return to [External APIs overview](i-overview.md). For putting auth in front of *your* APIs, see [API gateway authentication](../api-gateway/iv-authentication.md).
