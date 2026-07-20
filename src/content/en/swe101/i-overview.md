@@ -17,6 +17,7 @@ SWE101 — overview
 | **Web UI & styling** | [HTMX](htmx/i-overview.md), [CSS](css/i-overview.md), [Sass/Less](css/sass/i-overview.md) |
 | **Backend & data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md), [Kafka](kafka/i-overview.md), [PL/SQL](plsql/i-overview.md) |
 | **Infrastructure & delivery** | [CDN](cdn/i-overview.md), [API gateway](api-gateway/i-overview.md), [External APIs](external-apis/i-overview.md) |
+| **Templates** | [REST package](templates/ii-rest-package-layout.md) — controllers, DTOs, services, repositories, errors, middleware |
 | **Design** | [System design](sysdesign/scalable-patterns/i-overview.md), [PlantUML](plantuml/i-overview.md), [Mermaid](mermaid/i-overview.md) |
 | **Notes & knowledge** | [Obsidian](obsidian/i-overview.md) |
 
