@@ -1,10 +1,10 @@
 ---
-label: "I"
+label: "IV"
 subtitle: "Machines & memory"
-group: "Operating systems"
-order: 1
+group: "CS101"
+order: 3
 ---
-Operating systems — Part I
+Level IV — Machines & memory
 Kernel role, memory layout, execution models, hardware landscape.
 
 ## 1. What operating systems do

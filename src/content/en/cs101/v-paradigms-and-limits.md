@@ -1,10 +1,10 @@
 ---
-label: "IV"
+label: "V"
 subtitle: "Paradigms & limits"
-group: "Data structures & algorithms"
+group: "CS101"
 order: 4
 ---
-Level IV — Paradigms & limits
+Level V — Paradigms & limits
 Greedy, divide & conquer, DP, reductions, hardness, approximation.
 
 ## 1. Greedy algorithms

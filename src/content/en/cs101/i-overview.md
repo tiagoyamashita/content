@@ -1,5 +1,6 @@
 ---
-label: "I Overview"
+label: "I"
+subtitle: "Overview"
 group: "CS101"
 order: 0
 ---
@@ -10,10 +11,10 @@ CS101 — overview
 
 | Area | Focus |
 |------|--------|
-| [**Core concepts**](i-core-concepts.md) | Big ideas that show up everywhere |
-| [**Foundations**](ii-foundations.md) | Grounding vocabulary and mental models |
-| [**Machines & memory**](i-machines-and-memory.md) | OS role, memory, execution |
-| [**Paradigms & limits**](iv-paradigms-and-limits.md) | Computation models and what they cannot do |
+| [**Core concepts**](ii-core-concepts.md) | Big ideas that show up everywhere |
+| [**Foundations**](iii-foundations.md) | Grounding vocabulary and mental models |
+| [**Machines & memory**](iv-machines-and-memory.md) | OS role, memory, execution |
+| [**Paradigms & limits**](v-paradigms-and-limits.md) | Computation models and what they cannot do |
 | [**Data structures**](data-structures/i-array.md) | Arrays, lists, trees, heaps, graphs, hash tables |
 | [**Algorithms**](Algorithms/i-overview.md) | Sorting, search, graphs, DP, greedy, backtracking |
 | [**Databases**](databases/i-overview.md) | Relational, KV, document, wide-column, graph, time-series |
@@ -22,7 +23,7 @@ CS101 — overview
 ## Suggested order
 
 ```text
-Foundations / core concepts
+Overview → Core concepts → Foundations
   → Machines & memory
   → Data structures → Algorithms
   → Databases

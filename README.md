@@ -22,12 +22,14 @@ Each locale has top-level **tracks** (sidebar sections), for example:
 | **SWE101** | Languages, Git, system design, databases, Kafka, CDN, … |
 | **Quant SWE** | Markets, market data, microstructure, backtesting, trading systems, risk |
 | **SRE101** | CI/CD, cloud architecture, Kubernetes, Terraform, observability |
+| **Cybersecurity** | Threat modeling, identity, app/network security, IR |
 | **AI101** | LLMs, ML, deep learning, AI engineering |
 | **Digital marketing** | SEO, content strategy, analytics, email, paid ads |
+| **Careers** | Japan tech paths — support, QA, FE/BE, PM, SRE; study maps & compensation |
 | **Cryptocurrency101** | Blockchain concepts and network examples |
 | **Startups** | Free services and practical tooling |
 | **Languages** | Japanese language notes |
-| **Food** | Baking and related notes |
+| **Food** | Baking, savory recipes, and related notes |
 
 Tracks can nest submenus (e.g. `swe101/languages&frameworks/mermaid/`). Section order and titles come from **`_meta.json`** files; each note is a **`.md`** file with YAML frontmatter.
 

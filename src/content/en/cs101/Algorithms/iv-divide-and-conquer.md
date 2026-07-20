@@ -26,7 +26,7 @@ Many algorithms satisfy **T(n) = a T(n/b) + f(n)**:
 
 **Binary search:** one subproblem of half size, **O(1)** work → **T(n) = T(n/2) + O(1) = O(log n)**.
 
-The **Master theorem** (see [Paradigms & limits](../iv-paradigms-and-limits.md)) classifies many such recurrences without expanding the recursion tree.
+The **Master theorem** (see [Paradigms & limits](../v-paradigms-and-limits.md)) classifies many such recurrences without expanding the recursion tree.
 
 ## 3. Maximum subarray (Kadane vs divide & conquer)
 **Kadane** (linear scan) is the practical **O(n)** solution:

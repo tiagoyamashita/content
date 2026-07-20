@@ -9,7 +9,7 @@ At each step, take the **locally best** option that looks good now — **without
 
 **When it works:** you can prove the local choice is safe (exchange argument, matroid, or known theorem). **When it fails:** a counterexample where greedy misses the global optimum (e.g. **0/1 knapsack** — use DP).
 
-See also **Level IV — Paradigms** [Paradigms & limits](../iv-paradigms-and-limits.md).
+See also **Level V — Paradigms** [Paradigms & limits](../v-paradigms-and-limits.md).
 
 ## 1. Classic problems
 
