@@ -11,6 +11,7 @@ Practical recipes and kitchen notes. Not a nutrition or restaurant guide — jus
 | Submenu | Focus |
 |---------|--------|
 | [**Baking**](baking/i-chocolate-banana-bread.md) | Banana bread, cookies, and related bakes |
+| [**Savory**](savory/i-lasagna-bolognese.md) | Pasta and other savory mains |
 
 ## Baking
 
@@ -19,4 +20,10 @@ Practical recipes and kitchen notes. Not a nutrition or restaurant guide — jus
 | [Chocolate banana bread](baking/i-chocolate-banana-bread.md) | Loaf recipe |
 | [Chocolate chip cookies](baking/ii-cookies.md) | Cookie recipe |
 
-Start here: [Chocolate banana bread](baking/i-chocolate-banana-bread.md).
+## Savory
+
+| Note | Focus |
+|------|--------|
+| [Lasagna Bolognese](savory/i-lasagna-bolognese.md) | Ragù, béchamel, layered pasta |
+
+Start here: [Chocolate banana bread](baking/i-chocolate-banana-bread.md) or [Lasagna Bolognese](savory/i-lasagna-bolognese.md).
