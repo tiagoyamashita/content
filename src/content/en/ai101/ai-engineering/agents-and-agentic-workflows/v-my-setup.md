@@ -113,15 +113,15 @@ Several agents on **one remote** is fine if they don’t fight over the same fil
 
 ```mermaid
 flowchart TB
-  Remote[(github.com/org/app)]
-  Main[main clone — Chat A — feat/auth]
-  WT[worktree — Chat B — feat/billing]
+  Remote[(remote: org/app)]
+  Main["main clone — Chat A — feat/auth"]
+  WT["worktree — Chat B — feat/billing"]
 
   Remote --> Main
   Remote --> WT
 
-  Main -->|PR 1| Remote
-  WT -->|PR 2| Remote
+  Main -->|"PR 1"| Remote
+  WT -->|"PR 2"| Remote
 ```
 
 ### Coordination checklist
@@ -141,16 +141,17 @@ sequenceDiagram
   participant B as Agent B worktree
   participant GH as GitHub
 
-  You->>A: "Implement auth on feat/auth"
-  You->>B: "Implement billing on feat/billing"
-  par Parallel work
+  You->>A: Implement auth on feat/auth
+  You->>B: Implement billing on feat/billing
+  par Auth path
     A->>A: Edit auth files only
+  and Billing path
     B->>B: Edit billing files only
   end
-  A->>GH: Push + PR
-  B->>GH: Push + PR
-  You->>GH: Review / merge order
-  Note over You,GH: If conflict, merge one first; rebase the other
+  A->>GH: Push and open PR
+  B->>GH: Push and open PR
+  You->>GH: Review and merge order
+  Note over You,GH: If conflict, merge one first then rebase the other
 ```
 
 ### When *not* to parallelize
