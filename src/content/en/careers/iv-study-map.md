@@ -65,4 +65,4 @@ Months 9–12  Interview loops + Japanese if targeting domestic roles
 
 ## Next
 
-Pick a role under [Paths](paths/i-overview.md).
+See how roles sit in the life cycle: [SDLC & roles](v-sdlc-and-roles.md). Then pick a role under [Paths](paths/i-overview.md).

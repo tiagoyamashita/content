@@ -27,13 +27,18 @@ flowchart LR
 
 ## Skills that matter
 
-| Skill | Why |
-|-------|-----|
-| TypeScript + modern framework | React/Next common in JP product cos |
-| CSS / layout / design systems | Ships usable UI |
-| HTTP + auth cookies/JWT | Real apps, not toy components |
-| Testing | Component + E2E |
-| Performance | Mobile networks still matter |
+| Skill | Level | Notes |
+|-------|-------|-------|
+| TypeScript (or strong JS) | Core | Types catch UI contract bugs |
+| Modern UI framework | Core | React/Next common in JP product cos |
+| CSS / layout / design systems | Core | Consistent, responsive UI |
+| HTTP + auth (cookies/JWT) | Core | Real app integration |
+| Component testing | Core | Jest/Vitest/Testing Library |
+| Accessibility | Core | Keyboard, semantics, contrast |
+| E2E testing | Stretch | Playwright/Cypress for critical paths |
+| Performance | Stretch | Bundles, CWV, lazy loading |
+| i18n / JP typography & forms | Stretch | Differentiator in Japan |
+| Design collaboration | Stretch | Figma handoff, design tokens |
 
 ## Japan notes
 

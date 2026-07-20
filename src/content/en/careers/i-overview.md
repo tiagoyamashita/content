@@ -16,6 +16,7 @@ Figures are **illustrative bands** (mostly Tokyo, foreigner-friendly employers).
 | [Japan tech market](ii-japan-tech-market.md) | Employer types, language, visas, culture signals |
 | [Compensation](iii-compensation.md) | How 年収 works; bands; negotiation basics |
 | [Study map](iv-study-map.md) | Which curriculum tracks feed which roles |
+| [SDLC & roles](v-sdlc-and-roles.md) | Life-cycle phases; where each role fits; skills by phase |
 | **[Paths](paths/i-overview.md)** | Support, QA, frontend, backend, PM, and more |
 
 ## Role cheat sheet
@@ -43,7 +44,7 @@ flowchart LR
 ## Suggested reading order
 
 ```text
-Overview → Japan tech market → Compensation → Study map → pick a Paths note
+Overview → Japan tech market → Compensation → Study map → SDLC & roles → pick a Paths note
 ```
 
 ## Next
