@@ -29,6 +29,8 @@ The roles collaborate, and one person may cover both in a small organization, bu
 | [Stakeholders and communication](vi-stakeholders-and-communication.md) | Governance, status reporting, and difficult conversations |
 | [Delivery and closure](vii-delivery-and-closure.md) | Execution, handover, retrospectives, and benefits review |
 | [Templates and checklists](viii-templates-and-checklists.md) | Reusable project brief, RAID log, status report, and closeout |
+| [Agile delivery methods](ix-agile-delivery-methods.md) | Agile principles, Scrum, Kanban, hybrid delivery, and metrics |
+| [Jira, Confluence, and delivery tools](x-jira-confluence-and-delivery-tools.md) | Configuring work tracking, documentation, dashboards, and integrations |
 
 ## A practical lifecycle
 
