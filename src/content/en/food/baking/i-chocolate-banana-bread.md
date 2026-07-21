@@ -1,11 +1,11 @@
 ---
 label: "I"
-subtitle: "Chocolate banana bread"
+subtitle: "Coffee dark chocolate banana bread"
 group: "Baking"
 order: 1
 ---
-Chocolate banana bread
-Moist loaf with cocoa and melted chocolate chips. **All weights are in grams** — zero a bowl on the scale and add each ingredient directly.
+Coffee dark chocolate banana bread
+Moist loaf with cocoa, melted dark chocolate chips, and instant coffee. **All weights are in grams** — zero a bowl on the scale and add each ingredient directly.
 
 **Yield:** one 23 × 13 cm (9 × 5 in) loaf · **Oven:** 175 °C (350 °F)
 
@@ -27,17 +27,19 @@ Moist loaf with cocoa and melted chocolate chips. **All weights are in grams** �
 | Unsalted butter, melted and slightly cooled | 100 |
 | Large eggs (about 2) | 100 |
 | Dark chocolate chips or chunks | 120 |
-| Baking powder | 8 |
-| Baking soda | 3 |
+| Baking powder | 12 |
+| Instant coffee | 5 |
 | Fine salt | 2 |
 | Vanilla extract | 5 |
 
 **Banana note:** 300 g is roughly 2 large very ripe bananas (spotty peel). Peel, mash with a fork, then weigh — add or remove banana until you hit 300 g.
 
+**Coffee note:** Use plain **instant coffee** granules or powder (not ground beans). 5 g is about 1 heaped teaspoon — it deepens the chocolate flavor more than it tastes like a cup of coffee.
+
 ## Method
 
 1. **Heat oven** to 175 °C. Grease the loaf pan or line with parchment.
-2. **Dry mix:** In a bowl, combine **200 g flour**, **35 g cocoa**, **8 g baking powder**, **3 g baking soda**, and **2 g salt**. Whisk 30 seconds.
+2. **Dry mix:** In a bowl, combine **200 g flour**, **35 g cocoa**, **12 g baking powder**, **5 g instant coffee**, and **2 g salt**. Whisk 30 seconds.
 3. **Wet mix:** In a large bowl, weigh **300 g mashed banana**, **140 g sugar**, **100 g melted butter**, **100 g eggs**, and **5 g vanilla**. Stir until smooth.
 4. **Combine:** Add dry mix to wet. Fold until no dry flour streaks remain — do not overmix.
 5. **Chocolate:** Fold in **120 g chocolate chips**, reserving **20 g** for the top if you like.
@@ -48,7 +50,7 @@ Moist loaf with cocoa and melted chocolate chips. **All weights are in grams** �
 
 ```text
 Bowl on scale → tare → 300 g banana → tare → 140 g sugar → 100 g butter → 100 g eggs → 5 g vanilla
-Separate bowl → tare → 200 g flour → 35 g cocoa → 8 g baking powder → 3 g baking soda → 2 g salt
+Separate bowl → tare → 200 g flour → 35 g cocoa → 12 g baking powder → 5 g instant coffee → 2 g salt
 Fold dry into wet → tare small cup → 120 g chocolate chips → fold in
 ```
 
@@ -58,6 +60,7 @@ Fold dry into wet → tare small cup → 120 g chocolate chips → fold in
 |--------|------------|
 | **Less sweet** | Sugar **110 g** |
 | **Extra chocolate** | Chips **150 g**, cocoa **40 g** |
+| **Stronger coffee** | Instant coffee **8 g** |
 | **Walnuts** | Add **80 g** toasted walnut pieces with the chips |
 
 ## Storage

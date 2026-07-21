@@ -17,7 +17,7 @@ Practical recipes and kitchen notes. Not a nutrition or restaurant guide — jus
 
 | Note | Focus |
 |------|--------|
-| [Chocolate banana bread](baking/i-chocolate-banana-bread.md) | Loaf recipe |
+| [Coffee dark chocolate banana bread](baking/i-chocolate-banana-bread.md) | Loaf recipe |
 | [Chocolate chip cookies](baking/ii-cookies.md) | Cookie recipe |
 
 ## Savory
@@ -26,4 +26,4 @@ Practical recipes and kitchen notes. Not a nutrition or restaurant guide — jus
 |------|--------|
 | [Lasagna Bolognese](savory/i-lasagna-bolognese.md) | Ragù, béchamel, layered pasta |
 
-Start here: [Chocolate banana bread](baking/i-chocolate-banana-bread.md) or [Lasagna Bolognese](savory/i-lasagna-bolognese.md).
+Start here: [Coffee dark chocolate banana bread](baking/i-chocolate-banana-bread.md) or [Lasagna Bolognese](savory/i-lasagna-bolognese.md).
