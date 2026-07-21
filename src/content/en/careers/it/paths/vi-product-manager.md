@@ -50,11 +50,11 @@ flowchart LR
 
 | Priority | Track |
 |----------|-------|
-| 1 | Enough [SWE101](../../swe101/i-overview.md) to read an architecture diagram |
-| 2 | [System design](../../swe101/sysdesign/scalable-patterns/i-overview.md) vocabulary |
-| 3 | [AI Applied](../../ai101/ai-engineering/i-overview.md) — research & drafting |
-| 4 | [Digital marketing](../../digital-marketing/i-overview.md) if growth-leaning |
-| 5 | [Languages](../../languages/i-overview.md) if targeting domestic orgs |
+| 1 | Enough [SWE101](../../../swe101/i-overview.md) to read an architecture diagram |
+| 2 | [System design](../../../swe101/sysdesign/scalable-patterns/i-overview.md) vocabulary |
+| 3 | [AI Applied](../../../ai101/ai-engineering/i-overview.md) — research & drafting |
+| 4 | [Digital marketing](../../../digital-marketing/i-overview.md) if growth-leaning |
+| 5 | [Languages](../../../languages/i-overview.md) if targeting domestic orgs |
 
 Build: 2–3 **case writeups** (problem, options, metrics, decision, result).
 
@@ -67,7 +67,7 @@ Associate ~**¥5–8M**; mid ~**¥8–13M**; senior/group often **¥13–20M+** 
 | From PM | Toward |
 |---------|--------|
 | Group / director | Product leadership |
-| Founder skills | [Startups](../../startups/i-overview.md) |
+| Founder skills | [Startups](../../../startups/i-overview.md) |
 | Deep tech | Technical PM / eng |
 
 ## Next

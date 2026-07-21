@@ -7,17 +7,17 @@ order: 4
 Study map
 Map **this curriculum** to career paths. Depth beats random courses — pick a primary role, ship projects, then add adjacent skills.
 
-Parent: [Careers overview](i-overview.md). Roles: [Paths](paths/i-overview.md).
+Parent: [IT careers overview](i-overview.md). Roles: [Paths](paths/i-overview.md).
 
 ## 1. Shared foundation (almost everyone)
 
 | Goal | Start here |
 |------|------------|
-| How computers + data + networks work | [CS101](../cs101/i-overview.md) |
-| Git, languages, APIs, design | [SWE101](../swe101/i-overview.md) |
-| Ship + operate | [SRE101](../sre101/i-overview.md) (lighter for FE/PM) |
-| Prompting / agents for productivity | [AI101 Applied](../ai101/ai-engineering/i-overview.md) |
-| Japanese language (if needed) | [Languages](../languages/i-overview.md) |
+| How computers + data + networks work | [CS101](../../cs101/i-overview.md) |
+| Git, languages, APIs, design | [SWE101](../../swe101/i-overview.md) |
+| Ship + operate | [SRE101](../../sre101/i-overview.md) (lighter for FE/PM) |
+| Prompting / agents for productivity | [AI101 Applied](../../ai101/ai-engineering/i-overview.md) |
+| Japanese language (if needed) | [Languages](../../languages/i-overview.md) |
 
 ```mermaid
 flowchart TD

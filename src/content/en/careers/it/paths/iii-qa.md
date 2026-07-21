@@ -53,10 +53,10 @@ flowchart TD
 
 | Priority | Track |
 |----------|-------|
-| 1 | [SWE101](../../swe101/i-overview.md) — language + Git |
-| 2 | [SRE101 CI/CD](../../sre101/i-overview.md) — pipelines |
+| 1 | [SWE101](../../../swe101/i-overview.md) — language + Git |
+| 2 | [SRE101 CI/CD](../../../sre101/i-overview.md) — pipelines |
 | 3 | Frontend or backend track matching the product |
-| 4 | [Cybersecurity](../../cybersecurity/i-overview.md) — basic threat thinking |
+| 4 | [Cybersecurity](../../../cybersecurity/i-overview.md) — basic threat thinking |
 
 Build: automate login + critical path for an open-source app; show flake handling.
 
