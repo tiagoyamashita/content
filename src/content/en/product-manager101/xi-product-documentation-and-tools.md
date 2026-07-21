@@ -165,4 +165,4 @@ Pilot the workflow with one team and a small set of artifacts. Measure whether p
 
 **Related:** [Jira, Confluence, and delivery tools](../project-manager101/x-jira-confluence-and-delivery-tools.md).
 
-**Back to:** [Product Manager 101 overview](i-overview.md).
+**Next:** [Product manager vs project manager](xii-product-manager-vs-project-manager.md).

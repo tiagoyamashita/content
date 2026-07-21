@@ -18,6 +18,8 @@ Product management identifies valuable problems, chooses outcomes to pursue, and
 
 Both roles create clarity and alignment. Neither replaces engineering, design, research, marketing, sales, or operations expertise.
 
+See [Product manager vs project manager](xii-product-manager-vs-project-manager.md) for a detailed comparison of ownership, artifacts, metrics, daily work, and organizational variations.
+
 ## Map of this track
 
 | Note | Focus |
@@ -32,6 +34,7 @@ Both roles create clarity and alignment. Neither replaces engineering, design, r
 | [Templates and checklists](ix-templates-and-checklists.md) | Reusable opportunity, PRD, roadmap, and launch tools |
 | [Agile product development](x-agile-product-development.md) | Continuous discovery, iterative delivery, backlogs, and team ceremonies |
 | [Product documentation and tools](xi-product-documentation-and-tools.md) | Jira, Confluence, roadmapping, research, design, and analytics tools |
+| [Product manager vs project manager](xii-product-manager-vs-project-manager.md) | Detailed role boundaries, collaboration, examples, and title ambiguity |
 
 ## Product loop
 
