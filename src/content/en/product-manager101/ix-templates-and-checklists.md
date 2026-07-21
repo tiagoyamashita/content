@@ -104,4 +104,4 @@ Review trigger or date:
 
 Pick an existing product. Write an opportunity brief from observable evidence, define one outcome metric and two guardrails, compare three solution approaches, and design the smallest ethical test of the riskiest assumption.
 
-**Back to:** [Product Manager 101 overview](i-overview.md).
+**Next:** [Agile product development](x-agile-product-development.md).

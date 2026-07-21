@@ -30,6 +30,8 @@ Both roles create clarity and alignment. Neither replaces engineering, design, r
 | [Metrics and experiments](vii-metrics-and-experiments.md) | Outcome metrics, instrumentation, and causal learning |
 | [Launch and iteration](viii-launch-and-iteration.md) | Readiness, go-to-market, feedback, and lifecycle decisions |
 | [Templates and checklists](ix-templates-and-checklists.md) | Reusable opportunity, PRD, roadmap, and launch tools |
+| [Agile product development](x-agile-product-development.md) | Continuous discovery, iterative delivery, backlogs, and team ceremonies |
+| [Product documentation and tools](xi-product-documentation-and-tools.md) | Jira, Confluence, roadmapping, research, design, and analytics tools |
 
 ## Product loop
 

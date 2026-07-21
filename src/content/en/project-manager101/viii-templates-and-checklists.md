@@ -93,4 +93,4 @@ Decision:
 
 Choose a small four-week initiative. Write the project brief, build a milestone plan, identify five RAID entries, send a one-page status update, and conduct a closeout. Review which artifact changed a decision; simplify anything that did not help.
 
-**Back to:** [Project Manager 101 overview](i-overview.md).
+**Next:** [Agile delivery methods](ix-agile-delivery-methods.md).
