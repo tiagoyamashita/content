@@ -68,6 +68,25 @@ cargo fmt                   # format (rustfmt)
 cargo clippy                # lints (needs clippy component)
 ```
 
+### Auto-reload while developing
+
+Rust does not normally hot-swap code inside a running process. Instead, a file watcher stops the current process, rebuilds the crate, and starts it again whenever a source file changes. Install **`cargo-watch`** once:
+
+```text
+cargo install cargo-watch --locked
+```
+
+Run it from the project root:
+
+```text
+cargo watch -x run                         # rebuild and restart the app
+cargo watch -x check                       # fast compiler feedback only
+cargo watch -x check -x test               # check, then run tests
+cargo watch -x "run -p hello_app"          # run one workspace package
+```
+
+This is **automatic rebuild + restart**, not true in-process hot reload: application memory and in-memory state reset on every change. Web frameworks may provide their own development command with browser refresh or hot module replacement; prefer that command when available.
+
 ## 4. Example: build your own shareable library
 
 ### Step 1 — create the library crate

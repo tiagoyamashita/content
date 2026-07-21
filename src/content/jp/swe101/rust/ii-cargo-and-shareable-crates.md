@@ -69,6 +69,25 @@ cargo fmt                   # format (rustfmt)
 cargo clippy                # lints (needs clippy component)
 ```
 
+### 開発中の自動リロード
+
+Rust では通常、実行中のプロセス内でコードをホットスワップしません。代わりにファイル監視ツールが、ソースファイルの変更時に現在のプロセスを停止し、クレートを再ビルドして起動し直します。まず **`cargo-watch`** を一度インストールします。
+
+```text
+cargo install cargo-watch --locked
+```
+
+プロジェクトのルートで実行します。
+
+```text
+cargo watch -x run                         # アプリを再ビルドして再起動
+cargo watch -x check                       # コンパイラの結果だけを素早く確認
+cargo watch -x check -x test               # check の後にテストを実行
+cargo watch -x "run -p hello_app"          # ワークスペース内の1パッケージを実行
+```
+
+これは真のプロセス内ホットリロードではなく、**自動再ビルド + 再起動**です。変更のたびにアプリケーションのメモリとインメモリ状態はリセットされます。Web フレームワークにブラウザ更新や Hot Module Replacement を含む独自の開発コマンドがある場合は、そちらを優先してください。
+
 ## 4. 例: 独自の共有可能なライブラリを構築する
 
 ### ステップ 1 — ライブラリクレートを作成する
