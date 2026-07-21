@@ -18,6 +18,8 @@ Project management turns an agreed objective into a coordinated delivery plan. A
 
 The roles collaborate, and one person may cover both in a small organization, but the decisions are different.
 
+See [Product manager vs project manager](../product-manager101/xii-product-manager-vs-project-manager.md) for a detailed comparison of ownership, artifacts, metrics, daily work, and organizational variations.
+
 ## Map of this track
 
 | Note | Focus |
@@ -31,6 +33,7 @@ The roles collaborate, and one person may cover both in a small organization, bu
 | [Templates and checklists](viii-templates-and-checklists.md) | Reusable project brief, RAID log, status report, and closeout |
 | [Agile delivery methods](ix-agile-delivery-methods.md) | Agile principles, Scrum, Kanban, hybrid delivery, and metrics |
 | [Jira, Confluence, and delivery tools](x-jira-confluence-and-delivery-tools.md) | Configuring work tracking, documentation, dashboards, and integrations |
+| [Product manager vs project manager](../product-manager101/xii-product-manager-vs-project-manager.md) | Detailed role boundaries, collaboration, examples, and title ambiguity |
 
 ## A practical lifecycle
 
