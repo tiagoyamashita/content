@@ -33,6 +33,8 @@ Related: [SWE101 overview](../i-overview.md), language tracks under `languages&f
 | **[Caching](caching/i-overview.md)** | ETag / Cache-Control / app cache |
 | **[Transactions](transactions/i-overview.md)** | ACID at the service boundary |
 | **[Idempotency](idempotency/i-overview.md)** | Safe POST retries (`Idempotency-Key`) |
+| **[Concurrency](concurrency/i-overview.md)** | Threads vs event loops, parallel fan-out, safe shared state |
+| **[Logging](logging/i-overview.md)** | Programmatic structured logs: context + wrappers + redaction |
 
 Each domain has the same stacks: **Java Spring**, **Python FastAPI**, **JavaScript Express**, **Go net/http**.
 
