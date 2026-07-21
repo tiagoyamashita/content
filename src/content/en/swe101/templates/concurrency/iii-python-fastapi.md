@@ -77,6 +77,32 @@ async def checksum(payload: bytes) -> dict:
     return {"sha256": digest}
 ```
 
+## Capacity by version
+
+CPython's **GIL** is the defining capacity fact: on standard builds only one thread executes Python bytecode at a time, so threads do **not** add CPU parallelism. State the interpreter version your scaling plan assumes.
+
+| CPython version | Parallelism story | How you scale |
+|-----------------|-------------------|---------------|
+| **≤ 3.11** | One GIL; threads for I/O only | **Processes** — run `workers ≈ CPU cores` (Gunicorn/Uvicorn) |
+| **3.12** | Per-interpreter GIL (PEP 684, sub-interpreters) | Still process-based in practice for most web apps |
+| **3.13** | Experimental **free-threaded** build (`python3.13t`, PEP 703) — GIL can be disabled | Threads start to scale CPU; ecosystem/C-extension support still maturing |
+| **3.14+** | Free-threading moving to officially supported | Same direction; verify your deps ship free-threaded wheels |
+
+One instance's capacity:
+
+```text
+total concurrent requests  ≈  worker_processes  ×  in-flight coroutines per loop
+worker_processes           ≈  CPU cores (CPU-bound)  or  higher (I/O-bound)
+```
+
+```bash
+# One loop per worker; N workers ≈ cores. Each worker is a separate process + GIL.
+uvicorn app:app --workers 4
+# or: gunicorn -k uvicorn.workers.UvicornWorker -w 4 app:app
+```
+
+**Watch out:** adding `threading.Thread`s for CPU work on ≤3.12 buys nothing — the GIL serializes them; use `ProcessPoolExecutor` (shown above). Don't assume a single async worker uses all cores — it uses **one**. Size worker count to cores and memory, and keep per-loop fan-out bounded with `asyncio.Semaphore`.
+
 ## Notes
 
 | Topic | Practice |

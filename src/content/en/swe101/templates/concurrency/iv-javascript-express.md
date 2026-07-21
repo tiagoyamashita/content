@@ -73,6 +73,38 @@ function hashInWorker(data) {
 // parentPort.postMessage(createHash("sha256").update(workerData).digest("hex"));
 ```
 
+## Capacity by version
+
+Node runs your JS on **one thread per process**, so a single instance uses **one CPU core** for JS. Capacity scales by running more processes. State the Node version — the concurrency toolbox changed across recent LTS lines.
+
+| Node version | Relevant capability | Effect on capacity |
+|--------------|---------------------|--------------------|
+| **≤ 11** | `worker_threads` experimental | CPU work blocked the loop or needed child processes |
+| **12+ (LTS)** | `worker_threads` stable | Offload CPU work without leaving the process |
+| **16 EOL / 18+ (LTS)** | Global `fetch`, `AbortSignal.timeout` | Bounded outbound calls with no extra deps |
+| **20 / 22 (LTS)** | Perf + stable test runner/perf hooks | Same model; better defaults and diagnostics |
+
+One instance's capacity:
+
+```text
+JS throughput per process  =  1 CPU core
+total capacity             =  processes (cluster / PM2 / containers)  ×  per-loop concurrency
+```
+
+```js
+// Fan out to one process per core; each has its own event loop.
+import cluster from "node:cluster";
+import { availableParallelism } from "node:os";
+
+if (cluster.isPrimary) {
+  for (let i = 0; i < availableParallelism(); i++) cluster.fork();
+} else {
+  // start Express app here
+}
+```
+
+**Watch out:** one blocking/CPU-heavy handler stalls **every** in-flight request on that process — offload to `worker_threads` or a separate service. A single Node process will not use all cores no matter how much you `Promise.all` — you need `cluster`, a process manager, or multiple containers. Keep outbound fan-out bounded (see `mapWithLimit` above) so you don't exhaust sockets/FDs.
+
 ## Notes
 
 | Topic | Practice |

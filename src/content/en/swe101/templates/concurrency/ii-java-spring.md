@@ -83,6 +83,31 @@ class RequestMetrics {
 public void reindexAsync(String id) { /* runs off the request thread */ }
 ```
 
+## Capacity by version
+
+Your capacity ceiling depends heavily on the JDK and Spring Boot version — state the minimum you assume.
+
+| JDK / Spring Boot | Concurrency model | Practical ceiling |
+|-------------------|-------------------|-------------------|
+| **JDK 8–20** (any Boot) | Platform threads only | Blocked requests each pin an OS thread (~1 MB stack). Tomcat `server.tomcat.threads.max` (default **200**) caps concurrent blocking requests |
+| **JDK 21+ LTS, Boot 3.2+** | **Virtual threads** (Project Loom) | Blocking I/O no longer thread-bound — hundreds of thousands of in-flight requests; ceiling moves to heap + DB/connection pool |
+| **JDK 25 LTS** | Loom refinements | Same model as 21; fewer pinning cases (e.g. `synchronized`) |
+
+Enable virtual threads (Boot 3.2+ on JDK 21+):
+
+```properties
+spring.threads.virtual.enabled=true
+```
+
+Capacity math on platform threads:
+
+```text
+max concurrent blocking requests  ≈  server.tomcat.threads.max   (default 200)
+extra requests  ->  wait in accept queue  ->  latency + timeouts
+```
+
+**Watch out:** virtual threads make **blocking** cheap, but they don't remove **downstream** limits. If your DB pool is 20 connections, 50 000 virtual threads still queue on those 20. Size [connection pools](../repositories/i-overview.md) and pair with [Resilience](../resilience/i-overview.md) bulkheads. Pre-21, don't `join()` huge fan-outs on the request thread — you exhaust the Tomcat pool.
+
 ## Notes
 
 | Topic | Practice |
