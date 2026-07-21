@@ -7,6 +7,8 @@ order: 1
 Observability — overview
 **Observability** answers *why* a request failed or was slow — not just *that* it failed. The three pillars are **logs** (discrete events), **metrics** (aggregated counters/histograms), and **traces** (request-scoped spans). Tie them together with a **request ID** and optional **trace ID** so you can jump from a spike in latency to the exact log lines.
 
+For reusable logging infrastructure—request context, access middleware, operation wrappers, structured fields, and redaction—use the dedicated [Logging templates](../logging/i-overview.md).
+
 ## Mental model
 
 ```mermaid
@@ -55,7 +57,7 @@ Start with **RED on HTTP routes** — it maps directly to client experience.
 
 | Topic | Practice |
 |-------|----------|
-| **Structured logs** | Same field names across services (`requestId`, `status`, `durationMs`) |
+| **Structured logs** | Same fields across services; see [programmatic Logging](../logging/i-overview.md) |
 | **Don't log secrets** | Strip auth headers, tokens, PII before emit |
 | **Metrics cardinality** | Label by route template (`/api/items/{id}`), not raw IDs |
 | **Trace sampling** | 100% in dev; head-sample in prod (e.g. 1–10%) to control cost |
@@ -63,4 +65,4 @@ Start with **RED on HTTP routes** — it maps directly to client experience.
 
 ## Next
 
-Pick your stack — start with [Java — Spring](ii-java-spring.md) or [Python — FastAPI](iii-python-fastapi.md).
+[Programmatic Logging](../logging/i-overview.md), or start with [Java — Spring](ii-java-spring.md) / [Python — FastAPI](iii-python-fastapi.md).

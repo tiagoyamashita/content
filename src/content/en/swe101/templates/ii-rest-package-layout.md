@@ -48,6 +48,8 @@ flowchart TB
 | Perf | [Caching](caching/i-overview.md) | ETag, Cache-Control, app cache |
 | Consistency | [Transactions](transactions/i-overview.md) | ACID at service boundary |
 | Safe writes | [Idempotency](idempotency/i-overview.md) | Replay-safe POST |
+| Parallelism | [Concurrency](concurrency/i-overview.md) | Threads vs event loops, bounded fan-out |
+| Diagnostics | [Logging](logging/i-overview.md) | Programmatic context, access logs, operation wrappers |
 
 ## Suggested package folders
 
