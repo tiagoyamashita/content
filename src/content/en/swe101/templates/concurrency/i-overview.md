@@ -55,6 +55,34 @@ flowchart TB
 4. **Make shared state safe.** Prefer immutable data; otherwise use the stack's concurrency primitives (locks, atomics, channels).
 5. **Push consistency to the DB.** For concurrent writes, rely on [Transactions](../transactions/i-overview.md) and row locks — not in-memory guards.
 
+## Capacity model per stack
+
+"How many concurrent requests can one instance hold?" has a different answer — and a different **bottleneck** — per stack.
+
+| Stack | Concurrency unit | Rough cost each | Usual capacity ceiling |
+|-------|------------------|-----------------|------------------------|
+| **Spring MVC (platform threads)** | OS thread | ~1 MB stack + scheduler | Thread pool size (Tomcat default **200**) → memory-bound in the low thousands |
+| **Spring MVC (virtual threads)** | Virtual thread | ~hundreds of bytes | Downstream/DB pool + heap → hundreds of thousands |
+| **Spring WebFlux** | Reactor subscription | Tiny (few loop threads) | CPU + downstream limits, not thread count |
+| **FastAPI / asyncio** | Coroutine on 1 loop | Tiny | 1 CPU core per process → scale with workers |
+| **Express / Node** | Callback on 1 loop | Tiny | 1 CPU core per process → scale with cluster/instances |
+| **Go net/http** | Goroutine | ~2–8 KB stack | Memory + FDs + downstream → hundreds of thousands |
+
+**Key point:** event-loop runtimes (asyncio, Node) use **one CPU core per process**, so horizontal capacity = **processes × loop concurrency**. Thread/goroutine runtimes (Spring, Go) can use many cores in one process but hit **pool, memory, or file-descriptor** ceilings.
+
+## Capacity changes by language / runtime version
+
+The concurrency ceiling has shifted a lot recently — always state the **minimum version** your capacity assumptions need.
+
+| Runtime | Version that changes capacity | What changed |
+|---------|-------------------------------|--------------|
+| **Java** | **21 LTS** (Spring Boot **3.2+**) | Virtual threads GA — blocking I/O stops being thread-bound; `spring.threads.virtual.enabled=true` |
+| **Python** | **3.12** / **3.13** | 3.12 sub-interpreters (PEP 684); 3.13 experimental **free-threaded** (no-GIL) build — until then threads don't add CPU parallelism |
+| **Node** | **12+** / **18+** | `worker_threads` stable (12); global `fetch` + `AbortSignal.timeout` (18) for bounded outbound work |
+| **Go** | **1.22** / **1.25** | 1.22 fixed loop-variable capture (safer goroutines in loops); 1.25 makes `GOMAXPROCS` **container-CPU-aware** |
+
+Each stack page has a **Capacity by version** section with the concrete knobs and the math.
+
 ## Parallel outbound calls (common need)
 
 Fetching several upstreams for one response? Do it **in parallel with a bounded limit and a timeout** — see each stack page. This is where concurrency and [Resilience](../resilience/i-overview.md) meet.

@@ -115,6 +115,42 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
+## Capacity by version
+
+Goroutines are cheap (~2–8 KB), so one Go instance can hold **hundreds of thousands** of concurrent requests — the ceiling is memory, file descriptors, and downstream limits, not the goroutine count. Two Go versions materially affect capacity and correctness.
+
+| Go version | Change | Why it matters for capacity/safety |
+|------------|--------|------------------------------------|
+| **≤ 1.21** | Loop var captured by reference; `GOMAXPROCS = NumCPU` (host) | Needed `i, id := i, id` before spawning goroutines in a loop; in containers `GOMAXPROCS` saw **host** cores, not the CPU limit |
+| **1.22+** | Per-iteration loop variables | The `i, id := i, id` capture line is no longer required (harmless to keep) |
+| **1.25+** | **Container-aware `GOMAXPROCS`** | Runtime honors the cgroup CPU quota — the scheduler and parallel work match your actual limit |
+
+Set parallelism explicitly when not on 1.25+ in a container:
+
+```go
+import (
+	"runtime"
+
+	"go.uber.org/automaxprocs/maxprocs" // pre-1.25: align GOMAXPROCS to cgroup quota
+)
+
+func init() {
+	_, _ = maxprocs.Set()          // or: runtime.GOMAXPROCS(cpuQuotaFromEnv())
+	_ = runtime.GOMAXPROCS(0)      // 0 = read current value
+}
+```
+
+Capacity intuition:
+
+```text
+concurrent requests  ≈  limited by  memory (goroutine stacks + buffers)
+                                     open file descriptors (ulimit -n)
+                                     downstream pool sizes
+GOMAXPROCS           =  how many goroutines run in parallel (≈ CPU cores / quota)
+```
+
+**Watch out:** on Go ≤1.21 in Kubernetes, a 500m CPU limit still saw all host cores via `GOMAXPROCS`, causing throttling and latency spikes — pin it with `automaxprocs` or upgrade to 1.25+. Cheap goroutines are not free: always **bound** fan-out (semaphore/worker pool, shown above) and raise `ulimit -n` for high-FD workloads.
+
 ## Notes
 
 | Topic | Practice |
