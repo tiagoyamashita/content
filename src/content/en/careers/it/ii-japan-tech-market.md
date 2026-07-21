@@ -7,7 +7,7 @@ order: 2
 Japan tech market
 Where you work in Japan often matters more than the exact title. This note sketches **employer types**, **language**, and **hiring** signals — not legal advice for visas or contracts.
 
-Parent: [Careers overview](i-overview.md). Pay: [Compensation](iii-compensation.md).
+Parent: [IT careers overview](i-overview.md). Pay: [Compensation](iii-compensation.md).
 
 ## 1. Employer types (the big lever)
 

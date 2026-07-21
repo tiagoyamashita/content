@@ -50,10 +50,10 @@ flowchart LR
 
 | Priority | Track |
 |----------|-------|
-| 1 | [JavaScript / React](../../swe101/languages&frameworks/javascript/i-overview.md) |
-| 2 | [CSS](../../swe101/languages&frameworks/css/i-overview.md) |
-| 3 | [CDN](../../swe101/cdn/i-overview.md) |
-| 4 | [CS101](../../cs101/i-overview.md) basics + Git |
+| 1 | [JavaScript / React](../../../swe101/languages&frameworks/javascript/i-overview.md) |
+| 2 | [CSS](../../../swe101/languages&frameworks/css/i-overview.md) |
+| 3 | [CDN](../../../swe101/cdn/i-overview.md) |
+| 4 | [CS101](../../../cs101/i-overview.md) basics + Git |
 
 Build: a polished JP/EN bilingual UI with auth against a public API.
 

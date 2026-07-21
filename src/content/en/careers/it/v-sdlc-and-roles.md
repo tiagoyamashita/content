@@ -7,7 +7,7 @@ order: 5
 SDLC & roles
 Where each career path sits in the **software development life cycle (SDLC)**, and which **skills** matter in each phase. Modern product teams use a **loop** (not a one-way waterfall), but the same role names still cluster around certain stages.
 
-Parent: [Careers overview](i-overview.md) · Role detail: [Paths](paths/i-overview.md).
+Parent: [IT careers overview](i-overview.md) · Role detail: [Paths](paths/i-overview.md).
 
 ## 1. SDLC as a loop
 

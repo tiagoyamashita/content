@@ -5,48 +5,43 @@ group: "Careers"
 order: 1
 ---
 Careers — overview
-Career notes for **tech roles in Japan**: what each path actually does, how to **study** for it (using this repo), and **compensation** ranges. Aimed at people building skills in CS/SWE/AI who want a realistic Japan-oriented map — not immigration or tax advice.
+Career notes with a **Japan-oriented** lens: what a role actually does, how people **get in and progress**, language and visa realities, and rough **compensation** bands. Not immigration, legal, or tax advice — always verify with current employers and recruiters.
 
-Figures are **illustrative bands** (mostly Tokyo, foreigner-friendly employers). Always verify with current offers, [TokyoDev](https://www.tokyodev.com/), Levels.fyi, and recruiters. Employer type often moves pay more than title alone.
+This track is split into two branches so tech and non-tech paths stay easy to navigate.
 
-## Map of this track
+## Branches
 
-| Note | Focus |
-|------|--------|
-| [Japan tech market](ii-japan-tech-market.md) | Employer types, language, visas, culture signals |
-| [Compensation](iii-compensation.md) | How 年収 works; bands; negotiation basics |
-| [Study map](iv-study-map.md) | Which curriculum tracks feed which roles |
-| [SDLC & roles](v-sdlc-and-roles.md) | Life-cycle phases; where each role fits; skills by phase |
-| **[Paths](paths/i-overview.md)** | Support, QA, frontend, backend, PM, and more |
-
-## Role cheat sheet
-
-| Path | Day-to-day | Usually needs |
-|------|------------|---------------|
-| [Support engineer](paths/ii-support-engineer.md) | Tickets, repros, customer trust | Product knowledge, clear writing, some code |
-| [QA / test](paths/iii-qa.md) | Quality strategy, automation, risk | Test design, tooling, collaboration with eng |
-| [Frontend](paths/iv-frontend.md) | UI, UX engineering, web performance | JS/TS, React/etc., accessibility |
-| [Backend](paths/v-backend.md) | APIs, data, reliability | One server language, SQL, systems basics |
-| [Product manager](paths/vi-product-manager.md) | Roadmaps, discovery, trade-offs | Communication, metrics, technical literacy |
-| [SRE / platform](paths/vii-sre-platform.md) | Uptime, delivery, infra | Linux, cloud, CI/CD, observability |
+| Branch | For | Start |
+|--------|-----|-------|
+| **[IT careers](it/i-overview.md)** | Software, QA, SRE, product, and other tech roles | [IT careers overview](it/i-overview.md) |
+| **[Other careers](other/i-overview.md)** | Hospitality, healthcare, education, finance, and skilled trades | [Other careers overview](other/i-overview.md) |
 
 ```mermaid
-flowchart LR
-  Skills[Skills from CS101 / SWE101 / SRE101 / AI101]
-  Skills --> Support
-  Skills --> QA
-  Skills --> FE[Frontend]
-  Skills --> BE[Backend]
-  Skills --> PM[Product]
-  Skills --> SRE[SRE / platform]
+flowchart TD
+  Careers[Careers] --> IT[IT careers]
+  Careers --> Other[Other careers]
+  IT --> Roles1[Support · QA · Frontend · Backend · PM · SRE]
+  Other --> Roles2[Hospitality · Healthcare · Education · Finance · Trades]
 ```
 
-## Suggested reading order
+## How the notes are organized
 
-```text
-Overview → Japan tech market → Compensation → Study map → SDLC & roles → pick a Paths note
-```
+Each branch has an overview plus role or field notes. Most notes follow the same shape:
+
+- **Day-to-day** — what the work involves.
+- **Skills that matter** — core vs stretch.
+- **Japan notes** — language, employer type, visa, and market signals.
+- **Compensation** — illustrative bands; verify against live offers.
+- **How to get in / progress** — entry routes and next moves.
+
+## Which branch?
+
+| You are… | Go to |
+|----------|-------|
+| Building software, data, or infrastructure skills | [IT careers](it/i-overview.md) |
+| Exploring service, care, teaching, business, or trade work | [Other careers](other/i-overview.md) |
+| Unsure and comparing options | Skim both overviews, then pick a role note |
 
 ## Next
 
-[Japan tech market](ii-japan-tech-market.md).
+Pick a branch: [IT careers](it/i-overview.md) or [Other careers](other/i-overview.md).

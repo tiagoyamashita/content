@@ -50,10 +50,10 @@ flowchart LR
 
 | Priority | Track |
 |----------|-------|
-| 1 | [SWE101](../../swe101/i-overview.md) — APIs, Git basics |
-| 2 | [CS101 networking](../../cs101/networking/i-tcp-udp-and-transport-basics.md) — HTTP/TLS intuition |
-| 3 | [AI Applied](../../ai101/ai-engineering/i-overview.md) — search docs / draft replies carefully |
-| 4 | [Languages](../../languages/i-overview.md) if targeting JP customers |
+| 1 | [SWE101](../../../swe101/i-overview.md) — APIs, Git basics |
+| 2 | [CS101 networking](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) — HTTP/TLS intuition |
+| 3 | [AI Applied](../../../ai101/ai-engineering/i-overview.md) — search docs / draft replies carefully |
+| 4 | [Languages](../../../languages/i-overview.md) if targeting JP customers |
 
 Build: a personal **runbook** for a product you use (repro steps, common errors, escalation template).
 

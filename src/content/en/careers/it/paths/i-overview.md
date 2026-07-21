@@ -7,7 +7,7 @@ order: 1
 Career paths — overview
 Role-by-role notes for Japan-oriented tech careers: day-to-day work, skills, study links into this repo, and compensation pointers.
 
-Parent track: [Careers](../i-overview.md) · [Compensation](../iii-compensation.md) · [Study map](../iv-study-map.md) · [SDLC & roles](../v-sdlc-and-roles.md).
+Parent track: [IT careers](../i-overview.md) · [Compensation](../iii-compensation.md) · [Study map](../iv-study-map.md) · [SDLC & roles](../v-sdlc-and-roles.md).
 
 ## Map
 

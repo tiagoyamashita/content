@@ -52,10 +52,10 @@ flowchart TB
 
 | Priority | Track |
 |----------|-------|
-| 1 | [SRE101](../../sre101/i-overview.md) — full track |
-| 2 | [SWE101](../../swe101/i-overview.md) — enough to partner with backend |
-| 3 | [CS101 networking](../../cs101/networking/i-tcp-udp-and-transport-basics.md) |
-| 4 | [Cybersecurity](../../cybersecurity/i-overview.md) basics |
+| 1 | [SRE101](../../../sre101/i-overview.md) — full track |
+| 2 | [SWE101](../../../swe101/i-overview.md) — enough to partner with backend |
+| 3 | [CS101 networking](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) |
+| 4 | [Cybersecurity](../../../cybersecurity/i-overview.md) basics |
 
 Build: Terraform + CI deploying a service with metrics and an alert.
 
@@ -73,4 +73,4 @@ Often at or above backend mid bands: roughly **¥8–14M** mid; senior higher, e
 
 ## Track complete
 
-Return to [Paths overview](i-overview.md) or [Careers overview](../i-overview.md).
+Return to [Paths overview](i-overview.md) or [IT careers overview](../i-overview.md).
