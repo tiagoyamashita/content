@@ -48,7 +48,7 @@ Toggle with the editor icon or command palette: **Toggle Live Preview / Source m
 | **This curriculum repo** (Cursor Notes) | Markdown + relative path | `See [Docker in CI](../../sre101/cicd/tools-and-platforms/v-docker-in-ci.md).` |
 | **Same Obsidian submenu** | Filename only | `[Install & vault setup](ii-install-and-vault-setup.md)` |
 
-In **this repository**, cross-links use the target note’s **`subtitle`** as link text — see [Topics and folders](../../getting-started/guide-topics-and-folders.md). Do not use bare backtick paths; use markdown links.
+In **this repository**, cross-links use the target note’s **`subtitle`** as link text. Do not use bare backtick paths; use markdown links.
 
 ## 3. Wikilinks and embeds
 
