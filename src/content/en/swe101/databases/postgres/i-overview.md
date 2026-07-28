@@ -33,13 +33,13 @@ For the general database landscape (NoSQL, CAP, polyglot persistence), see [Data
 
 ## Architecture (mental model)
 
-```text
-Application  →  connection pool  →  Postgres server
-                                      │
-                    ┌─────────────────┼─────────────────┐
-                    ▼                 ▼                 ▼
-              shared_buffers      WAL (durability)   background workers
-              (cache pages)       (crash recovery)  (vacuum, checkpointer)
+```mermaid
+flowchart LR
+  App[Application] --> Pool[connection pool]
+  Pool --> PG[Postgres server]
+  PG --> SB[shared_buffers]
+  PG --> WAL[WAL]
+  PG --> VW[background workers]
 ```
 
 | Component | Role |

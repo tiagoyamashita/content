@@ -9,13 +9,17 @@ API gateway — how gateways work
 
 ## 1. Request flow
 
-```text
-1. Client TLS handshake with gateway (api.example.com)
-2. Gateway matches route (path, method, host)
-3. Plugins/policies run (auth, rate limit, WAF)
-4. Gateway forwards to upstream (HTTP/gRPC/Lambda)
-5. Upstream responds
-6. Gateway may transform response → client
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant G as Gateway
+  participant U as Upstream
+  C->>G: TLS handshake + request
+  G->>G: match route
+  G->>G: auth, rate limit, WAF
+  G->>U: forward
+  U-->>G: response
+  G-->>C: response
 ```
 
 | Step | Failure mode |
@@ -50,9 +54,10 @@ ALB spreads load; gateway adds **API product** features.
 
 ## 4. With CDN in front
 
-```text
-GET /assets/app.js     → CDN → S3 (gateway not involved)
-POST /api/v1/orders    → CDN bypass → Gateway → orders-service
+```mermaid
+flowchart LR
+  A[GET /assets/app.js] --> CDN --> S3
+  B[POST /api/v1/orders] --> CDN2[CDN bypass] --> GW[Gateway] --> OS[orders-service]
 ```
 
 CDN may share hostname — **path-based behaviors** send API traffic to gateway origin. Details: [CDN & API gateway together](../cdn/viii-cdn-and-api-gateway-together.md).

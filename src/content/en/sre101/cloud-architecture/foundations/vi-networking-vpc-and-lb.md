@@ -33,12 +33,13 @@ VPC CIDR: 10.0.0.0/16
 | **Typical resources** | ALB, bastion (if used) | App servers, databases |
 | **Inbound from web** | Through LB in public tier | LB forwards to private targets |
 
-```text
-Internet ──▶ IGW ──▶ ALB (public subnet)
-                         │
-                         └──▶ EC2 targets (private subnet)
-
-Private EC2 outbound: private subnet ──▶ NAT GW (public subnet) ──▶ IGW
+```mermaid
+flowchart TB
+  internet[Internet] --> igw[IGW]
+  igw --> alb[ALB public subnet]
+  alb --> app[EC2 private subnet]
+  app --> nat[NAT GW]
+  nat --> igw
 ```
 
 **NAT Gateway** cost note: hourly + data processing — use **VPC endpoints** for S3/DynamoDB to avoid NAT for AWS API traffic.

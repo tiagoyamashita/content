@@ -39,11 +39,12 @@ Software is grouped by **who uses it**, **where it runs**, and **how it is sold*
 
 Many products combine types: a **mobile app** talks to a **backend API** backed by **Postgres**, with a **web admin** for operators.
 
-```text
-User-facing          →  Web / mobile / desktop  (React, Angular, Flutter, …)
-Business logic       →  Services (Spring Boot, FastAPI, Node, …)
-Data                 →  SQL, document, cache, queue
-Delivery             →  Git, CI/CD, containers, CDN
+```mermaid
+flowchart TB
+  UF[User-facing] --> UI[Web / mobile / desktop]
+  BL[Business logic] --> Svc[Services]
+  Data[Data] --> Stores[SQL / document / cache / queue]
+  Del[Delivery] --> Ship[Git / CI/CD / CDN]
 ```
 
 ## 2. Deployment & ownership models
@@ -70,10 +71,22 @@ A **lifecycle** is how work moves from idea → running software. Teams mix piec
 | **DevOps / CI/CD** | Build, test, deploy **automated** on every change | Any team shipping frequently | Upfront pipeline investment |
 | **Shape Up** | 6-week cycles, betting table, cool-down | Product companies (Basecamp-style) | Not sprint-based; fixed appetite |
 
-```text
-Waterfall:     Req ──► Design ──► Build ──► Test ──► Release
-Agile loop:    Plan → Build → Review → Deploy → repeat (weeks)
-DevOps loop:   Commit → CI test → staging → prod (hours/days)
+```mermaid
+flowchart LR
+  subgraph Waterfall
+    R[Req] --> D[Design] --> B[Build] --> T[Test] --> Rel[Release]
+  end
+```
+
+```mermaid
+flowchart LR
+  subgraph Agile
+    P[Plan] --> Bu[Build] --> Rev[Review] --> De[Deploy]
+    De --> P
+  end
+  subgraph DevOps
+    C[Commit] --> CI[CI test] --> St[staging] --> Pr[prod]
+  end
 ```
 
 ## 4. Environments across the lifecycle

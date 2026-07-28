@@ -23,10 +23,11 @@ A pipeline is a directed graph of stages → jobs → steps.
 
 Typical linear pipeline:
 
-```
-┌───────┐   ┌──────┐   ┌──────────┐   ┌────────┐
-│ build │ → │ test │ → │ security │ → │ deploy │
-└───────┘   └──────┘   └──────────┘   └────────┘
+```mermaid
+flowchart LR
+  build[build] --> test[test]
+  test --> security[security]
+  security --> deploy[deploy]
 ```
 
 

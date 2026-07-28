@@ -23,6 +23,14 @@ Day-to-day Git: configure once, then **add → commit → push**, branch for fea
 
 ## Minimum daily loop
 
+```mermaid
+flowchart LR
+  S[git status] --> A[git add]
+  A --> C[git commit]
+  C --> P[git pull --rebase]
+  P --> Pu[git push]
+```
+
 ```bash
 git status
 git add path/to/file

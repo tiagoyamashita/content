@@ -13,6 +13,25 @@ Run containers at scale with a declarative API you automate against.
 
 ## 2. Control plane vs workloads
 
+```mermaid
+flowchart TB
+  subgraph cp[Control plane]
+    api[kube-apiserver]
+    etcd[etcd]
+    sched[kube-scheduler]
+    cm[controller-manager]
+  end
+  subgraph nodes[Worker nodes]
+    kubelet[kubelet]
+    pods[Pods]
+  end
+  api --> sched
+  api --> cm
+  api --> etcd
+  kubelet --> pods
+  api --> kubelet
+```
+
 | Piece | Responsibility |
 |-------|----------------|
 | **kube-apiserver** | Validates REST requests; single coordination façade for the cluster. |

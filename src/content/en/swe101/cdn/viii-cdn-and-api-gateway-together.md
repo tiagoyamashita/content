@@ -11,20 +11,13 @@ For cloud-architecture framing (north-south vs mesh), see [API Gateway & service
 
 ## 1. Two layers, one client request
 
-```text
-Browser / mobile app
-        │
-        ▼
-   ┌─────────┐
-   │   CDN   │  Static: /assets/*, some GET /public/*
-   └────┬────┘
-        │ cache MISS or non-cacheable path
-        ▼
-   ┌─────────────┐
-   │ API Gateway │  /api/* — auth, rate limit, route
-   └──────┬──────┘
-          ▼
-   ALB / K8s Ingress / Lambda / microservices
+```mermaid
+flowchart TB
+  Client[Browser / mobile app]
+  Client --> CDN
+  CDN -->|static / cacheable GET| Assets[Cached assets]
+  CDN -->|miss or API path| GW[API Gateway]
+  GW --> Svc[ALB / K8s / Lambda / services]
 ```
 
 | Component | Primary job | Typical paths |
@@ -40,11 +33,13 @@ Gateway answers: “**Who** is this client, are they **allowed**, and **which se
 
 ### Web app + REST API (AWS-style)
 
-```text
-CloudFront (CDN)
-  ├── /assets/*     → S3 origin (long TTL)
-  ├── /index.html   → S3 (short TTL)
-  └── /api/*        → API Gateway → Lambda or ALB → services
+```mermaid
+flowchart TB
+  CF[CloudFront CDN]
+  CF -->|/assets/*| S3a[S3 long TTL]
+  CF -->|/index.html| S3b[S3 short TTL]
+  CF -->|/api/*| GW[API Gateway]
+  GW --> Svc[Lambda or ALB to services]
 ```
 
 One hostname (`app.example.com`) or split (`cdn.` vs `api.`).

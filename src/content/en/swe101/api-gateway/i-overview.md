@@ -33,8 +33,12 @@ For architecture patterns (north-south vs service mesh), see [API Gateway & serv
 | **Reverse proxy (NGINX)** | Often **is** the gateway, or sits behind it |
 | **WAF** | “Is this request malicious?” — often bundled with CDN/gateway |
 
-```text
-Client → CDN (optional) → API Gateway → Load balancer → Service pods
+```mermaid
+flowchart LR
+  Client --> CDN
+  CDN --> GW[API Gateway]
+  GW --> LB[Load balancer]
+  LB --> Pods[Service pods]
 ```
 
 ## What gateways typically do

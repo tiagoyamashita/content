@@ -14,12 +14,10 @@ Systems fail. **HA** minimizes downtime within a region; **DR** prepares for reg
 | **RTO** | Recovery **Time** Objective — max acceptable **downtime** | 4 hours |
 | **RPO** | Recovery **Point** Objective — max acceptable **data loss** (time window) | 15 minutes |
 
-```text
-Failure at T0 ───────────────────────────▶ Service restored
-              │◀──── RTO (downtime) ────▶│
-
-Last good backup ──▶ Failure
-              │◀──── RPO (data lost) ───▶│
+```mermaid
+flowchart LR
+  backup[Last good backup] -->|RPO data loss window| failure[Failure at T0]
+  failure -->|RTO downtime| restored[Service restored]
 ```
 
 Lower RTO/RPO → higher cost and complexity.

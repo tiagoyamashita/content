@@ -15,9 +15,10 @@ Ask first:
 2. What must update **atomically**?
 3. How big can nested arrays grow?
 
-```text
-Read path drives layout  →  embed what you fetch together
-Write path drives splits →  reference what changes independently
+```mermaid
+flowchart LR
+  Read[Read path] --> Embed[embed what you fetch together]
+  Write[Write path] --> Ref[reference what changes independently]
 ```
 
 ## 2. Embedding vs referencing

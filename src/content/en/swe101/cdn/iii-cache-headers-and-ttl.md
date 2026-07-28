@@ -41,11 +41,12 @@ ETag: "config-v7"
 
 When TTL expires, edge may **revalidate** without full download:
 
-```http
-GET /v1/public/config HTTP/1.1
-If-None-Match: "config-v7"
-
-HTTP/1.1 304 Not Modified
+```mermaid
+sequenceDiagram
+  participant E as CDN edge
+  participant O as Origin
+  E->>O: GET + If-None-Match
+  O-->>E: 304 Not Modified
 ```
 
 **304** saves bandwidth; origin still gets a request — tune TTL to balance freshness vs origin load.

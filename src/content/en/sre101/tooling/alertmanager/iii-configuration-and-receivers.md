@@ -11,6 +11,13 @@ SRE tooling — Alertmanager: Configuration & receivers
 
 One file defines **routes**, **receivers**, and optional **`inhibit_rules`**. Prometheus sends alerts with **labels** and **annotations**—routes use **`matchers`** (or legacy **`match:`**) on those labels.
 
+```mermaid
+flowchart TB
+  route[route tree] --> critical[critical to pager]
+  route --> warning[warning to slack]
+  route --> default[default receiver]
+```
+
 ## 2. Minimal skeleton
 
 ```yaml

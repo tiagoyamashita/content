@@ -17,6 +17,16 @@ Message queues and async flows
 | Debugging | Single trace | Need correlation ids across hops |
 | Consistency | Immediate read-your-writes | Eventual; design for delay |
 
+```mermaid
+flowchart LR
+  subgraph Sync
+    API1[API] -->|wait| W1[Worker]
+  end
+  subgraph Async
+    API2[API] --> Q[Queue] --> W2[Worker]
+  end
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 140" role="img" aria-label="Sync call vs async queue decoupling">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Sync vs async</text>
   <text x="12" y="38" fill="#a1a1aa" font-size="9">Sync: API ──wait──▶ Worker (both must scale together)</text>

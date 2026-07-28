@@ -16,10 +16,13 @@ Handle growth by **scaling** compute and **offloading** repeated reads. Cloud au
 | Cons | Hard ceiling, SPOF | App must be stateless or shared state |
 | Cloud example | `t3.micro` → `t3.xlarge` | ASG 2 → 20 EC2 instances |
 
-```text
-Vertical:  [====      ]  →  [============]
-Horizontal: [==] [==]     →  [==] [==] [==] [==] [==]
-            load balancer distributes requests
+```mermaid
+flowchart LR
+  lb[Load balancer] --> i1[Instance]
+  lb --> i2[Instance]
+  lb --> i3[Instance]
+  lb --> i4[Instance]
+  lb --> i5[Instance]
 ```
 
 ## 2. Stateless services
@@ -65,6 +68,13 @@ ScaleInCooldown: 300
 | **Health checks** | LB deregisters unhealthy instances before scale-in |
 
 ## 4. Caching layers
+
+```mermaid
+flowchart LR
+  cdn[CDN edge] --> redis[Redis]
+  redis --> replica[Read replica]
+  replica --> db[Primary DB]
+```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" role="img" aria-label="Cache tiers CDN Redis read replica">
   <rect x="12" y="36" width="72" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>

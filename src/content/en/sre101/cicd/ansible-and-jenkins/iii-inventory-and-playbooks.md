@@ -7,6 +7,13 @@ order: 3
 Inventory & playbooks
 **Inventory** defines **which hosts** Ansible manages. **Playbooks** define **what** to configure on them.
 
+```mermaid
+flowchart LR
+  inv[Inventory groups] --> pb[Playbook]
+  pb --> web[webservers]
+  pb --> db[dbservers]
+```
+
 ## 1. Static inventory (INI)
 
 ```ini

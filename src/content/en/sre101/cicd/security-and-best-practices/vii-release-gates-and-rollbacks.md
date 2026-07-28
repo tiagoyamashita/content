@@ -57,6 +57,13 @@ CI built and scanned that exact image in an earlier stage [Docker in CI](../tool
 
 ## 4. Progressive delivery
 
+```mermaid
+flowchart LR
+  rolling[Rolling] --> undo[rollout undo]
+  blue[Blue/green] --> switch[Switch traffic back]
+  canary[Canary 5 to 100%] --> route[Route to old version]
+```
+
 | Strategy | Behavior | Rollback |
 |----------|----------|----------|
 | **Rolling** | Replace pods in batches | `kubectl rollout undo` |

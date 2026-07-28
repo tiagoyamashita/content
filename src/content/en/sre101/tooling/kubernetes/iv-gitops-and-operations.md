@@ -9,6 +9,13 @@ Day-two habits: safe rollouts, drills, and pipelines that treat manifests like p
 
 ## 1. GitOps mindset
 
+```mermaid
+flowchart LR
+  git[Git manifests] --> ci[CI validate]
+  ci --> reconcile[Flux / Argo CD]
+  reconcile --> cluster[Kubernetes cluster]
+```
+
 - Manifests live in Git (**Flux**, **Argo CD**, **Terraform Kubernetes provider**, etc.)—peer review + CI validation precedes cluster reconcile.
 - Avoid silent **`kubectl apply`** hotfixes without backporting YAML—drift becomes undebuggable during incidents.
 

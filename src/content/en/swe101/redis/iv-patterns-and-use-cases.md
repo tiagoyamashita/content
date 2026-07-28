@@ -9,15 +9,15 @@ Production Redis usage centers on a few **repeatable patterns**. Each assumes a 
 
 ## 1. Cache-aside
 
-```text
-READ:
-  1. GET cache:key
-  2. hit  → return
-  3. miss → load from DB → SET cache:key EX ttl → return
-
-WRITE:
-  1. UPDATE database
-  2. DEL cache:key   (or SET new value)
+```mermaid
+flowchart TB
+  R[READ] --> G[GET cache:key]
+  G -->|hit| Ret[return]
+  G -->|miss| DB[load from DB]
+  DB --> Set[SET cache:key EX ttl]
+  Set --> Ret
+  W[WRITE] --> Upd[UPDATE database]
+  Upd --> Del[DEL cache:key]
 ```
 
 ```text

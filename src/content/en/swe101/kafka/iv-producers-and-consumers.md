@@ -11,22 +11,19 @@ Previous: [Core concepts](iii-core-concepts-and-architecture.md). Diagram refere
 
 ## 1. End-to-end: HTTP → Kafka → handler
 
-```plantuml
-@startuml
-title Order API publishes domain event
-actor Client
-participant "Order API" as API
-database Postgres as DB
-queue "order-events" as K
-participant "Payment consumer" as PAY
-
-Client -> API: POST /orders
-API -> DB: BEGIN; INSERT order; COMMIT
-API -> K: produce OrderPlaced (key=orderId)
-API --> Client: 201 Created
-K -> PAY: poll batch
-PAY -> PAY: charge / reserve inventory
-@enduml
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant API as Order API
+  participant DB as Postgres
+  participant K as order-events
+  participant PAY as Payment consumer
+  C->>API: POST /orders
+  API->>DB: INSERT order commit
+  API->>K: produce OrderPlaced
+  API-->>C: 201 Created
+  K->>PAY: poll batch
+  PAY->>PAY: charge / reserve
 ```
 
 **Important:** commit the database **before** or **in the same outbox transaction** as the event — never announce success to Kafka if the order row failed (see [Transactional outbox](vi-patterns-and-integration.md)).

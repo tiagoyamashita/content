@@ -11,22 +11,15 @@ Previous: [Producers & consumers](iv-producers-and-consumers.md).
 
 ## 1. One group, many consumers
 
-```plantuml
-@startuml
-!theme plain
-queue "order-events" as T {
-  card "P0" as p0
-  card "P1" as p1
-  card "P2" as p2
-}
-
-participant "Consumer A\n(group: payments)" as CA
-participant "Consumer B\n(group: payments)" as CB
-
-p0 --> CA
-p1 --> CB
-p2 --> CA
-@enduml
+```mermaid
+flowchart TB
+  T[order-events]
+  T --> P0[P0]
+  T --> P1[P1]
+  T --> P2[P2]
+  P0 --> CA[Consumer A payments]
+  P1 --> CB[Consumer B payments]
+  P2 --> CA
 ```
 
 Topic **`order-events`** has 3 partitions; group **`payments`** has 2 consumer instances — one consumer may handle 2 partitions, the other 1. Add a **third** consumer → ideally one partition each.
@@ -39,17 +32,12 @@ Topic **`order-events`** has 3 partitions; group **`payments`** has 2 consumer i
 
 ## 2. Fan-out to multiple services
 
-```plantuml
-@startuml
-queue "order-events" as T
-participant "payments\n(group: payments)" as PAY
-participant "email\n(group: notifications)" as EMAIL
-participant "search\n(group: search-index)" as IDX
-
-T -> PAY: all partitions (own offsets)
-T -> EMAIL: all partitions (own offsets)
-T -> IDX: all partitions (own offsets)
-@enduml
+```mermaid
+flowchart TB
+  T[order-events]
+  T --> PAY[payments group]
+  T --> EMAIL[notifications group]
+  T --> IDX[search-index group]
 ```
 
 Each service maintains **its own offset** per partition — slow email does not block payments.

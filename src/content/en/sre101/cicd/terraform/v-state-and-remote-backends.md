@@ -87,11 +87,16 @@ Create backend resources once (bootstrap stack or separate admin process), then 
 
 ## 5. State locking
 
-```text
-Engineer A: terraform apply  → acquires lock
-Engineer B: terraform apply  → Error: lock already held
-Engineer A: apply completes  → releases lock
-Engineer B: retry            → succeeds
+```mermaid
+sequenceDiagram
+  participant A as Engineer A
+  participant Lock as DynamoDB lock
+  participant B as Engineer B
+
+  A->>Lock: apply acquires lock
+  B->>Lock: apply blocked
+  A->>Lock: apply completes releases lock
+  B->>Lock: retry succeeds
 ```
 
 Without locking, two applies can interleave API calls and leave infra inconsistent.

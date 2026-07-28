@@ -22,6 +22,14 @@ Patterns & design — overview
 
 ## Architecture layers (mental model)
 
+```mermaid
+flowchart LR
+  client[Client] --> gw[CDN / GW]
+  gw --> services[Services]
+  services --> cache[Cache]
+  cache --> data[Data]
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="Cloud architecture layers client gateway services data">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Request path — patterns apply at each hop</text>
   <rect x="12" y="40" width="56" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>

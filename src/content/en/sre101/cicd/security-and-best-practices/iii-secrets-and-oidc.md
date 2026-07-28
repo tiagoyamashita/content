@@ -47,6 +47,18 @@ Malicious PRs can exfiltrate secrets if workflows run with elevated access. Use 
 
 ## 3. OIDC — why it beats static keys
 
+```mermaid
+sequenceDiagram
+  participant CI as CI pipeline
+  participant IdP as OIDC provider
+  participant Cloud as Cloud IAM
+
+  CI->>IdP: request identity token
+  IdP->>CI: short-lived JWT
+  CI->>Cloud: AssumeRoleWithWebIdentity
+  Cloud->>CI: temp credentials
+```
+
 | Static AWS key | OIDC |
 |----------------|------|
 | Lives months/years | Minutes TTL |

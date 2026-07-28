@@ -46,11 +46,15 @@ Assumes you can write an app; this track is about **delivery and operations**.
 
 ## Suggested order
 
-```text
-CI/CD fundamentals → Tools & platforms
-  → Cloud foundations → Patterns & design
-  → Prometheus / Grafana (observe what you ship)
-  → Kubernetes when you run containers at scale
+```mermaid
+flowchart TB
+  Overview[Overview]
+  Overview --> CICD[CI/CD fundamentals]
+  CICD --> Tools[Tools and platforms]
+  Tools --> Cloud[Cloud foundations]
+  Cloud --> Patterns[Patterns and design]
+  Patterns --> Observe[Prometheus / Grafana]
+  Observe --> K8s[Kubernetes at scale]
 ```
 
 ## How this relates to other tracks

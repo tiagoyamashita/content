@@ -20,6 +20,13 @@ What Grafana is for in an observability stack.
 
 ## 3. Typical stack
 
+```mermaid
+flowchart LR
+  prom[Prometheus metrics] --> grafana[Grafana]
+  loki[Loki logs] --> grafana
+  tempo[Tempo traces] --> grafana
+```
+
 **Prometheus** → metrics; **Loki** → logs; **Tempo** (or Jaeger) → traces—**Grafana** is usually where engineers pivot during incidents.
 
 Continue with **Installation** and **Tips and tricks** in this folder.

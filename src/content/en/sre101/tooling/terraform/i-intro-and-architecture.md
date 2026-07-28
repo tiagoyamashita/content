@@ -13,6 +13,14 @@ Describe infrastructure declaratively; Terraform computes dependency graphs and 
 
 ## 2. How a run works (mental model)
 
+```mermaid
+flowchart LR
+  parse[Parse .tf] --> refresh[Refresh state]
+  refresh --> diff[Diff desired vs actual]
+  diff --> apply[Apply via providers]
+  apply --> state[Update state]
+```
+
 1. Parse `.tf` → build DAG of resources + data sources.
 2. Refresh **state** / provider reads unless constrained (**`-refresh=false`**).
 3. Diff desired vs actual → execution plan.

@@ -34,6 +34,14 @@ How Prometheus fits into observability and how its pieces connect.
 
 ## 5. Pairing in the stack
 
+```mermaid
+flowchart LR
+  targets[Scrape targets] --> prom[Prometheus TSDB]
+  prom --> grafana[Grafana dashboards]
+  prom --> am[Alertmanager]
+  am --> notify[Slack / PagerDuty]
+```
+
 - **Grafana** queries Prometheus with PromQL for dashboards.
 - **Alertmanager** receives alerts from Prometheus and handles routing, silences, Slack/PagerDuty, etc.
 

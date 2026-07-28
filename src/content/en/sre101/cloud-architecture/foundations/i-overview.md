@@ -23,6 +23,13 @@ Before patterns and scale, understand **what cloud providers offer**: service mo
 
 ## Cloud stack at a glance
 
+```mermaid
+flowchart LR
+  compute[Compute] --> storage[Storage]
+  storage --> network[Network]
+  network --> security[Security]
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Cloud foundation layers compute storage network">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Build blocks every architecture uses</text>
   <rect x="12" y="40" width="80" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>

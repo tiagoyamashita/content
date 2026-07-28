@@ -25,4 +25,11 @@ Log aggregation tuned for labels, not full-text indexing of everything.
 
 ## 4. Pairing
 
+```mermaid
+flowchart LR
+  agent[Promtail / Fluent Bit] --> loki[Loki]
+  loki --> grafana[Grafana]
+  prom[Prometheus] --> grafana
+```
+
 Explore logs in **Grafana** alongside Prometheus graphs for the same service and time range.

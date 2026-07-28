@@ -22,6 +22,13 @@ Secure CI/CD protects **source**, **build**, **artifacts**, and **deploy targets
 
 ## Secure pipeline layers
 
+```mermaid
+flowchart LR
+  source[Source and deps] --> build[Build and scan]
+  build --> secrets[Secrets and IAM]
+  secrets --> gates[Deploy gates]
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="CI/CD security layers from source to deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Defense in depth across the pipeline</text>
   <rect x="12" y="36" width="88" height="28" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>

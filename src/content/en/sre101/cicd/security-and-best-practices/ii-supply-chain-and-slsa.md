@@ -28,6 +28,14 @@ Supply chain & SLSA
 
 Most teams target **L2** with signed provenance and pinned dependencies; **L3** for security-sensitive releases.
 
+```mermaid
+flowchart LR
+  deps[Pin deps] --> sbom[Generate SBOM]
+  sbom --> scan[Scan in CI]
+  scan --> sign[Sign artifacts]
+  sign --> verify[Verify at deploy]
+```
+
 ## 3. Pin actions and dependencies
 
 **Bad** — tag can move:

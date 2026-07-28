@@ -22,6 +22,13 @@ Terraform — overview
 
 ## Core workflow
 
+```mermaid
+flowchart LR
+  init[init] --> plan[plan]
+  plan --> apply[apply]
+  apply -.-> destroy[destroy]
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="Terraform init plan apply destroy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Plan before apply — always</text>
   <rect x="12" y="40" width="56" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>

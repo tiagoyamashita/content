@@ -7,6 +7,13 @@ order: 4
 SRE tooling — Prometheus: Scrape & discovery
 Configure **what** to scrape, **how often**, and **how labels map** into the TSDB.
 
+```mermaid
+flowchart LR
+  sd[Service discovery] --> relabel[Relabel configs]
+  relabel --> scrape[Scrape /metrics]
+  scrape --> tsdb[TSDB ingest]
+```
+
 ## 1. Static targets (non-Kubernetes)
 
 Minimal **`prometheus.yml`** fragment:

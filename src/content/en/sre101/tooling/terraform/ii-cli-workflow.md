@@ -9,12 +9,12 @@ Daily commands from **`init`** through **`apply`**, plus variables and refreshes
 
 ## 1. Standard lifecycle
 
-```text
-terraform init          # providers + backends + modules
-terraform validate      # config correctness (no API calls)
-terraform fmt -recursive
-terraform plan -out=plan.tfplan
-terraform apply plan.tfplan
+```mermaid
+flowchart LR
+  init[init] --> validate[validate]
+  validate --> fmt[fmt]
+  fmt --> plan[plan]
+  plan --> apply[apply]
 ```
 
 **`plan`** without **`apply`** is what gates merges—capture textual/HTML plans in CI artifacts.

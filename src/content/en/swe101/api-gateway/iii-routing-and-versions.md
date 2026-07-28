@@ -9,10 +9,11 @@ Route by **path**, **method**, **host**, and **headers** — map public URLs to 
 
 ## 1. Path-based routing
 
-```text
-GET  /api/v1/orders/*     → orders-service:8080
-GET  /api/v1/users/*      → users-service:8080
-POST /api/v1/webhooks/*   → webhook-handler
+```mermaid
+flowchart LR
+  O["GET /api/v1/orders/*"] --> OS[orders-service]
+  U["GET /api/v1/users/*"] --> US[users-service]
+  W["POST /api/v1/webhooks/*"] --> WH[webhook-handler]
 ```
 
 Kong-style conceptual config:
@@ -58,9 +59,10 @@ Same gateway cluster, different **route tables** per hostname.
 
 Send small % of traffic to new version:
 
-```text
-95% /api/v1/orders → orders-v1
- 5% /api/v1/orders → orders-v2-canary
+```mermaid
+flowchart LR
+  R["/api/v1/orders"] -->|95%| V1[orders-v1]
+  R -->|5%| V2[orders-v2-canary]
 ```
 
 Implemented via:
