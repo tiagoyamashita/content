@@ -16,6 +16,16 @@ Explore in **layers** by distance (in **unweighted** edges, hop count).
 - **Time O(n + m)** with adjacency lists.
 - **Uses:** shortest path in **unweighted** graphs, level order, connectivity.
 
+```mermaid
+flowchart LR
+  Start[Start] --> Q[Enqueue start]
+  Q --> Loop{Queue empty?}
+  Loop -->|No| Deq[Dequeue v]
+  Deq --> Neigh[Enqueue unseen neighbors]
+  Neigh --> Loop
+  Loop -->|Yes| Done[Visit order by layer]
+```
+
 ```java
 // Compile: javac --release 22 …
 import java.util.ArrayDeque;
@@ -51,6 +61,15 @@ Go **deep** before backtracking — **stack** or **recursion**.
 
 - **Time O(n + m)**.
 - **Uses:** cycle detection, topological sort, connected components, maze exploration.
+
+```mermaid
+flowchart TB
+  V[Visit v] --> Mark[Mark seen]
+  Mark --> Edge{Unseen neighbor w?}
+  Edge -->|Yes| Rec[DFS w]
+  Rec --> Edge
+  Edge -->|No| Back[Backtrack]
+```
 
 ```java
 // Compile: javac --release 22 …

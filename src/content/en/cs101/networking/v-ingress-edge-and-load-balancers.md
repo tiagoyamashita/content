@@ -40,8 +40,12 @@ Non-Kubernetes systems use the same idea under names like **reverse proxy**, **A
 
 Traffic path (typical):
 
-```text
-Internet → cloud LB (optional TLS) → Ingress controller → Service → Pod
+```mermaid
+flowchart TB
+  Net[Internet] --> LB[Cloud LB]
+  LB --> Ing[Ingress controller]
+  Ing --> Svc[Service]
+  Svc --> Pod[Pod]
 ```
 
 ## 3. TLS at the edge

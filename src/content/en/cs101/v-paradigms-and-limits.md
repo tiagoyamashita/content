@@ -32,6 +32,16 @@ Greedy, divide & conquer, DP, reductions, hardness, approximation.
 - DP when optimal answer depends on overlapping smaller structured instances.
 - Try: write recurrence first; if exponential naive tree → memoize.
 
+```mermaid
+flowchart TD
+  Start[Optimization problem] --> Local{Local choice always safe?}
+  Local -->|Yes prove it| Greedy[Greedy]
+  Local -->|No / unsure| Overlap{Overlapping subproblems?}
+  Overlap -->|Yes| DP[Dynamic programming]
+  Overlap -->|No| DnC[Divide and conquer]
+  DP --> Recur[Write recurrence then memoize or tabulate]
+```
+
 ## 5. Reductions
 - Reduce problem A to B: solving B lets you solve A with little overhead.
 - If A reduces to B and A is hard → B is at least as hard (complexity lower bounds).

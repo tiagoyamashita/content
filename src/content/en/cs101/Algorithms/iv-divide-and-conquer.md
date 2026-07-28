@@ -13,6 +13,16 @@ Divide & conquer
 3. **Conquer** — recurse on each part.
 4. **Combine** — merge partial answers in **O(n)** or similar.
 
+```mermaid
+flowchart TB
+  P[Problem size n] --> Base{Base case?}
+  Base -->|Yes| Sol[Solve directly]
+  Base -->|No| Div[Divide into parts]
+  Div --> Rec[Conquer recurse]
+  Rec --> Comb[Combine results]
+  Comb --> Out[Answer]
+```
+
 Examples: **merge sort**, **binary search**, **maximum subarray** (cross-midpoint case), **Karatsuba** multiplication (advanced).
 
 ## 2. Recurrence (sketch)

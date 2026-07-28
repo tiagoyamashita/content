@@ -53,24 +53,21 @@ Real systems often use **more than one** store (**polyglot persistence**): Postg
 
 ## 4. SQL vs NoSQL (decision sketch)
 
-```text
-Need ad-hoc JOINs across many entities + ACID transactions?
-  → Relational (SQL)
-
-Need sub-millisecond key lookup, no joins?
-  → Key-value
-
-Schema varies per record, nested JSON, rapid product iteration?
-  → Document
-
-Billions of writes, partition by key, tunable consistency?
-  → Wide-column
-
-Queries are “friends of friends”, shortest path, pattern match on edges?
-  → Graph
-
-Queries are “avg CPU last hour by host”, append-only metrics?
-  → Time-series
+```mermaid
+flowchart TD
+  Need[What do you need?] --> Joins{Ad-hoc JOINs + ACID?}
+  Joins -->|Yes| SQL[Relational SQL]
+  Joins -->|No| Key{Sub-ms key lookup?}
+  Key -->|Yes| KV[Key-value]
+  Key -->|No| Nested{Flexible nested JSON?}
+  Nested -->|Yes| Doc[Document]
+  Nested -->|No| Scale{Huge partitioned writes?}
+  Scale -->|Yes| WC[Wide-column]
+  Scale -->|No| Rel{Friends-of-friends / paths?}
+  Rel -->|Yes| Graph[Graph]
+  Rel -->|No| TS{Append-only metrics over time?}
+  TS -->|Yes| Time[Time-series]
+  TS -->|No| SQL
 ```
 
 **NoSQL** is not “no SQL ever” — it means **not only relational tables**. Many teams run **PostgreSQL** plus **Redis** plus one specialized store.
@@ -86,6 +83,13 @@ Most stores use:
 - **B-tree** (or **B+ tree**) indexes for range scans and point lookups — same family as balanced BSTs in CS101.
 - **Write-ahead log (WAL)** — append changes before applying to pages (durability after crash).
 - **Buffer pool** — cache hot pages in RAM.
+
+```mermaid
+flowchart LR
+  App[App] --> WAL[WAL append]
+  WAL --> Buf[Buffer pool]
+  Buf --> Pages[(B-tree pages on disk)]
+```
 
 Hash indexes appear in key-value and hash-table-backed stores for **O(1)** point reads.
 

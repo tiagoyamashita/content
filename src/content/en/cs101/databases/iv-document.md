@@ -70,6 +70,14 @@ db.products.aggregate([
 
 ## 4. Embedding vs referencing
 
+```mermaid
+flowchart LR
+  Parent[Parent document] -->|Embed| Nested[Arrays and objects inside]
+  Parent -->|Reference| Other[Other doc by id]
+  Nested --> OneTrip[One round trip read]
+  Other --> TwoTrip[Two lookups or lookup join]
+```
+
 | Pattern | Use when |
 |---------|----------|
 | **Embed** array/object in parent | One-to-few; read together; bounded size |

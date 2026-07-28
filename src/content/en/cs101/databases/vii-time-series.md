@@ -49,10 +49,11 @@ Reads:   ──► recent window hot; old data cold or aggregated
 
 TSDBs **drop or roll up** old data automatically:
 
-```text
-Raw 10s resolution  → keep 7 days
-5m averages         → keep 90 days
-1h averages         → keep 2 years
+```mermaid
+flowchart TB
+  Raw[Raw 10s samples] -->|keep 7 days| Roll5[5m averages]
+  Roll5 -->|keep 90 days| Roll1h[1h averages]
+  Roll1h -->|keep 2 years| Cold[Long-term store]
 ```
 
 **Compaction** merges small files into larger blocks; **WAL** ensures durability on ingest.

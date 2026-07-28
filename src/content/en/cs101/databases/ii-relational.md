@@ -9,16 +9,20 @@ Relational databases (SQL)
 
 ## 1. Data model
 
-```text
-users                          orders
-┌────┬─────────┬──────────┐    ┌────┬─────────┬────────┬────────┐
-│ id │ name    │ email    │    │ id │ user_id │ total  │ status │
-├────┼─────────┼──────────┤    ├────┼─────────┼────────┼────────┤
-│  1 │ Ada     │ a@…      │◄───│ 10 │    1    │  49.99 │ paid   │
-│  2 │ Grace   │ g@…      │    │ 11 │    1    │  12.00 │ open   │
-└────┴─────────┴──────────┘    └────┴─────────┴────────┴────────┘
-         ▲                              │
-         └──────── foreign key ──────────┘
+```mermaid
+erDiagram
+  USERS ||--o{ ORDERS : places
+  USERS {
+    bigint id PK
+    text name
+    text email UK
+  }
+  ORDERS {
+    bigint id PK
+    bigint user_id FK
+    numeric total
+    text status
+  }
 ```
 
 | Concept | Role |

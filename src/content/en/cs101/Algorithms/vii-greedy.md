@@ -24,6 +24,17 @@ See also **Level V — Paradigms** [Paradigms & limits](../v-paradigms-and-limit
 ## 2. Activity selection (sketch)
 Sort activities by **finish time**. Take the next activity that **starts after** the last chosen finish.
 
+```mermaid
+flowchart LR
+  In[Activities] --> Sort[Sort by finish time]
+  Sort --> Scan[Scan in order]
+  Scan --> Fit{Starts after last finish?}
+  Fit -->|Yes| Take[Take activity]
+  Fit -->|No| Skip[Skip]
+  Take --> Scan
+  Skip --> Scan
+```
+
 ```java
 // Compile: javac --release 22 …
 import java.util.Arrays;

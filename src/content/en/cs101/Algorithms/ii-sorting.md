@@ -26,6 +26,17 @@ Arrange elements in **non-decreasing** order (or by a **`Comparator`**). **Compa
 2. **Conquer** — singletons are sorted.
 3. **Combine** — merge two sorted halves in **O(n)** time.
 
+```mermaid
+flowchart TB
+  A[Array] --> L[Left half]
+  A --> R[Right half]
+  L --> L1[Sorted left]
+  R --> R1[Sorted right]
+  L1 --> M[Merge O of n]
+  R1 --> M
+  M --> Out[Sorted array]
+```
+
 **Time Θ(n log n)**; **space Θ(n)** for a typical auxiliary buffer.
 
 ```java
@@ -63,6 +74,16 @@ private static void merge(int[] a, int[] buf, int lo, int mid, int hi) {
 
 ## 3. Quicksort
 Pick a **pivot**, **partition** so elements ≤ pivot are left, > pivot right, recurse on both sides.
+
+```mermaid
+flowchart LR
+  In[Input] --> Pivot[Pick pivot]
+  Pivot --> Part[Partition]
+  Part --> Left[Recurse left of pivot]
+  Part --> Right[Recurse right of pivot]
+  Left --> Done[Sorted]
+  Right --> Done
+```
 
 - **Average Θ(n log n)**; **worst Θ(n²)** if pivot is always min/max (sorted input with bad pivot rule).
 - **Mitigation:** random pivot, median-of-three, or switch to insertion sort on small ranges.

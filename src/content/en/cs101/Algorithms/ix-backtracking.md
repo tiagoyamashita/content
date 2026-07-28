@@ -14,6 +14,21 @@ Same idea as **DFS** on an implicit **state tree** of decisions.
 2. **Recurse** — solve the rest.
 3. **Unchoose** — restore state (backtrack).
 
+```mermaid
+flowchart TD
+  Root[Partial solution] --> Choose[Choose next option]
+  Choose --> Valid{Constraints OK?}
+  Valid -->|No| Undo[Unchoose / prune]
+  Valid -->|Yes| Rec[Recurse]
+  Rec --> Done{Complete?}
+  Done -->|Yes| Keep[Record solution]
+  Done -->|No| Choose
+  Keep --> Undo
+  Undo --> More{More options?}
+  More -->|Yes| Choose
+  More -->|No| Back[Backtrack]
+```
+
 Often prune branches early with **constraints** (invalid partial solutions).
 
 ```java

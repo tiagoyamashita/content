@@ -13,6 +13,14 @@ Solve optimization or counting problems by reusing answers to **overlapping subp
 
 ## 1. Top-down vs bottom-up
 
+```mermaid
+flowchart LR
+  Naive[Naive recursion] -->|redo work| Exp[Exponential tree]
+  Naive -->|cache answers| Memo[Memoization top-down]
+  Memo --> Same[Same asymptotic cost]
+  Tab[Tabulation bottom-up] --> Same
+```
+
 | Style | Mechanism | Pros |
 |-------|-----------|------|
 | **Memoization** | Recursion + cache (`Map` or array) | Fast to write |

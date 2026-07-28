@@ -25,13 +25,12 @@ Engineers usually mix **OSI** names with the **TCP/IP** stack:
 
 **Rule of thumb:** when someone says **“L7 load balancer”** they mean **application-aware HTTP(S) routing**. **“L4 load balancer”** means **connection distribution without parsing HTTP**.
 
-```text
-Client
-  │
-  ▼  L7 — Host: api.example.com  Path: /v1/users  (HTTP)
-  ▼  L6 — TLS encrypts bytes (HTTPS)
-  ▼  L4 — TCP to 203.0.113.50:443
-  ▼  L3 — IP routing across the internet
+```mermaid
+flowchart TB
+  Client --> L7[L7 Host and path HTTP]
+  L7 --> L6[L6 TLS encrypts bytes]
+  L6 --> L4[L4 TCP to IP port 443]
+  L4 --> L3[L3 IP routing]
 ```
 
 ## 2. What each balancer type sees
@@ -64,33 +63,13 @@ Client
 
 ### Stack placement (typical cloud + Kubernetes)
 
-```text
-Internet
-    │
-    ▼
-┌─────────────────────────────────────┐
-│  DNS (geo / health)                 │  ← name → regional LB hostname
-└─────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────┐
-│  Cloud L4 LB (optional)             │  ← high PPS, TLS passthrough, fixed IP
-└─────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────┐
-│  L7 Ingress / API gateway           │  ← Host, path, TLS terminate, WAF
-└─────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────┐
-│  Service / pods (app processes)     │  ← HTTP server, gRPC server, WS handler
-└─────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────┐
-│  L4 to data tier (optional)         │  ← Postgres, Redis — rarely HTTP
-└─────────────────────────────────────┘
+```mermaid
+flowchart TB
+  Net[Internet] --> DNS[DNS geo / health]
+  DNS --> L4[Cloud L4 LB optional]
+  L4 --> L7[L7 Ingress / API gateway]
+  L7 --> App[Service / pods]
+  App --> Data[L4 to data tier]
 ```
 
 **You do not need every box.** A small app: **DNS → one L7 reverse proxy → one app** is enough. Add **L4** when you need **millions of TCP connections**, **fixed IPs with passthrough**, or **non-HTTP protocols**.
