@@ -16,21 +16,22 @@ Services communicate via **events** on a **message broker** instead of synchrono
 | Simple debugging | Needs idempotency, DLQ |
 | Cascade latency | Buffering under load |
 
-```text
-Sync:  Order Svc ──HTTP──▶ Inventory Svc ──HTTP──▶ Payment Svc
-       (failure in payment blocks whole chain)
-
-Async: Order Svc ──▶ queue ──▶ Inventory worker
-                    └──▶ Payment worker (parallel)
+```mermaid
+flowchart LR
+  order[Order Svc] --> queue[Queue]
+  queue --> inv[Inventory worker]
+  queue --> pay[Payment worker]
 ```
 
 ## 2. Message queue (point-to-point)
 
 **One consumer** processes each message (competing consumers).
 
-```text
-Producer ──▶ [ Queue ] ──▶ Consumer A
-                    └──▶ Consumer B  (only one gets each message)
+```mermaid
+flowchart LR
+  prod[Producer] --> queue[Queue]
+  queue --> ca[Consumer A]
+  queue --> cb[Consumer B]
 ```
 
 | Cloud service | Model |

@@ -61,6 +61,15 @@ Gateway timeout should be **≤ CDN timeout** and **≥ upstream p99** — align
 
 When upstream error rate spikes, **fail fast** instead of queueing threads:
 
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open: error threshold
+  Open --> HalfOpen: timeout
+  HalfOpen --> Closed: probe OK
+  HalfOpen --> Open: probe fail
+```
+
 | State | Behavior |
 |-------|----------|
 | **Closed** | Normal proxy |

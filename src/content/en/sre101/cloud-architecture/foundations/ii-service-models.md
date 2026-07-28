@@ -15,14 +15,21 @@ Cloud providers abstract hardware in **layers**. Higher layers mean **less ops b
 | **PaaS** | App code & data | OS, runtime, scaling | App Engine, Elastic Beanstalk, Heroku |
 | **SaaS** | Config & your data | Everything else | Gmail, Salesforce, GitHub |
 
-```text
-Responsibility stack (bottom = always provider):
-
-  SaaS     │████████████████│  you: config only
-  PaaS     │████████░░░░░░░░│  you: app + data
-  IaaS     │████░░░░░░░░░░░░│  you: OS through app
-           └────────────────┘
-           Hardware / virtualization
+```mermaid
+flowchart TB
+  subgraph saas[SaaS]
+    saasYou[You: config only]
+  end
+  subgraph paas[PaaS]
+    paasYou[You: app and data]
+  end
+  subgraph iaas[IaaS]
+    iaasYou[You: OS through app]
+  end
+  provider[Provider: hardware and virtualization]
+  saas --> paas
+  paas --> iaas
+  iaas --> provider
 ```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 140" role="img" aria-label="IaaS PaaS SaaS responsibility stack">

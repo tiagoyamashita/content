@@ -20,15 +20,16 @@ Microservices vs monolith
 
 ## 2. Monolith advantages
 
-```text
-┌─────────────────────────────────┐
-│         Monolith (one JAR)       │
-│  ┌─────┐ ┌─────┐ ┌──────────┐  │
-│  │Auth │ │Orders│ │Inventory │  │
-│  └──┬──┘ └──┬──┘ └────┬─────┘  │
-│     └───────┴─────────┘         │
-│           shared DB              │
-└─────────────────────────────────┘
+```mermaid
+flowchart TB
+  subgraph mono[Monolith one JAR]
+    auth[Auth]
+    orders[Orders]
+    inv[Inventory]
+    auth --> db[(shared DB)]
+    orders --> db
+    inv --> db
+  end
 ```
 
 - Fast local development — no service mesh to run
@@ -37,14 +38,14 @@ Microservices vs monolith
 
 ## 3. Microservices advantages
 
-```text
-     ┌─────────┐     ┌─────────┐     ┌──────────┐
-     │  Auth   │     │ Orders  │     │ Inventory│
-     │ service │     │ service │     │ service  │
-     └────┬────┘     └────┬────┘     └────┬─────┘
-          │    HTTP/gRPC   │               │
-          └────────────────┴───────────────┘
-                    message bus (optional)
+```mermaid
+flowchart LR
+  auth[Auth service] --> orders[Orders service]
+  orders --> inv[Inventory service]
+  bus[Message bus]
+  auth -.-> bus
+  orders -.-> bus
+  inv -.-> bus
 ```
 
 - Scale **orders** service during peak without scaling auth

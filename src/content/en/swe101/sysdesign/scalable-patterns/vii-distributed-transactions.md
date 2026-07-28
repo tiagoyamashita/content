@@ -9,10 +9,10 @@ When one business action touches **multiple services** or **databases**, you can
 
 ## 1. The problem
 
-```text
-Order service (DB A)     Payment service (DB B)
-        │                         │
-        └──── both must succeed or neither ────┘
+```mermaid
+flowchart LR
+  O[Order service DB A] --- X[must both succeed or neither]
+  P[Payment service DB B] --- X
 ```
 
 Network partitions and independent failures break naive “call A then B” flows.
@@ -43,6 +43,14 @@ Example: **Create order → Charge payment → Reserve inventory**
 | 1 | Create order (pending) | Cancel order |
 | 2 | Charge card | Refund |
 | 3 | Reserve stock | Release stock |
+
+```mermaid
+flowchart LR
+  S1[Create order] --> S2[Charge payment] --> S3[Reserve inventory]
+  S3 -.->|on failure| C3[Release stock]
+  S2 -.->|on failure| C2[Refund]
+  S1 -.->|on failure| C1[Cancel order]
+```
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" role="img" aria-label="Saga forward steps and compensating rollback">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Orchestration saga</text>

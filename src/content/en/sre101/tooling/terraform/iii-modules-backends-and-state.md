@@ -7,6 +7,14 @@ order: 3
 SRE tooling — Terraform: Modules, backends & state
 Modules reuse patterns; remote **state** needs locking and backup discipline.
 
+```mermaid
+flowchart LR
+  module[Module call] --> resources[Resources]
+  resources --> backend[S3 remote backend]
+  backend --> lock[DynamoDB lock]
+  backend --> consumer[Remote state consumer]
+```
+
 ## 1. Modules
 
 ```hcl

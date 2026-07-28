@@ -39,11 +39,12 @@ Production topics usually **`replication-factor: 3`** and **`min.insync.replicas
 
 ## 2. Topic and partition
 
-```text
-topic: order-events
-  partition 0:  [0][1][2][3][4]…  ← offsets
-  partition 1:  [0][1][2]…
-  partition 2:  [0][1][2][3]…
+```mermaid
+flowchart TB
+  T[topic order-events]
+  T --> P0[partition 0 offsets 0 1 2 3]
+  T --> P1[partition 1 offsets 0 1 2]
+  T --> P2[partition 2 offsets 0 1 2 3]
 ```
 
 | Concept | Detail |
@@ -67,8 +68,10 @@ Offset:  assigned by broker
 
 **Partition key:** same key → same partition → ordering for that entity (e.g. all events for `orderId=42` stay ordered).
 
-```text
-hash(key) % numPartitions  →  partition index
+```mermaid
+flowchart LR
+  Key[hash key] --> Mod["% numPartitions"]
+  Mod --> Part[partition index]
 ```
 
 No key → round-robin or sticky partitioner (batching).

@@ -9,6 +9,19 @@ Native CI/CD for **GitHub** repos. Workflows live in **`.github/workflows/`** as
 
 ## 1. Core concepts
 
+```mermaid
+sequenceDiagram
+  participant Event as Trigger event
+  participant WF as Workflow
+  participant Job as Job
+  participant Step as Steps
+
+  Event->>WF: push / PR / schedule
+  WF->>Job: runs on runner
+  Job->>Step: checkout
+  Job->>Step: setup / test / deploy
+```
+
 | Term | Meaning |
 |------|---------|
 | **Workflow** | YAML file; triggered by events |

@@ -13,38 +13,22 @@ Previous: [Patterns & integration](vi-patterns-and-integration.md). Theory: [Che
 
 ## 1. Parallel vs sequential (do not confuse)
 
-```plantuml
-@startuml
-title WRONG for strict sequence — parallel fan-out
-queue "order-events" as T
-participant "Payment\n(group: payments)" as P
-participant "Shipping\n(group: shipping)" as S
-participant "Email\n(group: email)" as E
-
-T -> P: OrderPlaced
-T -> S: OrderPlaced
-T -> E: OrderPlaced
-note right of S: All three start at once.\nShipping must NOT read OrderPlaced directly.
-@enduml
+```mermaid
+flowchart TB
+  T[order-events OrderPlaced]
+  T --> P[Payment]
+  T --> S[Shipping]
+  T --> E[Email]
 ```
 
-```plantuml
-@startuml
-title RIGHT — sequential pipeline (choreographed chain)
-participant "Order svc" as O
-queue "order-events" as T1
-participant "Payment svc" as P
-queue "payment-events" as T2
-participant "Shipping svc" as S
+All three start at once — shipping must **not** read `OrderPlaced` directly.
 
-O -> T1: OrderPlaced
-T1 -> P: consume
-P -> P: charge — success only
-P -> T2: PaymentCaptured
-T2 -> S: consume
-S -> S: create shipment
-note right of P: On failure: PaymentFailed\n— no PaymentCaptured → Shipping never runs
-@enduml
+```mermaid
+flowchart LR
+  O[Order svc] -->|OrderPlaced| T1[order-events]
+  T1 --> P[Payment svc]
+  P -->|PaymentCaptured| T2[payment-events]
+  T2 --> SH[Shipping svc]
 ```
 
 | Goal | Pattern |

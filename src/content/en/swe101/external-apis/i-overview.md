@@ -19,10 +19,10 @@ Related: [API gateway authentication](../api-gateway/iv-authentication.md) (vali
 
 ## Mental model
 
-```text
-Your app  →  OAuth / API credentials  →  Vendor API (Drive, GitHub, GitLab, …)
-                ↑
-         refresh / rotate secrets
+```mermaid
+flowchart LR
+  App[Your app] -->|OAuth / API credentials| Vendor[Vendor API]
+  App -->|refresh / rotate| Secrets[Secrets store]
 ```
 
 | Credential type | Who acts | Typical use |

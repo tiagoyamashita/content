@@ -33,11 +33,11 @@ For document-store concepts (embedding vs referencing, when to choose documents)
 
 ## Core vocabulary
 
-```text
-Cluster
-  └── Database (e.g. myapp)
-        └── Collection (e.g. products)   ← like a table, schema-flexible
-              └── Document { _id, ... }  ← like a row, but nested
+```mermaid
+flowchart TB
+  Cluster --> DB[Database myapp]
+  DB --> Coll[Collection products]
+  Coll --> Doc[Document _id ...]
 ```
 
 | Term | Role |

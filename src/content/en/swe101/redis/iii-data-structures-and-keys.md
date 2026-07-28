@@ -11,11 +11,12 @@ Redis values are not only strings — pick the **type** that matches your access
 
 Use a **namespace** prefix — readable, grep-friendly in logs:
 
-```text
-cache:product:8812
-session:sess_abc123
-ratelimit:api:192.168.1.1:2026051914
-user:42:profile
+```mermaid
+flowchart LR
+  K1[cache:product:8812]
+  K2[session:sess_abc123]
+  K3[ratelimit:api:IP:window]
+  K4[user:42:profile]
 ```
 
 | Convention | Example |

@@ -44,6 +44,19 @@ Region: eu-west-1
 
 ## 3. Mental model diagram
 
+```mermaid
+flowchart TB
+  subgraph region[Region eu-west-1]
+    aza[AZ-a]
+    azb[AZ-b]
+    azc[AZ-c]
+  end
+  lb[Load balancer spans AZs]
+  lb --> aza
+  lb --> azb
+  lb --> azc
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 110" role="img" aria-label="Region with three AZs">
   <rect x="12" y="24" width="376" height="72" rx="4" fill="none" stroke="#52525b"/>
   <text x="20" y="40" fill="#d4d4d8" font-size="10" font-weight="600">Region (eu-west-1)</text>

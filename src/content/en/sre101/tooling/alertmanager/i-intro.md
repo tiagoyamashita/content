@@ -9,6 +9,15 @@ Dedupe, group, and route Prometheus alerts to humans and systems.
 
 ## 1. Role
 
+```mermaid
+flowchart LR
+  prom[Prometheus] --> am[Alertmanager]
+  am --> dedupe[dedupe group route]
+  dedupe --> recv[Receivers]
+  recv --> slack[Slack]
+  recv --> pd[PagerDuty]
+```
+
 **Alertmanager** receives alerts from **Prometheus** (or compatible sources), **suppresses** duplicates, **groups** related fires into single notifications, and **routes** them by labels (team, severity, region).
 
 

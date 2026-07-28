@@ -9,6 +9,13 @@ You cannot operate what you cannot see. **Observability** combines logs, metrics
 
 ## 1. Three pillars
 
+```mermaid
+flowchart LR
+  logs[Logs] --> observe[Observability]
+  metrics[Metrics] --> observe
+  traces[Traces] --> observe
+```
+
 | Pillar | What | Tooling examples |
 |--------|------|------------------|
 | **Logs** | Discrete events with context | CloudWatch Logs, Datadog, ELK |
@@ -88,10 +95,11 @@ For each service:
 | **SLO** | **Objective** — internal target | p99 latency < 200 ms over 30 days |
 | **SLA** | **Agreement** — contractual | 99.9% uptime or credit |
 
-```text
-SLI (measure)  →  SLO (target)  →  SLA (contract with customer)
-     │                │
-     └── error budget: 100% - SLO = allowed bad minutes/month
+```mermaid
+flowchart LR
+  sli[SLI measure] --> slo[SLO target]
+  slo --> sla[SLA contract]
+  slo --> budget[Error budget]
 ```
 
 **Error budget:** if SLO is 99.9%, you have ~43 min downtime/month. Budget exhausted → freeze features, focus on reliability.

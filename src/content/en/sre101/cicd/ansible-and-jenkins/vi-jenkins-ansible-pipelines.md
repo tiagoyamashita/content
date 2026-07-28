@@ -9,6 +9,15 @@ Jenkins + Ansible pipelines
 
 ## 1. Responsibility split
 
+```mermaid
+flowchart LR
+  checkout[Checkout] --> build[Build]
+  build --> test[Test]
+  test --> lint[Ansible Lint]
+  lint --> staging[Deploy Staging]
+  staging --> prod[Deploy Production]
+```
+
 | Layer | Owns |
 |-------|------|
 | **Jenkins** | Checkout, compile, unit/integration test, artifacts, gates |

@@ -18,6 +18,14 @@ Pods, controllers, probes, capacity, and disruption budgets.
 
 ## 2. Probes
 
+```mermaid
+flowchart LR
+  kubelet[kubelet] --> startup[startupProbe]
+  kubelet --> liveness[livenessProbe]
+  kubelet --> readiness[readinessProbe]
+  readiness --> svc[Service endpoints]
+```
+
 - **livenessProbe** — kubelet restarts container if unhealthy (avoid expensive checks that flap).
 - **readinessProbe** — removes Pod from **Service** endpoints until ready (traffic shaping during startup).
 - **startupProbe** — protects slow-start apps so liveness does not kill them prematurely.

@@ -7,6 +7,14 @@ order: 2
 SRE tooling — Prometheus: Metrics types & PromQL
 Instrument with the right **metric type**, keep **labels** under control, and read graphs with **PromQL**.
 
+```mermaid
+flowchart TB
+  counter[Counter only increases]
+  gauge[Gauge up or down]
+  hist[Histogram buckets]
+  summary[Summary quantiles]
+```
+
 ## 1. Metric types (client ↔ exposition)
 
 | Type | Meaning | Typical use |

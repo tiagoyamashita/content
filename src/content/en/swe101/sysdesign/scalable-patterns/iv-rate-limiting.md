@@ -47,6 +47,13 @@ Rate limiting
 
 - Blend previous + current window counts — good balance of accuracy and memory (common in Redis implementations).
 
+```mermaid
+flowchart LR
+  Bucket[Token bucket B tokens] -->|request| OK[allow if token available]
+  Bucket -->|empty| Reject[429 reject]
+  Refill[refill at R per sec] --> Bucket
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Token bucket allows burst then steady rate">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Token bucket (B=5, R=1/s)</text>
   <rect x="12" y="32" width="120" height="24" rx="3" fill="rgba(34,197,94,0.15)" stroke="#86efac"/>

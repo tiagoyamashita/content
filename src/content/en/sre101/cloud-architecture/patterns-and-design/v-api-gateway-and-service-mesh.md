@@ -90,6 +90,15 @@ Pod: [ app container ] [ Envoy sidecar ]
 
 Track failures to a downstream dependency; **fail fast** when unhealthy.
 
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open: failures exceed threshold
+  Open --> HalfOpen: cooldown expires
+  HalfOpen --> Closed: probe succeeds
+  HalfOpen --> Open: probe fails
+```
+
 | State | Behavior |
 |-------|----------|
 | **Closed** | Normal calls |

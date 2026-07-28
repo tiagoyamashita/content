@@ -22,6 +22,16 @@ Patterns for **APIs**, **async messaging**, **rate limiting**, **search**, **CDN
 
 ## Where these sit in a typical architecture
 
+```mermaid
+flowchart LR
+  Client --> CDN
+  CDN --> GW[API / Gateway]
+  GW --> Svc[Service]
+  Svc --> Q[Queue]
+  Svc --> Search[Search]
+  Svc --> DB[(DB)]
+```
+
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" role="img" aria-label="Client through CDN API gateway services queue search and databases">
   <text x="12" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Request path (simplified)</text>
   <rect x="12" y="36" width="64" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>

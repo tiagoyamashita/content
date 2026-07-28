@@ -28,13 +28,18 @@ Diagram syntax: [PlantUML sequence diagrams](../plantuml/iii-sequence-diagrams.m
 
 ## What problem Kafka solves
 
-```text
-Without Kafka:
-  Service A ──HTTP──► Service B     (tight coupling, no replay, spikes drop traffic)
+```mermaid
+flowchart LR
+  subgraph Without
+    A1[Service A] -->|HTTP tight coupling| B1[Service B]
+  end
+```
 
-With Kafka:
-  Service A ──publish──► topic ◄──consume── Service B
-                              ◄──consume── Service C (same event, many subscribers)
+```mermaid
+flowchart LR
+  A2[Service A] -->|publish| T[topic]
+  T -->|consume| B2[Service B]
+  T -->|consume| C[Service C]
 ```
 
 | Need | Why Kafka |

@@ -7,6 +7,15 @@ order: 3
 SRE tooling — Kubernetes: Networking & policy
 Clusters default **allow-all** Pod-to-Pod traffic until you tighten **NetworkPolicy**.
 
+```mermaid
+flowchart LR
+  client[Client] --> svc[ClusterIP Service]
+  svc --> pod1[Pod]
+  svc --> pod2[Pod]
+  policy[NetworkPolicy] -.-> pod1
+  policy -.-> pod2
+```
+
 ## 1. Services & DNS
 
 - **ClusterIP** — virtual IP inside cluster; **`kube-proxy`** (iptables/IPVS) or eBPF datapaths route traffic to healthy endpoints (Pods passing readiness).
