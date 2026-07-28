@@ -21,14 +21,12 @@ For **where** to place L4 vs L7 balancers, see [L4/L7 layers and where to balanc
 | **gRPC** | Request/response + **streams** | **HTTP/2** (TCP or TLS) | Microservice RPC, strong contracts (Protobuf) |
 | **HTTP/3** | Same roles as H1/H2 | **QUIC (UDP)** | Multiplexing without TCP head-of-line blocking |
 
-```text
-REST:     client ──GET──► server ──200 JSON──► client   (connection may close)
-
-WebSocket: client ◄──────► server   (one TCP conn, many frames both ways)
-
-SSE:      client ──GET──► server ──chunk chunk chunk──►  (one response, open)
-
-gRPC:     client ──HTTP/2 stream──► server  ( unary or bidi streams )
+```mermaid
+flowchart LR
+  REST[REST] -->|request response| Done[May close]
+  WS[WebSocket] -->|bidirectional frames| Live[One TCP stays open]
+  SSE[SSE] -->|server chunks| Stream[Long HTTP response]
+  gRPC[gRPC] -->|HTTP/2 streams| RPC[Unary or bidi]
 ```
 
 ## 2. WebSockets
@@ -36,6 +34,16 @@ gRPC:     client ──HTTP/2 stream──► server  ( unary or bidi streams )
 ### Handshake (still HTTP)
 
 WebSocket begins as a normal **HTTP/1.1** request with an **Upgrade** negotiation:
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  Client->>Server: GET /chat Upgrade websocket
+  Server-->>Client: 101 Switching Protocols
+  Client->>Server: WebSocket frames
+  Server->>Client: WebSocket frames
+```
 
 ```http
 GET /chat HTTP/1.1
@@ -161,15 +169,14 @@ content-type: application/grpc
 
 ## 7. End-to-end example — chat app on Kubernetes
 
-```text
-Browser  wss://app.example.com/ws
-    │
-    ▼  DNS → cloud LB IP
-    ▼  L7 Ingress (TLS terminate, WS Upgrade enabled, timeout 3600s)
-    ▼  Service chat-realtime (sessionAffinity: ClientIP optional)
-    ▼  Pod chat-7f3a  ←── Redis pub/sub ──► Pod chat-9b2c
-         ▲                                        ▲
-         └──────── other WS clients ──────────────┘
+```mermaid
+flowchart TB
+  Browser[Browser wss] --> DNS[DNS to cloud LB]
+  DNS --> Ing[L7 Ingress TLS + WS Upgrade]
+  Ing --> Svc[Service chat-realtime]
+  Svc --> P1[Pod chat A]
+  Svc --> P2[Pod chat B]
+  P1 <-->|Redis pub/sub| P2
 ```
 
 | Component | Setting |

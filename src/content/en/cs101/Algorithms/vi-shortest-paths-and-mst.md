@@ -18,6 +18,21 @@ Weighted graphs: edges carry **cost** or **distance**.
 ### Dijkstra (non-negative weights)
 Greedy: always settle the **closest** unsettled vertex using a **min-priority queue** [Priority queue](../data-structures/ix-priority-queue.md).
 
+```mermaid
+flowchart TD
+  Init[dist source = 0 others INF] --> PQ[Push source into min-PQ]
+  PQ --> Empty{PQ empty?}
+  Empty -->|No| Pop[Extract-min u]
+  Pop --> Stale{d equals dist u?}
+  Stale -->|No| Empty
+  Stale -->|Yes| Relax[For each edge u to v: relax]
+  Relax --> Better{new dist better?}
+  Better -->|Yes| Update[Update dist v and push]
+  Better -->|No| Empty
+  Update --> Empty
+  Empty -->|Yes| Done[dist array]
+```
+
 ```java
 // Compile: javac --release 22 …
 import java.util.Arrays;

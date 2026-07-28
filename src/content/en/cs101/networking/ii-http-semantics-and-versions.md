@@ -13,6 +13,15 @@ HTTP is an **application-layer** protocol: **methods**, **URLs**, **headers**, a
 - **Client** opens a connection (typically to port **80** for HTTP, **443** for HTTPS) and sends a **request**.
 - **Server** returns a **response** with a **status code**, headers, and optional body.
 
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  Client->>Server: GET /v1/users/42 Host api.example.com
+  Server-->>Client: 200 OK Content-Type application/json
+  Note over Client,Server: Body optional on both sides
+```
+
 **Common methods**
 
 - **GET** — read a resource; should be safe and idempotent when used correctly.
@@ -36,6 +45,13 @@ HTTP is an **application-layer** protocol: **methods**, **URLs**, **headers**, a
 - **Connection** — keep-alive behavior (HTTP/1.1 defaults differ from HTTP/1.0).
 
 ## 4. HTTP/1.1 vs HTTP/2 vs HTTP/3 (high level)
+
+```mermaid
+flowchart LR
+  H1[HTTP/1.1] --> TCP1[Many TCP connections]
+  H2[HTTP/2] --> TCP2[One TCP many streams]
+  H3[HTTP/3] --> QUIC[QUIC over UDP]
+```
 
 | Version | Transport | Multiplexing | Typical note |
 |---------|-----------|--------------|--------------|

@@ -53,10 +53,24 @@ EXPIRE rate_limit:10.0.0.1 60
 
 ### Cache-aside
 
-```text
-1. READ:  app → cache GET key
-           miss → DB → SET cache → return
-2. WRITE: app → DB commit → DELETE cache key (or update)
+```mermaid
+sequenceDiagram
+  participant App
+  participant Cache
+  participant DB
+  App->>Cache: GET key
+  alt hit
+    Cache-->>App: value
+  else miss
+    Cache-->>App: miss
+    App->>DB: load
+    DB-->>App: row
+    App->>Cache: SET key
+    App-->>App: return value
+  end
+  Note over App,DB: WRITE path
+  App->>DB: commit
+  App->>Cache: DELETE key
 ```
 
 Stale cache happens if you update DB without invalidating cache — define order in code.

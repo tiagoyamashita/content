@@ -9,11 +9,11 @@ A **graph** database stores **vertices** (nodes) and **edges** (relationships) w
 
 ## 1. Data model
 
-```text
-(Ada:Person { born: 1815 })
-    -[:KNOWS { since: 1833 }]-> (Charles:Person)
-    -[:KNOWS]-> (Grace:Person)
-(Grace)-[:WROTE]-> (Algorithm:Book { title: "..." })
+```mermaid
+graph LR
+  Ada[Ada Person] -->|KNOWS| Charles[Charles Person]
+  Charles -->|KNOWS| Grace[Grace Person]
+  Grace -->|WROTE| Book[Algorithm Book]
 ```
 
 | Piece | Meaning |

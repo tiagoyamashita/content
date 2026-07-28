@@ -34,6 +34,19 @@ Requires a **sorted** array (or sorted order by `Comparator`).
 
 **Invariant:** if target is present, its index lies in `[lo, hi]`.
 
+```mermaid
+flowchart TD
+  Start[lo..hi] --> Mid[mid = lo + hi-lo / 2]
+  Mid --> Cmp{arr mid vs target}
+  Cmp -->|Equal| Found[Return mid]
+  Cmp -->|arr mid less| Right[lo = mid + 1]
+  Cmp -->|arr mid greater| Left[hi = mid - 1]
+  Right --> Empty{lo <= hi?}
+  Left --> Empty
+  Empty -->|Yes| Mid
+  Empty -->|No| Miss[Return -1]
+```
+
 ```java
 // Compile: javac --release 22 …
 import java.util.Arrays;

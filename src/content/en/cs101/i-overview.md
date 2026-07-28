@@ -22,13 +22,16 @@ CS101 — overview
 
 ## Suggested order
 
-```text
-Overview → Core concepts → Foundations
-  → Machines & memory
-  → Data structures → Algorithms
-  → Databases
-  → Networking
-  → Paradigms & limits (anytime after foundations)
+```mermaid
+flowchart TB
+  Overview --> Core[Core concepts]
+  Core --> Found[Foundations]
+  Found --> Machines[Machines and memory]
+  Found --> Paradigms[Paradigms and limits]
+  Machines --> DS[Data structures]
+  DS --> Algo[Algorithms]
+  Algo --> DB[Databases]
+  DB --> Net[Networking]
 ```
 
 ## How this relates to other tracks

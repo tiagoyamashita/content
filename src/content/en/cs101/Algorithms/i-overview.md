@@ -22,6 +22,18 @@ An **algorithm** is a finite, step-by-step procedure that takes **input** and pr
 
 ## 2. Common algorithm families (map)
 
+```mermaid
+flowchart LR
+  Algo[Algorithms] --> Sort[Sorting]
+  Algo --> Search[Searching]
+  Algo --> DnC[Divide and conquer]
+  Algo --> Graph[Graph]
+  Algo --> Greedy[Greedy]
+  Algo --> DP[Dynamic programming]
+  Algo --> BT[Backtracking]
+  Algo --> Pat[Patterns]
+```
+
 | Family | Idea | Examples in this submenu |
 |--------|------|-------------------------|
 | **Sorting** | Arrange keys in order | merge sort, quicksort, heapsort |
