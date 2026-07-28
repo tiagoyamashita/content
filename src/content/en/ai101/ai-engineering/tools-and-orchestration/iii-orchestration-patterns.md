@@ -10,8 +10,11 @@ Orchestration patterns
 
 ### Copy-paste bridge (lowest friction)
 
-```text
-Source doc → chat → paste result → destination
+```mermaid
+flowchart LR
+  Src[Source doc] --> Chat[Chat]
+  Chat --> Paste[Paste result]
+  Paste --> Dest[Destination]
 ```
 
 Fine for occasional tasks; does not scale.
@@ -48,8 +51,11 @@ ChatGPT / Claude / Copilot **connectors** read Google Drive, Slack, GitHub, etc.
 
 ### Automation chains
 
-```text
-Form submit → AI summarise → create Notion page → Slack notify
+```mermaid
+flowchart LR
+  Trigger[Form submit] --> AI[AI summarise]
+  AI --> Notion[Create Notion page]
+  Notion --> Slack[Slack notify]
 ```
 
 | Platform | Strength |

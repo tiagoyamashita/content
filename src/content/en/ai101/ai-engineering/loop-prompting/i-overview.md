@@ -29,15 +29,18 @@ Both reuse **stored context** instead of pasting the same preamble into a new ch
 
 ## 2. Mental model
 
-```text
-OLD (one-shot every time)
-  New chat → full role + task + constraints + paste docs → answer → discard
-
-NEW (loop prompting)
-  Set up once (project / skill / rule / assistant)
-    → loop: small prompt + optional new file
-    → loop: verify / refine
-    → loop: (optional) scheduled or event-driven rerun
+```mermaid
+flowchart TB
+  subgraph Old[One-shot every time]
+    N1[New chat] --> N2[Full brief + paste]
+    N2 --> N3[Answer] --> N4[Discard]
+  end
+  subgraph New[Loop prompting]
+    S[Set up once] --> L1[Small prompt]
+    L1 --> L2[Verify / refine]
+    L2 --> L3[Scheduled rerun]
+    L3 -.-> L1
+  end
 ```
 
 | Layer | What persists | Where (examples) |

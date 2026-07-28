@@ -7,6 +7,17 @@ order: 6
 Feature engineering
 Raw data rarely feeds directly into a model. **Features** are numeric representations of inputs — scaling, encoding, and derived columns that make patterns learnable.
 
+```mermaid
+flowchart LR
+  Raw[Raw data] --> Num[Numeric scale]
+  Raw --> Cat[Encode categories]
+  Raw --> Text[Text features]
+  Num --> Pipe[Pipeline]
+  Cat --> Pipe
+  Text --> Pipe
+  Pipe --> Model[Model]
+```
+
 ## 1. Numerical features
 
 | Transform | When |

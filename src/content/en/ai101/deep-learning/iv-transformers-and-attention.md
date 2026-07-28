@@ -11,9 +11,14 @@ Transformers and attention
 
 Each token builds a representation by **attending** to all other tokens in the sequence.
 
-```text
-Q = X·Wq    K = X·Wk    V = X·Wv
-Attention(Q,K,V) = softmax(QKᵀ / √dₖ) · V
+```mermaid
+flowchart LR
+  X[Input X] --> Q[Q = X·Wq]
+  X --> K[K = X·Wk]
+  X --> V[V = X·Wv]
+  Q --> Attn[softmax QKᵀ/√d · V]
+  K --> Attn
+  V --> Attn
 ```
 
 | Symbol | Meaning |
@@ -32,8 +37,13 @@ Concatenate heads → linear projection.
 
 ## 3. Transformer block
 
-```text
-x → Multi-Head Attention → Add & Norm → Feed-Forward → Add & Norm → output
+```mermaid
+flowchart LR
+  X[x] --> MHA[Multi-Head Attention]
+  MHA --> Add1[Add and Norm]
+  Add1 --> FF[Feed-Forward]
+  FF --> Add2[Add and Norm]
+  Add2 --> Out[output]
 ```
 
 | Piece | Role |
@@ -61,6 +71,13 @@ Attention alone is **permutation-invariant** — order must be injected:
 | **Encoder-decoder** | Encoder bidirectional; decoder causal cross-attn | T5, original translation |
 
 **LLMs** for chat are almost always **decoder-only** causal LMs.
+
+```mermaid
+flowchart LR
+  Enc[Encoder-only] -->|bidirectional| BERT[BERT]
+  Dec[Decoder-only] -->|causal| GPT[GPT LLaMA]
+  Both[Encoder-decoder] -->|cross-attn| T5[T5]
+```
 
 ## 6. Complexity note
 

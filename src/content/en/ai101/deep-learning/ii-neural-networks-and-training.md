@@ -9,8 +9,11 @@ A **neural network** stacks **layers** of neurons — each computes **activation
 
 ## 1. Single neuron
 
-```text
-output = activation( w · x + b )
+```mermaid
+flowchart LR
+  X[Input x] --> Dot[w·x + b]
+  Dot --> Act[activation]
+  Act --> Out[output]
 ```
 
 | Piece | Role |
@@ -32,8 +35,12 @@ output = activation( w · x + b )
 
 **Dense (fully connected):** every input connects to every output in the layer.
 
-```text
-input → [hidden × N] → output
+```mermaid
+flowchart LR
+  In[Input] --> H[Hidden layers]
+  H --> Out[Output]
+  Out --> Loss[Loss]
+  Loss -->|backprop| H
 ```
 
 More layers = **deeper** network = richer (hierarchical) features.

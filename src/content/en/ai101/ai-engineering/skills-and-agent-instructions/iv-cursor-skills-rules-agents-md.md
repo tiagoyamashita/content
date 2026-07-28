@@ -8,6 +8,13 @@ Cursor skills, rules & AGENTS.md
 
 Cursor-specific layout for skills, rules, and repo briefing files. For portable setup across Claude Code and Codex, see [Cross-tool portable setup](iii-cross-tool-portable-setup.md).
 
+```mermaid
+flowchart TB
+  AG[AGENTS.md — always on] --> Rules[.cursor/rules/*.mdc]
+  Rules --> Skills[.cursor/skills/*/SKILL.md]
+  Skills --> Scripts[scripts/ in skill folder]
+```
+
 ## 4. Cursor skills — layout
 
 Skills live in a **folder** with a required **`SKILL.md`**:

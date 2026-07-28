@@ -21,6 +21,14 @@ Tools and orchestration
 
 This is for **users** choosing and wiring tools, not building ML pipelines.
 
+```mermaid
+flowchart LR
+  Chat[Chat apps] --> AI[AI step]
+  IDE[IDE agents] --> AI
+  Auto[Automations] --> AI
+  AI --> Action[Slack / docs / code]
+```
+
 ## Study order
 
 [Tool map](ii-tool-map-and-patterns.md) → [Orchestration patterns](iii-orchestration-patterns.md) → [Connectors, models & teams](iv-connectors-models-and-teams.md) → [Anti-patterns & rehearsal](v-antipatterns-and-rehearsal.md)

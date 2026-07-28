@@ -18,6 +18,13 @@ Deep dive on **multimodal & files** — split into focused notes below.
 Multimodal and files
 Modern AI tools accept **images**, **PDFs**, **spreadsheets**, **audio**, and **screenshots** — not just typed prompts. Using files well beats retyping content.
 
+```mermaid
+flowchart LR
+  Files[PDF / image / sheet / audio] --> Attach[Attach or upload]
+  Attach --> Model[Multimodal model]
+  Model --> Out[Summary / extract / answer]
+```
+
 ## Study order
 
 [PDFs & documents](ii-pdfs-and-documents.md) → [Images, spreadsheets & data](iii-images-spreadsheets-data.md) → [Voice, code & limits](iv-voice-code-and-limits.md)

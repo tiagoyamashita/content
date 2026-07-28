@@ -16,19 +16,14 @@ Three different layers — **do not merge them into one file**. Each has its own
 | **Skill** | `.cursor/skills/<name>/SKILL.md` | When user prompt matches `description` | **User** (or explicit skill invoke) |
 | **Hook** | `.cursor/hooks.json` + `.cursor/hooks/*` | On events: shell, commit, edit, stop | **Product** — no user prompt |
 
-```text
-                    ┌─────────────────────────────────────┐
-                    │  AGENTS.md — always-on briefing      │
-                    │  stack, tests, folder map, skill index │
-                    └─────────────────┬───────────────────┘
-                                      │ every chat
-                                      ▼
-User: "review this PR" ──────► SKILL loads ──────► agent follows workflow
-                                      │
-User: "git commit" ────────────► HOOK runs first ──► allow / deny shell
-                                      │ blocked?
-                                      ▼
-User: "why did commit fail?" ► SKILL (hook-failure-help) explains log
+```mermaid
+flowchart TB
+  AG[AGENTS.md] -->|every chat| Session[Agent session]
+  User[User: review PR] --> Skill[Skill loads]
+  Skill --> Session
+  User2[git commit] --> Hook[Hook runs]
+  Hook -->|deny| Block[Shell blocked]
+  Hook -->|allow| Session
 ```
 
 ## Map of this submenu

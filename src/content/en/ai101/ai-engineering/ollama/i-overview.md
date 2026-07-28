@@ -23,10 +23,13 @@ For comparing Ollama vs llama.cpp / vLLM, see [Local run platforms](../implement
 
 ## Mental model
 
-```text
-ollama pull <model>   →  weights cached on disk (~/.ollama)
-ollama run <model>    →  load into RAM/VRAM → chat (CLI)
-ollama serve          →  HTTP API on :11434 (OpenAI-compatible /v1)
+```mermaid
+flowchart LR
+  Pull[ollama pull] --> Cache[Weights cached]
+  Cache --> Run[ollama run]
+  Run --> Chat[CLI chat]
+  Cache --> Serve[ollama serve]
+  Serve --> API[HTTP :11434/v1]
 ```
 
 | Piece | You control | Ollama handles |

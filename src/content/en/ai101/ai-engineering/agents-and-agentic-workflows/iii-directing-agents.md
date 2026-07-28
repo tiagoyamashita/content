@@ -24,6 +24,14 @@ Directing agents
 
 ## 4. How to direct an agent well
 
+```mermaid
+flowchart LR
+  Goal[Clear done state] --> Bound[Boundaries]
+  Bound --> Tools[Tools allowed]
+  Tools --> Check[Checkpoints]
+  Check --> Verify[Verify output]
+```
+
 Use the same building blocks as [Effective prompting](../effective-prompting/i-overview.md), plus:
 
 | Add | Example |

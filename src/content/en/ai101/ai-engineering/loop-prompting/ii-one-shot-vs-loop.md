@@ -30,12 +30,12 @@ One-shot is fine for **truly novel** tasks. It is expensive for **recurring** wo
 
 ## 2. Loop habit
 
-```text
-Set up once (project / skill / assistant / rules)
-  → turn 1: “Draft Q3 summary from @data/”
-  → turn 2: “Cut section 2; keep all numbers.”
-  → turn 3: “Export as bullet email for execs.”
-  → next week: “Same format; new file @data/q4.csv”
+```mermaid
+flowchart LR
+  Setup[Set up once] --> T1[Turn 1: draft]
+  T1 --> T2[Turn 2: fix section]
+  T2 --> T3[Turn 3: change format]
+  T3 --> T4[Next week: new file]
 ```
 
 Each turn is a **delta** — a correction, a new attachment, or a changed input — not a rebuilt system prompt.

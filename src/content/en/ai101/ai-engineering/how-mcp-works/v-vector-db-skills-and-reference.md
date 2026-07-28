@@ -10,6 +10,13 @@ Vector DB, skills & reference
 
 These solve **different problems**. You often combine them.
 
+```mermaid
+flowchart TB
+  Skills[Skills / AGENTS.md] -->|static how-to| Agent[Agent]
+  RAG[Vector DB / RAG] -->|semantic search| Agent
+  MCP[MCP tools] -->|live data + actions| Agent
+```
+
 | Need | Mechanism | Example |
 |------|-----------|---------|
 | **How to write a PR review** | [Skill](../skills-and-agent-instructions/i-overview.md) | Static playbook in `SKILL.md` |

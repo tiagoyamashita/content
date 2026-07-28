@@ -20,6 +20,12 @@ Effective prompting
 
 For API-level detail (roles, JSON mode), see [LLM prompt engineering](../../llms/iv-prompt-engineering.md). This note is for **everyday use**.
 
+```mermaid
+flowchart LR
+  Role[Role] --> Task --> Constraints --> Format[Output format]
+  Format --> Model[Model reply]
+```
+
 Once a prompt works repeatedly, promote it to persistent instructions — see [Loop prompting](../loop-prompting/i-overview.md).
 
 ## Study order

@@ -26,13 +26,14 @@ Deep dive: [Ollama track](../ollama/i-overview.md).
 
 ## 2. Decision shortcuts
 
-```text
-"I just want it running tonight"     → Ollama or LM Studio
-"Local coding / Cursor / Continue"   → Ollama + qwen2.5-coder:7b (or 32b if 24 GB VRAM)
-"I have a MacBook"                   → Ollama, MLX, or LM Studio
-"I have a Linux box + NVIDIA GPU"    → vLLM or TGI for APIs; Ollama for simplicity
-"CPU only / 16 GB RAM"               → llama.cpp + small Q4 GGUF (see RAM note)
-"Ship to production at scale"        → vLLM, TGI, or TensorRT-LLM — not desktop apps
+```mermaid
+flowchart TD
+  Q{Your goal?}
+  Q -->|fast start| Ollama[Ollama / LM Studio]
+  Q -->|local coding| Cursor[Ollama + qwen2.5-coder]
+  Q -->|MacBook| Mac[Ollama / MLX]
+  Q -->|NVIDIA + scale| vLLM[vLLM / TGI]
+  Q -->|CPU only| CPU[llama.cpp + Q4]
 ```
 
 ## 3. Format compatibility

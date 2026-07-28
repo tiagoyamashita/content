@@ -31,6 +31,13 @@ Models reflect training data biases. For HR, lending, medical, or legal-adjacent
 
 Malicious **content you paste** (email, webpage, doc) may say “ignore previous instructions.”
 
+```mermaid
+flowchart LR
+  Untrusted[Untrusted text] --> Delim[Delimit as data]
+  Delim --> Model[Model treats as content]
+  Model --> Agent[Agent with narrow scope]
+```
+
 | Mitigation |
 |------------|
 | Delimit untrusted text: `"""untrusted email"""` |

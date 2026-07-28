@@ -15,8 +15,16 @@ A model is only useful if performance on **new data** is known and **honest**. T
 | **Validation** | 10–20% | Tune hyperparameters; pick model |
 | **Test** | 10–20% | **Once**, final unbiased estimate |
 
-```text
-!! Never tune on the test set — it becomes validation by accident.
+Never tune on the test set — it becomes validation by accident.
+
+```mermaid
+flowchart LR
+  Data[Dataset] --> Train[Train 60–80%]
+  Data --> Val[Validation 10–20%]
+  Data --> Test[Test 10–20%]
+  Train --> Fit[Fit parameters]
+  Val --> Tune[Tune hyperparams]
+  Test --> Final[Final score once]
 ```
 
 **Time-series:** split by **time** — train on past, validate/test on future. Random shuffle leaks future into past.

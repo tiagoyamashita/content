@@ -18,6 +18,13 @@ Deep dive on **trust, privacy & verify** — split into focused notes below.
 Trust, privacy and verify
 AI tools are **fast and fluent** — not automatically **true**, **private**, or **allowed** for your workplace. This note is the minimum every **user** should practice.
 
+```mermaid
+flowchart LR
+  Output[AI output] --> Verify[Verify facts]
+  Verify --> Privacy[Check privacy]
+  Privacy --> Limits[Respect limits]
+```
+
 ## Study order
 
 [Hallucinations & verification](ii-hallucinations-and-verification.md) → [Privacy & enterprise data](iii-privacy-enterprise-data.md) → [Agents, injection & limits](iv-agents-injection-limits.md)

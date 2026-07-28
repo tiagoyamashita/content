@@ -8,6 +8,13 @@ Plan your server
 
 Before writing code, decide **what the agent may do** and **what it must never do**. MCP servers are small connectors — not full applications.
 
+```mermaid
+flowchart TD
+  Scope[One integration] --> Tools[1–8 clear tools]
+  Tools --> Auth[Env-based secrets]
+  Auth --> Transport[stdio or HTTP]
+```
+
 ## 1. One server, one integration
 
 | Good | Avoid |

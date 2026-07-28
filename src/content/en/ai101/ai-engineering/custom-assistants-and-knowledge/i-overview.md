@@ -18,6 +18,12 @@ Deep dive on **custom assistants & knowledge** — split into focused notes belo
 Custom assistants and knowledge
 Products let you attach **your** documents and **standing instructions** so AI answers like a teammate who read the handbook — without fine-tuning models yourself.
 
+```mermaid
+flowchart LR
+  You[You] -->|instructions + files| Asst[Custom assistant]
+  Asst -->|grounded reply| You
+```
+
 ## Study order
 
 [Products & building assistants](ii-products-and-building-assistants.md) → [RAG & knowledge libraries](iii-rag-and-knowledge-libraries.md) → [Memory & governance](iv-memory-and-governance.md)

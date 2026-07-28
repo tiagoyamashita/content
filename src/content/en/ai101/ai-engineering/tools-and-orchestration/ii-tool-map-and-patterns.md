@@ -8,6 +8,14 @@ Tool map
 
 ## 1. Tool map
 
+```mermaid
+flowchart TB
+  Chat[General chat] --> Use[Writing / analysis]
+  IDE[IDE / code] --> Code[Implementation]
+  Office[Office / enterprise] --> Tenant[M365 / Workspace]
+  Auto[Automation] --> Chain[Trigger → AI → action]
+```
+
 | Category | Examples | Best for |
 |----------|----------|----------|
 | **General chat** | ChatGPT, Claude, Gemini | Writing, analysis, brainstorming |

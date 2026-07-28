@@ -55,13 +55,16 @@ Agent reads log and summarizes
 
 ## User-only flow
 
-```text
-User opens chat
-  → AGENTS.md loads (background briefing)
-  → User: "review my PR"
-  → pr-review-lite skill loads
-  → Agent reviews per SKILL.md
-  → (no hook, no commit gate)
+```mermaid
+sequenceDiagram
+  participant User
+  participant AGENTS as AGENTS.md
+  participant Skill as pr-review-lite
+  participant Agent
+  User->>AGENTS: session start
+  User->>Skill: "review my PR"
+  Skill->>Agent: checklist
+  Agent-->>User: review output
 ```
 
 ## When to use skills alone

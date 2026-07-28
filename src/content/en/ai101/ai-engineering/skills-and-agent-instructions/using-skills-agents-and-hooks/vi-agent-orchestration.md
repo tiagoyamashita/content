@@ -12,28 +12,12 @@ This folder is a **project-level orchestration** guide. For product-wide pattern
 
 ## Orchestration stack (bottom → top)
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│  Human — goal, approval, parameters                          │
-└────────────────────────────┬────────────────────────────────┘
-                             │
-┌────────────────────────────▼────────────────────────────────┐
-│  AGENTS.md — always-on context (stack, tests, skill index)   │
-└────────────────────────────┬────────────────────────────────┘
-                             │ every session
-┌────────────────────────────▼────────────────────────────────┐
-│  Hooks — event gates (commit, shell, edit, stop)             │
-│  Deterministic; no LLM required                              │
-└────────────────────────────┬────────────────────────────────┘
-                             │ allow / deny / follow-up
-┌────────────────────────────▼────────────────────────────────┐
-│  Skills — route workflows by user intent (description match) │
-└────────────────────────────┬────────────────────────────────┘
-                             │
-┌────────────────────────────▼────────────────────────────────┐
-│  Scripts + MCP — act on repo / external systems              │
-│  JSON logs back to agent for summarize / loop                │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart BT
+  Human[Human — goal + approval] --> AG[AGENTS.md]
+  AG --> Hooks[Hooks — gates]
+  Hooks --> Skills[Skills — workflows]
+  Skills --> Act[Scripts + MCP]
 ```
 
 | Layer | Orchestrates | Example |
@@ -58,10 +42,17 @@ No hook. User drives timing. See [Skills alone](ii-use-skills-alone.md).
 
 ### 2. Gate then explain (hook + companion skill)
 
-```text
-git commit → hook DENY → log written
-User asks  → hook-failure-help / secrets-scan-help skill
-User fixes → retry commit → hook ALLOW
+```mermaid
+sequenceDiagram
+  participant User
+  participant Hook
+  participant Skill
+  User->>Hook: git commit
+  Hook-->>User: DENY + log
+  User->>Skill: why did commit fail?
+  Skill-->>User: explain + fix steps
+  User->>Hook: retry commit
+  Hook-->>User: ALLOW
 ```
 
 Hook enforces; skill narrates. See [Hooks on commit](iv-use-hooks-on-commit.md).

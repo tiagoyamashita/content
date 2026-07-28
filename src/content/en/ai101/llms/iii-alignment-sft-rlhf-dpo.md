@@ -7,6 +7,15 @@ order: 3
 Alignment — SFT, RLHF, and DPO
 Pre-trained models predict **likely** text — not necessarily **helpful** or **safe**. **Alignment** trains behaviour users expect from assistants.
 
+```mermaid
+flowchart LR
+  Base[Pre-trained base] --> SFT[SFT]
+  SFT --> RLHF[RLHF]
+  SFT --> DPO[DPO]
+  RLHF --> Chat[Chat model]
+  DPO --> Chat
+```
+
 ## 1. Supervised fine-tuning (SFT)
 
 Fine-tune on curated **(instruction, response)** pairs.

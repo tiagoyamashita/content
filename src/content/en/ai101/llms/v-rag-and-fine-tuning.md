@@ -9,27 +9,29 @@ Two ways to add **domain knowledge** and **behaviour** without full pre-training
 
 ## 1. RAG — Retrieval-Augmented Generation
 
-```text
-1. Embed documents → vector store (pgvector, Pinecone, OpenSearch k-NN)
-2. User question → embed query → nearest-neighbour search
-3. Inject top-k chunks into prompt as context
-4. LLM generates answer grounded in chunks
+```mermaid
+flowchart LR
+  Docs[Documents] --> Emb[Embed]
+  Emb --> Store[Vector store]
+  Q[Question] --> Search[Similarity search]
+  Store --> Search
+  Search --> Prompt[Prompt + chunks]
+  Prompt --> LLM[LLM]
+  LLM --> Ans[Answer]
 ```
 
-```plantuml
-@startuml
-actor User
-participant "App" as A
-database "Vector store" as V
-participant "LLM" as L
-
-User -> A: question
-A -> V: similarity search
-V --> A: top-k chunks
-A -> L: prompt = system + chunks + question
-L --> A: answer
-A --> User: answer + citations
-@enduml
+```mermaid
+sequenceDiagram
+  actor User
+  participant App
+  participant Vector as Vector store
+  participant LLM
+  User->>App: question
+  App->>Vector: similarity search
+  Vector-->>App: top-k chunks
+  App->>LLM: system + chunks + question
+  LLM-->>App: answer
+  App-->>User: answer + citations
 ```
 
 | Pros | Cons |
