@@ -22,6 +22,12 @@ How MCP works
 
 You configure them once; the agent **calls tools** the server exposes. This note explains **how that connection works** — API, gRPC, or something else.
 
+```mermaid
+flowchart LR
+  Host[Host e.g. Cursor] <-->|JSON-RPC| Server[MCP server]
+  Server --> API[External API]
+```
+
 ## Study order
 
 [JSON-RPC & transports](ii-json-rpc-and-transports.md) → [End-to-end flow & LLM](iii-end-to-end-flow-and-llm.md) → [MCP vs connectors & security](iv-mcp-vs-connectors-and-security.md) → [Vector DB, skills & reference](v-vector-db-skills-and-reference.md)

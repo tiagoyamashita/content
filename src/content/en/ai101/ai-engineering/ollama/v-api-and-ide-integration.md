@@ -8,6 +8,13 @@ API & IDE integration
 
 Ollama exposes an **OpenAI-compatible** HTTP API so IDEs and tools work with a local model instead of a cloud API.
 
+```mermaid
+flowchart LR
+  IDE[Cursor / Continue] -->|/v1/chat| Ollama[Ollama :11434]
+  Ollama --> Model[Loaded model]
+  Model --> IDE
+```
+
 ## 1. Base URL and auth
 
 | Setting | Value |

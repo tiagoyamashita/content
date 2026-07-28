@@ -23,8 +23,11 @@ This track is for **practitioners** who want to go beyond hosted chat apps. For 
 
 ## Mental model
 
-```text
-Hugging Face repo  →  weights on disk  →  runtime (Ollama / llama.cpp / vLLM / …)  →  API or UI
+```mermaid
+flowchart LR
+  HF[Hugging Face repo] --> Disk[Weights on disk]
+  Disk --> Runtime[Ollama / llama.cpp / vLLM]
+  Runtime --> API[API or UI]
 ```
 
 | Step | You decide |

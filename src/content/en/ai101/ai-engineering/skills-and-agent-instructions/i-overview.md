@@ -30,6 +30,19 @@ This is for **people who use agents daily** — especially **Cursor**, **Claude 
 
 Use both: skills tell the agent *your process*; MCP gives it *live access*. See [How MCP works](../how-mcp-works/i-overview.md).
 
+```mermaid
+flowchart TB
+  subgraph Repo[Project — git]
+    PS[.cursor/skills/]
+    AG[AGENTS.md]
+  end
+  subgraph Home[Personal — ~/.cursor/skills/]
+    US[my-commit-style]
+  end
+  Repo --> Agent[Agent]
+  Home --> Agent
+```
+
 ## Project skills vs personal (user) skills
 
 Cursor (and Claude Code) load skills from **two different places**. The rule is simple: **team process → repo**; **your habits → home folder**.

@@ -8,6 +8,13 @@ Models — pull & manage
 
 Models are referenced by **tags** (`model:variant`). Ollama downloads weights on first `pull` and caches them locally.
 
+```mermaid
+flowchart LR
+  Pull[ollama pull] --> List[ollama list]
+  List --> Run[ollama run]
+  Run --> Rm[ollama rm]
+```
+
 ## 1. Pull models
 
 ```bash

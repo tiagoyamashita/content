@@ -17,9 +17,10 @@ Artifacts & why bother
 
 Think of skills as **onboarding docs for the agent** — short, actionable, trigger-aware.
 
-```text
-You (once)  →  write SKILL.md / rules / AGENTS.md
-Agent (each task)  →  loads matching instructions  →  fewer retries
+```mermaid
+flowchart LR
+  You[Write SKILL.md once] --> Load[Agent loads on match]
+  Load --> Task[Fewer retries per task]
 ```
 
 **Promotion rule:** if you have typed the same instruction **three times**, move it to a skill, rule, or `AGENTS.md`. See [Persistent instructions](../loop-prompting/iii-persistent-instructions.md).
@@ -73,12 +74,12 @@ Deep domain doc (one feature area) linked from AGENTS.md?
 
 ## 4. Layering (use together)
 
-```text
-AGENTS.md          ← baseline: stack, commands, layout (always relevant)
-  ├── rules/*.mdc  ← style when editing matching files
-  ├── SKILL.md     ← heavy workflows on demand (instructions in markdown)
-  ├── scripts/     ← executable files; SKILL.md points at path — not embedded in .md
-  └── docs/*.md    ← optional deep context, linked not pasted
+```mermaid
+flowchart TB
+  AG[AGENTS.md] --> Rules[rules/*.mdc]
+  AG --> Skill[SKILL.md]
+  AG --> Scripts[scripts/]
+  AG --> Docs[docs/*.md]
 ```
 
 Do **not** paste the entire skill into `AGENTS.md` — link to it. Keep `AGENTS.md` under ~2–3 screens; Codex enforces a size cap by default.

@@ -43,6 +43,14 @@ Turn 4: verify against source
 
 Syntax varies by product; the idea is universal: **arm → wake → act → re-arm** until you stop.
 
+```mermaid
+flowchart LR
+  Arm[Arm loop] --> Wake[Wake on timer/event]
+  Wake --> Act[Run prompt]
+  Act --> ReArm[Re-arm]
+  ReArm -.-> Wake
+```
+
 ## 3. Event-driven loop (watcher)
 
 Instead of blind polling, wake when something **changes**:

@@ -18,8 +18,14 @@ Two specialised architectures before **transformers** dominated: **CNNs** for **
 | **Pooling** (max/avg) | Downsample; translation tolerance |
 | **Flatten + Dense** | Classify from high-level maps |
 
-```text
-[Conv → ReLU → Pool] × N → Flatten → Dense → logits
+```mermaid
+flowchart LR
+  Conv[Conv] --> ReLU[ReLU]
+  ReLU --> Pool[Pool]
+  Pool --> Stack[Repeat N]
+  Stack --> Flat[Flatten]
+  Flat --> Dense[Dense]
+  Dense --> Logits[logits]
 ```
 
 ### Why CNNs for images
@@ -40,9 +46,14 @@ Random flip, crop, colour jitter — cheap regularisation for vision.
 
 **Idea:** maintain **hidden state** **hₜ** updated at each time step:
 
-```text
-hₜ = f(hₜ₋₁, xₜ)
-yₜ = g(hₜ)
+```mermaid
+flowchart LR
+  X1[x₁] --> H1[h₁]
+  H0[h₀] --> H1
+  H1 --> Y1[y₁]
+  X2[x₂] --> H2[h₂]
+  H1 --> H2
+  H2 --> Y2[y₂]
 ```
 
 Memory of prior inputs — for language, sensor streams.

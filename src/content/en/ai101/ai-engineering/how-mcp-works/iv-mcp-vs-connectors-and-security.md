@@ -16,6 +16,17 @@ MCP vs connectors & security
 
 MCP’s value is **one connector format** many hosts can reuse — same GitHub server for Cursor and Claude Desktop.
 
+```mermaid
+flowchart TB
+  subgraph Hosts[AI hosts]
+    Cursor
+    Claude[Claude Desktop]
+  end
+  MCP[MCP server] --> Hosts
+  Native[Native connector] --> ChatGPT
+  REST[Custom REST] --> App[Your app]
+```
+
 ## 9. Security (user checklist)
 
 | Risk | Mitigation |

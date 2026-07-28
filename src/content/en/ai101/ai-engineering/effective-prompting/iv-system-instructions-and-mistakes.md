@@ -17,6 +17,12 @@ System instructions & mistakes
 
 Put **stable** rules in system/project instructions; put **this task’s** content in the user message.
 
+```mermaid
+flowchart TB
+  Sys[System / project instructions] -.->|always loaded| Model[Model]
+  User[User message — this task] --> Model
+```
+
 ## 6. Common mistakes
 
 | Mistake | Fix |

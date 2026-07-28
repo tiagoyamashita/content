@@ -14,14 +14,14 @@ Chat, assistant & agent
 | **Assistant** | Question + saved docs/instructions | Reply grounded in your knowledge |
 | **Agent** | **Goal** | Plan → act → observe → repeat until done or blocked |
 
-```text
-Goal: "Find last quarter's churn drivers from these CSVs and slide outline"
-
-Agent loop:
-  1. Inspect files
-  2. Run analysis / search
-  3. Draft outline
-  4. Ask you one clarifying question OR deliver
+```mermaid
+flowchart TD
+  G[Goal + CSVs] --> I[Inspect files]
+  I --> R[Run analysis]
+  R --> D[Draft outline]
+  D --> Q{Blocked?}
+  Q -->|yes| Ask[Ask clarifying Q]
+  Q -->|no| Done[Deliver]
 ```
 
 ## 2. What “agentic orchestration” means for users
@@ -60,8 +60,12 @@ A --> You: deliverable
 
 You do not modify model weights. You **expose capabilities** the product wires into the tool-calling loop.
 
-```text
-You enable tools  →  host registers tool names + descriptions  →  LLM picks tool  →  host runs it  →  result back to LLM
+```mermaid
+flowchart LR
+  You[Enable tools] --> Host[Host registers]
+  Host --> LLM[LLM picks tool]
+  LLM --> Run[Host runs]
+  Run --> Result[Result to LLM]
 ```
 
 | What you add | What the LLM gains |

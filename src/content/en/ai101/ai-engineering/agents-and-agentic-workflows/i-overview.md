@@ -21,6 +21,12 @@ An **AI agent** (in products you use) is a model that ** pursues a goal over mul
 
 You do not deploy agents yourself; you **direct** them in Cursor, ChatGPT, Claude, Copilot, and automation platforms.
 
+```mermaid
+flowchart LR
+  Perceive[Perceive] --> Plan --> Act
+  Act -->|observe result| Perceive
+```
+
 ## Study order
 
 [Chat, assistant & agent](ii-chat-assistant-agent.md) → [Directing agents](iii-directing-agents.md) → [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) → [My setup](v-my-setup.md)

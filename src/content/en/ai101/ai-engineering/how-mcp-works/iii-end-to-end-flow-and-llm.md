@@ -38,15 +38,20 @@ H --> You: natural language answer
 
 **Almost — but not directly.** The MCP server sends JSON back to the **host’s MCP client**, not straight into the model API with no middle step. The **host** (Cursor, Claude Desktop) then **injects that result into the chat** as a **tool result**, and the **LLM reads it on the next turn**.
 
-```text
-1. You ask a question
-2. LLM (in host) says: "call tool search_issues"
-3. Host → MCP server (JSON-RPC request)
-4. MCP server → Linear API → gets data
-5. MCP server → Host (JSON-RPC response with tool output)
-6. Host adds "tool result" to conversation context
-7. LLM reads tool result → writes answer in plain English
-8. You see the final reply
+```mermaid
+sequenceDiagram
+  actor You
+  participant Host
+  participant LLM
+  participant MCP as MCP server
+  You->>Host: question
+  Host->>LLM: messages + tools
+  LLM->>Host: tool_call
+  Host->>MCP: JSON-RPC
+  MCP-->>Host: tool result
+  Host->>LLM: tool_result
+  LLM-->>Host: answer
+  Host-->>You: reply
 ```
 
 | Hop | What travels | Who sees it |

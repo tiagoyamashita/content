@@ -24,6 +24,14 @@ npx @modelcontextprotocol/inspector python /absolute/path/to/my-mcp-server/serve
 
 Fix schema and handler bugs here before opening Cursor.
 
+```mermaid
+flowchart LR
+  Code[Your server] --> Inspector[MCP Inspector]
+  Inspector --> Fix[Fix schema / handler]
+  Fix --> Cursor[Wire mcp.json]
+  Cursor --> Agent[Verify in agent]
+```
+
 ## 2. Local logging tips
 
 | Tip | Why |

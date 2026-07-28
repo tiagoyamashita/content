@@ -64,6 +64,13 @@ note right of M : Trained on (input, label) examples
 
 Most production tabular ML is **supervised**. Language and vision pre-training often use **self-supervised** objectives (labels derived from the data itself).
 
+```mermaid
+flowchart LR
+  Sup[Supervised] -->|labelled X, y| Pred[Predict y]
+  Unsup[Unsupervised] -->|X only| Struct[Find structure]
+  RL[Reinforcement] -->|agent + reward| Policy[Learn policy]
+```
+
 ## Minimal supervised experiment
 
 ```python

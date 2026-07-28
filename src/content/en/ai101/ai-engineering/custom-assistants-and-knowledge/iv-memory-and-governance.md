@@ -10,6 +10,14 @@ Memory & governance
 
 Some products **remember** facts across chats (“user prefers bullet points”).
 
+```mermaid
+flowchart LR
+  Fact[User states preference] --> Mem[Product memory]
+  Mem --> Later[Later chats]
+  Later -->|personalise| Reply[Reply]
+  Mem -->|wrong?| Fix[Correct or delete]
+```
+
 | Upside | Downside |
 |--------|----------|
 | Less repetition | Wrong memory persists — correct or delete |

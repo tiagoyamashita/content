@@ -18,14 +18,19 @@ Hooks on commit
 
 ## Commit hook flow
 
-```text
-User or agent types: git commit -m "..."
-  → beforeShellExecution hook fires
-  → secrets_scan.py reads stdin JSON
-  → scans staged files
-  → writes log to .cursor/hooks/logs/
-  → stdout: { "permission": "allow" | "deny" }
-  → exit 2 → commit blocked (if failClosed)
+```mermaid
+sequenceDiagram
+  participant User
+  participant Hook as secrets_scan.py
+  participant Git
+  User->>Git: git commit
+  Git->>Hook: beforeShellExecution
+  Hook->>Hook: scan staged files
+  alt deny
+    Hook-->>User: blocked + log
+  else allow
+    Hook-->>Git: proceed
+  end
 ```
 
 **Agent is not in the loop** unless the commit is blocked and the user asks why.

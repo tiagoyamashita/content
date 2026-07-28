@@ -25,6 +25,17 @@ Hallucinations & verification
 
 Treat AI like a **clever colleague who sometimes bluffs**.
 
+```mermaid
+flowchart TD
+  Out[Model output] --> Facts{Facts?}
+  Facts -->|yes| Source[Open primary source]
+  Facts -->|numbers| Sheet[Match spreadsheet]
+  Facts -->|code| Tests[Run tests]
+  Source --> Ship[Ship]
+  Sheet --> Ship
+  Tests --> Ship
+```
+
 ## 4. Verification checklist (before you ship)
 
 - [ ] Facts traced to a source **you** opened

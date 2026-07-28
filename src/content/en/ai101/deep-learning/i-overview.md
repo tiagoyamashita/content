@@ -26,6 +26,12 @@ Deep learning — overview
 
 Many production systems use **both** — gradient boosting on tabular features + neural net on text/images.
 
+```mermaid
+flowchart TB
+  ML[Classical ML] -->|tabular| Tab[Structured data]
+  DL[Deep learning] -->|images text audio| High[High-dim data]
+```
+
 ## Stack
 
 | Layer | Common tools |

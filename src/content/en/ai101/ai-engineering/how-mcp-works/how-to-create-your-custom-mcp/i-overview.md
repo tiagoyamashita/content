@@ -21,8 +21,11 @@ Read [How MCP works](../i-overview.md) first for JSON-RPC, stdio vs HTTP, and th
 
 ## What you are building
 
-```text
-Cursor (host)  →  MCP client  →  YOUR server (stdio)  →  your DB / API / script
+```mermaid
+flowchart LR
+  Cursor[Cursor host] --> Client[MCP client]
+  Client <-->|stdio| Yours[Your server]
+  Yours --> API[DB / API / script]
 ```
 
 | You write | Host handles |

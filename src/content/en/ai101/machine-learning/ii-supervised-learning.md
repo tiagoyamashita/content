@@ -7,6 +7,13 @@ order: 2
 Supervised learning
 Given labelled data **{(x₁, y₁), …, (xₙ, yₙ)}**, learn **f(x) → ŷ** that **generalises** to unseen **x**. Two main task types: **classification** (discrete y) and **regression** (continuous y).
 
+```mermaid
+flowchart TB
+  X[Features X] --> f[Model f]
+  f --> Class[Classification: discrete ŷ]
+  f --> Reg[Regression: continuous ŷ]
+```
+
 ## 1. Classification
 
 **y** is a discrete class — spam/not-spam, digit 0–9, churn yes/no.

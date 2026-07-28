@@ -15,8 +15,12 @@ Models can **memorise noise** (overfit) or **miss signal** (underfit). **Regular
 | Train low, test high | **Overfitting** (high variance) | Low | High |
 | Both low | Good fit | Low | Low |
 
-```text
-Simple model ──► underfit ──► sweet spot ──► overfit ──► very complex model
+```mermaid
+flowchart LR
+  Simple[Simple model] --> Under[Underfit]
+  Under --> Sweet[Sweet spot]
+  Sweet --> Over[Overfit]
+  Over --> Complex[Very complex]
 ```
 
 ## 2. Regularization
@@ -58,6 +62,12 @@ Always tune on **validation** (or inner CV fold), never test.
 ## 5. Learning curves
 
 Plot train vs val metric vs **training set size**:
+
+```mermaid
+flowchart LR
+  Bias[High bias] -->|val high gap small| MoreData[More data helps little]
+  Var[High variance] -->|val high large gap| Reg[More data or regularize]
+```
 
 | Curve shape | Meaning |
 |-------------|---------|

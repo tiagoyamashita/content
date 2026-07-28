@@ -9,12 +9,12 @@ Persistent instructions
 
 ## 1. Stack (pick what your tool supports)
 
-```text
-Assistant / Project instructions     →  who you are, tone, always-do rules
-Skills / saved workflows             →  how to run a process
-Rules / repo conventions             →  code style, file patterns
-Knowledge files / RAG                →  docs the model can retrieve
-Personal prompt library              →  templates you paste rarely
+```mermaid
+flowchart TB
+  A[Assistant / project instructions] --> S[Skills / workflows]
+  S --> R[Rules / conventions]
+  R --> K[Knowledge / RAG]
+  K --> P[Prompt library]
 ```
 
 | Layer | ChatGPT / Claude | Cursor / IDE |

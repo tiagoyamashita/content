@@ -8,11 +8,13 @@ Iteration & templates
 
 ## 3. Iteration loop (how pros work)
 
-```text
-1. Rough prompt → see output
-2. Fix ambiguity (“too long”, “wrong tone”, “missed section 3”)
-3. Add one constraint or example per iteration
-4. Save the prompt that worked (personal library)
+```mermaid
+flowchart LR
+  Draft[Rough prompt] --> See[See output]
+  See --> Fix[Fix ambiguity]
+  Fix --> Add[Add one constraint]
+  Add --> Save[Save template]
+  Save -.->|next task| Draft
 ```
 
 | Feedback to the model | Better than |
