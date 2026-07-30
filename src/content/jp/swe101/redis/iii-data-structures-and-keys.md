@@ -7,7 +7,7 @@ order: 3
 Redis — データ構造とキー
 
 
-Redis values are not only strings — pick the **type** that matches your access pattern. **Key design** and **TTL** matter as much as in [Key-value stores](../../CS101/databases/iii-key-value.md).
+Redis values are not only strings — pick the **type** that matches your access pattern. **Key design** and **TTL** matter as much as in [Key-value stores](../../cs101/databases/iii-key-value.md).
 
 ## 1. キーの命名
 

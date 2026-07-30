@@ -11,7 +11,7 @@ Redis — アプリの統合
 
 
 
-**接続プーリング**、**タイムアウト**、**重要な規則**を初日から使用してください。例は [Java / Spring Boot](../java/springboot/i-intro-and-project-layout.md) および [Python](../python/i-basics-and-syntax.md）。
+**接続プーリング**、**タイムアウト**、**重要な規則**を初日から使用してください。例は [Java / Spring Boot](../languages&frameworks/java/springboot/i-intro-and-project-layout.md) および [Python](../languages&frameworks/python/i-basics-and-syntax.md）。
 
 ## 1. Java — レタス (推奨)
 

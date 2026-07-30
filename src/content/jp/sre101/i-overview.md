@@ -64,5 +64,5 @@ flowchart TB
 | トラック | 重なり |
 |-------|---------|
 | [SWE101](../swe101/i-overview.md) | デプロイするアプリと API |
-| [CS101 ネットワーキング](../CS101/networking/i-tcp-udp-and-transport-basics.md) | クラウド LB の下にある L4/L7、DNS、TLS |
+| [CS101 ネットワーキング](../cs101/networking/i-tcp-udp-and-transport-basics.md) | クラウド LB の下にある L4/L7、DNS、TLS |
 | [Cybersecurity](../cybersecurity/i-overview.md) | アイデンティティ、シークレット、インシデント対応 |

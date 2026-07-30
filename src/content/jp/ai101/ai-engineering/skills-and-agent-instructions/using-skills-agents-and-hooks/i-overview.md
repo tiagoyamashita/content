@@ -1,0 +1,60 @@
+---
+label: "I"
+subtitle: "Overview"
+group: "Using skills, agents & hooks"
+order: 1
+---
+Using skills, agents & hooks — overview
+
+**Agent orchestration** at the project level: coordinate **AGENTS.md**, **skills**, **hooks**, and **scripts** so the right workflow runs at the right time. See [Agent orchestration](vi-agent-orchestration.md) for the full stack and patterns.
+
+Three different layers — **do not merge them into one file**. Each has its own trigger and job.
+
+| Layer | File(s) | When it runs | Who starts it |
+|-------|---------|--------------|---------------|
+| **Agent briefing** | `AGENTS.md` (repo root) | Every agent session in this repo | Cursor / Claude Code automatically |
+| **Skill** | `.cursor/skills/<name>/SKILL.md` | When user prompt matches `description` | **User** (or explicit skill invoke) |
+| **Hook** | `.cursor/hooks.json` + `.cursor/hooks/*` | On events: shell, commit, edit, stop | **Product** — no user prompt |
+
+```mermaid
+flowchart TB
+  AG[AGENTS.md] -->|every chat| Session[Agent session]
+  User[User: review PR] --> Skill[Skill loads]
+  Skill --> Session
+  User2[git commit] --> Hook[Hook runs]
+  Hook -->|deny| Block[Shell blocked]
+  Hook -->|allow| Session
+```
+
+## Map of this submenu
+
+| Note | Focus |
+|------|--------|
+| [Skills alone](ii-use-skills-alone.md) | On-demand workflows — user asks, skill loads |
+| [AGENTS.md alone](iii-use-agents-md-alone.md) | Standing repo context — no trigger phrase needed |
+| [Hooks on commit](iv-use-hooks-on-commit.md) | Automatic gates before `git commit` |
+| [Combine all three](v-combine-skills-agents-hooks.md) | End-to-end commit flow + when to use which |
+| [Agent orchestration](vi-agent-orchestration.md) | Full stack, patterns, loops, MCP + skills |
+
+**Runnable scripts + full hook implementation:** [Examples](../examples/i-overview.md) (copy `examples/.cursor/` to your project).
+
+**Sample files to copy:** [sample/.cursor/](sample/.cursor/README.md) — minimal `AGENTS.md`, skills, and `hooks.json` layout.
+
+## Quick picker
+
+| You want… | Use | Not |
+|-----------|-----|-----|
+| “Always know our test command” | `AGENTS.md` | Skill |
+| “Run PR review when I ask” | Skill | Hook |
+| “Block commit if `.env` staged” | Hook | Skill alone |
+| “Explain hook failure in chat” | Skill (companion) | Hook (hooks don’t chat) |
+
+## Study order
+
+[Skills alone](ii-use-skills-alone.md) → [AGENTS.md alone](iii-use-agents-md-alone.md) → [Hooks on commit](iv-use-hooks-on-commit.md) → [Combine all three](v-combine-skills-agents-hooks.md) → [Agent orchestration](vi-agent-orchestration.md).
+
+## Related
+
+- [Artifacts & why bother](../ii-artifacts-why-and-what.md)
+- [Cursor skills, rules & AGENTS.md](../iv-cursor-skills-rules-agents-md.md)
+- [Examples — parameterized scripts & logs](../examples/i-overview.md)
