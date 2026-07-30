@@ -1,4 +1,4 @@
-﻿---
+﻿﻿---
 label: "I"
 subtitle: "概要"
 group: "Artificial intelligence"
@@ -11,7 +11,7 @@ AI101 — overview
 
 | Submenu | Focus | Audience |
 |---------|--------|----------|
-| [**AI Applied**](ai-applied/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
+| [**AI Applied**](ai-engineering/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
 | [Machine learning](machine-learning/i-overview.md) | Supervised/unsupervised, evaluation, features | Builders & curious readers |
 | [Deep learning](deep-learning/i-overview.md) | Neural nets, CNNs, RNNs, transformers | Technical depth |
 | [LLMs](llms/i-overview.md) | Pre-training, alignment, RAG, fine-tuning | Engineers integrating LLMs |
@@ -29,7 +29,7 @@ flowchart LR
 
 | You want to… | Start here |
 |--------------|------------|
-| Write better prompts, use agents, stay safe | [AI Applied overview](ai-applied/i-overview.md) |
+| Write better prompts, use agents, stay safe | [AI Applied overview](ai-engineering/i-overview.md) |
 | Learn sklearn, metrics, workflows | [Machine learning overview](machine-learning/i-overview.md) |
 | Understand transformers and GPT | [Deep learning](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
 
@@ -49,6 +49,6 @@ Use **AI Applied** in parallel or first if you mainly interact with products, no
 |-------|---------|
 | [Python](../../swe101/python/i-basics-and-syntax.md) | pandas, scikit-learn, PyTorch |
 | [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
-| [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
+| [CS101 data structures](../../cs101/data-structures/i-array.md) | Vectors, matrices intuition |
 
-**Related:** [Skills & agent instructions](ai-applied/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-applied/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-applied/agents-and-agentic-workflows/i-overview.md).
+**Related:** [Skills & agent instructions](ai-engineering/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-engineering/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-engineering/agents-and-agentic-workflows/i-overview.md).

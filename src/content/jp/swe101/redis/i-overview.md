@@ -9,7 +9,7 @@ Redis — 概要
 
 **Redis** is an **in-memory data store** with optional persistence. It excels at **low-latency key access**, **TTL-based expiry**, and **atomic primitives** — cache, sessions, rate limits, pub/sub, and lightweight queues. It is usually **not** your system of record; pair it with [Postgres](../postgres/i-overview.md) or [MongoDB](../mongodb/i-overview.md).
 
-For key-value concepts (cache-aside, sessions, when not to use KV alone), see [Key-value stores](../../CS101/databases/iii-key-value.md).
+For key-value concepts (cache-aside, sessions, when not to use KV alone), see [Key-value stores](../../cs101/databases/iii-key-value.md).
 
 ## このトラックの地図
 

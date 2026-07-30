@@ -13,11 +13,11 @@ SWE101 — 概要
 | 領域 | このトラック内の例 |
 |------|-------------------------|
 | **バージョン管理** | [Git](git/i-overview.md) |
-| **言語** | [Java](java/intro/i-basics-and-syntax.md), [Python](python/i-basics-and-syntax.md), [Rust](rust/i-basics-and-toolchain.md) |
-| **フレームワーク** | [Spring Boot](java/springboot/i-intro-and-project-layout.md), [HTMX](htmx/i-overview.md) |
+| **言語** | [Java](languages&frameworks/java/intro/i-basics-and-syntax.md), [Python](languages&frameworks/python/i-basics-and-syntax.md), [Rust](languages&frameworks/rust/i-basics-and-toolchain.md) |
+| **フレームワーク** | [Spring Boot](languages&frameworks/java/springboot/i-intro-and-project-layout.md), [HTMX](languages&frameworks/htmx/i-overview.md) |
 | **バックエンドとデータ** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md), [PL/SQL](plsql/i-overview.md) |
 | **インフラとデリバリー** | [CDN](cdn/i-overview.md), [API gateway](api-gateway/i-overview.md) |
-| **設計** | [システム設計](sysdesign/scalable-patterns/i-overview.md), [PlantUML](plantuml/i-overview.md) |
+| **設計** | [システム設計](sysdesign/scalable-patterns/i-overview.md), [PlantUML](languages&frameworks/plantuml/i-overview.md) |
 
 ## 1. ソフトウェアの種類
 
@@ -30,7 +30,7 @@ SWE101 — 概要
 | **デスクトップ** | Windows / macOS / Linux | IDE、制作ツール、POS | Electron、.NET、Qt、Tauri | インストーラ、自動更新、ローカルファイル |
 | **API / バックエンド** | サーバ、コンテナ | REST/GraphQL、webhook | Spring Boot、FastAPI、Express など | 可用性、スケール、バージョニング、冪等性 |
 | **組み込み / ファームウェア** | MCU、デバイス | 家電、センサー、車載 | FreeRTOS、Zephyr など | メモリ制限、リアルタイム、安全 |
-| **CLI / 開発者ツール** | ターミナル、CI | `git`、ビルド、リンタ | Click、Cobra、Clap ([Rust](rust/i-basics-and-toolchain.md)) | スクリプト性、クロスプラットフォーム |
+| **CLI / 開発者ツール** | ターミナル、CI | `git`、ビルド、リンタ | Click、Cobra、Clap ([Rust](languages&frameworks/rust/i-basics-and-toolchain.md)) | スクリプト性、クロスプラットフォーム |
 | **バッチ / データパイプライン** | スケジューラ、Spark など | ETL、レポート、学習ジョブ | Spark、Airflow、dbt | スループット、コスト、正しさ |
 | **社内ツール** | 社内ネットワーク | サポート画面、運用ダッシュボード | Web と同じく React + Spring / HTMX など | SSO、監査ログ |
 | **プラットフォーム / インフラ** | クラウド、k8s | DB、キュー、CDN | Kubernetes、Terraform（**SRE101** 参照） | 信頼性、マルチテナント分離 |
@@ -115,8 +115,8 @@ flowchart LR
 
 | フェーズ | 役立つ SWE101 トピック |
 |-------|-------------------------|
-| **設計** | [システム設計](sysdesign/scalable-patterns/i-overview.md), [PlantUML](plantuml/i-overview.md) |
-| **実装** | 言語、[Java Spring Boot](java/springboot/i-intro-and-project-layout.md) |
+| **設計** | [システム設計](sysdesign/scalable-patterns/i-overview.md), [PlantUML](languages&frameworks/plantuml/i-overview.md) |
+| **実装** | 言語、[Java Spring Boot](languages&frameworks/java/springboot/i-intro-and-project-layout.md) |
 | **データ保存** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md) |
 | **統合と出荷** | [Git](git/i-overview.md), [API gateway](api-gateway/i-overview.md) |
 | **スケールと運用** | [CDN](cdn/i-overview.md), システム設計のボトルネック分析 |

@@ -69,7 +69,7 @@ Internet
 | **エグレスフィルタ** | 侵害されたアプリの外向き通信を制限 |
 | **WAF** | エッジで一般的な HTTP 攻撃をブロック |
 
-ネットワークの詳細: [CS101 ネットワーク](../CS101/networking/i-tcp-udp-and-transport-basics.md)。
+ネットワークの詳細: [CS101 ネットワーク](../cs101/networking/i-tcp-udp-and-transport-basics.md)。
 
 ## 5. ゼロトラスト（実践版）
 

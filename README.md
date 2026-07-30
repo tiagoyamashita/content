@@ -151,6 +151,7 @@ Python utilities under **`scripts/`** (stdlib + optional deps; run from repo roo
 | **`patch-graphify-folder-stats.py`** | Post-process `graphify-out/graph.html` to show **% of nodes per top folder** (AI101, SWE101, …) |
 | **`translate-content-ja.py`** | Translate English prose to Japanese under `src/content/jp/` |
 | **`sync-en-mermaid-to-jp.py`** | Copy Mermaid diagrams from paired English notes into Japanese notes |
+| **`sync-en-locale-to-jp.py`** | Align `jp/` tree with `en/` and translate English prose to Japanese |
 | **`migrate-ai-applied.py`** | One-off migration helpers for AI101 folder moves |
 | **`restore-content-en.py`** | Restore / repair English content from backups |
 

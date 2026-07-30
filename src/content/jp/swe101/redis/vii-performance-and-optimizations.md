@@ -132,6 +132,6 @@ DB書き込みが優勢な場合:
 
 ## 関連メモ
 
-- [キーと値のストア](../../CS101/databases/iii-key-value.md) — 概念的なパターン
+- [キーと値のストア](../../cs101/databases/iii-key-value.md) — 概念的なパターン
 - [パターンと使用例](iv-patterns-and-use-cases.md) — キャッシュアサイド、レート制限
 - [データベースの最適化 (MongoDB)](../mongodb/vii-database-optimizations.md) — ドキュメント ストアのチューニング
