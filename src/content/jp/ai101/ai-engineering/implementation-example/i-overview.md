@@ -1,27 +1,27 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Implementation examples — overview
-Hands-on notes for **running open models locally** — downloading weights from Hugging Face, picking a runtime, sizing RAM, and using CPU-friendly runners when you do not have a large GPU.
+実装例 — 概要
+**オープン モデルをローカルで実行する**に関する実践的なメモ — Hugging Face からのウェイトのダウンロード、ランタイムの選択、RAM のサイズ設定、および大規模な GPU がない場合の CPU 対応ランナーの使用。
 
-This track is for **practitioners** who want to go beyond hosted chat apps. For how models work conceptually, see [LLMs](../../llms/i-overview.md).
+このトラックは、ホスト型チャット アプリの枠を超えたい**実践者**向けです。モデルが概念的にどのように機能するかについては、[LLMs]( を参照してください)../../llms/i-overview.md）。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [Downloading from Hugging Face](ii-downloading-from-huggingface.md) | CLI, Git LFS, auth, and what you actually get |
-| [Local run platforms](iii-local-run-platforms.md) | Ollama, llama.cpp, LM Studio, vLLM, and more — pros and cons |
-| [Model RAM requirements](iv-model-ram-requirements.md) | Quantization, context length, and sizing tables |
-| [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) | airLLM, llama.cpp CPU, MLX, and trade-offs |
-| [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) | Per-platform install, GPU verify, and model picks for 8 GB VRAM |
-| [TurboVec + Ollama + local files](vii-turbovec-ollama-local-files.md) | Local RAG — index your files, compressed vectors, no cloud |
-| [Ollama](../ollama/i-overview.md) | Full Ollama track — install through troubleshooting |
+|注 |フォーカス |
+|------|----------|
+| [ハグフェイスからダウンロード](ii-downloading-from-huggingface.md) | CLI、Git LFS、認証、および実際に得られるもの |
+| [ローカル実行プラットフォーム](iii-local-run-platforms.md) | Ollama、llama.cpp、LM Studio、vLLM など — 長所と短所 |
+| [モデル RAM の要件](iv-model-ram-requirements.md) |量子化、コンテキストの長さ、およびサイジング テーブル |
+| [CPU と軽量ランナー](v-cpu-and-lightweight-runners.md) | airLLM、llama.cpp CPU、MLX、およびトレードオフ |
+| [RTX 1080 にインストールして実行](vi-install-and-run-rtx-1080.md) |プラットフォームごとのインストール、GPU 検証、および 8 GB VRAM のモデル選択 |
+| [TurboVec + Ollama + ローカル ファイル](vii-turbovec-ollama-local-files.md) |ローカル RAG — ファイル、圧縮ベクトル、クラウドなしのインデックス作成 |
+| [Ollama](../ollama/i-overview.md) |完全な Ollama トラック — トラブルシューティングを通じてインストール |
 
-## Mental model
+## メンタルモデル
 
 ```mermaid
 flowchart LR
@@ -30,23 +30,23 @@ flowchart LR
   Runtime --> API[API or UI]
 ```
 
-| Step | You decide |
-|------|------------|
-| **Model** | Size, license, chat vs code, quantization (Q4, Q8, …) |
-| **Runtime** | Ease of use vs throughput vs GPU requirement |
-| **Hardware** | RAM for weights + KV cache; VRAM if using GPU |
+|ステップ |あなたが決める |
+|------|-----------|
+| **モデル** |サイズ、ライセンス、チャットとコード、量子化 (Q4、Q8、…) |
+| **ランタイム** |使いやすさ、スループット、GPU 要件 |
+| **ハードウェア** |重みの RAM + キャッシュの KV。 GPU を使用する場合は VRAM |
 
-**Default coding pick:** **Qwen2.5-Coder 7B** (`ollama pull qwen2.5-coder:7b`) — open license, no HF gating, fits 8 GB GPUs. See [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+**デフォルトのコーディング選択:** **Qwen2.5-Coder 7B** (`ollama pull qwen2.5-coder:7b`) — オープンライセンス、HF ゲートなし、8 つの GB GPU に適合します。 [ハグフェイスからダウンロードする](ii-downloading-from-huggingface.md）。
 
-## Study order
+## 勉強の順番
 
-[Downloading from Hugging Face](ii-downloading-from-huggingface.md) → [Local run platforms](iii-local-run-platforms.md) → [Model RAM requirements](iv-model-ram-requirements.md) → [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) → [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) → [TurboVec + Ollama + local files](vii-turbovec-ollama-local-files.md)
+[ハグフェイスからダウンロード](ii-downloading-from-huggingface.md) → [ローカル実行プラットフォーム](iii-local-run-platforms.md) → [モデル RAM の要件](iv-model-ram-requirements.md) → [CPU & 軽量ランナー](v-cpu-and-lightweight-runners.md) → [RTX 1080 にインストールして実行](vi-install-and-run-rtx-1080.md) → [TurboVec + Ollama + ローカル ファイル](vii-turbovec-ollama-local-files.md）
 
-## When to run locally vs use an API
+## ローカルで実行する場合と API を使用する場合
 
-| Run locally | Use a hosted API |
-|-------------|------------------|
-| Data must stay on your machine | You want the newest frontier models |
-| Predictable cost at high volume | No GPU/RAM to manage |
-| Offline or air-gapped | You need minimal setup time |
-| Fine-tuned or niche open weights | Compliance allows cloud inference |
+|ローカルで実行 |ホストされた API を使用する |
+|-----------|------|
+|データはマシン上に保存する必要があります |最新のフロンティアモデルが欲しい |
+|大量生産時の予測可能なコスト | GPU/RAM を管理する必要がない |
+|オフラインまたはエアギャップ |セットアップに必要な時間は最小限です |
+|微調整またはニッチなオープンウェイト |コンプライアンスによりクラウド推論が可能 |
