@@ -1,14 +1,14 @@
 ---
 label: "V"
-subtitle: "Test & wire into Cursor"
+subtitle: "テストして Cursor に配線する"
 group: "How to create your custom MCP"
 order: 5
 ---
-Test & wire into Cursor
+テストして Cursor に配線する
 
-## 1. MCP Inspector (fastest feedback)
+## 1. MCP インスペクター (最速のフィードバック)
 
-The official **MCP Inspector** talks to your server over stdio without Cursor:
+公式 **MCP インスペクター** は、Cursor を使用せずに標準入出力経由でサーバーと通信します。
 
 ```bash
 npx @modelcontextprotocol/inspector node /absolute/path/to/my-mcp-server/dist/index.js
@@ -16,13 +16,13 @@ npx @modelcontextprotocol/inspector node /absolute/path/to/my-mcp-server/dist/in
 npx @modelcontextprotocol/inspector python /absolute/path/to/my-mcp-server/server.py
 ```
 
-| Inspector UI | What to verify |
+|検査官 UI |何を確認するか |
 |--------------|----------------|
-| **Tools** tab | All tools listed with schemas |
-| **Call tool** | Run `echo` with sample args — check response |
-| **Logs** | JSON-RPC errors, stack traces |
+| **ツール** タブ |すべてのツールがスキーマとともにリストされています |
+| **ツールの呼び出し** |走る`echo`サンプル引数を使用して — 応答を確認します。
+| **ログ** | JSON-RPC エラー、スタック トレース |
 
-Fix schema and handler bugs here before opening Cursor.
+Cursor を開く前に、ここでスキーマとハンドラーのバグを修正してください。
 
 ```mermaid
 flowchart LR
@@ -32,21 +32,21 @@ flowchart LR
   Cursor --> Agent[Verify in agent]
 ```
 
-## 2. Local logging tips
+## 2. ローカルログのヒント
 
-| Tip | Why |
+|ヒント |なぜ |
 |-----|-----|
-| **Never `console.log` to stdout** in stdio servers | stdout is the JSON-RPC wire — corrupts protocol |
-| Log to **stderr** | `console.error(...)` / `logging` to stderr is safe |
-| Log tool name + duration | Debug slow API calls |
+| **一度もない`console.log`stdio サーバーの stdout** へ | stdout は JSON-RPC ワイヤです - プロトコルが破損します |
+| **stderr** にログを記録する |`console.error(...)`/`logging`標準エラー出力は安全です。
+|ログツール名 + 期間 |遅い API 呼び出しをデバッグする |
 
 ```typescript
 console.error(`[get_issue] id=${issue_id} duration_ms=${Date.now() - t0}`);
 ```
 
-## 3. Cursor `mcp.json`
+## 3. Cursor`mcp.json`
 
-Project-level (committed for team) — `.cursor/mcp.json`:
+プロジェクトレベル (チームにコミット) —`.cursor/mcp.json`:
 
 ```json
 {
@@ -62,7 +62,7 @@ Project-level (committed for team) — `.cursor/mcp.json`:
 }
 ```
 
-Python example:
+Python の例:
 
 ```json
 {
@@ -78,19 +78,19 @@ Python example:
 }
 ```
 
-| Field | Notes |
-|-------|-------|
-| `command` | Executable — use absolute paths for venv `python` |
-| `args` | Script path as first arg |
-| `env` | Secrets — prefer user-level overrides for real keys |
+|フィールド |メモ |
+|------|------|
+|`command`|実行可能ファイル — venv には絶対パスを使用します`python`|
+|`args`|最初の引数としてスクリプト パス |
+|`env`|シークレット - 実際のキーのユーザーレベルの上書きを優先します。
 
-**User-global** config also works: Cursor Settings → MCP → add server (same shape).
+**ユーザー グローバル** 構成も機能します: Cursor 設定 → MCP → サーバーを追加 (同じ形状)。
 
-After saving, **restart MCP** or reload Cursor — then check MCP status in the IDE.
+保存後、**MCP** を再起動するか、Cursor をリロードし、IDE で MCP のステータスを確認します。
 
-## 4. npm-linked TypeScript server
+## 4. npm にリンクされた TypeScript サーバー
 
-During development:
+開発中:
 
 ```json
 {
@@ -104,25 +104,25 @@ During development:
 }
 ```
 
-Or publish locally: `npm link` and `"command": "my-mcp-server"`.
+またはローカルに公開します。`npm link`そして`"command": "my-mcp-server"`。
 
-## 5. Verify in Cursor
+## 5. Cursor で確認する
 
-1. Open chat / agent mode.
-2. Ask: *“Use the echo tool to say hello”* — or a real tool like `search_issues`.
-3. Confirm the agent invokes your server (MCP tool call in UI).
-4. If tools missing: check MCP panel for connection errors.
+1. チャット/エージェントモードを開きます。
+2. 質問します: *「挨拶するにはエコー ツールを使用してください」* — または次のような実際のツールを使用します。`search_issues`。
+3. エージェントがサーバーを呼び出すことを確認します (UI の MCP ツール呼び出し)。
+4. ツールが不足している場合: MCP パネルで接続エラーがないか確認します。
 
-| Symptom | Fix |
-|---------|-----|
-| Server disconnected | Wrong path; rebuild `dist/`; missing shebang `#!/usr/bin/env node` |
-| No tools listed | Server crash on startup — run via Inspector |
-| Tool call fails | stderr logs; return `isError` with message |
-| Env not set | Add `env` block; restart MCP |
+|症状 |修正 |
+|----------|-----|
+|サーバーが切断されました |間違った道です。再構築する`dist/`;行方不明のシバン`#!/usr/bin/env node`|
+|ツールがリストされていません |起動時にサーバーがクラッシュする - インスペクター経由で実行 |
+|ツール呼び出しが失敗する |標準エラーログ。戻る`isError`メッセージ付き |
+|環境が設定されていません |追加`env`ブロック; MCP を再起動します。
 
-## 6. Claude Desktop (optional)
+## 6. クロードデスクトップ (オプション)
 
-`claude_desktop_config.json` (macOS/Linux path varies):
+`claude_desktop_config.json`(macOS/Linux パスは異なります):
 
 ```json
 {
@@ -135,12 +135,12 @@ Or publish locally: `npm link` and `"command": "my-mcp-server"`.
 }
 ```
 
-Same server binary — one implementation, multiple hosts.
+同じサーバーバイナリ — 1 つの実装、複数のホスト。
 
-## 7. HTTP transport (team server)
+## 7. __​​IT0__ トランスポート (チームサーバー)
 
-For remote shared MCP, deploy with Streamable HTTP per spec — out of scope for first version; start stdio locally, extract HTTP when you need a shared instance. See [JSON-RPC & transports](../ii-json-rpc-and-transports.md).
+リモート共有 MCP の場合は、仕様ごとに Streamable HTTP を使用してデプロイします。最初のバージョンの範囲外です。 stdio をローカルで起動し、共有インスタンスが必要な場合は HTTP を抽出します。 [JSON-RPC とトランスポート](を参照してください)../ii-json-rpc-and-transports.md）。
 
-## Next
+＃＃ 次
 
-[Security & distribution](vi-security-and-distribution.md) — ship to your team safely.
+[セキュリティと配布](vi-security-and-distribution.md) — チームに安全に発送します。

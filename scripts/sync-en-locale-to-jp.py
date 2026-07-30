@@ -204,13 +204,37 @@ def google_translate_http(text: str, sl: str = "en", tl: str = "ja") -> str:
 
 
 def get_translator():
+    backends = []
     try:
         from deep_translator import GoogleTranslator
 
         t = GoogleTranslator(source="en", target="ja")
-        return lambda s: t.translate(s)
+        backends.append(("deep", lambda s: t.translate(s)))
     except ImportError:
-        return google_translate_http
+        pass
+    try:
+        from deep_translator import MyMemoryTranslator
+
+        mm = MyMemoryTranslator(source="en-US", target="ja-JP")
+        backends.append(("mymemory", lambda s: mm.translate(s)))
+    except Exception:
+        pass
+    backends.append(("http", google_translate_http))
+
+    def translate(s: str) -> str:
+        last_err: Exception | None = None
+        for name, fn in backends:
+            try:
+                out = fn(s)
+                if out is None:
+                    raise RuntimeError(f"{name} returned None")
+                return out
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                continue
+        raise RuntimeError(f"all translators failed: {last_err}")
+
+    return translate
 
 
 def looks_japanese(text: str) -> bool:

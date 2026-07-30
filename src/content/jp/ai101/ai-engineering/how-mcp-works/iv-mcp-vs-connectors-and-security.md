@@ -1,20 +1,20 @@
 ---
 label: "IV"
-subtitle: "MCP vs connectors & security"
+subtitle: "MCP 対コネクタおよびセキュリティ"
 group: "AI Applied"
 order: 4
 ---
-MCP vs connectors & security
+MCP 対コネクタおよびセキュリティ
 
-## 8. MCP vs “built-in connector” vs REST
+## 8. MCP 対「内蔵コネクタ」対 REST
 
-| Approach | Who builds it | Wire to AI host |
-|----------|---------------|-----------------|
-| **MCP server** | Community or vendor | JSON-RPC (stdio/HTTP) |
-| **Native integration** | ChatGPT/Anthropic/Microsoft | Vendor-specific API |
-| **Custom REST in your app** | Your backend | Your code — not MCP unless you wrap it |
+|アプローチ |誰がそれを構築するのか | AI ホストに接続する |
+|----------|------|------|
+| **MCP サーバー** |コミュニティまたはベンダー | JSON-RPC (stdio/HTTP) |
+| **ネイティブ統合** | ChatGPT/人類/マイクロソフト |ベンダー固有の API |
+| **アプリ内のカスタム REST** |あなたのバックエンド |コード — ラップしない限り MCP ではありません |
 
-MCP’s value is **one connector format** many hosts can reuse — same GitHub server for Cursor and Claude Desktop.
+MCP の値は、多くのホストで再利用できる **1 つのコネクタ形式** です。Cursor と Claude Desktop には同じ GitHub サーバーが使用されます。
 
 ```mermaid
 flowchart TB
@@ -27,14 +27,14 @@ flowchart TB
   REST[Custom REST] --> App[Your app]
 ```
 
-## 9. Security (user checklist)
+## 9. セキュリティ (ユーザーチェックリスト)
 
-| Risk | Mitigation |
-|------|------------|
-| MCP server has **API keys** | Env vars; never commit tokens; rotate |
-| **Over-broad tools** | Enable only servers you need |
-| **Remote MCP URL** | HTTPS only; trust the provider |
-| **stdio server runs locally** | It can read files/shell per its design — read server docs |
-| **Prompt injection → tool abuse** | Limit scopes; review agent actions ([Trust & verify](../trust-privacy-and-verify/i-overview.md)) |
+|リスク |緩和 |
+|------|-----------|
+| MCP サーバーには **API キー**があります |環境変数。決してトークンをコミットしないでください。回転 |
+| **広範なツール** |必要なサーバーのみを有効にする |
+| **リモート MCP URL** | HTTPS のみ。プロバイダーを信頼する |
+| **stdio サーバーはローカルで実行されます** |設計に従ってファイル/シェルを読み取ることができます — サーバードキュメントを読む |
+| **即時注入 → ツールの乱用** |範囲を制限する。エージェントのアクションを確認する ([信頼して検証する](../trust-privacy-and-verify/i-overview.md)) |
 
-MCP does not replace **permission models** of underlying APIs — your GitHub token still only does what GitHub allows.
+MCP は、基礎となる API の **権限モデル** を置き換えません。GitHub トークンは、引き続き GitHub が許可することのみを実行します。
