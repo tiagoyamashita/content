@@ -1,17 +1,17 @@
 ---
 label: "VII"
-subtitle: "Binary search tree"
-group: "Data structures & algorithms"
+subtitle: "Árvore de pesquisa binária"
+group: "Estruturas de dados e algoritmos"
 order: 7
 ---
-Binary search tree (BST)
-Ordered binary tree: all keys in the left subtree are strictly smaller than the node’s key; all keys in the right subtree are strictly larger (for a strict total order).
+Árvore de pesquisa binária (BST)
+Árvore binária ordenada: todas as chaves da subárvore esquerda são estritamente menores que a chave do nó; todas as chaves na subárvore direita são estritamente maiores (para uma ordem total estrita).
 
-**Ops:** search, insert, delete follow a root-to-leaf path — time **O(h)** where **h** is height. Balanced: **h = O(log n)**; skewed chain from sorted inserts: **h = Θ(n)**.
+**Ops:** pesquise, insira, exclua siga um caminho da raiz à folha - tempo **O(h)** onde **h** é a altura. Balanceado: **h = O(log n)**; cadeia distorcida de inserções classificadas: **h = Θ(n)**.
 
-**Balancing (overview):** **AVL** trees enforce a tight height balance with rotations; **red-black** trees use color rules to keep **h = O(log n)** with slightly looser balance and fewer rotations on average. Both restore **O(log n)** worst-case search/insert/delete.
+**Balanceamento (visão geral):** **AVL** as árvores impõem um equilíbrio rígido de altura com rotações; árvores **vermelho-pretas** usam regras de cores para manter **h = O(log n)** com equilíbrio um pouco mais frouxo e menos rotações em média. Ambos restauram **O(log n)** pesquisa/inserção/exclusão do pior caso.
 
-**Related:** **Level II — Trees, heaps, hashing** (`ii-trees-heaps-hashing.md`).
+**Relacionado:** **Nível II — Árvores, heaps, hashing** (`ii-trees-heaps-hashing.md`).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 218" role="img" aria-label="Binary search tree with smaller keys left larger keys right">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">BST ordering (example)</text>

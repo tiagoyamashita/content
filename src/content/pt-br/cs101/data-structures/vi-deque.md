@@ -1,17 +1,17 @@
 ---
 label: "VI"
-subtitle: "Deque"
-group: "Data structures & algorithms"
+subtitle: "Árvore de pesquisa binária"
+group: "Estruturas de dados e algoritmos"
 order: 6
 ---
-Deque (double-ended queue)
-Insert and remove at **both** ends in **O(1)**.
+Deque (fila dupla)
+Insira e remova em **ambas** extremidades em **O(1)**.
 
-A **deque** generalizes **stack** (one end) and **queue** (opposite ends only): you can push/pop at front **and** back depending on API naming (`push_front`, `push_back`, etc.).
+Um **deque** generaliza **stack** (uma extremidade) e **queue** (somente extremidades opostas): você pode push/pop na frente **e** atrás dependendo da nomenclatura API (`push_front`,`push_back`, etc.).
 
-**Implementations:** **doubly linked list**, or **circular array** with two indices moving toward each other with wrap.
+**Implementações:** **lista duplamente vinculada** ou **matriz circular** com dois índices movendo-se um em direção ao outro com quebra automática.
 
-**Uses:** sliding-window algorithms, work-stealing queues, palindrome checks with two pointers.
+**Usos:** algoritmos de janela deslizante, filas para roubo de trabalho, verificações de palíndromo com dois ponteiros.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-label="Deque allows push and pop at both front and back ends">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">Four O(1) end operations</text>
