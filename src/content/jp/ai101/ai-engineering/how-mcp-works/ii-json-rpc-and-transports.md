@@ -1,14 +1,14 @@
 ---
 label: "II"
-subtitle: "JSON-RPC & transports"
+subtitle: "JSON-RPC とトランスポート"
 group: "AI Applied"
 order: 2
 ---
-JSON-RPC & transports
+JSON-RPC とトランスポート
 
-## 1. One-sentence model
+## 1. 一文モデル
 
-**MCP is not gRPC.** Messages are **JSON-RPC 2.0** (structured JSON requests/responses) sent over **stdio** (local) or **HTTP** (remote). The MCP server then talks to the real system — often a normal **REST/HTTPS API**.
+**MCP は gRPC ではありません。** メッセージは **stdio** (ローカル) または **HTTP** (リモート) 経由で送信される **JSON-RPC 2.0** (構造化 JSON 要求/応答) です。その後、MCP サーバーは実際のシステム (通常は通常の **REST/HTTPS API**) と通信します。
 
 ```mermaid
 flowchart LR
@@ -18,49 +18,49 @@ flowchart LR
   Server -->|HTTPS| API[Linear / Postgres / Slack]
 ```
 
-## 2. Three roles
+＃＃２．３つの役割
 
-| Role | What it is | Example |
-|------|------------|---------|
-| **Host** | App you use | Cursor, Claude Desktop, VS Code + extension |
-| **MCP client** | Built into the host; speaks MCP | Cursor’s MCP layer |
-| **MCP server** | Connector you install/configure | `github`, `postgres`, `@modelcontextprotocol/server-*` |
+|役割 |それは何ですか |例 |
+|------|-----------|----------|
+| **ホスト** |使用するアプリ | Cursor、クロード デスクトップ、VS コード + 拡張機能 |
+| **MCP クライアント** |ホストに組み込まれています。 MCP を話します | Cursor の MCP レイヤー |
+| **MCP サーバー** |インストール/構成するコネクタ |`github`、`postgres`、`@modelcontextprotocol/server-*`|
 
-You only configure **servers** in settings. The host runs the **client** for you.
+設定で**サーバー**を構成するだけです。ホストは、**クライアント**を実行します。
 
-## 3. Wire protocol: JSON-RPC, not gRPC
+## 3. ワイヤ プロトコル: gRPC ではなく JSON-RPC
 
-### What is JSON-RPC?
+### JSON-RPC とは何ですか?
 
-**JSON-RPC** is a small, standard way to say **“run this function remotely, here are the arguments, give me back a result”** — with everything encoded as **JSON text**.
+**JSON-RPC** は、**「この関数をリモートで実行します。引数は次のとおりです。結果を返してください」** という小さな標準的な方法で、すべてが **JSON テキスト**としてエンコードされます。
 
-| Word | Meaning |
-|------|---------|
-| **JSON** | The message body is plain JSON you can read in a log |
-| **RPC** | **Remote procedure call** — caller invokes a **named method** on another process, like calling a function over a pipe or HTTP |
+|単語 |意味 |
+|-----|----------|
+| **JSON** |メッセージ本文は、ログで読み取ることができるプレーンな JSON です。
+| **RPC** | **リモート プロシージャ コール** — 呼び出し元は、パイプまたは HTTP 経由で関数を呼び出すなど、別のプロセスで **名前付きメソッド** を呼び出します。
 
-Think of it as a **thin envelope**, not a full REST API design:
+これは、完全な REST API 設計ではなく、**薄い封筒** と考えてください。
 
 ```text
 Request:  "Please run method X with params Y"  (one JSON object)
 Response: "Here is result Z" or "Error: …"       (one JSON object)
 ```
 
-It is **not** the same as:
+これは**同じではありません**:
 
-| | JSON-RPC (MCP wire) | REST API (Linear, GitHub) |
-|---|---------------------|---------------------------|
-| **Style** | Named **methods** (`tools/call`) | **URLs** + HTTP verbs (`GET /issues`) |
-| **Who uses it** | MCP **client ↔ MCP server** | MCP **server ↔ external SaaS** |
-| **You configure** | Rarely — host handles it | Tokens, base URLs in server config |
+| | JSON-RPC (MCP ワイヤー) | REST API (線形、GitHub) |
+|---|---------------------|--------------------------|
+| **スタイル** |名前付き **メソッド** (`tools/call`) | **URL** + HTTP 動詞 (`GET /issues`) |
+| **誰が使用しますか** | MCP **クライアント ↔ MCP サーバー** | MCP **サーバー ↔ 外部 SaaS** |
+| **設定はあなたが行います** |まれに — ホストが処理します。トークン、サーバー構成のベース URL |
 
-MCP picked JSON-RPC because it is **simple**, **human-readable**, and works over **stdio pipes** (one JSON line in, one JSON line out) without inventing a custom binary protocol.
+MCP が JSON-RPC を選択した理由は、これが **シンプル**で、**人間が判読可能**で、カスタム バイナリ プロトコルを作成することなく **stdio パイプ** (1 つの JSON ライン入力、1 つの JSON ライン出力) で動作するためです。
 
-### Request and response shape
+### リクエストとレスポンスの形状
 
-Every message is a JSON object with a few fixed fields:
+すべてのメッセージは、いくつかの固定フィールドを持つ JSON オブジェクトです。
 
-**Request** (client → server):
+**リクエスト** (クライアント → サーバー):
 
 ```json
 {
@@ -74,14 +74,14 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-| Field | Role |
-|-------|------|
-| `jsonrpc` | Always `"2.0"` — protocol version |
-| `id` | Correlates request with response (like a request ID) |
-| `method` | **Which remote function** to run (MCP defines names like `tools/call`, `tools/list`) |
-| `params` | Arguments for that method |
+|フィールド |役割 |
+|------|------|
+|`jsonrpc`|いつも`"2.0"`— プロトコルのバージョン |
+|`id`|リクエストとレスポンスを関連付けます (リクエスト ID など)。
+|`method`| **どのリモート関数**を実行するか (MCP は次のような名前を定義します)`tools/call`、`tools/list`) |
+|`params`|そのメソッドの引数 |
 
-**Response** (server → client) — success:
+**応答** (サーバー → クライアント) — 成功:
 
 ```json
 {
@@ -95,7 +95,7 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-**Response** — failure:
+**応答** — 失敗:
 
 ```json
 {
@@ -108,29 +108,29 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-| Field | Role |
-|-------|------|
-| `result` | Payload on success — for MCP tools, often **text or structured content** |
-| `error` | Payload on failure — code + message (no `result`) |
+|フィールド |役割 |
+|------|------|
+|`result`|成功時のペイロード — MCP ツールの場合、多くの場合 **テキストまたは構造化コンテンツ** |
+|`error`|失敗時のペイロード — コード + メッセージ (いいえ`result`) |
 
-The **host** sends JSON-RPC to the MCP server; the **LLM never parses JSON-RPC**. It only sees the **tool result** the host extracts from `result` and drops into the chat.
+**ホスト**は JSON-RPC を MCP サーバーに送信します。 **LLM は JSON-RPC** を解析しません。ホストが抽出した**ツール結果**のみを参照します。`result`そしてチャットにドロップします。
 
-### JSON-RPC vs gRPC (why MCP did not pick gRPC)
+### JSON-RPC と gRPC (MCP が gRPC を選択しなかった理由)
 
-| | MCP (JSON-RPC) | gRPC (for comparison) |
-|---|----------------|------------------------|
-| **Message format** | **JSON text** | Protobuf (binary) |
-| **Typical transport** | stdio pipes or **HTTP POST** | HTTP/2 |
-| **Human readable** | Yes — easy to debug in logs | No — encoded binary |
-| **Standard in MCP spec** | Yes | **Not used** by MCP |
+| | MCP (JSON-RPC) | gRPC (比較用) |
+|---|----------------|--------------------------|
+| **メッセージ形式** | **JSON テキスト** | Protobuf (バイナリ) |
+| **一般的な輸送方法** | stdio パイプまたは **HTTP POST** | HTTP/2 |
+| **人間が読める形式** |はい - ログでのデバッグが簡単です。いいえ - エンコードされたバイナリ |
+| **MCP 仕様の標準** |はい | **未使用** by MCP |
 
-The model does not send raw HTTP to Linear. It asks the **host** to run an MCP **tool**; the host sends **JSON-RPC** to the MCP server; the server implements that tool and may call Linear’s **HTTPS REST API** with your token.
+モデルは生の HTTP を Linear に送信しません。 **ホスト**に MCP **ツール**を実行するよう要求します。ホストは **JSON-RPC** を MCP サーバーに送信します。サーバーはそのツールを実装し、トークンを使用して Linear の **HTTPS REST API** を呼び出すことができます。
 
-## 4. Two standard transports
+## 4. 2 つの標準トランスポート
 
-The [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) defines how JSON-RPC moves between client and server.
+[MCP 仕様](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) JSON-RPC がクライアントとサーバー間を移動する方法を定義します。
 
-### stdio (local — most common in IDEs)
+### stdio (ローカル - IDE で最も一般的)
 
 ```text
 Host spawns MCP server as subprocess
@@ -138,17 +138,17 @@ Host spawns MCP server as subprocess
   Server writes JSON-RPC → server's stdout
 ```
 
-| Used when | Examples |
-|-----------|----------|
-| Server runs **on your machine** | Cursor, Claude Desktop local config |
-| Server is a **script or binary** | `npx @modelcontextprotocol/server-filesystem` |
+| | の場合に使用されます。例 |
+|----------|----------|
+|サーバーは **お使いのマシン上で動作します** | Cursor、クロード デスクトップのローカル構成 |
+|サーバーは **スクリプトまたはバイナリ**です |`npx @modelcontextprotocol/server-filesystem`|
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Simple; no open ports | Server must be installed locally |
-| Good for secrets on laptop | One server process per config entry |
+|単純;開いているポートがありません |サーバーはローカルにインストールする必要があります |
+|ラップトップ上の秘密に最適 |構成エントリごとに 1 つのサーバー プロセス |
 
-**Cursor `mcp.json` (conceptual):**
+**Cursor`mcp.json`(概念的):**
 
 ```json
 {
@@ -162,24 +162,24 @@ Host spawns MCP server as subprocess
 }
 ```
 
-Host **starts** the process; communication is **pipes**, not you clicking a URL.
+ホストがプロセスを**開始**します。通信は **パイプ** であり、URL をクリックするものではありません。
 
-### Streamable HTTP (remote)
+### ストリーミング可能な HTTP (リモート)
 
-For servers running as a **web service** (team-hosted connector, SaaS MCP):
+**Web サービス** (チームホスト型コネクタ、SaaS MCP) として実行されているサーバーの場合:
 
 ```text
 Client → HTTP POST (JSON-RPC body) → https://your-company.com/mcp
 Server → JSON response OR SSE stream (Server-Sent Events)
 ```
 
-| Piece | Detail |
-|-------|--------|
-| **POST** | Each client message can be a POST to one **MCP endpoint** (e.g. `/mcp`) |
-| **GET** | Optional — open **SSE** stream so server can push notifications |
-| **Headers** | `Mcp-Protocol-Version`, `Mcp-Session-Id` for versioning/sessions |
-| **Auth** | Usually Bearer token or OAuth on HTTPS — same as any API |
+|ピース |詳細 |
+|------|----------|
+| **POST** |各クライアント メッセージは、1 つの **MCP エンドポイント** に対する POST にすることができます (例:`/mcp`) |
+| **GET** |オプション — **SSE** ストリームを開き、サーバーが通知をプッシュできるようにします。
+| **ヘッダー** |`Mcp-Protocol-Version`、`Mcp-Session-Id`バージョン管理/セッション用 |
+| **認証** |通常はベアラー トークンまたは HTTPS の OAuth — 他の API と同じ |
 
-This is **plain HTTP(S)** — load balancers, API gateways, and corporate proxies often work without gRPC support.
+これは **プレーン HTTP(S)** です。ロード バランサー、API ゲートウェイ、および企業プロキシは、多くの場合、gRPC サポートなしで動作します。
 
-**Older transport:** early MCP used **HTTP + SSE** (two endpoints). New implementations should use **Streamable HTTP**; some stacks support both for compatibility.
+**古いトランスポート:** 初期の MCP は **HTTP + SSE** (2 つのエンドポイント) を使用していました。新しい実装では **Streamable HTTP** を使用する必要があります。一部のスタックは互換性のために両方をサポートしています。
