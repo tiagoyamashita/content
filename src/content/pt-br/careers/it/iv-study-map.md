@@ -1,23 +1,23 @@
 ---
 label: "IV"
-subtitle: "Study map"
-group: "Careers"
+subtitle: "Mapa de estudo"
+group: "Carreiras"
 order: 4
 ---
-Study map
-Map **this curriculum** to career paths. Depth beats random courses — pick a primary role, ship projects, then add adjacent skills.
+Mapa de estudo
+Mapeie **este currículo** para planos de carreira. A profundidade supera os cursos aleatórios – escolha uma função principal, envie projetos e adicione habilidades adjacentes.
 
-Parent: [IT careers overview](i-overview.md). Roles: [Paths](paths/i-overview.md).
+Pai: [IT visão geral das carreiras](i-overview.md). Funções: [Caminhos](paths/i-overview.md).
 
-## 1. Shared foundation (almost everyone)
+## 1. Base compartilhada (quase todos)
 
-| Goal | Start here |
+| Meta | Comece aqui |
 |------|------------|
-| How computers + data + networks work | [CS101](../../cs101/i-overview.md) |
-| Git, languages, APIs, design | [SWE101](../../swe101/i-overview.md) |
-| Ship + operate | [SRE101](../../sre101/i-overview.md) (lighter for FE/PM) |
-| Prompting / agents for productivity | [AI101 Applied](../../ai101/ai-engineering/i-overview.md) |
-| Japanese language (if needed) | [Languages](../../languages/i-overview.md) |
+| Como funcionam os computadores + dados + redes | [CS101](../../cs101/i-overview.md) |
+| Git, idiomas, APIs, design | [SWE101](../../swe101/i-overview.md) |
+| Enviar + operar | [SRE101](../../sre101/i-overview.md) (mais leve para FE/PM) |
+| Solicitação/agentes de produtividade | [AI101 Aplicado](../../ai101/ai-engineering/i-overview.md) |
+| Língua japonesa (se necessário) | [Idiomas](../../languages/i-overview.md) |
 
 ```mermaid
 flowchart TD
@@ -34,28 +34,28 @@ flowchart TD
   AI[AI101 Applied] -.-> Role
 ```
 
-## 2. Path → curriculum (primary → secondary)
+## 2. Caminho → currículo (primário → secundário)
 
-| Path | Primary study | Secondary |
+| Caminho | Estudo primário | Secundário |
 |------|---------------|-----------|
-| [Support](paths/ii-support-engineer.md) | Product + networking basics; clear writing | SWE101 APIs; AI Applied for search/docs |
-| [QA](paths/iii-qa.md) | SWE101 + test strategy; CI in SRE101 | One language deeply; API gateway / HTTP |
-| [Frontend](paths/iv-frontend.md) | JS/TS + React (SWE101) | CSS, CDN, accessibility, design sense |
-| [Backend](paths/v-backend.md) | Java/Python/Go + Postgres + APIs | Kafka, Redis, system design |
-| [PM](paths/vi-product-manager.md) | Discovery + metrics literacy | Enough SWE101 to talk to eng; AI Applied |
-| [SRE](paths/vii-sre-platform.md) | SRE101 full track | SWE101 + CS networking |
+| [Apoiar](paths/ii-support-engineer.md) | Produto + noções básicas de rede; escrita clara | SWE101 APIs; AI Solicitado para pesquisa/documentos |
+| [QA](paths/iii-qa.md) | SWE101 + estratégia de teste; CI em SRE101 | Uma linguagem profundamente; API gateway / HTTP |
+| [Front-end](paths/iv-frontend.md) | JS/TS + Reagir (SWE101) | CSS, CDN, acessibilidade, sentido de design |
+| [Back-end](paths/v-backend.md) | Java/Python/Ir + Postgres + APIs | Kafka, Redis, projeto de sistema |
+| [PM](paths/vi-product-manager.md) | Descoberta + alfabetização em métricas | Basta SWE101 para falar com o eng; AI Aplicado |
+| [SRE](paths/vii-sre-platform.md) | SRE101 trilha completa | Rede SWE101 + CS |
 
-## 3. Portfolio that Japan recruiters understand
+## 3. Portfólio que os recrutadores do Japão entendem
 
-| Role | Evidence |
+| Função | Evidência |
 |------|----------|
-| FE / BE | GitHub repos, deployed demos, PR history |
-| QA | Test plans, automation repos, bug writeups |
-| Support | Public troubleshooting posts, runbooks you wrote |
-| PM | Case studies: problem → metrics → trade-offs → outcome |
-| SRE | Homelab / cloud projects with monitoring + IaC |
+| FE / BE | repositórios GitHub, demonstrações implantadas, histórico de PR |
+| QA | Planos de teste, repositórios de automação, registros de bugs |
+| Suporte | Postagens públicas de solução de problemas, runbooks que você escreveu |
+| PM | Estudos de caso: problema → métricas → trade-offs → resultado |
+| SRE | Projetos Homelab/cloud com monitorização + IaC |
 
-## 4. Timeboxing
+## 4. Limite de tempo
 
 ```text
 Months 0–3   Foundation (CS + Git + one language)
@@ -63,6 +63,6 @@ Months 3–9   Path depth + 1–2 portfolio pieces
 Months 9–12  Interview loops + Japanese if targeting domestic roles
 ```
 
-## Next
+## Próximo
 
-See how roles sit in the life cycle: [SDLC & roles](v-sdlc-and-roles.md). Then pick a role under [Paths](paths/i-overview.md).
+Veja como as funções se enquadram no ciclo de vida: [SDLC & funções](v-sdlc-and-roles.md). Em seguida, escolha uma função em [Caminhos](paths/i-overview.md).

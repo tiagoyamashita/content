@@ -4,18 +4,18 @@ subtitle: "QA"
 group: "Paths"
 order: 3
 ---
-QA / test engineering
-**QA** protects users from bad releases: risk-based testing, automation, and clear bug reports. Titles vary — QA engineer, SDET, quality engineer.
+QA / engenharia de teste
+**QA** protege os usuários contra lançamentos incorretos: testes baseados em risco, automação e relatórios claros de bugs. Os títulos variam – engenheiro QA, SDET, engenheiro de qualidade.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Plan | Test strategy per feature / release |
-| Explore | Edge cases, permissions, i18n (important in Japan) |
-| Automate | E2E / API / unit where ROI is clear |
-| Gate | CI red builds; release sign-off |
-| Partner | Sit with FE/BE; shift-left reviews |
+| Plano | Estratégia de teste por recurso/versão |
+| Explorar | Casos extremos, permissões, i18n (importante no Japão) |
+| Automatizar | E2E / API / unidade onde ROI está claro |
+| Portão | CI compilações vermelhas; aprovação de lançamento |
+| Parceiro | Sente-se com FE/BE; comentários sobre shift-left |
 
 ```mermaid
 flowchart TD
@@ -28,51 +28,51 @@ flowchart TD
   CI --> Release
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Test design / risk analysis | Core | What to cover vs what to skip |
-| Exploratory testing | Core | Find what scripts miss |
-| One language + test framework | Core | pytest, JUnit, Playwright, Cypress… |
-| API testing | Core | Contracts, auth, edge payloads |
-| CI literacy | Core | Gates, flakes, artifacts |
-| Clear bug reports | Core | Steps, expected/actual, env |
-| Automation architecture | Stretch | Page objects, shared fixtures, parallelization |
-| Performance / a11y basics | Stretch | Smoke for CWV, keyboard, screen readers |
-| Security smoke checks | Stretch | AuthZ gaps, injection basics |
-| Japanese | Market | Useful for domestic UX/copy issues |
+| Desenho de teste/análise de risco | Núcleo | O que cobrir versus o que pular |
+| Testes exploratórios | Núcleo | Descubra o que falta nos scripts |
+| Uma linguagem + estrutura de teste | Núcleo | pytest, JUnit, dramaturgo, Cypress… |
+| Teste API | Núcleo | Contratos, autenticação, cargas úteis de borda |
+| CI alfabetização | Núcleo | Portões, flocos, artefatos |
+| Limpar relatórios de bugs | Núcleo | Etapas, esperadas/reais, ambiente |
+| Arquitetura de automação | Alongamento | Objetos de página, fixtures compartilhados, paralelização |
+| Desempenho / noções básicas do a11y | Alongamento | Fumaça para CWV, teclado, leitores de tela |
+| Verificações de fumaça de segurança | Alongamento | Lacunas AuthZ, princípios básicos de injeção |
+| Japonês | Mercado | Útil para problemas domésticos de UX/copy |
 
-## Japan notes
+## Notas do Japão
 
-- Domestic firms may still lean **manual QA**; product / gaishikei lean **SDET**.
-- Strong automation + English can land foreigner-friendly roles even without N1.
-- Gaming and embedded have specialized QA cultures.
+- As empresas nacionais ainda podem usar **manual QA**; produto / gaishikei magro **SDET**.
+- Forte automação + inglês podem conseguir cargos adequados para estrangeiros, mesmo sem N1.
+- Jogos e incorporados possuem culturas QA especializadas.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | [SWE101](../../../swe101/i-overview.md) — language + Git |
-| 2 | [SRE101 CI/CD](../../../sre101/i-overview.md) — pipelines |
-| 3 | Frontend or backend track matching the product |
-| 4 | [Cybersecurity](../../../cybersecurity/i-overview.md) — basic threat thinking |
+| 1 | [SWE101](../../../swe101/i-overview.md) — idioma + Git |
+| 2 | [SRE101 CI/CD](../../../sre101/i-overview.md) — gasodutos |
+| 3 | Faixa de front-end ou back-end correspondente ao produto |
+| 4 | [Cibersegurança](../../../cybersecurity/i-overview.md) — pensamento básico sobre ameaças |
 
-Build: automate login + critical path for an open-source app; show flake handling.
+Build: automatizar login + caminho crítico para um aplicativo de código aberto; mostrar manuseio de flocos.
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-Mid QA / SDET roughly **¥5–10M**; senior automation at strong product cos can approach SWE bands. Manual-only tracks usually cap lower.
+Meados de QA / SDET aproximadamente **¥5–10 milhões**; a automação sênior em produtos fortes pode se aproximar das bandas SWE. Faixas somente manuais geralmente têm limite inferior.
 
-## Career moves
+## Movimentos de carreira
 
-| From QA | Toward |
-|---------|--------|
-| Automation depth | SDET / toolsmith |
-| Product risk sense | PM |
-| Infra + flaky systems | SRE |
-| Feature ownership | Backend / FE (needs portfolio) |
+| De QA | Em direção |
+|--------|--------|
+| Profundidade de automação | SDET / ferreiro |
+| Sentido de risco do produto | PM |
+| Sistemas infra+ escamosos | SRE |
+| Propriedade de recursos | Backend / FE (precisa de portfólio) |
 
-## Next
+## Próximo
 
-[Frontend](iv-frontend.md) · [Backend](v-backend.md).
+[Front-end](iv-frontend.md) · [Back-end](v-backend.md).

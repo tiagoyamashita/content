@@ -1,25 +1,25 @@
 ---
 label: "III"
-subtitle: "Healthcare & caregiving"
+subtitle: "Cuidados de saúde e cuidados"
 group: "Other careers"
 order: 3
 ---
-Healthcare & caregiving
-Nursing, elderly and disability caregiving (介護, kaigo), and allied health support. Japan's aging population makes caregiving one of the highest-demand fields, with dedicated visa routes for foreign workers.
+Cuidados de saúde e cuidados
+Cuidados de enfermagem, idosos e deficientes (介護, kaigo) e apoio de saúde aliado. O envelhecimento da população do Japão faz com que a prestação de cuidados seja uma das áreas de maior procura, com rotas de visto dedicadas para trabalhadores estrangeiros.
 
-Not medical advice. Licensing rules are strict and change — verify with employers and the relevant Japanese authorities.
+Não é conselho médico. As regras de licenciamento são rigorosas e mudam – verifique com os empregadores e as autoridades japonesas relevantes.
 
-Parent: [Other careers](i-overview.md).
+Pai: [Outras carreiras](i-overview.md).
 
-## Day-to-day
+## Dia a dia
 
-| Role | Examples |
+| Função | Exemplos |
 |------|----------|
-| Care worker (介護職) | Daily living support, mobility, meals, bathing, records |
-| Nurse (看護師) | Clinical care under Japanese licensing |
-| Care support / assistant | Facility support, activities, family communication |
-| Home care (訪問介護) | In-home visits and personal care |
-| Care leader / manager | Care planning, rotas, staff training, compliance |
+| Trabalhador de cuidados (介護職) | Apoio à vida diária, mobilidade, alimentação, banho, registos |
+| Enfermeira (看護師) | Cuidados clínicos sob licença japonesa |
+| Apoio/assistente de cuidados | Apoio às instalações, atividades, comunicação familiar |
+| Assistência domiciliar (訪問介護) | Visitas domiciliares e cuidados pessoais |
+| Líder / gestor de cuidados | Planejamento de cuidados, escalas, treinamento de pessoal, compliance |
 
 ```mermaid
 flowchart LR
@@ -30,60 +30,60 @@ flowchart LR
   Plan --> Leader[Care leader]
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Japanese (communication + reading) | Core | Care records and safety require solid Japanese |
-| Empathy & patience | Core | Dignity and trust with residents and families |
-| Physical stamina & safe handling | Core | Transfers, mobility support |
-| Care fundamentals | Core | Hygiene, nutrition, observation, reporting |
-| Teamwork & handover | Core | Shift-based continuity of care |
-| Emergency response | Stretch | Recognizing and escalating changes |
-| Care planning / leadership | Stretch | Path to leader and manager roles |
+| Japonês (comunicação + leitura) | Núcleo | Registros de cuidados e segurança exigem um japonês sólido |
+| Empatia e paciência | Núcleo | Dignidade e confiança com moradores e famílias |
+| Resistência física e manuseio seguro | Núcleo | Transferências, apoio à mobilidade |
+| Fundamentos de cuidados | Núcleo | Higiene, nutrição, observação, elaboração de relatórios |
+| Trabalho em equipe e transferência | Núcleo | Continuidade dos cuidados por turnos |
+| Resposta de emergência | Alongamento | Reconhecendo e escalando mudanças |
+| Planejamento / liderança do cuidado | Alongamento | Caminho para funções de líder e gerente |
 
-## Japan notes
+## Notas do Japão
 
-- **介護 (kaigo)** demand is high and growing due to demographics; foreign workers are actively recruited.
-- Japanese ability is essential for safety, records, and family communication — often required for the visa.
-- National qualifications (e.g. **介護福祉士 Certified Care Worker**) raise pay and stability.
-- Nursing (看護師) requires Japanese licensing; foreign nurses usually need to qualify in Japan.
+- **介護 (kaigo)** a demanda é alta e crescente devido à demografia; trabalhadores estrangeiros são ativamente recrutados.
+- A habilidade japonesa é essencial para segurança, registros e comunicação familiar – muitas vezes necessária para o visto.
+- As qualificações nacionais (por exemplo, **介護福祉士 Certified Care Worker**) aumentam o salário e a estabilidade.
+- Enfermagem (看護師) exige licenciamento japonês; enfermeiras estrangeiras geralmente precisam se qualificar no Japão.
 
-## Entry & qualifications
+## Entrada e qualificações
 
-| Route | Notes |
+| Rota | Notas |
 |-------|-------|
-| Specified Skilled Worker (SSW) — nursing care (介護) | Skills + Japanese test route |
-| Nursing Care (介護) visa | For those who become Certified Care Workers |
-| EPA program | Bilateral programs (e.g. Indonesia, Philippines, Vietnam) with training + exams |
-| Technical training programs | Structured entry with employer support |
+| Trabalhador qualificado específico (SSW) — cuidados de enfermagem (介護) | Habilidades + rota de teste de japonês |
+| Visto para Cuidados de Enfermagem (介護) | Para aqueles que se tornam Profissionais de Cuidados Certificados |
+| Programa EPA | Programas bilaterais (por exemplo, Indonésia, Filipinas, Vietname) com formação + exames |
+| Programas de treinamento técnico | Entrada estruturada com apoio do empregador |
 
-Japanese-language and skills tests are typically required; confirm the current pathway.
+Normalmente são necessários testes de língua japonesa e de habilidades; confirmar o caminho atual.
 
-## Compensation (illustrative)
+## Remuneração (ilustrativa)
 
-| Level | Rough ¥M / year |
+| Nível | Aproximadamente ¥M/ano |
 |-------|-----------------|
-| Entry care worker | 2.8–3.8 |
-| Certified care worker (介護福祉士) | 3.5–5 |
-| Care leader | 4.5–6 |
-| Facility / care manager | 5.5–8+ |
-| Licensed nurse (看護師) | 4.5–7+ |
+| Trabalhador de cuidados de entrada | 2,8–3,8 |
+| Cuidador certificado (介護福祉士) | 3,5–5 |
+| Líder de cuidados | 4,5–6 |
+| Gerente de instalações/cuidados | 5,5–8+ |
+| Enfermeira licenciada (看護師) | 4,5–7+ |
 
-Night-shift allowances and qualifications materially affect pay. Some employers provide housing or study support toward certification.
+Os subsídios e as qualificações do turno nocturno afectam materialmente os salários. Alguns empregadores fornecem moradia ou apoio ao estudo para a certificação.
 
-## How to get in / progress
+## Como entrar / progredir
 
-1. Reach functional Japanese (aim for N3+ for care records and safety).
-2. Enter via SSW, EPA, or a training program with a supporting employer.
-3. Gain experience, then pursue **介護福祉士** certification.
-4. Progress to care leader and facility management, or specialize.
+1. Alcance o japonês funcional (meta para N3+ para registros de cuidados e segurança).
+2. Inscreva-se via SSW, EPA ou um programa de treinamento com um empregador de apoio.
+3. Ganhe experiência e busque a certificação **介護福祉士**.
+4. Progresso para líder de atendimento e gerenciamento de instalações ou especialização.
 
-## Related
+## Relacionado
 
-- [Languages](../../languages/i-overview.md) for Japanese study.
-- [Careers overview](../i-overview.md) · [Other careers](i-overview.md).
+- [Idiomas](../../languages/i-overview.md) para estudo japonês.
+- [Visão geral das carreiras](../i-overview.md) · [Outras carreiras](i-overview.md).
 
-## Next
+## Próximo
 
-[Education & teaching](iv-education.md).
+[Educação e ensino](iv-education.md).

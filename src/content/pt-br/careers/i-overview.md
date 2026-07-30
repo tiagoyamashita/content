@@ -1,20 +1,20 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Careers"
+subtitle: "Visão geral"
+group: "Carreiras"
 order: 1
 ---
-Careers — overview
-Career notes with a **Japan-oriented** lens: what a role actually does, how people **get in and progress**, language and visa realities, and rough **compensation** bands. Not immigration, legal, or tax advice — always verify with current employers and recruiters.
+Carreiras - visão geral
+Notas de carreira com lentes **orientadas para o Japão**: o que uma função realmente faz, como as pessoas **entram e progridem**, realidades de idioma e visto e faixas aproximadas de **compensação**. Não é aconselhamento sobre imigração, jurídico ou fiscal – sempre verifique com os empregadores e recrutadores atuais.
 
-This track is split into two branches so tech and non-tech paths stay easy to navigate.
+Esta trilha é dividida em dois ramos para que os caminhos tecnológicos e não tecnológicos sejam fáceis de navegar.
 
-## Branches
+## Galhos
 
-| Branch | For | Start |
+| Filial | Para | Iniciar |
 |--------|-----|-------|
-| **[IT careers](it/i-overview.md)** | Software, QA, SRE, product, and other tech roles | [IT careers overview](it/i-overview.md) |
-| **[Other careers](other/i-overview.md)** | Hospitality, healthcare, education, finance, and skilled trades | [Other careers overview](other/i-overview.md) |
+| **[IT carreiras](it/i-overview.md)** | Software, QA, SRE, produto e outras funções de tecnologia | [IT visão geral das carreiras](it/i-overview.md) |
+| **[Outras carreiras](other/i-overview.md)** | Hotelaria, saúde, educação, finanças e comércio especializado | [Visão geral de outras carreiras](other/i-overview.md) |
 
 ```mermaid
 flowchart TD
@@ -24,24 +24,24 @@ flowchart TD
   Other --> Roles2[Hospitality · Healthcare · Education · Finance · Trades]
 ```
 
-## How the notes are organized
+## Como as notas são organizadas
 
-Each branch has an overview plus role or field notes. Most notes follow the same shape:
+Cada filial tem uma visão geral, além de notas de função ou de campo. A maioria das notas segue o mesmo formato:
 
-- **Day-to-day** — what the work involves.
-- **Skills that matter** — core vs stretch.
-- **Japan notes** — language, employer type, visa, and market signals.
-- **Compensation** — illustrative bands; verify against live offers.
-- **How to get in / progress** — entry routes and next moves.
+- **Dia-a-dia** — o que o trabalho envolve.
+- **Habilidades que importam** — core versus stretch.
+- **Notas sobre o Japão** — idioma, tipo de empregador, visto e sinais de mercado.
+- **Remuneração** — faixas ilustrativas; verifique com ofertas ao vivo.
+- **Como entrar / progresso** — rotas de entrada e próximos movimentos.
 
-## Which branch?
+## Qual filial?
 
-| You are… | Go to |
+| Você é… | Vá para |
 |----------|-------|
-| Building software, data, or infrastructure skills | [IT careers](it/i-overview.md) |
-| Exploring service, care, teaching, business, or trade work | [Other careers](other/i-overview.md) |
-| Unsure and comparing options | Skim both overviews, then pick a role note |
+| Desenvolvendo habilidades em software, dados ou infraestrutura | [IT carreiras](it/i-overview.md) |
+| Explorando serviços, cuidados, ensino, negócios ou trabalho comercial | [Outras carreiras](other/i-overview.md) |
+| Opções inseguras e comparativas | Dê uma olhada nas duas visões gerais e escolha uma nota de função |
 
-## Next
+## Próximo
 
-Pick a branch: [IT careers](it/i-overview.md) or [Other careers](other/i-overview.md).
+Escolha um ramo: [IT carreiras](it/i-overview.md) ou [Outras carreiras](other/i-overview.md).

@@ -1,15 +1,15 @@
 ---
 label: "V"
-subtitle: "SDLC & roles"
-group: "Careers"
+subtitle: "SDLC e funções"
+group: "Carreiras"
 order: 5
 ---
-SDLC & roles
-Where each career path sits in the **software development life cycle (SDLC)**, and which **skills** matter in each phase. Modern product teams use a **loop** (not a one-way waterfall), but the same role names still cluster around certain stages.
+SDLC e funções
+Onde cada plano de carreira se enquadra no **ciclo de vida de desenvolvimento de software (SDLC)** e quais **habilidades** são importantes em cada fase. As equipes de produto modernas usam um **loop** (não uma cascata unidirecional), mas os mesmos nomes de funções ainda se agrupam em torno de determinados estágios.
 
-Parent: [IT careers overview](i-overview.md) · Role detail: [Paths](paths/i-overview.md).
+Pai: [IT visão geral das carreiras](i-overview.md) · Detalhe da função: [Caminhos](paths/i-overview.md).
 
-## 1. SDLC as a loop
+## 1. SDLC como um loop
 
 ```mermaid
 flowchart LR
@@ -22,17 +22,17 @@ flowchart LR
   Support --> Discover
 ```
 
-| Phase | Question | Typical owners |
+| Fase | Pergunta | Proprietários típicos |
 |-------|----------|----------------|
-| **Discover** | What problem / outcome? | PM (+ support insights, design) |
-| **Design** | What to build, how it fits | PM, FE/BE leads, sometimes SRE |
-| **Build** | Make it real | Frontend, backend |
-| **Test** | Is it safe to ship? | QA (+ eng writing tests) |
-| **Release** | Get it to users | SRE / platform, eng |
-| **Operate** | Keep it healthy | SRE, backend on-call |
-| **Support** | Help users; feed learning | Support → PM / eng |
+| **Descubra** | Qual problema/resultado? | PM (+ insights de suporte, design) |
+| **Projeto** | O que construir, como cabe | PM, FE/BE lidera, às vezes SRE |
+| **Construir** | Torne isso real | Front-end, back-end |
+| **Teste** | É seguro enviar? | QA (+ testes de redação de engenharia) |
+| **Lançamento** | Leve aos usuários | SRE / plataforma, eng |
+| **Operar** | Mantenha-o saudável | SRE, back-end de plantão |
+| **Suporte** | Ajudar os usuários; alimentar aprendizagem | Suporte → PM / eng |
 
-## 2. Who shows up where
+## 2. Quem aparece onde
 
 ```mermaid
 flowchart TB
@@ -62,91 +62,91 @@ flowchart TB
   SUP -->|insights| PM
 ```
 
-Heavy overlap is normal: backend writes unit tests; FE does a11y checks; PM joins launch reviews; support files bugs that become roadmap items.
+A sobreposição pesada é normal: o backend grava testes de unidade; FE faz todas as verificações; PM junta-se às análises de lançamento; arquivos de suporte com bugs que se tornam itens do roteiro.
 
-## 3. RACI-style view (illustrative)
+## 3. Visualização RACI-style (ilustrativa)
 
-| Phase | PM | FE | BE | QA | SRE | Support |
-|-------|----|----|----|----|-----|---------|
-| Discover | **A/R** | C | C | C | I | **C** (themes) |
-| Design | **A** | **R** | **R** | C | C | I |
-| Build | C | **R** | **R** | C | C | I |
-| Test | C | R | R | **A/R** | C | I |
-| Release | C | C | C | C | **A/R** | I |
-| Operate | I | C | **R** | I | **A/R** | C |
-| Support | C | C | C | I | C | **A/R** |
+| Fase | PM | FE | BE | QA | SRE | Suporte |
+|---|----|----|----|--------|-----|---------|
+| Descubra | **A/R** | C | C | C | eu | **C** (temas) |
+| Projeto | **A** | **R** | **R** | C | C | eu |
+| Construir | C | **R** | **R** | C | C | eu |
+| Teste | C | R | R | **A/R** | C | eu |
+| Liberação | C | C | C | C | **A/R** | eu |
+| Operar | eu | C | **R** | eu | **A/R** | C |
+| Suporte | C | C | C | eu | C | **A/R** |
 
-**R** = does the work · **A** = accountable · **C** = consulted · **I** = informed.
+**R** = faz o trabalho · **A** = responsável · **C** = consultado · **I** = informado.
 
-## 4. Skills by position (SDLC lens)
+## 4. Habilidades por posição (lente SDLC)
 
-### Product manager
+### Gerente de produto
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| Discovery / interviews | Discover |
-| Prioritization & roadmapping | Discover → Design |
-| Writing specs / acceptance criteria | Design → Build |
-| Metrics & experimentation | Release → Operate |
-| Stakeholder communication (often Japanese in JP) | All phases |
-| Technical literacy | Design reviews with eng |
+| Descoberta / entrevistas | Descubra |
+| Priorização e roteiro | Descobrir → Projetar |
+| Escrevendo especificações/critérios de aceitação | Projetar → Construir |
+| Métricas e experimentação | Liberar → Operar |
+| Comunicação com as partes interessadas (geralmente em japonês em JP) | Todas as fases |
+| Alfabetização técnica | Revisões de design com engenharia |
 
-### Frontend engineer
+### Engenheiro de front-end
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| TypeScript + UI framework (e.g. React) | Build |
-| CSS / design systems / a11y | Design → Build |
-| Client-server integration (HTTP, auth) | Build |
-| Component & E2E testing | Test |
-| Performance (CWV, bundles) | Build → Operate |
-| i18n / JP UX details | Build → Support feedback |
+| Estrutura TypeScript + UI (por exemplo, React) | Construir |
+| CSS / sistemas de design / a11y | Projetar → Construir |
+| Integração cliente-servidor (HTTP, autenticação) | Construir |
+| Teste de componentes e E2E | Teste |
+| Desempenho (CWV, pacotes) | Construir → Operar |
+| detalhes de i18n / JP UX | Construir → Feedback de suporte |
 
-### Backend engineer
+### Engenheiro de back-end
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| One server language deeply | Build |
-| SQL / data modeling | Design → Build |
-| API design (auth, idempotency, versioning) | Design → Build |
-| Concurrency & failure modes | Build → Operate |
-| System design | Design |
-| Observability basics (logs/metrics) | Operate |
+| Uma linguagem de servidor profundamente | Construir |
+| SQL / modelagem de dados | Projetar → Construir |
+| Design API (autenticação, idempotência, versionamento) | Projetar → Construir |
+| Simultaneidade e modos de falha | Construir → Operar |
+| Projeto de sistema | Projeto |
+| Noções básicas de observabilidade (logs/métricas) | Operar |
 
 ### QA / SDET
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| Test design & risk analysis | Design → Test |
-| Automation (API / UI / unit hooks) | Test |
-| CI literacy & flake control | Test → Release |
-| Exploratory testing | Test |
-| Clear bug reports | Test → Build |
-| Security / privacy smoke checks | Test |
+| Desenho de teste e análise de risco | Projeto → Teste |
+| Automação (API / UI / ganchos de unidade) | Teste |
+| CI alfabetização e controle de flocos | Teste → Liberar |
+| Testes exploratórios | Teste |
+| Limpar relatórios de bugs | Teste → Construir |
+| Verificações de fumaça de segurança/privacidade | Teste |
 
-### SRE / platform
+### SRE / plataforma
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| CI/CD & release engineering | Release |
-| Cloud + containers / K8s | Release → Operate |
-| IaC (Terraform) | Design → Release |
-| Observability & alerting | Operate |
-| Incident response / postmortems | Operate |
-| Platform enablement for eng | Build → Release |
+| CI/CD e engenharia de liberação | Liberação |
+| Nuvem + contêineres / K8s | Liberar → Operar |
+| IaC (Terraform) | Design → Liberação |
+| Observabilidade e alertas | Operar |
+| Resposta a incidentes/post-mortems | Operar |
+| Habilitação de plataforma para eng | Construir → Liberar |
 
-### Support engineer
+### Engenheiro de suporte
 
-| Skill | SDLC use |
+| Habilidade | SDLC usar |
 |-------|----------|
-| Product expertise | Support |
-| Repro (logs, HTTP, basic SQL) | Support → Test/Build |
-| Written communication | Support |
-| Escalation & bug quality | Support → Build |
-| Empathy / de-escalation | Support |
-| Pattern spotting for PM | Support → Discover |
+| Conhecimento do produto | Suporte |
+| Repro (logs, HTTP, SQL básico) | Suporte → Testar/Construir |
+| Comunicação escrita | Suporte |
+| Escalação e qualidade de bugs | Suporte → Construir |
+| Empatia / desescalada | Suporte |
+| Detecção de padrões para PM | Suporte → Descobrir |
 
-## 5. One feature, all roles
+## 5. Um recurso, todas as funções
 
 ```mermaid
 sequenceDiagram
@@ -172,15 +172,15 @@ sequenceDiagram
   SUP->>BE: Escalated defects
 ```
 
-## 6. Waterfall vs continuous delivery (Japan context)
+## 6. Cascata vs entrega contínua (contexto do Japão)
 
-| Model | Where you still see it | Role impact |
-|-------|------------------------|-------------|
-| **Waterfall / SI** | Large enterprise, some SIers | Heavier PM/project mgmt; QA as late gate; less SRE |
-| **Agile + CD** | Product cos, gaishikei | Roles overlap more; QA shifts left; SRE owns release |
+| Modelo | Onde você ainda vê | Impacto da função |
+|-------|-------------|------------|
+| **Cachoeira / SI** | Grande empresa, alguns SIers | PM/gerenciamento de projeto mais pesado; QA como portão atrasado; menos SRE |
+| **Ágil + CD** | Produto cos, gaishikei | As funções se sobrepõem mais; QA muda para a esquerda; SRE possui lançamento |
 
-Know which model the company uses — the same title can mean different SDLC placement.
+Saiba qual modelo a empresa usa — o mesmo título pode significar diferentes posicionamentos de SDLC.
 
-## Next
+## Próximo
 
-Deepen a role under [Paths](paths/i-overview.md), or study links in [Study map](iv-study-map.md).
+Aprofunde uma função em [Caminhos](paths/i-overview.md) ou links de estudo em [Mapa de estudo](iv-study-map.md).

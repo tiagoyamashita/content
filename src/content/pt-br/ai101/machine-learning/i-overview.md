@@ -1,31 +1,31 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Machine learning"
+subtitle: "Visão geral"
+group: "Aprendizado de máquina"
 order: 1
 ---
-Machine learning — overview
-**Machine learning (ML)** builds systems that **improve from data** instead of relying only on hand-written rules. You provide **examples**; an algorithm adjusts **parameters** so predictions get better on **new, unseen** inputs.
+Aprendizado de máquina – visão geral
+**Aprendizado de máquina (ML)** cria sistemas que **melhoram a partir de dados** em vez de depender apenas de regras escritas à mão. Você fornece **exemplos**; um algoritmo ajusta **parâmetros** para que as previsões melhorem em entradas **novas e invisíveis**.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Part | Topic |
+| Parte | Tópico |
 |------|--------|
-| **I — Overview** | Vocabulary, paradigms, how this track fits AI101 |
-| **II — Supervised learning** | Classification, regression, loss, common algorithms |
-| **III — Unsupervised learning** | Clustering, dimensionality reduction, anomaly detection |
-| **IV — Model evaluation** | Train/val/test, metrics, cross-validation |
-| **V — Overfitting & regularization** | Bias-variance, L1/L2, tuning |
-| **VI — Feature engineering** | Numeric, categorical, text features; leakage |
-| **VII — ML workflow & deployment** | End-to-end pipeline, drift, MLOps touchpoints |
+| **I — Visão geral** | Vocabulário, paradigmas, como essa trilha se encaixa AI101 |
+| **II — Aprendizagem supervisionada** | Classificação, regressão, perda, algoritmos comuns |
+| **III — Aprendizagem não supervisionada** | Clustering, redução de dimensionalidade, detecção de anomalias |
+| **IV — Avaliação do modelo** | Treinar/avaliar/teste, métricas, validação cruzada |
+| **V — Overfitting e regularização** | Viés-variância, L1/L2, ajuste |
+| **VI — Engenharia de recursos** | Recursos numéricos, categóricos e de texto; vazamento |
+| **VII — Fluxo de trabalho e implantação de ML** | Pipeline ponta a ponta, desvio, pontos de contato MLOps |
 
-## Rules vs learning
+## Regras vs aprendizagem
 
-| Traditional programming | Machine learning |
+| Programação tradicional | Aprendizado de máquina |
 |-------------------------|------------------|
-| Engineer writes `if` / `else` logic | Model learns patterns from data |
-| Behavior changes when **code** changes | Behavior changes when **data** or **training** changes |
-| Works when rules are simple and known | Works when rules are too complex to specify |
+| Engenheiro escreve`if`-&#09;o`else`lógica | Modelo aprende padrões a partir de dados |
+| O comportamento muda quando o **código** muda | O comportamento muda quando **dados** ou **treinamento** mudam |
+| Funciona quando as regras são simples e conhecidas | Funciona quando as regras são muito complexas para serem especificadas |
 
 ```plantuml
 @startuml
@@ -43,26 +43,26 @@ note right of M : Trained on (input, label) examples
 @enduml
 ```
 
-## Core vocabulary
+## Vocabulário principal
 
-| Term | Meaning |
+| Prazo | Significado |
 |------|---------|
-| **Feature (X)** | Measurable input — column, pixel, sensor reading |
-| **Label / target (y)** | What you predict — class, price, rating |
-| **Model** | Learned function **f(X) ≈ y** |
-| **Training** | Fit parameters to minimise **loss** |
-| **Inference** | Run trained model on new data |
-| **Hyperparameter** | Chosen before training — learning rate, tree depth |
+| **Recurso (X)** | Entrada mensurável – coluna, pixel, leitura do sensor |
+| **Rótulo/alvo (y)** | O que você prevê – classe, preço, classificação |
+| **Modelo** | Função aprendida **f(X) ≈ y** |
+| **Treinamento** | Ajustar parâmetros para minimizar **perdas** |
+| **Inferência** | Execute o modelo treinado em novos dados |
+| **Hiperparâmetro** | Escolhido antes do treinamento — taxa de aprendizagem, profundidade da árvore |
 
-## Three paradigms
+## Três paradigmas
 
-| Paradigm | Data | Goal |
+| Paradigma | Dados | Meta |
 |----------|------|------|
-| **Supervised** | Labelled examples | Predict labels for new inputs |
-| **Unsupervised** | Unlabelled | Find structure (clusters, components) |
-| **Reinforcement** | Agent + environment | Maximise cumulative **reward** |
+| **Supervisionado** | Exemplos rotulados | Prever rótulos para novos insumos |
+| **Não supervisionado** | Não rotulado | Encontrar estrutura (clusters, componentes) |
+| **Reforço** | Agente + ambiente | Maximize a **recompensa** cumulativa |
 
-Most production tabular ML is **supervised**. Language and vision pre-training often use **self-supervised** objectives (labels derived from the data itself).
+A maior parte da produção tabular ML é **supervisionada**. O pré-treinamento de linguagem e visão geralmente usa objetivos **auto-supervisionados** (rótulos derivados dos próprios dados).
 
 ```mermaid
 flowchart LR
@@ -71,7 +71,7 @@ flowchart LR
   RL[Reinforcement] -->|agent + reward| Policy[Learn policy]
 ```
 
-## Minimal supervised experiment
+## Experimento mínimo supervisionado
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -84,17 +84,17 @@ model.fit(X_train, y_train)
 print(classification_report(y_test, model.predict(X_test)))
 ```
 
-## What you need
+## O que você precisa
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
 | **Python** | pandas, scikit-learn |
-| **Statistics** | Distributions, variance, metric confidence |
-| **Domain knowledge** | Define the right label and features |
-| **Evaluation discipline** | Hold-out test, no leakage |
+| **Estatísticas** | Distribuições, variância, confiança métrica |
+| **Conhecimento do domínio** | Defina o rótulo e os recursos corretos |
+| **Disciplina de avaliação** | Teste de resistência, sem vazamento |
 
-## Next
+## Próximo
 
-Continue with [Supervised learning](ii-supervised-learning.md).
+Continue com [Aprendizagem supervisionada](ii-supervised-learning.md).
 
-**Related:** [AI101 overview](../i-overview.md), [Deep learning overview](../deep-learning/i-overview.md).
+**Relacionado:** [Visão geral de AI101](../i-overview.md), [Visão geral do aprendizado profundo](../deep-learning/i-overview.md).

@@ -1,19 +1,19 @@
 ---
 label: "V"
-subtitle: "Overfitting, regularization & tuning"
-group: "Machine learning"
+subtitle: "Overfitting, regularização e ajuste"
+group: "Aprendizado de máquina"
 order: 5
 ---
-Overfitting, regularization and tuning
-Models can **memorise noise** (overfit) or **miss signal** (underfit). **Regularization** and **hyperparameter tuning** find the sweet spot between **bias** and **variance**.
+Overfitting, regularização e ajuste
+Os modelos podem **memorizar ruído** (overfit) ou **perder sinal** (underfit). **Regularização** e **ajuste de hiperparâmetros** encontram o ponto ideal entre **viés** e **variância**.
 
-## 1. Bias-variance tradeoff
+## 1. Troca entre polarização e variância
 
-| Symptom | Diagnosis | Train error | Test error |
+| Sintoma | Diagnóstico | Erro de trem | Erro de teste |
 |---------|-----------|-------------|------------|
-| Both high | **Underfitting** (high bias) | High | High |
-| Train low, test high | **Overfitting** (high variance) | Low | High |
-| Both low | Good fit | Low | Low |
+| Ambos altos | **underfitting** (alto viés) | Alto | Alto |
+| Treine baixo, teste alto | **Sobreajuste** (alta variância) | Baixo | Alto |
+| Ambos baixos | Bom ajuste | Baixo | Baixo |
 
 ```mermaid
 flowchart LR
@@ -23,45 +23,45 @@ flowchart LR
   Over --> Complex[Very complex]
 ```
 
-## 2. Regularization
+## 2. Regularização
 
-Penalise complexity so weights do not explode.
+Penalize a complexidade para que os pesos não explodam.
 
-| Method | Effect | Typical use |
+| Método | Efeito | Uso típico |
 |--------|--------|-------------|
-| **L2 (Ridge)** | Shrinks weights smoothly | Linear models, default stabiliser |
-| **L1 (Lasso)** | Drives some weights to **zero** | Sparse feature selection |
-| **Elastic net** | L1 + L2 | Correlated features |
-| **Dropout** | Randomly zero activations (NN) | [Deep learning](../deep-learning/ii-neural-networks-and-training.md) |
-| **Early stopping** | Stop when val loss worsens | Trees, neural nets |
-| **Max depth / min samples** | Limit tree growth | Random forest, boosting |
+| **L2 (cumeeira)** | Encolhe pesos suavemente | Modelos lineares, estabilizador padrão |
+| **L1 (Laço)** | Leva alguns pesos a **zero** | Seleção esparsa de recursos |
+| **Rede elástica** | L1 + L2 | Recursos correlacionados |
+| **Abandono** | Aleatoriamente zero ativações (NN) | [Aprendizagem profunda](../deep-learning/ii-neural-networks-and-training.md) |
+| **Parada antecipada** | Pare quando a perda de val piorar | Árvores, redes neurais |
+| **Profundidade máxima / amostras mínimas** | Limitar o crescimento das árvores | Floresta aleatória, aumentando |
 
-Loss with L2: **Loss + λ Σ wᵢ²** — **λ** controls strength.
+Perda com L2: **Perda + λ Σ wᵢ²** — **λ** controla a força.
 
-## 3. Hyperparameter tuning
+## 3. Ajuste de hiperparâmetros
 
-Hyperparameters are **not** learned by gradient on one batch — you search them.
+Os hiperparâmetros **não** são aprendidos por gradiente em um lote – você os pesquisa.
 
-| Method | Idea |
+| Método | Idéia |
 |--------|------|
-| **Grid search** | Exhaustive small grid |
-| **Random search** | Sample combinations — often better than grid for same budget |
-| **Bayesian optimisation** | Model the val score surface (Optuna, Hyperopt) |
+| **Pesquisa em grade** | Grade pequena exaustiva |
+| **Pesquisa aleatória** | Combinações de amostras — muitas vezes melhores que a grelha para o mesmo orçamento |
+| **Otimização bayesiana** | Modele a superfície de pontuação val (Optuna, Hyperopt) |
 
-Always tune on **validation** (or inner CV fold), never test.
+Sempre ajuste a **validação** (ou a dobra interna CV), nunca teste.
 
-## 4. More data vs simpler model
+## 4. Mais dados versus modelo mais simples
 
-| Fix overfitting | Fix underfitting |
+| Corrigir overfitting | Corrigir subajuste |
 |-----------------|------------------|
-| More training data | More features (careful of leakage) |
-| Regularization | More complex model |
-| Feature selection | Train longer (if undertrained NN) |
-| Reduce model capacity | Reduce regularization |
+| Mais dados de treinamento | Mais recursos (cuidado com vazamentos) |
+| Regularização | Modelo mais complexo |
+| Seleção de recursos | Treinar por mais tempo (se não tiver treinamento suficiente NN) |
+| Reduzir a capacidade do modelo | Reduzir a regularização |
 
-## 5. Learning curves
+## 5. Curvas de aprendizado
 
-Plot train vs val metric vs **training set size**:
+Plotar trem vs val métrica vs **tamanho do conjunto de treinamento**:
 
 ```mermaid
 flowchart LR
@@ -69,15 +69,15 @@ flowchart LR
   Var[High variance] -->|val high large gap| Reg[More data or regularize]
 ```
 
-| Curve shape | Meaning |
-|-------------|---------|
-| Val high, gap small | **High bias** — get more data won't help much; need richer model |
-| Val high, large gap | **High variance** — more data or regularize |
+| Forma curva | Significado |
+|------------|---------|
+| Val alto, lacuna pequena | **Alto viés** – obter mais dados não ajudará muito; preciso de modelo mais rico |
+| Val alto, grande lacuna | **Alta variação** — mais dados ou regularização |
 
-## 6. Rehearsal questions
+## 6. Perguntas de ensaio
 
-- L1 vs L2 — when do you want sparse weights?
-- Why early stopping is a form of regularization?
-- What does it mean if train and val loss both plateau high?
+- L1 vs L2 — quando você quer pesos esparsos?
+- Por que a parada antecipada é uma forma de regularização?
+- O que significa se a perda de trem e val estiver estagnada?
 
-**Related:** [Model evaluation](iv-model-evaluation-and-metrics.md), [Supervised learning](ii-supervised-learning.md).
+**Relacionado:** [Avaliação do modelo](iv-model-evaluation-and-metrics.md), [Aprendizagem supervisionada](ii-supervised-learning.md).

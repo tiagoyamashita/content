@@ -1,21 +1,21 @@
 ---
 label: "II"
-subtitle: "Support engineer"
+subtitle: "Engenheiro de suporte"
 group: "Paths"
 order: 2
 ---
-Support engineer
-Also called **CSE**, **technical support**, or **customer engineer**. You keep customers unblocked: reproduce issues, explain product behavior, escalate bugs, and feed insights back to eng/PM.
+Engenheiro de suporte
+Também chamado de **CSE**, **suporte técnico** ou **engenheiro do cliente**. Você mantém os clientes desbloqueados: reproduz problemas, explica o comportamento do produto, escala bugs e fornece insights para eng/PM.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Triage | Prioritize tickets; spot outages vs user error |
-| Reproduce | Local/staging repro; logs; HAR files |
-| Communicate | Clear status in EN (and often JP) |
-| Escalate | Write bug reports eng will actually use |
-| Improve | Macros, runbooks, FAQ, better error messages |
+| Triagem | Priorize ingressos; interrupções pontuais versus erro do usuário |
+| Reproduzir | Reprodução local/preparação; registros; Arquivos HAR |
+| Comunicar | Limpar status em EN (e frequentemente em JP) |
+| Escalar | Escreva relatórios de bugs que o engenheiro realmente usará |
+| Melhorar | Macros, runbooks, FAQ, melhores mensagens de erro |
 
 ```mermaid
 flowchart LR
@@ -26,49 +26,49 @@ flowchart LR
   Repro -->|gap| PM
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Product depth | Core | Know happy path, limits, billing/auth quirks |
-| Ticket triage | Core | Severity, impact, duplicate detection |
-| HTTP / browser / logs | Core | Status codes, HAR, app logs |
-| Basic SQL / admin tools | Core | Read-only checks when product allows |
-| Clear written updates | Core | Status, repro, next step — EN and often JP |
-| Empathy under pressure | Core | De-escalate without over-promising |
-| Bug report quality | Stretch | Minimal repro eng can run |
-| Light scripting | Stretch | Python/JS to batch checks or parse logs |
-| Japanese (business) | Market | Often required for domestic B2B support |
+| Profundidade do produto | Núcleo | Conheça o caminho feliz, limites, peculiaridades de cobrança/autenticação |
+| Triagem de tickets | Núcleo | Gravidade, impacto, detecção de duplicatas |
+| HTTP/navegador/registros | Núcleo | Códigos de status, HAR, logs de aplicativos |
+| Ferramentas básicas de SQL / administração | Núcleo | Verificações somente leitura quando o produto permite |
+| Atualizações escritas claras | Núcleo | Status, reprodução, próxima etapa — EN e frequentemente JP |
+| Empatia sob pressão | Núcleo | Desescalar sem prometer demais |
+| Qualidade do relatório de bug | Alongamento | O engenheiro de reprodução mínimo pode ser executado |
+| Script leve | Alongamento | Python/JS para verificações em lote ou análise de logs |
+| Japonês (negócios) | Mercado | Frequentemente necessário para suporte doméstico B2B |
 
-## Japan notes
+## Notas do Japão
 
-- Bilingual support is scarce → **pay and visa sponsorship** can be strong relative to skill bar.
-- Expect **business Japanese** more often than for backend at English-first product cos.
-- Shift / on-call depends on product; SaaS global support may follow follow-the-sun.
+- O apoio bilíngue é escasso → **patrocínio de pagamentos e vistos** pode ser forte em relação ao nível de habilidades.
+- Espere **japonês comercial** com mais frequência do que back-end em produtos com foco em inglês.
+- Turno/plantão depende do produto; O suporte global de SaaS pode seguir o exemplo do sol.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | [SWE101](../../../swe101/i-overview.md) — APIs, Git basics |
-| 2 | [CS101 networking](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) — HTTP/TLS intuition |
-| 3 | [AI Applied](../../../ai101/ai-engineering/i-overview.md) — search docs / draft replies carefully |
-| 4 | [Languages](../../../languages/i-overview.md) if targeting JP customers |
+| 1 | [SWE101](../../../swe101/i-overview.md) — APIs, Git noções básicas |
+| 2 | [CS101 rede](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) — HTTP/TLS intuição |
+| 3 | [AI Aplicado](../../../ai101/ai-engineering/i-overview.md) — pesquise cuidadosamente os documentos/respostas preliminares |
+| 4 | [Idiomas](../../../languages/i-overview.md) se for direcionado a clientes JP |
 
-Build: a personal **runbook** for a product you use (repro steps, common errors, escalation template).
+Crie: um **runbook** pessoal para um produto que você usa (etapas de reprodução, erros comuns, modelo de escalonamento).
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-See [Compensation](../iii-compensation.md). Mid support / CSE often roughly **¥5–9M**; bilingual + technical depth can push higher at gaishikei. Usually below senior SWE at the same firm.
+Consulte [Compensação](../iii-compensation.md). Suporte médio / CSE geralmente aproximadamente **¥5–9M**; A profundidade bilíngue + técnica pode aumentar ainda mais no gaishikei. Geralmente abaixo do SWE sênior na mesma empresa.
 
-## Career moves
+## Movimentos de carreira
 
-| From support | Toward |
+| Do suporte | Em direção |
 |--------------|--------|
-| Strong debugging | QA / SDET |
-| Product sense | PM / solutions engineer |
-| Deep systems | Backend / SRE (needs more coding signal) |
+| Depuração forte | QA / SDET |
+| Sentido do produto | PM / engenheiro de soluções |
+| Sistemas profundos | Backend / SRE (precisa de mais sinal de codificação) |
 
-## Next
+## Próximo
 
-[QA](iii-qa.md) or [Study map](../iv-study-map.md).
+[QA](iii-qa.md) ou [Mapa de estudo](../iv-study-map.md).

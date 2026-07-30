@@ -1,21 +1,21 @@
 ---
 label: "IV"
-subtitle: "Frontend"
+subtitle: "Front-end"
 group: "Paths"
 order: 4
 ---
-Frontend engineer
-You build what users **see and touch**: web (and sometimes mobile) UI, performance, accessibility, and client-side architecture.
+Engenheiro de front-end
+Você cria o que os usuários **vêem e tocam**: UI web (e às vezes móvel), desempenho, acessibilidade e arquitetura do lado do cliente.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Implement | Components, routing, forms, state |
-| Integrate | Call backend APIs; handle errors |
-| Polish | Loading states, a11y, i18n (JP date/currency) |
-| Measure | Core Web Vitals, bundle size |
-| Collaborate | Designers, PM, backend contracts |
+| Implementar | Componentes, roteamento, formulários, estado |
+| Integrar | Chame back-end APIs; lidar com erros |
+| Polonês | Carregando estados, a11y, i18n (JP data/moeda) |
+| Medir | Core Web Vitals, tamanho do pacote |
+| Colabore | Designers, PM, contratos de back-end |
 
 ```mermaid
 flowchart LR
@@ -25,51 +25,51 @@ flowchart LR
   FE --> User[Browser]
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| TypeScript (or strong JS) | Core | Types catch UI contract bugs |
-| Modern UI framework | Core | React/Next common in JP product cos |
-| CSS / layout / design systems | Core | Consistent, responsive UI |
-| HTTP + auth (cookies/JWT) | Core | Real app integration |
-| Component testing | Core | Jest/Vitest/Testing Library |
-| Accessibility | Core | Keyboard, semantics, contrast |
-| E2E testing | Stretch | Playwright/Cypress for critical paths |
-| Performance | Stretch | Bundles, CWV, lazy loading |
-| i18n / JP typography & forms | Stretch | Differentiator in Japan |
-| Design collaboration | Stretch | Figma handoff, design tokens |
+| TypeScript (ou JS forte) | Núcleo | Tipos detectam bugs de contrato UI |
+| Estrutura moderna UI | Núcleo | React/Next comum no produto JP cos |
+| CSS / layout / sistemas de design | Núcleo | UI consistente e responsivo |
+| HTTP + autenticação (cookies/JWT) | Núcleo | Integração real de aplicativos |
+| Teste de componentes | Núcleo | Biblioteca Jest/Vitest/Teste |
+| Acessibilidade | Núcleo | Teclado, semântica, contraste |
+| Teste E2E | Alongamento | Dramaturgo/Cypress por caminhos críticos |
+| Desempenho | Alongamento | Pacotes, CWV, carregamento lento |
+| tipografia e formulários i18n / JP | Alongamento | Diferenciador no Japão |
+| Colaboração de design | Alongamento | Transferência Figma, tokens de design |
 
-## Japan notes
+## Notas do Japão
 
-- **TypeScript + React/Next** is a common stack at modern product companies.
-- i18n and **Japanese typography / form UX** are differentiators.
-- English-first FE roles exist; design collaboration may still be JP-heavy.
+- **TypeScript + React/Next** é uma pilha comum em empresas de produtos modernas.
+- i18n e **Tipografia/formulário japonês UX** são diferenciais.
+- Existem funções FE que priorizam o inglês; a colaboração no design ainda pode ser JP- pesada.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | [JavaScript / React](../../../swe101/languages&frameworks/javascript/i-overview.md) |
+| 1 | [JavaScript/Reagir](../../../swe101/languages&frameworks/javascript/i-overview.md) |
 | 2 | [CSS](../../../swe101/languages&frameworks/css/i-overview.md) |
 | 3 | [CDN](../../../swe101/cdn/i-overview.md) |
-| 4 | [CS101](../../../cs101/i-overview.md) basics + Git |
+| 4 | [CS101](../../../cs101/i-overview.md) básico + Git |
 
-Build: a polished JP/EN bilingual UI with auth against a public API.
+Build: um JP/EN UI bilíngue polido com autenticação contra um API público.
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-Tracks overall SWE bands: mid roughly **¥7–12M** at foreigner-friendly product cos; senior higher. Same employer-type split as [Compensation](../iii-compensation.md).
+Rastreia bandas SWE gerais: meados de aproximadamente **¥7–12 milhões** em custos de produtos adequados para estrangeiros; sênior superior. Mesma divisão por tipo de empregador que [Remuneração](../iii-compensation.md).
 
-## Career moves
+## Movimentos de carreira
 
-| From FE | Toward |
-|---------|--------|
-| Full product ownership | Full-stack |
-| Design systems | UX engineering |
-| Performance / platform | Web platform / SRE-adjacent |
-| User outcomes | PM |
+| De FE | Em direção |
+|--------|--------|
+| Propriedade total do produto | Pilha completa |
+| Sistemas de design | UX engenharia |
+| Desempenho/plataforma | Plataforma web / SRE-adjacente |
+| Resultados do usuário | PM |
 
-## Next
+## Próximo
 
-[Backend](v-backend.md).
+[Back-end](v-backend.md).

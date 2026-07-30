@@ -1,11 +1,11 @@
 ---
 label: "II"
-subtitle: "Supervised learning"
-group: "Machine learning"
+subtitle: "Aprendizagem supervisionada"
+group: "Aprendizado de máquina"
 order: 2
 ---
-Supervised learning
-Given labelled data **{(x₁, y₁), …, (xₙ, yₙ)}**, learn **f(x) → ŷ** that **generalises** to unseen **x**. Two main task types: **classification** (discrete y) and **regression** (continuous y).
+Aprendizagem supervisionada
+Dados os dados rotulados **{(x₁, y₁), …, (xₙ, yₙ)}**, aprenda **f(x) → ŷ** que **generaliza** para **x** invisível. Dois tipos principais de tarefas: **classificação** (y discreto) e **regressão** (y contínuo).
 
 ```mermaid
 flowchart TB
@@ -14,77 +14,77 @@ flowchart TB
   f --> Reg[Regression: continuous ŷ]
 ```
 
-## 1. Classification
+## 1. Classificação
 
-**y** is a discrete class — spam/not-spam, digit 0–9, churn yes/no.
+**y** é uma classe discreta — spam/não-spam, dígito 0–9, rotatividade sim/não.
 
-| Variant | Example |
-|---------|---------|
-| **Binary** | Fraud vs legitimate |
-| **Multi-class** | Image category (single label) |
-| **Multi-label** | Tags on a document (many labels per row) |
+| Variante | Exemplo |
+|--------|---------|
+| **Binário** | Fraude vs legítimo |
+| **Multiclasse** | Categoria de imagem (rótulo único) |
+| **Multi-rótulo** | Tags em um documento (muitos rótulos por linha) |
 
-### Common algorithms
+### Algoritmos comuns
 
-| Algorithm | Idea | When to try |
+| Algoritmo | Idéia | Quando tentar |
 |-----------|------|-------------|
-| **Logistic regression** | Linear boundary + sigmoid | Strong baseline; interpretable |
-| **Decision tree** | Axis-aligned splits | Non-linear; watch overfitting |
-| **Random forest** | Ensemble of trees | Robust default on tabular data |
-| **Gradient boosting** (XGBoost, LightGBM, CatBoost) | Sequential error correction | Often wins Kaggle tabular |
-| **SVM** | Max-margin separator | Medium data; kernel trick for non-linear |
-| **k-NN** | Vote of k nearest neighbours | Simple; slow at scale |
-| **Neural network** | Stacked layers | Images, text, large data — see [Deep learning](../deep-learning/i-overview.md) |
+| **Regressão logística** | Limite linear + sigmóide | Linha de base forte; interpretável |
+| **Árvore de decisão** | Divisões alinhadas ao eixo | Não linear; assistir overfitting |
+| **Floresta aleatória** | Conjunto de árvores | Padrão robusto em dados tabulares |
+| **Aumento de gradiente** (XGBoost, LightGBM, CatBoost) | Correção de erros sequencial | Muitas vezes ganha Kaggle tabular |
+| **SVM** | Separador de margem máxima | Dados médios; truque do kernel para não linear |
+| **k-NN** | Votação de k vizinhos mais próximos | Simples; lento em escala |
+| **Rede neural** | Camadas empilhadas | Imagens, texto, grandes dados — consulte [Aprendizado profundo](../deep-learning/i-overview.md) |
 
-## 2. Regression
+## 2. Regressão
 
-**y** is continuous — price, demand, temperature.
+**y** é contínuo – preço, demanda, temperatura.
 
-| Algorithm | Notes |
+| Algoritmo | Notas |
 |-----------|-------|
-| **Linear regression** | ŷ = w·x + b; interpret coefficients |
-| **Ridge (L2)** | Penalises large weights |
-| **Lasso (L1)** | Sparse feature selection |
-| **Gradient boosting** | Non-linear; strong on structured data |
+| **Regressão linear** | ŷ = w·x + b; interpretar coeficientes |
+| **Cimista (L2)** | Penaliza grandes pesos |
+| **Laço (L1)** | Seleção esparsa de recursos |
+| **Aumento de gradiente** | Não linear; forte em dados estruturados |
 
-## 3. Loss functions
+## 3. Funções de perda
 
-Training **minimises loss** on training data (usually via gradient descent or closed-form solution).
+O treinamento **minimiza a perda** nos dados de treinamento (geralmente por meio de descida gradiente ou solução de formato fechado).
 
-| Task | Loss | Formula (intuition) |
+| Tarefa | Perda | Fórmula (intuição) |
 |------|------|---------------------|
-| Regression | **MSE** | Average squared error — penalises big mistakes |
-| Regression | **MAE** | Average absolute error — robust to outliers |
-| Classification | **Cross-entropy** | Penalises confident wrong classes |
-| Imbalanced binary | **Weighted CE** or **focal loss** | Up-weight rare class |
+| Regressão | **MSE** | Erro quadrático médio — penaliza grandes erros |
+| Regressão | **MAE** | Erro absoluto médio — robusto a valores discrepantes |
+| Classificação | **Entropia cruzada** | Penaliza aulas erradas confiantes |
+| Binário desequilibrado | **CE** ponderado ou **perda focal** | Classe rara de peso elevado |
 
 ```text
 MSE  = (1/n) Σ (ŷ − y)²
 CE   = − Σ y·log(ŷ)     (one-hot y)
 ```
 
-## 4. Decision boundaries (intuition)
+## 4. Limites de decisão (intuição)
 
-| Model | Boundary shape |
+| Modelo | Forma limite |
 |-------|----------------|
-| Logistic regression | Linear (hyperplane) |
-| Tree / forest | Piecewise constant regions |
-| k-NN | Flexible local regions |
-| Neural net | Highly flexible |
+| Regressão logística | Linear (hiperplano) |
+| Árvore/floresta | Regiões constantes por partes |
+| k-NN | Regiões locais flexíveis |
+| Rede neural | Altamente flexível |
 
-More flexibility → lower **bias**, higher **variance** risk — see [Overfitting & regularization](v-overfitting-regularization-and-tuning.md).
+Mais flexibilidade → menor **viés**, maior risco de **variância** — consulte [Overfitting e regularização](v-overfitting-regularization-and-tuning.md).
 
-## 5. Baseline first
+## 5. Linha de base primeiro
 
-Before complex models:
+Antes de modelos complexos:
 
-| Baseline | Purpose |
+| Linha de base | Finalidade |
 |----------|---------|
-| **Majority class** (classification) | Beat this or your model is useless |
-| **Mean prediction** (regression) | Same |
-| **Logistic / linear** | Fast, interpretable benchmark |
+| **Turma majoritária** (classificação) | Vença isso ou seu modelo será inútil |
+| **Previsão média** (regressão) | Mesmo |
+| **Logística/linear** | Referência rápida e interpretável |
 
-## 6. sklearn sketch
+## 6. esboço do sklearn
 
 ```python
 from sklearn.linear_model import LogisticRegression
@@ -98,12 +98,12 @@ clf = Pipeline([
 clf.fit(X_train, y_train)
 ```
 
-Use **pipelines** so preprocessing fits only on training data — avoids leakage.
+Use **pipelines** para que o pré-processamento se ajuste apenas aos dados de treinamento e evite vazamentos.
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Classification vs regression — give one example of each from e-commerce.
-- Why cross-entropy for classification instead of MSE on class ids?
-- When would random forest beat logistic regression on the same dataset?
+- Classificação vs regressão — dê um exemplo de cada um no comércio eletrônico.
+- Por que entropia cruzada para classificação em vez de MSE nos IDs de classe?
+- Quando a floresta aleatória superaria a regressão logística no mesmo conjunto de dados?
 
-**Related:** [Model evaluation](iv-model-evaluation-and-metrics.md), [Feature engineering](vi-feature-engineering.md).
+**Relacionado:** [Avaliação do modelo](iv-model-evaluation-and-metrics.md), [Engenharia de recursos](vi-feature-engineering.md).

@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Examples overview"
+subtitle: "Visão geral dos exemplos"
 group: "Examples"
 order: 1
 ---
-Cryptocurrency101 — Examples
-End-to-end **deploy and pay** walkthroughs for the shared [fee split pattern](../v-fee-split-pattern.md): incoming payment → **2%** to the **app account** (treasury) → **remainder** to the **to** account (recipient).
+Criptomoeda101 – Exemplos
+Orientações completas de **implantação e pagamento** para o [padrão de divisão de taxas] compartilhado(../v-fee-split-pattern.md): entrada de pagamento → **2%** para a **conta do aplicativo** (tesouraria) → **resto** para a conta **para** (destinatário).
 
-Each example is a **copy-paste project layout** — not a bundled repo. Audit and test on **testnet** before mainnet.
+Cada exemplo é um **layout de projeto de copiar e colar** — não um repositório agrupado. Audite e teste na **testnet** antes da mainnet.
 
-## Map
+## Mapa
 
-| Example | Network | Language | Fee |
-|---------|---------|----------|-----|
-| [Tron — 2% fee split deploy](ii-tron-two-percent-fee-split.md) | Tron (TVM) | Solidity + TronBox | 200 bps (2%) |
-| [TON — 2% fee split deploy](iii-ton-two-percent-fee-split.md) | TON | Tact + Blueprint | 200 bps (2%) |
+| Exemplo | Rede | Idioma | Taxa |
+|--------|---------|----------|-----|
+| [Tron – implantação de divisão de taxa de 2%](ii-tron-two-percent-fee-split.md) | Tron (TVM) | Solidez + TronBox | 200 pontos base (2%) |
+| [TON — implantação de divisão de taxa de 2%](iii-ton-two-percent-fee-split.md) | TON | Tato + Projeto | 200 pontos base (2%) |
 
-## Shared rule (both examples)
+## Regra compartilhada (ambos os exemplos)
 
 ```text
 amount     = TRX or TON attached to pay()
@@ -39,15 +39,15 @@ SC -> TO: send remainder
 @enduml
 ```
 
-## Before you start
+## Antes de começar
 
-| Topic | Where |
+| Tópico | Onde |
 |-------|--------|
-| What crypto / txs are | [What is cryptocurrency?](../ii-what-is-cryptocurrency.md) |
-| UTXO vs account | [How transactions are stored](../iii-how-transactions-are-stored.md) |
-| Verify on testnet | [Verify before broadcast](../viii-verify-before-broadcast.md) |
-| Failed txs / gas | [Failed transactions & funds](../vii-failed-transactions-and-funds.md) |
+| O que são criptografia/txs | [O que é criptomoeda?](../ii-what-is-cryptocurrency.md) |
+| UTXO vs conta | [Como as transações são armazenadas](../iii-how-transactions-are-stored.md) |
+| Verifique no testnet | [Verifique antes da transmissão](../viii-verify-before-broadcast.md) |
+| Txs/gás falhados | [Falha nas transações e fundos](../vii-failed-transactions-and-funds.md) |
 
-## Next
+## Próximo
 
-Start with [Tron](ii-tron-two-percent-fee-split.md) if you already know Solidity, or [TON](iii-ton-two-percent-fee-split.md) for Tact + Blueprint.
+Comece com [Tron](ii-tron-two-percent-fee-split.md) se você já conhece Solidity, ou [TON](iii-ton-two-percent-fee-split.md) para Tato + Projeto.

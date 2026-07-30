@@ -1,46 +1,46 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Paths"
 order: 1
 ---
-Career paths — overview
-Role-by-role notes for Japan-oriented tech careers: day-to-day work, skills, study links into this repo, and compensation pointers.
+Planos de carreira - visão geral
+Notas função por função para carreiras tecnológicas orientadas para o Japão: trabalho diário, habilidades, links de estudo para este repositório e dicas de remuneração.
 
-Parent track: [IT careers](../i-overview.md) · [Compensation](../iii-compensation.md) · [Study map](../iv-study-map.md) · [SDLC & roles](../v-sdlc-and-roles.md).
+Trilha principal: [IT carreiras](../i-overview.md) · [Compensação](../iii-compensation.md) · [Mapa de estudo](../iv-study-map.md) · [SDLC & funções](../v-sdlc-and-roles.md).
 
-## Map
+## Mapa
 
-| Path | Focus |
+| Caminho | Foco |
 |------|--------|
-| [Support engineer](ii-support-engineer.md) | Customers, tickets, technical trust |
-| [QA](iii-qa.md) | Quality, automation, risk |
-| [Frontend](iv-frontend.md) | Web UI and client engineering |
-| [Backend](v-backend.md) | APIs, data, services |
-| [Product manager](vi-product-manager.md) | Outcomes, roadmaps, discovery |
-| [SRE / platform](vii-sre-platform.md) | Reliability and delivery systems |
+| [Engenheiro de suporte](ii-support-engineer.md) | Clientes, tickets, confiança técnica |
+| [QA](iii-qa.md) | Qualidade, automação, risco |
+| [Front-end](iv-frontend.md) | Web UI e engenharia de cliente |
+| [Back-end](v-backend.md) | APIs, dados, serviços |
+| [Gerente de produto](vi-product-manager.md) | Resultados, roteiros, descoberta |
+| [SRE / plataforma](vii-sre-platform.md) | Confiabilidade e sistemas de entrega |
 
-## Skills at a glance
+## Visão geral das habilidades
 
-| Path | Core skills (short) |
-|------|---------------------|
-| Support | Product depth, triage, logs/HTTP, writing, empathy |
-| QA | Test design, automation, API/UI checks, CI, bug quality |
-| Frontend | TypeScript, UI framework, CSS/a11y, HTTP/auth, testing |
-| Backend | Language depth, SQL, APIs, testing, failure modes |
-| PM | Discovery, prioritization, specs, metrics, stakeholders |
-| SRE | Linux/cloud, K8s, CI/CD, IaC, observability, IR |
+| Caminho | Habilidades básicas (curtas) |
+|------|----------|
+| Suporte | Profundidade do produto, triagem, logs/HTTP, redação, empatia |
+| QA | Design de testes, automação, verificações API/UI, CI, qualidade de bugs |
+| Interface | TypeScript, estrutura UI, CSS/a11y, HTTP/auth, teste |
+| Back-end | Profundidade da linguagem, SQL, APIs, testes, modos de falha |
+| PM | Descoberta, priorização, especificações, métricas, partes interessadas |
+| SRE | Linux/nuvem, K8s, CI/CD, IaC, observabilidade, IR |
 
-Full tables live on each path note and in [SDLC & roles](../v-sdlc-and-roles.md).
+Tabelas completas ficam em cada nota de caminho e em [SDLC & role](../v-sdlc-and-roles.md).
 
-## How to use these notes
+## Como usar essas notas
 
-1. Skim [SDLC & roles](../v-sdlc-and-roles.md) — where does the work sit?
-2. Read **day-to-day** and **skills** on a path note — does it fit?
-3. Check **Japan notes** — language and employer fit.
-4. Follow **study path** into CS101 / SWE101 / SRE101 / AI101.
-5. Recheck **comp** against [Compensation](../iii-compensation.md) when you interview.
+1. Dê uma olhada em [SDLC e funções](../v-sdlc-and-roles.md) – onde fica o trabalho?
+2. Leia **dia a dia** e **habilidades** em uma nota de caminho – ela se encaixa?
+3. Verifique **notas sobre o Japão** — adequação do idioma e do empregador.
+4. Siga o **caminho de estudo** em CS101 / SWE101 / SRE101 / AI101.
+5. Verifique novamente **comp** em relação a [Compensação](../iii-compensation.md) quando você entrevista.
 
-## Next
+## Próximo
 
-Start with the path closest to your current skills — often [Backend](v-backend.md) or [Frontend](iv-frontend.md) for engineers, [Support](ii-support-engineer.md) for customer-facing technical roles.
+Comece com o caminho mais próximo de suas habilidades atuais — geralmente [Backend](v-backend.md) ou [Front-end](iv-frontend.md) para engenheiros, [Suporte](ii-support-engineer.md) para funções técnicas voltadas para o cliente.

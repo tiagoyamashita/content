@@ -1,21 +1,21 @@
 ---
 label: "VII"
-subtitle: "SRE / platform"
+subtitle: "SRE / plataforma"
 group: "Paths"
 order: 7
 ---
-SRE / platform engineer
-You make delivery **safe and boring**: CI/CD, cloud, Kubernetes, observability, incident response, and internal platforms that help product teams ship.
+SRE / engenheiro de plataforma
+Você torna a entrega **segura e enfadonha**: CI/CD, nuvem, Kubernetes, observabilidade, resposta a incidentes e plataformas internas que ajudam as equipes de produto a entregar.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Automate | Pipelines, IaC, golden paths |
-| Observe | Metrics, logs, traces, alerts |
-| Respond | Incidents, postmortems |
-| Harden | Security baselines, least privilege |
-| Enable | Self-serve platforms for eng |
+| Automatizar | Pipelines, IaC, caminhos dourados |
+| Observar | Métricas, logs, rastreamentos, alertas |
+| Responder | Incidentes, post-mortems |
+| Endurecer | Linhas de base de segurança, privilégio mínimo |
+| Habilitar | Plataformas de autoatendimento para engenharia |
 
 ```mermaid
 flowchart TB
@@ -27,50 +27,50 @@ flowchart TB
   Improve --> CI
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Linux + networking | Core | Debug hosts and traffic |
-| Cloud (AWS or GCP) | Core | Default substrate |
-| Containers / Kubernetes | Core | Common runtime |
-| CI/CD | Core | Safe, repeatable releases |
-| IaC (Terraform) | Core | Reproducible environments |
-| Observability | Core | Metrics, logs, traces, alerts |
-| Coding for automation | Core | Python/Go/etc. — platforms are software |
-| Incident response | Stretch | Command, timelines, postmortems |
-| Security baselines | Stretch | IAM, secrets, network policy |
-| Developer experience | Stretch | Golden paths, self-serve platforms |
+| Linux + redes | Núcleo | Depurar hosts e tráfego |
+| Nuvem (AWS ou GCP) | Núcleo | Substrato padrão |
+| Contêineres / Kubernetes | Núcleo | Tempo de execução comum |
+| CI/CD | Núcleo | Lançamentos seguros e repetíveis |
+| IaC (Terraform) | Núcleo | Ambientes reproduzíveis |
+| Observabilidade | Núcleo | Métricas, logs, rastreamentos, alertas |
+| Codificação para automação | Núcleo | Python/Vai/etc. — plataformas são software |
+| Resposta a incidentes | Alongamento | Comando, cronogramas, postmortems |
+| Linhas de base de segurança | Alongamento | IAM, segredos, política de rede |
+| Experiência do desenvolvedor | Alongamento | Caminhos dourados, plataformas de autoatendimento |
 
-## Japan notes
+## Notas do Japão
 
-- Hiring is strong where product cos run serious cloud estates.
-- Traditional IT may label similar work “インフラ” with more ops / less coding — read the JD carefully.
-- English docs (AWS/GCP) help; company chat may still be Japanese.
+- A contratação é forte onde os produtos administram propriedades de nuvem sérias.
+- O IT tradicional pode rotular trabalhos semelhantes como “インフラ” com mais operações/menos codificação — leia o JD com atenção.
+- Ajuda com documentos em inglês (AWS/GCP); o bate-papo da empresa ainda pode ser japonês.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | [SRE101](../../../sre101/i-overview.md) — full track |
-| 2 | [SWE101](../../../swe101/i-overview.md) — enough to partner with backend |
-| 3 | [CS101 networking](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) |
-| 4 | [Cybersecurity](../../../cybersecurity/i-overview.md) basics |
+| 1 | [SRE101](../../../sre101/i-overview.md) — faixa completa |
+| 2 | [SWE101](../../../swe101/i-overview.md) — o suficiente para fazer parceria com back-end |
+| 3 | [CS101 rede](../../../cs101/networking/i-tcp-udp-and-transport-basics.md) |
+| 4 | [Cibersegurança](../../../cybersecurity/i-overview.md) noções básicas |
 
-Build: Terraform + CI deploying a service with metrics and an alert.
+Build: Terraform + CI implantando um serviço com métricas e um alerta.
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-Often at or above backend mid bands: roughly **¥8–14M** mid; senior higher, especially with on-call + cloud depth. See [Compensation](../iii-compensation.md).
+Frequentemente nas bandas intermediárias de back-end ou acima: aproximadamente **¥8–14M** médias; sênior superior, especialmente com plantão + profundidade de nuvem. Consulte [Compensação](../iii-compensation.md).
 
-## Career moves
+## Movimentos de carreira
 
-| From SRE | Toward |
+| De SRE | Em direção |
 |----------|--------|
-| Product infra | Platform lead |
-| Security focus | SecEng |
-| Deep systems | Staff backend |
+| Infraestrutura do produto | Líder de plataforma |
+| Foco na segurança | SecEng |
+| Sistemas profundos | Back-end da equipe |
 
-## Track complete
+## Rastreamento concluído
 
-Return to [Paths overview](i-overview.md) or [IT careers overview](../i-overview.md).
+Retorne para [Visão geral dos caminhos](i-overview.md) ou [IT visão geral das carreiras](../i-overview.md).

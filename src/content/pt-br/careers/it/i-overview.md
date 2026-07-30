@@ -1,36 +1,36 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "IT careers"
 order: 1
 ---
-IT careers — overview
-Career notes for **tech roles in Japan**: what each path actually does, how to **study** for it (using this repo), and **compensation** ranges. Aimed at people building skills in CS/SWE/AI who want a realistic Japan-oriented map — not immigration or tax advice.
+Carreiras IT - visão geral
+Notas de carreira para **funções de tecnologia no Japão**: o que cada caminho realmente faz, como **estudar** para isso (usando este repositório) e faixas de **compensação**. Destinado a pessoas que desenvolvem habilidades em CS/SWE/AI que desejam um mapa realista orientado para o Japão - e não aconselhamento sobre imigração ou impostos.
 
-Figures are **illustrative bands** (mostly Tokyo, foreigner-friendly employers). Always verify with current offers, [TokyoDev](https://www.tokyodev.com/), Levels.fyi, and recruiters. Employer type often moves pay more than title alone.
+Os números são **faixas ilustrativas** (principalmente Tóquio, empregadores amigos dos estrangeiros). Sempre verifique as ofertas atuais, [TokyoDev](https://www.tokyodev.com/), Levels.fyi e recrutadores. O tipo de empregador geralmente muda o pagamento mais do que apenas o título.
 
-Parent: [Careers](../i-overview.md). For non-tech paths, see [Other careers](../other/i-overview.md).
+Pai: [Carreiras](../i-overview.md). Para caminhos não tecnológicos, consulte [Outras carreiras](../other/i-overview.md).
 
-## Map of this track
+## Mapa desta trilha
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Japan tech market](ii-japan-tech-market.md) | Employer types, language, visas, culture signals |
-| [Compensation](iii-compensation.md) | How 年収 works; bands; negotiation basics |
-| [Study map](iv-study-map.md) | Which curriculum tracks feed which roles |
-| [SDLC & roles](v-sdlc-and-roles.md) | Life-cycle phases; where each role fits; skills by phase |
-| **[Paths](paths/i-overview.md)** | Support, QA, frontend, backend, PM, and more |
+| [Mercado de tecnologia do Japão](ii-japan-tech-market.md) | Tipos de empregadores, idioma, vistos, sinais culturais |
+| [Compensação](iii-compensation.md) | Como funciona; bandas; noções básicas de negociação |
+| [Mapa de estudo](iv-study-map.md) | Quais currículos acompanham quais funções |
+| [SDLC e funções](v-sdlc-and-roles.md) | Fases do ciclo de vida; onde cada função se encaixa; competências por fase |
+| **[Caminhos](paths/i-overview.md)** | Suporte, QA, frontend, backend, PM e muito mais |
 
-## Role cheat sheet
+## Folha de dicas de funções
 
-| Path | Day-to-day | Usually needs |
+| Caminho | Dia-a-dia | Geralmente precisa |
 |------|------------|---------------|
-| [Support engineer](paths/ii-support-engineer.md) | Tickets, repros, customer trust | Product knowledge, clear writing, some code |
-| [QA / test](paths/iii-qa.md) | Quality strategy, automation, risk | Test design, tooling, collaboration with eng |
-| [Frontend](paths/iv-frontend.md) | UI, UX engineering, web performance | JS/TS, React/etc., accessibility |
-| [Backend](paths/v-backend.md) | APIs, data, reliability | One server language, SQL, systems basics |
-| [Product manager](paths/vi-product-manager.md) | Roadmaps, discovery, trade-offs | Communication, metrics, technical literacy |
-| [SRE / platform](paths/vii-sre-platform.md) | Uptime, delivery, infra | Linux, cloud, CI/CD, observability |
+| [Engenheiro de suporte](paths/ii-support-engineer.md) | Ingressos, repros, confiança do cliente | Conhecimento do produto, redação clara, algum código |
+| [QA / teste](paths/iii-qa.md) | Estratégia de qualidade, automação, risco | Design de teste, ferramentas, colaboração com engenharia |
+| [Front-end](paths/iv-frontend.md) | UI, UX engenharia, desempenho web | JS/TS, React/etc., acessibilidade |
+| [Back-end](paths/v-backend.md) | APIs, dados, confiabilidade | Uma linguagem de servidor, SQL, noções básicas de sistemas |
+| [Gerente de produto](paths/vi-product-manager.md) | Roteiros, descoberta, compensações | Comunicação, métricas, alfabetização técnica |
+| [SRE / plataforma](paths/vii-sre-platform.md) | Tempo de atividade, entrega, infra | Linux, nuvem, CI/CD, observabilidade |
 
 ```mermaid
 flowchart LR
@@ -43,12 +43,12 @@ flowchart LR
   Skills --> SRE[SRE / platform]
 ```
 
-## Suggested reading order
+## Ordem de leitura sugerida
 
 ```text
 Overview → Japan tech market → Compensation → Study map → SDLC & roles → pick a Paths note
 ```
 
-## Next
+## Próximo
 
-[Japan tech market](ii-japan-tech-market.md).
+[Mercado de tecnologia do Japão](ii-japan-tech-market.md).

@@ -1,23 +1,23 @@
 ---
 label: "II"
-subtitle: "Tron — 2% fee split deploy"
+subtitle: "Tron – implantação de divisão de taxa de 2%"
 group: "Examples"
 order: 2
 ---
-Example — Tron: 2% fee split (full deploy)
-Deploy a **Solidity** contract on **Tron** (TVM) that accepts **TRX**, sends **2%** to your **app account**, and **98%** to a **to** account. Uses **TronBox** + **TronLink** on **Nile** testnet.
+Exemplo - Tron: divisão de taxas de 2% (implantação completa)
+Implante um contrato do **Solidity** no **Tron** (TVM) que aceita **TRX**, envia **2%** para sua **conta do aplicativo** e **98%** para uma conta **para**. Usa **TronBox** + **TronLink** na rede de teste **Nile**.
 
-Parent: [Examples overview](i-overview.md) · Network: [Tron overview](../networks/tron/i-overview.md).
+Pai: [Visão geral dos exemplos](i-overview.md) · Rede: [Visão geral do Tron](../networks/tron/i-overview.md).
 
-**Not financial advice.** Minimal contract for learning — audit before production.
+**Não é aconselhamento financeiro.** Contrato mínimo para aprendizagem – auditoria antes da produção.
 
-## 1. What you are building
+## 1. O que você está construindo
 
-| Role | Address | Receives |
+| Função | Endereço | Recebe |
 |------|---------|----------|
-| **App account** | Your treasury wallet (`T…`) | **2%** of each payment (200 bps) |
-| **To account** | Recipient per call (`T…`) | **98%** remainder |
-| **Contract** | Deployed `T…` | Holds logic only — should not hoard TRX |
+| **Conta do aplicativo** | Sua carteira do tesouro (`T…`) | **2%** de cada pagamento (200 bps) |
+| **Para conta** | Destinatário por chamada (`T…`) | **98%** restante |
+| **Contrato** | Implantado`T…`| Contém apenas lógica - não deve acumular TRX |
 
 ```text
 User calls pay(toAccount) with 100 TRX attached:
@@ -25,7 +25,7 @@ User calls pay(toAccount) with 100 TRX attached:
   toAccount   ← 98 TRX
 ```
 
-## 2. Project layout
+## 2. Layout do projeto
 
 ```text
 tron-fee-split-2pct/
@@ -41,16 +41,16 @@ tron-fee-split-2pct/
     call_pay.js                  # optional: test pay() from CLI
 ```
 
-| File | Purpose |
+| Arquivo | Finalidade |
 |------|---------|
-| **`TwoPercentFeeSplitter.sol`** | `pay(toAccount)` splits `msg.value` |
-| **`tronbox.js`** | Nile/mainnet RPC + private key for deploy |
-| **`2_deploy_fee_splitter.js`** | Passes **app account** address and `feeBps = 200` |
-| **`call_pay.js`** | Sends test `pay()` after deploy |
+| **`TwoPercentFeeSplitter.sol`** |`pay(toAccount)`divisões`msg.value`|
+| **`tronbox.js`** | Nilo/mainnet RPC + chave privada para implantação |
+| **`2_deploy_fee_splitter.js`** | Passa o endereço da **conta do aplicativo** e`feeBps = 200`|
+| **`call_pay.js`** | Envia teste`pay()`após a implantação |
 
-## 3. Contract — full source
+## 3. Contrato – fonte completa
 
-**`contracts/TwoPercentFeeSplitter.sol`**
+(R)`contracts/TwoPercentFeeSplitter.sol`(R)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -98,11 +98,11 @@ contract TwoPercentFeeSplitter {
 }
 ```
 
-For a **fixed 2%** mainnet deploy, constructor uses `_feeBps = 200`.
+Para uma implantação de mainnet **fixa de 2%**, o construtor usa`_feeBps = 200`.
 
-### Where `appAccount` gets its value
+### Onde`appAccount`obtém seu valor
 
-`immutable` means: **assign exactly once in the constructor**, then it is baked into the contract bytecode forever. There is no later setter.
+`immutable`significa: **atribua exatamente uma vez no construtor**, então ele é inserido no bytecode do contrato para sempre. Não há setter posterior.
 
 ```text
 1. You set env var     TRON_APP_ACCOUNT=TYourTreasuryWallet...
@@ -127,15 +127,15 @@ note right of ST: Cannot change\nafter deploy
 @enduml
 ```
 
-| Step | Code location | What happens |
-|------|---------------|--------------|
-| **Declare** | `address public immutable appAccount;` | Names the field — **no value yet** |
-| **Pass in** | `constructor(address _appAccount, …)` | Deploy tx includes your treasury `T…` address |
-| **Assign** | `appAccount = _appAccount;` (line in constructor) | **Value is set here** |
-| **Use** | `appAccount.call{value: fee}("")` in `pay()` | Reads the address stored at deploy |
-| **Verify** | Tronscan → Read contract → `appAccount()` | Public `immutable` auto-getter |
+| Etapa | Localização do código | O que acontece |
+|------|---------------|-------------|
+| **Declarar** |`address public immutable appAccount;`| Nomeia o campo — **nenhum valor ainda** |
+| **Passe** |`constructor(address _appAccount, …)`| Implantar tx inclui seu tesouro`T…`endereço |
+| **Atribuir** |`appAccount = _appAccount;`(linha no construtor) | **O valor é definido aqui** |
+| **Usar** |`appAccount.call{value: fee}("")`em`pay()`| Lê o endereço armazenado na implantação |
+| **Verificar** | Tronscan → Ler contrato →`appAccount()`| Público`immutable`coletor automático |
 
-**`toAccount`** is different — it is **not** stored on the contract. Callers pass it on every `pay(toAccount)` as the recipient for that payment.
+(R)`toAccount`** é diferente — **não** está armazenado no contrato. Os chamadores passam a cada`pay(toAccount)`como destinatário desse pagamento.
 
 ```javascript
 // migrations/2_deploy_fee_splitter.js — this address becomes appAccount
@@ -145,9 +145,9 @@ deployer.deploy(Splitter, APP_ACCOUNT, FEE_BPS);
 //                      constructor 1st argument → appAccount
 ```
 
-## 4. TronBox config
+## 4. Configuração do TronBox
 
-**`package.json`**
+(R)`package.json`(R)
 
 ```json
 {
@@ -159,7 +159,7 @@ deployer.deploy(Splitter, APP_ACCOUNT, FEE_BPS);
 }
 ```
 
-**`tronbox.js`**
+(R)`tronbox.js`(R)
 
 ```javascript
 module.exports = {
@@ -185,14 +185,14 @@ module.exports = {
 };
 ```
 
-| Setting | Meaning |
-|---------|---------|
-| **`feeLimit`** | Max TRX burned for energy on this tx (sun units context in TronBox) |
-| **`TRON_PRIVATE_KEY`** | Deployer wallet — **never commit** to git |
+| Configuração | Significado |
+|--------|---------|
+| **`feeLimit`** | Max TRX queimou energia neste tx (contexto de unidades solares em TronBox) |
+| **`TRON_PRIVATE_KEY`** | Carteira do implementador — **nunca se comprometa** com o git |
 
-## 5. Migrations
+## 5. Migrações
 
-**`migrations/1_initial_migration.js`**
+(R)`migrations/1_initial_migration.js`(R)
 
 ```javascript
 const Migrations = artifacts.require("Migrations");
@@ -201,7 +201,7 @@ module.exports = function (deployer) {
 };
 ```
 
-**`migrations/2_deploy_fee_splitter.js`**
+(R)`migrations/2_deploy_fee_splitter.js`(R)
 
 ```javascript
 const Splitter = artifacts.require("TwoPercentFeeSplitter");
@@ -215,7 +215,7 @@ module.exports = function (deployer) {
 };
 ```
 
-## 6. Deploy flow
+## 6. Fluxo de implantação
 
 ```plantuml
 @startuml
@@ -253,23 +253,23 @@ npx tronbox migrate --network nile
 # Note contract address from output
 ```
 
-| Step | Verify |
+| Etapa | Verifique |
 |------|--------|
-| Compile | No Solidity errors |
-| Migrate | Tronscan Nile shows **Contract Creation** |
-| Read `appAccount()` | Matches your treasury `T…` |
-| Read `feeBps()` | Returns `200` |
+| Compilar | Sem erros de solidez |
+| Migrar | Tronscan Nile mostra **Criação de Contrato** |
+| Ler`appAccount()`| Corresponde ao seu tesouro`T…`|
+| Ler`feeBps()`| Devoluções`200`|
 
-## 7. Call `pay()` — send a test payment
+## 7. Ligue`pay()`— enviar um pagamento de teste
 
-**TronLink / TronIDE**
+**TronLink/TronIDE**
 
-1. Open contract on Nile Tronscan → **Write contract**.
-2. `pay(toAccount)` — set **toAccount** = recipient `T…`.
-3. Attach **Call value** = e.g. `10` TRX.
-4. Confirm — wallet must hold **10 TRX + energy/bandwidth**.
+1. Abra o contrato no Nile Tronscan → **Escrever contrato**.
+2.`pay(toAccount)`— definir **toAccount** = destinatário`T…`.
+3. Anexe **Valor da chamada** = por exemplo.`10`TRX.
+4. Confirme — a carteira deve conter **10 TRX + energia/largura de banda**.
 
-**`scripts/call_pay.js`** (optional)
+(R)`scripts/call_pay.js`** (opcional)
 
 ```javascript
 const TronWeb = require("tronweb");
@@ -295,47 +295,47 @@ async function main() {
 main().catch(console.error);
 ```
 
-## 8. Verify payment completed
+## 8. Verifique o pagamento concluído
 
-| Check | Expected |
+| Verifique | Esperado |
 |-------|----------|
-| Tronscan tx **Result** | `SUCCESS` |
-| **Paid** event | `fee` = 2% of `amount`, `remainder` = 98% |
-| App account balance | +2% |
-| To account balance | +98% |
-| Caller wallet | −amount − energy/bandwidth |
+| Tronscan tx **Resultado** |`SUCCESS`|
+| Evento **Pago** |`fee`= 2% de`amount`,`remainder`= 98% |
+| Saldo da conta do aplicativo | +2% |
+| Para saldo da conta | +98% |
+| Carteira do chamador | −quantidade − energia/largura de banda |
 
-Example with **100 TRX** payment:
+Exemplo com pagamento **100 TRX**:
 
 ```text
 fee       = 100 × 200 / 10000 = 2 TRX   → appAccount
 remainder = 98 TRX                    → toAccount
 ```
 
-See [Verify safe & completed](../ix-verify-safe-and-completed.md#4-tron-tvm).
+Consulte [Verificar segurança e conclusão](../ix-verify-safe-and-completed.md#4-tron-tvm).
 
-## 9. Common failures
+## 9. Falhas comuns
 
-| Error | Cause | Fix |
+| Erro | Causa | Correção |
 |-------|-------|-----|
-| `no trx` | `callValue` = 0 | Attach TRX |
-| `to transfer failed` | Recipient contract rejects TRX | Use EOA or payable contract |
-| `insufficient funds` | Not enough TRX for value + energy | Top up; see [Part VII](../vii-failed-transactions-and-funds.md) |
-| Deploy energy high | Large bytecode | Optimize compiler; stake TRX on mainnet |
+|`no trx`|`callValue`= 0 | Anexe TRX |
+|`to transfer failed`| Contrato do destinatário rejeita TRX | Use EOA ou contrato a pagar |
+|`insufficient funds`| TRX insuficiente para valor + energia | Completar; veja [Parte VII](../vii-failed-transactions-and-funds.md) |
+| Implantar alta energia | Bytecode grande | Otimize o compilador; apostar TRX na mainnet |
 
-## 10. Mainnet checklist
+## 10. Lista de verificação da rede principal
 
-| # | Item |
+| # | Artigo |
 |---|------|
-| 1 | Run full flow on **Nile** |
-| 2 | `staticCall` / constant contract simulate `pay()` |
-| 3 | Set `TRON_APP_ACCOUNT` to production treasury |
-| 4 | `tronbox migrate --network mainnet` |
-| 5 | Canary `pay()` with small TRX |
-| 6 | Save contract address from **your** deploy tx |
+| 1 | Execute o fluxo completo no **Nile** |
+| 2 |`staticCall`/ simulação de contrato constante`pay()`|
+| 3 | Definir`TRON_APP_ACCOUNT`para tesouraria de produção |
+| 4 |`tronbox migrate --network mainnet`|
+| 5 | Canário`pay()`com pequeno TRX |
+| 6 | Salve o endereço do contrato de **seu** tx de implantação |
 
-## 11. Related
+## 11. Relacionado
 
-- [TON — 2% fee split deploy](iii-ton-two-percent-fee-split.md)
-- [Tron network overview](../networks/tron/i-overview.md)
-- [Fee split pattern](../v-fee-split-pattern.md)
+- [TON — implantação de divisão de taxa de 2%](iii-ton-two-percent-fee-split.md)
+- [Visão geral da rede Tron](../networks/tron/i-overview.md)
+- [Padrão de divisão de taxas](../v-fee-split-pattern.md)

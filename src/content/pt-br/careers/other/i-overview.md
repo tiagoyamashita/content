@@ -1,63 +1,63 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Other careers"
 order: 1
 ---
-Other careers — overview
-Career notes for **non-tech paths in Japan**: hospitality, healthcare and caregiving, education, finance and business, and skilled trades. Same Japan-oriented lens as the IT branch — employer types, language, visa realities, and rough pay — but for fields outside software.
+Outras carreiras - visão geral
+Notas de carreira para **caminhos não tecnológicos no Japão**: hospitalidade, saúde e cuidados, educação, finanças e negócios, e profissões especializadas. Mesma lente orientada para o Japão que a filial IT – tipos de empregadores, idioma, realidades de vistos e salários aproximados – mas para áreas fora de software.
 
-Not immigration, legal, medical, or financial advice. Bands are **illustrative** and vary widely by employer, region, certification, and Japanese level. Always verify with current job listings, employers, and licensed advisors.
+Não é aconselhamento sobre imigração, jurídico, médico ou financeiro. As faixas são **ilustrativas** e variam amplamente de acordo com o empregador, região, certificação e nível de japonês. Sempre verifique as listas de empregos atuais, empregadores e consultores licenciados.
 
-Parent: [Careers](../i-overview.md). For tech roles, see [IT careers](../it/i-overview.md).
+Pai: [Carreiras](../i-overview.md). Para funções de tecnologia, consulte [IT carreiras](../it/i-overview.md).
 
-## Map of this branch
+## Mapa desta filial
 
-| Field | Focus |
+| Campo | Foco |
 |-------|-------|
-| [Hospitality](ii-hospitality.md) | Hotels, restaurants, tourism, and guest services |
-| [Healthcare & caregiving](iii-healthcare.md) | Nursing, caregiving (介護), and allied health support |
-| [Education & teaching](iv-education.md) | English teaching (ALT/eikaiwa), international schools, cram schools |
-| [Finance & business](v-finance-and-business.md) | Accounting, banking, sales, operations, and back office |
-| [Skilled trades](vi-skilled-trades.md) | Construction, manufacturing, logistics, and facilities |
+| [Hospitalidade](ii-hospitality.md) | Hotéis, restaurantes, turismo e serviços ao hóspede |
+| [Saúde e cuidados](iii-healthcare.md) | Enfermagem, cuidados (介護) e apoio à saúde aliado |
+| [Educação e ensino](iv-education.md) | Ensino de inglês (ALT/eikaiwa), escolas internacionais, cursinhos |
+| [Finanças e negócios](v-finance-and-business.md) | Contabilidade, bancos, vendas, operações e back office |
+| [Ofícios qualificados](vi-skilled-trades.md) | Construção, fabricação, logística e instalações |
 
-## The big levers in Japan (all fields)
+## As grandes alavancas no Japão (todos os campos)
 
-| Lever | Why it matters |
+| Alavanca | Por que é importante |
 |-------|----------------|
-| **Japanese level** | Most non-tech roles are customer- or team-facing; JLPT N3–N1 widens options fast |
-| **Visa / status of residence** | Each field maps to specific visas (e.g. Specified Skilled Worker, Instructor, Business Manager) |
-| **Certification / license** | Care, health, finance, and trades often gate pay and roles behind qualifications |
-| **Employer type** | International hotel vs local inn, international school vs eikaiwa — pay and culture differ sharply |
-| **Region** | Tokyo pays more but costs more; tourism and care demand are strong outside big cities too |
+| **Nível de japonês** | A maioria das funções não tecnológicas são voltadas para o cliente ou para a equipe; JLPT N3–N1 amplia opções rapidamente |
+| **Visto / estatuto de residência** | Cada campo é mapeado para vistos específicos (por exemplo, Trabalhador Qualificado Especificado, Instrutor, Gerente de Negócios) |
+| **Certificação/licença** | Cuidados, saúde, finanças e comércio muitas vezes determinam salários e funções por trás das qualificações |
+| **Tipo de empregador** | Hotel internacional versus pousada local, escola internacional versus eikaiwa – remuneração e cultura diferem drasticamente |
+| **Região** | Tóquio paga mais, mas custa mais; a procura de turismo e cuidados também é forte fora das grandes cidades |
 
-## Language reality
+## Realidade linguística
 
-| Level | What it typically unlocks |
+| Nível | O que normalmente desbloqueia |
 |-------|---------------------------|
-| Low / English-only | Some eikaiwa, international hotels, tourism, and global-company back office |
-| Conversational (N4–N3) | Most guest-facing, care-support, and team roles |
-| Business (N2–N1) | Supervisory, licensed, corporate, and domestic-client roles |
+| Baixo / somente em inglês | Alguns eikaiwa, hotéis internacionais, turismo e back office de empresas globais |
+| Conversacional (N4–N3) | A maioria das funções voltadas para hóspedes, suporte de atendimento e equipe |
+| Negócios (N2–N1) | Funções de supervisão, licenciadas, corporativas e de clientes domésticos |
 
-## Visa quick map (high level)
+## Mapa rápido de visto (alto nível)
 
-| Field | Common routes (illustrative) |
-|-------|------------------------------|
-| Hospitality | Specified Skilled Worker (SSW) food service/accommodation; Skilled Labor |
-| Healthcare/care | SSW nursing care (介護); Nursing Care visa; EPA programs |
-| Education | Instructor; Engineer/Specialist in Humanities (some roles) |
-| Finance/business | Engineer/Specialist in Humanities; Business Manager (founders) |
-| Skilled trades | SSW construction/manufacturing; Skilled Labor; technical programs |
+| Campo | Rotas comuns (ilustrativas) |
+|-------|-----------------------------|
+| Hospitalidade | Trabalhador Qualificado Específico (SSW) serviço de alimentação/alojamento; Mão de obra qualificada |
+| Cuidados de saúde/cuidados | SSW cuidados de enfermagem (介護); Visto de cuidados de enfermagem; EPA programas |
+| Educação | Instrutor; Engenheiro/Especialista em Ciências Humanas (algumas funções) |
+| Finanças/negócios | Engenheiro/Especialista em Ciências Humanas; Gerente de Negócios (fundadores) |
+| Comércios especializados | SSW construção/fabricação; Mão de obra qualificada; programas técnicos |
 
-Always confirm current requirements with the employer and immigration counsel — categories and eligibility change.
+Sempre confirme os requisitos atuais com o empregador e o conselho de imigração – categorias e alterações de elegibilidade.
 
-## How to use these notes
+## Como usar essas notas
 
-1. Pick a field note and read **day-to-day** — does the work fit?
-2. Check **entry & qualifications** — what license, visa, or Japanese level is needed?
-3. Read **Japan notes** — employer types and where demand is strong.
-4. Compare **compensation** against live listings before deciding.
+1. Escolha uma nota de campo e leia **dia a dia** — o trabalho se encaixa?
+2. Verifique **entrada e qualificações** — qual licença, visto ou nível de japonês é necessário?
+3. Leia **notas sobre o Japão** — tipos de empregadores e onde a demanda é forte.
+4. Compare a **compensação** com as listagens ativas antes de decidir.
 
-## Next
+## Próximo
 
-Start with the field closest to your goals: [Hospitality](ii-hospitality.md), [Healthcare & caregiving](iii-healthcare.md), [Education & teaching](iv-education.md), [Finance & business](v-finance-and-business.md), or [Skilled trades](vi-skilled-trades.md).
+Comece com o campo mais próximo dos seus objetivos: [Hospitalidade](ii-hospitality.md), [Saúde e prestação de cuidados](iii-healthcare.md), [Educação e ensino](iv-education.md), [Finanças e negócios](v-finance-and-business.md) ou [Ofícios especializados](vi-skilled-trades.md).

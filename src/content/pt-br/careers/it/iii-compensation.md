@@ -1,25 +1,25 @@
 ---
 label: "III"
-subtitle: "Compensation"
-group: "Careers"
+subtitle: "Compensação"
+group: "Carreiras"
 order: 3
 ---
-Compensation
-How **年収 (nenshū)** is usually quoted in Japan, rough **Tokyo bands** by role, and what to clarify in an offer. Not tax, legal, or personalized financial advice. Bands are **approximate** (≈2025–2026 market chatter for foreigner-friendly employers) and move with yen, firm, and level.
+Compensação
+Como **年収 (nenshū)** geralmente é citado no Japão, **bandas de Tóquio** por função e o que esclarecer em uma oferta. Não é aconselhamento fiscal, jurídico ou financeiro personalizado. As faixas são **aproximadas** (≈2025–2026 conversas de mercado para empregadores amigos dos estrangeiros) e variam com o iene, a empresa e o nível.
 
-Sources to cross-check: TokyoDev surveys, Levels.fyi (Big Tech), recruiter ranges, written offers.
+Fontes para verificação cruzada: pesquisas TokyoDev, Levels.fyi (Big Tech), gamas de recrutadores, ofertas escritas.
 
-## 1. How packages are structured
+## 1. Como os pacotes são estruturados
 
-| Piece | Meaning |
+| Peça | Significado |
 |-------|---------|
-| **Base (基本給)** | Monthly fixed × 12 |
-| **Bonus (賞与)** | Often summer + winter; 0–6+ months of base depending on firm |
-| **Allowances** | Commute almost always; housing/family at some firms |
-| **Equity / RSU** | Common at global + some product cos; rare at traditional JP firms |
-| **Deemed overtime** | Fixed OT baked into pay — ask how many hours it covers |
+| **Base (基本給)** | Fixo mensal × 12 |
+| **Bônus (賞与)** | Freqüentemente verão + inverno; 0–6+ meses de base dependendo da empresa |
+| **Subsídios** | Comutar quase sempre; habitação/família em algumas empresas |
+| **Patrimônio / RSU** | Comum no global + alguns produtos cos; raro em empresas tradicionais de JP |
+| **Horas extras consideradas** | Corrigido OT incluído no pagamento – pergunte quantas horas cobre |
 
-**Always ask:** “Is this figure base×12 only, or base + target bonus (+ equity)?”
+**Sempre pergunte:** “Este valor é apenas base×12 ou base + bônus alvo (+ patrimônio líquido)?”
 
 ```mermaid
 flowchart LR
@@ -30,48 +30,48 @@ flowchart LR
   Gross --> Net[Net after tax + shakai hoken]
 ```
 
-Rough take-home is often ~**70–80%** of gross for mid earners (year-2 residence tax included) — run a calculator for your case.
+O valor aproximado para casa costuma ser ~**70–80%** do valor bruto para pessoas com renda média (imposto de residência do ano 2 incluído) - use uma calculadora para o seu caso.
 
-## 2. Engineer bands (Tokyo, illustrative ¥M / year total)
+## 2. Bandas de engenheiros (Tóquio, ilustrativo ¥M/ano total)
 
-Foreigner-friendly / product-leaning employers (not national MHLW averages):
+Empregadores amigos dos estrangeiros/com tendência para o produto (não as médias nacionais MHLW):
 
-| Level | Years (rough) | Total comp ¥M |
+| Nível | Anos (ásperos) | Compromisso total ¥M |
 |-------|---------------|---------------|
-| Junior | 0–2 | 4–7 |
-| Mid | 2–5 | 7–11 |
-| Senior | 5–9 | 10–16 |
-| Staff / lead | 9+ | 14–22 |
-| Principal+ / Big Tech senior | 12+ | 18–35+ (equity heavy) |
+| Júnior | 0–2 | 4–7 |
+| Médio | 2–5 | 7–11 |
+| Sênior | 5–9 | 10–16 |
+| Equipe / líder | 9+ | 14–22 |
+| Diretor+ / Big Tech sênior | 12+ | 18–35+ (capital pesado) |
 
-TokyoDev 2025-style medians often land near **~¥9–10M** overall for survey engineers, with **higher medians at foreign / remote-global** employers and **lower at Japanese-HQ** — employer type dominates.
+As medianas do estilo TokyoDev 2025 geralmente chegam perto de **~¥9–10M** no geral para engenheiros de pesquisa, com **medianas mais altas em empregadores estrangeiros/globais remotos** e **mais baixas em japoneses-HQ** — o tipo de empregador domina.
 
-## 3. By role family (mid-level, illustrative)
+## 3. Por família de funções (nível médio, ilustrativo)
 
-| Role | Mid band ¥M (rough) | Notes |
+| Função | Banda média ¥M (áspero) | Notas |
 |------|---------------------|--------|
-| Support / CSE | 5–9 | Bilingual premium; on-call rare vs SWE |
-| QA / SDET | 5–10 | Automation skills raise ceiling |
-| Frontend | 7–12 | Same ladder as SWE at product cos |
-| Backend | 7–13 | Often the widest hiring volume |
-| SRE / platform | 8–14 | Premium for cloud + reliability |
-| Product manager | 8–13 | Senior PM 13–20+ at strong employers |
+| Suporte / CSE | 5–9 | Prêmio bilíngue; de plantão raro vs SWE |
+| QA / SDET | 5–10 | Habilidades de automação aumentam o teto |
+| Interface | 7–12 | Mesma escada que SWE no preço do produto |
+| Back-end | 7–13 | Muitas vezes o maior volume de contratações |
+| SRE / plataforma | 8–14 | Premium para nuvem + confiabilidade |
+| Gerente de produto | 8–13 | Sênior PM 13–20+ em empregadores fortes |
 
-Big Tech Japan and top ML/PM seats can sit **well above** these mid bands.
+A Big Tech Japan e os principais assentos ML/PM podem ficar **bem acima** dessas bandas intermediárias.
 
-## 4. Negotiation basics (Japan-friendly)
+## 4. Noções básicas de negociação (amigável ao Japão)
 
-| Do | Don’t |
+| Faça | Não |
 |----|-------|
-| Wait for a written offer before hard numbers | Invent competing offers |
-| Ask 10–15% with market comps | Demand 30% without leverage |
-| Negotiate sign-on, equity, remote days | Ignore bonus guarantee vs “target” |
-| Clarify overtime / 裁量労働制 | Assume US-style refreshers everywhere |
+| Aguarde uma oferta por escrito antes de números concretos | Invente ofertas concorrentes |
+| Pergunte de 10 a 15% com comparações de mercado | Demanda 30% sem alavancagem |
+| Negociar login, patrimônio, dias remotos | Ignorar garantia de bônus versus “alvo” |
+| Esclarecer horas extras / 裁量労働制 | Suponha atualizações de estilo US- em todos os lugares |
 
-## 5. Cost of living context
+## 5. Contexto do custo de vida
 
-Tokyo rents and international-school costs can erase a headline raise. Compare **net + commute + housing** across offers, not base alone.
+Os aluguéis de Tóquio e os custos das escolas internacionais podem anular um aumento nas manchetes. Compare **rede + deslocamento diário + moradia** entre ofertas, não apenas com base.
 
-## Next
+## Próximo
 
-[Study map](iv-study-map.md) — which notes in this repo feed each path. Role detail: [Paths overview](paths/i-overview.md).
+[Mapa de estudo](iv-study-map.md) - quais notas neste repositório alimentam cada caminho. Detalhe da função: [Visão geral dos caminhos](paths/i-overview.md).

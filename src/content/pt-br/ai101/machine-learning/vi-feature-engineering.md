@@ -1,11 +1,11 @@
 ---
 label: "VI"
-subtitle: "Feature engineering"
-group: "Machine learning"
+subtitle: "Engenharia de recursos"
+group: "Aprendizado de máquina"
 order: 6
 ---
-Feature engineering
-Raw data rarely feeds directly into a model. **Features** are numeric representations of inputs — scaling, encoding, and derived columns that make patterns learnable.
+Engenharia de recursos
+Os dados brutos raramente alimentam diretamente um modelo. **Recursos** são representações numéricas de entradas — dimensionamento, codificação e colunas derivadas que tornam os padrões aprendíveis.
 
 ```mermaid
 flowchart LR
@@ -18,69 +18,69 @@ flowchart LR
   Pipe --> Model[Model]
 ```
 
-## 1. Numerical features
+## 1. Recursos numéricos
 
-| Transform | When |
+| Transformar | Quando |
 |-----------|------|
-| **Standardisation** (z-score) | Mean 0, std 1 — many linear models, k-means, PCA |
-| **Min-max scaling** | Bound to [0, 1] — neural nets, image pixels |
-| **Log transform** | Right-skewed counts (income, page views) |
-| **Binning** | Non-linear effects; careful with boundaries |
-| **Polynomial / interaction** | Explicit x₁·x₂ for linear models |
+| **Padronização** (pontuação z) | Média 0, padrão 1 — muitos modelos lineares, k-médias, PCA |
+| **Escalonamento mínimo-máximo** | Limitado a [0, 1] — redes neurais, pixels de imagem |
+| **Transformação de log** | Contagens distorcidas à direita (receita, visualizações de páginas) |
+| **Binning** | Efeitos não lineares; cuidado com os limites |
+| **Polinômio / interação** | X₁·x₂ explícito para modelos lineares |
 
-## 2. Categorical features
+## 2. Características categóricas
 
-| Encoding | Use |
+| Codificação | Usar |
 |----------|-----|
-| **One-hot** | Nominal categories — no false order |
-| **Ordinal / label** | True order (small, medium, large) only |
-| **Target encoding** | Replace category with mean target — **leakage risk**; use CV |
-| **Frequency encoding** | Category → count in train set |
+| **Um-quente** | Categorias nominais — sem ordem falsa |
+| **Ordinal / rótulo** | Somente pedido verdadeiro (pequeno, médio, grande) |
+| **Codificação de destino** | Substituir categoria pela meta média — **risco de vazamento**; usar CV |
+| **Codificação de frequência** | Categoria → contagem no conjunto do trem |
 
-High-cardinality categories (user id, SKU): **embeddings**, **hashing**, or **group rare levels**.
+Categorias de alta cardinalidade (id de usuário, SKU): **embeddings**, **hashing** ou **grupo de níveis raros**.
 
-## 3. Text features (classical ML)
+## 3. Recursos de texto (ML clássico)
 
-Before transformers:
+Antes dos transformadores:
 
-| Method | Output |
+| Método | Saída |
 |--------|--------|
-| **Bag-of-words** | Word counts per document |
-| **TF-IDF** | Down-weight common words |
-| **Word2Vec / GloVe** | Dense word vectors — average for document |
+| **Saco de palavras** | Contagem de palavras por documento |
+| **TF-IDF** | Palavras comuns de baixo peso |
+| **Word2Vec/GloVe** | Vetores de palavras densas — média para documento |
 
-Modern NLP often uses **pre-trained embeddings** or end-to-end [LLMs](../llms/i-overview.md).
+O NLP moderno geralmente usa **embeddings pré-treinados** ou [LLMs](../llms/i-overview.md).
 
-## 4. Missing values
+## 4. Valores ausentes
 
-| Strategy | Risk |
+| Estratégia | Risco |
 |----------|------|
-| **Drop rows** | Lose data; bias if not MCAR |
-| **Impute mean/median/mode** | Simple baseline |
-| **Model-based impute** | Better; fit imputer on train only |
-| **Missing indicator column** | “Was missing” can be predictive |
+| **Eliminar linhas** | Perder dados; preconceito se não for MCAR |
+| **Imputar média/mediana/moda** | Linha de base simples |
+| **Imputação baseada em modelo** | Melhorar; instalar o imputer apenas no trem |
+| **Coluna do indicador ausente** | “Estava faltando” pode ser preditivo |
 
-## 5. Feature leakage
+## 5. Vazamento de recursos
 
-**Leakage** — feature contains information unavailable at prediction time or directly encodes the label.
+**Vazamento** — o recurso contém informações indisponíveis no momento da previsão ou codifica diretamente o rótulo.
 
-| Bad example | Why |
-|-------------|-----|
-| “Loan approved” column predicting default | Label in disguise |
-| Test-set statistics in train normalisation | Fit scaler on train only |
-| Future timestamp in churn model | Time travel |
+| Mau exemplo | Por que |
+|------------|-----|
+| Coluna “Empréstimo aprovado” prevendo inadimplência | Etiqueta disfarçada |
+| Estatísticas do conjunto de testes na normalização do trem | Colocar o escalador apenas no trem |
+| Carimbo de data/hora futuro no modelo de rotatividade | Viagem no tempo |
 
-Symptom: **too good** offline metrics; production collapse.
+Sintoma: métricas off-line **boas demais**; colapso da produção.
 
-## 6. Feature selection
+## 6. Seleção de recursos
 
-| Method | Idea |
+| Método | Idéia |
 |--------|------|
-| **Filter** | Correlation, mutual information |
-| **Wrapper** | Search subsets with val score |
-| **Embedded** | Lasso, tree importance |
+| **Filtro** | Correlação, informação mútua |
+| **Invólucro** | Pesquisar subconjuntos com pontuação val |
+| **Incorporado** | Laço, importância da árvore |
 
-Remove redundant features for speed and interpretability — not always for accuracy.
+Remova recursos redundantes para obter velocidade e interpretabilidade – nem sempre para obter precisão.
 
 ## 7. Pipelines (sklearn)
 
@@ -94,12 +94,12 @@ preprocess = ColumnTransformer([
 ])
 ```
 
-Fit **entire pipeline** on train; `predict` on test applies same transforms.
+Colocar **pipeline inteiro** no trem;`predict`no teste aplica as mesmas transformações.
 
-## 8. Rehearsal questions
+## 8. Perguntas de ensaio
 
-- One-hot vs label encoding for `color: red, blue, green`?
-- Give an example of target leakage in a house price model.
-- Why fit StandardScaler on training data only?
+- Codificação one-hot vs label para`color: red, blue, green`?
+- Dê um exemplo de vazamento alvo em um modelo de preços de imóveis.
+- Por que ajustar o StandardScaler apenas nos dados de treinamento?
 
-**Related:** [Supervised learning](ii-supervised-learning.md), [ML workflow](vii-ml-workflow-and-deployment.md).
+**Relacionado:** [Aprendizagem supervisionada](ii-supervised-learning.md), [fluxo de trabalho ML](vii-ml-workflow-and-deployment.md).

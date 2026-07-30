@@ -1,23 +1,23 @@
 ---
 label: "IV"
-subtitle: "Education & teaching"
+subtitle: "Educação e ensino"
 group: "Other careers"
 order: 4
 ---
-Education & teaching
-Teaching in Japan spans English conversation (eikaiwa), assistant language teaching (ALT) in public schools, international schools, universities, and private tutoring (cram schools, 塾). It is one of the most common entry routes for foreigners.
+Educação e ensino
+O ensino no Japão abrange conversação em inglês (eikaiwa), ensino assistente de idiomas (ALT) em escolas públicas, escolas internacionais, universidades e aulas particulares (cursinhos, 塾). É uma das vias de entrada mais comuns para estrangeiros.
 
-Parent: [Other careers](i-overview.md).
+Pai: [Outras carreiras](i-overview.md).
 
-## Day-to-day
+## Dia a dia
 
-| Role | Examples |
+| Função | Exemplos |
 |------|----------|
-| ALT (assistant language teacher) | Support Japanese teachers in public schools; lessons, pronunciation, culture |
-| Eikaiwa instructor | Conversation classes for children and adults at private schools |
-| International school teacher | Full curriculum teaching (often licensed) in English |
-| University lecturer | English, subject teaching, research (higher requirements) |
-| Cram school (塾) / tutor | Exam prep, subject support, private lessons |
+| ALT (professor assistente de línguas) | Apoiar professores de japonês em escolas públicas; aulas, pronúncia, cultura |
+| Instrutor Eikaiwa | Aulas de conversação para crianças e adultos em escolas particulares |
+| Professor de escola internacional | Ensino curricular completo (frequentemente licenciado) em inglês |
+| Docente universitário | Inglês, ensino de disciplinas, pesquisa (requisitos mais elevados) |
+| Cursinho (塾) / tutor | Preparação para exames, suporte de disciplinas, aulas particulares |
 
 ```mermaid
 flowchart LR
@@ -26,61 +26,61 @@ flowchart LR
   Exp --> Own[Private tutoring / own school]
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Clear communication & lesson delivery | Core | Engage varied ages and levels |
-| Classroom management | Core | Especially with children |
-| Patience & cultural sensitivity | Core | Adapting to Japanese school norms |
-| Planning & assessment | Core | Curriculum, materials, feedback |
-| Japanese (varies) | Market | Low for eikaiwa/ALT; higher for admin and coordination |
-| Teaching license / degree | Stretch | Required for international schools and universities |
-| Subject specialization | Stretch | Raises pay and options (IB, exam prep) |
+| Comunicação clara e entrega de aulas | Núcleo | Envolver idades e níveis variados |
+| Gestão de sala de aula | Núcleo | Principalmente com crianças |
+| Paciência e sensibilidade cultural | Núcleo | Adaptando-se às normas escolares japonesas |
+| Planejamento e avaliação | Núcleo | Currículo, materiais, feedback |
+| Japonês (varia) | Mercado | Baixo para eikaiwa/ALT; superior para administração e coordenação |
+| Licença/licenciatura | Alongamento | Obrigatório para escolas e universidades internacionais |
+| Especialização temática | Alongamento | Aumenta salários e opções (IB, preparação para exames) |
 
-## Japan notes
+## Notas do Japão
 
-- **ALT and eikaiwa** are common first jobs; a bachelor's degree is typically required for the visa.
-- **International schools and universities** expect a teaching license and/or higher degrees and pay significantly more.
-- **JET Programme** is a well-known government-run ALT route.
-- Being a **native or near-native English speaker** helps for language roles, but qualifications separate careers from short stints.
+- **ALT e eikaiwa** são primeiros empregos comuns; normalmente é necessário um diploma de bacharel para o visto.
+- **Escolas e universidades internacionais** esperam uma licença de ensino e/ou diplomas superiores e pagam significativamente mais.
+- **Programa JET** é uma rota ALT bem conhecida administrada pelo governo.
+- Ser um **falante nativo ou quase nativo de inglês** ajuda nas funções linguísticas, mas as qualificações separam as carreiras de períodos curtos.
 
-## Entry & qualifications
+## Entrada e qualificações
 
-| Route | Notes |
+| Rota | Notas |
 |-------|-------|
-| Instructor visa | Common for language teaching roles |
-| Engineer/Specialist in Humanities | Some education-adjacent and corporate training roles |
-| JET Programme | Government ALT placement, often outside big cities |
-| Teaching license + experience | Required for international schools; strongly preferred at universities |
+| Visto de instrutor | Comum para funções de ensino de idiomas |
+| Engenheiro/Especialista em Ciências Humanas | Algumas funções de treinamento corporativo e adjacentes à educação |
+| Programa JET | Colocação governamental ALT, muitas vezes fora das grandes cidades |
+| Licença docente + experiência | Obrigatório para escolas internacionais; fortemente preferido nas universidades |
 
-A bachelor's degree is generally needed for teaching visas; confirm the current requirements.
+Geralmente é necessário um diploma de bacharel para vistos de ensino; confirmar os requisitos atuais.
 
-## Compensation (illustrative)
+## Remuneração (ilustrativa)
 
-| Level | Rough ¥M / year |
+| Nível | Aproximadamente ¥M/ano |
 |-------|-----------------|
-| Eikaiwa / entry ALT | 2.5–3.6 |
-| Experienced ALT / senior eikaiwa | 3–4.5 |
-| International school teacher (licensed) | 5–9+ |
-| University lecturer | 4–8+ (varies widely) |
-| School coordinator / manager | 4.5–7 |
+| Eikaiwa / entrada ALT | 2,5–3,6 |
+| Experiente ALT / eikaiwa sênior | 3–4,5 |
+| Professor de escola internacional (licenciado) | 5–9+ |
+| Docente universitário | 4–8+ (varia muito) |
+| Coordenador/gestor escolar | 4,5–7 |
 
-International schools and some universities pay well above entry eikaiwa/ALT; private tutoring income varies with hours and reputation.
+Escolas internacionais e algumas universidades pagam bem acima do valor de entrada eikaiwa/ALT; a renda de aulas particulares varia de acordo com as horas e a reputação.
 
-## How to get in / progress
+## Como entrar / progredir
 
-1. Enter via eikaiwa, ALT, or JET with a bachelor's degree.
-2. Gain classroom experience and gather references.
-3. Earn a teaching license or specialization (e.g. TEFL/CELTA, then formal licensure).
-4. Move toward international schools, universities, or coordination roles.
-5. Optionally build private tutoring or your own school (see [Business Manager route](v-finance-and-business.md)).
+1. Inscreva-se via eikaiwa, ALT ou JET com diploma de bacharel.
+2. Ganhe experiência em sala de aula e reúna referências.
+3. Obtenha uma licença ou especialização de ensino (por exemplo, TEFL/CELTA e, em seguida, licenciamento formal).
+4. Avançar para escolas, universidades ou funções de coordenação internacionais.
+5. Opcionalmente, crie aulas particulares ou sua própria escola (consulte [Rota do Gerente de Negócios](v-finance-and-business.md)).
 
-## Related
+## Relacionado
 
-- [Languages](../../languages/i-overview.md) for your own Japanese study.
-- [Careers overview](../i-overview.md) · [Other careers](i-overview.md).
+- [Idiomas](../../languages/i-overview.md) para seu próprio estudo de japonês.
+- [Visão geral das carreiras](../i-overview.md) · [Outras carreiras](i-overview.md).
 
-## Next
+## Próximo
 
-[Finance & business](v-finance-and-business.md).
+[Finanças e negócios](v-finance-and-business.md).

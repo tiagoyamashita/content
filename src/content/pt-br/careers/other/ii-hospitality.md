@@ -1,23 +1,23 @@
 ---
 label: "II"
-subtitle: "Hospitality"
+subtitle: "Hospitalidade"
 group: "Other careers"
 order: 2
 ---
-Hospitality
-Hotels, ryokan, restaurants, cafes, tourism, and guest services. Japan's inbound tourism demand makes multilingual hospitality staff valuable, especially in Tokyo, Kyoto, Osaka, and resort areas.
+Hospitalidade
+Hotéis, ryokan, restaurantes, cafés, turismo e serviços ao hóspede. A demanda turística do Japão torna a equipe de hotelaria multilíngue valiosa, especialmente em Tóquio, Kyoto, Osaka e áreas de resort.
 
-Parent: [Other careers](i-overview.md).
+Pai: [Outras carreiras](i-overview.md).
 
-## Day-to-day
+## Dia a dia
 
-| Role | Examples |
+| Função | Exemplos |
 |------|----------|
-| Front desk / concierge | Check-in, guest requests, bookings, multilingual guest support |
-| Food & beverage | Service, hosting, bar, barista, kitchen support |
-| Housekeeping / operations | Room readiness, quality standards, coordination |
-| Tour / guest experience | Guiding, planning, interpreting, activity support |
-| Supervisor / manager | Rotas, service standards, training, guest recovery |
+| Recepção / concierge | Check-in, solicitações de hóspedes, reservas, suporte multilíngue aos hóspedes |
+| Alimentos e bebidas | Atendimento, hospedagem, bar, barista, apoio de cozinha |
+| Limpeza / operações | Preparação da sala, padrões de qualidade, coordenação |
+| Experiência do passeio/convidado | Orientação, planejamento, interpretação, apoio às atividades |
+| Supervisor/gerente | Rotas, padrões de serviço, formação, recuperação de hóspedes |
 
 ```mermaid
 flowchart LR
@@ -28,61 +28,61 @@ flowchart LR
   Manager --> Guest
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Customer service / omotenashi | Core | Japan's service bar is high; attentiveness matters |
-| Japanese (conversational+) | Core | N4–N3 for guest-facing; more for supervisory |
-| English / other languages | Core | Inbound tourism premium; Chinese/Korean also valued |
-| Composure under pressure | Core | Peak service, complaints, recovery |
-| POS / booking systems | Core | Property management and reservation tools |
-| Teamwork & communication | Core | Tight coordination across shifts |
-| Wine/food or activity knowledge | Stretch | Differentiator in upscale venues |
-| Team leadership | Stretch | Path to supervisor and management |
+| Atendimento ao cliente / omotenashi | Núcleo | A barra de serviços do Japão é alta; atenção é importante |
+| Japonês (conversacional+) | Núcleo | N4–N3 para atendimento aos hóspedes; mais para supervisão |
+| Inglês / outros idiomas | Núcleo | Prêmio de turismo receptivo; Chinês/Coreano também valorizado |
+| Compostura sob pressão | Núcleo | Atendimento de pico, reclamações, recuperação |
+| POS / sistemas de reserva | Núcleo | Ferramentas de gestão e reserva de propriedades |
+| Trabalho em equipe e comunicação | Núcleo | Coordenação estreita entre turnos |
+| Conhecimento sobre vinho/comida ou atividade | Alongamento | Diferencial em espaços de alto padrão |
+| Liderança de equipe | Alongamento | Caminho para supervisor e gerenciamento |
 
-## Japan notes
+## Notas do Japão
 
-- **Inbound tourism** drives strong demand for multilingual staff; international hotels value English plus a third language.
-- **International chains vs local inns (ryokan)** differ in pay, formality, and Japanese expectations.
-- Seasonal and resort roles (Hokkaido, Okinawa) can include housing.
-- Service standards (身だしなみ, punctuality, omotenashi) are taken seriously.
+- **Turismo receptivo** impulsiona forte demanda por pessoal multilíngue; os hotéis internacionais valorizam o inglês mais um terceiro idioma.
+- **Redes internacionais versus pousadas locais (ryokan)** diferem em termos de remuneração, formalidade e expectativas japonesas.
+- As funções sazonais e de resort (Hokkaido, Okinawa) podem incluir alojamento.
+- Os padrões de serviço (身だしなみ, pontualidade, omotenashi) são levados a sério.
 
-## Entry & qualifications
+## Entrada e qualificações
 
-| Route | Notes |
+| Rota | Notas |
 |-------|-------|
-| Specified Skilled Worker (SSW) — food service / accommodation | Skills + Japanese test route for eligible roles |
-| Skilled Labor visa | Certain specialized cooking roles (e.g. named cuisines) |
-| New graduate / mid-career hire | Common at larger hotels and chains |
-| Working holiday (eligible nationalities) | Common entry into seasonal hospitality |
+| Trabalhador qualificado específico (SSW) — serviço de alimentação/alojamento | Habilidades + rota de teste de japonês para funções elegíveis |
+| Visto de Trabalho Qualificado | Certas funções culinárias especializadas (por exemplo, cozinhas nomeadas) |
+| Recém-licenciado/contratação em meio de carreira | Comum em grandes hotéis e redes |
+| Férias de trabalho (nacionalidades elegíveis) | Entrada comum na hospitalidade sazonal |
 
-Confirm the current visa category and eligibility with the employer.
+Confirme a categoria atual do visto e a elegibilidade com o empregador.
 
-## Compensation (illustrative)
+## Remuneração (ilustrativa)
 
-| Level | Rough ¥M / year |
+| Nível | Aproximadamente ¥M/ano |
 |-------|-----------------|
-| Entry service / front line | 2.8–4 |
-| Experienced / bilingual guest-facing | 3.5–5.5 |
-| Supervisor | 4.5–7 |
-| Hotel / venue manager | 6–12+ |
+| Atendimento de entrada/linha de frente | 2.8–4 |
+| Atendimento experiente/bilíngue | 3,5–5,5 |
+| Supervisor | 4,5–7 |
+| Gerente de hotel / local | 6–12+ |
 
-Tips are not customary in Japan; base pay, shift allowances, and (sometimes) housing matter more. Upscale international properties pay above local averages.
+Gorjetas não são habituais no Japão; salário base, subsídios de turno e (às vezes) moradia são mais importantes. Propriedades internacionais de luxo pagam acima da média local.
 
-## How to get in / progress
+## Como entrar / progredir
 
-1. Build conversational Japanese and a second guest language.
-2. Start front-line (front desk, F&B) to learn service standards.
-3. Learn property/booking systems and complaint recovery.
-4. Move toward supervisor, then venue or department management.
-5. Specialize (luxury, MICE, revenue/operations) for higher bands.
+1. Desenvolva um japonês de conversação e um segundo idioma convidado.
+2. Inicie a linha de frente (recepção, alimentos e bebidas) para aprender os padrões de serviço.
+3. Aprenda sistemas de propriedade/reserva e recuperação de reclamações.
+4. Passe para o supervisor e depois para o gerenciamento do local ou do departamento.
+5. Especialize-se (luxo, MICE, receita/operações) para faixas mais altas.
 
-## Related
+## Relacionado
 
-- [Languages](../../languages/i-overview.md) for Japanese study.
-- [Careers overview](../i-overview.md) · [Other careers](i-overview.md).
+- [Idiomas](../../languages/i-overview.md) para estudo japonês.
+- [Visão geral das carreiras](../i-overview.md) · [Outras carreiras](i-overview.md).
 
-## Next
+## Próximo
 
-[Healthcare & caregiving](iii-healthcare.md).
+[Saúde e cuidados](iii-healthcare.md).

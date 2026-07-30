@@ -1,25 +1,25 @@
 ---
 label: "VI"
-subtitle: "Safety & production"
+subtitle: "Segurança e produção"
 group: "LLMs"
 order: 6
 ---
-Safety and production
-Shipping LLMs requires **guardrails**, **observability**, and **serving** discipline — not just good prompts.
+Segurança e produção
+O envio LLMs requer **guarda-corpos**, **observabilidade** e disciplina de **serviço** — e não apenas bons avisos.
 
-## 1. Threat model (brief)
+## 1. Modelo de ameaça (breve)
 
-| Risk | Example |
+| Risco | Exemplo |
 |------|---------|
-| **Prompt injection** | Untrusted content overrides system |
-| **Data exfiltration** | Model leaks secrets from context |
-| **Harmful content** | Violence, illegal instructions |
-| **PII** | Model outputs or logs customer data |
-| **Cost abuse** | Unbounded token usage |
+| **Injeção imediata** | Conteúdo não confiável substitui o sistema |
+| **Exfiltração de dados** | Modelo vaza segredos do contexto |
+| **Conteúdo prejudicial** | Violência, instruções ilegais |
+| **PII** | O modelo gera ou registra dados do cliente |
+| **Abuso de custos** | Uso ilimitado de token |
 
-Layer defences — no single filter catches everything.
+Defesas de camada – nenhum filtro captura tudo.
 
-## 2. Guardrails stack
+## 2. Pilha de guarda-corpos
 
 ```mermaid
 flowchart LR
@@ -28,53 +28,53 @@ flowchart LR
   Out --> User[User]
 ```
 
-| Layer | Tooling examples |
+| Camada | Exemplos de ferramentas |
 |-------|------------------|
-| **Input moderation** | Vendor APIs, open classifiers |
-| **System prompt** | Refusals, scope limits |
-| **Tool sandbox** | SQL read-only, network off |
-| **Output validation** | JSON schema, allow-list |
+| **Moderação de entrada** | Fornecedor APIs, classificadores abertos |
+| **Prompt do sistema** | Recusas, limites de âmbito |
+| **Caixa de areia de ferramentas** | SQL somente leitura, rede desligada |
+| **Validação de saída** | Esquema JSON, lista de permissões |
 
-## 3. Serving architecture
+## 3. Servindo arquitetura
 
-| Component | Role |
+| Componente | Função |
 |-----------|------|
-| **API gateway** | Auth, rate limits — [Rate limiting](../../swe101/sysdesign/scalable-patterns/iv-rate-limiting.md) |
-| **Model server** | vLLM, TGI, TensorRT-LLM — batching, KV cache |
-| **Vector DB** | RAG retrieval |
-| **Queue** | Async long jobs |
+| **API gateway** | Autenticação, limites de taxa — [Limite de taxa](../../swe101/sysdesign/scalable-patterns/iv-rate-limiting.md) |
+| **Servidor modelo** | vLLM, TGI, TensorRT-LLM — lote, cache KV |
+| **Vetor DB** | Recuperação RAG |
+| **Fila** | Trabalhos longos assíncronos |
 
-Monitor **latency p99**, **tokens/sec**, **GPU util**, **error rate**.
+Monitore **latência p99**, **tokens/seg**, **GPU utilitário**, **taxa de erro**.
 
-## 4. Logging and privacy
+## 4. Registro e privacidade
 
-| Do | Don't |
+| Faça | Não |
 |----|-------|
-| Log prompt hashes, token counts, latency | Log full prompts with PII in plain text |
-| Sample traces for quality review | Store secrets in prompts |
-| Retention policy + redaction | Infinite chat logs without consent |
+| Registrar hashes de prompt, contagens de tokens, latência | Registrar prompts completos com PII em texto simples |
+| Amostras de traços para revisão de qualidade | Armazene segredos em prompts |
+| Política de retenção + redação | Registros de bate-papo infinitos sem consentimento |
 
-## 5. Cost control
+## 5. Controle de custos
 
-| Lever | Effect |
+| Alavanca | Efeito |
 |-------|--------|
-| **Smaller model** for routing/classify | Cheaper triage |
-| **Cache** frequent queries | Dedupe embeddings |
-| **Max tokens** cap | Prevent runaway completion |
-| **Rate limits per user** | Abuse prevention |
+| **Modelo menor** para roteamento/classificação | Triagem mais barata |
+| **Cache** consultas frequentes | Desduplicar embeddings |
+| **Máximo de tokens** limite | Impedir a conclusão descontrolada |
+| **Limites de tarifas por usuário** | Prevenção de abusos |
 
-## 6. Human in the loop
+## 6. Humano no circuito
 
-| Use case | Pattern |
+| Caso de uso | Padrão |
 |----------|---------|
-| High-stakes (medical, legal) | Human approval before send |
-| Feedback | Thumbs down → eval set for next alignment |
-| Escalation | Confidence threshold → support agent |
+| Riscos elevados (médicos, jurídicos) | Aprovação humana antes de enviar |
+| Comentários | Polegar para baixo → avaliação definida para o próximo alinhamento |
+| Escalação | Limite de confiança → agente de suporte |
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Name three production metrics for an LLM API.
-- Prompt injection vs data poisoning — difference?
-- When is a smaller local model better than GPT-4 API?
+- Cite três métricas de produção para um LLM API.
+- Injeção imediata versus envenenamento de dados — diferença?
+- Quando um modelo local menor é melhor que GPT-4 API?
 
-**Related:** [Prompt engineering](iv-prompt-engineering.md), [RAG & fine-tuning](v-rag-and-fine-tuning.md), [ML workflow](../machine-learning/vii-ml-workflow-and-deployment.md).
+**Relacionado:** [Engenharia imediata](iv-prompt-engineering.md), [RAG e ajuste fino](v-rag-and-fine-tuning.md), [fluxo de trabalho ML](../machine-learning/vii-ml-workflow-and-deployment.md).

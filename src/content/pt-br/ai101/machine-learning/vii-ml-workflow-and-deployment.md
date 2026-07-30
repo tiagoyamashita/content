@@ -1,26 +1,26 @@
 ---
 label: "VII"
-subtitle: "ML workflow & deployment"
-group: "Machine learning"
+subtitle: "Fluxo de trabalho e implantação de ML"
+group: "Aprendizado de máquina"
 order: 7
 ---
-ML workflow and deployment
-From problem definition to **production inference** — the loop engineers repeat for every ML product.
+Fluxo de trabalho e implantação de ML
+Da definição do problema à **inferência de produção** — os engenheiros de loop repetem para cada produto ML.
 
-## 1. End-to-end workflow
+## 1. Fluxo de trabalho de ponta a ponta
 
-| Step | Actions |
+| Etapa | Ações |
 |------|---------|
-| **1. Problem** | Define metric tied to business (revenue, safety, latency) |
-| **2. Data** | Collect, label, document schema and biases |
-| **3. EDA** | Distributions, missingness, outliers, leakage checks |
-| **4. Features** | [Feature engineering](vi-feature-engineering.md), pipelines |
-| **5. Baseline** | Simple model or heuristic |
-| **6. Train & tune** | Validation-driven iteration |
-| **7. Test** | Final hold-out evaluation — report this number |
-| **8. Deploy** | Batch or online serving |
-| **9. Monitor** | Drift, performance, data quality |
-| **10. Retrain** | Scheduled or triggered by drift |
+| **1. Problema** | Definir métricas vinculadas ao negócio (receita, segurança, latência) |
+| **2. Dados** | Coletar, rotular, documentar esquemas e preconceitos |
+| **3. EDA** | Distribuições, faltas, valores discrepantes, verificações de vazamentos |
+| **4. Recursos** | [Engenharia de recursos](vi-feature-engineering.md), dutos |
+| **5. Linha de base** | Modelo simples ou heurística |
+| **6. Treine e sintonize** | Iteração orientada para validação |
+| **7. Teste** | Avaliação final de resistência — reportar este número |
+| **8. Implantar** | Serviço em lote ou on-line |
+| **9. Monitorar** | Deriva, desempenho, qualidade de dados |
+| **10. Retreinar** | Programado ou acionado por desvio |
 
 ```mermaid
 flowchart LR
@@ -31,60 +31,60 @@ flowchart LR
   M --> D
 ```
 
-## 2. Batch vs online inference
+## 2. Inferência em lote vs online
 
-| Mode | Pattern | Example |
+| Modo | Padrão | Exemplo |
 |------|---------|---------|
-| **Batch** | Score entire table nightly | Churn scores for CRM |
-| **Online (real-time)** | API per request | Fraud check at checkout |
-| **Streaming** | Score events from queue | Click ranking |
+| **Lote** | Pontue a mesa inteira todas as noites | Pontuações de rotatividade para CRM |
+| **On-line (tempo real)** | API por pedido | Verificação de fraude na finalização da compra |
+| **Transmissão** | Pontuar eventos da fila | Classificação de cliques |
 
-Online needs **latency SLA**, **versioned models**, and **fallback** if model fails.
+Online precisa de **latência SLA**, **modelos versionados** e **reserva** se o modelo falhar.
 
-## 3. Model versioning and reproducibility
+## 3. Versionamento e reprodutibilidade do modelo
 
-| Artifact | Track |
+| Artefato | Acompanhar |
 |----------|-------|
-| **Training data** snapshot or hash | Which rows trained this model |
-| **Code** | Git commit |
-| **Hyperparameters** | Config file |
-| **Metrics** | Val/test scores on that run |
-| **Model weights** | Registry (MLflow, W&B, S3) |
+| **Dados de treinamento** instantâneo ou hash | Quais linhas treinaram este modelo |
+| **Código** | Git confirmar |
+| **Hiperparâmetros** | Arquivo de configuração |
+| **Métricas** | Pontuações de valor/teste nessa execução |
+| **Pesos do modelo** | Cadastro (MLfluxo, W&B, S3) |
 
-Same inputs + same artifacts → same predictions (within float tolerance).
+Mesmas entradas + mesmos artefatos → mesmas previsões (dentro da tolerância de flutuação).
 
-## 4. Data drift and concept drift
+## 4. Desvio de dados e desvio de conceito
 
-| Drift type | Meaning | Signal |
+| Tipo de deriva | Significado | Sinal |
 |------------|---------|--------|
-| **Data drift** | Input distribution changes | Feature stats shift |
-| **Concept drift** | P(y\|x) changes | Accuracy drops with stable inputs |
+| **Desvio de dados** | Mudanças na distribuição de insumos | Mudança nas estatísticas de recursos |
+| **Desvio de conceito** | Mudanças em P(y\|x) | A precisão cai com entradas estáveis ​​|
 
-Monitor **prediction distributions**, **feature means**, and **labelled slice metrics** when labels arrive late.
+Monitore **distribuições de previsão**, **médias de recursos** e **métricas de fatias rotuladas** quando os rótulos chegam atrasados.
 
-## 5. MLOps touchpoints (overview)
+## 5. Pontos de contato MLOps (visão geral)
 
-| Practice | Purpose |
+| Prática | Finalidade |
 |----------|---------|
-| **CI for training pipelines** | Reproducible retrain |
-| **Feature store** | Consistent train/serve features |
-| **A/B test models** | Compare business metrics |
-| **Shadow mode** | New model runs but does not affect users |
+| **CI para pipelines de treinamento** | Retreinamento reproduzível |
+| **Loja de recursos** | Recursos consistentes de treinar/servir |
+| **A/B modelos de teste** | Compare métricas de negócios |
+| **Modo sombra** | Novo modelo roda mas não afeta usuários |
 
-Full MLOps is its own discipline — this track focuses on **ML fundamentals**.
+Full MLOps é uma disciplina própria – este curso se concentra em **ML fundamentos**.
 
-## 6. Fairness and governance (brief)
+## 6. Justiça e governança (breve)
 
-| Concern | Action |
-|---------|--------|
-| **Protected attributes** | Measure metrics by group; avoid proxy features |
-| **Explainability** | SHAP, feature importance for regulated domains |
-| **PII** | Minimise features; secure storage |
+| Preocupação | Ação |
+|--------|--------|
+| **Atributos protegidos** | Medir métricas por grupo; evite recursos de proxy |
+| **Explicabilidade** | SHAP, importância do recurso para domínios regulamentados |
+| **PII** | Minimize recursos; armazenamento seguro |
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Difference between validation and test in production workflow?
-- What triggers a retrain — calendar vs drift?
-- Batch vs online — when is batch enough?
+- Diferença entre validação e teste no fluxo de trabalho de produção?
+- O que desencadeia uma reciclagem – calendário versus desvio?
+- Lote vs online — quando o lote é suficiente?
 
-**Related:** [Model evaluation](iv-model-evaluation-and-metrics.md), [AI101 overview](../i-overview.md), [Observability at scale](../../swe101/sysdesign/scalable-patterns/viii-observability-at-scale.md).
+**Relacionado:** [Avaliação do modelo](iv-model-evaluation-and-metrics.md), [Visão geral de AI101](../i-overview.md), [Observabilidade em escala](../../swe101/sysdesign/scalable-patterns/viii-observability-at-scale.md).

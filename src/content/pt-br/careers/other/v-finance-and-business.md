@@ -1,26 +1,26 @@
 ---
 label: "V"
-subtitle: "Finance & business"
+subtitle: "Finanças e negócios"
 group: "Other careers"
 order: 5
 ---
-Finance & business
-Accounting, banking, insurance, sales, marketing, operations, HR, and general back-office roles — plus founding a company. These roles range from English-friendly gaishikei seats to Japanese-heavy domestic positions.
+Finanças e negócios
+Contabilidade, bancos, seguros, vendas, marketing, operações, HR e funções gerais de back-office - além de fundar uma empresa. Essas funções variam desde assentos gaishikei amigáveis ​​aos ingleses até cargos domésticos de grande peso japonês.
 
-Not financial or legal advice. Verify licensing and visa details with employers and licensed professionals.
+Não é aconselhamento financeiro ou jurídico. Verifique os detalhes do licenciamento e do visto com empregadores e profissionais licenciados.
 
-Parent: [Other careers](i-overview.md).
+Pai: [Outras carreiras](i-overview.md).
 
-## Day-to-day
+## Dia a dia
 
-| Role | Examples |
+| Função | Exemplos |
 |------|----------|
-| Accounting / finance | Bookkeeping, closing, reporting, tax coordination, FP&A |
-| Banking / insurance | Client service, analysis, compliance, back office |
-| Sales / business development | Pipeline, client meetings, proposals, account management |
-| Marketing / operations | Campaigns, vendor coordination, process, logistics |
-| HR / admin | Hiring, payroll coordination, employee support |
-| Founder / business manager | Running a company, hiring, finances, strategy |
+| Contabilidade/finanças | Escrituração, fechamento, elaboração de relatórios, coordenação tributária, FP&A |
+| Banca / seguros | Atendimento ao cliente, análise, compliance, back office |
+| Vendas/desenvolvimento de negócios | Pipeline, reuniões com clientes, propostas, gerenciamento de contas |
+| Marketing/operações | Campanhas, coordenação de fornecedores, processos, logística |
+| HR /administrador | Contratação, coordenação de folha de pagamento, suporte aos funcionários |
+| Fundador/gerente de negócios | Administração de uma empresa, contratação, finanças, estratégia |
 
 ```mermaid
 flowchart LR
@@ -30,62 +30,62 @@ flowchart LR
   Founder[Founder] --> Business
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Japanese (business) | Core–Market | High for domestic roles; lower at some gaishikei |
-| Numeracy & attention to detail | Core | Finance, accounting, operations |
-| Communication & relationship building | Core | Sales, client work, stakeholder management |
-| Domain tools | Core | Excel, accounting software, CRM, ERP |
-| Compliance awareness | Core | Regulated finance and cross-border rules |
-| Certifications (簿記, CPA, CFA, etc.) | Stretch | Raise pay and open specialist roles |
-| Bilingual reporting | Stretch | Bridge role between HQ and Japan |
+| Japonês (negócios) | Núcleo–Mercado | Alto para funções domésticas; abaixe em alguns gaishikei |
+| Numeração e atenção aos detalhes | Núcleo | Finanças, contabilidade, operações |
+| Comunicação e construção de relacionamento | Núcleo | Vendas, trabalho com clientes, gestão de partes interessadas |
+| Ferramentas de domínio | Núcleo | Excel, software de contabilidade, CRM, ERP |
+| Conscientização sobre conformidade | Núcleo | Financiamento regulamentado e regras transfronteiriças |
+| Certificações (簿記, CPA, CFA, etc.) | Alongamento | Aumentar salários e abrir cargos de especialistas |
+| Reportagem bilíngue | Alongamento | Papel de ponte entre HQ e o Japão |
 
-## Japan notes
+## Notas do Japão
 
-- **Gaishikei (foreign-capital) firms** offer more English-friendly finance, sales, and operations roles; domestic firms usually expect **business Japanese**.
-- **Bookkeeping certification (簿記)** is widely recognized for accounting roles; global credentials (CPA/CFA) help in international finance.
-- **Bilingual bridge roles** (connecting overseas HQ and Japan operations) are valued.
-- Founding a company uses the **Business Manager** visa, with capital and substance requirements.
+- **Empresas Gaishikei (capital estrangeiro)** oferecem funções financeiras, de vendas e operações mais amigáveis ​​ao inglês; as empresas nacionais geralmente esperam **japoneses empresariais**.
+- **Certificação de Escrituração Contábil (簿記)** é amplamente reconhecida para funções contábeis; credenciais globais (CPA/CFA) ajudam nas finanças internacionais.
+- **Funções de ponte bilíngues** (conectando HQ no exterior e operações no Japão) são valorizadas.
+- Fundar uma empresa utiliza o visto **Gerente de Negócios**, com requisitos de capital e substância.
 
-## Entry & qualifications
+## Entrada e qualificações
 
-| Route | Notes |
+| Rota | Notas |
 |-------|-------|
-| Engineer/Specialist in Humanities | Common for finance, sales, marketing, HR, operations |
-| Intra-company transfer | Moving within a multinational |
-| Business Manager visa | For founders/managers meeting investment and substance rules |
-| Highly Skilled Professional | Points-based; can speed benefits for strong profiles |
+| Engenheiro/Especialista em Ciências Humanas | Comum para finanças, vendas, marketing, HR, operações |
+| Transferência intra-empresa | Movendo-se dentro de uma multinacional |
+| Visto de Gerente de Negócios | Para fundadores/gestores que cumpram as regras de investimento e de substância |
+| Profissional Altamente Qualificado | Baseado em pontos; pode acelerar benefícios para perfis fortes |
 
-Confirm current visa and any licensing requirements with the employer or counsel.
+Confirme o visto atual e quaisquer requisitos de licenciamento com o empregador ou advogado.
 
-## Compensation (illustrative)
+## Remuneração (ilustrativa)
 
-| Level | Rough ¥M / year |
+| Nível | Aproximadamente ¥M/ano |
 |-------|-----------------|
-| Entry back office / admin | 3–4.5 |
-| Accountant / analyst (mid) | 4.5–8 |
-| Sales / BD (with commission) | 4.5–10+ |
-| Manager / controller | 8–15 |
-| Gaishikei finance (senior) | 12–25+ |
+| Entrada backoffice / admin | 3–4,5 |
+| Contador/analista (médio) | 4,5–8 |
+| Vendas / BD (com comissão) | 4,5–10+ |
+| Gerente / controlador | 8–15 |
+| Finanças Gaishikei (sênior) | 12–25+ |
 
-Bilingual ability and certifications move pay significantly; gaishikei and global finance sit well above domestic averages.
+A capacidade e as certificações bilíngues alteram significativamente os salários; O gaishikei e as finanças globais situam-se bem acima das médias nacionais.
 
-## How to get in / progress
+## Como entrar / progredir
 
-1. Build business Japanese (or target English-friendly gaishikei roles).
-2. Add a recognized credential (簿記 for accounting; CPA/CFA for finance).
-3. Gain experience in a specific function (finance, sales, operations).
-4. Move into management, specialist, or bilingual bridge roles.
-5. To start a company, plan for the **Business Manager** visa and see [Startups](../../startups/i-overview.md).
+1. Desenvolver o japonês para negócios (ou direcionar funções de gaishikei amigáveis ​​ao inglês).
+2. Adicione uma credencial reconhecida (簿記 para contabilidade; CPA/CFA para finanças).
+3. Ganhe experiência em uma função específica (finanças, vendas, operações).
+4. Passe para funções de gerenciamento, especialista ou ponte bilíngue.
+5. Para abrir uma empresa, planeje o visto **Gerente de Negócios** e veja [Startups](../../startups/i-overview.md).
 
-## Related
+## Relacionado
 
-- [Startups](../../startups/i-overview.md) for founding on a budget.
-- [Digital marketing](../../digital-marketing/i-overview.md) for marketing paths.
-- [Careers overview](../i-overview.md) · [Other careers](i-overview.md).
+- [Inicializações](../../startups/i-overview.md) para financiar um orçamento.
+- [Digital marketing](../../digital-marketing/i-overview.md) para caminhos de marketing.
+- [Visão geral das carreiras](../i-overview.md) · [Outras carreiras](i-overview.md).
 
-## Next
+## Próximo
 
-[Skilled trades](vi-skilled-trades.md).
+[Ofícios qualificados](vi-skilled-trades.md).

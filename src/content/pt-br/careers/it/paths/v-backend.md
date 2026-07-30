@@ -1,21 +1,21 @@
 ---
 label: "V"
-subtitle: "Backend"
+subtitle: "Back-end"
 group: "Paths"
 order: 5
 ---
-Backend engineer
-You own **services and data**: APIs, business logic, databases, queues, and the reliability of everything behind the UI.
+Engenheiro de back-end
+Você possui **serviços e dados**: APIs, lógica de negócios, bancos de dados, filas e a confiabilidade de tudo por trás do UI.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Design | Endpoints, schemas, migrations |
-| Implement | Services in Go / Java / Kotlin / Python / Ruby… |
-| Operate | Logs, metrics, on-call for your services |
-| Integrate | Kafka, Redis, third-party APIs |
-| Review | Security, performance, correctness |
+| Projeto | Endpoints, esquemas, migrações |
+| Implementar | Serviços em Go / Java / Kotlin / Python / Ruby… |
+| Operar | Logs, métricas, plantão para seus serviços |
+| Integrar | Kafka, Redis, APIs de terceiros |
+| Revisão | Segurança, desempenho, correção |
 
 ```mermaid
 flowchart TB
@@ -26,52 +26,52 @@ flowchart TB
   Svc --> Cache[Redis]
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| One server language deeply | Core | Go, Java/Kotlin, Python, Node, Ruby… |
-| SQL + data modeling | Core | Migrations, indexes, transactions |
-| API design | Core | Auth, validation, versioning, idempotency |
-| Git + code review | Core | Daily collaboration |
-| Testing (unit/integration) | Core | Confidence to ship |
-| Concurrency & failure modes | Stretch | Timeouts, retries, partial failure |
-| Caching / messaging | Stretch | Redis, Kafka — see SWE101 |
-| System design | Stretch | Mid → senior interview + real design |
-| Observability | Stretch | Structured logs, metrics, traces |
-| Security basics | Stretch | AuthZ, secrets, injection awareness |
+| Uma linguagem de servidor profundamente | Núcleo | Vá, Java/Kotlin, Python, Node, Ruby… |
+| SQL + modelagem de dados | Núcleo | Migrações, índices, transações |
+| Projeto API | Núcleo | Autenticação, validação, versionamento, idempotência |
+| Git + revisão de código | Núcleo | Colaboração diária |
+| Testes (unidade/integração) | Núcleo | Confiança para enviar |
+| Simultaneidade e modos de falha | Alongamento | Tempos limite, novas tentativas, falha parcial |
+| Cache/mensagens | Alongamento | Redis, Kafka — consulte SWE101 |
+| Projeto de sistema | Alongamento | Entrevista intermediária → sênior + design real |
+| Observabilidade | Alongamento | Logs estruturados, métricas, rastreamentos |
+| Noções básicas de segurança | Alongamento | AuthZ, segredos, conscientização sobre injeção |
 
-## Japan notes
+## Notas do Japão
 
-- **Go, Kotlin/Java, TypeScript (Node), Python** appear often; Ruby remains at some product firms; Java strong at enterprise / SI.
-- Domestic SI work can mean waterfall + older stacks — know it exists; target product cos if you want modern SWE practice.
-- English-first backend roles are comparatively common at gaishikei.
+- **Go, Kotlin/Java, TypeScript (Node), Python** aparecem com frequência; Ruby permanece em algumas empresas de produtos; Java forte na empresa / SI.
+- Trabalho doméstico de SI pode significar cascata + pilhas mais antigas — saiba que existe; produto-alvo porque se você deseja uma prática moderna de SWE.
+- As primeiras funções de back-end em inglês são comparativamente comuns no gaishikei.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | Language track in [SWE101](../../../swe101/i-overview.md) (Java/Python/…) |
-| 2 | [Postgres](../../../swe101/databases/postgres/i-overview.md) / databases |
+| 1 | Faixa de idioma em [SWE101](../../../swe101/i-overview.md) (Java/Python/…) |
+| 2 | [Postgres](../../../swe101/databases/postgres/i-overview.md) / bancos de dados |
 | 3 | [Kafka](../../../swe101/kafka/i-overview.md), [Redis](../../../swe101/redis/i-overview.md) |
-| 4 | [System design](../../../swe101/sysdesign/scalable-patterns/i-overview.md) |
+| 4 | [Projeto do sistema](../../../swe101/sysdesign/scalable-patterns/i-overview.md) |
 | 5 | [CS101](../../../cs101/i-overview.md) |
 
-Build: a small service with auth, Postgres, tests, and a deploy story.
+Build: um pequeno serviço com autenticação, Postgres, testes e uma história de implantação.
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-Core SWE ladder: mid **¥7–13M** at foreigner-friendly employers; senior **¥10–16M+**; staff/Big Tech higher. Employer type dominates — see [Compensation](../iii-compensation.md).
+Escada principal SWE: meados de **¥7–13 milhões** em empregadores amigos dos estrangeiros; sênior **¥10–16M+**; equipe/Big Tech superior. O tipo de empregador domina — consulte [Remuneração](../iii-compensation.md).
 
-## Career moves
+## Movimentos de carreira
 
-| From backend | Toward |
+| Do back-end | Em direção |
 |--------------|--------|
-| Infra passion | SRE / platform |
-| Data / ML | [AI101](../../../ai101/i-overview.md) / ML eng |
-| Markets | [Quant SWE](../../../quant-swe/i-overview.md) |
-| People leadership | Eng manager |
+| Paixão infra | SRE / plataforma |
+| Dados / ML | [AI101](../../../ai101/i-overview.md) / ML eng |
+| Mercados | [Quanto SWE](../../../quant-swe/i-overview.md) |
+| Liderança de pessoas | Gerente de Eng |
 
-## Next
+## Próximo
 
-[Product manager](vi-product-manager.md) · [SRE / platform](vii-sre-platform.md).
+[Gerente de produto](vi-product-manager.md) · [SRE / plataforma](vii-sre-platform.md).

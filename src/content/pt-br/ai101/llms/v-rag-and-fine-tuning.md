@@ -1,13 +1,13 @@
 ---
 label: "V"
-subtitle: "RAG & fine-tuning"
+subtitle: "RAG e ajuste fino"
 group: "LLMs"
 order: 5
 ---
-RAG and fine-tuning
-Two ways to add **domain knowledge** and **behaviour** without full pre-training from scratch.
+RAG e ajuste fino
+Duas maneiras de adicionar **conhecimento de domínio** e **comportamento** sem pré-treinamento completo do zero.
 
-## 1. RAG — Retrieval-Augmented Generation
+## 1. RAG — Geração Aumentada de Recuperação
 
 ```mermaid
 flowchart LR
@@ -34,55 +34,55 @@ sequenceDiagram
   App-->>User: answer + citations
 ```
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Update knowledge by changing index | Quality = retrieval quality |
-| Citations natural | Extra latency (retrieve + longer prompt) |
-| No full retrain | Chunking strategy matters |
+| Atualizar conhecimento alterando índice | Qualidade = qualidade de recuperação |
+| Citações naturais | Latência extra (recuperação + prompt mais longo) |
+| Sem reciclagem completa | A estratégia de fragmentação é importante |
 
-**Chunking:** 256–512 tokens with overlap; metadata (title, section) in embedding text.
+**Chunking:** 256–512 tokens com sobreposição; metadados (título, seção) na incorporação de texto.
 
-Same pattern as [Order search CDC](../../swe101/sysdesign/examples/viii-order-search-cdc.md) — OLTP vs search index.
+Mesmo padrão de [Pesquisa de pedido CDC](../../swe101/sysdesign/examples/viii-order-search-cdc.md) — OLTP vs índice de pesquisa.
 
-## 2. Fine-tuning
+## 2. Ajuste fino
 
-Continue training (or adapter training) on domain **(instruction, response)** pairs.
+Continue o treinamento (ou treinamento do adaptador) em pares de domínio **(instrução, resposta)**.
 
-| Method | Detail |
+| Método | Detalhe |
 |--------|--------|
-| **Full fine-tune** | Update all weights — expensive; forgetting risk |
-| **LoRA** | Low-rank adapters on attention layers — train &lt;1% params |
-| **QLoRA** | LoRA + quantised base — consumer GPU friendly |
+| **Ajuste completo** | Atualizar todos os pesos — caro; esquecendo o risco |
+| **LoRA** | Adaptadores de baixa classificação em camadas de atenção - treinar &lt;1% de parâmetros |
+| **QLoRA** | LoRA + base quantizada — favorável ao consumidor GPU |
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Style and format baked in | Needs curated dataset |
-| No retrieval step at inference | Knowledge frozen at train time |
-| Smaller deployable adapters | Catastrophic forgetting if overdone |
+| Estilo e formato integrados | Precisa de conjunto de dados com curadoria |
+| Nenhuma etapa de recuperação na inferência | Conhecimento congelado na hora do trem |
+| Adaptadores implantáveis ​​menores | Esquecimento catastrófico se exagerado |
 
-## 3. When to use which
+## 3. Quando usar qual
 
-| Need | RAG | Fine-tune / LoRA |
+| Necessidade | RAG | Ajuste fino / LoRA |
 |------|-----|------------------|
-| Changing docs (policies, manuals) | **Yes** | Poor alone |
-| Fixed tone / JSON format | Optional | **Yes** |
-| Long private corpus | **Yes** | Costly to embed all in weights |
-| Low latency, no vector DB | No | **Maybe** |
+| Alteração de documentos (políticas, manuais) | **Sim** | Pobre sozinho |
+| Tom fixo / formato JSON | Opcional | **Sim** |
+| Longo corpus privado | **Sim** | Caro incorporar tudo em pesos |
+| Baixa latência, sem vetor DB | Não | **Talvez** |
 
-**Production:** **both** — LoRA for format + RAG for facts.
+**Produção:** **ambos** — LoRA para formato + RAG para fatos.
 
-## 4. Evaluation
+## 4. Avaliação
 
-| RAG metric | Measure |
+| métrica RAG | Medir |
 |------------|---------|
-| **Retrieval recall@k** | Correct chunk in top k? |
-| **Answer faithfulness** | Supported by retrieved text? |
-| **End-to-end** | Human or LLM-as-judge on task |
+| **Recuperação de recuperação@k** | Pedaço correto no topo k? |
+| **Responda com fidelidade** | Suportado pelo texto recuperado? |
+| **De ponta a ponta** | Humano ou LLM como juiz em tarefa |
 
-## 5. Rehearsal questions
+## 5. Perguntas de ensaio
 
-- Why RAG does not fix a model that ignores context?
-- LoRA vs full fine-tune — parameter and ops trade-off?
-- How do citations help trust in enterprise RAG?
+- Por que RAG não corrige um modelo que ignora contexto?
+- LoRA vs ajuste fino completo – compensação de parâmetros e operações?
+- Como as citações ajudam a confiar na empresa RAG?
 
-**Related:** [Prompt engineering](iv-prompt-engineering.md), [Safety & production](vi-safety-and-production.md).
+**Relacionado:** [Engenharia imediata](iv-prompt-engineering.md), [Segurança e produção](vi-safety-and-production.md).

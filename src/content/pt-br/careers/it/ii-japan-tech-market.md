@@ -1,63 +1,63 @@
 ---
 label: "II"
-subtitle: "Japan tech market"
-group: "Careers"
+subtitle: "Mercado de tecnologia do Japão"
+group: "Carreiras"
 order: 2
 ---
-Japan tech market
-Where you work in Japan often matters more than the exact title. This note sketches **employer types**, **language**, and **hiring** signals — not legal advice for visas or contracts.
+Mercado de tecnologia do Japão
+O local onde você trabalha no Japão geralmente é mais importante do que o título exato. Esta nota descreve **tipos de empregadores**, **idioma** e sinais de **contratação** – e não aconselhamento jurídico para vistos ou contratos.
 
-Parent: [IT careers overview](i-overview.md). Pay: [Compensation](iii-compensation.md).
+Pai: [IT visão geral das carreiras](i-overview.md). Pagamento: [Compensação](iii-compensation.md).
 
-## 1. Employer types (the big lever)
+## 1. Tipos de empregadores (a grande alavanca)
 
-| Type | Examples (illustrative) | Comp / culture (tendencies) |
-|------|-------------------------|-------------------------------|
-| **Global Big Tech (Japan entity)** | Google, Amazon, Microsoft, etc. | Highest total comp; English common; structured levels |
-| **Gaishikei / foreign-capital product** | Many fintech, SaaS, games studios | Competitive pay; English or bilingual teams |
-| **English-friendly Japanese product** | Mercari, LINE Yahoo, SmartNews-class peers | Strong mid/senior bands; mix of JP/EN |
-| **Japanese HQ traditional / SI** | Large manufacturers, SIers, agencies | Lower cash vs global; stability; more Japanese |
-| **Remote foreign (no JP entity)** | Overseas employers, contractors | Can pay global rates; visa/tax complexity |
+| Tipo | Exemplos (ilustrativos) | Comp/cultura (tendências) |
+|------|--------------|------------------------------------------|
+| **Global Big Tech (entidade do Japão)** | Google, Amazon, Microsoft, etc. | Maior compensação total; Inglês comum; níveis estruturados |
+| **Gaishikei / produto de capital estrangeiro** | Muitos estúdios de fintech, SaaS e jogos | Remuneração competitiva; Equipes inglesas ou bilíngues |
+| **Produto japonês compatível com inglês** | Mercari, LINE Yahoo, pares da classe SmartNews | Bandas médias/sénior fortes; mistura de JP/EN |
+| **Japonês HQ tradicional / SI** | Grandes fabricantes, SIers, agências | Menor caixa versus global; estabilidade; mais japonês |
+| **Estrangeiro remoto (sem entidade JP)** | Empregadores e empreiteiros estrangeiros | Pode pagar taxas globais; complexidade de vistos/impostos |
 
-TokyoDev-style surveys repeatedly show **median engineer pay higher at foreign / no-JP-entity employers** than at Japanese-HQ firms — treat title alone as incomplete.
+Pesquisas no estilo TokyoDev mostram repetidamente **salários médios de engenheiros mais altos em empregadores estrangeiros/sem entidades JP-** do que em empresas japonesas-HQ – tratam apenas o título como incompleto.
 
-## 2. Language
+## 2. Idioma
 
-| Level | What it unlocks |
+| Nível | O que isso desbloqueia |
 |-------|-----------------|
-| **English-only** | Possible at many gaishikei / global teams; smaller job market |
-| **Business Japanese (N2-ish)** | Much wider market; PM, support, sales-eng, domestic product |
-| **Native / N1** | Domestic enterprise, government-adjacent, deep customer roles |
+| **Somente em inglês** | Possível em muitas equipes gaishikei/globais; mercado de trabalho menor |
+| **Japonês para negócios (N2-ish)** | Mercado muito mais amplo; PM, suporte, engenheiro de vendas, produto nacional |
+| **Nativo / N1** | Empresa nacional, adjacente ao governo, funções profundas de cliente |
 
-Support and PM often need **more Japanese** than pure backend at an English-first team. Backend/frontend at global product cos can stay English-primary longer.
+O suporte e PM muitas vezes precisam de **mais japonês** do que back-end puro em uma equipe que prioriza o inglês. O backend/frontend em produtos globais pode permanecer com o inglês primário por mais tempo.
 
-## 3. Visa & status (high level)
+## 3. Visto e status (alto nível)
 
-| Status | Typical path |
-|--------|--------------|
-| **Engineer / Specialist in Humanities** | Common for SWE, QA, PM, support at sponsoring employers |
-| **Intra-company transfer** | Moving with a multinational |
-| **Highly Skilled Professional** | Points-based; can help with faster benefits |
-
-Always confirm with the employer’s immigration counsel — requirements change.
-
-## 4. Culture signals in interviews
-
-| Signal | Often means |
+| Estado | Caminho típico |
 |--------|-------------|
-| Long “cultural fit” loops | Domestic-leaning org |
-| Leetcode + system design | Global / competitive eng bar |
-| Take-home + portfolio | Product / startup style |
-| Heavy JP writing test | Customer-facing or domestic PM/support |
+| **Engenheiro / Especialista em Ciências Humanas** | Comum para SWE, QA, PM, apoio em empregadores patrocinadores |
+| **Transferência intra-empresa** | Movendo-se com uma multinacional |
+| **Profissional Altamente Qualificado** | Baseado em pontos; pode ajudar com benefícios mais rápidos |
 
-## 5. Location
+Sempre confirme com o conselho de imigração do empregador – os requisitos mudam.
 
-| Place | Notes |
+## 4. Sinais culturais em entrevistas
+
+| Sinal | Muitas vezes significa |
+|--------|------------|
+| Longos ciclos de “adequação cultural” | Organização com tendência doméstica |
+| Leetcode + design de sistema | Barra de engenharia global/competitiva |
+| Levar para casa + portfólio | Estilo de produto/startup |
+| Teste de redação pesado JP | Suporte PM/ voltado para o cliente ou doméstico |
+
+## 5. Localização
+
+| Local | Notas |
 |-------|--------|
-| **Tokyo** | Largest market and highest cash bands |
-| **Osaka / Kyoto / Fukuoka** | Growing scenes; often lower cash than Tokyo |
-| **Remote Japan** | More common post-2020; still company-dependent |
+| **Tóquio** | Maior mercado e faixas de caixa mais altas |
+| **Osaka/Quioto/Fukuoka** | Cenas crescentes; muitas vezes menos dinheiro do que Tóquio |
+| **Japão remoto** | Mais comum pós-2020; ainda dependente da empresa |
 
-## Next
+## Próximo
 
-[Compensation](iii-compensation.md) — how packages are quoted and rough bands by role.
+[Compensação](iii-compensation.md) — como os pacotes são cotados e faixas aproximadas por função.

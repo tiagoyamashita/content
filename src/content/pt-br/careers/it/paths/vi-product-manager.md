@@ -1,21 +1,21 @@
 ---
 label: "VI"
-subtitle: "Product manager"
+subtitle: "Gerente de produto"
 group: "Paths"
 order: 6
 ---
-Product manager
-PMs decide **what to build and why**: discovery, prioritization, specs, and outcomes — not (usually) writing production code.
+Gerente de produto
+Os PMs decidem **o que construir e por quê**: descoberta, priorização, especificações e resultados — e não (normalmente) escrever código de produção.
 
-## Day-to-day
+## Dia a dia
 
-| Activity | Examples |
+| Atividade | Exemplos |
 |----------|----------|
-| Discover | Interviews, data, support themes |
-| Prioritize | Roadmaps, trade-offs, “not now” |
-| Specify | PRDs, user stories, acceptance criteria |
-| Align | Eng, design, sales, execs |
-| Measure | Launch metrics; iterate or kill |
+| Descubra | Entrevistas, dados, temas de apoio |
+| Priorizar | Roteiros, compromissos, “agora não” |
+| Especifique | PRDs, histórias de usuários, critérios de aceitação |
+| Alinhar | Eng, design, vendas, executivos |
+| Medir | Métricas de lançamento; iterar ou matar |
 
 ```mermaid
 flowchart LR
@@ -25,51 +25,51 @@ flowchart LR
   Measure --> Insight
 ```
 
-## Skills that matter
+## Habilidades que importam
 
-| Skill | Level | Notes |
+| Habilidade | Nível | Notas |
 |-------|-------|-------|
-| Discovery (interviews, data) | Core | Find real problems |
-| Prioritization | Core | Roadmaps and “not now” |
-| Spec writing | Core | Acceptance criteria eng can build |
-| Metrics / experimentation | Core | Outcomes over output |
-| Stakeholder communication | Core | Align eng, design, sales, execs |
-| Technical literacy | Core | Read diagrams; respect constraints |
-| Japanese (business) | Market | Often required for domestic product |
-| Delivery facilitation | Stretch | Unblock without becoming project manager |
-| Pricing / packaging sense | Stretch | Especially B2B SaaS |
-| Writing for executives | Stretch | One-pagers and decision memos |
+| Descoberta (entrevistas, dados) | Núcleo | Encontre problemas reais |
+| Priorização | Núcleo | Roteiros e “agora não” |
+| Escrita de especificações | Núcleo | Critérios de aceitação que o engenheiro pode construir |
+| Métricas/experimentação | Núcleo | Resultados em relação à produção |
+| Comunicação com as partes interessadas | Núcleo | Alinhar engenheiros, design, vendas, executivos |
+| Alfabetização técnica | Núcleo | Leia diagramas; respeitar restrições |
+| Japonês (negócios) | Mercado | Frequentemente exigido para produtos nacionais |
+| Facilitação de entrega | Alongamento | Desbloquear sem se tornar gerente de projeto |
+| Sentido de preço/embalagem | Alongamento | Especialmente B2B SaaS |
+| Redação para executivos | Alongamento | Folhas de uma página e memorandos de decisão |
 
-## Japan notes
+## Notas do Japão
 
-- Domestic PM often expects **strong Japanese** + stakeholder management.
-- Gaishikei / global product may hire English-primary PMs with domain skill.
-- “PM” at SI/agencies can mean project manager (schedule) — clarify **product** vs **project**.
+- A PM doméstica muitas vezes espera um **forte japonês** + gerenciamento das partes interessadas.
+- Gaishikei/produto global pode contratar PMs com domínio do inglês primário.
+- “PM” em SI/agencies pode significar gerente de projeto (cronograma) — esclareça **produto** vs **projeto**.
 
-## Study path (this repo)
+## Caminho de estudo (este repositório)
 
-| Priority | Track |
+| Prioridade | Acompanhar |
 |----------|-------|
-| 1 | Enough [SWE101](../../../swe101/i-overview.md) to read an architecture diagram |
-| 2 | [System design](../../../swe101/sysdesign/scalable-patterns/i-overview.md) vocabulary |
-| 3 | [AI Applied](../../../ai101/ai-engineering/i-overview.md) — research & drafting |
-| 4 | [Digital marketing](../../../digital-marketing/i-overview.md) if growth-leaning |
-| 5 | [Languages](../../../languages/i-overview.md) if targeting domestic orgs |
+| 1 | Chega [SWE101](../../../swe101/i-overview.md) para ler um diagrama de arquitetura |
+| 2 | [Projeto do sistema](../../../swe101/sysdesign/scalable-patterns/i-overview.md) vocabulário |
+| 3 | [AI Aplicado](../../../ai101/ai-engineering/i-overview.md) — pesquisa e redação |
+| 4 | [Marketing digital](../../../digital-marketing/i-overview.md) se for orientado para o crescimento |
+| 5 | [Idiomas](../../../languages/i-overview.md) se tiver como alvo organizações nacionais |
 
-Build: 2–3 **case writeups** (problem, options, metrics, decision, result).
+Construção: 2–3 **redações de caso** (problema, opções, métricas, decisão, resultado).
 
-## Compensation (illustrative Tokyo)
+## Compensação (Tóquio ilustrativo)
 
-Associate ~**¥5–8M**; mid ~**¥8–13M**; senior/group often **¥13–20M+** at strong employers; directors higher. See [Compensation](../iii-compensation.md).
+Associado ~**¥5–8 milhões**; meados de ~**¥8–13 milhões**; seniores/grupo frequentemente **¥13–20M+** em empregadores fortes; diretores mais altos. Consulte [Compensação](../iii-compensation.md).
 
-## Career moves
+## Movimentos de carreira
 
-| From PM | Toward |
-|---------|--------|
-| Group / director | Product leadership |
-| Founder skills | [Startups](../../../startups/i-overview.md) |
-| Deep tech | Technical PM / eng |
+| De PM | Em direção |
+|--------|--------|
+| Grupo / diretor | Liderança de produto |
+| Habilidades do fundador | [Inicializações](../../../startups/i-overview.md) |
+| Tecnologia profunda | Técnico PM / eng |
 
-## Next
+## Próximo
 
-[SRE / platform](vii-sre-platform.md).
+[SRE / plataforma](vii-sre-platform.md).
