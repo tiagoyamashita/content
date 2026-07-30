@@ -1,14 +1,14 @@
 ---
 label: "V"
-subtitle: "Test & wire into Cursor"
+subtitle: "Teste e conecte em Cursor"
 group: "How to create your custom MCP"
 order: 5
 ---
-Test & wire into Cursor
+Teste e conecte em Cursor
 
-## 1. MCP Inspector (fastest feedback)
+## 1. MCP Inspetor (feedback mais rápido)
 
-The official **MCP Inspector** talks to your server over stdio without Cursor:
+O **MCP Inspector** oficial fala com seu servidor via stdio sem Cursor:
 
 ```bash
 npx @modelcontextprotocol/inspector node /absolute/path/to/my-mcp-server/dist/index.js
@@ -16,13 +16,13 @@ npx @modelcontextprotocol/inspector node /absolute/path/to/my-mcp-server/dist/in
 npx @modelcontextprotocol/inspector python /absolute/path/to/my-mcp-server/server.py
 ```
 
-| Inspector UI | What to verify |
+| Inspetor UI | O que verificar |
 |--------------|----------------|
-| **Tools** tab | All tools listed with schemas |
-| **Call tool** | Run `echo` with sample args — check response |
-| **Logs** | JSON-RPC errors, stack traces |
+| Guia **Ferramentas** | Todas as ferramentas listadas com esquemas |
+| **Ferramenta de chamada** | Correr`echo`com argumentos de amostra - verifique a resposta |
+| **Registros** | Erros JSON-RPC, rastreamentos de pilha |
 
-Fix schema and handler bugs here before opening Cursor.
+Corrija erros de esquema e manipulador aqui antes de abrir Cursor.
 
 ```mermaid
 flowchart LR
@@ -32,21 +32,21 @@ flowchart LR
   Cursor --> Agent[Verify in agent]
 ```
 
-## 2. Local logging tips
+## 2. Dicas de registro local
 
-| Tip | Why |
+| Dica | Por que |
 |-----|-----|
-| **Never `console.log` to stdout** in stdio servers | stdout is the JSON-RPC wire — corrupts protocol |
-| Log to **stderr** | `console.error(...)` / `logging` to stderr is safe |
-| Log tool name + duration | Debug slow API calls |
+| **Nunca`console.log`para stdout** em servidores stdio | stdout é o fio JSON-RPC - corrompe o protocolo |
+| Faça logon em **stderr** |`console.error(...)`-&#09;o`logging`para stderr é seguro |
+| Nome da ferramenta de registro + duração | Depurar chamadas API lentas |
 
 ```typescript
 console.error(`[get_issue] id=${issue_id} duration_ms=${Date.now() - t0}`);
 ```
 
-## 3. Cursor `mcp.json`
+## 3. Cursor`mcp.json`
 
-Project-level (committed for team) — `.cursor/mcp.json`:
+Nível do projeto (comprometido com a equipe) -`.cursor/mcp.json`TÉCNICO.:
 
 ```json
 {
@@ -62,7 +62,7 @@ Project-level (committed for team) — `.cursor/mcp.json`:
 }
 ```
 
-Python example:
+Python exemplo:
 
 ```json
 {
@@ -78,19 +78,19 @@ Python example:
 }
 ```
 
-| Field | Notes |
+| Campo | Notas |
 |-------|-------|
-| `command` | Executable — use absolute paths for venv `python` |
-| `args` | Script path as first arg |
-| `env` | Secrets — prefer user-level overrides for real keys |
+|`command`| Executável – use caminhos absolutos para venv`python`|
+|`args`| Caminho do script como primeiro argumento |
+|`env`| Segredos — prefira substituições no nível do usuário para chaves reais |
 
-**User-global** config also works: Cursor Settings → MCP → add server (same shape).
+**A configuração global do usuário** também funciona: Cursor Configurações → MCP → adicionar servidor (mesmo formato).
 
-After saving, **restart MCP** or reload Cursor — then check MCP status in the IDE.
+Após salvar, **reinicie MCP** ou recarregue Cursor — então verifique o status de MCP em IDE.
 
-## 4. npm-linked TypeScript server
+## 4. Servidor TypeScript vinculado a npm
 
-During development:
+Durante o desenvolvimento:
 
 ```json
 {
@@ -104,25 +104,25 @@ During development:
 }
 ```
 
-Or publish locally: `npm link` and `"command": "my-mcp-server"`.
+Ou publique localmente:`npm link`e`"command": "my-mcp-server"`.
 
-## 5. Verify in Cursor
+## 5. Verifique em Cursor
 
-1. Open chat / agent mode.
-2. Ask: *“Use the echo tool to say hello”* — or a real tool like `search_issues`.
-3. Confirm the agent invokes your server (MCP tool call in UI).
-4. If tools missing: check MCP panel for connection errors.
+1. Abra o modo chat/agente.
+2. Pergunte: *“Use a ferramenta de eco para dizer olá”* — ou uma ferramenta real como`search_issues`.
+3. Confirme se o agente invoca seu servidor (chamada de ferramenta MCP em UI).
+4. Se faltarem ferramentas: verifique se há erros de conexão no painel MCP.
 
-| Symptom | Fix |
-|---------|-----|
-| Server disconnected | Wrong path; rebuild `dist/`; missing shebang `#!/usr/bin/env node` |
-| No tools listed | Server crash on startup — run via Inspector |
-| Tool call fails | stderr logs; return `isError` with message |
-| Env not set | Add `env` block; restart MCP |
+| Sintoma | Correção |
+|--------|-----|
+| Servidor desconectado | Caminho errado; reconstruir`dist/`; faltando shebang`#!/usr/bin/env node`|
+| Nenhuma ferramenta listada | Falha do servidor na inicialização – execute via Inspector |
+| A chamada da ferramenta falha | registros stderr; retornar`isError`com mensagem |
+| Ambiente não definido | Adicionar`env`bloquear; reiniciar MCP |
 
-## 6. Claude Desktop (optional)
+## 6. Claude Desktop (opcional)
 
-`claude_desktop_config.json` (macOS/Linux path varies):
+`claude_desktop_config.json`(o caminho do macOS/Linux varia):
 
 ```json
 {
@@ -135,12 +135,12 @@ Or publish locally: `npm link` and `"command": "my-mcp-server"`.
 }
 ```
 
-Same server binary — one implementation, multiple hosts.
+Mesmo binário de servidor — uma implementação, vários hosts.
 
-## 7. HTTP transport (team server)
+## 7. Transporte HTTP (servidor de equipe)
 
-For remote shared MCP, deploy with Streamable HTTP per spec — out of scope for first version; start stdio locally, extract HTTP when you need a shared instance. See [JSON-RPC & transports](../ii-json-rpc-and-transports.md).
+Para MCP compartilhado remotamente, implante com Streamable HTTP de acordo com as especificações — fora do escopo da primeira versão; inicie o stdio localmente, extraia HTTP quando precisar de uma instância compartilhada. Consulte [JSON-RPC e transportes](../ii-json-rpc-and-transports.md).
 
-## Next
+## Próximo
 
-[Security & distribution](vi-security-and-distribution.md) — ship to your team safely.
+[Segurança e distribuição](vi-security-and-distribution.md) — envie para sua equipe com segurança.

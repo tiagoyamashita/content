@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "Iteration & templates"
+subtitle: "Iteração e modelos"
 group: "AI Applied"
 order: 3
 ---
-Iteration & templates
+Iteração e modelos
 
-## 3. Iteration loop (how pros work)
+## 3. Loop de iteração (como funcionam os profissionais)
 
 ```mermaid
 flowchart LR
@@ -17,17 +17,17 @@ flowchart LR
   Save -.->|next task| Draft
 ```
 
-| Feedback to the model | Better than |
+| Feedback ao modelo | Melhor que |
 |-----------------------|-------------|
-| “Shorter; drop adjectives; keep all dates.” | “Try again.” |
-| “Wrong: revenue is in table 2, not table 1.” | “That’s wrong.” |
-| “Use the template in my first message.” | Starting a new chat |
+| “Mais curto; descarte adjetivos; mantenha todas as datas.” | “Tente novamente.” |
+| “Errado: a receita está na tabela 2, não na tabela 1.” | “Isso está errado.” |
+| “Use o modelo na minha primeira mensagem.” | Iniciando um novo bate-papo |
 
-**New chat vs continue:** new chat when topic changes or context is polluted; continue when refining the same deliverable.
+**Novo chat vs continuar:** novo chat quando o tópico muda ou o contexto é poluído; continue ao refinar o mesmo produto final.
 
-## 4. Templates by task type
+## 4. Modelos por tipo de tarefa
 
-### Summarise
+### Resumir
 
 ```text
 Summarise for a busy [role].
@@ -40,7 +40,7 @@ Source:
 """
 ```
 
-### Compare options
+### Comparar opções
 
 ```text
 Compare A vs B for [decision].
@@ -49,7 +49,7 @@ Output: table + one-paragraph recommendation.
 Context: …
 ```
 
-### Code help (without shipping blindly)
+### Ajuda do código (sem envio às cegas)
 
 ```text
 Language: [X]. Goal: [one sentence].
@@ -58,7 +58,7 @@ Flag assumptions and edge cases.
 Do not invent APIs — say if unsure.
 ```
 
-### Email / message draft
+### E-mail/rascunho de mensagem
 
 ```text
 Tone: [direct / warm / formal].
@@ -67,4 +67,4 @@ Goal: [what should reader do after reading].
 Facts only from below — do not invent names or dates.
 ```
 
-**Next:** [System instructions & mistakes](iv-system-instructions-and-mistakes.md).
+**Próximo:** [Instruções e erros do sistema](iv-system-instructions-and-mistakes.md).

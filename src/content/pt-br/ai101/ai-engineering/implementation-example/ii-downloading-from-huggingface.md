@@ -1,26 +1,26 @@
 ---
 label: "II"
-subtitle: "Downloading from Hugging Face"
+subtitle: "Baixando do Hugging Face"
 group: "AI Applied"
 order: 2
 ---
-Downloading from Hugging Face
+Baixando do Hugging Face
 
-[Hugging Face](https://huggingface.co) hosts model **weights**, **tokenizers**, and **configs**. A repo page (e.g. `meta-llama/Llama-3.2-3B-Instruct`) is a versioned folder — not a single installer.
+[Abraçando o rosto](https://huggingface.co) hospeda o modelo **pesos**, **tokenizers** e **configs**. Uma página de repositório (por exemplo`meta-llama/Llama-3.2-3B-Instruct`) é uma pasta com versão – não um único instalador.
 
-## 1. What you are downloading
+## 1. O que você está baixando
 
-| Artifact | Purpose |
+| Artefato | Finalidade |
 |----------|---------|
-| `config.json` | Architecture, hidden size, layer count |
-| `tokenizer.json` / `tokenizer.model` | Text → tokens |
-| `*.safetensors` or `*.bin` | Model weights (large) |
-| `generation_config.json` | Default decode settings |
-| `README.md` | License, prompt format, eval notes |
+|`config.json`| Arquitetura, tamanho oculto, contagem de camadas |
+|`tokenizer.json`-&#09;o`tokenizer.model`| Texto → tokens |
+|`*.safetensors`ou`*.bin`| Pesos do modelo (grandes) |
+|`generation_config.json`| Configurações de decodificação padrão |
+|`README.md`| Licença, formato de prompt, notas de avaliação |
 
-**GGUF** repos (for llama.cpp / Ollama imports) ship one or more `.gguf` files with quantization already baked in. **Original** repos ship full-precision or HF-quantized safetensors for Python runtimes.
+**GGUF** repositórios (para importações llama.cpp / Ollama) enviam um ou mais`.gguf`arquivos com quantização já incorporada. **Os repositórios originais** enviam tensores de segurança de precisão total ou HF-quantizados para tempos de execução Python.
 
-## 2. Prerequisites
+## 2. Pré-requisitos
 
 ```bash
 # Hugging Face CLI — installs the `hf` command (current)
@@ -30,50 +30,50 @@ pip install -U "huggingface_hub[cli]"
 git lfs install
 ```
 
-Log in if the model is **gated** (license acceptance required):
+Faça login se o modelo for **bloqueado** (é necessária a aceitação da licença):
 
 ```bash
 hf auth login
 ```
 
-`huggingface-cli` is **deprecated** — use `hf` for all CLI tasks (`hf download`, `hf auth login`, `hf --help`).
+`huggingface-cli`está **obsoleto** - use`hf`para todas as tarefas CLI (`hf download`,`hf auth login`,`hf --help`).
 
-Create a token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) with **read** access.
+Crie um token em [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) com acesso de **leitura**.
 
-### Gated models (Meta Llama, etc.) — required before download
+### Modelos fechados (Meta Llama, etc.) — necessários antes do download
 
-`meta-llama/Llama-3.2-3B-Instruct` is **gated**. Unauthenticated downloads fail with:
+`meta-llama/Llama-3.2-3B-Instruct`é **fechado**. Downloads não autenticados falham com:
 
 ```text
 Error: Access denied. This repository requires approval.
 Warning: You are sending unauthenticated requests to the HF Hub.
 ```
 
-**Fix — do all three steps in order:**
+**Corrigir – execute todas as três etapas em ordem:**
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| **1. Web approval** | Open [meta-llama/Llama-3.2-3B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct) while logged in → **Agree and access repository** (Meta license form). Approval is usually instant. |
-| **2. CLI login** | `hf auth login` → paste a **read** token from [settings/tokens](https://huggingface.co/settings/tokens) |
-| **3. Retry** | Same `hf download` command |
+| **1. Aprovação Web** | Abra [meta-llama/Llama-3.2-3B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct) enquanto estiver logado → **Concordar e acessar o repositório** (formulário de meta licença). A aprovação geralmente é instantânea. |
+| **2. CLI login** |`hf auth login`→ cole um token de **leitura** de [settings/tokens](https://huggingface.co/settings/tokens) |
+| **3. Tente novamente** | Mesmo`hf download`comando |
 
-Verify auth before downloading:
+Verifique a autenticação antes de baixar:
 
 ```bash
 hf auth whoami
 # Should print your HF username — confirms login only, NOT gated-repo access
 ```
 
-**`hf auth whoami` succeeding does not mean you can download Llama.** For gated repos you must also complete **step 1 (web approval)** on the model page while logged in as the **same HF user** as the CLI. If download still says `requires approval`, open the repo URL in a browser and look for **Agree and access repository** — until that button is gone and you see the Files tab, CLI downloads will fail.
+(R)`hf auth whoami`ter sucesso não significa que você pode baixar o Llama.** Para repositórios fechados, você também deve concluir a **etapa 1 (aprovação da web)** na página do modelo enquanto estiver conectado como o **mesmo usuário HF** do CLI. Se o download ainda disser`requires approval`, abra o repositório URL em um navegador e procure **Concordar e acessar o repositório** — até que esse botão desapareça e você veja a guia Arquivos, os downloads de CLI falharão.
 
-**Alternative token env var** (scripts, CI, or if login cache fails):
+**Token alternativo env var** (scripts, CI ou se o cache de login falhar):
 
 ```bash
 export HF_TOKEN="hf_xxxxxxxx"   # your read token — never commit this
 hf download meta-llama/Llama-3.2-3B-Instruct --local-dir ./models/llama-3.2-3b
 ```
 
-**Skip gating for local GGUF** — community quant repos are usually open; fine for Ollama / llama.cpp:
+**Skip gate para GGUF** local — os repositórios quantitativos da comunidade geralmente estão abertos; bom para Ollama / llama.cpp:
 
 ```bash
 hf download bartowski/Llama-3.2-3B-Instruct-GGUF \
@@ -81,21 +81,21 @@ hf download bartowski/Llama-3.2-3B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-Or use **Ollama** (no HF account for the default catalog): `ollama pull llama3.2:3b`.
+Ou use **Ollama** (sem conta HF para o catálogo padrão):`ollama pull llama3.2:3b`.
 
-### Recommended open models (2025–2026)
+### Modelos abertos recomendados (2025–2026)
 
-| Use case | Model | Gated? | Ollama | Hugging Face |
-|----------|-------|--------|--------|--------------|
-| **Local coding (default)** | **Qwen2.5-Coder 7B Instruct** | No | `qwen2.5-coder:7b` | [Qwen/Qwen2.5-Coder-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct) |
-| General chat 7B | Qwen2.5 7B Instruct | No | `qwen2.5:7b` | `Qwen/Qwen2.5-7B-Instruct` |
-| Fast / small GPU | Qwen2.5-Coder 3B | No | `qwen2.5-coder:3b` | `Qwen/Qwen2.5-Coder-3B-Instruct` |
-| Best open coder (24 GB+ VRAM) | Qwen2.5-Coder 32B Instruct | No | `qwen2.5-coder:32b` | `Qwen/Qwen2.5-Coder-32B-Instruct` |
-| General chat (gated) | Llama 3.2 3B Instruct | **Yes** (Meta) | `llama3.2:3b` | `meta-llama/Llama-3.2-3B-Instruct` |
+| Caso de uso | Modelo | Fechado? | Ollama | Abraçando o rosto |
+|----------|-------|--------|--------|-------------|
+| **Codificação local (padrão)** | **Instrução Qwen2.5-Coder 7B** | Não |`qwen2.5-coder:7b`| [Qwen/Qwen2.5-Coder-7B-Instrução](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct) |
+| Bate-papo geral 7B | Qwen2.5 7B Instruir | Não |`qwen2.5:7b`|`Qwen/Qwen2.5-7B-Instruct`|
+| Rápido/pequeno GPU | Qwen2.5-Codificador 3B | Não |`qwen2.5-coder:3b`|`Qwen/Qwen2.5-Coder-3B-Instruct`|
+| Melhor codificador aberto (24 GB+ VRAM) | Instrução Qwen2.5-Coder 32B | Não |`qwen2.5-coder:32b`|`Qwen/Qwen2.5-Coder-32B-Instruct`|
+| Chat geral (fechado) | Lhama 3.2 3B Instruir | **Sim** (Meta) |`llama3.2:3b`|`meta-llama/Llama-3.2-3B-Instruct`|
 
-**Qwen2.5-Coder** is the usual pick for **code generation, fixes, and IDE assistants** — Apache 2.0, no HF approval step, strong benchmarks vs other open coders. Use the **`-Instruct`** variant for chat/coding; base weights are for fine-tuning only.
+**Qwen2.5-Coder** é a escolha usual para **geração de código, correções e assistentes IDE** — Apache 2.0, sem etapa de aprovação HF, benchmarks fortes em comparação com outros codificadores abertos. Use o **`-Instruct`** variante para chat/codificação; os pesos básicos são apenas para ajuste fino.
 
-**Download Qwen2.5-Coder (no gating):**
+**Baixe o Qwen2.5-Coder (sem bloqueio):**
 
 ```bash
 # Full safetensors (transformers / vLLM)
@@ -107,11 +107,11 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-Or skip HF: `ollama pull qwen2.5-coder:7b`.
+Ou pule HF:`ollama pull qwen2.5-coder:7b`.
 
-## 3. Method A — `hf download` (preferred)
+## 3. Método A -`hf download`(preferido)
 
-Download an entire repo or specific files into a local folder:
+Baixe um repositório inteiro ou arquivos específicos em uma pasta local:
 
 ```bash
 # Qwen2.5-Coder — open, best default for coding (7B fits 8 GB GPU)
@@ -126,15 +126,15 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
 hf download meta-llama/Llama-3.2-3B-Instruct --local-dir ./models/llama-3.2-3b
 ```
 
-| Flag | Use |
+| Bandeira | Usar |
 |------|-----|
-| `--local-dir` | Mirror repo layout on disk |
-| `--local-dir-use-symlinks False` | Real files, not symlinks (portable copies) |
-| `--revision` | Pin a branch, tag, or commit |
+|`--local-dir`| Layout de repositório de espelho no disco |
+|`--local-dir-use-symlinks False`| Arquivos reais, não links simbólicos (cópias portáteis) |
+|`--revision`| Fixe um branch, tag ou commit |
 
-Resume is automatic — interrupted downloads continue where they left off.
+A retomada é automática – os downloads interrompidos continuam de onde pararam.
 
-## 4. Method B — Git clone + LFS
+## 4. Método B — clone Git + LFS
 
 ```bash
 git clone https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct
@@ -142,16 +142,16 @@ cd Llama-3.2-3B-Instruct
 git lfs pull
 ```
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Familiar Git workflow | Slower for huge repos; LFS quota on HF |
-| Easy to pin commits | Pulls whole repo unless sparse-checkout configured |
+| Fluxo de trabalho Git familiar | Mais lento para grandes repositórios; Cota LFS em HF |
+| Confirmações fáceis de fixar | Extrai todo o repositório, a menos que o sparse-checkout esteja configurado |
 
-For gated models, use HTTPS with a token or SSH key linked to your HF account.
+Para modelos fechados, use HTTPS com um token ou chave SSH vinculada à sua conta HF.
 
-## 5. Method C — Python `snapshot_download`
+## 5. Método C — Python`snapshot_download`
 
-Useful inside scripts or notebooks:
+Útil dentro de scripts ou notebooks:
 
 ```python
 from huggingface_hub import snapshot_download
@@ -163,7 +163,7 @@ path = snapshot_download(
 )
 ```
 
-`transformers` can also fetch on first use:
+`transformers`também pode buscar no primeiro uso:
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -172,21 +172,21 @@ tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-Coder-7B-Instruct")
 model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-Coder-7B-Instruct")
 ```
 
-Weights land in the HF cache (`~/.cache/huggingface/hub`) unless you pass `cache_dir` or `local_dir`.
+Os pesos vão para o cache HF (`~/.cache/huggingface/hub`) a menos que você passe`cache_dir`ou`local_dir`.
 
-## 6. Picking the right repo variant
+## 6. Escolhendo a variante de repositório certa
 
-| You want | Look for |
+| Você quer | Procure |
 |----------|----------|
-| **Coding / IDE assistant** | **Qwen2.5-Coder** `*-Instruct` or `qwen2.5-coder:7b` on Ollama |
-| **llama.cpp / KoboldCPP** | `*-GGUF` repos or `.gguf` in Files tab |
-| **Ollama** | Often `ollama pull <name>` — Ollama downloads for you; or import a GGUF |
-| **vLLM / TGI / transformers** | Original safetensors repo or AWQ/GPTQ quant |
-| **Smaller disk footprint** | Q4_K_M, Q5_K_M GGUF or AWQ 4-bit |
+| **Assistente de codificação / IDE** | **Qwen2.5-Codificador**`*-Instruct`ou`qwen2.5-coder:7b`em Ollama |
+| **llama.cpp / KoboldCPP** |`*-GGUF`repositórios ou`.gguf`na guia Arquivos |
+| **Ollama** | Muitas vezes`ollama pull <name>`— Ollama downloads para você; ou importe um GGUF |
+| **vLLM / TGI / transformadores** | Repositório de tensores de segurança originais ou AWQ/GPTQ quant |
+| **Pequeno espaço em disco** | Q4_K_M, Q5_K_M GGUF ou AWQ 4 bits |
 
-Always read the **license** on the model card. Many weights forbid commercial use or require registration.
+Leia sempre a **licença** no cartão do modelo. Muitos pesos proíbem o uso comercial ou exigem registro.
 
-## 7. Verify the download
+## 7. Verifique o download
 
 ```bash
 # Check total size vs repo "Files and versions" tab
@@ -196,19 +196,19 @@ du -sh ./models/qwen2.5-coder-7b
 ls -lh ./models/qwen2.5-coder-7b/*.safetensors
 ```
 
-If a shard is tiny (few KB), Git LFS may not have pulled — run `git lfs pull` or re-run `hf download`.
+Se um fragmento for pequeno (poucos KB), Git LFS pode não ter sido extraído – execute`git lfs pull`ou reexecutar`hf download`.
 
-## 8. Common issues
+## 8. Problemas comuns
 
-| Problem | Fix |
-|---------|-----|
-| **Access denied / requires approval** | Gated repo — complete [web approval](#gated-models-meta-llama-etc--required-before-download), then `hf auth login`; confirm with `hf auth whoami` |
-| **Unauthenticated requests warning** | Same — you are not logged in; set `HF_TOKEN` or run `hf auth login` |
-| **403 / gated repo** | Accept license on HF website **first** (logged in), then `hf auth login` |
-| **Out of disk** | Download one GGUF quant instead of full safetensors |
-| **Slow first pull** | Use `hf download` with a wired connection; pin one quant |
-| **Wrong format for runtime** | GGUF → llama.cpp/Ollama; safetensors → transformers/vLLM |
+| Problema | Correção |
+|--------|-----|
+| **Acesso negado/requer aprovação** | Repo fechado – concluir [aprovação da web](#gated-models-meta-llama-etc--required-before-download), então`hf auth login`; confirme com`hf auth whoami`|
+| **Aviso de solicitações não autenticadas** | Mesmo – você não está logado; definir`HF_TOKEN`ou correr`hf auth login`|
+| **403 / repositório fechado** | Aceite a licença no site HF **primeiro** (logado) e depois`hf auth login`|
+| **Sem disco** | Baixe um GGUF quant em vez de tensores de segurança completos |
+| **Primeira puxada lenta** | Usar`hf download`com conexão com fio; fixar um quanto |
+| **Formato incorreto para tempo de execução** | GGUF → lhama.cpp/Ollama; tensores de segurança → transformadores/vLLM |
 
-## Next
+## Próximo
 
-[Local run platforms](iii-local-run-platforms.md) — where to load these files and serve inference.
+[Plataformas de execução local](iii-local-run-platforms.md) — onde carregar esses arquivos e servir inferência.

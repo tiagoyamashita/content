@@ -1,24 +1,24 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Effective prompting — overview
-Deep dive on **effective prompting** — split into focused notes below.
+Solicitação eficaz – visão geral
+Aprofunde-se em **solicitações eficazes** — divida em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) | Part of effective prompting track |
-| [Iteration & templates](iii-iteration-and-templates.md) | Part of effective prompting track |
-| [System instructions & mistakes](iv-system-instructions-and-mistakes.md) | Part of effective prompting track |
+| [Prompt mínimo e técnicas](ii-minimum-prompt-and-techniques.md) | Parte do caminho de estímulo eficaz |
+| [Iteração e modelos](iii-iteration-and-templates.md) | Parte do caminho de estímulo eficaz |
+| [Instruções e erros do sistema](iv-system-instructions-and-mistakes.md) | Parte do caminho de estímulo eficaz |
 
-Effective prompting
-**Prompting** is how you steer ChatGPT, Claude, Gemini, and similar tools. You are not “programming” the model — you are **specifying the task** so the model has enough context to help once, not after five retries.
+Solicitação eficaz
+**Avisar** é como você orienta ChatGPT, Claude, Gemini e ferramentas semelhantes. Você não está “programando” o modelo – você está **especificando a tarefa** para que o modelo tenha contexto suficiente para ajudar uma vez, e não após cinco tentativas.
 
-For API-level detail (roles, JSON mode), see [LLM prompt engineering](../../llms/iv-prompt-engineering.md). This note is for **everyday use**.
+Para detalhes de nível API (funções, modo JSON), consulte [engenharia de prompt LLM](../../llms/iv-prompt-engineering.md). Esta nota é para **uso diário**.
 
 ```mermaid
 flowchart LR
@@ -26,8 +26,8 @@ flowchart LR
   Format --> Model[Model reply]
 ```
 
-Once a prompt works repeatedly, promote it to persistent instructions — see [Loop prompting](../loop-prompting/i-overview.md).
+Quando um prompt funcionar repetidamente, promova-o para instruções persistentes — consulte [Solicitação de loop](../loop-prompting/i-overview.md).
 
-## Study order
+## Ordem de estudo
 
-[Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) → [Iteration & templates](iii-iteration-and-templates.md) → [System instructions & mistakes](iv-system-instructions-and-mistakes.md) → [Loop prompting](../loop-prompting/i-overview.md)
+[Prompt mínimo e técnicas](ii-minimum-prompt-and-techniques.md) → [Iteração e modelos](iii-iteration-and-templates.md) → [Instruções e erros do sistema](iv-system-instructions-and-mistakes.md) → [Solicitação de loop](../loop-prompting/i-overview.md)

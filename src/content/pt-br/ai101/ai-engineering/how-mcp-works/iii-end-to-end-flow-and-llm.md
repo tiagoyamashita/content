@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "End-to-end flow & LLM"
+subtitle: "Fluxo ponta a ponta e LLM"
 group: "AI Applied"
 order: 3
 ---
-End-to-end flow & LLM
+Fluxo ponta a ponta e LLM
 
-## 5. End-to-end flow
+## 5. Fluxo ponta a ponta
 
 ```plantuml
 @startuml
@@ -28,15 +28,15 @@ H --> You: natural language answer
 @enduml
 ```
 
-| Step | Protocol |
+| Etapa | Protocolo |
 |------|----------|
-| You ↔ Host | Chat UI |
-| Host ↔ MCP server | **JSON-RPC** over stdio or HTTP |
-| MCP server ↔ SaaS | **That product’s API** (REST, GraphQL, SDK) |
+| Você ↔ Anfitrião | Bate-papo UI |
+| Host ↔ servidor MCP | **JSON-RPC** sobre stdio ou HTTP |
+| Servidor MCP ↔ SaaS | **Esse produto é API** (REST, GraphQL, SDK) |
 
-## 6. Does JSON go straight to the LLM?
+## 6. JSON vai direto para LLM?
 
-**Almost — but not directly.** The MCP server sends JSON back to the **host’s MCP client**, not straight into the model API with no middle step. The **host** (Cursor, Claude Desktop) then **injects that result into the chat** as a **tool result**, and the **LLM reads it on the next turn**.
+**Quase — mas não diretamente.** O servidor MCP envia JSON de volta para o **cliente MCP do host**, não diretamente para o modelo API sem etapa intermediária. O **host** (Cursor, Claude Desktop) então **injeta esse resultado no chat** como um **resultado da ferramenta**, e o **LLM o lê no próximo turno**.
 
 ```mermaid
 sequenceDiagram
@@ -54,15 +54,15 @@ sequenceDiagram
   Host-->>You: reply
 ```
 
-| Hop | What travels | Who sees it |
-|-----|--------------|-------------|
-| MCP client ↔ MCP server | **JSON-RPC** (wire protocol) | Host only — not shown in chat UI |
-| Host ↔ LLM | **Tool call + tool result** (text/JSON in messages) | Model uses it as context |
-| Host ↔ You | **Natural language** | What you read |
+| Pulo | O que viaja | Quem vê |
+|-----|-------------|-------------|
+| MCP cliente ↔ MCP servidor | **JSON-RPC** (protocolo de ligação) | Somente host — não mostrado no chat UI |
+| Anfitrião ↔ LLM | **Chamada de ferramenta + resultado de ferramenta** (texto/JSON em mensagens) | Modelo usa isso como contexto |
+| Anfitrião ↔ Você | **Linguagem natural** | O que você lê |
 
-So yes: the **data** is usually JSON (issue list, query rows, file contents). The LLM **does** consume that content — but **via the host**, which wraps it in the standard **tool-calling** loop. The LLM does **not** open a socket to the MCP server itself.
+Então, sim: os **dados** geralmente são JSON (lista de problemas, linhas de consulta, conteúdo do arquivo). O LLM **consome** esse conteúdo — mas **por meio do host**, que o envolve no loop padrão de **chamada de ferramenta**. O LLM **não** abre um soquete para o próprio servidor MCP.
 
-The loop can repeat: LLM may call **several** MCP tools before answering you.
+O loop pode se repetir: LLM pode chamar **várias** ferramentas MCP antes de responder.
 
 ```plantuml
 @startuml
@@ -82,16 +82,16 @@ H --> You: reply
 @enduml
 ```
 
-**What you see:** the final prose (and maybe tool-run indicators in the UI). **What you don’t see:** raw JSON-RPC between client and server — unless you debug logs.
+**O que você vê:** a prosa final (e talvez indicadores de execução da ferramenta no UI). **O que você não vê:** JSON-RPC bruto entre cliente e servidor — a menos que você depure logs.
 
-## 7. What the MCP server exposes
+## 7. O que o servidor MCP expõe
 
-After connect, the server advertises capabilities:
+Após a conexão, o servidor anuncia os recursos:
 
-| Capability | Agent can… |
+| Capacidade | Agente pode… |
 |------------|------------|
-| **Tools** | Call functions (`create_issue`, `run_query`) |
-| **Resources** | Read URIs (`file://`, `db://schema/users`) |
-| **Prompts** | Use pre-built prompt templates (less common for users) |
+| **Ferramentas** | Funções de chamada (`create_issue`,`run_query`) |
+| **Recursos** | Ler URIs (`file://`,`db://schema/users`) |
+| **Avisos** | Use modelos de prompt pré-construídos (menos comuns para usuários) |
 
-The **LLM** sees tool **names and descriptions**; the host maps model intent to MCP **tool calls**.
+O **LLM** vê **nomes e descrições** das ferramentas; o host mapeia a intenção do modelo para MCP **chamadas de ferramenta**.

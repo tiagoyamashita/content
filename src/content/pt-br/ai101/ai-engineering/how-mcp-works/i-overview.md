@@ -1,26 +1,26 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-How MCP works — overview
-Deep dive on **how mcp works** — split into focused notes below.
+Como MCP funciona — visão geral
+Aprofunde-se em **como funciona o mcp** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [JSON-RPC & transports](ii-json-rpc-and-transports.md) | Part of how mcp works track |
-| [End-to-end flow & LLM](iii-end-to-end-flow-and-llm.md) | Part of how mcp works track |
-| [MCP vs connectors & security](iv-mcp-vs-connectors-and-security.md) | Part of how mcp works track |
-| [Vector DB, skills & reference](v-vector-db-skills-and-reference.md) | Part of how mcp works track |
-| **[How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md)** | Plan, build, test, and ship your own MCP server |
+| [JSON-RPC e transportes](ii-json-rpc-and-transports.md) | Parte de como funciona o mcp track |
+| [Fluxo ponta a ponta & LLM](iii-end-to-end-flow-and-llm.md) | Parte de como funciona o mcp track |
+| [MCP vs conectores e segurança](iv-mcp-vs-connectors-and-security.md) | Parte de como funciona o mcp track |
+| [Vetor DB, habilidades e referência](v-vector-db-skills-and-reference.md) | Parte de como funciona o mcp track |
+| **[Como criar seu MCP personalizado](how-to-create-your-custom-mcp/i-overview.md)** | Planeje, construa, teste e envie seu próprio servidor MCP |
 
-How MCP works
-**MCP (Model Context Protocol)** is how tools like **Cursor**, **Claude Desktop**, and **Claude Code** plug into **external systems** — databases, GitHub, Linear, Sentry — through small **connector programs** called **MCP servers**.
+Como MCP funciona
+**MCP (Model Context Protocol)** é como ferramentas como **Cursor**, **Claude Desktop** e **Claude Code** se conectam a **sistemas externos** — bancos de dados, GitHub, Linear, Sentry — por meio de pequenos **programas conectores** chamados servidores **MCP**.
 
-You configure them once; the agent **calls tools** the server exposes. This note explains **how that connection works** — API, gRPC, or something else.
+Você os configura uma vez; o agente **chama ferramentas** que o servidor expõe. Esta nota explica **como essa conexão funciona** — API, gRPC ou qualquer outra coisa.
 
 ```mermaid
 flowchart LR
@@ -28,8 +28,8 @@ flowchart LR
   Server --> API[External API]
 ```
 
-## Study order
+## Ordem de estudo
 
-[JSON-RPC & transports](ii-json-rpc-and-transports.md) → [End-to-end flow & LLM](iii-end-to-end-flow-and-llm.md) → [MCP vs connectors & security](iv-mcp-vs-connectors-and-security.md) → [Vector DB, skills & reference](v-vector-db-skills-and-reference.md)
+[JSON-RPC e transportes](ii-json-rpc-and-transports.md) → [Fluxo ponta a ponta & LLM](iii-end-to-end-flow-and-llm.md) → [MCP vs conectores e segurança](iv-mcp-vs-connectors-and-security.md) → [Vetor DB, habilidades e referência](v-vector-db-skills-and-reference.md)
 
-**Build your own:** [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md) — after you understand transports and the end-to-end flow.
+**Crie o seu próprio:** [Como criar seu MCP personalizado](how-to-create-your-custom-mcp/i-overview.md) — depois de entender os transportes e o fluxo de ponta a ponta.

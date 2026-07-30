@@ -1,21 +1,21 @@
 ---
 label: "IV"
-subtitle: "System instructions & mistakes"
+subtitle: "Instruções e erros do sistema"
 group: "AI Applied"
 order: 4
 ---
-System instructions & mistakes
+Instruções e erros do sistema
 
-## 5. System instructions vs chat message
+## 5. Instruções do sistema versus mensagem de bate-papo
 
-| Product | Where “always follow” rules live |
-|---------|----------------------------------|
-| **ChatGPT** | Custom GPT instructions, or first message |
-| **Claude** | Project instructions |
-| **Cursor** | Rules, `.cursorrules`, project docs |
-| **Copilot** | Copilot instructions in VS Code |
+| Produto | Onde residem as regras de “sempre seguir” |
+|--------|---------------------------------|
+| **Bate-papoGPT** | Instruções GPT personalizadas ou primeira mensagem |
+| **Cláudio** | Instruções do projeto |
+| **Cursor** | Regras,`.cursorrules`, documentos do projeto |
+| **Copiloto** | Instruções do copiloto no código VS |
 
-Put **stable** rules in system/project instructions; put **this task’s** content in the user message.
+Coloque regras **estáveis** nas instruções do sistema/projeto; coloque **o conteúdo desta tarefa** na mensagem do usuário.
 
 ```mermaid
 flowchart TB
@@ -23,22 +23,22 @@ flowchart TB
   User[User message — this task] --> Model
 ```
 
-## 6. Common mistakes
+## 6. Erros comuns
 
-| Mistake | Fix |
-|---------|-----|
-| Vague goal | One measurable deliverable |
-| Wall of text, no structure | Headings, delimiters `"""…"""` |
-| Asking for “best” without criteria | List criteria or weights |
-| Trusting first answer on facts | Ask for sources; verify ([Trust & verify](../trust-privacy-and-verify/i-overview.md)) |
-| Pasting secrets | Redact; use enterprise tier if required |
+| Erro | Correção |
+|--------|-----|
+| Objetivo vago | Um resultado mensurável |
+| Parede de texto, sem estrutura | Títulos, delimitadores`"""…"""`|
+| Pedir o “melhor” sem critérios | Listar critérios ou pesos |
+| Confiando na primeira resposta aos fatos | Peça fontes; verificar ([Confiar e verificar](../trust-privacy-and-verify/i-overview.md)) |
+| Colando segredos | Redigir; use o nível corporativo, se necessário |
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- What four pieces belong in a “minimum good prompt”?
-- When is chain-of-thought worth the extra tokens?
-- Why save prompts that worked?
+- Quais são as quatro peças que pertencem a uma “instrução mínima válida”?
+- Quando a cadeia de pensamento vale os tokens extras?
+- Por que salvar prompts que funcionaram?
 
-**Next:** [Loop prompting — Overview](../loop-prompting/i-overview.md).
+**Próximo:** [Solicitação de loop — Visão geral](../loop-prompting/i-overview.md).
 
-**Related:** [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Custom assistants](../custom-assistants-and-knowledge/i-overview.md).
+**Relacionado:** [Agentes e fluxos de trabalho de agente](../agents-and-agentic-workflows/i-overview.md), [Assistentes personalizados](../custom-assistants-and-knowledge/i-overview.md).

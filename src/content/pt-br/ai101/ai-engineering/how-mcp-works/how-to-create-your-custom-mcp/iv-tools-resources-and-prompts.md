@@ -1,24 +1,24 @@
 ---
 label: "IV"
-subtitle: "Tools, resources & prompts"
+subtitle: "Ferramentas, recursos e prompts"
 group: "How to create your custom MCP"
 order: 4
 ---
-Tools, resources & prompts
+Ferramentas, recursos e prompts
 
-## 1. Tool design rules
+## 1. Regras de design de ferramentas
 
-| Rule | Why |
+| Regra | Por que |
 |------|-----|
-| **Verb-first names** | `create_ticket`, `list_deployments` — clear intent for the LLM |
-| **Rich descriptions** | Host shows name + description when picking tools — include “use when…” |
-| **Small inputs** | Prefer `id` + `limit` over huge nested blobs |
-| **Bounded output** | Truncate lists (top 10–50); summarize large payloads |
-| **Explicit read/write** | Description: “Read-only” or “Creates a record — requires user confirmation in UI” |
+| **Nomes dos verbos** |`create_ticket`,`list_deployments`— intenção clara para LLM |
+| **Descrições ricas** | O host mostra o nome + a descrição ao escolher as ferramentas – inclua “usar quando…” |
+| **Pequenos insumos** | Prefiro`id`+`limit`sobre enormes bolhas aninhadas |
+| **Saída limitada** | Listas truncadas (10–50 principais); resumir grandes cargas úteis |
+| **Leitura/gravação explícita** | Descrição: “Somente leitura” ou “Cria um registro — requer confirmação do usuário em UI” |
 
-### Input validation
+### Validação de entrada
 
-Use **Zod** (TypeScript) or type hints (FastMCP) so bad arguments fail **before** your API call:
+Use **Zod** (TypeScript) ou dicas de tipo (FastMCP) para que argumentos ruins falhem **antes** de sua chamada API:
 
 ```typescript
 {
@@ -28,11 +28,11 @@ Use **Zod** (TypeScript) or type hints (FastMCP) so bad arguments fail **before*
 }
 ```
 
-Return validation errors as tool results with `isError: true` so the model can retry.
+Retornar erros de validação como resultados da ferramenta com`isError: true`para que o modelo possa tentar novamente.
 
-## 2. Tool result shape
+## 2. Forma do resultado da ferramenta
 
-MCP tools return **content** blocks — usually text:
+As ferramentas MCP retornam blocos de **conteúdo** — geralmente texto:
 
 ```typescript
 return {
@@ -42,15 +42,15 @@ return {
 };
 ```
 
-| Content type | Use |
+| Tipo de conteúdo | Usar |
 |--------------|-----|
-| `text` | JSON as formatted string, human summaries, logs |
-| `image` | Base64 or URL (when host supports it) |
-| `resource` | Reference to a resource URI |
+|`text`| JSON como string formatada, resumos humanos, logs |
+|`image`| Base64 ou URL (quando o host suporta) |
+|`resource`| Referência a um recurso URI |
 
-For structured data, **JSON.stringify** into text is fine — the model parses it on the next turn.
+Para dados estruturados, **JSON.stringify** em texto é adequado – o modelo os analisa no próximo turno.
 
-### Errors the model can fix
+### Erros que o modelo pode corrigir
 
 ```typescript
 return {
@@ -59,13 +59,13 @@ return {
 };
 ```
 
-Avoid stack traces in production — log server-side, return short messages.
+Evite rastreamentos de pilha na produção – registre no lado do servidor e retorne mensagens curtas.
 
-## 3. Resources (optional)
+## 3. Recursos (opcional)
 
-Resources expose **readable** content by URI — good for runbooks, config snippets, cached exports.
+Os recursos expõem conteúdo **legível** por URI — bom para runbooks, snippets de configuração e exportações em cache.
 
-TypeScript (conceptual):
+TypeScript (conceitual):
 
 ```typescript
 server.resource(
@@ -83,14 +83,14 @@ server.resource(
 );
 ```
 
-| Tools | Resources |
+| Ferramentas | Recursos |
 |-------|-----------|
-| Model **invokes** with parameters | Model or user **reads** by URI |
-| Search, create, mutate | Static or slowly changing docs |
+| Modelo **invoca** com parâmetros | Modelo ou usuário **lê** por URI |
+| Pesquise, crie, altere | Documentos estáticos ou que mudam lentamente |
 
-## 4. Prompts (optional)
+## 4. Solicitações (opcional)
 
-Prompts are **named templates** with arguments — like slash commands:
+Os prompts são **modelos nomeados** com argumentos — como comandos de barra:
 
 ```typescript
 server.prompt(
@@ -110,30 +110,30 @@ server.prompt(
 );
 ```
 
-Most custom servers skip prompts until tools are stable.
+A maioria dos servidores personalizados ignora os prompts até que as ferramentas estejam estáveis.
 
-## 5. Multiple related tools — example set
+## 5. Múltiplas ferramentas relacionadas - conjunto de exemplos
 
-| Tool | Type | Description snippet |
+| Ferramenta | Tipo | Trecho de descrição |
 |------|------|---------------------|
-| `list_projects` | Read | List projects user can access. Call before other project tools. |
-| `get_issue` | Read | Fetch one issue by id. |
-| `search_issues` | Read | Search by query string; max 20 results. |
-| `add_comment` | Write | Add comment to issue — destructive. |
+|`list_projects`| Leia | Listar projetos que o usuário pode acessar. Ligue antes de outras ferramentas de projeto. |
+|`get_issue`| Leia | Busque um problema por ID. |
+|`search_issues`| Leia | Pesquise por string de consulta; máximo de 20 resultados. |
+|`add_comment`| Escreva | Adicionar comentário ao problema – destrutivo. |
 
-Ordering hints in descriptions (`Call list_projects first`) improve multi-step agent runs.
+Dicas de pedido nas descrições (`Call list_projects first`) melhoram as execuções do agente em várias etapas.
 
-## 6. Anti-patterns
+## 6. Antipadrões
 
-| Anti-pattern | Fix |
+| Antipadrão | Correção |
 |--------------|-----|
-| One tool that runs arbitrary SQL | Parameterized queries or fixed report ids |
-| `run_shell` with full bash | Never — or strictly allowlisted commands in a sandbox |
-| Returning 10 MB JSON | Paginate, summarize server-side |
-| Tool names that differ only by case | Stick to snake_case |
+| Uma ferramenta que executa SQL arbitrariamente | Consultas parametrizadas ou IDs de relatório fixos |
+|`run_shell`com festa completa | Nunca — ou comandos estritamente permitidos em uma sandbox |
+| Retornando 10 MB JSON | Paginar, resumir o lado do servidor |
+| Nomes de ferramentas que diferem apenas por caso | Atenha-se a Snake_case |
 
-See [Security & distribution](vi-security-and-distribution.md) and [MCP vs connectors & security](../iv-mcp-vs-connectors-and-security.md).
+Consulte [Segurança e distribuição](vi-security-and-distribution.md) e [MCP vs conectores e segurança](../iv-mcp-vs-connectors-and-security.md).
 
-## Next
+## Próximo
 
-[Test & wire into Cursor](v-test-and-wire-cursor.md) — run the server in an IDE.
+[Teste e conecte em Cursor](v-test-and-wire-cursor.md) — execute o servidor em um IDE.

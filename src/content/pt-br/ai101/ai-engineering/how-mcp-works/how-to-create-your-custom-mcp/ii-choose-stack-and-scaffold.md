@@ -1,26 +1,26 @@
 ---
 label: "II"
-subtitle: "Choose stack & scaffold"
+subtitle: "Escolha pilha e andaime"
 group: "How to create your custom MCP"
 order: 2
 ---
-Choose stack & scaffold
+Escolha pilha e andaime
 
-Pick **TypeScript** or **Python** — both have official MCP SDKs. For most IDE teams already on Node, **TypeScript** matches Cursor examples; **Python** is fastest if your logic is already in Python scripts or data libs.
+Escolha **TypeScript** ou **Python** — ambos têm SDKs MCP oficiais. Para a maioria das equipes IDE que já estão no Node, **TypeScript** corresponde aos exemplos Cursor; **Python** é mais rápido se sua lógica já estiver em scripts Python ou bibliotecas de dados.
 
-## 1. Stack comparison
+## 1. Comparação de pilha
 
-| | **TypeScript** | **Python (FastMCP)** |
+| | **TypeScript** | **Python (RápidoMCP)** |
 |---|----------------|----------------------|
-| **Package** | `@modelcontextprotocol/sdk` | `mcp` (`FastMCP`) |
-| **Runtime** | Node 18+ | Python 3.10+ |
-| **Schema** | Zod | Type hints / Pydantic |
-| **Best when** | JS/TS monorepo, npm publish | Data/ML scripts, FastAPI teams |
-| **Cursor spawn** | `node dist/index.js` | `python server.py` or `uv run` |
+| **Pacote** |`@modelcontextprotocol/sdk`|`mcp`(`FastMCP`) |
+| **Tempo de execução** | Nó 18+ | Python 3.10+ |
+| **Esquema** | Zod | Dicas de tipo / Pydantic |
+| **Melhor quando** | JS/TS monorepo, npm publicar | Scripts de dados/ML, equipes FastAPI |
+| **Cursor geração** |`node dist/index.js`|`python server.py`ou`uv run`|
 
-Start with **stdio** transport — one subprocess, no open ports. Add HTTP later only if you need a remote team-hosted server.
+Comece com transporte **stdio** — um subprocesso, sem portas abertas. Adicione HTTP mais tarde somente se precisar de um servidor remoto hospedado pela equipe.
 
-## 2. TypeScript scaffold
+## 2. Estrutura TypeScript
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -30,7 +30,7 @@ npm install -D typescript @types/node
 npx tsc --init --module NodeNext --moduleResolution NodeNext --outDir dist --rootDir src
 ```
 
-**`package.json`** — add bin entry for Cursor:
+(R)`package.json`** — adicione entrada bin para Cursor:
 
 ```json
 {
@@ -56,7 +56,7 @@ my-mcp-server/
 └── tsconfig.json
 ```
 
-## 3. Python scaffold
+## 3. Andaime Python
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -76,26 +76,26 @@ my-mcp-server/
 └── .venv/
 ```
 
-With **uv** (recommended for reproducible spawns):
+Com **uv** (recomendado para spawns reproduzíveis):
 
 ```bash
 uv init my-mcp-server
 uv add mcp
 ```
 
-## 4. Naming and versioning
+## 4. Nomenclatura e controle de versão
 
-| Field | Guidance |
+| Campo | Orientação |
 |-------|----------|
-| **Server `name`** | Short snake-case id: `acme-tickets`, not `My Cool Server` |
-| **Version** | Semver in server metadata — helps debug which build Cursor launched |
-| **Tool names** | Verb + noun: `search_tickets`, `create_ticket` — stable across releases |
+| **Servidor`name`** | ID curto do caso de cobra:`acme-tickets`, não`My Cool Server`|
+| **Versão** | Semver nos metadados do servidor — ajuda a depurar qual build Cursor foi lançada |
+| **Nomes de ferramentas** | Verbo + substantivo:`search_tickets`,`create_ticket`— estável entre versões |
 
-Hosts show tool names to the model; renames break agent habits — treat tool names like a small public API.
+Hosts mostram nomes de ferramentas para o modelo; renomeia os hábitos do agente de interrupção — trate os nomes das ferramentas como um pequeno API público.
 
-## 5. Environment and secrets
+## 5. Meio ambiente e segredos
 
-Never hard-code tokens. Read from env vars the host passes in `mcp.json`:
+Nunca codifique tokens. Leia do env vars que o host passa`mcp.json`TÉCNICO.:
 
 ```json
 "env": {
@@ -104,8 +104,8 @@ Never hard-code tokens. Read from env vars the host passes in `mcp.json`:
 }
 ```
 
-In code: `process.env.ACME_API_TOKEN` (TS) or `os.environ["ACME_API_TOKEN"]` (Python). Fail fast at startup if required vars are missing.
+No código:`process.env.ACME_API_TOKEN`(TS) ou`os.environ["ACME_API_TOKEN"]`(Python). Falha rapidamente na inicialização se faltarem vars necessários.
 
-## Next
+## Próximo
 
-[Define tools & resources](iii-define-tools-and-resources.md) — design what the agent can call before writing handlers.
+[Definir ferramentas e recursos](iii-define-tools-and-resources.md) — projete o que o agente pode chamar antes de escrever manipuladores.

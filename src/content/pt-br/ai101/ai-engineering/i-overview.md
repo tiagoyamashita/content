@@ -1,33 +1,33 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-AI Applied — overview
-**Practical AI for people who use it** — ChatGPT, Claude, Gemini, Copilot, Cursor, and similar tools — not for training models or reading research papers.
+AI Aplicado — visão geral
+**AI prático para pessoas que o utilizam** — ChatGPT, Claude, Gemini, Copilot, Cursor e ferramentas semelhantes — não para modelos de treinamento ou leitura de artigos de pesquisa.
 
-If you want how models work under the hood, see [Machine learning](../machine-learning/i-overview.md) → [Deep learning](../deep-learning/i-overview.md) → [LLMs](../llms/i-overview.md). **Start here** if your goal is better **outputs**, **workflows**, and **trust** in daily work.
+Se você quiser saber como os modelos funcionam nos bastidores, consulte [Aprendizado de máquina](../machine-learning/i-overview.md) → [Aprendizado profundo](../deep-learning/i-overview.md) → [LLMs](../llms/i-overview.md). **Comece aqui** se sua meta for melhores **resultados**, **fluxos de trabalho** e **confiança** no trabalho diário.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Part | Topic |
+| Parte | Tópico |
 |------|--------|
-| **I — Overview** | Who this is for, mental model, pick your path |
-| **[Effective prompting](effective-prompting/i-overview.md)** | Prompt structure, techniques, templates |
-| **[Loop prompting](loop-prompting/i-overview.md)** | Set up once, iterate in loops — not re-prompt every time |
-| **[Agents & agentic workflows](agents-and-agentic-workflows/i-overview.md)** | Multi-step AI, tools, guardrails |
-| **[Tools & orchestration](tools-and-orchestration/i-overview.md)** | Chat apps, IDE agents, automations, MCP intro |
-| **[Custom assistants & knowledge](custom-assistants-and-knowledge/i-overview.md)** | Projects, custom GPTs, RAG for users |
-| **[Multimodal & files](multimodal-and-files/i-overview.md)** | PDFs, images, spreadsheets, voice |
-| **[Trust, privacy & verify](trust-privacy-and-verify/i-overview.md)** | Hallucinations, sensitive data, fact-checking |
-| **[Skills & agent instructions](skills-and-agent-instructions/i-overview.md)** | `SKILL.md`, rules, `AGENTS.md` |
-| **[How MCP works](how-mcp-works/i-overview.md)** | JSON-RPC, stdio vs HTTP, vector DB vs MCP; [custom MCP](how-mcp-works/how-to-create-your-custom-mcp/i-overview.md) |
-| **[Implementation examples](implementation-example/i-overview.md)** | Hugging Face downloads, local runtimes, RAM sizing, CPU runners; [TurboVec RAG](implementation-example/vii-turbovec-ollama-local-files.md) |
-| **[Ollama](ollama/i-overview.md)** | Install, models, API, Modelfile, GPU troubleshooting |
+| **I — Visão geral** | Para quem se destina, modelo mental, escolha seu caminho |
+| **[Solicitação eficaz](effective-prompting/i-overview.md)** | Estrutura imediata, técnicas, modelos |
+| **[Aviso de loop](loop-prompting/i-overview.md)** | Configure uma vez, itere em loops - não solicite novamente todas as vezes |
+| **[Agentes e fluxos de trabalho de agentes](agents-and-agentic-workflows/i-overview.md)** | AI multietapas, ferramentas, guarda-corpos |
+| **[Ferramentas e orquestração](tools-and-orchestration/i-overview.md)** | Aplicativos de bate-papo, agentes IDE, automações, introdução MCP |
+| **[Assistentes e conhecimento personalizados](custom-assistants-and-knowledge/i-overview.md)** | Projetos, GPTs personalizados, RAG para usuários |
+| **[Multimodal e arquivos](multimodal-and-files/i-overview.md)** | PDFs, imagens, planilhas, voz |
+| **[Confiança, privacidade e verificação](trust-privacy-and-verify/i-overview.md)** | Alucinações, dados sensíveis, verificação de factos |
+| **[Habilidades e instruções do agente](skills-and-agent-instructions/i-overview.md)** |`SKILL.md`, regras,`AGENTS.md`|
+| **[Como MCP funciona](how-mcp-works/i-overview.md)** | JSON-RPC, stdio vs HTTP, vetor DB vs MCP; [customizado MCP](how-mcp-works/how-to-create-your-custom-mcp/i-overview.md) |
+| **[Exemplos de implementação](implementation-example/i-overview.md)** | Hugging Face downloads, tempos de execução locais, dimensionamento RAM, corredores CPU; [TurboVec RAG](implementation-example/vii-turbovec-ollama-local-files.md) |
+| **[Ollama](ollama/i-overview.md)** | Instalação, modelos, API, Modelfile, solução de problemas de GPU |
 
 
-## Mental model (user view)
+## Modelo mental (visão do usuário)
 
 ```mermaid
 flowchart LR
@@ -38,37 +38,37 @@ flowchart LR
   Tools[search, code, files] -.-> Model
 ```
 
-**Loop prompting:** store instructions once, then send **short deltas** in the same session or on a schedule — see [Loop prompting](loop-prompting/i-overview.md).
+**Solicitação de loop:** armazene as instruções uma vez e, em seguida, envie **deltas curtos** na mesma sessão ou de acordo com uma programação — consulte [Solicitação de loop](loop-prompting/i-overview.md).
 
-| You control | AI controls |
-|-------------|-------------|
-| Goal, tone, format, examples | Wording and reasoning (within limits) |
-| What files/context to attach | Which tool to call (in agent mode) |
-| When to stop or redirect | Step order in multi-step tasks |
+| Você controla | AI controles |
+|------------|------------|
+| Objetivo, tom, formato, exemplos | Redação e raciocínio (dentro dos limites) |
+| Quais arquivos/contexto anexar | Para qual ferramenta ligar (no modo agente) |
+| Quando parar ou redirecionar | Ordem das etapas em tarefas de várias etapas |
 
-## Who should read what
+## Quem deve ler o quê
 
-| Your job | Start with |
+| Seu trabalho | Comece com |
 |----------|------------|
-| Knowledge worker (PM, analyst, writer) | [Effective prompting](effective-prompting/i-overview.md) → [Loop prompting](loop-prompting/i-overview.md) → [Custom assistants](custom-assistants-and-knowledge/i-overview.md) |
-| Developer using Cursor/Copilot | [Loop prompting](loop-prompting/i-overview.md) → [Agents](agents-and-agentic-workflows/i-overview.md) → [Skills & instructions](skills-and-agent-instructions/i-overview.md) |
-| Manager rolling out AI to a team | [Trust & privacy](trust-privacy-and-verify/i-overview.md) → [Custom assistants](custom-assistants-and-knowledge/i-overview.md) |
-| Power user chaining tools | [Orchestration](tools-and-orchestration/i-overview.md) → [Agents](agents-and-agentic-workflows/i-overview.md) |
+| Trabalhador do conhecimento (PM, analista, escritor) | [Solicitação eficaz](effective-prompting/i-overview.md) → [Solicitação de loop](loop-prompting/i-overview.md) → [Assistentes personalizados](custom-assistants-and-knowledge/i-overview.md) |
+| Desenvolvedor usando Cursor/Copilot | [Aviso de loop](loop-prompting/i-overview.md) → [Agentes](agents-and-agentic-workflows/i-overview.md) → [Habilidades e instruções](skills-and-agent-instructions/i-overview.md) |
+| Gerente implementando AI para uma equipe | [Confiança e privacidade](trust-privacy-and-verify/i-overview.md) → [Assistentes personalizados](custom-assistants-and-knowledge/i-overview.md) |
+| Ferramentas avançadas de encadeamento de usuários | [Orquestração](tools-and-orchestration/i-overview.md) → [Agentes](agents-and-agentic-workflows/i-overview.md) |
 
-## 2024–2026 shift: from chat to loops and agents
+## Mudança 2024–2026: do chat para loops e agentes
 
-| Era | Interaction | Example |
+| Época | Interação | Exemplo |
 |-----|-------------|---------|
-| **Chat** | One question → one answer | “Summarise this email” |
-| **Loop prompting** | Stored instructions + short deltas | Project rules + “fix table 2” / `/loop 5m check CI` |
-| **Assistants** | Saved instructions + files | Claude Project, Custom GPT |
-| **Agents** | Goal → many steps + tools | “Research competitors and draft a table” |
-| **Orchestration** | Several AIs or automations wired together | CRM → AI summary → Slack |
+| **Bate-papo** | Uma pergunta → uma resposta | “Resumir este e-mail” |
+| **Aviso de loop** | Instruções armazenadas + deltas curtos | Regras do projeto + “fixar tabela 2” /`/loop 5m check CI`|
+| **Assistentes** | Instruções salvas + arquivos | Projeto Claude, Personalizado GPT |
+| **Agentes** | Objetivo → muitas etapas + ferramentas | “Pesquise concorrentes e elabore uma tabela” |
+| **Orquestração** | Vários AIs ou automações conectadas entre si | CRM → resumo de AI → Folga |
 
-You do not need to build any of this — products expose it in the UI. You **do** need clear goals, good context, and verification habits.
+Você não precisa construir nada disso - os produtos expõem isso no UI. Você **precisa** de objetivos claros, bom contexto e hábitos de verificação.
 
-## Next
+## Próximo
 
-Continue with [Effective prompting](effective-prompting/i-overview.md), then [Loop prompting](loop-prompting/i-overview.md).
+Continue com [Solicitação efetiva](effective-prompting/i-overview.md), depois [Solicitação de loop](loop-prompting/i-overview.md).
 
-**Related:** [LLM prompt engineering (technical)](../llms/iv-prompt-engineering.md), [RAG for users](custom-assistants-and-knowledge/i-overview.md).
+**Relacionado:** [LLM engenharia imediata (técnica)](../llms/iv-prompt-engineering.md), [RAG para usuários](custom-assistants-and-knowledge/i-overview.md).

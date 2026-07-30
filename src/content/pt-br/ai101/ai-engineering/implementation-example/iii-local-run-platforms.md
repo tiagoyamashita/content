@@ -1,30 +1,30 @@
 ---
 label: "III"
-subtitle: "Local run platforms"
+subtitle: "Plataformas de execução local"
 group: "AI Applied"
 order: 3
 ---
-Local run platforms
+Plataformas de execução local
 
-After weights are on disk, a **runtime** loads them and exposes chat — CLI, desktop app, or HTTP API. Pick based on hardware, throughput, and how much setup you will tolerate.
+Depois que os pesos estão no disco, um **tempo de execução** os carrega e expõe o chat — CLI, aplicativo de desktop ou HTTP API. Escolha com base no hardware, no rendimento e na quantidade de configuração que você tolerará.
 
-## 1. Platform comparison
+## 1. Comparação de plataformas
 
-| Platform | Best for | GPU | CPU | API | Pros | Cons |
+| Plataforma | Melhor para | GPU | CPU | API | Prós | Contras |
 |----------|----------|-----|-----|-----|------|------|
-| **[Ollama](https://ollama.com)** | Fast local start, dev machines | Yes (CUDA/Metal) | Yes (slow) | OpenAI-compatible `/v1` | One command `ollama pull`; cross-platform; simple UI | Fewer tuning knobs; model catalog curated |
+| **[Ollama](https://ollama.com)** | Início local rápido, máquinas de desenvolvimento | Sim (CUDA/Metal) | Sim (lento) | Compatível com OpenAI`/v1`| Um comando`ollama pull`; plataforma cruzada; simples UI | Menos botões de afinação; curadoria de catálogo de modelos |
 
-Deep dive: [Ollama track](../ollama/i-overview.md).
-| **[llama.cpp](https://github.com/ggerganov/llama.cpp)** (`llama-server`) | Maximum control, GGUF ecosystem | Yes | **Strong** | HTTP server built-in | Huge quant community; low RAM options; embeddable | CLI-first; you manage models/paths |
-| **[LM Studio](https://lmstudio.ai)** | Desktop users, experimentation | Yes | Yes | Local server | GUI for search/download/chat; easy GPU offload slider | Desktop only; less suited to headless servers |
-| **[vLLM](https://github.com/vllm-project/vllm)** | Production GPU serving, batching | **Required** (NVIDIA) | No | OpenAI-compatible | High throughput; PagedAttention; multi-GPU | Heavy setup; needs Linux + recent GPU |
-| **[TGI](https://github.com/huggingface/text-generation-inference)** (HF) | HF-native GPU deploy | **Required** | No | REST / gRPC | Good HF integration; production features | Opinionated stack; GPU-focused |
-| **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | NVIDIA max perf | **Required** (NVIDIA) | No | Custom / Triton | Fastest on supported GPUs | Complex build; NVIDIA-only |
-| **[MLX](https://github.com/ml-explore/mlx)** | Apple Silicon Macs | Metal | N/A (Apple GPU) | Python / local | Optimized for M-series; low friction on Mac | Apple hardware only |
-| **[GPT4All](https://gpt4all.io)** | Offline desktop, low spec | Optional | **Yes** | Local API | Very approachable; bundles models | Smaller model selection; less hackable |
-| **[KoboldCPP](https://github.com/LostRuins/koboldcpp)** | Creative writing, single binary | Yes | Yes | Web UI + API | Portable; story-mode features | Niche UI; smaller community than Ollama |
+Aprofundamento: [faixa Ollama](../ollama/i-overview.md).
+| **[lhama.cpp](https://github.com/ggerganov/llama.cpp)** (`llama-server`) | Controle máximo, ecossistema GGUF | Sim | **Forte** | Servidor HTTP integrado | Enorme comunidade quantitativa; opções baixas de RAM; incorporável | CLI-primeiro; você gerencia modelos/caminhos |
+| **[LM Estúdio](https://lmstudio.ai)** | Usuários de desktop, experimentação | Sim | Sim | Servidor local | GUI para pesquisa/download/chat; controle deslizante de descarregamento fácil GPU | Somente desktop; menos adequado para servidores headless |
+| **[vLLM](https://github.com/vllm-project/vllm)** | Produção GPU serviço, dosagem | **Obrigatório** (NVIDIA) | Não | Compatível com OpenAI | Alto rendimento; PagedAtenção; multi-GPU | Configuração pesada; precisa de Linux + GPU recente |
+| **[TGI](https://github.com/huggingface/text-generation-inference)** (HF) | HF-nativo GPU implantar | **Obrigatório** | Não | REST/gRPC | Boa integração HF; características de produção | Pilha opinativa; GPU focado |
+| **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | NVIDIA desempenho máximo | **Obrigatório** (NVIDIA) | Não | Personalizado / Tritão | Mais rápido em GPUs suportados | Construção complexa; NVIDIA-somente |
+| **[MLX](https://github.com/ml-explore/mlx)** | Macs de silício da Apple | Metal | N/A (Apple GPU) | Python/local | Otimizado para série M-; baixo atrito no Mac | Apenas hardware Apple |
+| **[GPT4Todos](https://gpt4all.io)** | Área de trabalho offline, especificações baixas | Opcional | **Sim** | Local API | Muito acessível; modelos de pacotes | Seleção de modelo menor; menos hackeável |
+| **[KoboldCPP](https://github.com/LostRuins/koboldcpp)** | Escrita criativa, binário único | Sim | Sim | Rede UI + API | Portátil; recursos do modo história | Nicho UI; comunidade menor que Ollama |
 
-## 2. Decision shortcuts
+## 2. Atalhos de decisão
 
 ```mermaid
 flowchart TD
@@ -36,20 +36,20 @@ flowchart TD
   Q -->|CPU only| CPU[llama.cpp + Q4]
 ```
 
-## 3. Format compatibility
+## 3. Compatibilidade de formato
 
-| Runtime | Typical weight format |
-|---------|----------------------|
-| Ollama | Ollama bundle (Modelfile) or import GGUF |
+| Tempo de execução | Formato de peso típico |
+|--------|----------------------|
+| Ollama | Pacote Ollama (Modelfile) ou importação GGUF |
 | llama.cpp / LM Studio / KoboldCPP | **GGUF** |
-| vLLM / TGI / transformers | **safetensors**, AWQ, GPTQ, FP8 |
-| MLX | MLX-converted weights (often linked from HF) |
+| vLLM / TGI / transformadores | **tensores de segurança**, AWQ, GPTQ, FP8 |
+| MLX | Pesos convertidos em MLX (geralmente vinculados a HF) |
 
-Downloading the wrong format means convert or re-download — see [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+Baixar o formato errado significa converter ou baixar novamente — veja [Baixando do Hugging Face](ii-downloading-from-huggingface.md).
 
-## 4. API shape (integration)
+## 4. Forma API (integração)
 
-Most local stacks expose an **OpenAI-compatible** HTTP API so existing clients work:
+A maioria das pilhas locais expõem um **OpenAI-compatível** HTTP API para que os clientes existentes funcionem:
 
 ```bash
 # Ollama + Qwen2.5-Coder (coding)
@@ -58,37 +58,37 @@ curl http://localhost:11434/v1/chat/completions \
   -d '{"model":"qwen2.5-coder:7b","messages":[{"role":"user","content":"Write a Python fib function"}]}'
 ```
 
-| Platform | Default base URL |
+| Plataforma | Base padrão URL |
 |----------|------------------|
-| Ollama | `http://localhost:11434/v1` |
-| llama-server | `http://localhost:8080` (configurable) |
-| LM Studio | `http://localhost:1234/v1` |
-| vLLM | `http://localhost:8000/v1` |
+| Ollama |`http://localhost:11434/v1`|
+| servidor lhama |`http://localhost:8080`(configurável) |
+| LM Estúdio |`http://localhost:1234/v1`|
+| vLLM |`http://localhost:8000/v1`|
 
-Point Cursor, Continue, or your app at that URL with a dummy API key if the server does not enforce auth. For coding, set model to **`qwen2.5-coder:7b`** (8 GB GPU) or **`qwen2.5-coder:32b`** (24 GB+ GPU).
+Aponte Cursor, Continue ou seu aplicativo naquele URL com uma chave API fictícia se o servidor não impor autenticação. Para codificação, defina o modelo como **`qwen2.5-coder:7b`** (8 GB GPU) ou **`qwen2.5-coder:32b`** (24 GB+ GPU).
 
-## 5. Recommended coding model — Qwen2.5-Coder
+## 5. Modelo de codificação recomendado — Qwen2.5-Coder
 
-| Size | Ollama tag | VRAM (Q4, ~4k ctx) | Best for |
+| Tamanho | etiqueta Ollama | VRAM (Q4, ~4k ctx) | Melhor para |
 |------|------------|-------------------|----------|
-| 1.5B | `qwen2.5-coder:1.5b` | ~2 GB | Autocomplete / paired with larger chat model |
-| 3B | `qwen2.5-coder:3b` | ~2.5 GB | Fast edits on tight GPUs |
-| **7B** | **`qwen2.5-coder:7b`** | **~5 GB** | **Default for RTX 1080 / 8 GB cards** |
-| 14B | `qwen2.5-coder:14b` | ~9 GB | 12–16 GB VRAM |
-| 32B | `qwen2.5-coder:32b` | ~20 GB | 24 GB VRAM — strongest open coder in family |
+| 1,5B |`qwen2.5-coder:1.5b`| ~2 GB | Preenchimento automático/pareado com modelo de chat maior |
+| 3B |`qwen2.5-coder:3b`| ~2,5 GB | Edições rápidas em GPUs apertados |
+| **7B** | **`qwen2.5-coder:7b`** | **~5 GB** | **Padrão para placas RTX 1080/8 GB** |
+| 14B |`qwen2.5-coder:14b`| ~9 GB | 12–16 GB VRAM |
+| 32B |`qwen2.5-coder:32b`| ~20 GB | 24 GB VRAM — codificador aberto mais forte da família |
 
-Apache 2.0 license; downloads from HF do **not** require Meta-style gating. See [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+Licença Apache 2.0; downloads de HF **não** exigem controle de meta-estilo. Veja [Baixando do Hugging Face](ii-downloading-from-huggingface.md).
 
-## 6. Security on local servers
+## 6. Segurança em servidores locais
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| Open port on LAN | Bind to `127.0.0.1` only unless you intend remote access |
-| No authentication | Do not expose `:11434` or `:8080` to the internet raw |
-| Model license | Local run does not bypass HF or Meta license terms |
+| Abrir porta em LAN | Vincular a`127.0.0.1`somente a menos que você pretenda acesso remoto |
+| Sem autenticação | Não exponha`:11434`ou`:8080`para a internet crua |
+| Licença de modelo | A execução local não ignora os termos de licença HF ou Meta |
 
-## Next
+## Próximo
 
-[Model RAM requirements](iv-model-ram-requirements.md) — size models to your machine before picking quant and context length.
+[Requisitos do modelo RAM](iv-model-ram-requirements.md) — dimensione os modelos para sua máquina antes de escolher o comprimento do quant e do contexto.
 
-**Hands-on:** [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) — per-platform setup for 8 GB Pascal GPUs.
+**Prática:** [Instalar e executar em RTX 1080](vi-install-and-run-rtx-1080.md) — configuração por plataforma para 8 GB Pascal GPUs.

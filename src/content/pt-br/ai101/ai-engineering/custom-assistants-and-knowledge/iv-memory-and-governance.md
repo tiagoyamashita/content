@@ -1,14 +1,14 @@
 ---
 label: "IV"
-subtitle: "Memory & governance"
+subtitle: "Memória e governança"
 group: "AI Applied"
 order: 4
 ---
-Memory & governance
+Memória e governança
 
-## 6. Memory features
+## 6. Recursos de memória
 
-Some products **remember** facts across chats (“user prefers bullet points”).
+Alguns produtos **lembram** fatos em bate-papos (“o usuário prefere marcadores”).
 
 ```mermaid
 flowchart LR
@@ -18,17 +18,17 @@ flowchart LR
   Mem -->|wrong?| Fix[Correct or delete]
 ```
 
-| Upside | Downside |
+| Vantagens | Desvantagem |
 |--------|----------|
-| Less repetition | Wrong memory persists — correct or delete |
-| Personalisation | Privacy — know what vendor stores |
+| Menos repetição | A memória errada persiste — corrija ou exclua |
+| Personalização | Privacidade – saiba quais fornecedores armazenam |
 
-Turn off or clear memory for **shared machines** or **sensitive work**.
+Desligue ou limpe a memória de **máquinas compartilhadas** ou **trabalhos confidenciais**.
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Custom GPT vs one-off chat — when is setup worth it?
-- Why ask the model to quote sources?
-- What belongs in instructions vs uploaded files?
+- GPT personalizado vs bate-papo único - quando vale a pena configurar?
+- Por que pedir ao modelo para citar fontes?
+- O que pertence às instruções versus arquivos enviados?
 
-**Related:** [Effective prompting](../effective-prompting/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**Relacionado:** [Solicitação eficaz](../effective-prompting/i-overview.md), [Confiar e verificar](../trust-privacy-and-verify/i-overview.md).

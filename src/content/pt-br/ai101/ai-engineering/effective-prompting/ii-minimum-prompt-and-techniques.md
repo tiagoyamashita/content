@@ -1,21 +1,21 @@
 ---
 label: "II"
-subtitle: "Minimum prompt & techniques"
+subtitle: "Prompt e técnicas mínimas"
 group: "AI Applied"
 order: 2
 ---
-Minimum prompt & techniques
+Prompt e técnicas mínimas
 
-## 1. The minimum good prompt
+## 1. O prompt mínimo bom
 
-Include four pieces when the task matters:
+Inclua quatro peças quando a tarefa for importante:
 
-| Piece | Example |
+| Peça | Exemplo |
 |-------|---------|
-| **Role / perspective** | “You are a concise editor for a technical blog.” |
-| **Task** | “Rewrite the draft below for clarity.” |
-| **Constraints** | “Keep under 300 words; preserve all numbers.” |
-| **Output format** | “Use bullet points; no intro paragraph.” |
+| **Função/perspectiva** | “Você é um editor conciso de um blog técnico.” |
+| **Tarefa** | “Reescreva o rascunho abaixo para maior clareza.” |
+| **Restrições** | “Mantenha menos de 300 palavras; preserve todos os números.” |
+| **Formato de saída** | “Use marcadores; sem parágrafo de introdução.” |
 
 ```mermaid
 flowchart TB
@@ -29,17 +29,17 @@ flowchart TB
   Prompt --> Out[Model output]
 ```
 
-Weak: “Make this better.”  
-Strong: “List three concrete edits; for each, quote the original sentence and your revision.”
+Fraco: “Torne isso melhor.”  
+Forte: “Liste três edições concretas; para cada uma, cite a frase original e sua revisão.”
 
-## 2. Techniques that actually help
+## 2. Técnicas que realmente ajudam
 
-| Technique | When to use | Example phrase |
-|-----------|-------------|----------------|
-| **Zero-shot** | Simple, well-known task | “Translate to Japanese: …” |
-| **Few-shot** | You have a style template | Paste 2 examples, then “Now do the same for …” |
-| **Chain-of-thought** | Math, logic, planning | “Think step by step, then give the final answer.” |
-| **Draft → critique → revise** | Important documents | “First draft, then list weaknesses, then improved version.” |
-| **Audience toggle** | Same content, different reader | “Explain twice: for executives, then for engineers.” |
+| Técnica | Quando usar | Frase de exemplo |
+|-----------|------------|----------------|
+| **Tiro zero** | Tarefa simples e conhecida | “Traduzir para Japonês:…” |
+| **Poucos tiros** | Você tem um modelo de estilo | Cole 2 exemplos e depois “Agora faça o mesmo para…” |
+| **Cadeia de pensamento** | Matemática, lógica, planejamento | “Pense passo a passo e depois dê a resposta final.” |
+| **Rascunho → crítica → revisão** | Documentos importantes | “Primeiro rascunho, depois listar os pontos fracos e depois a versão melhorada.” |
+| **Alternância de público** | Mesmo conteúdo, leitor diferente | “Explique duas vezes: para executivos e depois para engenheiros.” |
 
-**Chain-of-thought:** ask for reasoning **before** the final answer when mistakes are costly. Hide the steps in your copy if you only need the conclusion.
+**Cadeia de pensamento:** peça raciocínio **antes** da resposta final quando os erros custarem caro. Oculte as etapas em sua cópia se precisar apenas da conclusão.

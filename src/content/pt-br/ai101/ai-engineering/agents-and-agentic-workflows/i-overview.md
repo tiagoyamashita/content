@@ -1,25 +1,25 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Agents & agentic workflows — overview
-Deep dive on **agents & agentic workflows** — split into focused notes below.
+Agentes e fluxos de trabalho de agentes — visão geral
+Aprofundamento em **agentes e fluxos de trabalho de agentes** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Chat, assistant & agent](ii-chat-assistant-agent.md) | Modes compared; tools (built-ins, MCP, skills + scripts e.g. Translate API) |
-| [Directing agents](iii-directing-agents.md) | Part of agents & agentic workflows track |
-| [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) | Part of agents & agentic workflows track |
-| [My setup](v-my-setup.md) | Rules agent vs repo agents; multi-repo and same-repo parallel work |
+| [Chat, assistente e agente](ii-chat-assistant-agent.md) | Modos comparados; ferramentas (integradas, MCP, habilidades + scripts, por exemplo, Traduzir API) |
+| [Agentes diretores](iii-directing-agents.md) | Acompanha parte dos fluxos de trabalho de agentes e agentes |
+| [Produtos e humanos no circuito](iv-products-and-human-in-the-loop.md) | Acompanha parte dos fluxos de trabalho de agentes e agentes |
+| [Minha configuração](v-my-setup.md) | Agente de regras versus agentes de recompra; trabalho paralelo multi-repo e mesmo repo |
 
-Agents and agentic workflows
-An **AI agent** (in products you use) is a model that ** pursues a goal over multiple steps** — planning, calling **tools** (search, code, files, APIs), and adjusting when something fails — instead of answering in one shot.
+Agentes e fluxos de trabalho de agente
+Um **AI agente** (nos produtos que você usa) é um modelo que **persegue uma meta em várias etapas** — planejamento, chamada de **ferramentas** (pesquisa, código, arquivos, APIs) e ajuste quando algo falha — em vez de responder de uma só vez.
 
-You do not deploy agents yourself; you **direct** them in Cursor, ChatGPT, Claude, Copilot, and automation platforms.
+Você não implanta agentes sozinho; você os **direciona** em Cursor, ChatGPT, Claude, Copilot e plataformas de automação.
 
 ```mermaid
 flowchart LR
@@ -27,6 +27,6 @@ flowchart LR
   Act -->|observe result| Perceive
 ```
 
-## Study order
+## Ordem de estudo
 
-[Chat, assistant & agent](ii-chat-assistant-agent.md) → [Directing agents](iii-directing-agents.md) → [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) → [My setup](v-my-setup.md)
+[Chat, assistente e agente](ii-chat-assistant-agent.md) → [Agentes diretores](iii-directing-agents.md) → [Produtos e humanos no circuito](iv-products-and-human-in-the-loop.md) → [Minha configuração](v-my-setup.md)

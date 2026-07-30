@@ -1,26 +1,26 @@
 ---
 label: "IV"
-subtitle: "Products & human-in-the-loop"
+subtitle: "Produtos e humanos no circuito"
 group: "AI Applied"
 order: 4
 ---
-Products & human-in-the-loop
+Produtos e humanos no circuito
 
-## 5. Agentic patterns in products (2025–2026)
+## 5. Padrões de agência em produtos (2025–2026)
 
-| Product area | Agent-like behaviour |
+| Área de produto | Comportamento de agente |
 |--------------|----------------------|
-| **Cursor Agent** | Multi-file code changes, terminal, browser |
-| **ChatGPT** | Agent mode, deep research, connectors |
-| **Claude** | Projects + tool use, computer use (where enabled) |
-| **Microsoft Copilot** | M365 graph + actions in tenant |
-| **Devin / coding agents** | Long-horizon software tasks (human review critical) |
+| **Cursor Agente** | Alterações de código de vários arquivos, terminal, navegador |
+| **Bate-papoGPT** | Modo agente, pesquisa profunda, conectores |
+| **Cláudio** | Projetos + uso de ferramentas, uso de computador (quando habilitado) |
+| **Copiloto Microsoft** | Gráfico M365 + ações no locatário |
+| **Devin/agentes de codificação** | Tarefas de software de longo horizonte (revisão humana crítica) |
 
-Capabilities change quickly — principles stay: **goal, constraints, verify**.
+As capacidades mudam rapidamente — os princípios permanecem: **objetivo, restrições, verificação**.
 
-## 6. Human-in-the-loop
+## 6. Humano no circuito
 
-Treat agent output as **draft**:
+Trate a saída do agente como **rascunho**:
 
 ```mermaid
 sequenceDiagram
@@ -33,12 +33,12 @@ sequenceDiagram
   You->>You: Ship
 ```
 
-For legal, medical, financial, or production deploys: **you** are accountable; the agent is a fast intern.
+Para implantações legais, médicas, financeiras ou de produção: **você** é responsável; o agente é um estagiário rápido.
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- How is an agent different from a long chat thread?
-- Name two guardrails before letting an agent edit code.
-- What is orchestration in one sentence for a non-developer?
+- Qual a diferença entre um agente e um longo chat?
+- Cite duas proteções antes de permitir que um agente edite o código.
+- O que é orquestração em uma frase para um não desenvolvedor?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**Relacionado:** [Ferramentas e orquestração](../tools-and-orchestration/i-overview.md), [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md), [Confiar e verificar](../trust-privacy-and-verify/i-overview.md).

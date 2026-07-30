@@ -1,14 +1,14 @@
 ---
 label: "III"
-subtitle: "RAG & knowledge libraries"
+subtitle: "RAG e bibliotecas de conhecimento"
 group: "AI Applied"
 order: 3
 ---
-RAG & knowledge libraries
+RAG e bibliotecas de conhecimento
 
-## 4. RAG without the jargon
+## 4. RAG sem o jargão
 
-**Retrieval-augmented generation (RAG)** = AI **searches your files** and **writes using those chunks**.
+**Geração aumentada de recuperação (RAG)** = AI **pesquisa seus arquivos** e **grava usando esses pedaços**.
 
 ```mermaid
 flowchart LR
@@ -19,28 +19,28 @@ flowchart LR
   Prompt --> LLM[LLM answer]
 ```
 
-| You do | Product does |
-|--------|--------------|
-| Upload PDFs / connect drive | Chunk, embed, search on each question |
-| Ask question | Inject relevant passages into prompt |
+| Você faz | O produto faz |
+|--------|-------------|
+| Carregar PDFs / conectar unidade | Pedaço, incorporação, pesquisa em cada pergunta |
+| Faça pergunta | Injete passagens relevantes no prompt |
 
-Tips for better answers:
+Dicas para melhores respostas:
 
-| Tip | Why |
+| Dica | Por que |
 |-----|-----|
-| **Descriptive filenames** | Helps retrieval and your sanity |
-| **One topic per doc** | Reduces wrong chunks mixed in |
-| **Ask “quote the source”** | Easier to verify |
-| **Split huge PDFs** | By chapter if product allows |
+| **Nomes de arquivos descritivos** | Ajuda na recuperação e na sua sanidade |
+| **Um tópico por documento** | Reduz pedaços errados misturados |
+| **Peça “citar a fonte”** | Mais fácil de verificar |
+| **Divida PDFs enormes** | Por capítulo se o produto permitir |
 
-Technical depth: [LLM RAG](../../llms/v-rag-and-fine-tuning.md), [Order search example](../../swe101/sysdesign/examples/viii-order-search-cdc.md).
+Profundidade técnica: [LLM RAG](../../llms/v-rag-and-fine-tuning.md), [Exemplo de pesquisa de pedido](../../swe101/sysdesign/examples/viii-order-search-cdc.md).
 
-## 5. Team knowledge libraries
+## 5. Bibliotecas de conhecimento da equipe
 
-| Approach | Fit |
+| Abordagem | Ajuste |
 |----------|-----|
-| **Single shared Project/GPT** | Small team, one domain |
-| **Per-product assistants** | Different policies and tone |
-| **Wiki + AI sidebar** | Notion AI, Confluence AI on existing wiki |
+| **Projeto único compartilhado/GPT** | Equipe pequena, um domínio |
+| **Assistentes por produto** | Diferentes políticas e tom |
+| **Wiki + AI barra lateral** | Noção AI, Confluence AI em wiki existente |
 
-Governance: owner per assistant, changelog when policies update.
+Governança: proprietário por assistente, changelog quando as políticas são atualizadas.

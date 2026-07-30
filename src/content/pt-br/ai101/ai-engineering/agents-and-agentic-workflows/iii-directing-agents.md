@@ -1,28 +1,28 @@
 ---
 label: "III"
-subtitle: "Directing agents"
+subtitle: "Agentes diretores"
 group: "AI Applied"
 order: 3
 ---
-Directing agents
+Agentes diretores
 
-## 3. When agents help vs hurt
+## 3. Quando os agentes ajudam versus prejudicam
 
-| Good for agents | Better as plain chat |
+| Bom para agentes | Melhor como bate-papo simples |
 |-----------------|----------------------|
-| Multi-file coding tasks | One-off definition |
-| Research across many sources | Short rewrite |
-| Repetitive ops with checks | Sensitive irreversible actions without review |
-| “Figure out how this repo works” | Factual lookup you can verify in one doc |
+| Tarefas de codificação de vários arquivos | Definição única |
+| Pesquisa em muitas fontes | Reescrita curta |
+| Operações repetitivas com cheques | Ações sensíveis e irreversíveis sem revisão |
+| “Descubra como funciona esse repositório” | Pesquisa factual que você pode verificar em um documento |
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| Wrong file edited | Small tasks; review diffs |
-| Invented citations | Require links; verify |
-| Runaway scope | “Stop after step 3 and show plan” |
-| Cost / time | Set limits; use smaller model for drafts |
+| Arquivo errado editado | Pequenas tarefas; revisar diferenças |
+| Citações inventadas | Exigir links; verificar |
+| Escopo descontrolado | “Pare após o passo 3 e mostre o plano” |
+| Custo/tempo | Estabeleça limites; usar modelo menor para rascunhos |
 
-## 4. How to direct an agent well
+## 4. Como direcionar bem um agente
 
 ```mermaid
 flowchart LR
@@ -32,16 +32,16 @@ flowchart LR
   Check --> Verify[Verify output]
 ```
 
-Use the same building blocks as [Effective prompting](../effective-prompting/i-overview.md), plus:
+Use os mesmos blocos de construção de [Solicitação eficaz](../effective-prompting/i-overview.md), mais:
 
-| Add | Example |
+| Adicionar | Exemplo |
 |-----|---------|
-| **Clear done state** | “Done when: PR-ready diff + test command output.” |
-| **Boundaries** | “Do not change files under `/legacy`.” |
-| **Tools allowed** | “Use repo search only; no web.” |
-| **Checkpoints** | “After plan, wait for my OK before edits.” |
-| **Verification** | “Run tests and paste summary.” |
+| **Limpar estado concluído** | “Feito quando: PR-ready diff + saída do comando de teste.” |
+| **Limites** | “Não altere os arquivos em`/legacy`.” |
+| **Ferramentas permitidas** | “Use apenas pesquisa de repositório; sem rede.” |
+| **Pontos de verificação** | “Depois do plano, espere pelo meu OK antes das edições.” |
+| **Verificação** | “Execute testes e cole o resumo.” |
 
-**Cursor / IDE agents:** point at folders, mention stack, reference existing patterns (“match `UserService` style”).
+Agentes **Cursor / IDE:** apontam para pastas, mencionam pilha, referenciam padrões existentes (“correspondem`UserService`estilo").
 
-**Research agents:** specify date range, preferred sources, and output schema (table, memo, slides).
+**Agentes de pesquisa:** especificam o intervalo de datas, as fontes preferidas e o esquema de saída (tabela, memorando, slides).

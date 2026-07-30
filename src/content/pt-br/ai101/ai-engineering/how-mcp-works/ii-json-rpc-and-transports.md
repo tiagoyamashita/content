@@ -1,14 +1,14 @@
 ---
 label: "II"
-subtitle: "JSON-RPC & transports"
+subtitle: "JSON-RPC e transportes"
 group: "AI Applied"
 order: 2
 ---
-JSON-RPC & transports
+JSON-RPC e transportes
 
-## 1. One-sentence model
+## 1. Modelo de uma frase
 
-**MCP is not gRPC.** Messages are **JSON-RPC 2.0** (structured JSON requests/responses) sent over **stdio** (local) or **HTTP** (remote). The MCP server then talks to the real system — often a normal **REST/HTTPS API**.
+**MCP não é gRPC.** As mensagens são **JSON-RPC 2.0** (solicitações/respostas JSON estruturadas) enviadas por **stdio** (local) ou **HTTP** (remoto). O servidor MCP então se comunica com o sistema real - geralmente um **REST/HTTPS API** normal.
 
 ```mermaid
 flowchart LR
@@ -18,49 +18,49 @@ flowchart LR
   Server -->|HTTPS| API[Linear / Postgres / Slack]
 ```
 
-## 2. Three roles
+## 2. Três funções
 
-| Role | What it is | Example |
-|------|------------|---------|
-| **Host** | App you use | Cursor, Claude Desktop, VS Code + extension |
-| **MCP client** | Built into the host; speaks MCP | Cursor’s MCP layer |
-| **MCP server** | Connector you install/configure | `github`, `postgres`, `@modelcontextprotocol/server-*` |
+| Função | O que é | Exemplo |
+|------|------------|--------|
+| **Anfitrião** | Aplicativo que você usa | Cursor, Claude Desktop, VS Código + extensão |
+| **MCP cliente** | Integrado ao host; fala MCP | Camada MCP de Cursor |
+| **MCP servidor** | Conector que você instala/configura |`github`,`postgres`,`@modelcontextprotocol/server-*`|
 
-You only configure **servers** in settings. The host runs the **client** for you.
+Você só configura **servidores** nas configurações. O host executa o **cliente** para você.
 
-## 3. Wire protocol: JSON-RPC, not gRPC
+## 3. Protocolo de transmissão: JSON-RPC, não gRPC
 
-### What is JSON-RPC?
+### O que é JSON-RPC?
 
-**JSON-RPC** is a small, standard way to say **“run this function remotely, here are the arguments, give me back a result”** — with everything encoded as **JSON text**.
+**JSON-RPC** é uma maneira pequena e padrão de dizer **“execute esta função remotamente, aqui estão os argumentos, devolva-me um resultado”** — com tudo codificado como texto **JSON**.
 
-| Word | Meaning |
+| Palavra | Significado |
 |------|---------|
-| **JSON** | The message body is plain JSON you can read in a log |
-| **RPC** | **Remote procedure call** — caller invokes a **named method** on another process, like calling a function over a pipe or HTTP |
+| **JSON** | O corpo da mensagem é simples JSON você pode ler em um log |
+| **RPC** | **Chamada de procedimento remoto** — o chamador invoca um **método nomeado** em outro processo, como chamar uma função através de um canal ou HTTP |
 
-Think of it as a **thin envelope**, not a full REST API design:
+Pense nisso como um **envelope fino**, não como um design REST API completo:
 
 ```text
 Request:  "Please run method X with params Y"  (one JSON object)
 Response: "Here is result Z" or "Error: …"       (one JSON object)
 ```
 
-It is **not** the same as:
+**não** é o mesmo que:
 
-| | JSON-RPC (MCP wire) | REST API (Linear, GitHub) |
-|---|---------------------|---------------------------|
-| **Style** | Named **methods** (`tools/call`) | **URLs** + HTTP verbs (`GET /issues`) |
-| **Who uses it** | MCP **client ↔ MCP server** | MCP **server ↔ external SaaS** |
-| **You configure** | Rarely — host handles it | Tokens, base URLs in server config |
+| | JSON-RPC (fio MCP) | REST API (Linear, GitHub) |
+|---|---------------------|--------------------------|
+| **Estilo** | **métodos** nomeados (`tools/call`) | **URLs** + verbos HTTP (`GET /issues`) |
+| **Quem usa** | MCP **cliente ↔ MCP servidor** | MCP **servidor ↔ SaaS externo** |
+| **Você configura** | Raramente – o host cuida disso | Tokens, URLs base na configuração do servidor |
 
-MCP picked JSON-RPC because it is **simple**, **human-readable**, and works over **stdio pipes** (one JSON line in, one JSON line out) without inventing a custom binary protocol.
+MCP escolheu JSON-RPC porque é **simples**, **legível por humanos** e funciona em **tubos stdio** (uma entrada de linha JSON, uma saída de linha JSON) sem inventar um protocolo binário personalizado.
 
-### Request and response shape
+### Formulário de solicitação e resposta
 
-Every message is a JSON object with a few fixed fields:
+Cada mensagem é um objeto JSON com alguns campos fixos:
 
-**Request** (client → server):
+**Solicitação** (cliente → servidor):
 
 ```json
 {
@@ -74,14 +74,14 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-| Field | Role |
+| Campo | Função |
 |-------|------|
-| `jsonrpc` | Always `"2.0"` — protocol version |
-| `id` | Correlates request with response (like a request ID) |
-| `method` | **Which remote function** to run (MCP defines names like `tools/call`, `tools/list`) |
-| `params` | Arguments for that method |
+|`jsonrpc`| Sempre`"2.0"`— versão do protocolo |
+|`id`| Correlaciona solicitação com resposta (como uma solicitação ID) |
+|`method`| **Qual função remota** executar (MCP define nomes como`tools/call`,`tools/list`) |
+|`params`| Argumentos para esse método |
 
-**Response** (server → client) — success:
+**Resposta** (servidor → cliente) — sucesso:
 
 ```json
 {
@@ -95,7 +95,7 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-**Response** — failure:
+**Resposta** — falha:
 
 ```json
 {
@@ -108,29 +108,29 @@ Every message is a JSON object with a few fixed fields:
 }
 ```
 
-| Field | Role |
+| Campo | Função |
 |-------|------|
-| `result` | Payload on success — for MCP tools, often **text or structured content** |
-| `error` | Payload on failure — code + message (no `result`) |
+|`result`| Carga útil em caso de sucesso — para ferramentas MCP, geralmente **texto ou conteúdo estruturado** |
+|`error`| Carga útil em caso de falha — código + mensagem (não`result`) |
 
-The **host** sends JSON-RPC to the MCP server; the **LLM never parses JSON-RPC**. It only sees the **tool result** the host extracts from `result` and drops into the chat.
+O **host** envia JSON-RPC para o servidor MCP; o **LLM nunca analisa JSON-RPC**. Ele vê apenas o **resultado da ferramenta** do qual o host extrai`result`e entra no chat.
 
-### JSON-RPC vs gRPC (why MCP did not pick gRPC)
+### JSON-RPC vs gRPC (por que MCP não escolheu gRPC)
 
-| | MCP (JSON-RPC) | gRPC (for comparison) |
-|---|----------------|------------------------|
-| **Message format** | **JSON text** | Protobuf (binary) |
-| **Typical transport** | stdio pipes or **HTTP POST** | HTTP/2 |
-| **Human readable** | Yes — easy to debug in logs | No — encoded binary |
-| **Standard in MCP spec** | Yes | **Not used** by MCP |
+| | MCP (JSON-RPC) | gRPC (para comparação) |
+|---|----------------|---------|
+| **Formato da mensagem** | **JSON texto** | Protobuf (binário) |
+| **Transporte típico** | tubos stdio ou **HTTP POST** | HTTP/2 |
+| **Legível por humanos** | Sim — fácil de depurar em logs | Não — binário codificado |
+| **Padrão na especificação MCP** | Sim | **Não usado** por MCP |
 
-The model does not send raw HTTP to Linear. It asks the **host** to run an MCP **tool**; the host sends **JSON-RPC** to the MCP server; the server implements that tool and may call Linear’s **HTTPS REST API** with your token.
+O modelo não envia HTTP bruto para Linear. Ele pede ao **host** para executar uma MCP **ferramenta**; o host envia **JSON-RPC** para o servidor MCP; o servidor implementa essa ferramenta e pode chamar **HTTPS REST API** da Linear com seu token.
 
-## 4. Two standard transports
+## 4. Dois transportes padrão
 
-The [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) defines how JSON-RPC moves between client and server.
+A [especificação MCP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) define como JSON-RPC se move entre cliente e servidor.
 
-### stdio (local — most common in IDEs)
+### stdio (local — mais comum em IDEs)
 
 ```text
 Host spawns MCP server as subprocess
@@ -138,17 +138,17 @@ Host spawns MCP server as subprocess
   Server writes JSON-RPC → server's stdout
 ```
 
-| Used when | Examples |
+| Usado quando | Exemplos |
 |-----------|----------|
-| Server runs **on your machine** | Cursor, Claude Desktop local config |
-| Server is a **script or binary** | `npx @modelcontextprotocol/server-filesystem` |
+| O servidor é executado **na sua máquina** | Cursor, configuração local do Claude Desktop |
+| O servidor é um **script ou binário** |`npx @modelcontextprotocol/server-filesystem`|
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Simple; no open ports | Server must be installed locally |
-| Good for secrets on laptop | One server process per config entry |
+| Simples; sem portas abertas | O servidor deve ser instalado localmente |
+| Bom para segredos no laptop | Um processo de servidor por entrada de configuração |
 
-**Cursor `mcp.json` (conceptual):**
+**Cursor`mcp.json`(conceptual):**
 
 ```json
 {
@@ -162,24 +162,24 @@ Host spawns MCP server as subprocess
 }
 ```
 
-Host **starts** the process; communication is **pipes**, not you clicking a URL.
+O host **inicia** o processo; a comunicação é **pipes**, e não você clicar em URL.
 
-### Streamable HTTP (remote)
+### Streamable HTTP (remoto)
 
-For servers running as a **web service** (team-hosted connector, SaaS MCP):
+Para servidores executados como um **serviço web** (conector hospedado em equipe, SaaS MCP):
 
 ```text
 Client → HTTP POST (JSON-RPC body) → https://your-company.com/mcp
 Server → JSON response OR SSE stream (Server-Sent Events)
 ```
 
-| Piece | Detail |
+| Peça | Detalhe |
 |-------|--------|
-| **POST** | Each client message can be a POST to one **MCP endpoint** (e.g. `/mcp`) |
-| **GET** | Optional — open **SSE** stream so server can push notifications |
-| **Headers** | `Mcp-Protocol-Version`, `Mcp-Session-Id` for versioning/sessions |
-| **Auth** | Usually Bearer token or OAuth on HTTPS — same as any API |
+| **POST** | Cada mensagem do cliente pode ser um POST para um endpoint **MCP** (por exemplo`/mcp`) |
+| **GET** | Opcional - abra o fluxo **SSE** para que o servidor possa enviar notificações |
+| **Cabeçalhos** |`Mcp-Protocol-Version`,`Mcp-Session-Id`para versionamento/sessões |
+| **Autorização** | Normalmente token portador ou OAuth em HTTPS — igual a qualquer API |
 
-This is **plain HTTP(S)** — load balancers, API gateways, and corporate proxies often work without gRPC support.
+Isso é **simples HTTP(S)** — balanceadores de carga, gateways API e proxies corporativos geralmente funcionam sem suporte gRPC.
 
-**Older transport:** early MCP used **HTTP + SSE** (two endpoints). New implementations should use **Streamable HTTP**; some stacks support both for compatibility.
+**Transporte mais antigo:** MCP inicial usado **HTTP + SSE** (dois pontos de extremidade). Novas implementações devem usar **Streamable HTTP**; algumas pilhas suportam ambos para compatibilidade.

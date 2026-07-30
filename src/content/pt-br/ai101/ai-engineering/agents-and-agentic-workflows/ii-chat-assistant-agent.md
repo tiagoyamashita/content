@@ -1,18 +1,18 @@
 ---
 label: "II"
-subtitle: "Chat, assistant & agent"
+subtitle: "Bate-papo, assistente e agente"
 group: "AI Applied"
 order: 2
 ---
-Chat, assistant & agent
+Bate-papo, assistente e agente
 
-## 1. Chat vs assistant vs agent
+## 1. Bate-papo x assistente x agente
 
-| Mode | You give | AI does |
-|------|----------|---------|
-| **Chat** | Question | Single reply |
-| **Assistant** | Question + saved docs/instructions | Reply grounded in your knowledge |
-| **Agent** | **Goal** | Plan → act → observe → repeat until done or blocked |
+| Modo | Você dá | AI faz |
+|------|----------|--------|
+| **Bate-papo** | Pergunta | Resposta única |
+| **Assistente** | Pergunta + documentos/instruções salvos | Resposta baseada no seu conhecimento |
+| **Agente** | **Meta** | Planejar → agir → observar → repetir até terminar ou bloquear |
 
 ```mermaid
 flowchart TD
@@ -24,18 +24,18 @@ flowchart TD
   Q -->|no| Done[Deliver]
 ```
 
-## 2. What “agentic orchestration” means for users
+## 2. O que “orquestração de agente” significa para os usuários
 
-**Orchestration** = coordinating **steps and tools** to complete a workflow.
+**Orquestração** = coordenação de **etapas e ferramentas** para concluir um fluxo de trabalho.
 
-| Layer | User-facing example |
+| Camada | Exemplo voltado para o usuário |
 |-------|---------------------|
-| **Single agent** | Cursor Agent: edit repo from a task description |
-| **Tool use** | ChatGPT with browsing + Python + your Google Drive |
-| **Multi-agent** (product-managed) | Research mode that searches, reads, synthesises |
-| **External orchestration** | Zapier/Make: trigger → AI step → post to Slack |
+| **Agente único** | Cursor Agente: editar repositório a partir de uma descrição de tarefa |
+| **Uso de ferramenta** | ChatGPT com navegação + Python + seu Google Drive |
+| **Multiagente** (gerenciado pelo produto) | Modo de pesquisa que busca, lê, sintetiza |
+| **Orquestração externa** | Zapier/Make: gatilho → etapa AI → postar no Slack |
 
-You design **goals and guardrails**; the product runs the loop.
+Você projeta **metas e grades de proteção**; o produto executa o loop.
 
 ```plantuml
 @startuml
@@ -54,11 +54,11 @@ A --> You: deliverable
 @enduml
 ```
 
-## 3. Adding more tools to your LLM
+## 3. Adicionando mais ferramentas ao seu LLM
 
-**Tools** are actions the model can **request** through the host app — search the web, read a file, run code, call an API — instead of only generating text. More tools = the LLM can **do** more in the agent loop above.
+**Ferramentas** são ações que o modelo pode **solicitar** por meio do aplicativo host — pesquisar na Web, ler um arquivo, executar código, chamar um API — em vez de apenas gerar texto. Mais ferramentas = o LLM pode **fazer** mais no loop do agente acima.
 
-You do not modify model weights. You **expose capabilities** the product wires into the tool-calling loop.
+Você não modifica os pesos do modelo. Você **expõe os recursos** dos fios do produto no loop de chamada de ferramenta.
 
 ```mermaid
 flowchart LR
@@ -68,58 +68,58 @@ flowchart LR
   Run --> Result[Result to LLM]
 ```
 
-| What you add | What the LLM gains |
+| O que você adiciona | O que o LLM ganha |
 |--------------|-------------------|
-| Web search | Current events, docs, citations |
-| Code interpreter | Charts, CSV analysis, small scripts |
-| File / drive connector | Read your docs without paste |
-| GitHub / Linear MCP | Issues, PRs, live tickets |
-| Terminal (IDE agent) | Tests, builds, git |
-| Skill + script | Repeatable API workflow the agent runs on command |
-| MCP / Action wrapping a script | Same script, exposed as a named `translate` tool |
+| Pesquisa na web | Atualidades, documentos, citações |
+| Intérprete de código | Gráficos, análise CSV, pequenos scripts |
+| Conector de arquivo/unidade | Leia seus documentos sem colar |
+| GitHub / Linear MCP | Edições, PRs, ingressos ao vivo |
+| Terminal (agente IDE) | Testes, compilações, git |
+| Habilidade + roteiro | Fluxo de trabalho API repetível que o agente executa sob comando |
+| MCP / Ação envolvendo um script | Mesmo script, exposto como um nome`translate`ferramenta |
 
-### Option A — Built-in tools (toggle in the UI)
+### Opção A — Ferramentas integradas (alternar em UI)
 
-Most chat products ship tools; you **enable** them per chat or workspace.
+A maioria dos produtos de chat inclui ferramentas; você os **ativa** por chat ou espaço de trabalho.
 
-| Product | Typical built-ins | How to add |
-|---------|-------------------|------------|
-| **ChatGPT** | Browsing, Code Interpreter, image | Model picker / agent mode; Custom GPT **Actions** for your APIs |
-| **Claude** | Web search, analysis, computer use (where enabled) | Project or chat settings; **connectors** for Drive, GitHub |
-| **Gemini** | Google Search, Workspace | Extensions in Gemini apps |
-| **Cursor** | Codebase, terminal, browser, edit files | Agent mode; `@` files and docs |
-| **Copilot** | M365 graph, repo context | Tenant plugins / Copilot Studio |
+| Produto | Integrados típicos | Como adicionar |
+|--------|-------------------|--------|
+| **Bate-papoGPT** | Navegação, intérprete de código, imagem | Modo seletor de modelo/agente; GPT **Ações** personalizadas para seus APIs |
+| **Cláudio** | Pesquisa na Web, análise, utilização do computador (quando ativado) | Configurações de projeto ou chat; **conectores** para Drive, GitHub |
+| **Gêmeos** | Pesquisa Google, espaço de trabalho | Extensões em aplicativos Gemini |
+| **Cursor** | Codebase, terminal, navegador, editar arquivos | Modo agente;`@`arquivos e documentos |
+| **Copiloto** | Gráfico M365, contexto do repositório | Plug-ins de locatário / Copilot Studio |
 
-Start here before custom wiring — zero config beyond permissions.
+Comece aqui antes da fiação personalizada: nenhuma configuração além das permissões.
 
-### Option B — App connectors (OAuth)
+### Opção B — Conectores de aplicativos (OAuth)
 
-**Connectors** let the host read or act in SaaS you already use.
+**Conectores** permitem que o host leia ou atue no SaaS que você já usa.
 
 ```text
 Settings → Connect Google Drive / Slack / GitHub → approve OAuth scopes → model can search or summarise connected data
 ```
 
-| Good for | Watch out |
+| Bom para | Cuidado |
 |----------|-----------|
-| Less copy-paste | Only connect data you may expose to AI |
-| Fresher context | Wrong connector scope = over-broad access |
+| Menos copiar e colar | Conecte apenas dados que você possa expor a AI |
+| Contexto mais atual | Escopo do conector errado = acesso excessivamente amplo |
 
-Same idea as [orchestration patterns](../tools-and-orchestration/iii-orchestration-patterns.md) — connectors section.
+Mesma ideia de [padrões de orquestração](../tools-and-orchestration/iii-orchestration-patterns.md) — seção de conectores.
 
-### Option C — MCP servers (extend IDE and desktop agents)
+### Opção C — servidores MCP (estender IDE e agentes de desktop)
 
-**MCP (Model Context Protocol)** adds **custom tools** via small connector programs — Postgres, Sentry, internal APIs.
+**MCP (Model Context Protocol)** adiciona **ferramentas personalizadas** por meio de pequenos programas conectores — Postgres, Sentry, APIs internos.
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| 1 | Pick or install an MCP server (`@modelcontextprotocol/server-github`, vendor plugin, team-hosted HTTP server) |
-| 2 | Configure in host (`mcp.json` in Cursor, Claude Desktop settings) |
-| 3 | Provide tokens via env vars — never in git |
-| 4 | Restart host; tools appear in agent tool list |
-| 5 | Ask in natural language; model chooses `search_issues`, `run_query`, etc. |
+| 1 | Escolha ou instale um servidor MCP (`@modelcontextprotocol/server-github`, plugin do fornecedor, servidor HTTP hospedado pela equipe) |
+| 2 | Configurar no host (`mcp.json`em Cursor, configurações do Claude Desktop) |
+| 3 | Fornece tokens via env vars - nunca no git |
+| 4 | Reinicie o host; ferramentas aparecem na lista de ferramentas do agente |
+| 5 | Pergunte em linguagem natural; modelo escolhe`search_issues`,`run_query`, etc. |
 
-**Cursor `mcp.json` (conceptual):**
+**Cursor`mcp.json`(conceptual):**
 
 ```json
 {
@@ -133,28 +133,28 @@ Same idea as [orchestration patterns](../tools-and-orchestration/iii-orchestrati
 }
 ```
 
-Wire format is **JSON-RPC** (stdio or HTTP), not something you hand-author in prompts. Full detail: [How MCP works](../how-mcp-works/i-overview.md).
+O formato de transmissão é **JSON-RPC** (stdio ou HTTP), não algo que você cria manualmente em prompts. Detalhes completos: [Como MCP funciona](../how-mcp-works/i-overview.md).
 
-### Option D — Custom actions / your own API (power users)
+### Opção D — Ações personalizadas/seu próprio API (usuários avançados)
 
-| Mechanism | Fit |
+| Mecanismo | Ajuste |
 |-----------|-----|
-| **Custom GPT Actions** | OpenAPI schema → ChatGPT calls your HTTPS endpoints |
-| **Claude tool use + MCP** | Same pattern for desktop / API integrations |
-| **Zapier / Make / n8n** | LLM step in a workflow; tools = other SaaS nodes |
-| **Your backend** | App calls LLM with `tools` parameter (OpenAI/Anthropic APIs) — builder path |
+| **Ações GPT personalizadas** | Esquema OpenAPI → ChatGPT chama seus endpoints HTTPS |
+| **Uso da ferramenta Claude + MCP** | Mesmo padrão para integrações desktop/API |
+| **Zapier / Make / n8n** | LLM etapa em um fluxo de trabalho; ferramentas = outros nós SaaS |
+| **Seu back-end** | O aplicativo chama LLM com`tools`parâmetro (OpenAI/Anthropic APIs) — caminho do construtor |
 
-For **non-developers**, Custom GPT Actions and automation platforms are the usual way to “add one more tool” (e.g. create CRM record, post to Slack).
+Para **não desenvolvedores**, ações GPT personalizadas e plataformas de automação são a maneira usual de “adicionar mais uma ferramenta” (por exemplo, criar registro CRM, postar no Slack).
 
-### Option E — Skills + script calling (are they tools?)
+### Opção E — Habilidades + chamada de script (são ferramentas?)
 
-**Short answer:** a **skill is not a tool**; a **script can be**.
+**Resposta curta:** uma **habilidade não é uma ferramenta**; um **script pode ser**.
 
-| Piece | What it is | Callable tool? |
+| Peça | O que é | Ferramenta que pode ser chamada? |
 |-------|------------|----------------|
-| **Skill (`SKILL.md`)** | Instructions: when to act, which command, output format | **No** — loaded as **context** (playbook) |
-| **Script** (`translate.py`) | Code that hits an API and prints a result | **Yes** — when the host can **run** it (terminal, MCP, Custom Action backend) |
-| **Skill + script together** | Skill tells the agent *“for translation, run this script”* | **Indirect tool** — model calls **run terminal** or a wrapped **`translate`** tool |
+| **Habilidade (`SKILL.md`)** | Instruções: quando agir, qual comando, formato de saída | **Não** — carregado como **contexto** (manual) |
+| **Roteiro** (`translate.py`) | Código que atinge API e imprime um resultado | **Sim** — quando o host pode **executá-lo** (terminal, MCP, back-end de ação personalizada) |
+| **Habilidade + roteiro juntos** | Skill diz ao agente *“para tradução, execute este script”* | **Ferramenta indireta** — chamadas de modelo **run terminal** ou um wrapper **`translate`** ferramenta |
 
 ```text
 Skill     →  "Use scripts/translate.py for any translate request"
@@ -163,21 +163,21 @@ Host tool →  Shell (Cursor Agent) OR MCP tool OR HTTPS Action
 LLM       →  sees tool result, writes answer to user
 ```
 
-Three common ways to wire the same script:
+Três maneiras comuns de conectar o mesmo script:
 
-| Wiring | Who runs the script | Model sees |
+| Fiação | Quem executa o script | Modelo vê |
 |--------|---------------------|------------|
-| **IDE agent + skill** | Host runs `python scripts/translate.py …` in terminal | Terminal output in tool result |
-| **MCP server** | MCP server invokes script or HTTP internally | `translate` in tool list |
-| **Custom GPT Action** | Your small API runs script server-side | `translateText` in OpenAPI actions |
+| **IDE agente + habilidade** | Host é executado`python scripts/translate.py …`no terminal | Saída do terminal no resultado da ferramenta |
+| **MCP servidor** | Servidor MCP invoca script ou HTTP internamente |`translate`na lista de ferramentas |
+| **Ação GPT personalizada** | Seu pequeno API executa script no lado do servidor |`translateText`em ações OpenAPI |
 
-Skills and scripts are a good fit for **one team, one repo, one API key in env** — without building a full MCP server on day one.
+Habilidades e scripts são adequados para **uma equipe, um repositório, uma chave API no ambiente** — sem construir um servidor MCP completo no primeiro dia.
 
-#### Example: translate with Google Cloud Translation API
+#### Exemplo: traduzir com o Google Cloud Translation API
 
-**1. Enable** [Cloud Translation API](https://cloud.google.com/translate/docs) and create an API key (restrict by IP or use a secrets manager in production).
+**1. Ativar** [Tradução na nuvem API](https://cloud.google.com/translate/docs) e crie uma chave API (restringir por IP ou usar um gerenciador de segredos na produção).
 
-**2. Script** — `scripts/translate.py` (stdlib only; key in env):
+**2. Roteiro ** -`scripts/translate.py`(somente stdlib; digite env):
 
 ```python
 #!/usr/bin/env python3
@@ -209,7 +209,7 @@ python scripts/translate.py "Welcome to the beta" ja
 # → ベータ版へようこそ
 ```
 
-**3. Skill** — `.cursor/skills/translate/SKILL.md` (or `.claude/skills/…`):
+**3. Habilidade** -`.cursor/skills/translate/SKILL.md`(ou`.claude/skills/…`):
 
 ```markdown
 ---
@@ -225,96 +225,96 @@ description: Translate user text via scripts/translate.py and Google Translation
 4. API key is in env `GOOGLE_TRANSLATE_API_KEY` — never print it.
 ```
 
-**4. User asks in Cursor Agent:**
+**4. O usuário pergunta no Cursor Agente:**
 
 ```text
 Translate this sentence to Japanese: "Ship date is April 15."
 ```
 
-**5. What happens:**
+**5. O que acontece:**
 
 ```text
 Agent loads skill → chooses terminal tool → runs script → gets 「発売日は4月15日です」 → replies to you
 ```
 
-That is **script calling as a tool**: the LLM did not call Google directly; the **host executed code** and fed the result back.
+Isso é **chamada de script como ferramenta**: o LLM não ligou diretamente para o Google; o **código executado pelo host** e retornou o resultado.
 
-**Same script as a formal tool (MCP / API):** wrap `translate()` in an MCP server that exposes `tools/call` method `translate` with `{ "text", "target" }`, or expose `POST /translate` in OpenAPI for a Custom GPT Action — the HTTP/MCP layer is the tool; the script logic stays the same.
+**Mesmo script de uma ferramenta formal (MCP / API):** wrap`translate()`em um servidor MCP que expõe`tools/call`método`translate`com`{ "text", "target" }`ou expor`POST /translate`em OpenAPI para uma ação GPT personalizada — a camada HTTP/MCP é a ferramenta; a lógica do script permanece a mesma.
 
-| Approach | Best when |
+| Abordagem | Melhor quando |
 |----------|-----------|
-| Skill + terminal | Solo dev, Cursor/Claude Code, quick internal utility |
-| MCP wrapper | Shared tool list, audit, no arbitrary shell |
-| Custom GPT Action | Non-technical users in ChatGPT only |
+| Habilidade + terminal | Solo dev, Cursor/Claude Code, utilitário interno rápido |
+| MCP invólucro | Lista de ferramentas compartilhadas, auditoria, sem shell arbitrário |
+| Ação GPT personalizada | Somente usuários não técnicos no ChatGPT |
 
-#### Does this reduce token usage?
+#### Isso reduz o uso de token?
 
-**Sometimes yes — but skills and scripts affect tokens differently.**
+**Às vezes sim, mas as habilidades e os scripts afetam os tokens de maneira diferente.**
 
-| Piece | Token effect | Why |
-|-------|--------------|-----|
-| **Skill loaded into context** | **Costs tokens** | `SKILL.md` text is added to the prompt (often only when relevant — depends on product) |
-| **Script / API tool result** | **Usually saves tokens** | Model gets a **short factual result** (one translated line) instead of generating or reasoning at length |
-| **Fewer retry turns** | **Saves tokens** | Right command first time vs five “try again” chats |
-| **Each tool call round** | **Costs tokens** | Tool name, args JSON, and result all go back into context for the next LLM turn |
+| Peça | Efeito simbólico | Por que |
+|-------|-------------|-----|
+| **Habilidade carregada no contexto** | **Custa tokens** |`SKILL.md`texto é adicionado ao prompt (geralmente apenas quando relevante — depende do produto) |
+| **Resultado da ferramenta Script / API** | **Geralmente economiza tokens** | O modelo obtém um **resultado factual curto** (uma linha traduzida) em vez de gerar ou raciocinar longamente |
+| **Menos tentativas** | **Economiza tokens** | Comando certo na primeira vez vs cinco bate-papos “tente novamente” |
+| **Cada rodada de chamada de ferramenta** | **Custa tokens** | Nome da ferramenta, argumentos JSON e resultado voltam ao contexto para o próximo turno LLM |
 
-**Translate example — compare:**
+**Exemplo de tradução — compare:**
 
-| Approach | Rough token picture |
-|----------|---------------------|
-| LLM translates in chat | Output tokens for full answer + sometimes chain-of-thought; quality risk |
-| Paste Google API docs every time | Large **input** every session |
-| Skill once + script call | One-time skill cost; tool result ≈ one short string; API docs stay **out** of the model |
+| Abordagem | Imagem simbólica aproximada |
+|----------|----------|
+| LLM traduz no chat | Tokens de saída para resposta completa + às vezes cadeia de pensamento; risco de qualidade |
+| Cole documentos API do Google sempre | Grande **entrada** em cada sessão |
+| Habilidade uma vez + chamada de script | Custo único de habilidade; resultado da ferramenta ≈ uma sequência curta; Documentos API ficam **fora** do modelo |
 
 ```text
 Expensive:  "Here is our 2-page translation policy…" pasted every chat
 Cheaper:    SKILL.md (~30 lines, loaded when needed) + tool result "発売日は4月15日です"
 ```
 
-**Net savings when:**
+**Economia líquida quando:**
 
-- The script returns **compact** data (translation, price, status code) — not megabytes of logs
-- The skill replaces **repeated** long instructions you would otherwise paste
-- You avoid **multi-turn** correction loops
+- O script retorna dados **compactos** (tradução, preço, código de status) — não megabytes de logs
+- A habilidade substitui instruções longas **repetidas** que você colaria de outra forma
+- Você evita loops de correção **multivoltas**
 
-**Net cost or no win when:**
+**Custo líquido ou nenhuma vitória quando:**
 
-- Skill file is **huge** (paste a manual into `SKILL.md` — use `reference.md` + short skill instead)
-- **Many** tools fire in one task (each result added to context)
-- You enable **dozens** of MCP tools — tool **descriptions** alone bloat the system prompt
-- Script output is massive (dump entire DB) — trim before returning to the LLM
+- O arquivo de habilidade é **enorme** (cole um manual em`SKILL.md`- usar`reference.md`+ habilidade curta em vez disso)
+- **Muitas** ferramentas são acionadas em uma tarefa (cada resultado adicionado ao contexto)
+- Você habilita **dezenas** de ferramentas MCP — apenas as **descrições** das ferramentas sobrecarregam o prompt do sistema
+- A saída do script é enorme (despejar DB inteiro) - corte antes de retornar para LLM
 
-**Practical rule:** skills trade **a small fixed instruction cost** for **less chat thrash**; scripts trade **one tool round** for **not asking the model to simulate an API**. Together they often reduce **total session tokens** — not because the model does less work magically, but because you stop re-sending the same rules and stop generating what code already computed.
+**Regra prática:** troca de habilidades **um pequeno custo fixo de instrução** por **menos problemas no chat**; os scripts trocam **uma rodada de ferramentas** por **não solicitar ao modelo que simule um API**. Juntos, eles geralmente reduzem o **total de tokens de sessão** — não porque o modelo funciona menos magicamente, mas porque você para de reenviar as mesmas regras e para de gerar o código já computado.
 
-See [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md) for keeping skills short; [How MCP works](../how-mcp-works/i-overview.md) to promote the script to a first-class MCP tool.
+Consulte [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md) para manter as habilidades curtas; [Como MCP funciona](../how-mcp-works/i-overview.md) para promover o script a uma ferramenta MCP de primeira classe.
 
-### What the model actually sees
+### O que o modelo realmente vê
 
-The LLM does **not** get raw API keys. It sees a **tool catalog**:
+O LLM **não** obtém chaves API brutas. Ele vê um **catálogo de ferramentas**:
 
-| Field | Purpose |
+| Campo | Finalidade |
 |-------|---------|
-| **Name** | `get_issue`, `search_docs` |
-| **Description** | When to use it — quality matters for correct picks |
-| **Parameters** | JSON schema the host validates |
+| **Nome** |`get_issue`,`search_docs`|
+| **Descrição** | Quando usar – a qualidade é importante para escolhas corretas |
+| **Parâmetros** | Esquema JSON que o host valida |
 
-Better descriptions → fewer wrong tool calls. If a tool misfires, tighten the description or reduce how many tools are enabled at once.
+Melhores descrições → menos chamadas de ferramentas erradas. Se uma ferramenta falhar, restrinja a descrição ou reduza o número de ferramentas ativadas ao mesmo tempo.
 
-### Practical checklist
+### Lista de verificação prática
 
-| Step | Do |
+| Etapa | Faça |
 |------|-----|
-| 1 | List what the agent must **read** vs **write** (read-only first) |
-| 2 | Enable **built-ins** that cover 80% (search, files, code) |
-| 3 | Add **connectors** for your doc stores |
-| 4 | Add **MCP** only for live systems chat cannot reach |
-| 5 | Narrow **OAuth / token scopes**; rotate secrets |
-| 6 | Test with one clear goal: “Find open P1 bugs and summarise” |
+| 1 | Liste o que o agente deve **ler** vs **escrever** (somente leitura primeiro) |
+| 2 | Habilite **integrações** que cobrem 80% (pesquisa, arquivos, código) |
+| 3 | Adicione **conectores** para seus armazenamentos de documentos |
+| 4 | Adicione **MCP** apenas para sistemas ao vivo, o chat não pode ser alcançado |
+| 5 | Estreito **OAuth / escopos de token**; girar segredos |
+| 6 | Teste com um objetivo claro: “Encontrar bugs P1 abertos e resumir” |
 
-| Avoid | Why |
+| Evite | Por que |
 |-------|-----|
-| Enabling every MCP server at once | Model picks wrong tool; wider attack surface |
-| Write tools without human review | Agents can post, delete, or charge APIs |
-| Duplicating same data via connector + MCP + upload | Conflicting context |
+| Habilitando todos os servidores MCP de uma vez | O modelo escolhe a ferramenta errada; superfície de ataque mais ampla |
+| Escreva ferramentas sem revisão humana | Os agentes podem postar, excluir ou cobrar APIs |
+| Duplicando os mesmos dados via conector + MCP + upload | Contexto conflitante |
 
-**Related:** [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How MCP works](../how-mcp-works/i-overview.md), [Orchestration patterns](../tools-and-orchestration/iii-orchestration-patterns.md), [Directing agents](iii-directing-agents.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**Relacionado:** [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md), [Como MCP funciona](../how-mcp-works/i-overview.md), [Padrões de orquestração](../tools-and-orchestration/iii-orchestration-patterns.md), [Agentes diretores](iii-directing-agents.md), [Confiar e verificar](../trust-privacy-and-verify/i-overview.md).

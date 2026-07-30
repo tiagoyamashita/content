@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Custom assistants & knowledge — overview
-Deep dive on **custom assistants & knowledge** — split into focused notes below.
+Assistentes personalizados e conhecimento — visão geral
+Aprofunde-se em **assistentes personalizados e conhecimento** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Products & building assistants](ii-products-and-building-assistants.md) | Part of custom assistants & knowledge track |
-| [RAG & knowledge libraries](iii-rag-and-knowledge-libraries.md) | Part of custom assistants & knowledge track |
-| [Memory & governance](iv-memory-and-governance.md) | Part of custom assistants & knowledge track |
+| [Produtos e assistentes de construção](ii-products-and-building-assistants.md) | Parte dos assistentes personalizados e trilha de conhecimento |
+| [RAG e bibliotecas de conhecimento](iii-rag-and-knowledge-libraries.md) | Parte dos assistentes personalizados e trilha de conhecimento |
+| [Memória e governança](iv-memory-and-governance.md) | Parte dos assistentes personalizados e trilha de conhecimento |
 
-Custom assistants and knowledge
-Products let you attach **your** documents and **standing instructions** so AI answers like a teammate who read the handbook — without fine-tuning models yourself.
+Assistentes personalizados e conhecimento
+Os produtos permitem que você anexe **seus** documentos e **instruções permanentes** para que AI responda como um colega de equipe que lê o manual, sem precisar ajustar os modelos por conta própria.
 
 ```mermaid
 flowchart LR
@@ -24,6 +24,6 @@ flowchart LR
   Asst -->|grounded reply| You
 ```
 
-## Study order
+## Ordem de estudo
 
-[Products & building assistants](ii-products-and-building-assistants.md) → [RAG & knowledge libraries](iii-rag-and-knowledge-libraries.md) → [Memory & governance](iv-memory-and-governance.md)
+[Produtos e assistentes de construção](ii-products-and-building-assistants.md) → [RAG e bibliotecas de conhecimento](iii-rag-and-knowledge-libraries.md) → [Memória e governança](iv-memory-and-governance.md)

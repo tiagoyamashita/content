@@ -1,21 +1,21 @@
 ---
 label: "V"
-subtitle: "My setup"
+subtitle: "Minha configuração"
 group: "AI Applied"
 order: 5
 ---
-My setup — multi-agent Cursor workflow
-How I run **Cursor agents** day to day: one chat owns **global rules**, other chats do **repo work**, and I keep **parallel work** safe when several agents touch the same codebase.
+Minha configuração - fluxo de trabalho Cursor multiagente
+Como executo **Cursor agentes** no dia a dia: um chat possui **regras globais**, outros chats fazem **trabalho de repositório** e eu mantenho o **trabalho paralelo** seguro quando vários agentes tocam a mesma base de código.
 
-This is a personal operating model, not a product requirement. Related: [Directing agents](iii-directing-agents.md), [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md), [Agent orchestration](../skills-and-agent-instructions/using-skills-agents-and-hooks/vi-agent-orchestration.md).
+Este é um modelo operacional pessoal, não um requisito do produto. Relacionado: [Agentes diretores](iii-directing-agents.md), [Cursor habilidades, regras e AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md), [Orquestração de agentes](../skills-and-agent-instructions/using-skills-agents-and-hooks/vi-agent-orchestration.md).
 
-## 1. Roles at a glance
+## 1. Visão geral das funções
 
-| Agent chat | Owns | Does not own |
-|------------|------|--------------|
-| **Rules agent** | User rules, global habits, cross-repo conventions | Feature PRs in product repos |
-| **Repo agents** | One (or few) git remotes / worktrees each | Editing my global rule set “while they’re at it” |
-| **Me** | Merge decisions, which chat is allowed to write | Blind trust of every tool call |
+| Bate-papo do agente | Possui | Não possui |
+|------------|------|-------------|
+| **Agente de regras** | Regras de usuário, hábitos globais, convenções entre repositórios | Apresentar PRs em repositórios de produtos |
+| **Agentes de recompra** | Um (ou poucos) controles remotos/árvores de trabalho git cada | Editando meu conjunto de regras globais “enquanto eles estão fazendo isso” |
+| **Eu** | Mesclar decisões, quais chats podem escrever | Confiança cega em cada chamada de ferramenta |
 
 ```mermaid
 flowchart TB
@@ -40,20 +40,20 @@ flowchart TB
   GR -.->|loaded by| C
 ```
 
-**Rule:** the Rules agent changes **how all agents behave**. Repo agents change **code**. Mixing those jobs in one chat causes surprise diffs and half-finished rule edits.
+**Regra:** o agente de regras altera **o modo como todos os agentes se comportam**. Os agentes do repositório alteram o **código**. Misturar essas tarefas em um chat causa diferenças surpreendentes e edições de regras incompletas.
 
-## 2. Rules agent (global)
+## 2. Agente de regras (global)
 
-Use a **dedicated chat** (and often a scratch or notes workspace) whose only job is instruction surface area:
+Use um **bate-papo dedicado** (e geralmente um espaço de trabalho de rascunhos ou anotações) cuja única função é a área de superfície de instruções:
 
-| Layer | Typical location | Scope |
+| Camada | Localização típica | Escopo |
 |-------|------------------|-------|
-| **User rules** | Cursor user rules (account / settings) | Every project |
-| **User skills** | `~/.cursor/skills/` | Every project |
-| **User hooks** | User-level hooks if you use them | Every project |
-| **Team rules** | Only when you explicitly open that repo | That remote |
+| **Regras do usuário** | Cursor regras de usuário (conta/configurações) | Cada projeto |
+| **Habilidades do usuário** |`~/.cursor/skills/`| Cada projeto |
+| **Ganchos de usuário** | Ganchos de nível de usuário, se você os usar | Cada projeto |
+| **Regras da equipe** | Somente quando você abre explicitamente esse repo | Esse controle remoto |
 
-Prompt pattern for the Rules agent:
+Padrão de prompt para o agente de regras:
 
 ```text
 You only edit global / user-level Cursor rules and skills.
@@ -77,11 +77,11 @@ sequenceDiagram
   Repo->>Repo: Follows updated global rule
 ```
 
-Keep a short **changelog** in the Rules chat (or a private note): date, what changed, why — so you can roll back bad global instructions.
+Mantenha um breve **registro de alterações** no bate-papo de regras (ou uma nota privada): data, o que mudou, por quê — para que você possa reverter instruções globais incorretas.
 
-## 3. Repo agents (different remotes)
+## 3. Agentes Repo (diferentes controles remotos)
 
-Spin **one agent chat per active repo** (or per epic). Point the workspace root at that clone before asking for edits.
+Gire **um chat de agente por repositório ativo** (ou por épico). Aponte a raiz do espaço de trabalho para esse clone antes de solicitar edições.
 
 ```mermaid
 flowchart LR
@@ -100,16 +100,16 @@ flowchart LR
   Session3 --> R3[(origin infra)]
 ```
 
-| Practice | Why |
+| Prática | Por que |
 |----------|-----|
-| **Name the chat** after the repo / ticket | Less context bleed |
-| **One branch per agent** when possible | Cleaner PRs |
-| **Tell the agent the repo path** if roots can move | Avoid editing the wrong tree |
-| **Don’t ask Chat B to “also fix global rules”** | That’s the Rules agent’s job |
+| **Nomeie o chat** após o repo/ticket | Menos sangramento de contexto |
+| **Uma agência por agente** quando possível | RP mais limpos |
+| **Informe ao agente o caminho do repositório** se as raízes puderem se mover | Evite editar a árvore errada |
+| **Não peça ao Chat B para “também corrigir regras globais”** | Esse é o trabalho do agente de regras |
 
-## 4. Same repo, same time
+## 4. Mesmo repositório, mesma hora
 
-Several agents on **one remote** is fine if they don’t fight over the same files. Prefer **git worktrees** (or separate clones) so each chat has its own checkout and branch.
+Vários agentes em **um controle remoto** são adequados se não brigarem pelos mesmos arquivos. Prefira **árvores de trabalho git** (ou clones separados) para que cada chat tenha seu próprio checkout e branch.
 
 ```mermaid
 flowchart TB
@@ -124,15 +124,15 @@ flowchart TB
   WT -->|"PR 2"| Remote
 ```
 
-### Coordination checklist
+### Lista de verificação de coordenação
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| Two agents edit the same file | Split by directory / ownership; or serialize |
-| Both commit on one branch | **One branch per agent**; rebase/merge via you |
-| Stale context after pull | Tell each chat when `main` moved |
-| Hook / lock file fights | Don’t run long installers in two trees at once without need |
-| Rules change mid-flight | Pause repo agents; update Rules agent; resume |
+| Dois agentes editam o mesmo arquivo | Dividir por diretório/propriedade; ou serializar |
+| Ambos confirmam em um branch | **Uma agência por agente**; rebase/mesclagem através de você |
+| Contexto obsoleto após pull | Diga a cada bate-papo quando`main`movido |
+| Lutas de arquivo de gancho / bloqueio | Não execute instaladores longos em duas árvores ao mesmo tempo sem necessidade |
+| As regras mudam no meio do voo | Pausar agentes de recompra; atualizar agente de regras; currículo |
 
 ```mermaid
 sequenceDiagram
@@ -154,15 +154,15 @@ sequenceDiagram
   Note over You,GH: If conflict, merge one first then rebase the other
 ```
 
-### When *not* to parallelize
+### Quando *não* paralelizar
 
-- Large renames / moves that touch the whole tree  
-- Shared generated locks (`package-lock.json`) without a plan  
-- “Refactor everything” + “ship a hotfix” in the same hours  
+- Grandes renomeações/movimentos que tocam toda a árvore  
+- Bloqueios gerados compartilhados (`package-lock.json`) sem um plano  
+- “Refatorar tudo” + “enviar um hotfix” nas mesmas horas
 
-Then: **one agent**, or hotfix first, refactor second.
+Então: **um agente**, ou hotfix primeiro, refatore depois.
 
-## 5. End-to-end day shape
+## 5. Formato do dia de ponta a ponta
 
 ```mermaid
 flowchart TD
@@ -178,9 +178,9 @@ flowchart TD
   YouMerge --> Done[Done / next ticket]
 ```
 
-## 6. Prompt snippets I reuse
+## 6. Trechos de prompt que reutilizo
 
-**Rules agent**
+**Agente de regras**
 
 ```text
 Scope: user-level Cursor rules only.
@@ -188,7 +188,7 @@ Output: proposed rule text, files touched, rollback note.
 Do not modify any git repo application source.
 ```
 
-**Repo agent**
+**Agente de recompra**
 
 ```text
 Repo: <path or name>. Branch: feat/<ticket>.
@@ -196,21 +196,21 @@ Do not change user/global Cursor rules.
 If a standing rule should change, say so — I will run the Rules agent.
 ```
 
-**Same-repo parallel**
+**Paralelo do mesmo repositório**
 
 ```text
 You own paths: <dirs>. Other agent owns: <dirs>.
 Do not edit outside your paths. Worktree: <path>. Branch: <name>.
 ```
 
-## 7. Related notes
+## 7. Notas relacionadas
 
-| Topic | Note |
+| Tópico | Nota |
 |-------|------|
-| How to steer agents | [Directing agents](iii-directing-agents.md) |
-| Where rules/skills live | [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md) |
-| Human approval loops | [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) |
+| Como orientar os agentes | [Agentes diretores](iii-directing-agents.md) |
+| Onde residem as regras/habilidades | [Cursor habilidades, regras e AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md) |
+| Ciclos de aprovação humana | [Produtos e humanos no circuito](iv-products-and-human-in-the-loop.md) |
 
-## Next
+## Próximo
 
-Return to [Agents & agentic workflows overview](i-overview.md).
+Retorne para [Visão geral de agentes e fluxos de trabalho de agente](i-overview.md).

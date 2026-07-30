@@ -1,27 +1,27 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Implementation examples — overview
-Hands-on notes for **running open models locally** — downloading weights from Hugging Face, picking a runtime, sizing RAM, and using CPU-friendly runners when you do not have a large GPU.
+Exemplos de implementação – visão geral
+Notas práticas para **executar modelos abertos localmente** — baixar pesos do Hugging Face, escolher um tempo de execução, dimensionar RAM e usar executores compatíveis com CPU quando você não tiver um GPU grande.
 
-This track is for **practitioners** who want to go beyond hosted chat apps. For how models work conceptually, see [LLMs](../../llms/i-overview.md).
+Este curso é para **praticantes** que desejam ir além dos aplicativos de bate-papo hospedados. Para saber como os modelos funcionam conceitualmente, consulte [LLMs](../../llms/i-overview.md).
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Downloading from Hugging Face](ii-downloading-from-huggingface.md) | CLI, Git LFS, auth, and what you actually get |
-| [Local run platforms](iii-local-run-platforms.md) | Ollama, llama.cpp, LM Studio, vLLM, and more — pros and cons |
-| [Model RAM requirements](iv-model-ram-requirements.md) | Quantization, context length, and sizing tables |
-| [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) | airLLM, llama.cpp CPU, MLX, and trade-offs |
-| [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) | Per-platform install, GPU verify, and model picks for 8 GB VRAM |
-| [TurboVec + Ollama + local files](vii-turbovec-ollama-local-files.md) | Local RAG — index your files, compressed vectors, no cloud |
-| [Ollama](../ollama/i-overview.md) | Full Ollama track — install through troubleshooting |
+| [Baixando do Hugging Face](ii-downloading-from-huggingface.md) | CLI, Git LFS, auth e o que você realmente obtém |
+| [Plataformas de execução local](iii-local-run-platforms.md) | Ollama, llama.cpp, LM Studio, vLLM e mais – prós e contras |
+| [Requisitos do modelo RAM](iv-model-ram-requirements.md) | Quantização, comprimento de contexto e tabelas de dimensionamento |
+| [CPU e corredores leves](v-cpu-and-lightweight-runners.md) | airLLM, llama.cpp CPU, MLX e compensações |
+| [Instalar e executar em RTX 1080](vi-install-and-run-rtx-1080.md) | Instalação por plataforma, verificação de GPU e escolha de modelo para 8 GB VRAM |
+| [TurboVec + Ollama + arquivos locais](vii-turbovec-ollama-local-files.md) | Local RAG — indexe seus arquivos, vetores compactados, sem nuvem |
+| [Ollama](../ollama/i-overview.md) | Trilha Ollama completa – instalação por meio de solução de problemas |
 
-## Mental model
+## Modelo mental
 
 ```mermaid
 flowchart LR
@@ -30,23 +30,23 @@ flowchart LR
   Runtime --> API[API or UI]
 ```
 
-| Step | You decide |
+| Etapa | Você decide |
 |------|------------|
-| **Model** | Size, license, chat vs code, quantization (Q4, Q8, …) |
-| **Runtime** | Ease of use vs throughput vs GPU requirement |
-| **Hardware** | RAM for weights + KV cache; VRAM if using GPU |
+| **Modelo** | Tamanho, licença, chat vs código, quantização (Q4, Q8,…) |
+| **Tempo de execução** | Facilidade de uso versus taxa de transferência versus requisito GPU |
+| **Hardware** | RAM para pesos + KV cache; VRAM se estiver usando GPU |
 
-**Default coding pick:** **Qwen2.5-Coder 7B** (`ollama pull qwen2.5-coder:7b`) — open license, no HF gating, fits 8 GB GPUs. See [Downloading from Hugging Face](ii-downloading-from-huggingface.md).
+**Escolha de codificação padrão:** **Qwen2.5-Coder 7B** (`ollama pull qwen2.5-coder:7b`) — licença aberta, sem restrição HF, cabe 8 GB GPUs. Veja [Baixando do Hugging Face](ii-downloading-from-huggingface.md).
 
-## Study order
+## Ordem de estudo
 
-[Downloading from Hugging Face](ii-downloading-from-huggingface.md) → [Local run platforms](iii-local-run-platforms.md) → [Model RAM requirements](iv-model-ram-requirements.md) → [CPU & lightweight runners](v-cpu-and-lightweight-runners.md) → [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) → [TurboVec + Ollama + local files](vii-turbovec-ollama-local-files.md)
+[Baixando do Hugging Face](ii-downloading-from-huggingface.md) → [Plataformas de execução local](iii-local-run-platforms.md) → [Requisitos do modelo RAM](iv-model-ram-requirements.md) → [CPU e corredores leves](v-cpu-and-lightweight-runners.md) → [Instalar e executar em RTX 1080](vi-install-and-run-rtx-1080.md) → [TurboVec + Ollama + arquivos locais](vii-turbovec-ollama-local-files.md)
 
-## When to run locally vs use an API
+## Quando executar localmente versus usar um API
 
-| Run locally | Use a hosted API |
-|-------------|------------------|
-| Data must stay on your machine | You want the newest frontier models |
-| Predictable cost at high volume | No GPU/RAM to manage |
-| Offline or air-gapped | You need minimal setup time |
-| Fine-tuned or niche open weights | Compliance allows cloud inference |
+| Execute localmente | Use um API hospedado |
+|------------|------------------|
+| Os dados devem permanecer na sua máquina | Você quer os mais novos modelos de fronteira |
+| Custo previsível em alto volume | Não há GPU/RAM para gerenciar |
+| Off-line ou sem ar | Você precisa de um tempo mínimo de configuração |
+| Pesos ajustados ou abertos de nicho | Conformidade permite inferência na nuvem |

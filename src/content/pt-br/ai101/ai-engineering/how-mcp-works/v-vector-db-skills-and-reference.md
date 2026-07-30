@@ -1,14 +1,14 @@
 ---
 label: "V"
-subtitle: "Vector DB, skills & reference"
+subtitle: "Vetor DB, habilidades e referência"
 group: "AI Applied"
 order: 5
 ---
-Vector DB, skills & reference
+Vetor DB, habilidades e referência
 
-## 10. When you need MCP vs skills vs vector DB
+## 10. Quando você precisa de MCP vs habilidades vs vetor DB
 
-These solve **different problems**. You often combine them.
+Eles resolvem **problemas diferentes**. Você costuma combiná-los.
 
 ```mermaid
 flowchart TB
@@ -17,13 +17,13 @@ flowchart TB
   MCP[MCP tools] -->|live data + actions| Agent
 ```
 
-| Need | Mechanism | Example |
-|------|-----------|---------|
-| **How to write a PR review** | [Skill](../skills-and-agent-instructions/i-overview.md) | Static playbook in `SKILL.md` |
-| **Repo layout and test command** | `AGENTS.md` / rules | Always-in-context project facts |
-| **Search 10k support PDFs by meaning** | **Vector DB + RAG** | “What’s our refund policy for EU?” |
-| **Fetch live Linear issue #42** | **MCP** tool | Exact, current ticket data |
-| **Run `SELECT * FROM orders WHERE id = …`** | **MCP** → Postgres/SQL | Structured lookup, not similarity |
+| Necessidade | Mecanismo | Exemplo |
+|------|-----------|--------|
+| **Como escrever uma avaliação PR** | [Habilidade](../skills-and-agent-instructions/i-overview.md) | Manual estático em`SKILL.md`|
+| **Layout do repositório e comando de teste** |`AGENTS.md`/ regras | Fatos do projeto sempre em contexto |
+| **Pesquise 10 mil PDFs de suporte por significado** | **Vetor DB + RAG** | “Qual é a nossa política de reembolso para EU?” |
+| **Busque a edição Linear ao vivo nº 42** | **MCP** ferramenta | Dados exatos e atuais do ticket |
+| **Correr`SELECT * FROM orders WHERE id = …`** | **MCP** → Postgres/SQL | Pesquisa estruturada, não similaridade |
 
 ```text
 Skills / AGENTS.md     →  always-on instructions (small, static)
@@ -31,64 +31,64 @@ Vector DB (RAG)        →  semantic search over large text corpus
 MCP tools              →  live actions & exact queries (APIs, SQL, GitHub)
 ```
 
-### What is a vector DB for here?
+### Para que serve um vetor DB aqui?
 
-A **vector database** stores **embeddings** — numeric representations of text — so you can find **“chunks similar in meaning”** to the user’s question, not just keyword matches.
+Um **banco de dados vetorial** armazena **incorporações** — representações numéricas de texto — para que você possa encontrar **“pedaços semelhantes em significado”** à pergunta do usuário, não apenas correspondências de palavras-chave.
 
 ```text
 Offline:  docs → chunk → embed → store vectors (+ metadata)
 Online:   question → embed → nearest-neighbour search → top-k chunks → prompt → LLM
 ```
 
-That pattern is **[RAG](../../llms/v-rag-and-fine-tuning.md)**. The vector DB is the **retrieval engine**; the LLM still writes the answer using those chunks.
+Esse padrão é **[RAG](../../llms/v-rag-and-fine-tuning.md)**. O vetor DB é o **mecanismo de recuperação**; o LLM ainda escreve a resposta usando esses pedaços.
 
-### When to use a vector DB
+### Quando usar um vetor DB
 
-| Use vector DB when… | Why |
+| Use o vetor DB quando… | Por que |
 |---------------------|-----|
-| **Large, changing document set** | Policies, manuals, wiki, past tickets — too big to paste into every prompt |
-| **Questions are fuzzy / paraphrased** | User says “cancel subscription”; doc says “terminate plan” — similarity helps |
-| **You need citations from prose** | Answer must quote handbook sections |
-| **Keyword search fails** | Synonyms, typos, cross-language, conceptual questions |
+| **Conjunto de documentos grande e mutável** | Políticas, manuais, wiki, tickets anteriores — grandes demais para serem colados em todos os prompts |
+| **As perguntas são confusas/parafraseadas** | O usuário diz “cancelar assinatura”; doc diz “encerrar plano” – semelhança ajuda |
+| **Você precisa de citações de prosa** | A resposta deve citar as seções do manual |
+| **Falha na pesquisa por palavra-chave** | Sinônimos, erros de digitação, linguagem cruzada, questões conceituais |
 
-### When you do **not** need a vector DB
+### Quando você **não** precisa de um vetor DB
 
-| Skip vector DB when… | Use instead |
-|----------------------|-------------|
-| **Small, fixed context** | Skills, `AGENTS.md`, a few uploaded files (ChatGPT Project, Cursor rules) |
-| **Exact ID or key lookup** | SQL, REST API via **MCP** (`get_order`, `fetch_issue`) |
-| **Live operational state** | “Is deploy green?” → monitoring API, not doc search |
-| **Structured filters** | `status=open AND team=billing` → database query, not k-NN |
-| **Whole repo fits in agent context** | IDE indexes open files; `@docs` may be enough for one codebase |
+| Ignorar vetor DB quando… | Use em vez disso |
+|----------------------|------------|
+| **Contexto pequeno e fixo** | Habilidades,`AGENTS.md`, alguns arquivos enviados (Projeto ChatGPT, regras Cursor) |
+| **Exatamente ID ou pesquisa de chave** | SQL, REST API através de **MCP** (`get_order`,`fetch_issue`) |
+| **Estado operacional ativo** | “A implantação é verde?” → monitoramento API, não pesquisa de documentos |
+| **Filtros estruturados** |`status=open AND team=billing`→ consulta ao banco de dados, não k-NN |
+| **O repositório inteiro se ajusta ao contexto do agente** | IDE indexa arquivos abertos;`@docs`pode ser suficiente para uma base de código |
 
-### Where vector DBs sit relative to MCP
+### Onde os bancos de dados vetoriais ficam em relação a MCP
 
-Vector DBs are **not** part of JSON-RPC or the MCP spec. They are **storage behind** retrieval — often reached in one of two ways:
+Bancos de dados vetoriais **não** fazem parte de JSON-RPC ou da especificação MCP. Eles são **armazenamento por trás** da recuperação – geralmente alcançados de duas maneiras:
 
-**A) Product-built RAG (you don’t wire MCP)**
+**A) Produto RAG construído (você não conecta MCP)**
 
-ChatGPT Projects, NotebookLM, Copilot — they chunk, embed, and search **inside the product**. You upload files; no vector MCP required.
+ChatGPT Projects, NotebookLM, Copilot — eles agrupam, incorporam e pesquisam **dentro do produto**. Você carrega arquivos; nenhum vetor MCP é necessário.
 
-**B) MCP exposes search as a tool**
+**B) MCP expõe a pesquisa como uma ferramenta**
 
-Your app or a custom MCP server wraps the vector store:
+Seu aplicativo ou um servidor MCP personalizado encapsula o armazenamento de vetores:
 
 ```text
 LLM → host → MCP tool "search_handbook" → vector DB (similarity) → chunks → tool result → LLM
 ```
 
-**Local stack example:** [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md) — no managed vector service; files and index on disk.
+**Exemplo de pilha local:** [TurboVec + Ollama + arquivos locais](../../implementation-example/vii-turbovec-ollama-local-files.md) — nenhum serviço de vetor gerenciado; arquivos e índice no disco.
 
-Same JSON-RPC path as any other MCP tool; the server runs embed + k-NN, returns text chunks.
+O mesmo caminho JSON-RPC de qualquer outra ferramenta MCP; o servidor executa embed + k-NN, retorna pedaços de texto.
 
-**C) Your backend does RAG before the agent**
+**C) Seu back-end faz RAG antes do agente**
 
 ```text
 User question → your API retrieves from vector DB → builds prompt → LLM
 Separate MCP tools for: create_ticket, run_sql, post_slack
 ```
 
-Common in production: **RAG for knowledge**, **MCP for actions**.
+Comum na produção: **RAG para conhecimento**, **MCP para ações**.
 
 ```plantuml
 @startuml
@@ -116,7 +116,7 @@ Host --> User
 @enduml
 ```
 
-### Quick decision tree
+### Árvore de decisão rápida
 
 ```text
 Is it "find relevant paragraphs in lots of text"?
@@ -129,31 +129,31 @@ Is it "how should the agent behave"?
   Yes → skill / AGENTS.md / custom GPT instructions
 ```
 
-Skills = **playbook**. Vector DB = **semantic memory over documents**. MCP = **live hands** into systems.
+Habilidades = **manual**. Vetor DB = **memória semântica sobre documentos**. MCP = **mãos ativas** nos sistemas.
 
-**Deeper:** [RAG & fine-tuning](../../llms/v-rag-and-fine-tuning.md), [Custom assistants & knowledge](../custom-assistants-and-knowledge/i-overview.md).
+**Mais profundo:** [RAG e ajuste fino](../../llms/v-rag-and-fine-tuning.md), [Assistentes personalizados e conhecimento](../custom-assistants-and-knowledge/i-overview.md).
 
-## 11. Quick reference
+## 11. Referência rápida
 
-| Question | Answer |
+| Pergunta | Resposta |
 |----------|--------|
-| What is JSON-RPC? | **Remote procedure call** — invoke a named **method** with JSON **params**, get JSON **result** or **error** |
-| Is MCP gRPC? | **No** — JSON-RPC 2.0 |
-| Does MCP server reply to the LLM directly? | **No** — reply goes to **host**, host passes **tool result** to LLM |
-| Local Cursor MCP? | Usually **stdio** (subprocess) |
-| Hosted team MCP? | **Streamable HTTP** (POST + optional SSE) |
-| How does server reach Linear? | **HTTPS REST** (or vendor SDK) |
-| Do I write JSON-RPC? | **No** — host and server handle it |
-| When do I need a vector DB? | **Large text corpus + fuzzy semantic search** (RAG) — not for exact API/SQL lookups |
-| Vector DB part of MCP? | **No** — optional **backend** behind an MCP search tool or your own RAG app |
+| O que é JSON-RPC? | **Chamada de procedimento remoto** — invoca um **método** nomeado com JSON **params**, obtém JSON **resultado** ou **erro** |
+| MCP é gRPC? | **Não** — JSON-RPC 2.0 |
+| O servidor MCP responde diretamente ao LLM? | **Não** — a resposta vai para **host**, o host passa o **resultado da ferramenta** para LLM |
+| Local Cursor MCP? | Normalmente **stdio** (subprocesso) |
+| Equipe hospedada MCP? | **Transmitivel HTTP** (POST + opcional SSE) |
+| Como o servidor chega ao Linear? | **HTTPS REST** (ou fornecedor SDK) |
+| Eu escrevo JSON-RPC? | **Não** — host e servidor cuidam disso |
+| Quando preciso de um vetor DB? | **Corpus de texto grande + pesquisa semântica difusa** (RAG) — não para pesquisas exatas API/SQL |
+| Vetor DB parte de MCP? | **Não** — **backend** opcional por trás de uma ferramenta de pesquisa MCP ou de seu próprio aplicativo RAG |
 
-## 12. Rehearsal questions
+## 12. Perguntas de ensaio
 
-- What does JSON-RPC stand for, and what three fields identify a request?
-- MCP vs vector DB — which for “open Linear issue #42” vs “what does our handbook say about refunds”?
-- What protocol carries messages between MCP client and server?
-- Who sits between the MCP server and the LLM?
-- stdio vs Streamable HTTP — when is each used?
-- Who calls Linear’s API — the LLM or the MCP server?
+- O que significa JSON-RPC e quais são os três campos que identificam uma solicitação?
+- MCP vs vetor DB — qual para “edição linear aberta nº 42” versus “o que nosso manual diz sobre reembolsos”?
+- Qual protocolo transporta mensagens entre o cliente e o servidor MCP?
+- Quem fica entre o servidor MCP e o LLM?
+- stdio vs Streamable HTTP — quando cada um é usado?
+- Quem chama o API da Linear - o servidor LLM ou MCP?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md), [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md).
+**Relacionado:** [Ferramentas e orquestração](../tools-and-orchestration/i-overview.md), [Agentes e fluxos de trabalho de agentes](../agents-and-agentic-workflows/i-overview.md), [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md), [Como criar seu MCP personalizado](how-to-create-your-custom-mcp/i-overview.md), [TurboVec + Ollama + arquivos locais](../../implementation-example/vii-turbovec-ollama-local-files.md).

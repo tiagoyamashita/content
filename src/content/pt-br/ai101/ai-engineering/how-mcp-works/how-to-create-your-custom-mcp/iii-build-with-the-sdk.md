@@ -1,14 +1,14 @@
 ---
 label: "III"
-subtitle: "Build with the SDK"
+subtitle: "Construa com o SDK"
 group: "How to create your custom MCP"
 order: 3
 ---
-Build with the SDK
+Construa com o SDK
 
-Official SDKs wrap JSON-RPC and stdio so you register **tools** instead of parsing raw messages. Pick **TypeScript** (most examples in the wild) or **Python** (FastMCP — fastest for scripts).
+Os SDKs oficiais agrupam JSON-RPC e stdio para que você registre **ferramentas** em vez de analisar mensagens brutas. Escolha **TypeScript** (a maioria dos exemplos disponíveis) ou **Python** (FastMCP — mais rápido para scripts).
 
-## 1. TypeScript — project scaffold
+## 1. TypeScript – estrutura do projeto
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -18,7 +18,7 @@ npm install -D typescript @types/node
 npx tsc --init --module NodeNext --moduleResolution NodeNext --target ES2022 --outDir dist
 ```
 
-`package.json` — add bin entry for the host to run:
+`package.json`— adicione entrada bin para o host executar:
 
 ```json
 {
@@ -33,7 +33,7 @@ npx tsc --init --module NodeNext --moduleResolution NodeNext --target ES2022 --o
 }
 ```
 
-`src/index.ts` — minimal server:
+`src/index.ts`— servidor mínimo:
 
 ```typescript
 #!/usr/bin/env node
@@ -65,7 +65,7 @@ node dist/index.js
 # Blocks with no output — waiting for JSON-RPC on stdin (correct for stdio)
 ```
 
-## 2. Python — FastMCP scaffold
+## 2. Python — Andaime rápidoMCP
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -74,7 +74,7 @@ source .venv/bin/activate
 pip install "mcp[cli]"
 ```
 
-`server.py`:
+`server.py`TÉCNICO.:
 
 ```python
 from mcp.server.fastmcp import FastMCP
@@ -97,7 +97,7 @@ python server.py
 # Blocks — stdio transport active
 ```
 
-## 3. Project layout (either language)
+## 3. Layout do projeto (qualquer idioma)
 
 ```text
 my-mcp-server/
@@ -107,11 +107,11 @@ my-mcp-server/
   .gitignore         # .env, node_modules, .venv
 ```
 
-Keep **business logic** in separate modules (`crm_client.ts`, `queries.py`) so handlers stay thin.
+Mantenha a **lógica de negócios** em módulos separados (`crm_client.ts`,`queries.py`) para que os manipuladores permaneçam magros.
 
-## 4. Calling an external API from a tool
+## 4. Chamando um API externo de uma ferramenta
 
-TypeScript pattern:
+Padrão TypeScript:
 
 ```typescript
 server.tool(
@@ -144,16 +144,16 @@ server.tool(
 );
 ```
 
-Python FastMCP — use `httpx` or `requests` the same way; return strings or raise for errors.
+Python RápidoMCP - usar`httpx`ou`requests`da mesma forma; retornar strings ou aumentar em caso de erros.
 
-## 5. SDK choice
+## 5. SDK escolha
 
-| Pick | When |
+| Escolha | Quando |
 |------|------|
-| **TypeScript** | Team already on Node; publishing to npm; mirroring MCP official examples |
-| **Python** | Data/ops scripts, FastAPI shops, quickest prototype |
-| **Other** | Go/Rust SDKs exist — use when binary size or performance matters |
+| **TypeScript** | Equipe já no Node; publicação no npm; espelhando exemplos oficiais de MCP |
+| **Python** | Scripts de dados/operações, lojas FastAPI, protótipo mais rápido |
+| **Outros** | Existem SDKs Go/Rust — use quando o tamanho binário ou o desempenho são importantes |
 
-## Next
+## Próximo
 
-[Tools, resources & prompts](iv-tools-resources-and-prompts.md) — schemas, resources, and response shapes.
+[Ferramentas, recursos e instruções](iv-tools-resources-and-prompts.md) — esquemas, recursos e formas de resposta.

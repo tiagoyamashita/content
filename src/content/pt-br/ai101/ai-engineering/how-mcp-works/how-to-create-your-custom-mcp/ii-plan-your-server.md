@@ -1,12 +1,12 @@
 ---
 label: "II"
-subtitle: "Plan your server"
+subtitle: "Planeje seu servidor"
 group: "How to create your custom MCP"
 order: 2
 ---
-Plan your server
+Planeje seu servidor
 
-Before writing code, decide **what the agent may do** and **what it must never do**. MCP servers are small connectors — not full applications.
+Antes de escrever o código, decida **o que o agente pode fazer** e **o que ele nunca deve fazer**. Os servidores MCP são conectores pequenos – não aplicativos completos.
 
 ```mermaid
 flowchart TD
@@ -15,38 +15,38 @@ flowchart TD
   Auth --> Transport[stdio or HTTP]
 ```
 
-## 1. One server, one integration
+## 1. Um servidor, uma integração
 
-| Good | Avoid |
+| Bom | Evite |
 |------|-------|
-| `company-crm-mcp` — CRM search + create lead | One mega-server for CRM + GitHub + email + shell |
-| `team-runbooks-mcp` — read internal wiki pages | Exposing every database table as a separate tool |
-| `deploy-status-mcp` — query CI / release API | Passing raw SQL from the model with no guardrails |
+|`company-crm-mcp`— CRM pesquisa + criação de lead | Um megaservidor para CRM + GitHub + email + shell |
+|`team-runbooks-mcp`— leia páginas wiki internas | Expondo cada tabela do banco de dados como uma ferramenta separada |
+|`deploy-status-mcp`— consulta CI / liberação API | Passando SQL bruto do modelo sem guarda-corpos |
 
-Hosts list **all tools** from enabled servers. Fewer, clearer tools → better tool choice by the LLM.
+Lista de hosts **todas as ferramentas** dos servidores habilitados. Menos ferramentas e mais claras → melhor escolha de ferramentas pelo LLM.
 
-## 2. Tools vs resources vs prompts
+## 2. Ferramentas versus recursos versus prompts
 
-| MCP primitive | What it is | Example |
+| MCP primitivo | O que é | Exemplo |
 |---------------|------------|---------|
-| **Tool** | Function the model **calls** with arguments | `search_issues`, `run_health_check` |
-| **Resource** | **Readable** URI the user or model can fetch | `runbook://oncall/checkout` |
-| **Prompt** | Pre-built **template** the host can insert | `summarize-incident` with slots |
+| **Ferramenta** | Função que o modelo **chama** com argumentos |`search_issues`,`run_health_check`|
+| **Recurso** | **Legível** URI o usuário ou modelo pode buscar |`runbook://oncall/checkout`|
+| **Aviso** | **Modelo** pré-construído que o host pode inserir |`summarize-incident`com slots |
 
-**Start with tools only** — they cover 90% of custom integrations. Add resources when the agent should **read** stable documents; add prompts when you want reusable slash-command style templates.
+**Comece apenas com ferramentas** — elas cobrem 90% das integrações personalizadas. Adicione recursos quando o agente deve **ler** documentos estáveis; adicione prompts quando desejar modelos de estilo de comando de barra reutilizáveis.
 
-## 3. Design each tool
+## 3. Projete cada ferramenta
 
-For every tool, write a one-line spec before coding:
+Para cada ferramenta, escreva uma especificação de uma linha antes de codificar:
 
-| Field | Question |
+| Campo | Pergunta |
 |-------|----------|
-| **Name** | snake_case verb phrase — `get_order`, not `order` |
-| **Description** | What it does **and when** the model should use it (hosts show this to the LLM) |
-| **Inputs** | Minimal JSON schema — required vs optional |
-| **Output** | Text summary for the model, or structured JSON as text |
-| **Side effects** | Read-only vs writes — mark destructive tools clearly in the description |
-| **Auth** | Which env var or config file supplies the API token |
+| **Nome** | Snake_case frase verbal —`get_order`, não`order`|
+| **Descrição** | O que ele faz **e quando** o modelo deve usá-lo (os hosts mostram isso para o LLM) |
+| **Entradas** | Esquema JSON mínimo - obrigatório versus opcional |
+| **Saída** | Resumo de texto para o modelo ou JSON estruturado como texto |
+| **Efeitos colaterais** | Somente leitura versus gravação – marque claramente as ferramentas destrutivas na descrição |
+| **Autorização** | Qual env var ou arquivo de configuração fornece o token API |
 
 ```text
 Tool: search_customers
@@ -56,13 +56,13 @@ Output: JSON array of { id, name, email } (max 10)
 Auth: CRM_API_KEY from environment
 ```
 
-## 4. Configuration and secrets
+## 4. Configuração e segredos
 
-| Pattern | Use |
-|---------|-----|
-| **Environment variables** | API keys, base URLs — injected by host `mcp.json` |
-| **Config file path** | `CONFIG_PATH` pointing at YAML the server reads at startup |
-| **No secrets in repo** | Never commit tokens; document required env vars in README |
+| Padrão | Usar |
+|--------|-----|
+| **Variáveis ​​ambientais** | Chaves API, URLs base - injetadas pelo host`mcp.json`|
+| **Caminho do arquivo de configuração** |`CONFIG_PATH`apontando para YAML o servidor lê na inicialização |
+| **Sem segredos no repositório** | Nunca comprometa tokens; documento necessário env vars em README |
 
 ```json
 "env": {
@@ -71,23 +71,23 @@ Auth: CRM_API_KEY from environment
 }
 ```
 
-## 5. Transport choice
+## 5. Escolha de transporte
 
-| Transport | When |
+| Transporte | Quando |
 |-----------|------|
-| **stdio** (default) | Local dev, Cursor, Claude Desktop — host spawns your process |
-| **Streamable HTTP** | Team-hosted connector, shared service, remote agents |
+| **stdio** (padrão) | Desenvolvedor local, Cursor, Claude Desktop — host gera seu processo |
+| **Transmitivel HTTP** | Conector hospedado pela equipe, serviço compartilhado, agentes remotos |
 
-This track focuses on **stdio** — fastest path to a working custom server. See [JSON-RPC & transports](../ii-json-rpc-and-transports.md) for HTTP deployment.
+Este curso se concentra em **stdio** — caminho mais rápido para um servidor personalizado em funcionamento. Consulte [JSON-RPC e transportes](../ii-json-rpc-and-transports.md) para implantação HTTP.
 
-## 6. Checklist before coding
+## 6. Lista de verificação antes da codificação
 
-- [ ] Server name and version (`my-team-crm`, `1.0.0`)
-- [ ] List of 1–8 tools with descriptions
-- [ ] Env vars documented
-- [ ] Read vs write tools identified; writes need human-in-the-loop in product UX where possible
-- [ ] Error messages return **actionable text** (rate limit, 404, invalid id) — the model will read them
+- [] Nome e versão do servidor (`my-team-crm`,`1.0.0`)
+- [] Lista de 1 a 8 ferramentas com descrições
+- [] Env vars documentado
+- [ ] Ferramentas de leitura vs gravação identificadas; escreve a necessidade de humano no circuito no produto UX sempre que possível
+- [] Mensagens de erro retornam **texto acionável** (limite de taxa, 404, ID inválido) — o modelo irá lê-las
 
-## Next
+## Próximo
 
-[Build with the SDK](iii-build-with-the-sdk.md) — scaffold TypeScript or Python.
+[Construa com o SDK](iii-build-with-the-sdk.md) - andaime TypeScript ou Python.

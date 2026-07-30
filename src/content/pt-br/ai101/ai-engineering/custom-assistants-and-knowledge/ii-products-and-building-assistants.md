@@ -1,36 +1,36 @@
 ---
 label: "II"
-subtitle: "Products & building assistants"
+subtitle: "Produtos e assistentes de construção"
 group: "AI Applied"
 order: 2
 ---
-Products & building assistants
+Produtos e assistentes de construção
 
-## 1. Product equivalents
+## 1. Equivalentes de produtos
 
-| Product | Feature | What you configure |
-|---------|---------|-------------------|
-| **ChatGPT** | Custom GPTs, Memory (optional) | Instructions, files, actions |
-| **Claude** | Projects | Project knowledge + instructions |
-| **Gemini** | Gems | Persona + optional files |
-| **Copilot** | Copilot Studio / M365 Copilot | Tenant data, plugins |
-| **NotebookLM** | Notebooks | Sources → grounded Q&A, audio overview |
-| **Cursor** | Rules, docs index | Repo + `.cursor/rules` |
+| Produto | Recurso | O que você configura |
+|--------|---------|-------------------|
+| **Bate-papoGPT** | GPTs personalizados, memória (opcional) | Instruções, arquivos, ações |
+| **Cláudio** | Projetos | Conhecimento do projeto + instruções |
+| **Gêmeos** | Gemas | Persona + arquivos opcionais |
+| **Copiloto** | Copilot Studio / M365 Copilot | Dados do locatário, plug-ins |
+| **CadernoLM** | Cadernos | Fontes → perguntas e respostas fundamentadas, visão geral do áudio |
+| **Cursor** | Regras, índice de documentos | Repositório +`.cursor/rules`|
 
-Same idea everywhere: **instructions + knowledge + (optional) tools**.
+A mesma ideia em todos os lugares: **instruções + conhecimento + ferramentas (opcionais)**.
 
-## 2. What to put in “knowledge”
+## 2. O que colocar em “conhecimento”
 
-| Good sources | Poor sources |
+| Boas fontes | Fontes pobres |
 |--------------|--------------|
-| Policy PDFs, playbooks, FAQs | Random outdated exports |
-| Product specs, API docs you own | Confidential you’re not allowed to upload |
-| Meeting notes **you** curate | Entire email archive unfiltered |
-| Style guide, brand voice | Competitor docs you don’t have rights to |
+| PDFs de políticas, manuais, perguntas frequentes | Exportações aleatórias desatualizadas |
+| Especificações do produto, API documentos que você possui | Confidencial, você não tem permissão para fazer upload |
+| Notas da reunião **você** curador | Todo o arquivo de e-mail não filtrado |
+| Guia de estilo, voz da marca | Documentos do concorrente aos quais você não tem direitos |
 
-**Refresh:** stale knowledge → confident wrong answers. Date your uploads; replace quarterly.
+**Atualização:** conhecimento obsoleto → respostas erradas confiantes. Data seus uploads; substitua trimestralmente.
 
-## 3. Building a useful custom assistant
+## 3. Construindo um assistente personalizado útil
 
 ```text
 1. One sentence purpose   ("Answers support tier-1 about Billing v2")
@@ -42,7 +42,7 @@ Same idea everywhere: **instructions + knowledge + (optional) tools**.
 7. Test with edge cases   (unknown product, angry user, non-English)
 ```
 
-### Instruction template
+### Modelo de instrução
 
 ```text
 Purpose: …

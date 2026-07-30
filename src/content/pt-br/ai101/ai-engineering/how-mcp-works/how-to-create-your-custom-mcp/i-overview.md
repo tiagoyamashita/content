@@ -1,25 +1,25 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "How to create your custom MCP"
 order: 1
 ---
-How to create your custom MCP — overview
-Hands-on track for building an **MCP server** — a small program that exposes **tools** (and optionally **resources** / **prompts**) so Cursor, Claude Desktop, and other hosts can call **your** APIs, scripts, or data.
+Como criar seu MCP personalizado — visão geral
+Treinamento prático para construir um servidor **MCP** — um pequeno programa que expõe **ferramentas** (e opcionalmente **recursos** / **prompts**) para que Cursor, Claude Desktop e outros hosts possam chamar **seus** APIs, scripts ou dados.
 
-Read [How MCP works](../i-overview.md) first for JSON-RPC, stdio vs HTTP, and the host/client/server roles. This track is **implementation**: scaffold → define tools → test → wire into Cursor.
+Leia [Como MCP funciona](../i-overview.md) primeiro para JSON-RPC, stdio vs HTTP e as funções de host/cliente/servidor. Esta trilha é **implementação**: andaime → definir ferramentas → testar → conectar em Cursor.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Plan your server](ii-plan-your-server.md) | Scope, tools vs resources, env vars, one job per server |
-| [Build with the SDK](iii-build-with-the-sdk.md) | TypeScript and Python project setup |
-| [Tools, resources & prompts](iv-tools-resources-and-prompts.md) | Schemas, handlers, error shapes |
-| [Test & wire into Cursor](v-test-and-wire-cursor.md) | MCP Inspector, `mcp.json`, debugging |
-| [Security & distribution](vi-security-and-distribution.md) | Secrets, scopes, npm/pip, team rollout |
+| [Planeje seu servidor](ii-plan-your-server.md) | Escopo, ferramentas versus recursos, variáveis ​​ambientais, um trabalho por servidor |
+| [Construa com o SDK](iii-build-with-the-sdk.md) | Configuração do projeto TypeScript e Python |
+| [Ferramentas, recursos e instruções](iv-tools-resources-and-prompts.md) | Esquemas, manipuladores, formas de erro |
+| [Teste e conecte em Cursor](v-test-and-wire-cursor.md) | MCP Inspetor,`mcp.json`, depuração |
+| [Segurança e distribuição](vi-security-and-distribution.md) | Segredos, escopos, npm/pip, implementação de equipe |
 
-## What you are building
+## O que você está construindo
 
 ```mermaid
 flowchart LR
@@ -28,30 +28,30 @@ flowchart LR
   Yours --> API[DB / API / script]
 ```
 
-| You write | Host handles |
+| Você escreve | Alças de host |
 |-----------|--------------|
-| Tool names, input schemas, handler logic | Spawning process, JSON-RPC, LLM tool choice |
-| Env-based secrets (`API_KEY`) | Injecting env from `mcp.json` |
-| Returning text / JSON in MCP `content` | Feeding tool results back to the model |
+| Nomes de ferramentas, esquemas de entrada, lógica de tratamento | Processo de geração, JSON-RPC, escolha da ferramenta LLM |
+| Segredos baseados em ambiente (`API_KEY`) | Injetando ambiente de`mcp.json`|
+| Retornando texto / JSON em MCP`content`| Alimentando os resultados da ferramenta de volta ao modelo |
 
-## When a custom MCP makes sense
+## Quando um MCP personalizado faz sentido
 
-| Build custom MCP | Use existing / Skills instead |
-|------------------|-------------------------------|
-| Internal API or DB only your team has | Official `@modelcontextprotocol/server-*` already exists |
-| Repeatable agent actions (create ticket, run query) | One-off instructions → [Skills](../../skills-and-agent-instructions/i-overview.md) |
-| Same connector for Cursor + Claude Desktop | Static docs the model should read every time |
+| Construir MCP personalizado | Em vez disso, use habilidades / existentes |
+|------------------|------------------------------------------|
+| API interno ou DB que somente sua equipe possui | Oficial`@modelcontextprotocol/server-*`já existe |
+| Ações repetíveis do agente (criar ticket, executar consulta) | Instruções únicas → [Habilidades](../../skills-and-agent-instructions/i-overview.md) |
+| Mesmo conector para Cursor + Claude Desktop | Documentos estáticos que o modelo deve ler sempre |
 
-## Study order
+## Ordem de estudo
 
-[Plan your server](ii-plan-your-server.md) → [Build with the SDK](iii-build-with-the-sdk.md) → [Tools, resources & prompts](iv-tools-resources-and-prompts.md) → [Test & wire into Cursor](v-test-and-wire-cursor.md) → [Security & distribution](vi-security-and-distribution.md)
+[Planeje seu servidor](ii-plan-your-server.md) → [Construir com o SDK](iii-build-with-the-sdk.md) → [Ferramentas, recursos e prompts](iv-tools-resources-and-prompts.md) → [Teste e conecte em Cursor](v-test-and-wire-cursor.md) → [Segurança e distribuição](vi-security-and-distribution.md)
 
-## Prerequisites
+## Pré-requisitos
 
-| Skill | Why |
+| Habilidade | Por que |
 |-------|-----|
-| Basic **JSON** | Tool inputs/outputs are JSON-shaped |
-| **Node 18+** or **Python 3.10+** | Official MCP SDKs |
-| One **external system** to wrap | REST API, Postgres, filesystem path, shell script |
+| Básico **JSON** | As entradas/saídas da ferramenta têm formato JSON |
+| **Nó 18+** ou **Python 3.10+** | SDKs MCP oficiais |
+| Um **sistema externo** para embrulhar | REST API, Postgres, caminho do sistema de arquivos, script de shell |
 
-**Spec reference:** [modelcontextprotocol.io](https://modelcontextprotocol.io)
+**Referência de especificações:** [modelcontextprotocol.io](https://modelcontextprotocol.io)

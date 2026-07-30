@@ -1,35 +1,35 @@
 ---
 label: "VI"
-subtitle: "Security & distribution"
+subtitle: "Segurança e distribuição"
 group: "How to create your custom MCP"
 order: 6
 ---
-Security & distribution
+Segurança e distribuição
 
-Custom MCP servers run **on the user’s machine** with whatever credentials you put in `env`. Treat them like small services with production hygiene.
+Servidores MCP personalizados são executados **na máquina do usuário** com quaisquer credenciais que você inserir`env`. Trate-os como pequenos serviços com higiene de produção.
 
-## 1. Security checklist
+## 1. Lista de verificação de segurança
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| **Leaked API keys** in `mcp.json` | Use env from OS secret store; `.gitignore` local overrides; document placeholders only in committed config |
-| **Overpowered token** | Scoped API keys (read-only CRM, single GitHub repo) |
-| **Prompt injection → tool abuse** | Narrow tools; no arbitrary code execution; confirm writes in UI ([Trust & verify](../../trust-privacy-and-verify/i-overview.md)) |
-| **Path traversal** | If reading files, canonicalize paths and jail to allowlisted roots |
-| **SSRF** | Do not pass user URLs straight to server-side `fetch` without allowlist |
-| **Logging secrets** | Redact tokens in stderr logs |
+| **Chaves API vazadas** em`mcp.json`| Use env do armazenamento secreto OS;`.gitignore`substituições locais; espaços reservados para documentos apenas na configuração confirmada |
+| **Token sobrecarregado** | Chaves API com escopo (CRM somente leitura, repositório GitHub único) |
+| **Injeção imediata → abuso de ferramenta** | Ferramentas estreitas; nenhuma execução arbitrária de código; confirmar gravações em UI ([Confiar e verificar](../../trust-privacy-and-verify/i-overview.md)) |
+| **Travessia de caminho** | Se estiver lendo arquivos, canonize os caminhos e prenda nas raízes da lista de permissões |
+| **SSRF** | Não passe URLs de usuários diretamente para o lado do servidor`fetch`sem lista de permissões |
+| **Segredos de registro** | Editar tokens em logs stderr |
 
-MCP does not add permissions — your API token still only does what the upstream API allows.
+MCP não adiciona permissões — seu token API ainda faz apenas o que o API upstream permite.
 
-## 2. Least-privilege tools
+## 2. Ferramentas com menos privilégios
 
-| Pattern | Example |
-|---------|---------|
-| Separate read vs write tools | `get_order` vs `cancel_order` — disable write server in low-trust contexts |
-| Allowlisted actions | `rerun_job` only for job ids matching `^ci-\d+$` |
-| Rate limiting | Throttle expensive API calls server-side |
+| Padrão | Exemplo |
+|--------|---------|
+| Ferramentas separadas de leitura e gravação |`get_order`contra`cancel_order`— desabilitar servidor de gravação em contextos de baixa confiança |
+| Ações permitidas |`rerun_job`apenas para correspondência de IDs de trabalho`^ci-\d+$`|
+| Limitação de taxa | Acelerar chamadas API caras do lado do servidor |
 
-## 3. README template for your repo
+## 3. Modelo README para seu repositório
 
 ```markdown
 # my-mcp-server
@@ -51,16 +51,16 @@ Add to `.cursor/mcp.json` (see docs).
 npm run build && npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-## 4. Distribution options
+## 4. Opções de distribuição
 
-| Method | Audience |
+| Método | Público |
 |--------|----------|
-| **Git repo + `mcp.json` snippet** | Internal team |
-| **npm** `npx -y @yourorg/my-mcp-server` | TS servers — same pattern as official MCP packages |
-| **pip** + `uvx` | Python FastMCP packages |
-| **Single binary** (Go/Rust) | Air-gapped or no Node/Python on host |
+| **Git repositório +`mcp.json`trecho** | Equipe interna |
+| **npm**`npx -y @yourorg/my-mcp-server`| Servidores TS — mesmo padrão dos pacotes MCP oficiais |
+| ** pip ** +`uvx`| Pacotes Python RápidoMCP |
+| **Binário único** (Go/Rust) | Air gap ou nenhum nó/Python no host |
 
-Published package example in `mcp.json`:
+Exemplo de pacote publicado em`mcp.json`TÉCNICO.:
 
 ```json
 {
@@ -74,34 +74,34 @@ Published package example in `mcp.json`:
 }
 ```
 
-## 5. Versioning and breaking changes
+## 5. Controle de versão e alterações significativas
 
-| Change | Practice |
+| Alterar | Prática |
 |--------|----------|
-| Rename tool | Major version bump; document migration |
-| Add optional field | Minor — backward compatible |
-| Remove tool | Major; warn in server startup log |
+| Ferramenta renomear | Aumento da versão principal; migração de documentos |
+| Adicionar campo opcional | Menor — compatível com versões anteriores |
+| Remover ferramenta | Principal; avisa no log de inicialização do servidor |
 
-## 6. MCP vs Skills — when to add which
+## 6. MCP vs Habilidades — quando adicionar quais
 
-| Layer | Holds |
+| Camada | Detém |
 |-------|-------|
-| **MCP server** | Live data, authenticated APIs, mutations |
-| **Skill** | How your team wants the agent to use those tools ([Skills](../../skills-and-agent-instructions/i-overview.md)) |
+| **MCP servidor** | Dados ativos, APIs autenticados, mutações |
+| **Habilidade** | Como sua equipe deseja que o agente use essas ferramentas ([Habilidades](../../skills-and-agent-instructions/i-overview.md)) |
 
-Example: MCP exposes `search_logs`; a Skill says “always filter `env=prod` and last 1h unless user specifies otherwise.”
+Exemplo: MCP expõe`search_logs`; uma Skill diz “sempre filtrar`env=prod`e dura 1h, a menos que o usuário especifique o contrário.”
 
-## 7. Operational monitoring
+## 7. Monitoramento operacional
 
-| Signal | Action |
+| Sinal | Ação |
 |--------|--------|
-| Tool latency | Log duration to stderr; alert on p95 |
-| API 401/403 | Clear error text — “rotate CRM_API_KEY” |
-| Crash on startup | CI job that runs Inspector headless against mock env |
+| Latência da ferramenta | Duração do registro em stderr; alerta na p95 |
+| API 401/403 | Limpar texto de erro – “girar CRM_API_KEY” |
+| Falha na inicialização | CI trabalho que executa o Inspector headless em um ambiente simulado |
 
-## Related
+## Relacionado
 
-- [How MCP works](../i-overview.md)
-- [JSON-RPC & transports](../ii-json-rpc-and-transports.md)
-- [MCP vs connectors & security](../iv-mcp-vs-connectors-and-security.md)
-- [Agents & MCP wiring](../../agents-and-agentic-workflows/ii-chat-assistant-agent.md)
+- [Como MCP funciona](../i-overview.md)
+- [JSON-RPC & transportes](../ii-json-rpc-and-transports.md)
+- [MCP vs conectores e segurança](../iv-mcp-vs-connectors-and-security.md)
+- [Agentes e fiação MCP](../../agents-and-agentic-workflows/ii-chat-assistant-agent.md)
