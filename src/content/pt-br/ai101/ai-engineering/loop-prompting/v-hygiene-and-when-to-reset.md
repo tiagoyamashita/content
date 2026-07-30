@@ -1,81 +1,81 @@
 ---
 label: "V"
-subtitle: "Hygiene & when to reset"
+subtitle: "Higiene e quando reiniciar"
 group: "AI Applied"
 order: 5
 ---
-Hygiene & when to reset
-Loop prompting fails when **stored context lies** or **threads rot**. Maintain persistent layers like code: review, version, and reset deliberately.
+Higiene e quando reiniciar
+A solicitação de loop falha quando **contexto armazenado reside** ou **threads apodrecem**. Mantenha camadas persistentes como código: revise, versione e redefina deliberadamente.
 
-## 1. Context rot symptoms
+## 1. Sintomas de podridão de contexto
 
-| Symptom | Likely cause |
-|---------|--------------|
-| Model “forgets” rules mid-thread | Context window filled with old turns |
-| Contradictory answers | Polluted thread + outdated skill |
-| Wrong file patterns | Rules glob mismatch after refactor |
-| Loop keeps reporting stale status | Watcher not reset after deploy |
+| Sintoma | Causa provável |
+|--------|-------------|
+| Modelo “esquece” regras no meio da discussão | Janela de contexto repleta de curvas antigas |
+| Respostas contraditórias | Tópico poluído + habilidade desatualizada |
+| Padrões de arquivo errados | Incompatibilidade global de regras após refatoração |
+| Loop continua reportando status obsoleto | Observador não redefinido após implantação |
 
-## 2. When to reset
+## 2. Quando redefinir
 
-| Reset **thread** | Reset **instructions / skill** |
+| Redefinir **tópico** | Redefinir **instruções/habilidade** |
 |------------------|--------------------------------|
-| Model stuck repeating mistake | Process or stack changed |
-| Topic pivot | Instructions have wrong facts |
-| Confidential bleed | Skill copied from old job |
-| Long thread > ~20 heavy turns | Quarterly review either way |
+| Modelo travou repetindo erro | Processo ou pilha alterada |
+| Pivô do tópico | As instruções contêm fatos errados |
+| Sangramento confidencial | Habilidade copiada de emprego antigo |
+| Linha longa > ~20 voltas pesadas | Revisão trimestral de qualquer maneira |
 
-**New chat + same project** often fixes thread rot without losing persistent instructions.
+**Novo bate-papo + mesmo projeto** geralmente corrige problemas de thread sem perder instruções persistentes.
 
-## 3. Maintenance cadence
+## 3. Cadência de manutenção
 
-| Artifact | Review |
+| Artefato | Revisão |
 |----------|--------|
-| Custom GPT / Project instructions | When output quality slips |
-| `SKILL.md` | After workflow or CLI changes |
-| `.cursor/rules` | After major refactor |
-| `AGENTS.md` | When test commands or layout change |
-| Automation loops | After repo rename, branch policy change |
+| GPT personalizado / instruções do projeto | Quando a qualidade da saída diminui |
+|`SKILL.md`| Após alterações no fluxo de trabalho ou CLI |
+|`.cursor/rules`| Após grande refatoração |
+|`AGENTS.md`| Quando comandos de teste ou alteração de layout |
+| Loops de automação | Após a renomeação do repositório, alteração da política da ramificação |
 
-Add **last reviewed** date in skill footer if your team forgets.
+Adicione a data da **última revisão** no rodapé da habilidade caso sua equipe esqueça.
 
-## 4. Trust and verification in loops
+## 4. Confiança e verificação em loops
 
-Loops amplify mistakes — the same wrong check runs every 5 minutes.
+Loops amplificam erros – a mesma verificação errada é executada a cada 5 minutos.
 
-| Habit | Apply to |
+| Hábito | Inscreva-se em |
 |-------|----------|
-| **Verify sources** | Research loops, data summaries |
-| **Diff before accept** | Code loops, agent edits |
-| **Human gate** | External sends, merges, spend |
-| **Log loop output** | Audit what auto-ran |
+| **Verifique as fontes** | Ciclos de pesquisa, resumos de dados |
+| **Diferença antes de aceitar** | Loops de código, edições de agente |
+| **Portão humano** | Envios externos, mesclagens, gastos |
+| **Saída do loop de registro** | Audite o que foi executado automaticamente |
 
-See [Trust, privacy & verify](../trust-privacy-and-verify/i-overview.md).
+Consulte [Confiança, privacidade e verificação](../trust-privacy-and-verify/i-overview.md).
 
-## 5. Security boundaries
+## 5. Limites de segurança
 
-| Never loop unattended… | Without… |
+| Nunca faça loop sem supervisão… | Sem… |
 |------------------------|----------|
-| Send email / Slack to customers | Approval step |
-| Merge to main | CI + human review |
-| Use production credentials | Scoped read-only tokens |
-| Paste secrets into instructions | Redaction and env vars |
+| Enviar email/Slack para clientes | Etapa de aprovação |
+| Mesclar para principal | CI + revisão humana |
+| Use credenciais de produção | Tokens somente leitura com escopo definido |
+| Cole segredos nas instruções | Redação e env vars |
 
-Recurring prompts in shared terminals or logs can **leak** task details — scope loops to trusted environments.
+Solicitações recorrentes em terminais ou logs compartilhados podem **vazar** detalhes da tarefa — loops de escopo para ambientes confiáveis.
 
-## 6. Team rollout
+## 6. Lançamento da equipe
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| 1 | Identify top 3 repeated prompts → skills or project |
-| 2 | Document in repo (`AGENTS.md`, team wiki) |
-| 3 | Short internal examples of **delta** messages |
-| 4 | Shared review of skills like code |
-| 5 | Measure time saved; drop unused loops |
+| 1 | Identifique os 3 principais prompts repetidos → habilidades ou projeto |
+| 2 | Documento no repositório (`AGENTS.md`, equipe wiki) |
+| 3 | Pequenos exemplos internos de mensagens **delta** |
+| 4 | Revisão compartilhada de habilidades como código |
+| 5 | Meça o tempo economizado; descartar loops não utilizados |
 
-## 7. Decision checklist
+## 7. Lista de verificação de decisão
 
-Before starting a loop workflow:
+Antes de iniciar um fluxo de trabalho de loop:
 
 ```text
 [ ] Persistent layer holds stable rules (not retyped each time)
@@ -86,10 +86,10 @@ Before starting a loop workflow:
 [ ] Stop condition defined for recurring loops
 ```
 
-## 8. Rehearsal questions
+## 8. Perguntas de ensaio
 
-- What is context rot and one fix?
-- When should you update a skill vs start a new chat?
-- Why are unattended loops risky for customer email?
+- O que é a podridão do contexto e uma correção?
+- Quando você deve atualizar uma habilidade em vez de iniciar um novo chat?
+- Por que os loops autônomos são arriscados para o e-mail do cliente?
 
-**Next:** [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md) or [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md).
+**Próximo:** [Agentes e fluxos de trabalho de agente](../agents-and-agentic-workflows/i-overview.md) ou [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md).

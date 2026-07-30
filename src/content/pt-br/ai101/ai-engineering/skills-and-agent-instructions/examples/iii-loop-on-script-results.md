@@ -1,21 +1,21 @@
 ---
 label: "III"
-subtitle: "Loop on script results"
+subtitle: "Loop nos resultados do script"
 group: "Skills examples"
 order: 3
 ---
-Loop on script results
+Loop nos resultados do script
 
-**Goal:** Run a script, read its **log file**, and **iterate** on the same data — refine fixes or analysis without re-fetching from scratch each time. Keeps `current_log_file` in the conversation as the source of truth.
+**Objetivo:** executar um script, ler seu **arquivo de log** e **iterar** os mesmos dados — refinar correções ou análises sem buscar novamente do zero todas as vezes. Mantém`current_log_file`na conversa como fonte da verdade.
 
-## Live files (copy-ready)
+## Arquivos ativos (prontos para cópia)
 
-| File | Path |
+| Arquivo | Caminho |
 |------|------|
-| Skill instructions | [`.cursor/skills/test-flake-hunt/SKILL.md`](.cursor/skills/test-flake-hunt/SKILL.md) |
-| Script | [`.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py`](.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py) |
+| Instruções de habilidade | [`.cursor/skills/test-flake-hunt/SKILL.md`](.cursor/skills/test-flake-hunt/SKILL.md) |
+| Roteiro | [`.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py`](.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py) |
 
-## Folder layout
+## Layout de pasta
 
 ```text
 .cursor/skills/test-flake-hunt/
@@ -24,21 +24,20 @@ Loop on script results
   logs/
 ```
 
-## Loop pattern (from SKILL.md)
+## Padrão de loop (de SKILL.md)
 
-1. **Round 1** — run `python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[pattern]"`
-2. Store `current_log_file` from script output.
-3. **Round 2+** — read same log; propose fix; re-run only to verify.
-4. **Stop** at `exit_code == 0`, user stop, or 5 iterations without progress.
+1. **Rodada 1** – corrida`python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[pattern]"`2. Loja`current_log_file`da saída do script.
+3. **Rodada 2+** — leia o mesmo registro; propor correção; execute novamente apenas para verificar.
+4. **Pare** em`exit_code == 0`, parada do usuário ou 5 iterações sem progresso.
 
-## Optional: Cursor `stop` hook
+## Opcional: Cursor`stop`gancho
 
-For automatic “keep going” loops, use a `stop` hook with `loop_limit` — see [Hook — secrets scan](iv-hook-secrets-env-scan.md). Skills alone rely on the agent following the loop in `SKILL.md`.
+Para loops automáticos de “continuação”, use um`stop`gancho com`loop_limit`— veja [Gancho — verificação de segredos](iv-hook-secrets-env-scan.md). As habilidades por si só dependem do agente seguir o ciclo`SKILL.md`.
 
-## Tie-in
+## Ligação
 
-[Loop prompting](../../loop-prompting/i-overview.md) — short deltas each turn (“iteration 3: read last log, fix `auth.test.ts`”).
+[Aviso de loop](../../loop-prompting/i-overview.md) — deltas curtos a cada turno (“iteração 3: ler o último log, corrigir`auth.test.ts`”).
 
-## Next
+## Próximo
 
-[Hook — secrets & `.env` scan](iv-hook-secrets-env-scan.md) — automatic checks without user asking.
+[Gancho – segredos e`.env`digitalizar](iv-hook-secrets-env-scan.md) — verificações automáticas sem solicitação do usuário.

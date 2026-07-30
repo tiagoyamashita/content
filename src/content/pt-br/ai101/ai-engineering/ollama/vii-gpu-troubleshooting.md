@@ -1,12 +1,12 @@
 ---
 label: "VII"
-subtitle: "GPU & troubleshooting"
+subtitle: "GPU e solução de problemas"
 group: "Ollama"
 order: 7
 ---
-GPU & troubleshooting
+GPU e solução de problemas
 
-## 1. Confirm GPU is used
+## 1. Confirme que GPU é usado
 
 ```bash
 ollama run qwen2.5-coder:7b "hi"
@@ -15,62 +15,62 @@ ollama ps
 watch -n1 nvidia-smi
 ```
 
-| `ollama ps` shows | Meaning |
+|`ollama ps`shows | Significado |
 |-------------------|---------|
-| **100% GPU** | Good — model on card |
-| **100% CPU** | GPU not used — see fixes below |
-| **Mixed %** | Partial offload — normal for tight VRAM |
+| **100% GPU** | Bom — modelo no cartão |
+| **100% CPU** | GPU não usado — veja as correções abaixo |
+| **% misto** | Descarregamento parcial — normal para VRAM apertado |
 
-## 2. CPU-only when GPU expected
+## 2. CPU - somente quando GPU é esperado
 
-| Check | Fix |
+| Verifique | Correção |
 |-------|-----|
-| `nvidia-smi` fails | Install/fix NVIDIA driver; reboot |
-| Model too large | Smaller tag (`3b` not `32b`) |
-| Driver too old | Update to 535+ / 550+ |
-| Wrong Ollama build | Reinstall from [ollama.com](https://ollama.com/download) |
-| Force CPU test | `OLLAMA_NUM_GPU=0` — remove for normal use |
+|`nvidia-smi`falha | Instalar/corrigir o driver NVIDIA; reiniciar |
+| Modelo muito grande | Etiqueta menor (`3b`não`32b`) |
+| Motorista muito velho | Atualizar para 535+/550+ |
+| Compilação Ollama errada | Reinstale em [ollama.com](https://ollama.com/download) |
+| Forçar teste CPU |`OLLAMA_NUM_GPU=0`— remover para uso normal |
 
-Linux: ensure user can access GPU (`nvidia-smi` as same user running Ollama).
+Linux: garanta que o usuário possa acessar GPU (`nvidia-smi`como mesmo usuário executando Ollama).
 
-## 3. Out of memory (OOM)
+## 3. Sem memória (OOM)
 
-| Symptom | Fix |
-|---------|-----|
-| CUDA OOM / crash on load | Smaller model; `qwen2.5-coder:3b` |
-| OOM during long chat | Lower `num_ctx` (`/set num_ctx 2048`) |
-| Multiple models loaded | `ollama ps` — wait for idle unload or restart service |
-| Disk full on pull | `ollama rm` old models; `df -h ~/.ollama` |
+| Sintoma | Correção |
+|--------|-----|
+| CUDA OOM / falha na carga | Modelo menor;`qwen2.5-coder:3b`|
+| OOM durante um longo bate-papo | Mais baixo`num_ctx`(`/set num_ctx 2048`) |
+| Vários modelos carregados |`ollama ps`— aguarde o descarregamento ocioso ou reinicie o serviço |
+| Disco cheio ao puxar |`ollama rm`modelos antigos;`df -h ~/.ollama`|
 
-VRAM guide: [Model RAM requirements](../implementation-example/iv-model-ram-requirements.md). RTX 1080 specifics: [Install & run on RTX 1080](../implementation-example/vi-install-and-run-rtx-1080.md).
+Guia VRAM: [Requisitos do modelo RAM](../implementation-example/iv-model-ram-requirements.md). Especificações de RTX 1080: [Instalar e executar em RTX 1080](../implementation-example/vi-install-and-run-rtx-1080.md).
 
-## 4. Slow generation
+## 4. Geração lenta
 
-| Cause | Guidance |
+| Causa | Orientação |
 |-------|----------|
-| **7B on older GPU** | ~20–35 tok/s is normal for RTX 1080 |
-| **CPU inference** | Much slower — fix GPU first |
-| **Cold start** | First token after idle load is slower |
-| **Context too long** | KV cache cost — shorten `num_ctx` |
+| **7B em GPU** mais antigo | ~20–35 tok/s é normal para RTX 1080 |
+| **CPU inferência** | Muito mais lento — corrija GPU primeiro |
+| **Início a frio** | O primeiro token após o carregamento ocioso é mais lento |
+| **Contexto muito longo** | Custo de cache KV – encurtar`num_ctx`|
 
-## 5. Connection errors (API / Cursor)
+## 5. Erros de conexão (API / Cursor)
 
-| Error | Fix |
+| Erro | Correção |
 |-------|-----|
-| `connection refused` | `ollama serve` or `systemctl start ollama` |
-| Wrong model name | `ollama list` — use exact tag |
-| Cursor cannot reach API | Base URL must be `http://localhost:11434/v1` |
-| Remote machine | SSH tunnel or set `OLLAMA_HOST` (trusted network only) |
+|`connection refused`|`ollama serve`ou`systemctl start ollama`|
+| Nome de modelo errado |`ollama list`— use tag exata |
+| Cursor não pode acessar API | A base URL deve ser`http://localhost:11434/v1`|
+| Máquina remota | SSH túnel ou conjunto`OLLAMA_HOST`(somente rede confiável) |
 
-## 6. Pull / download failures
+## 6. Falhas de pull/download
 
-| Problem | Fix |
-|---------|-----|
-| Interrupted download | Re-run `ollama pull` — resumes |
-| No disk space | Remove models with `ollama rm` |
-| Proxy / firewall | Configure system proxy; check corporate SSL inspection |
+| Problema | Correção |
+|--------|-----|
+| Download interrompido | Executar novamente`ollama pull`— currículos |
+| Sem espaço em disco | Remover modelos com`ollama rm`|
+| Proxy/firewall | Configurar proxy do sistema; verificar inspeção corporativa SSL |
 
-## 7. Reset
+## 7. Redefinir
 
 ```bash
 sudo systemctl stop ollama
@@ -80,10 +80,10 @@ sudo systemctl start ollama
 ollama pull qwen2.5-coder:7b
 ```
 
-Use reset only when cache is corrupted — re-downloads all models.
+Use a redefinição somente quando o cache estiver corrompido – baixa novamente todos os modelos.
 
-## Related
+## Relacionado
 
-- [Install & setup](ii-install-and-setup.md)
-- [API & IDE integration](v-api-and-ide-integration.md)
-- [Implementation examples](../implementation-example/i-overview.md)
+- [Instalar e configurar](ii-install-and-setup.md)
+- [integração API e IDE](v-api-and-ide-integration.md)
+- [Exemplos de implementação](../implementation-example/i-overview.md)

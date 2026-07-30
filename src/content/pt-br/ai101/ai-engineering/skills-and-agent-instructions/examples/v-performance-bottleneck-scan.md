@@ -1,21 +1,21 @@
 ---
 label: "V"
-subtitle: "Performance & bottlenecks"
+subtitle: "Desempenho e gargalos"
 group: "Skills examples"
 order: 5
 ---
-Performance & bottlenecks
+Desempenho e gargalos
 
-**Goal:** A **skill-triggered** bot that scans for **performance issues** — large files, sync I/O heuristics, optional HTTP timing — and logs **runtime + findings** for the agent to summarize and suggest fixes.
+**Objetivo:** um bot **acionado por habilidade** que verifica **problemas de desempenho** — arquivos grandes, heurística I/O de sincronização, tempo HTTP opcional — e registra **tempo de execução + descobertas** para o agente resumir e sugerir correções.
 
-## Live files (copy-ready)
+## Arquivos ativos (prontos para cópia)
 
-| File | Path |
+| Arquivo | Caminho |
 |------|------|
-| Skill instructions | [`.cursor/skills/perf-scan/SKILL.md`](.cursor/skills/perf-scan/SKILL.md) |
-| Script | [`.cursor/skills/perf-scan/scripts/perf_scan.py`](.cursor/skills/perf-scan/scripts/perf_scan.py) |
+| Instruções de habilidade | [`.cursor/skills/perf-scan/SKILL.md`](.cursor/skills/perf-scan/SKILL.md) |
+| Roteiro | [`.cursor/skills/perf-scan/scripts/perf_scan.py`](.cursor/skills/perf-scan/scripts/perf_scan.py) |
 
-## Folder layout
+## Layout de pasta
 
 ```text
 .cursor/skills/perf-scan/
@@ -24,19 +24,19 @@ Performance & bottlenecks
   logs/
 ```
 
-## Run
+## Correr
 
 ```bash
 PERF_URL="${PERF_URL:-}" python3 .cursor/skills/perf-scan/scripts/perf_scan.py "."
 ```
 
-Agent flow: ask scope → confirm → run → read log → prioritize top 3 findings.
+Fluxo do agente: perguntar escopo → confirmar → executar → ler log → priorizar as três principais descobertas.
 
-## Combine with loop example
+## Combine com exemplo de loop
 
-[Loop on script results](iii-loop-on-script-results.md) — baseline log, fix, re-run, compare `findings_count`.
+[Loop nos resultados do script](iii-loop-on-script-results.md) — registro de linha de base, corrigir, executar novamente, comparar`findings_count`.
 
-## Related
+## Relacionado
 
-- [Parameterized script + clarify](ii-parameterized-script-clarify.md)
-- [Examples overview](i-overview.md)
+- [Script parametrizado + esclarecimento](ii-parameterized-script-clarify.md)
+- [Visão geral dos exemplos](i-overview.md)

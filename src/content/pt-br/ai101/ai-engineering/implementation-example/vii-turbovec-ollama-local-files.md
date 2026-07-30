@@ -1,23 +1,23 @@
 ---
 label: "VII"
-subtitle: "TurboVec + Ollama + local files"
+subtitle: "TurboVec + Ollama + arquivos locais"
 group: "AI Applied"
 order: 7
 ---
-TurboVec + Ollama + local files
+TurboVec + Ollama + arquivos locais
 
-Build a **fully local RAG** stack: your files stay on disk, **Ollama** embeds and generates, **[TurboVec](https://github.com/RyanCodrai/turbovec)** stores compressed vectors on disk — no cloud APIs, no managed vector DB.
+Crie uma pilha **RAG** totalmente local: seus arquivos permanecem no disco, **Ollama** incorpora e gera, **[TurboVec](https://github.com/RyanCodrai/turbovec)** armazena vetores compactados em disco — sem nuvem APIs, sem vetor gerenciado DB.
 
-For when vector search fits vs MCP vs skills, see [Vector DB, skills & reference](../how-mcp-works/v-vector-db-skills-and-reference.md).
+Para saber quando a pesquisa vetorial se ajusta vs MCP vs habilidades, consulte [Vetor DB, habilidades e referência](../how-mcp-works/v-vector-db-skills-and-reference.md).
 
-## 1. What TurboVec does
+## 1. O que o TurboVec faz
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **Your files** | Source of truth — `.md`, `.txt`, `.pdf` (after text extract), code, runbooks |
-| **Ollama `nomic-embed-text`** | Turns each chunk into a 768-dim embedding vector |
-| **TurboVec** | Compresses vectors (TurboQuant, 4-bit default) and runs fast similarity search |
-| **Ollama LLM** (e.g. `qwen2.5-coder:7b`) | Reads retrieved chunks and answers |
+| **Seus arquivos** | Fonte da verdade -`.md`,`.txt`,`.pdf`(após extração de texto), código, runbooks |
+| **Ollama`nomic-embed-text`** | Transforma cada pedaço em um vetor de incorporação de 768 dimensões |
+| **TurboVec** | Compacta vetores (TurboQuant, padrão de 4 bits) e executa pesquisa rápida de similaridade |
+| **Ollama LLM** (por ex.`qwen2.5-coder:7b`) | Lê pedaços recuperados e respostas |
 
 ```text
 Local files  →  chunk  →  Ollama embed  →  TurboVec index (.tvim + .nodes.json)
@@ -25,9 +25,9 @@ Local files  →  chunk  →  Ollama embed  →  TurboVec index (.tvim + .nodes.
 User question  →  embed  →  top-k chunks  →  prompt  →  Ollama LLM  →  answer
 ```
 
-TurboVec is **not** an MCP server by itself — it is the **retrieval engine** behind a Python/LlamaIndex app (or an MCP tool you write later that calls `search()`).
+TurboVec **não** é um servidor MCP por si só — é o **mecanismo de recuperação** por trás de um aplicativo Python/LlamaIndex (ou uma ferramenta MCP que você escreve mais tarde e que chama`search()`).
 
-## 2. Prerequisites
+## 2. Pré-requisitos
 
 ```bash
 # Ollama running
@@ -38,18 +38,18 @@ ollama pull nomic-embed-text
 ollama pull qwen2.5-coder:7b    # coding; or qwen2.5:7b for general chat
 ```
 
-| Model | Purpose | VRAM (approx) |
-|-------|---------|---------------|
-| `nomic-embed-text` | Embeddings | Small — loads on demand |
-| `qwen2.5-coder:7b` | Answers / code | ~5 GB Q4 on GPU |
+| Modelo | Finalidade | VRAM (aprox.) |
+|-------|------------|---------------|
+|`nomic-embed-text`| Incorporações | Pequenas — cargas sob pedido |
+|`qwen2.5-coder:7b`| Respostas/código | ~5 GB Q4 em GPU |
 
-Verify Ollama:
+Verifique Ollama:
 
 ```bash
 curl http://localhost:11434/api/tags
 ```
 
-## 3. Python environment
+## 3. Ambiente Python
 
 ```bash
 python3 -m venv ~/local-rag-venv
@@ -58,14 +58,14 @@ pip install -U pip
 pip install "turbovec[llama-index]" llama-index llama-index-llms-ollama llama-index-embeddings-ollama
 ```
 
-| Package | Role |
-|---------|------|
-| `turbovec[llama-index]` | `TurboQuantVectorStore` — drop-in for LlamaIndex simple store |
-| `llama-index` | Chunking, indexing, query engine |
-| `llama-index-llms-ollama` | Chat/completion via Ollama |
-| `llama-index-embeddings-ollama` | Embeddings via Ollama |
+| Pacote | Função |
+|--------|------|
+|`turbovec[llama-index]`|`TurboQuantVectorStore`- visita à loja simples LlamaIndex |
+|`llama-index`| Chunking, indexação, mecanismo de consulta |
+|`llama-index-llms-ollama`| Bate-papo/conclusão via Ollama |
+|`llama-index-embeddings-ollama`| Incorporações via Ollama |
 
-## 4. Local file layout
+## 4. Layout de arquivo local
 
 ```text
 ~/local-rag/
@@ -78,11 +78,11 @@ pip install "turbovec[llama-index]" llama-index llama-index-llms-ollama llama-in
   ingest_and_ask.py
 ```
 
-Put **only** files you are allowed to index in `data/`. TurboVec persists chunk text in `store/*.nodes.json` — treat `store/` as sensitive.
+Coloque **somente** arquivos nos quais você tem permissão para indexar`data/`. TurboVec persiste em pedaços de texto`store/*.nodes.json`- tratar`store/`tão sensível.
 
-## 5. Ingest local files and build the index
+## 5. Ingerir arquivos locais e construir o índice
 
-`ingest_and_ask.py`:
+`ingest_and_ask.py`TÉCNICO.:
 
 ```python
 from pathlib import Path
@@ -135,11 +135,11 @@ cd ~/local-rag
 python ingest_and_ask.py
 ```
 
-First run embeds every chunk through Ollama — slow on large corpora; later runs load from `store/`.
+A primeira execução incorpora cada pedaço através de Ollama – lento em corpora grandes; mais tarde executa o carregamento de`store/`.
 
-## 6. Ask questions (query engine)
+## 6. Faça perguntas (mecanismo de consulta)
 
-Add to the same file or a separate `ask.py`:
+Adicione ao mesmo arquivo ou em um arquivo separado`ask.py`TÉCNICO.:
 
 ```python
 from pathlib import Path
@@ -178,21 +178,21 @@ print(response)
 python ask.py
 ```
 
-Answers are grounded in chunks retrieved from **your** files — verify citations in the response text.
+As respostas são baseadas em partes recuperadas de **seus** arquivos — verifique as citações no texto da resposta.
 
-## 7. Re-index after file changes
+## 7. Reindexar após alterações no arquivo
 
-| Change | Action |
+| Alterar | Ação |
 |--------|--------|
-| New or edited files | Re-run ingest (or write incremental `add()` for new docs only) |
-| Start fresh | Delete `store/` and rebuild |
-| Single doc removed | `vector_store.delete(ref_doc_id)` per [TurboVec LlamaIndex docs](https://github.com/RyanCodrai/turbovec/blob/main/docs/integrations/llama_index.md) |
+| Arquivos novos ou editados | Execute novamente a ingestão (ou grave incremental`add()`somente para novos documentos) |
+| Comece do zero | Excluir`store/`e reconstruir |
+| Documento único removido |`vector_store.delete(ref_doc_id)`por [documentos do TurboVec LlamaIndex](https://github.com/RyanCodrai/turbovec/blob/main/docs/integrations/llama_index.md) |
 
-TurboVec supports **online ingest** — no separate training phase; new vectors append to the index.
+TurboVec suporta **ingestão online** — sem fase de treinamento separada; novos vetores são anexados ao índice.
 
-## 8. Minimal TurboVec without LlamaIndex
+## 8. TurboVec mínimo sem LlamaIndex
 
-For scripts that already have embeddings as NumPy arrays:
+Para scripts que já possuem embeddings como matrizes NumPy:
 
 ```python
 import numpy as np
@@ -207,46 +207,46 @@ index.write("my_index.tv")
 loaded = TurboQuantIndex.load("my_index.tv")
 ```
 
-Pair with your own chunker and `ollama embed` CLI or HTTP API for embeddings.
+Combine com seu próprio chunker e`ollama embed`CLI ou HTTP API para incorporações.
 
-## 9. RTX 1080 notes
+## 9. RTX 1080 notas
 
-| Concern | Guidance |
-|---------|----------|
-| **VRAM** | Embed model is small; `qwen2.5-coder:7b` fits 8 GB — see [Install & run on RTX 1080](vi-install-and-run-rtx-1080.md) |
-| **RAM** | TurboVec compresses vectors heavily — large doc sets stay smaller than raw float32 FAISS |
-| **Speed** | Ingest is embed-bound (Ollama); search is fast on CPU thanks to SIMD kernels |
-| **Coding docs** | `qwen2.5-coder:7b` + your repo markdown/code in `data/` |
+| Preocupação | Orientação |
+|--------|----------|
+| **VRAM** | O modelo incorporado é pequeno;`qwen2.5-coder:7b`serve para 8 GB — consulte [Instalar e executar em RTX 1080](vi-install-and-run-rtx-1080.md) |
+| **RAM** | O TurboVec compacta fortemente os vetores - grandes conjuntos de documentos permanecem menores que o float bruto32 FAISS |
+| **Velocidade** | A ingestão é incorporada (Ollama); a pesquisa é rápida em CPU graças aos kernels SIMD |
+| **Documentos de codificação** |`qwen2.5-coder:7b`+ sua marcação/código do repositório em`data/`|
 
-Monitor during ingest:
+Monitore durante a ingestão:
 
 ```bash
 watch -n1 nvidia-smi
 ollama ps
 ```
 
-## 10. Optional: expose as an MCP tool
+## 10. Opcional: expor como uma ferramenta MCP
 
-Wrap search in a custom MCP server so Cursor can call `search_handbook(query)`:
+Envolva a pesquisa em um servidor MCP personalizado para que Cursor possa chamar`search_handbook(query)`TÉCNICO.:
 
 ```text
 MCP tool handler  →  embed query (Ollama)  →  TurboVec search  →  return top chunks as text
 ```
 
-See [How to create your custom MCP](../how-mcp-works/how-to-create-your-custom-mcp/i-overview.md).
+Consulte [Como criar seu MCP personalizado](../how-mcp-works/how-to-create-your-custom-mcp/i-overview.md).
 
-## 11. Troubleshooting
+## 11. Solução de problemas
 
-| Problem | Fix |
-|---------|-----|
-| `connection refused` to Ollama | `ollama serve`; check `OLLAMA_BASE` |
-| Wrong embedding dim | Use `nomic-embed-text` (768) or match `TurboQuantIndex(dim=…)` to your embed model |
-| Empty answers | More chunks in `data/`; increase `similarity_top_k`; check file encoding |
-| Slow ingest | Normal — embed every chunk once; persist and reuse `store/` |
-| `persist` JSON error | Metadata on nodes must be JSON-serializable |
+| Problema | Correção |
+|--------|-----|
+|`connection refused`para Ollama |`ollama serve`; verificar`OLLAMA_BASE`|
+| Incorporação errada dim | Usar`nomic-embed-text`(768) ou combinar`TurboQuantIndex(dim=…)`ao seu modelo incorporado |
+| Respostas vazias | Mais pedaços em`data/`; aumentar`similarity_top_k`; verifique a codificação do arquivo |
+| Ingestão lenta | Normal – incorpore cada pedaço uma vez; persistir e reutilizar`store/`|
+|`persist`Erro JSON | Os metadados nos nós devem ser serializáveis ​​JSON |
 
-## Related
+## Relacionado
 
-- [Downloading from Hugging Face](ii-downloading-from-huggingface.md) — if you switch from Ollama to HF embed models
-- [Vector DB, skills & reference](../how-mcp-works/v-vector-db-skills-and-reference.md)
-- [RAG for users](../custom-assistants-and-knowledge/iii-rag-and-knowledge-libraries.md)
+- [Baixando do Hugging Face](ii-downloading-from-huggingface.md) — se você mudar de modelos incorporados Ollama para HF
+- [Vetor DB, habilidades e referência](../how-mcp-works/v-vector-db-skills-and-reference.md)
+- [RAG para usuários](../custom-assistants-and-knowledge/iii-rag-and-knowledge-libraries.md)

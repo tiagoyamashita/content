@@ -1,33 +1,33 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Loop prompting — overview
-**Loop prompting** is working with AI in **cycles** instead of **restarting from zero every time**. You invest once in durable instructions and context, then each turn is a small correction or trigger — not another full brief.
+Solicitação de loop — visão geral
+**A solicitação de loop** está funcionando com AI em **ciclos** em vez de **reiniciar do zero todas as vezes**. Você investe uma vez em instruções e contexto duráveis, então cada turno é uma pequena correção ou gatilho - e não outro briefing completo.
 
-This sits between [Effective prompting](../effective-prompting/i-overview.md) (how to write a good prompt) and [Agents](../agents-and-agentic-workflows/i-overview.md) (multi-step tool use). Loop prompting is the **habit layer**: stop re-explaining what the model should already know.
+Isso fica entre [Solicitação efetiva](../effective-prompting/i-overview.md) (como escrever um bom prompt) e [Agentes](../agents-and-agentic-workflows/i-overview.md) (uso de ferramenta em várias etapas). A solicitação de loop é a **camada do hábito**: pare de reexplicar o que o modelo já deveria saber.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [One-shot vs loop](ii-one-shot-vs-loop.md) | Old chat habit vs set-up-once, iterate-many |
-| [Persistent instructions](iii-persistent-instructions.md) | Projects, skills, rules, saved system context |
-| [Session & recurring loops](iv-session-and-recurring-loops.md) | Same-thread refinement, `/loop`, automations |
-| [Hygiene & when to reset](v-hygiene-and-when-to-reset.md) | Context rot, stale skills, trust boundaries |
+| [One-shot vs loop](ii-one-shot-vs-loop.md) | Antigo hábito de bate-papo versus configuração única, repetição de muitos |
+| [Instruções persistentes](iii-persistent-instructions.md) | Projetos, habilidades, regras, contexto do sistema salvo |
+| [Sessão e loops recorrentes](iv-session-and-recurring-loops.md) | Refinamento do mesmo thread,`/loop`, automações |
+| [Higiene e quando reiniciar](v-hygiene-and-when-to-reset.md) | Podridão do contexto, habilidades obsoletas, limites de confiança |
 
-## 1. Two kinds of loop
+## 1. Dois tipos de loop
 
-| Loop type | You do | Example |
-|-----------|--------|---------|
-| **Human-in-the-loop** | Keep one session or project; send short deltas | “Shorter intro.” “Fix table 2.” “Run tests again.” |
-| **Time / event loop** | Arm a recurring or watcher trigger | Cursor `/loop 5m check CI`, deploy watcher, weekly digest automation |
+| Tipo de loop | Você faz | Exemplo |
+|-----------|--------|--------|
+| **Humano no circuito** | Mantenha uma sessão ou projeto; enviar deltas curtos | “Introdução mais curta.” “Corrigir tabela 2.” “Faça testes novamente.” |
+| **Loop de tempo/evento** | Armar um gatilho recorrente ou observador | Cursor`/loop 5m check CI`, implantar observador, automação de resumo semanal |
 
-Both reuse **stored context** instead of pasting the same preamble into a new chat.
+Ambos reutilizam **contexto armazenado** em vez de colar o mesmo preâmbulo em um novo chat.
 
-## 2. Mental model
+## 2. Modelo mental
 
 ```mermaid
 flowchart TB
@@ -43,30 +43,30 @@ flowchart TB
   end
 ```
 
-| Layer | What persists | Where (examples) |
+| Camada | O que persiste | Onde (exemplos) |
 |-------|---------------|------------------|
-| **Identity & standards** | Tone, format, team rules | Custom GPT, Claude Project, `.cursor/rules` |
-| **Workflows** | Multi-step how-to | `SKILL.md`, saved prompt library |
-| **Repo / knowledge** | Files the model should see | Project files, RAG, `@folder` in Cursor |
-| **Session state** | Current deliverable in progress | Same chat thread, agent transcript |
+| **Identidade e padrões** | Tom, formato, regras da equipe | GPT personalizado, Projeto Claude,`.cursor/rules`|
+| **Fluxos de trabalho** | Instruções em várias etapas |`SKILL.md`, biblioteca de prompt salva |
+| **Repo/conhecimento** | Arquivos que o modelo deve ver | Arquivos de projeto, RAG,`@folder`em Cursor |
+| **Estado da sessão** | Produto atual em curso | Mesmo tópico de bate-papo, transcrição do agente |
 
-## 3. Who should read this
+## 3. Quem deveria ler isto
 
-| You… | Start with |
+| Você… | Comece com |
 |------|------------|
-| Re-type the same instructions daily | [Persistent instructions](iii-persistent-instructions.md) |
-| Refine drafts across many “try again” messages | [One-shot vs loop](ii-one-shot-vs-loop.md) |
-| Want CI or deploy checked without asking each time | [Session & recurring loops](iv-session-and-recurring-loops.md) |
-| Use Cursor or IDE agents heavily | This track → [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md) |
+| Digite novamente as mesmas instruções diariamente | [Instruções persistentes](iii-persistent-instructions.md) |
+| Refine rascunhos em muitas mensagens de “tente novamente” | [One-shot vs loop](ii-one-shot-vs-loop.md) |
+| Deseja CI ou implantação verificada sem perguntar todas as vezes | [Sessão e loops recorrentes](iv-session-and-recurring-loops.md) |
+| Use fortemente agentes Cursor ou IDE | Esta faixa → [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md) |
 
-## 4. Study order
+## 4. Ordem de estudo
 
-[One-shot vs loop](ii-one-shot-vs-loop.md) → [Persistent instructions](iii-persistent-instructions.md) → [Session & recurring loops](iv-session-and-recurring-loops.md) → [Hygiene & when to reset](v-hygiene-and-when-to-reset.md)
+[One-shot vs loop](ii-one-shot-vs-loop.md) → [Instruções persistentes](iii-persistent-instructions.md) → [Sessão e loops recorrentes](iv-session-and-recurring-loops.md) → [Higiene e quando reiniciar](v-hygiene-and-when-to-reset.md)
 
-## 5. Rehearsal questions
+## 5. Perguntas de ensaio
 
-- What is the difference between a human-in-the-loop and a time/event loop?
-- Name two places persistent instructions can live.
-- When is a new chat still the right choice?
+- Qual é a diferença entre um loop humano e um loop de tempo/evento?
+- Cite dois lugares onde as instruções persistentes podem residir.
+- Quando um novo chat ainda é a escolha certa?
 
-**Next:** [One-shot vs loop](ii-one-shot-vs-loop.md).
+**Próximo:** [One-shot vs loop](ii-one-shot-vs-loop.md).

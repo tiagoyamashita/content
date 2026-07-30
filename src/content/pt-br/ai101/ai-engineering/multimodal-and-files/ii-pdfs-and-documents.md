@@ -1,20 +1,20 @@
 ---
 label: "II"
-subtitle: "PDFs & documents"
+subtitle: "PDFs e documentos"
 group: "AI Applied"
 order: 2
 ---
-PDFs & documents
+PDFs e documentos
 
-## 2. PDFs and long documents
+## 2. PDFs e documentos longos
 
-| Technique | Example prompt |
+| Técnica | Exemplo de prompt |
 |-----------|----------------|
-| **Page scope** | “Only pages 12–15: list obligations.” |
-| **Structure first** | “Outline headings, then deep-dive §3.” |
-| **Compare** | “Diff v1 vs v2 PDF on pricing terms.” |
-| **Extract** | “Table of all dates and amounts as CSV.” |
+| **Escopo da página** | “Apenas páginas 12–15: listar obrigações.” |
+| **Estruture primeiro** | “Descreva os títulos e, em seguida, aprofunde-se §3.” |
+| **Comparar** | “Diferença entre v1 e v2 PDF em termos de preços.” |
+| **Extrato** | “Tabela de todas as datas e valores como CSV.” |
 
-**Limits:** very long PDFs may truncate — split files or use project knowledge with indexed upload.
+**Limites:** PDFs muito longos podem ficar truncados — divida arquivos ou use o conhecimento do projeto com upload indexado.
 
-**Scanned PDFs:** OCR quality varies; if text is garbled, re-scan or paste critical sections.
+**PDFs digitalizados:** a qualidade OCR varia; se o texto estiver ilegível, digitalize novamente ou cole as seções críticas.

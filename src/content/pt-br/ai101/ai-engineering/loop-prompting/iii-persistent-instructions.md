@@ -1,13 +1,13 @@
 ---
 label: "III"
-subtitle: "Persistent instructions"
+subtitle: "Instruções persistentes"
 group: "AI Applied"
 order: 3
 ---
-Persistent instructions
-**Persistent instructions** are the “prompt you don’t repeat” — loaded automatically when the product thinks they apply. Build this layer once; your daily loop becomes short commands.
+Instruções persistentes
+**Instruções persistentes** são o “aviso que você não deve repetir” — carregado automaticamente quando o produto acredita que se aplica. Construa esta camada uma vez; seu loop diário se torna comandos curtos.
 
-## 1. Stack (pick what your tool supports)
+## 1. Pilha (escolha o que sua ferramenta suporta)
 
 ```mermaid
 flowchart TB
@@ -17,33 +17,33 @@ flowchart TB
   K --> P[Prompt library]
 ```
 
-| Layer | ChatGPT / Claude | Cursor / IDE |
-|-------|------------------|--------------|
-| **Project / Custom GPT** | Instructions + uploaded files | Rules, `AGENTS.md`, index |
-| **Workflows** | Custom GPT actions, projects | `SKILL.md` |
-| **Knowledge** | Project knowledge, RAG | `@` mentions, codebase index |
+| Camada | Bate-papoGPT / Cláudio | Cursor / IDE |
+|-------|------------------|-------------|
+| **Projeto/Personalizado GPT** | Instruções + arquivos enviados | Regras,`AGENTS.md`, índice |
+| **Fluxos de trabalho** | Ações e projetos GPT personalizados |`SKILL.md`|
+| **Conhecimento** | Conhecimento do projeto, RAG |`@`menções, índice de base de código |
 
-Deep dives: [Custom assistants](../custom-assistants-and-knowledge/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md).
+Aprofundamentos: [Assistentes personalizados](../custom-assistants-and-knowledge/i-overview.md), [Habilidades e instruções do agente](../skills-and-agent-instructions/i-overview.md).
 
-## 2. What belongs in persistent layer
+## 2. O que pertence à camada persistente
 
-| Store persistently | Keep per-message |
+| Armazene persistentemente | Manter por mensagem |
 |--------------------|------------------|
-| Role, tone, audience | Today’s data, one-off facts |
-| Output format defaults | “Use Tuesday’s numbers only” |
-| Team naming, stack, test commands | “Stop after step 2” |
-| Verification habits (“cite sources”) | Specific file paths this turn |
-| Things you say every week | Novel constraints for this draft |
+| Papel, tom, público | Dados de hoje, fatos pontuais |
+| Padrões de formato de saída | “Use apenas os números de terça” |
+| Nomenclatura de equipe, pilha, comandos de teste | “Parar após o passo 2” |
+| Hábitos de verificação (“citar fontes”) | Caminhos de arquivo específicos neste turno |
+| Coisas que você diz toda semana | Novas restrições para este projecto |
 
-**Rule:** if you have sent it **three times**, externalize it.
+**Regra:** se você enviou **três vezes**, externalize.
 
-## 3. Claude Projects / ChatGPT Custom GPTs
+## 3. Projetos Claude / ChatGPT GPTs personalizados
 
-| Field | Loop prompting use |
+| Campo | Uso de prompt de loop |
 |-------|-------------------|
-| **Instructions** | Stable persona + quality bar |
-| **Knowledge files** | Policies, glossaries, past examples |
-| **Conversation** | Short deltas inside the project |
+| **Instruções** | Persona estável + barra de qualidade |
+| **Arquivos de conhecimento** | Políticas, glossários, exemplos anteriores |
+| **Conversa** | Deltas curtos dentro do projeto |
 
 ```text
 Project: “Acme PM assistant”
@@ -52,23 +52,23 @@ Project: “Acme PM assistant”
   Loop message: “Summarise this Slack export for exec standup.”
 ```
 
-Same project next week — only swap the export.
+Mesmo projeto na próxima semana – troque apenas a exportação.
 
-## 4. Cursor: rules, skills, AGENTS.md
+## 4. Cursor: regras, habilidades, AGENTS.md
 
-| Artifact | Loads when | Example content |
+| Artefato | Carrega quando | Conteúdo de exemplo |
 |----------|------------|-----------------|
-| **`.cursor/rules/*.mdc`** | File patterns or always | TypeScript error handling |
-| **`SKILL.md`** | Task matches description | “How we run smoke tests” |
-| **`AGENTS.md`** | Agent opens repo | Test command, folder map |
+| **`.cursor/rules/*.mdc`** | Padrões de arquivo ou sempre | Tratamento de erros TypeScript |
+| **`SKILL.md`** | A tarefa corresponde à descrição | “Como realizamos testes de fumaça” |
+| **`AGENTS.md`** | Agente abre repositório | Comando de teste, mapa de pastas |
 
-You say **“review this PR”** — rules enforce style, skills define the checklist, `AGENTS.md` says how to run tests. No essay in the chat box.
+Você diz **“revise isto PR”** – as regras impõem o estilo, as habilidades definem a lista de verificação,`AGENTS.md`diz como executar testes. Nenhum ensaio na caixa de bate-papo.
 
-See [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md).
+Consulte [habilidades de Cursor, regras e AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md).
 
-## 5. Prompt library (lightweight persistence)
+## 5. Biblioteca de prompts (persistência leve)
 
-Not everything needs a Custom GPT. A **personal library** works:
+Nem tudo precisa de um GPT personalizado. Uma **biblioteca pessoal** funciona:
 
 ```text
 prompts/
@@ -77,11 +77,11 @@ prompts/
   code-review-delta.md  # “checklist already in SKILL; paste diff”
 ```
 
-Loop = open template in a **project that already has instructions**, paste only the variable part.
+Loop = abrir template em um **projeto que já possui instruções**, colar apenas a parte variável.
 
-## 6. Promotion workflow
+## 6. Fluxo de trabalho de promoção
 
-When a one-shot chat went well:
+Quando um bate-papo único correu bem:
 
 ```text
 1. Highlight reusable blocks (role, format, checks)
@@ -91,19 +91,19 @@ When a one-shot chat went well:
 5. Test one short prompt — does quality hold?
 ```
 
-## 7. Anti-patterns
+## 7. Antipadrões
 
-| Mistake | Fix |
-|---------|-----|
-| Dump entire wiki into instructions | Link or RAG; keep instructions scannable |
-| Duplicate rules in 5 places | One source of truth; link from `AGENTS.md` |
-| Never update after process change | Review skills quarterly |
-| Secrets in instructions | Never — use env vars and redacted examples |
+| Erro | Correção |
+|--------|-----|
+| Despeje todo o wiki nas instruções | Link ou RAG; manter as instruções digitalizáveis ​​|
+| Regras duplicadas em 5 lugares | Uma fonte de verdade; link de`AGENTS.md`|
+| Nunca atualize após alteração do processo | Revise as habilidades trimestralmente |
+| Segredos nas instruções | Nunca - use env vars e exemplos redigidos |
 
-## 8. Rehearsal questions
+## 8. Perguntas de ensaio
 
-- Name three artifacts that store persistent instructions in Cursor.
-- What should stay in the message vs move to project instructions?
-- What is the “three times” promotion rule?
+- Cite três artefatos que armazenam instruções persistentes em Cursor.
+- O que deve permanecer na mensagem em vez de passar para as instruções do projeto?
+- Qual é a regra da promoção “três vezes”?
 
-**Next:** [Session & recurring loops](iv-session-and-recurring-loops.md).
+**Próximo:** [Sessão e loops recorrentes](iv-session-and-recurring-loops.md).

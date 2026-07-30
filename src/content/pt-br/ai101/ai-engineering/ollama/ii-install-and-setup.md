@@ -1,79 +1,79 @@
 ---
 label: "II"
-subtitle: "Install & setup"
+subtitle: "Instalar e configurar"
 group: "Ollama"
 order: 2
 ---
-Install & setup
+Instalar e configurar
 
-## 1. Install
+## 1. Instalar
 
-### Linux (script — recommended)
+### Linux (script – recomendado)
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-Installs the `ollama` binary and a **systemd** service (starts on boot on most distros).
+Instala o`ollama`binário e um serviço **systemd** (inicia na inicialização na maioria das distros).
 
-### macOS
+###macOS
 
-Download from [ollama.com/download](https://ollama.com/download) or:
+Baixe em [ollama.com/download](https://ollama.com/download) ou:
 
 ```bash
 brew install ollama
 ```
 
-Uses **Metal** on Apple Silicon automatically.
+Usa **Metal** no Apple Silicon automaticamente.
 
-### Windows
+###Janelas
 
-Installer from [ollama.com/download](https://ollama.com/download). Uses **CUDA** when an NVIDIA GPU and driver are present.
+Instalador de [ollama.com/download](https://ollama.com/download). Usa **CUDA** quando um NVIDIA GPU e um driver estão presentes.
 
-## 2. Verify
+## 2. Verifique
 
 ```bash
 ollama --version
 ollama list          # empty until first pull
 ```
 
-Start the server (often auto-started after install):
+Inicie o servidor (geralmente iniciado automaticamente após a instalação):
 
 ```bash
 ollama serve         # foreground — optional if service already running
 ```
 
-Check the API:
+Verifique o API:
 
 ```bash
 curl http://localhost:11434/api/tags
 ```
 
-## 3. GPU prerequisites (NVIDIA Linux)
+## 3. Pré-requisitos GPU (NVIDIA Linux)
 
 ```bash
 nvidia-smi
 ```
 
-| Check | Expected |
+| Verifique | Esperado |
 |-------|----------|
-| Driver | 535+ (550+ recommended) |
-| GPU listed | Your card (e.g. RTX 1080) |
-| No errors | Fix driver before blaming Ollama |
+| Motorista | 535+ (550+ recomendado) |
+| GPU listado | Seu cartão (por exemplo, RTX 1080) |
+| Sem erros | Corrija o driver antes de culpar Ollama |
 
-Ollama bundles its own CUDA runtime — you do **not** need a separate CUDA toolkit install for basic use.
+Ollama agrupa seu próprio tempo de execução CUDA — você **não** precisa de uma instalação separada do kit de ferramentas CUDA para uso básico.
 
-## 4. Where files live
+## 4. Onde os arquivos ficam
 
-| Path | Contents |
+| Caminho | Conteúdo |
 |------|----------|
-| `~/.ollama/models/` | Downloaded model blobs (large) |
-| `~/.ollama/` | Config and state |
-| **Service** | `systemctl status ollama` (Linux) |
+|`~/.ollama/models/`| Blobs de modelo baixados (grandes) |
+|`~/.ollama/`| Configuração e estado |
+| **Serviço** |`systemctl status ollama`(Linux) |
 
-Free disk before large pulls — a 7B model is roughly **4–8 GB** on disk depending on quant.
+Disco livre antes de grandes extrações - um modelo 7B tem aproximadamente **4–8 GB** no disco, dependendo do quant.
 
-## 5. Service management (Linux)
+## 5. Gerenciamento de serviços (Linux)
 
 ```bash
 sudo systemctl enable ollama
@@ -81,12 +81,12 @@ sudo systemctl start ollama
 sudo systemctl status ollama
 ```
 
-Logs:
+Registros:
 
 ```bash
 journalctl -u ollama -f
 ```
 
-## Next
+## Próximo
 
-[Models — pull & manage](iii-models-pull-and-manage.md) — download your first models.
+[Modelos – puxar e gerenciar](iii-models-pull-and-manage.md) — baixe seus primeiros modelos.

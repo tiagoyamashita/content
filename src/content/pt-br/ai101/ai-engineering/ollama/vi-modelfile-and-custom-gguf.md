@@ -1,14 +1,14 @@
 ---
 label: "VI"
-subtitle: "Modelfile & custom GGUF"
+subtitle: "Arquivo de modelo e GGUF personalizado"
 group: "Ollama"
 order: 6
 ---
-Modelfile & custom GGUF
+Arquivo de modelo e GGUF personalizado
 
-When a model is **not** in the Ollama library — or you want a **custom system prompt and parameters** baked in — use a **Modelfile** and `ollama create`.
+Quando um modelo **não** está na biblioteca Ollama — ou você deseja um **prompt e parâmetros personalizados do sistema** incorporados — use um **Modelfile** e`ollama create`.
 
-## 1. Modelfile basics
+## 1. Noções básicas do arquivo de modelo
 
 ```dockerfile
 FROM qwen2.5-coder:7b
@@ -22,17 +22,17 @@ ollama create python-tutor -f Modelfile
 ollama run python-tutor
 ```
 
-| Instruction | Purpose |
-|-------------|---------|
-| `FROM` | Base model tag **or** path to `.gguf` |
-| `SYSTEM` | Default system prompt |
-| `PARAMETER` | Default runtime params |
-| `TEMPLATE` | Chat template (advanced — usually inherited from base) |
-| `LICENSE` | License text metadata |
+| Instrução | Finalidade |
+|------------|---------|
+|`FROM`| Tag do modelo base **ou** caminho para`.gguf`|
+|`SYSTEM`| Prompt de sistema padrão |
+|`PARAMETER`| Parâmetros de tempo de execução padrão |
+|`TEMPLATE`| Modelo de bate-papo (avançado — geralmente herdado da base) |
+|`LICENSE`| Metadados de texto de licença |
 
-## 2. Import a local GGUF (from Hugging Face)
+## 2. Importe um GGUF local (do Hugging Face)
 
-Download GGUF first — see [Downloading from Hugging Face](../implementation-example/ii-downloading-from-huggingface.md):
+Baixe GGUF primeiro - veja [Baixando do Hugging Face](../implementation-example/ii-downloading-from-huggingface.md):
 
 ```bash
 hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
@@ -40,7 +40,7 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-Modelfile:
+Arquivo de modelo:
 
 ```dockerfile
 FROM ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf
@@ -52,9 +52,9 @@ ollama create qwen-coder-local -f Modelfile
 ollama run qwen-coder-local
 ```
 
-Use **absolute or repo-relative** paths to the `.gguf` file in `FROM`.
+Use caminhos **absolutos ou relativos ao repositório** para o`.gguf`arquivo em`FROM`.
 
-## 3. Derive from existing model
+## 3. Derive do modelo existente
 
 ```bash
 ollama show qwen2.5-coder:7b --modelfile > Modelfile
@@ -62,23 +62,23 @@ ollama show qwen2.5-coder:7b --modelfile > Modelfile
 ollama create my-qwen-dev -f Modelfile
 ```
 
-## 4. List custom models
+## 4. Listar modelos personalizados
 
 ```bash
 ollama list
 ```
 
-Custom names appear alongside library pulls (`python-tutor`, `qwen-coder-local`, etc.).
+Os nomes personalizados aparecem ao lado dos pulls da biblioteca (`python-tutor`,`qwen-coder-local`, etc.).
 
-## 5. Share with team
+## 5. Compartilhe com a equipe
 
-| Approach | Detail |
+| Abordagem | Detalhe |
 |----------|--------|
-| **Commit Modelfile** | Team runs `ollama create` after pulling same GGUF |
-| **Commit only Modelfile + HF instructions** | Modelfile points to `FROM qwen2.5-coder:7b` — everyone `ollama pull` |
-| **Do not commit** multi-GB `.gguf` blobs | Use `hf download` or `ollama pull` in README |
+| **Commit arquivo de modelo** | Corridas em equipe`ollama create`depois de puxar o mesmo GGUF |
+| **Commit apenas Modelfile + instruções HF** | Arquivo de modelo aponta para`FROM qwen2.5-coder:7b`- todos`ollama pull`|
+| **Não confirme** multi-GB`.gguf`bolhas | Usar`hf download`ou`ollama pull`em README |
 
-Example repo snippet:
+Exemplo de snippet de repositório:
 
 ```text
 models/
@@ -87,14 +87,14 @@ models/
   *.gguf                 ← gitignored
 ```
 
-## 6. When not to use Modelfile
+## 6. Quando não usar Modelfile
 
-| Situation | Better path |
-|-----------|-------------|
-| Model already in library | `ollama pull` only |
-| Need max inference control | llama.cpp directly — [Local run platforms](../implementation-example/iii-local-run-platforms.md) |
-| Production multi-user serving | vLLM / TGI — not Ollama desktop |
+| Situação | Melhor caminho |
+|-----------|------------|
+| Modelo já na biblioteca |`ollama pull`apenas |
+| Precisa de controle máximo de inferência | llama.cpp diretamente — [Plataformas de execução local](../implementation-example/iii-local-run-platforms.md) |
+| Serviço multiusuário de produção | vLLM / TGI — não Ollama desktop |
 
-## Next
+## Próximo
 
-[GPU & troubleshooting](vii-gpu-troubleshooting.md) — fix CPU-only, OOM, slow generation.
+[GPU e solução de problemas](vii-gpu-troubleshooting.md) - corrige apenas CPU, OOM, geração lenta.

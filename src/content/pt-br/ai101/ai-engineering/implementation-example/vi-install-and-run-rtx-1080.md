@@ -1,24 +1,24 @@
 ---
 label: "VI"
-subtitle: "Install & run on RTX 1080"
+subtitle: "Instale e execute em RTX 1080"
 group: "AI Applied"
 order: 6
 ---
-Install & run on RTX 1080
+Instale e execute em RTX 1080
 
-Step-by-step setup for each major local runtime on an **NVIDIA GeForce RTX 1080** (8 GB VRAM, Pascal / compute **6.1**). Assumes **Linux** (Ubuntu, Debian, Kali, etc.); Windows notes where the flow differs.
+Configuração passo a passo para cada tempo de execução local principal em uma **NVIDIA GeForce RTX 1080** (8 GB VRAM, Pascal/computação **6.1**). Assume **Linux** (Ubuntu, Debian, Kali, etc.); O Windows observa onde o fluxo difere.
 
-See [Model RAM requirements](iv-model-ram-requirements.md) for sizing theory. On 8 GB VRAM, start with **3B–7B** models at **Q4_K_M** or Ollama’s default quant.
+Consulte [Requisitos do modelo RAM](iv-model-ram-requirements.md) para a teoria do dimensionamento. Em 8 GB VRAM, comece com modelos **3B–7B** em **Q4_K_M** ou o quanto padrão de Ollama.
 
-## 0. RTX 1080 constraints
+## 0. RTX 1080 restrições
 
-| Spec | Implication |
+| Especificações | Implicação |
 |------|-------------|
-| **8 GB VRAM** | Comfortable: **3B–7B** Q4 on GPU. **8B** Q4 fits with modest context. **13B+** needs CPU offload or airLLM |
-| **Pascal (sm_61)** | Works with CUDA builds of Ollama, llama.cpp, KoboldCPP. **vLLM / TGI / TensorRT-LLM** target newer GPUs — often painful or unsupported |
-| **System RAM** | Aim for **16 GB+** so CPU offload and OS do not swap |
+| **8 GB VRAM** | Confortável: **3B–7B** Q4 em GPU. **8B** Q4 se encaixa em um contexto modesto. **13B+** precisa de descarregamento de CPU ou arLLM |
+| **Pascal (sm_61)** | Funciona com compilações CUDA de Ollama, llama.cpp, KoboldCPP. **vLLM / TGI / TensorRT-LLM** tem como alvo GPUs mais recentes – muitas vezes doloroso ou sem suporte |
+| **Sistema RAM** | Apontar para **16 GB+** então CPU descarrega e OS não trocam |
 
-### Shared prerequisites (all GPU paths)
+### Pré-requisitos compartilhados (todos os caminhos GPU)
 
 ```bash
 # 1. NVIDIA driver (reboot after install)
@@ -31,32 +31,32 @@ sudo apt update
 sudo apt install -y build-essential cmake git
 ```
 
-If `nvidia-smi` fails, fix the driver before any runtime below.
+Se`nvidia-smi`falhar, corrija o driver antes de qualquer tempo de execução abaixo.
 
-### Recommended models for 8 GB VRAM
+### Modelos recomendados para 8 GB VRAM
 
-| Model | Format | Fits fully on GPU? |
+| Modelo | Formato | Cabe totalmente em GPU? |
 |-------|--------|-------------------|
-| **`qwen2.5-coder:7b`** (Ollama) | Ollama bundle | **Yes — best open coder for 8 GB** |
-| `qwen2.5-coder:3b` | Ollama / Q4 GGUF | Yes — faster, lighter |
-| `llama3.2:3b` (Ollama) | Ollama bundle | Yes — general chat, not code-tuned |
-| `qwen2.5:7b` | Ollama / Q4 GGUF | Yes at Q4 — general chat |
-| `qwen2.5-coder:14b` | Q4 GGUF | Tight — partial offload on 1080 |
-| `qwen2.5-coder:32b` | Q4 GGUF | No — needs 24 GB+ VRAM |
+| **`qwen2.5-coder:7b`** (Ollama) | Pacote Ollama | **Sim — melhor codificador aberto para 8 GB** |
+|`qwen2.5-coder:3b`| Ollama / Q4 GGUF | Sim – mais rápido, mais leve |
+|`llama3.2:3b`(Ollama) | Pacote Ollama | Sim — bate-papo geral, sem ajuste de código |
+|`qwen2.5:7b`| Ollama / Q4 GGUF | Sim em Q4 — chat geral |
+|`qwen2.5-coder:14b`| Q4 GGUF | Apertado - descarregamento parcial em 1080 |
+|`qwen2.5-coder:32b`| Q4 GGUF | Não — precisa de 24 GB+ VRAM |
 
----
+###
 
-## 1. Ollama (easiest — start here)
+## 1. Ollama (mais fácil – comece aqui)
 
-### Install
+### Instalar
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-Windows/macOS: download from [ollama.com/download](https://ollama.com/download).
+Windows/macOS: baixe em [ollama.com/download](https://ollama.com/download).
 
-### Verify GPU
+### Verifique GPU
 
 ```bash
 ollama run qwen2.5-coder:7b "Write hello world in Python."
@@ -64,9 +64,9 @@ ollama run qwen2.5-coder:7b "Write hello world in Python."
 ollama ps
 ```
 
-`ollama ps` should show **GPU** in the processor column. If it says CPU only, check `nvidia-smi` and driver.
+`ollama ps`deve mostrar **GPU** na coluna do processador. Se disser apenas CPU, verifique`nvidia-smi`e motorista.
 
-### Pull and run models
+### Puxar e executar modelos
 
 ```bash
 # Best coding model for 8 GB VRAM (recommended)
@@ -86,7 +86,7 @@ ollama pull llama3.2:3b
 ollama run llama3.2:3b
 ```
 
-### OpenAI-compatible API (Cursor, Continue, etc.)
+### API compatível com OpenAI (Cursor, Continuar, etc.)
 
 ```bash
 # Server starts automatically on first request; or:
@@ -102,13 +102,13 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-| Cursor / IDE setting | Value |
+| Configuração Cursor / IDE | Valor |
 |----------------------|-------|
-| Base URL | `http://localhost:11434/v1` |
-| Model | **`qwen2.5-coder:7b`** (coding) or `qwen2.5:7b` (general chat) |
-| API key | any placeholder (e.g. `ollama`) |
+| Base URL |`http://localhost:11434/v1`|
+| Modelo | **`qwen2.5-coder:7b`** (codificação) ou`qwen2.5:7b`(bate-papo geral) |
+| Chave API | qualquer espaço reservado (por exemplo`ollama`) |
 
-### Run a custom GGUF
+### Execute um GGUF personalizado
 
 ```bash
 # After hf download (see Hugging Face note)
@@ -120,11 +120,11 @@ ollama create qwen-coder-local -f Modelfile
 ollama run qwen-coder-local
 ```
 
----
+###
 
-## 2. llama.cpp (CUDA build — max control)
+## 2. llama.cpp (compilação CUDA - controle máximo)
 
-### Install (build with CUDA)
+### Instalar (construir com CUDA)
 
 ```bash
 git clone https://github.com/ggerganov/llama.cpp
@@ -133,16 +133,16 @@ cmake -B build -DGGML_CUDA=ON
 cmake --build build --config Release -j "$(nproc)"
 ```
 
-Binaries land in `build/bin/` — e.g. `llama-cli`, `llama-server`.
+Os binários chegam`build/bin/`- por ex.`llama-cli`,`llama-server`.
 
-If CMake cannot find CUDA, set:
+Se o CMake não conseguir encontrar CUDA, defina:
 
 ```bash
 export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 ```
 
-### Download a GGUF
+### Baixe um GGUF
 
 ```bash
 pip install -U "huggingface_hub[cli]"
@@ -151,7 +151,7 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-### Run interactively
+### Execute interativamente
 
 ```bash
 ./build/bin/llama-cli \
@@ -162,14 +162,14 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --interactive
 ```
 
-| Flag | RTX 1080 guidance |
+| Bandeira | RTX orientação 1080 |
 |------|-------------------|
-| `-ngl 99` | Offload **all** layers to GPU (use for 3B–7B Q4) |
-| `-ngl 35` | Partial offload if 8B+ OOM — rest on CPU |
-| `-c 4096` | Context tokens — drop to **2048** if OOM |
-| `-ngl 0` | Force CPU (debug only) |
+|`-ngl 99`| Descarregar **todas** camadas para GPU (use para 3B–7B Q4) |
+|`-ngl 35`| Descarregamento parcial se 8B+ OOM — descanso em CPU |
+|`-c 4096`| Tokens de contexto — caem para **2048** se OOM |
+|`-ngl 0`| Forçar CPU (somente depuração) |
 
-### HTTP server
+### HTTP servidor
 
 ```bash
 ./build/bin/llama-server \
@@ -180,35 +180,35 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --port 8080
 ```
 
-API: `http://localhost:8080` — OpenAI-style endpoints per [llama.cpp server docs](https://github.com/ggerganov/llama.cpp/blob/master/tools/server/README.md).
+API:`http://localhost:8080`- Endpoints estilo OpenAI por [documentos do servidor llama.cpp](https://github.com/ggerganov/llama.cpp/blob/master/tools/server/README.md).
 
----
+###
 
-## 3. LM Studio (GUI — Linux or Windows)
+## 3. LM Estúdio (GUI — Linux ou Windows)
 
-### Install
+### Instalar
 
-1. Download from [lmstudio.ai](https://lmstudio.ai) (`.AppImage` on Linux, installer on Windows).
-2. Run the app; open **Discover** → search **`Qwen2.5-Coder-7B`** → pick **Q4** quant.
-3. **My Models** → load model → **GPU** offload slider to **max** (all layers).
+1. Baixe em [lmstudio.ai](https://lmstudio.ai) (`.AppImage`no Linux, instalador no Windows).
+2. Execute o aplicativo; abra **Descobrir** → pesquisar **`Qwen2.5-Coder-7B`** → escolha **Q4** quant.
+3. **Meus modelos** → carregar modelo → **GPU** descarregar o controle deslizante para **max** (todas as camadas).
 
-### Run
+### Correr
 
-- **Chat** tab for interactive use.
-- **Developer** → **Local Server** → start server on `http://localhost:1234/v1`.
+- Guia **Bate-papo** para uso interativo.
+- **Desenvolvedor** → **Servidor Local** → iniciar servidor em`http://localhost:1234/v1`.
 
-| RTX 1080 tip | Action |
+| RTX dica 1080 | Ação |
 |--------------|--------|
-| OOM on load | Smaller model or lower context in model settings |
-| Slow first token | Normal on 1080 for 7B — expect ~15–40 tok/s for 7B Q4 |
+| OOM em carga | Modelo menor ou contexto inferior nas configurações do modelo |
+| Primeiro token lento | Normal em 1080 para 7B — espere ~15–40 tok/s para 7B Q4 |
 
-No headless Linux server workflow — use Ollama or llama-server for SSH boxes.
+Nenhum fluxo de trabalho de servidor Linux headless - use Ollama ou llama-server para caixas SSH.
 
----
+###
 
-## 4. KoboldCPP (portable binary + web UI)
+## 4. KoboldCPP (binário portátil + web UI)
 
-### Install
+### Instalar
 
 ```bash
 # CUDA-enabled release from GitHub (pick latest cu12.x asset for Linux)
@@ -217,9 +217,9 @@ chmod +x koboldcpp-linux-x64-cuda12
 mv koboldcpp-linux-x64-cuda12 koboldcpp
 ```
 
-Windows: grab `koboldcpp.exe` CUDA build from the same releases page.
+Janelas: agarrar`koboldcpp.exe`CUDA compilado a partir da mesma página de lançamentos.
 
-### Run
+### Correr
 
 ```bash
 ./koboldcpp --model ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
@@ -228,31 +228,31 @@ Windows: grab `koboldcpp.exe` CUDA build from the same releases page.
   --port 5001
 ```
 
-Open `http://localhost:5001` in a browser. Lower `--gpulayers` if you hit OOM on 8B models.
+Abrir`http://localhost:5001`em um navegador. Mais baixo`--gpulayers`se você clicar em OOM nos modelos 8B.
 
----
+###
 
-## 5. GPT4All (desktop, optional CUDA)
+## 5. GPT4All (desktop, opcional CUDA)
 
-### Install
+### Instalar
 
-Download from [gpt4all.io](https://gpt4all.io) — Linux `.deb` / AppImage or Windows installer.
+Baixe em [gpt4all.io](https://gpt4all.io) -Linux`.deb`/AppImage ou instalador do Windows.
 
-### Run
+### Correr
 
-1. **Add Model** → choose a **3B–7B** chat model (avoid 13B+ on 1080).
-2. Settings → enable **GPU acceleration** (Vulkan/CUDA depending on build).
-3. **Local API** in settings if you need HTTP.
+1. **Adicionar modelo** → escolha um modelo de chat **3B–7B** (evite 13B+ em 1080).
+2. Configurações → ativar a aceleração **GPU** (Vulkan/CUDA dependendo da compilação).
+3. **Local API** nas configurações se você precisar de HTTP.
 
-Best for casual offline chat; developers usually prefer Ollama for API ergonomics.
+Melhor para bate-papo offline casual; os desenvolvedores geralmente preferem Ollama à ergonomia de API.
 
----
+###
 
-## 6. airLLM (large HF models on 8 GB VRAM)
+## 6. airLLM (modelos grandes HF em 8 GB VRAM)
 
-Layer-streaming — fits **13B+** slowly when full GPU load does not fit.
+Streaming de camada - ajusta **13B+** lentamente quando a carga completa de GPU não cabe.
 
-### Install
+### Instalar
 
 ```bash
 python3 -m venv ~/airllm-venv
@@ -261,7 +261,7 @@ pip install -U pip airllm torch --index-url https://download.pytorch.org/whl/cu1
 hf auth login
 ```
 
-### Run (Python)
+### Executar (Python)
 
 ```python
 from airllm import AutoModel
@@ -279,15 +279,15 @@ generation = model.generate(input_tokens["input_ids"].cuda(), max_new_tokens=50)
 print(model.tokenizer.decode(generation[0]))
 ```
 
-Use for **experiments**, not low-latency chat. First run downloads weights from Hugging Face.
+Use para **experimentos**, não para bate-papos de baixa latência. A primeira execução baixa os pesos do Hugging Face.
 
----
+###
 
-## 7. vLLM — not recommended on RTX 1080
+## 7. vLLM — não recomendado em RTX 1080
 
-[vLLM](https://github.com/vllm-project/vllm) targets **datacenter GPUs** (Ampere **sm_80+**). Pascal **sm_61** is often **unsupported** or requires building from source with reduced features — poor ROI on a 1080.
+[vLLM](https://github.com/vllm-project/vllm) tem como alvo **datacenter GPUs** (Ampere **sm_80+**). Pascal **sm_61** muitas vezes **não é suportado** ou requer compilação a partir do código-fonte com recursos reduzidos – ROI ruim em um 1080.
 
-If you still want to try (Linux only):
+Se você ainda quiser tentar (somente Linux):
 
 ```bash
 python3 -m venv ~/vllm-venv
@@ -299,57 +299,57 @@ python -m vllm.entrypoints.openai.api_server \
   --max-model-len 2048
 ```
 
-Expect build failures or runtime errors on Pascal. **Use Ollama or llama.cpp instead** on this card.
+Espere falhas de compilação ou erros de tempo de execução no Pascal. **Use Ollama ou llama.cpp** neste cartão.
 
----
+###
 
-## 8. TGI & TensorRT-LLM — skip on 1080
+## 8. TGI & TensorRT-LLM – pule em 1080
 
-| Platform | RTX 1080 verdict |
+| Plataforma | RTX 1080 veredicto |
 |----------|------------------|
-| **[TGI](https://github.com/huggingface/text-generation-inference)** | Docker + NVIDIA stack; official images assume newer GPUs. Possible with old CUDA images but unsupported for daily use |
-| **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | Optimized for **Tensor Core** GPUs (Turing+). Pascal lacks Tensor Cores — not worth installing |
+| **[TGI](https://github.com/huggingface/text-generation-inference)** | Pilha Docker + NVIDIA; as imagens oficiais assumem GPUs mais recentes. Possível com imagens CUDA antigas, mas sem suporte para uso diário |
+| **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | Otimizado para **Tensor Core** GPUs (Turing+). Pascal não possui Tensor Cores – não vale a pena instalar |
 
-For production APIs on modern hardware, revisit these on a **RTX 3060 12GB+** or cloud GPU.
+Para APIs de produção em hardware moderno, revisite-os em um **RTX 3060 12GB+** ou nuvem GPU.
 
----
+###
 
-## 9. MLX — not applicable
+## 9. MLX — não aplicável
 
-[MLX](https://github.com/ml-explore/mlx) is **Apple Silicon only**. Skip on an RTX 1080 PC.
+[MLX](https://github.com/ml-explore/mlx) é **Apenas Apple Silicon**. Pule em um RTX 1080 PC.
 
----
+###
 
-## 10. Quick pick for RTX 1080
+## 10. Escolha rápida para RTX 1080
 
-| Goal | Install | Run |
+| Meta | Instalar | Executar |
 |------|---------|-----|
-| **Local coding (recommended)** | Ollama | `ollama pull qwen2.5-coder:7b && ollama run qwen2.5-coder:7b` |
-| **IDE API for code** | Ollama | `http://localhost:11434/v1` + `qwen2.5-coder:7b` |
-| **Fastest general chat** | Ollama | `ollama pull llama3.2:3b && ollama run llama3.2:3b` |
-| **Fine-grained GPU/control** | llama.cpp CUDA build | `llama-server -ngl 99 -m …Qwen2.5-Coder…Q4_K_M.gguf` |
-| **Web UI, no terminal** | LM Studio or KoboldCPP | Search Qwen2.5-Coder-7B in GUI |
-| **13B+ experiment** | airLLM | `Qwen/Qwen2.5-Coder-14B-Instruct` + layer streaming |
+| **Codificação local (recomendado)** | Ollama |`ollama pull qwen2.5-coder:7b && ollama run qwen2.5-coder:7b`|
+| **IDE API para código** | Ollama |`http://localhost:11434/v1`+`qwen2.5-coder:7b`|
+| **Bate-papo geral mais rápido** | Ollama |`ollama pull llama3.2:3b && ollama run llama3.2:3b`|
+| **GPU/controle refinado** | lhama.cpp CUDA construir |`llama-server -ngl 99 -m …Qwen2.5-Coder…Q4_K_M.gguf`|
+| **Web UI, sem terminal** | LM Studio ou KoboldCPP | Pesquisar Qwen2.5-Coder-7B em GUI |
+| **Experiência 13B+** | arLLM |`Qwen/Qwen2.5-Coder-14B-Instruct`+ streaming de camada |
 
-## 11. Troubleshooting
+## 11. Solução de problemas
 
-| Symptom | Fix |
-|---------|-----|
-| **CUDA OOM** | Smaller model (3B), Q4 quant, lower `-c` / context, reduce `--gpulayers` |
-| **Runs on CPU only** | `nvidia-smi`; reinstall driver; rebuild llama.cpp with `-DGGML_CUDA=ON` |
-| **Slow generation** | Normal for 7B on 1080 (~20–35 tok/s Q4); use 3B for speed |
-| **Model not found** | `ollama pull <name>` or verify GGUF path |
-| **Gated HF model** | `hf auth login` + accept license |
+| Sintoma | Correção |
+|--------|-----|
+| **CUDA OOM** | Modelo menor (3B), Q4 quant, inferior`-c`/ contexto, reduzir`--gpulayers`|
+| **Funciona apenas em CPU** |`nvidia-smi`; reinstalar o driver; reconstruir llama.cpp com`-DGGML_CUDA=ON`|
+| **Geração lenta** | Normal para 7B em 1080 (~20–35 tok/s Q4); use 3B para velocidade |
+| **Modelo não encontrado** |`ollama pull <name>`ou verifique o caminho GGUF |
+| **Modelo fechado HF** |`hf auth login`+ aceitar licença |
 
-Monitor VRAM during a run:
+Monitore VRAM durante uma execução:
 
 ```bash
 watch -n1 nvidia-smi
 ```
 
-## Related
+## Relacionado
 
-- [Downloading from Hugging Face](ii-downloading-from-huggingface.md)
-- [Local run platforms](iii-local-run-platforms.md)
-- [Model RAM requirements](iv-model-ram-requirements.md)
-- [CPU & lightweight runners](v-cpu-and-lightweight-runners.md)
+- [Baixando do Hugging Face](ii-downloading-from-huggingface.md)
+- [Plataformas de execução local](iii-local-run-platforms.md)
+- [Requisitos do modelo RAM](iv-model-ram-requirements.md)
+- [CPU e corredores leves](v-cpu-and-lightweight-runners.md)

@@ -1,28 +1,28 @@
 ---
 label: "IV"
-subtitle: "Hook — secrets & env scan"
+subtitle: "Gancho – segredos e verificação de ambiente"
 group: "Skills examples"
 order: 4
 ---
-Hook — secrets & `.env` scan
+Gancho – segredos e`.env`digitalizar
 
-**Goal:** A **bot** that runs on **hooks** — before shell runs `git commit` — and scans for exposed secrets, `.env` files staged, API keys in diffs. Writes a **log**; can **block** the action when `failClosed` is set.
+**Objetivo:** Um **bot** que roda em **hooks** — antes da execução do shell`git commit`- e verifica segredos expostos,`.env`arquivos preparados, chaves API em diffs. Grava um **log**; pode **bloquear** a ação quando`failClosed`está definido.
 
-Hooks run **automatically**; skills run when the user asks. See [Linking a fixed script](../../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script).
+Os ganchos são executados **automaticamente**; habilidades são executadas quando o usuário pergunta. Consulte [Vinculando um script fixo](../../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script).
 
-## Live files (copy-ready)
+## Arquivos ativos (prontos para cópia)
 
-| File | Path |
+| Arquivo | Caminho |
 |------|------|
-| Hook config | [`.cursor/hooks.json`](.cursor/hooks.json) |
-| Hook script | [`.cursor/hooks/secrets_scan.py`](.cursor/hooks/secrets_scan.py) |
-| Scan logic | [`.cursor/hooks/lib/scan_staged_secrets.py`](.cursor/hooks/lib/scan_staged_secrets.py) |
-| Pre-commit CLI | [`.cursor/hooks/lib/scan_staged_secrets_cli.py`](.cursor/hooks/lib/scan_staged_secrets_cli.py) |
-| Help skill | [`.cursor/skills/secrets-scan-help/SKILL.md`](.cursor/skills/secrets-scan-help/SKILL.md) |
+| Configuração do gancho | [`.cursor/hooks.json`](.cursor/hooks.json) |
+| Script de gancho | [`.cursor/hooks/secrets_scan.py`](.cursor/hooks/secrets_scan.py) |
+| Lógica de varredura | [`.cursor/hooks/lib/scan_staged_secrets.py`](.cursor/hooks/lib/scan_staged_secrets.py) |
+| Pré-comprometer CLI | [`.cursor/hooks/lib/scan_staged_secrets_cli.py`](.cursor/hooks/lib/scan_staged_secrets_cli.py) |
+| Habilidade de ajuda | [`.cursor/skills/secrets-scan-help/SKILL.md`](.cursor/skills/secrets-scan-help/SKILL.md) |
 
-Copy all of [`.cursor/`](.cursor/README.md) to your project root.
+Copie tudo [`.cursor/`](.cursor/README.md) para a raiz do seu projeto.
 
-## Folder layout
+## Layout de pasta
 
 ```text
 .cursor/
@@ -33,24 +33,24 @@ Copy all of [`.cursor/`](.cursor/README.md) to your project root.
     logs/
 ```
 
-## Hook config
+## Configuração do gancho
 
-See [`.cursor/hooks.json`](.cursor/hooks.json) — `beforeShellExecution` on `git\s+commit`, `failClosed: true`.
+Ver [`.cursor/hooks.json`](.cursor/hooks.json) -`beforeShellExecution`sobre`git\s+commit`,`failClosed: true`.
 
-Test manually:
+Teste manualmente:
 
 ```bash
 echo '{"command":"git commit -m test"}' | python3 .cursor/hooks/secrets_scan.py
 ```
 
-## Optional: git pre-commit
+## Opcional: git pré-commit
 
 ```bash
 chmod +x .cursor/hooks/lib/scan_staged_secrets_cli.py
 # .git/hooks/pre-commit → exec python3 .cursor/hooks/lib/scan_staged_secrets_cli.py
 ```
 
-## Agent / user flow
+## Fluxo de agente/usuário
 
 ```text
 User or agent: git commit -m "…"
@@ -60,6 +60,6 @@ User or agent: git commit -m "…"
   → secrets-scan-help skill → read log → suggest fixes
 ```
 
-## Next
+## Próximo
 
-[Performance & bottlenecks](v-performance-bottleneck-scan.md) — on-demand profiling skill.
+[Desempenho e gargalos](v-performance-bottleneck-scan.md) — habilidade de criação de perfil sob demanda.

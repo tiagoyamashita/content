@@ -5,9 +5,9 @@ group: "AI Applied"
 order: 2
 ---
 One-shot vs loop
-**One-shot prompting** treats every chat like a blank slate. **Loop prompting** assumes most of the briefing already lives somewhere durable — your job each turn is to **steer**, not **rebrief**.
+**Avisos únicos** tratam cada bate-papo como uma folha em branco. **Avisos de loop** pressupõem que a maior parte do briefing já está em algum lugar durável — sua função em cada turno é **dirigir**, não **rebrief**.
 
-## 1. One-shot habit (still common)
+## 1. Hábito único (ainda comum)
 
 ```text
 Open new chat
@@ -19,16 +19,16 @@ Open new chat
   → tomorrow: repeat everything
 ```
 
-| Cost | Detail |
+| Custo | Detalhe |
 |------|--------|
-| **Time** | Minutes of setup per session |
-| **Quality drift** | Yesterday’s wording ≠ today’s |
-| **Lost iteration** | Good refinements trapped in old threads |
-| **Token waste** | Same context re-sent every message |
+| **Tempo** | Minutos de configuração por sessão |
+| **Desvio de qualidade** | Redação de ontem ≠ de hoje |
+| **Iteração perdida** | Bons refinamentos presos em fios antigos |
+| **Desperdício de tokens** | O mesmo contexto reenvia todas as mensagens |
 
-One-shot is fine for **truly novel** tasks. It is expensive for **recurring** work (weekly reports, PR reviews, support replies, doc edits).
+One-shot é adequado para tarefas **verdadeiramente novas**. É caro para trabalhos **recorrentes** (relatórios semanais, revisões PR, respostas de suporte, edições de documentos).
 
-## 2. Loop habit
+## 2. Hábito de loop
 
 ```mermaid
 flowchart LR
@@ -38,21 +38,21 @@ flowchart LR
   T3 --> T4[Next week: new file]
 ```
 
-Each turn is a **delta** — a correction, a new attachment, or a changed input — not a rebuilt system prompt.
+Cada turno é um **delta** — uma correção, um novo anexo ou uma entrada alterada — e não um prompt do sistema reconstruído.
 
-## 3. Side-by-side
+## 3. Lado a lado
 
-| Dimension | One-shot | Loop |
+| Dimensão | Um tiro | Laço |
 |-----------|----------|------|
-| **Setup per session** | Full prompt | Mostly already stored |
-| **Typical message length** | Long | Short |
-| **Context location** | Chat only | Project + chat |
-| **Best for** | One-off, sensitive isolation | Repeat workflows, same standards |
-| **Failure mode** | Inconsistent outputs | Stale or wrong stored context |
+| **Configuração por sessão** | Prompt completo | A maior parte já está armazenada |
+| **Tamanho típico da mensagem** | Longo | Curto |
+| **Localização de contexto** | Somente bate-papo | Projeto + bate-papo |
+| **Melhor para** | Isolamento único e sensível | Fluxos de trabalho repetidos, mesmos padrões |
+| **Modo de falha** | Resultados inconsistentes | Contexto armazenado obsoleto ou errado |
 
-## 4. The iteration loop (human)
+## 4. O loop de iteração (humano)
 
-From [Effective prompting — iteration](../effective-prompting/iii-iteration-and-templates.md), upgraded:
+De [Solicitação efetiva - iteração](../effective-prompting/iii-iteration-and-templates.md), atualizado:
 
 ```text
 1. Rough ask (context already loaded)
@@ -61,31 +61,31 @@ From [Effective prompting — iteration](../effective-prompting/iii-iteration-an
 4. Save what worked → skill or template (not just chat history)
 ```
 
-**Loop rule:** if you typed the same paragraph twice this week, **promote it** to persistent instructions — see [Persistent instructions](iii-persistent-instructions.md).
+**Regra de loop:** se você digitou o mesmo parágrafo duas vezes esta semana, **promova-o** para instruções persistentes — consulte [Instruções persistentes](iii-persistent-instructions.md).
 
-## 5. Loop is not “never start fresh”
+## 5. Loop não é “nunca começar do zero”
 
-| Start a **new** chat when… | **Continue** the loop when… |
-|----------------------------|-----------------------------|
-| Topic or audience changed completely | Same deliverable or workflow |
-| Context is polluted with wrong assumptions | Refining output quality |
-| You need isolation (confidential mix-up) | Agent already read the right files |
-| Model stuck in a bad pattern | Small directed fixes work |
+| Inicie um **novo** bate-papo quando… | **Continue** o loop quando… |
+|----------------------------|------------------------------------------|
+| Tópico ou público mudou completamente | Mesma entrega ou fluxo de trabalho |
+| O contexto está poluído com suposições erradas | Refinando a qualidade da saída |
+| Você precisa de isolamento (confusão confidencial) | Agente já leu os arquivos corretos |
+| Modelo preso em um padrão ruim | Pequenas correções direcionadas funcionam |
 
-## 6. Relation to agents
+## 6. Relação com agentes
 
-| | Loop prompting | Agents |
+| | Solicitação de loop | Agentes |
 |---|----------------|--------|
-| **Focus** | Don’t rebrief; iterate cheaply | Many steps + tools toward a goal |
-| **Your input** | Short steering | Goal + boundaries + checkpoints |
-| **Overlap** | Agent sessions *are* loops when context persists | Agents benefit from stored skills/rules |
+| **Foco** | Não reflita; iterar barato | Muitos passos + ferramentas em direção a um objetivo |
+| **Sua opinião** | Direção curta | Meta + limites + pontos de verificação |
+| **Sobreposição** | Sessões de agente *são* loops quando o contexto persiste | Os agentes se beneficiam de habilidades/regras armazenadas |
 
-Read [Agents — overview](../agents-and-agentic-workflows/i-overview.md) for tool-heavy multi-step work. Use loop prompting for **everyday** repeat steering.
+Leia [Agentes — visão geral](../agents-and-agentic-workflows/i-overview.md) para trabalhos em várias etapas com uso pesado de ferramentas. Use a solicitação de loop para repetir a direção **todos os dias**.
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Why does one-shot prompting waste tokens?
-- What makes a good “delta” message in a loop?
-- When should you still open a new chat?
+- Por que a solicitação única desperdiça tokens?
+- O que constitui uma boa mensagem “delta” em loop?
+- Quando você ainda deve abrir um novo chat?
 
-**Next:** [Persistent instructions](iii-persistent-instructions.md).
+**Próximo:** [Instruções persistentes](iii-persistent-instructions.md).

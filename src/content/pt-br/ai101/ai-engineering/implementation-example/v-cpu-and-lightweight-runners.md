@@ -1,41 +1,41 @@
 ---
 label: "V"
-subtitle: "CPU & lightweight runners"
+subtitle: "CPU e corredores leves"
 group: "AI Applied"
 order: 5
 ---
-CPU & lightweight runners
+CPU e corredores leves
 
-Not every machine has a 24 GB GPU. These runtimes prioritize **low VRAM**, **CPU inference**, or **layer offloading** so you can still run useful open models on a laptop or small cloud instance.
+Nem toda máquina possui 24 GB GPU. Esses tempos de execução priorizam **baixa VRAM**, **CPU inferência** ou **descarregamento de camada** para que você ainda possa executar modelos abertos úteis em um laptop ou pequena instância de nuvem.
 
-## 1. Runner comparison
+## 1. Comparação de corredores
 
-| Runner | Idea | GPU needed? | Best when |
+| Corredor | Idéia | GPU necessário? | Melhor quando |
 |--------|------|-------------|-----------|
-| **[llama.cpp](https://github.com/ggerganov/llama.cpp)** | Optimized GGUF inference; partial `-ngl` offload | Optional | Default for CPU + GGUF; huge community |
-| **[Ollama](https://ollama.com)** | Wraps llama.cpp (and others) with easy pulls | Optional | Same as llama.cpp but simpler UX |
-| **[airLLM](https://github.com/lyogavin/airllm)** | Stream **one layer at a time** through GPU | Small VRAM OK | 70B-class on **4 GB** VRAM (slow) |
-| **[MLX](https://github.com/ml-explore/mlx)** | Apple Metal kernels | Apple Silicon | Best local perf on M1/M2/M3 Macs |
-| **[GPT4All](https://gpt4all.io)** | Desktop app + CPU backends | Optional | Non-technical users, offline chat |
-| **[KoboldCPP](https://github.com/LostRuins/koboldcpp)** | llama.cpp fork + UI | Optional | Single portable binary |
-| **[llamafile](https://github.com/Mozilla-Ocho/llamafile)** | Model + runtime in one file | Optional | Drop-in executable, no install |
-| **transformers + `device_map="cpu"`** | Pure PyTorch on CPU | No | Prototyping only — very slow at scale |
+| **[lhama.cpp](https://github.com/ggerganov/llama.cpp)** | Inferência GGUF otimizada; parcial`-ngl`descarregar | Opcional | Padrão para CPU + GGUF; enorme comunidade |
+| **[Ollama](https://ollama.com)** | Envolve llama.cpp (e outros) com puxões fáceis | Opcional | Igual a llama.cpp, mas mais simples UX |
+| **[arLLM](https://github.com/lyogavin/airllm)** | Transmita **uma camada por vez** por meio de GPU | Pequeno VRAM OK | Classe 70B em **4 GB** VRAM (lento) |
+| **[MLX](https://github.com/ml-explore/mlx)** | Núcleos de Apple Metal | Silício da Apple | Melhor desempenho local em Macs M1/M2/M3 |
+| **[GPT4Todos](https://gpt4all.io)** | Aplicativo de desktop + back-ends CPU | Opcional | Usuários não técnicos, bate-papo offline |
+| **[KoboldCPP](https://github.com/LostRuins/koboldcpp)** | garfo lhama.cpp + UI | Opcional | Binário portátil único |
+| **[arquivo de chamada](https://github.com/Mozilla-Ocho/llamafile)** | Modelo + tempo de execução em um arquivo | Opcional | Executável drop-in, sem instalação |
+| **transformadores +`device_map="cpu"`** | PyTorch puro em CPU | Não | Apenas prototipagem – muito lenta em escala |
 
-## 2. airLLM — big models, tiny VRAM
+## 2. airLLM — modelos grandes, minúsculos VRAM
 
-**airLLM** keeps full weights in **system RAM** and moves **one transformer layer** into GPU memory per forward step.
+**airLLM** mantém pesos totais no **sistema RAM** e move **uma camada de transformador** para a memória GPU por passo de avanço.
 
 ```text
 70B model in RAM  →  layer 0 to GPU → compute → layer 1 to GPU → … → logits
 ```
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Run models far larger than VRAM | **Much slower** than full GPU load |
-| Works with Hugging Face safetensors | Python + CUDA setup; less polished than Ollama |
-| Useful for occasional batch jobs | Poor for low-latency chat |
+| Execute modelos muito maiores que VRAM | **Muito mais lento** que carga completa de GPU |
+| Funciona com tensores de segurança Hugging Face | Configuração de Python + CUDA; menos polido que Ollama |
+| Útil para trabalhos em lote ocasionais | Ruim para bate-papo de baixa latência |
 
-Typical install:
+Instalação típica:
 
 ```bash
 pip install airllm
@@ -48,83 +48,83 @@ model = AutoModel.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
 # inference API per project README — layer-wise GPU execution
 ```
 
-Use when you **must** run a specific HF model and only have **4–8 GB VRAM**, not for interactive coding assistants.
+Use quando você **deve** executar um modelo HF específico e só tem **4–8 GB VRAM**, não para assistentes de codificação interativos.
 
-## 3. llama.cpp on CPU (no GPU)
+## 3. llama.cpp em CPU (sem GPU)
 
-Download a **Q4_K_M** GGUF and run:
+Baixe um **Q4_K_M** GGUF e execute:
 
 ```bash
 ./llama-cli -m ./models/model-Q4_K_M.gguf -p "Hello" -n 128 -ngl 0
 ```
 
-| Flag | Meaning |
+| Bandeira | Significado |
 |------|---------|
-| `-ngl 0` | **No** GPU layers — pure CPU |
-| `-ngl 35` | Offload 35 layers to GPU (model-dependent) |
-| `-c 4096` | Context size — lower if OOM |
+|`-ngl 0`| **Não** GPU camadas — CPU puro |
+|`-ngl 35`| Descarregar 35 camadas para GPU (dependente do modelo) |
+|`-c 4096`| Tamanho do contexto — menor se OOM |
 
-**llama-server** exposes the same stack over HTTP for apps.
+**llama-server** expõe a mesma pilha em HTTP para aplicativos.
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Runs on almost any x86/ARM machine | Tokens/sec low on CPU (1–20 typical) |
-| Quantized RAM footprint | Long prompts feel sluggish |
-| Same binary scales from Pi to workstation | No training — inference only |
+| Funciona em praticamente qualquer máquina x86/ARM | Tokens/seg baixos em CPU (1–20 típico) |
+| Pegada quantizada de RAM | Prompts longos parecem lentos |
+| Mesmas escalas binárias do Pi para a estação de trabalho | Sem formação — apenas inferência |
 
-Pair with [Model RAM requirements](iv-model-ram-requirements.md) — **3B Q4** on **8 GB** RAM is realistic; **7B** on **16 GB** is the comfort zone for CPU.
+Emparelhe com [requisitos do modelo RAM](iv-model-ram-requirements.md) — **3B Q4** em **8 GB** RAM é realista; **7B** em **16 GB** é a zona de conforto para CPU.
 
-## 4. Apple Silicon — MLX
+## 4. Silício da Apple - MLX
 
-On Mac, **MLX** often beats generic CPU paths by using **unified memory** efficiently:
+No Mac, **MLX** geralmente supera caminhos CPU genéricos usando **memória unificada** com eficiência:
 
 ```bash
 pip install mlx-lm
 mlx_lm.generate --model mlx-community/Llama-3.2-3B-Instruct-4bit --prompt "Hello"
 ```
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Strong perf per watt on M-series | macOS / Apple hardware only |
-| 4-bit MLX models on HF | Smaller catalog than GGUF |
-| Good for local dev with Cursor | Not for Linux server deploy |
+| Forte desempenho por watt na série M- | Somente hardware macOS/Apple |
+| Modelos MLX de 4 bits em HF | Catálogo menor que GGUF |
+| Bom para desenvolvedores locais com Cursor | Não para implantação de servidor Linux |
 
-## 5. Ollama CPU mode
+## 5. Modo Ollama CPU
 
-If no GPU is detected, Ollama still runs — backed by llama.cpp CPU kernels:
+Se nenhum GPU for detectado, Ollama ainda será executado - apoiado pelos kernels llama.cpp CPU:
 
 ```bash
 ollama pull qwen2.5-coder:7b
 ollama run qwen2.5-coder:7b
 ```
 
-Prefer **smaller** tags (`3b`, `1.5b`) for CPU-only. Set `OLLAMA_NUM_GPU=0` to force CPU on hybrid machines when debugging.
+Prefira tags **menores** (`3b`,`1.5b`) apenas para CPU. Definir`OLLAMA_NUM_GPU=0`para forçar CPU em máquinas híbridas durante a depuração.
 
-## 6. When to use which
+## 6. Quando usar qual
 
-| Goal | Pick |
+| Meta | Escolha |
 |------|------|
-| Daily local **coding** | Ollama + **`qwen2.5-coder:7b`** |
-| Daily local chat (general) | Ollama + `qwen2.5:7b` or `llama3.2:3b` |
-| Tightest RAM, full control | llama.cpp + Q4_K_M GGUF |
-| MacBook dev machine | MLX or Ollama |
-| 70B on 8 GB VRAM experiment | airLLM |
-| Air-gapped USB stick | llamafile or portable KoboldCPP |
-| Production API throughput | **Not** these — use vLLM on GPU ([platforms note](iii-local-run-platforms.md)) |
+| **codificação** local diária | Ollama + **`qwen2.5-coder:7b`** |
+| Bate-papo local diário (geral) | Ollama +`qwen2.5:7b`ou`llama3.2:3b`|
+| RAM mais rígido, controle total | lhama.cpp + Q4_K_M GGUF |
+| Máquina de desenvolvimento MacBook | MLX ou Ollama |
+| 70B no experimento 8 GB VRAM | arLLM |
+| Bastão USB com entreferro | lhamafile ou KoboldCPP portátil |
+| Produção API rendimento | **Não** estes — use vLLM em GPU ([nota de plataforma](iii-local-run-platforms.md)) |
 
-## 7. Realistic expectations (CPU)
+## 7. Expectativas realistas (CPU)
 
-| Model | Rough tokens/sec (modern laptop CPU) |
+| Modelo | Tokens brutos/s (laptop moderno CPU) |
 |-------|--------------------------------------|
-| qwen2.5-coder 1.5B Q4 | 20–45 |
-| 1–3B Q4 | 15–40 |
-| qwen2.5-coder 7B Q4 | 3–12 |
-| 13B Q4 | 1–5 |
+| codificador qwen2.5 1.5B Q4 | 20–45 |
+| 1–3BQ4 | 15–40 |
+| codificador qwen2.5 7B Q4 | 3–12 |
+| 13BQ4 | 1–5 |
 
-Numbers vary wildly by AVX support, core count, and power limits. For coding assistance, **`qwen2.5-coder:7b` on GPU** or a **hosted API** usually beats **7B on CPU**.
+Os números variam muito de acordo com o suporte AVX, contagem de núcleos e limites de potência. Para assistência de codificação, **`qwen2.5-coder:7b`em GPU** ou um **IT2__** hospedado geralmente supera **7B em CPU**.
 
-## Related
+## Relacionado
 
-- [Downloading from Hugging Face](ii-downloading-from-huggingface.md)
-- [Local run platforms](iii-local-run-platforms.md)
-- [Model RAM requirements](iv-model-ram-requirements.md)
+- [Baixando do Hugging Face](ii-downloading-from-huggingface.md)
+- [Plataformas de execução local](iii-local-run-platforms.md)
+- [Requisitos do modelo RAM](iv-model-ram-requirements.md)

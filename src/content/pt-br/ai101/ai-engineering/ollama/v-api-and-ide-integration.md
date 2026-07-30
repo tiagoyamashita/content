@@ -1,12 +1,12 @@
 ---
 label: "V"
-subtitle: "API & IDE integration"
+subtitle: "Integração API e IDE"
 group: "Ollama"
 order: 5
 ---
-API & IDE integration
+Integração API e IDE
 
-Ollama exposes an **OpenAI-compatible** HTTP API so IDEs and tools work with a local model instead of a cloud API.
+Ollama expõe um **compatível com OpenAI** HTTP API para que IDEs e ferramentas funcionem com um modelo local em vez de um API de nuvem.
 
 ```mermaid
 flowchart LR
@@ -15,23 +15,23 @@ flowchart LR
   Model --> IDE
 ```
 
-## 1. Base URL and auth
+## 1. Base URL e autenticação
 
-| Setting | Value |
-|---------|-------|
-| **Base URL** | `http://localhost:11434/v1` |
-| **API key** | Any placeholder (e.g. `ollama`) — not enforced locally |
-| **Model name** | Exact tag: `qwen2.5-coder:7b` |
+| Configuração | Valor |
+|--------|-------|
+| **Base URL** |`http://localhost:11434/v1`|
+| **API chave** | Qualquer espaço reservado (por exemplo`ollama`) — não aplicado localmente |
+| **Nome do modelo** | Etiqueta exata:`qwen2.5-coder:7b`|
 
-Server starts on first request, or run explicitly:
+O servidor inicia na primeira solicitação ou é executado explicitamente:
 
 ```bash
 ollama serve
 ```
 
-## 2. Test with curl
+## 2. Teste com curl
 
-**Chat completions:**
+**Conclusões do bate-papo:**
 
 ```bash
 curl http://localhost:11434/v1/chat/completions \
@@ -44,7 +44,7 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-**Streaming:**
+**Transmissão:**
 
 ```bash
 curl http://localhost:11434/v1/chat/completions \
@@ -56,7 +56,7 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-**Embeddings:**
+**Incorporações:**
 
 ```bash
 curl http://localhost:11434/v1/embeddings \
@@ -69,18 +69,14 @@ curl http://localhost:11434/v1/embeddings \
 
 ## 3. Cursor
 
-1. Pull model: `ollama pull qwen2.5-coder:7b`
-2. Cursor Settings → **Models** → add **OpenAI-compatible** provider (wording varies by version):
-   - Base URL: `http://localhost:11434/v1`
-   - API key: `ollama`
-   - Model: `qwen2.5-coder:7b`
-3. Select that model in chat or agent mode.
+1. Modelo de tração:`ollama pull qwen2.5-coder:7b`2. Configurações Cursor → **Modelos** → adicionar provedor **compatível com OpenAI** (o texto varia de acordo com a versão):
+   - Base URL:`http://localhost:11434/v1`- Tecla API:`ollama`- Modelo:`qwen2.5-coder:7b`3. Selecione esse modelo no modo chat ou agente.
 
-Ollama must be running on the **same machine** as Cursor (or use SSH tunnel for remote).
+Ollama deve estar em execução na **mesma máquina** que Cursor (ou usar o túnel SSH para controle remoto).
 
-## 4. Continue (VS Code / JetBrains)
+## 4. Continuar (Código VS / JetBrains)
 
-In `config.json`:
+Em`config.json`TÉCNICO.:
 
 ```json
 {
@@ -94,31 +90,31 @@ In `config.json`:
 }
 ```
 
-Continue detects local Ollama when the extension is installed and `ollama` is on PATH.
+Continue detecta Ollama local quando a extensão é instalada e`ollama`está em PATH.
 
-## 5. Environment variables
+## 5. Variáveis ​​de ambiente
 
-| Variable | Effect |
+| Variável | Efeito |
 |----------|--------|
-| `OLLAMA_HOST` | Bind address (default `127.0.0.1:11434`) |
-| `OLLAMA_KEEP_ALIVE` | How long models stay loaded (e.g. `30m`, `0` = unload immediately) |
-| `OLLAMA_NUM_GPU` | Force GPU layer count; `0` = CPU only |
-| `OLLAMA_MODELS` | Custom models directory |
+|`OLLAMA_HOST`| Endereço de ligação (padrão`127.0.0.1:11434`) |
+|`OLLAMA_KEEP_ALIVE`| Quanto tempo os modelos permanecem carregados (por exemplo`30m`,`0`= descarregar imediatamente) |
+|`OLLAMA_NUM_GPU`| Forçar contagem de camadas GPU;`0`= CPU apenas |
+|`OLLAMA_MODELS`| Diretório de modelos personalizados |
 
-Example — listen on LAN (use only on trusted networks):
+Exemplo — escute em LAN (use apenas em redes confiáveis):
 
 ```bash
 OLLAMA_HOST=0.0.0.0:11434 ollama serve
 ```
 
-## 6. Security
+## 6. Segurança
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| Open port on LAN/internet | Keep `127.0.0.1` unless you intend remote access |
-| No API auth | Do not expose `:11434` to the public internet |
-| Sensitive prompts | Local only — data stays on machine; still log-aware |
+| Abrir porta em LAN/internet | Manter`127.0.0.1`a menos que você pretenda acesso remoto |
+| Sem autorização API | Não exponha`:11434`para a internet pública |
+| Alertas sensíveis | Apenas local – os dados permanecem na máquina; ainda reconhece o log |
 
-## Next
+## Próximo
 
-[Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) — import models not in the library.
+[Arquivo de modelo e GGUF personalizado](vi-modelfile-and-custom-gguf.md) — importa modelos que não estão na biblioteca.

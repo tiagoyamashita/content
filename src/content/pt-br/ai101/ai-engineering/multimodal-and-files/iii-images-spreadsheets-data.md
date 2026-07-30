@@ -1,29 +1,29 @@
 ---
 label: "III"
-subtitle: "Images, spreadsheets & data"
+subtitle: "Imagens, planilhas e dados"
 group: "AI Applied"
 order: 3
 ---
-Images, spreadsheets & data
+Imagens, planilhas e dados
 
-## 3. Images and screenshots
+## 3. Imagens e capturas de tela
 
-| Use case | Prompt tip |
+| Caso de uso | Dica imediata |
 |----------|------------|
-| **UI / bug report** | “List UI elements; suggest likely cause (hypothesis).” |
-| **Chart** | “Describe trend; don’t invent numbers not visible.” |
-| **Handwriting / whiteboard** | “Transcribe; mark illegible as [?].” |
-| **Generate image** | Separate tools (DALL·E, Midjourney) — be specific on style, aspect ratio |
+| **UI / relatório de bug** | “Liste os elementos UI; sugira a causa provável (hipótese).” |
+| **Gráfico** | “Descreva a tendência; não invente números que não sejam visíveis.” |
+| **Escrita / quadro branco** | “Transcreva; marque ilegível como [?].” |
+| **Gerar imagem** | Ferramentas separadas (DALL·E, Midjourney) — seja específico em estilo e proporção |
 
-**Do not** send images you’re not allowed to share (patient IDs, unreleased designs on personal chat).
+**Não** envie imagens que você não tem permissão para compartilhar (IDs de pacientes, designs não divulgados em chat pessoal).
 
-## 4. Spreadsheets and data
+## 4. Planilhas e dados
 
-| Task | Approach |
+| Tarefa | Abordagem |
 |------|----------|
-| **Explore** | Upload CSV; “summary stats and anomalies” |
-| **Formula help** | Describe goal + sample rows |
-| **Charts** | “Suggest chart type; describe axes” — rebuild in Excel/Sheets yourself |
-| **Sensitive data** | Aggregate or redact PII first; use enterprise tier |
+| **Explorar** | Carregar CSV; “estatísticas resumidas e anomalias” |
+| **Ajuda da fórmula** | Descrever meta + linhas de amostra |
+| **Gráficos** | “Sugerir tipo de gráfico; descrever eixos” – reconstrua você mesmo no Excel/Planilhas |
+| **Dados confidenciais** | Agregue ou edite PII primeiro; usar nível empresarial |
 
-AI may **hallucinate rows** — spot-check against source for decisions.
+AI pode **alucinar linhas** - verifique a fonte para decisões.

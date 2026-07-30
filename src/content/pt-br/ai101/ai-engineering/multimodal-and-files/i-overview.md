@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Multimodal & files — overview
-Deep dive on **multimodal & files** — split into focused notes below.
+Multimodal e arquivos — visão geral
+Aprofunde-se em **multimodal e arquivos** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [PDFs & documents](ii-pdfs-and-documents.md) | Part of multimodal & files track |
-| [Images, spreadsheets & data](iii-images-spreadsheets-data.md) | Part of multimodal & files track |
-| [Voice, code & limits](iv-voice-code-and-limits.md) | Part of multimodal & files track |
+| [PDFs e documentos](ii-pdfs-and-documents.md) | Parte da trilha multimodal e de arquivos |
+| [Imagens, planilhas e dados](iii-images-spreadsheets-data.md) | Parte da trilha multimodal e de arquivos |
+| [Voz, código e limites](iv-voice-code-and-limits.md) | Parte da trilha multimodal e de arquivos |
 
-Multimodal and files
-Modern AI tools accept **images**, **PDFs**, **spreadsheets**, **audio**, and **screenshots** — not just typed prompts. Using files well beats retyping content.
+Multimodal e arquivos
+As ferramentas AI modernas aceitam **imagens**, **PDFs**, **planilhas**, **áudio** e **capturas de tela** — e não apenas prompts digitados. Usar arquivos é melhor do que redigitar o conteúdo.
 
 ```mermaid
 flowchart LR
@@ -25,6 +25,6 @@ flowchart LR
   Model --> Out[Summary / extract / answer]
 ```
 
-## Study order
+## Ordem de estudo
 
-[PDFs & documents](ii-pdfs-and-documents.md) → [Images, spreadsheets & data](iii-images-spreadsheets-data.md) → [Voice, code & limits](iv-voice-code-and-limits.md)
+[PDFs e documentos](ii-pdfs-and-documents.md) → [Imagens, planilhas e dados](iii-images-spreadsheets-data.md) → [Voz, código e limites](iv-voice-code-and-limits.md)

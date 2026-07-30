@@ -1,34 +1,34 @@
 ---
 label: "IV"
-subtitle: "Voice, code & limits"
+subtitle: "Voz, código e limites"
 group: "AI Applied"
 order: 4
 ---
-Voice, code & limits
+Voz, código e limites
 
-## 5. Voice and meetings
+## 5. Voz e reuniões
 
-| Workflow | Tools pattern |
+| Fluxo de trabalho | Padrão de ferramentas |
 |----------|---------------|
-| Record → transcribe → summarise | Native or Otter/Fireflies |
-| Action items | “Extract tasks with owners and dates; mark uncertain as TBD.” |
-| Follow-up email | “Draft recap from transcript; don’t add commitments we didn’t make.” |
+| Gravar → transcrever → resumir | Nativos ou Lontras/Vaga-lumes |
+| Itens de ação | “Extraia tarefas com proprietários e datas; marque incerto como TBD.” |
+| E-mail de acompanhamento | “Rascunho do resumo da transcrição; não acrescente compromissos que não assumimos.” |
 
-Review transcripts before sharing externally — names and confidential topics.
+Revise as transcrições antes de compartilhar externamente – nomes e tópicos confidenciais.
 
-## 6. Code and repos (light user view)
+## 6. Código e repositórios (visão leve do usuário)
 
-Non-developers: paste snippets or logs. Developers: use [IDE orchestration](../tools-and-orchestration/i-overview.md).
+Não desenvolvedores: cole trechos ou logs. Desenvolvedores: usem [orquestração IDE](../tools-and-orchestration/i-overview.md).
 
-| Input | Prompt |
+| Entrada | Alerta |
 |-------|--------|
-| Stack trace | “Explain in plain English; suggest next debug step.” |
-| Config file | “What does this setting do; safe to change for X?” |
+| Rastreamento de pilha | “Explique em inglês simples; sugira a próxima etapa de depuração.” |
+| Arquivo de configuração | “O que essa configuração faz; é seguro alterá-la para X?” |
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- Why specify page numbers on a PDF question?
-- One risk of uploading a customer CSV to a consumer chat app?
-- When is image input better than describing the UI in words?
+- Por que especificar números de página em uma pergunta PDF?
+- Existe o risco de enviar um cliente CSV para um aplicativo de bate-papo do consumidor?
+- Quando a entrada de imagem é melhor do que descrever UI em palavras?
 
-**Related:** [Custom assistants](../custom-assistants-and-knowledge/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**Relacionado:** [Assistentes personalizados](../custom-assistants-and-knowledge/i-overview.md), [Confiar e verificar](../trust-privacy-and-verify/i-overview.md).

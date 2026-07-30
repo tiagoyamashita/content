@@ -1,24 +1,24 @@
 ---
 label: "II"
-subtitle: "Parameterized script + clarify"
+subtitle: "Script parametrizado + esclarecimento"
 group: "Skills examples"
 order: 2
 ---
-Parameterized script + clarify
+Script parametrizado + esclarecimento
 
-**Goal:** Run a script with **parameters** (`environment`, `dry_run`, etc.). If the user did not supply enough info, the agent **asks** for missing values and **confirms intent** before executing. The script **logs** runtime and results to JSON.
+**Objetivo:** executar um script com **parâmetros** (`environment`,`dry_run`, etc.). Se o usuário não forneceu informações suficientes, o agente **pede** valores ausentes e **confirma a intenção** antes de executar. O script **registra** o tempo de execução e os resultados em JSON.
 
-## Live files (copy-ready)
+## Arquivos ativos (prontos para cópia)
 
-| File | Path |
+| Arquivo | Caminho |
 |------|------|
-| Skill instructions | [`.cursor/skills/deploy-check/SKILL.md`](.cursor/skills/deploy-check/SKILL.md) |
-| Script | [`.cursor/skills/deploy-check/scripts/deploy_check.py`](.cursor/skills/deploy-check/scripts/deploy_check.py) |
-| Logging helper | [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) |
+| Instruções de habilidade | [`.cursor/skills/deploy-check/SKILL.md`](.cursor/skills/deploy-check/SKILL.md) |
+| Roteiro | [`.cursor/skills/deploy-check/scripts/deploy_check.py`](.cursor/skills/deploy-check/scripts/deploy_check.py) |
+| Ajudante de registro | [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) |
 
-Copy all of [`.cursor/`](.cursor/README.md) to your project — paths already use `.cursor/skills/...`.
+Copie tudo [`.cursor/`](.cursor/README.md) para o seu projeto — caminhos já usados`.cursor/skills/...`.
 
-## Folder layout
+## Layout de pasta
 
 ```text
 .cursor/skills/deploy-check/
@@ -29,16 +29,15 @@ Copy all of [`.cursor/`](.cursor/README.md) to your project — paths already us
   logs/                    ← gitignore; created at runtime
 ```
 
-## What the skill teaches the agent
+## O que a habilidade ensina ao agente
 
-From [`SKILL.md`](.cursor/skills/deploy-check/SKILL.md):
+De [`SKILL.md`](.cursor/skills/deploy-check/SKILL.md):
 
-1. **Ask** if `environment` is missing (`staging` | `production`).
-2. **Confirm** before run — especially for production.
-3. **Run** `python3 .cursor/skills/deploy-check/scripts/deploy_check.py …`
-4. **Read** the JSON log under `logs/` and summarize `duration_ms`, `exit_code`, `messages`.
+1. **Pergunte** se`environment`está faltando (`staging`|`production`).
+2. **Confirme** antes da execução — especialmente para produção.
+3. **Correr**`python3 .cursor/skills/deploy-check/scripts/deploy_check.py …`4. **Leia** o log JSON em`logs/`e resumir`duration_ms`,`exit_code`,`messages`.
 
-## Agent flow
+## Fluxo do agente
 
 ```text
 User: "check if we're ready to deploy"
@@ -50,16 +49,16 @@ User: "check if we're ready to deploy"
   → Agent reads log → reports results
 ```
 
-## Test
+## Teste
 
-After copy to your project:
+Depois de copiar para o seu projeto:
 
 ```bash
 python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run
 ```
 
-Fresh agent chat: *"run deploy check"* — agent should ask for environment before running.
+Bate-papo com agente novo: *"run deploy check"* — o agente deve solicitar o ambiente antes de executar.
 
-## Next
+## Próximo
 
-[Loop on script results](iii-loop-on-script-results.md) — reuse log data across iterations.
+[Loop nos resultados do script](iii-loop-on-script-results.md) — reutilizar dados de log entre iterações.

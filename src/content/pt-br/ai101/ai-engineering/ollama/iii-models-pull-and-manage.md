@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "Models — pull & manage"
+subtitle: "Modelos – extrair e gerenciar"
 group: "Ollama"
 order: 3
 ---
-Models — pull & manage
+Modelos – extrair e gerenciar
 
-Models are referenced by **tags** (`model:variant`). Ollama downloads weights on first `pull` and caches them locally.
+Os modelos são referenciados por **tags** (`model:variant`). Ollama baixa os pesos primeiro`pull`e os armazena em cache localmente.
 
 ```mermaid
 flowchart LR
@@ -15,7 +15,7 @@ flowchart LR
   Run --> Rm[ollama rm]
 ```
 
-## 1. Pull models
+## 1. Puxar modelos
 
 ```bash
 # Coding (recommended default)
@@ -29,9 +29,9 @@ ollama pull llama3.2:3b
 ollama pull nomic-embed-text
 ```
 
-Progress shows download size. Resume is automatic if interrupted.
+O progresso mostra o tamanho do download. A retomada é automática se interrompida.
 
-## 2. List and inspect
+## 2. Liste e inspecione
 
 ```bash
 ollama list
@@ -39,60 +39,60 @@ ollama show qwen2.5-coder:7b
 ollama show qwen2.5-coder:7b --modelfile
 ```
 
-`show` prints parameters, template, and license snippet.
+`show`imprime parâmetros, modelo e trecho de licença.
 
-## 3. Remove models (free disk)
+## 3. Remover modelos (disco livre)
 
 ```bash
 ollama rm qwen2.5:7b
 ollama rm model-name:tag
 ```
 
-List first — blobs are not removed until no model references them.
+Liste primeiro – os blobs não são removidos até que nenhum modelo os faça referência.
 
-## 4. Tag naming
+## 4. Nomeação de tags
 
-| Pattern | Meaning |
-|---------|---------|
-| `llama3.2` | Default variant for that family |
-| `llama3.2:3b` | Specific size |
-| `qwen2.5-coder:7b` | Family + size |
-| `@sha256:…` | Pin exact blob (advanced) |
+| Padrão | Significado |
+|--------|---------|
+|`llama3.2`| Variante padrão para essa família |
+|`llama3.2:3b`| Tamanho específico |
+|`qwen2.5-coder:7b`| Família + tamanho |
+|`@sha256:…`| Fixar blob exato (avançado) |
 
-Browse catalog: [ollama.com/library](https://ollama.com/library)
+Navegue pelo catálogo: [ollama.com/library](https://ollama.com/library)
 
-## 5. Model picks by hardware
+## 5. Escolhas de modelo por hardware
 
-| VRAM | Suggested tags |
+| VRAM | Tags sugeridas |
 |------|----------------|
-| **8 GB** | `qwen2.5-coder:7b`, `llama3.2:3b`, `qwen2.5:7b` |
-| **16 GB** | above + `qwen2.5-coder:14b` (may be tight) |
-| **24 GB+** | `qwen2.5-coder:32b`, `llama3.1:70b` (quantized) |
-| **CPU only** | `llama3.2:1b`, `qwen2.5-coder:3b` |
+| **8 GB** |`qwen2.5-coder:7b`,`llama3.2:3b`,`qwen2.5:7b`|
+| **16 GB** | acima +`qwen2.5-coder:14b`(pode ser apertado) |
+| **24 GB+** |`qwen2.5-coder:32b`,`llama3.1:70b`(quantizado) |
+| **CPU apenas** |`llama3.2:1b`,`qwen2.5-coder:3b`|
 
-See [Model RAM requirements](../implementation-example/iv-model-ram-requirements.md) for theory.
+Consulte [Requisitos do modelo RAM](../implementation-example/iv-model-ram-requirements.md) para teoria.
 
-## 6. Embedding models
+## 6. Incorporação de modelos
 
-For local RAG (with LlamaIndex, etc.):
+Para RAG local (com LlamaIndex, etc.):
 
 ```bash
 ollama pull nomic-embed-text
 ollama pull mxbai-embed-large
 ```
 
-Use the **same** Ollama base URL for embed and chat in your app. Walkthrough: [TurboVec + Ollama + local files](../implementation-example/vii-turbovec-ollama-local-files.md).
+Use a **mesma** Ollama base URL para incorporar e conversar em seu aplicativo. Passo a passo: [TurboVec + Ollama + arquivos locais](../implementation-example/vii-turbovec-ollama-local-files.md).
 
-## 7. Hugging Face vs Ollama library
+## 7. Abraçando o rosto vs biblioteca Ollama
 
-| Source | When |
+| Fonte | Quando |
 |--------|------|
-| **`ollama pull`** | Model is in Ollama library — fastest |
-| **Modelfile + GGUF** | You downloaded a `.gguf` from HF — see [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) |
-| **Full HF safetensors** | Use transformers/vLLM, or convert to GGUF first |
+| **`ollama pull`** | O modelo está na biblioteca Ollama – mais rápido |
+| **Arquivo modelo + GGUF** | Você baixou um`.gguf`de HF - consulte [Modelfile e GGUF personalizado](vi-modelfile-and-custom-gguf.md) |
+| **Sensores de segurança HF completos** | Use transformers/vLLM ou converta para GGUF primeiro |
 
-Meta Llama gated repos need HF approval; many **Qwen** and **Mistral** models pull from Ollama without HF steps.
+Os repositórios fechados Meta Llama precisam de aprovação HF; muitos modelos **Qwen** e **Mistral** extraem de Ollama sem etapas HF.
 
-## Next
+## Próximo
 
-[Run, chat & parameters](iv-run-chat-and-parameters.md) — use models interactively.
+[Executar, conversar e parâmetros](iv-run-chat-and-parameters.md) — use modelos de forma interativa.

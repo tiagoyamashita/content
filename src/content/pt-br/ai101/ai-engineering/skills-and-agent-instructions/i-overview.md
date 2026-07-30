@@ -1,34 +1,34 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Skills & agent instructions — overview
+Habilidades e instruções do agente — visão geral
 
-Deep dive on **skills & agent instructions** — how to teach an agent your workflows once, so you stop re-explaining them every chat.
+Aprofunde-se nas **habilidades e instruções do agente** — como ensinar seus fluxos de trabalho a um agente uma vez, para que você pare de explicá-los novamente a cada bate-papo.
 
-## What this track covers
+## O que esta faixa cobre
 
-**Skills** and **instruction `.md` files** encode *your* rules: commit format, PR checklist, API envelope shape, doc frontmatter, deploy steps. The product loads them when the task matches — you write markdown; the agent follows it.
+**Habilidades** e **instruções`.md`arquivos ** codificam *suas* regras: formato de commit, lista de verificação PR, formato de envelope API, frontmatter do documento, etapas de implantação. O produto os carrega quando a tarefa corresponde – você escreve a redução; o agente o segue.
 
-| You get | Without this layer |
-|---------|-------------------|
-| Same PR review every time | “Remember to check tests…” each diff |
-| Agent knows `npm test` and folder layout | Guesses commands; edits wrong dirs |
-| Team shares behaviour via git | Everyone’s agent behaves differently |
+| Você obtém | Sem esta camada |
+|--------|-------------------|
+| A mesma revisão PR sempre | “Lembre-se de verificar os testes…” cada diferença |
+| Agente sabe`npm test`e layout de pastas | Adivinha comandos; edita diretórios errados |
+| Equipe compartilha comportamento via git | O agente de cada um se comporta de maneira diferente |
 
-This is for **people who use agents daily** — especially **Cursor**, **Claude Code**, **Codex**, Claude Projects, and Custom GPTs. Not for training models.
+Isso é para **pessoas que usam agentes diariamente** — especialmente **Cursor**, **Claude Code**, **Codex**, Claude Projects e GPTs personalizados. Não para modelos de treinamento.
 
-## Skills vs live tools (MCP)
+## Habilidades versus ferramentas ativas (MCP)
 
-| | **Skills / rules / `AGENTS.md`** | **MCP / connectors** |
+| | **Habilidades/regras/`AGENTS.md`** | **MCP / conectores** |
 |---|----------------------------------|----------------------|
-| **What** | Static markdown instructions | Live APIs (DB, Slack, browser, etc.) |
-| **When** | “How *we* do X” | “Fetch / act on *current* data” |
-| **Example** | PR review checklist skill | Query production logs via MCP |
+| **O que** | Instruções de redução estática | APIs ativos (DB, Slack, navegador, etc.) |
+| **Quando** | “Como *nós* fazemos X” | “Buscar/atuar em dados *atual*” |
+| **Exemplo** | PR revisar habilidade de lista de verificação | Consultar logs de produção via MCP |
 
-Use both: skills tell the agent *your process*; MCP gives it *live access*. See [How MCP works](../how-mcp-works/i-overview.md).
+Use ambos: as habilidades informam ao agente *seu processo*; MCP dá *acesso ao vivo*. Veja [Como MCP funciona](../how-mcp-works/i-overview.md).
 
 ```mermaid
 flowchart TB
@@ -43,18 +43,18 @@ flowchart TB
   Home --> Agent
 ```
 
-## Project skills vs personal (user) skills
+## Habilidades de projeto versus habilidades pessoais (do usuário)
 
-Cursor (and Claude Code) load skills from **two different places**. The rule is simple: **team process → repo**; **your habits → home folder**.
+Cursor (e Claude Code) carregam habilidades de **dois lugares diferentes**. A regra é simples: **processo de equipe → repositório**; **seus hábitos → pasta inicial**.
 
-| | **Project skills** | **Personal (user) skills** |
-|---|-------------------|---------------------------|
-| **Cursor path** | `.cursor/skills/<skill-name>/SKILL.md` | `~/.cursor/skills/<skill-name>/SKILL.md` |
-| **Claude Code path** | `.claude/skills/<skill-name>/SKILL.md` | `~/.claude/skills/<skill-name>/SKILL.md` |
-| **Who sees it** | Everyone who clones the repo | Only you, on every repo you open |
-| **Git** | **Commit and PR** like code | **Never commit** — lives outside the repo |
-| **Good for** | PR review standards, deploy steps, repo frontmatter rules | Private runbooks, your commit tone, experiments |
-| **Example** | `.cursor/skills/pr-review/SKILL.md` | `~/.cursor/skills/my-weekly-status/SKILL.md` |
+| | **Habilidades de projeto** | **Habilidades pessoais (do usuário)** |
+|---|----|---------------------------|
+| **Cursor caminho** |`.cursor/skills/<skill-name>/SKILL.md`|`~/.cursor/skills/<skill-name>/SKILL.md`|
+| **Caminho do código Claude** |`.claude/skills/<skill-name>/SKILL.md`|`~/.claude/skills/<skill-name>/SKILL.md`|
+| **Quem vê** | Todos que clonam o repositório | Somente você, em cada repositório que você abre |
+| **Git** | **Commit e PR** código semelhante | **Nunca se comprometa** — vive fora do repositório |
+| **Bom para** | PR revisar padrões, implantar etapas, regras de frontmatter de repo | Runbooks privados, seu tom de compromisso, experimentos |
+| **Exemplo** |`.cursor/skills/pr-review/SKILL.md`|`~/.cursor/skills/my-weekly-status/SKILL.md`|
 
 ```text
 /home/you/
@@ -67,26 +67,26 @@ Cursor (and Claude Code) load skills from **two different places**. The rule is 
   AGENTS.md
 ```
 
-**Do not** put custom skills in `~/.cursor/skills-cursor/` — that directory is for Cursor built-ins only.
+**Não** coloque habilidades personalizadas`~/.cursor/skills-cursor/`- esse diretório é apenas para Cursor integrados.
 
-### What else lives in the repo (git-managed)
+### O que mais está no repositório (gerenciado pelo git)
 
-| File / folder | Purpose | Commit? |
+| Arquivo/pasta | Finalidade | Comprometer-se? |
 |---------------|---------|---------|
-| **`AGENTS.md`** (repo root) | Stack, test commands, folder map — every agent reads this | Yes |
-| **`.cursor/skills/`** | Team workflows | Yes |
-| **`.cursor/rules/*.mdc`** | Always-on or glob-matched coding rules (Cursor-only) | Yes |
-| **`docs/skills/`** | Optional **canonical** copy before syncing to `.cursor/` / `.claude/` | Yes |
-| **`.claude/skills/`** | Same skills for Claude Code teammates | Yes (if team uses Claude Code) |
-| **`CLAUDE.md`** | Claude Code standing prefs | Yes (optional) |
+| **`AGENTS.md`** (raiz do repositório) | Pilha, comandos de teste, mapa de pastas – todo agente lê isto | Sim |
+| **`.cursor/skills/`** | Fluxos de trabalho da equipe | Sim |
+| **`.cursor/rules/*.mdc`** | Regras de codificação sempre ativas ou com correspondência global (somente Cursor) | Sim |
+| **`docs/skills/`** | Cópia **canônica** opcional antes de sincronizar com`.cursor/`-&#09;o`.claude/`| Sim |
+| **`.claude/skills/`** | Mesmas habilidades para companheiros de equipe de Claude Code | Sim (se a equipe usar o Código Claude) |
+| **`CLAUDE.md`** | Preferências de posição do Código Claude | Sim (opcional) |
 
-Personal skills never go in the repo — if you need a team workflow, move it from `~/.cursor/skills/` into `.cursor/skills/` and open a PR.
+Habilidades pessoais nunca vão para o repositório – se você precisar de um fluxo de trabalho de equipe, mova-o de`~/.cursor/skills/`em`.cursor/skills/`e abra um PR.
 
-## Managing skills with git
+## Gerenciando habilidades com git
 
-Treat project skills as **source code**: versioned, reviewed, owned.
+Trate as habilidades do projeto como **código-fonte**: versionado, revisado, de propriedade.
 
-### What to commit
+### O que comprometer
 
 ```bash
 git add AGENTS.md
@@ -95,32 +95,32 @@ git add .cursor/skills/pr-review/scripts/smoke-test.sh   # if the skill ships a 
 git add .cursor/rules/typescript-errors.mdc              # rules, not skills — still team config
 ```
 
-**Include in git:** all of `.cursor/skills/`, `AGENTS.md`, optional `docs/skills/`, scripts under skill folders.
+**Incluir no git:** todos`.cursor/skills/`,`AGENTS.md`, opcional`docs/skills/`, scripts em pastas de habilidades.
 
-**Exclude from git:** nothing under `~/.cursor/` or `~/.claude/` (those paths are outside the repo anyway).
+**Excluir do git:** nada abaixo`~/.cursor/`ou`~/.claude/`(esses caminhos estão fora do repositório de qualquer maneira).
 
-### Typical git workflow
+### Fluxo de trabalho típico do git
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| **1. Branch** | `git checkout -b skills/add-pr-review` |
-| **2. Add skill** | Create `.cursor/skills/pr-review/SKILL.md` (+ `reference.md`, `scripts/` if needed) |
-| **3. Link in `AGENTS.md`** | Add a row under `## Skills` pointing to the skill path |
-| **4. Test locally** | Fresh agent chat → prompt that should trigger the skill → verify behaviour |
-| **5. PR** | Reviewers check instructions like code (wrong command = broken deploy) |
-| **6. Merge** | Teammates get skills on `git pull` — no manual install |
+| **1. Filial** |`git checkout -b skills/add-pr-review`|
+| **2. Adicionar habilidade** | Criar`.cursor/skills/pr-review/SKILL.md`(+`reference.md`,`scripts/`se necessário) |
+| **3. Link em`AGENTS.md`** | Adicione uma linha abaixo`## Skills`apontando para o caminho da habilidade |
+| **4. Teste localmente** | Bate-papo com novo agente → prompt que deve acionar a habilidade → verificar comportamento |
+| **5. PR** | Os revisores verificam instruções como código (comando errado = implantação interrompida) |
+| **6. Mesclar** | Colegas de equipe adquirem habilidades`git pull`— sem instalação manual |
 
-### Keep skills in sync across tools
+### Mantenha as habilidades sincronizadas entre as ferramentas
 
-If some teammates use **Cursor** and others **Claude Code**, duplicate or sync the same `SKILL.md`:
+Se alguns colegas de equipe usam **Cursor** e outros **Claude Code**, duplique ou sincronize o mesmo`SKILL.md`TÉCNICO.:
 
-| Strategy | How | Git note |
+| Estratégia | Como | Git nota |
 |----------|-----|----------|
-| **Duplicate** | Copy to `.cursor/skills/` and `.claude/skills/` | Commit **both** folders |
-| **Canonical `docs/skills/`** | Edit once in `docs/skills/pr-review/`, run sync script | Commit `docs/skills/` + synced copies |
-| **Symlink** (local only) | `ln -s ../../docs/skills/pr-review .cursor/skills/pr-review` | Symlinks often **don’t** port well — document duplicate or script for CI |
+| **Duplicado** | Copiar para`.cursor/skills/`e`.claude/skills/`| Confirmar **ambas** pastas |
+| **Canônico`docs/skills/`** | Edite uma vez`docs/skills/pr-review/`, execute o script de sincronização | Comprometer-se`docs/skills/`+ cópias sincronizadas |
+| **Link simbólico** (somente local) |`ln -s ../../docs/skills/pr-review .cursor/skills/pr-review`| Os links simbólicos geralmente **não** são bem portados — documento duplicado ou script para CI |
 
-Example sync script (commit to repo, run after editing `docs/skills/`):
+Exemplo de script de sincronização (comprometer-se com o repositório, executar após a edição`docs/skills/`):
 
 ```bash
 #!/bin/sh
@@ -135,32 +135,32 @@ done
 echo "Synced skills to .cursor/ and .claude/"
 ```
 
-Add to README: *“After changing `docs/skills/`, run `./scripts/sync-skills.sh`.”*
+Adicione a README: *“Depois de alterar`docs/skills/`, correr`./scripts/sync-skills.sh`.”*
 
-### PR and ownership practices
+### PR e práticas de propriedade
 
-| Practice | Why |
+| Prática | Por que |
 |----------|-----|
-| **One skill = one folder = one PR theme** | Easier review (“adds deploy-staging skill”) |
-| **Name an owner** in skill footer or team doc | Someone updates when process changes |
-| **Test in agent before merge** | Same bar as changing a runbook |
-| **Changelog line in `SKILL.md`** | `<!-- v2: added staging smoke script 2026-07 -->` |
-| **Don’t commit secrets** | Use env vars in scripts; reference in skill text only |
+| **Uma habilidade = uma pasta = um tema PR** | Revisão mais fácil (“adiciona habilidade de preparação de implantação”) |
+| **Nomeie um proprietário** no rodapé da habilidade ou no documento da equipe | Alguém atualiza quando o processo muda |
+| **Teste no agente antes da mesclagem** | Mesma barra da alteração de um runbook |
+| **Linha do changelog`SKILL.md`** |`<!-- v2: added staging smoke script 2026-07 -->`|
+| **Não cometa segredos** | Use env vars em scripts; referência apenas em texto de habilidade |
 
-When `AGENTS.md` changes (new test command), update skills that say `npm test` in the **same PR** or immediately after — avoid drift.
+Quando`AGENTS.md`mudanças (novo comando de teste), atualizar habilidades que dizem`npm test`no **mesmo PR** ou imediatamente depois - evite desvios.
 
-### Clone / new teammate checklist
+### Clone/lista de verificação de novo companheiro de equipe
 
-After `git clone` and opening the repo in Cursor:
+Depois`git clone`e abrindo o repositório em Cursor:
 
-1. **`AGENTS.md`** loads automatically (repo root).
-2. **`.cursor/skills/`** is available — no extra install step.
-3. **Personal skills** in `~/.cursor/skills/` still apply **in addition** to project skills (don’t duplicate conflicting instructions).
-4. Optional: run `./scripts/sync-skills.sh` only if your team uses `docs/skills/` as source.
+1. **`AGENTS.md`** carrega automaticamente (repo root).
+2. **`.cursor/skills/`** está disponível — nenhuma etapa extra de instalação.
+3. **Habilidades pessoais** em`~/.cursor/skills/`ainda se aplicam **além** às habilidades do projeto (não duplique instruções conflitantes).
+4. Opcional: execute`./scripts/sync-skills.sh`somente se sua equipe usar`docs/skills/`como fonte.
 
-## Skills folder tree
+## Árvore de pastas de habilidades
 
-How a typical **project** skills directory is organized. Each skill is a **folder** with a required **`SKILL.md`**; optional files hold detail the agent reads only when needed.
+Como um diretório típico de habilidades de **projeto** é organizado. Cada habilidade é uma **pasta** com um ** obrigatório`SKILL.md`**; arquivos opcionais contêm detalhes que o agente lê somente quando necessário.
 
 ```text
 repo/
@@ -196,9 +196,9 @@ repo/
       └── reference.md
 ```
 
-### Where scripts live (not inside the `.md`)
+### Onde os scripts ficam (não dentro do`.md`)
 
-Scripts are **real files on disk** in a `scripts/` subfolder next to `SKILL.md`. They are **not** embedded inside the markdown.
+Scripts são **arquivos reais em disco** em um`scripts/`subpasta ao lado de`SKILL.md`. Eles **não** estão incorporados na redução.
 
 ```text
 .cursor/skills/deploy-staging/
@@ -208,60 +208,60 @@ Scripts are **real files on disk** in a `scripts/` subfolder next to `SKILL.md`.
     validate.py         ← optional second script
 ```
 
-| File | Contains |
+| Arquivo | Contém |
 |------|----------|
-| **`SKILL.md`** | Text: “Run this command: `.cursor/skills/deploy-staging/scripts/smoke-test.sh`” |
-| **`scripts/*.sh`** | Executable code the agent runs via **Shell** |
-| **`reference.md`** | Extra prose — not executed |
+| **`SKILL.md`** | Texto: “Execute este comando:`.cursor/skills/deploy-staging/scripts/smoke-test.sh`” |
+| **`scripts/*.sh`** | Código executável que o agente executa via **Shell** |
+| **`reference.md`** | Prosa extra — não executada |
 
-The skill does **not** auto-run anything. The agent reads `SKILL.md`, then runs the path you wrote using the terminal tool — same as if you typed the command yourself.
+A habilidade **não** executa nada automaticamente. O agente lê`SKILL.md`e, em seguida, executa o caminho que você escreveu usando a ferramenta de terminal - como se você mesmo tivesse digitado o comando.
 
-**Alternative:** point `SKILL.md` at an existing repo script (e.g. `npm run smoke:staging` in `package.json`) instead of a file under `scripts/`. Full walkthrough: [Linking a fixed script](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script).
+**Alternativa:** ponto`SKILL.md`em um script de repositório existente (por exemplo,`npm run smoke:staging`em`package.json`) em vez de um arquivo em`scripts/`. Passo a passo completo: [Vinculando um script fixo](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script).
 
-| Path | Scope | Commit to git? |
+| Caminho | Escopo | Comprometer-se com o git? |
 |------|-------|----------------|
-| `.cursor/skills/<name>/` | **Project** — team workflows in this repo | **Yes** |
-| `.claude/skills/<name>/` | **Project** — Claude Code teammates | **Yes** (if used) |
-| `docs/skills/<name>/` | **Project** — canonical copy for sync | **Yes** |
-| `AGENTS.md`, `.cursor/rules/*.mdc` | **Project** — briefing + rules | **Yes** |
-| `~/.cursor/skills/<name>/` | **Personal** — all your repos | **No** (outside repo) |
-| `~/.claude/skills/<name>/` | **Personal** — Claude Code | **No** (outside repo) |
+|`.cursor/skills/<name>/`| **Projeto** — fluxos de trabalho da equipe neste repositório | **Sim** |
+|`.claude/skills/<name>/`| **Projeto** — Colegas de equipe de Claude Code | **Sim** (se usado) |
+|`docs/skills/<name>/`| **Projeto** — cópia canônica para sincronização | **Sim** |
+|`AGENTS.md`,`.cursor/rules/*.mdc`| **Projeto** — briefing + regras | **Sim** |
+|`~/.cursor/skills/<name>/`| **Pessoal** — todos os seus repositórios | **Não** (fora do repositório) |
+|`~/.claude/skills/<name>/`| **Pessoal** — Código Claude | **Não** (fora do repositório) |
 
-### Quick picker: where should this live?
+### Seletor rápido: onde isso deveria ficar?
 
-| You want… | Put it here |
-|-----------|-------------|
-| Whole team uses same PR review checklist | `.cursor/skills/pr-review/` → **git commit** |
-| Only you want a custom weekly-status format | `~/.cursor/skills/weekly-status/` → **not in git** |
-| Every agent knows `npm test` and folder layout | `AGENTS.md` at repo root → **git commit** |
-| TypeScript files always use our error types | `.cursor/rules/*.mdc` → **git commit** |
-| Same skill for Cursor + Claude Code | `.cursor/skills/` + `.claude/skills/` or `docs/skills/` + sync script |
-| Fixed bash/Python script for a workflow | `.cursor/skills/<name>/scripts/*.sh` — **not** pasted into `SKILL.md` |
-| Promoted from chat — now team policy | Move from personal folder to `.cursor/skills/`, open PR |
+| Você quer… | Coloque aqui |
+|-----------|------------|
+| Toda a equipe usa a mesma lista de verificação de revisão PR |`.cursor/skills/pr-review/`→ **git commit** |
+| Só você deseja um formato de status semanal personalizado |`~/.cursor/skills/weekly-status/`→ **não no git** |
+| Todo agente sabe`npm test`e layout de pastas |`AGENTS.md`na raiz do repositório → **git commit** |
+| Arquivos TypeScript sempre usam nossos tipos de erro |`.cursor/rules/*.mdc`→ **git commit** |
+| Mesma habilidade para Cursor + Código Claude |`.cursor/skills/`+`.claude/skills/`ou`docs/skills/`+ script de sincronização |
+| Script bash/Python corrigido para um fluxo de trabalho |`.cursor/skills/<name>/scripts/*.sh`— **não** colado em`SKILL.md`|
+| Promovido no chat — agora política da equipe | Mover da pasta pessoal para`.cursor/skills/`, abra PR |
 
-One skill folder = one workflow. Split large topics (e.g. `pr-review` vs `deploy-staging`) instead of one mega-skill. Put fixed commands in **`scripts/`** and reference them from `SKILL.md` — see [Linking a fixed script](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script). Multi-tool details: [Cross-tool portable setup](iii-cross-tool-portable-setup.md).
+Uma pasta de habilidades = um fluxo de trabalho. Divida tópicos grandes (por exemplo`pr-review`contra`deploy-staging`) em vez de uma mega-habilidade. Coloque comandos fixos em **`scripts/`** e referenciá-los de`SKILL.md`— veja [Vinculando um script fixo](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script). Detalhes de várias ferramentas: [Configuração portátil de ferramentas cruzadas](iii-cross-tool-portable-setup.md).
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Artifacts & why bother](ii-artifacts-why-and-what.md) | What to create, which product uses which artifact |
-| [Artifact examples](iia-artifact-examples.md) | Copy-paste samples for every artifact type |
-| [Cross-tool portable setup](iii-cross-tool-portable-setup.md) | One repo, Cursor + Claude Code + Codex |
-| [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) | Cursor layout, rules vs skills, `AGENTS.md`, **linking scripts** |
-| [Writing & maintaining skills](v-writing-and-maintaining-skills.md) | Descriptions, progressive disclosure, team workflow |
-| **[Using skills, agents & hooks](using-skills-agents-and-hooks/i-overview.md)** | Skills vs `AGENTS.md` vs hooks; [agent orchestration](using-skills-agents-and-hooks/vi-agent-orchestration.md) |
-| **[Examples](examples/i-overview.md)** | Parameterized scripts, loop on logs, commit hooks, perf scans — all with runtime JSON logs |
+| [Artefatos e por que se preocupar](ii-artifacts-why-and-what.md) | O que criar, qual produto utiliza qual artefato |
+| [Exemplos de artefatos](iia-artifact-examples.md) | Amostras de copiar e colar para cada tipo de artefato |
+| [Configuração portátil entre ferramentas](iii-cross-tool-portable-setup.md) | Um repositório, Cursor + Código Claude + Codex |
+| [Cursor habilidades, regras e AGENTS.md](iv-cursor-skills-rules-agents-md.md) | Layout Cursor, regras versus habilidades,`AGENTS.md`, **vinculando scripts** |
+| [Escrita e manutenção de habilidades](v-writing-and-maintaining-skills.md) | Descrições, divulgação progressiva, fluxo de trabalho da equipe |
+| **[Usando habilidades, agentes e ganchos](using-skills-agents-and-hooks/i-overview.md)** | Habilidades versus`AGENTS.md`versus ganchos; [orquestração de agentes](using-skills-agents-and-hooks/vi-agent-orchestration.md) |
+| **[Exemplos](examples/i-overview.md)** | Scripts parametrizados, loop em logs, ganchos de commit, varreduras de desempenho — tudo com logs JSON em tempo de execução |
 
-**Related loop:** [Persistent instructions](../loop-prompting/iii-persistent-instructions.md) — when to promote chat text into skills.
+**Loop relacionado:** [Instruções persistentes](../loop-prompting/iii-persistent-instructions.md) — quando promover o texto do bate-papo em habilidades.
 
-## Study order
+## Ordem de estudo
 
-[Artifacts & why bother](ii-artifacts-why-and-what.md) → [Artifact examples](iia-artifact-examples.md) → [Cross-tool portable setup](iii-cross-tool-portable-setup.md) → [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) → [Writing & maintaining skills](v-writing-and-maintaining-skills.md) → **[Using skills, agents & hooks](using-skills-agents-and-hooks/i-overview.md)** → **[Examples](examples/i-overview.md)** when you want copy-paste scripts with logging
+[Artefatos e por que se preocupar](ii-artifacts-why-and-what.md) → [Exemplos de artefatos](iia-artifact-examples.md) → [Configuração portátil de ferramentas cruzadas](iii-cross-tool-portable-setup.md) → [Cursor habilidades, regras e AGENTS.md](iv-cursor-skills-rules-agents-md.md) → [Habilidades de redação e manutenção](v-writing-and-maintaining-skills.md) → **[Usando habilidades, agentes e ganchos](using-skills-agents-and-hooks/i-overview.md)** → **[Exemplos](examples/i-overview.md)** quando você deseja copiar e colar scripts com registro
 
-## Start here (15 minutes)
+## Comece aqui (15 minutos)
 
-1. **`AGENTS.md`** at repo root — stack, `npm test`, folder map → **commit to git**. See [Artifact examples](iia-artifact-examples.md) §3.
-2. **One project skill** — `.cursor/skills/commit-messages/SKILL.md` (or `pr-review`) → **commit to git**. Not `~/.cursor/skills/` unless it stays personal.
-3. Fresh chat → short prompt → refine `description` if the skill does not load.
-4. Optional personal skill in `~/.cursor/skills/` only for habits you do **not** want the team to inherit.
+1. **`AGENTS.md`** na raiz do repositório - pilha,`npm test`, mapa de pastas → **comprometer-se com o git**. Consulte [Exemplos de artefatos](iia-artifact-examples.md) §3.
+2. **Uma habilidade de projeto** —`.cursor/skills/commit-messages/SKILL.md`(ou`pr-review`) → **comprometer-se com o git**. Não`~/.cursor/skills/`a menos que permaneça pessoal.
+3. Novo bate-papo → prompt curto → refinar`description`se a habilidade não carregar.
+4. Habilidade pessoal opcional em`~/.cursor/skills/`apenas para hábitos que você **não** deseja que a equipe herde.

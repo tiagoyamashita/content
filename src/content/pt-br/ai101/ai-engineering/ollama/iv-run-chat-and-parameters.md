@@ -1,89 +1,89 @@
 ---
 label: "IV"
-subtitle: "Run, chat & parameters"
+subtitle: "Executar, conversar e parâmetros"
 group: "Ollama"
 order: 4
 ---
-Run, chat & parameters
+Executar, conversar e parâmetros
 
-## 1. Interactive chat
+## 1. Bate-papo interativo
 
 ```bash
 ollama run qwen2.5-coder:7b
 ```
 
-| Command (in chat) | Action |
+| Comando (no chat) | Ação |
 |-------------------|--------|
-| `/bye`, `/exit` | Quit session |
-| `/clear` | Clear context |
-| `/set parameter value` | Change runtime param (see below) |
-| `/?` | Help |
+|`/bye`,`/exit`| Sair da sessão |
+|`/clear`| Contexto claro |
+|`/set parameter value`| Alterar parâmetro de tempo de execução (veja abaixo) |
+|`/?`| Ajuda |
 
-One-shot without interactive mode:
+One-shot sem modo interativo:
 
 ```bash
 ollama run qwen2.5-coder:7b "Write a Python function to merge two dicts"
 ```
 
-## 2. Common parameters
+## 2. Parâmetros comuns
 
-Set during chat with `/set` or in a **Modelfile** (persistent):
+Definido durante o bate-papo com`/set`ou em um **Modelfile** (persistente):
 
-| Parameter | Typical | Effect |
+| Parâmetro | Típico | Efeito |
 |-----------|---------|--------|
-| `temperature` | `0.7` | Randomness (lower = more deterministic) |
-| `num_ctx` | `4096` | Context window tokens — raise if you have VRAM |
-| `top_p` | `0.9` | Nucleus sampling |
-| `repeat_penalty` | `1.1` | Reduce repetition |
+|`temperature`|`0.7`| Aleatoriedade (menor = mais determinística) |
+|`num_ctx`|`4096`| Tokens de janela de contexto — aumente se você tiver VRAM |
+|`top_p`|`0.9`| Amostragem de núcleo |
+|`repeat_penalty`|`1.1`| Reduzir a repetição |
 
-Example in session:
+Exemplo em sessão:
 
 ```text
 /set temperature 0.2
 /set num_ctx 8192
 ```
 
-Coding tasks: try **`temperature 0.1–0.3`**.
+Tarefas de codificação: experimente **`temperature 0.1–0.3`**.
 
-## 3. System prompt
+## 3. Prompt do sistema
 
-In interactive chat, multiline system prompt:
+No bate-papo interativo, prompt do sistema multilinha:
 
 ```bash
 ollama run qwen2.5-coder:7b
 >>> /set system You are a senior Python engineer. Prefer stdlib. Always show types.
 ```
 
-For permanent system prompts, use a **Modelfile** — [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md).
+Para prompts permanentes do sistema, use um **Modelfile** — [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md).
 
-## 4. What is loaded right now
+## 4. O que está carregado agora
 
 ```bash
 ollama ps
 ```
 
-| Column | Meaning |
+| Coluna | Significado |
 |--------|---------|
-| **MODEL** | Running tag |
-| **PROCESSOR** | `100% GPU`, `100% CPU`, or mixed |
-| **UNTIL** | Idle unload timer |
+| **MODEL** | Marca de corrida |
+| **PROCESSOR** |`100% GPU`,`100% CPU`ou misto |
+| **UNTIL** | Temporizador de descarga ocioso |
 
-If **PROCESSOR** shows CPU only on a GPU machine, see [GPU & troubleshooting](vii-gpu-troubleshooting.md).
+Se **PROCESSOR** mostrar CPU apenas em uma máquina GPU, consulte [GPU e solução de problemas](vii-gpu-troubleshooting.md).
 
-## 5. Keep model in memory
+## 5. Mantenha o modelo na memória
 
-Default: Ollama unloads idle models after a few minutes.
+Padrão: Ollama descarrega modelos ociosos após alguns minutos.
 
 ```bash
 # Keep loaded 30 minutes after last request (example)
 OLLAMA_KEEP_ALIVE=30m ollama serve
 ```
 
-Or per-request via API `keep_alive` field — [API & IDE integration](v-api-and-ide-integration.md).
+Ou por solicitação via API`keep_alive`campo — [integração API e IDE](v-api-and-ide-integration.md).
 
-## 6. Multi-line input
+## 6. Entrada multilinha
 
-Paste code blocks directly in `ollama run`. End with a blank line or use one-shot mode with heredoc:
+Cole blocos de código diretamente em`ollama run`. Termine com uma linha em branco ou use o modo one-shot com heredoc:
 
 ```bash
 ollama run qwen2.5-coder:7b <<'EOF'
@@ -94,6 +94,6 @@ def divide(a, b):
 EOF
 ```
 
-## Next
+## Próximo
 
-[API & IDE integration](v-api-and-ide-integration.md) — Cursor, Continue, curl.
+[Integração API e IDE](v-api-and-ide-integration.md) — Cursor, Continuar, enrolar.

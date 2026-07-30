@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Skills examples"
 order: 1
 ---
-Skills examples — overview
+Exemplos de habilidades – visão geral
 
-Four **copy-paste patterns** for skills, scripts, and hooks. Every example includes:
+Quatro **padrões de copiar e colar** para habilidades, scripts e ganchos. Cada exemplo inclui:
 
-- A **`scripts/`** Python file (real code — not inside `SKILL.md`)
-- **Structured runtime logs** (timestamp, duration, exit code, results) via the stdlib `json` module
-- Instructions for the agent on **what to do with the log output**
+-UM**`scripts/`** Arquivo Python (código real - não dentro`SKILL.md`)
+- **Logs de tempo de execução estruturados** (carimbo de data/hora, duração, código de saída, resultados) por meio do stdlib`json`módulo
+- Instruções para o agente sobre **o que fazer com a saída do log**
 
-Scripts are **not** embedded in markdown — see [Where scripts live](../i-overview.md#where-scripts-live-not-inside-the-md).
+Os scripts **não** são incorporados no markdown — consulte [Onde os scripts ficam](../i-overview.md#where-scripts-live-not-inside-the-md).
 
-Runnable files live under **[`.cursor/`](.cursor/README.md)** — copy that folder into your project root (see [Copy to your project](#copy-to-your-project)).
+Arquivos executáveis ​​ficam em **[`.cursor/`](.cursor/README.md)** — copie essa pasta para a raiz do seu projeto (veja [Copiar para seu projeto](#copy-to-your-project)).
 
-## Copy to your project
+## Copie para o seu projeto
 
 ```bash
 cd src/content/en/ai101/ai-engineering/skills-and-agent-instructions/examples
@@ -24,40 +24,40 @@ chmod +x scripts/copy-to-project.sh
 ./scripts/copy-to-project.sh /path/to/your-project
 ```
 
-Or manually: copy `examples/.cursor/skills/`, `examples/.cursor/hooks/`, and `examples/.cursor/hooks.json` → your repo `.cursor/`. No path edits needed — `SKILL.md` files already use `.cursor/...`.
+Ou manualmente: copiar`examples/.cursor/skills/`,`examples/.cursor/hooks/`, e`examples/.cursor/hooks.json`→ seu repositório`.cursor/`. Não são necessárias edições de caminho —`SKILL.md`arquivos já usam`.cursor/...`.
 
-Smoke test:
+Teste de fumaça:
 
 ```bash
 python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run
 ```
 
-## Why Python (not bash)
+## Por que Python (não bash)
 
-| | **Python** | **bash** |
+| | **Python** | **festa** |
 |---|------------|----------|
-| JSON logs | `json.dump` — no `jq` | Heredocs + escaping bugs |
-| Args | `argparse` | Manual `case` / `getopts` |
-| Parsing diffs, AST, perf | `re`, `pathlib`, `ast` | Fragile `grep`/`awk` |
-| Hooks | Read stdin JSON, return dict | Same, but easier to get wrong |
-| Deps | **stdlib only** in these examples | Often needs `jq`, `curl` |
+| JSON registros |`json.dump`- não`jq`| Heredocs + escapando de bugs |
+| Argumentos |`argparse`| Manual`case`-&#09;o`getopts`|
+| Analisando diferenças, AST, perf |`re`,`pathlib`,`ast`| Frágil`grep`-&#09;o`awk`|
+| Ganchos | Leia stdin JSON, retorne dict | O mesmo, mas mais fácil de errar |
+| Dep. | **somente stdlib** nestes exemplos | Muitas vezes precisa`jq`,`curl`|
 
-Use **Python 3.10+**. No pip packages required for the examples below.
+Utilize **Python 3.10+**. Nenhum pacote pip é necessário para os exemplos abaixo.
 
-## Map of examples
+## Mapa de exemplos
 
-| Example | Pattern | Trigger |
-|---------|---------|---------|
-| [Parameterized script + clarify](ii-parameterized-script-clarify.md) | Pass args; ask if missing; confirm intent | Skill (user asks to run tool) |
-| [Loop on script results](iii-loop-on-script-results.md) | Re-use same log data; refine across iterations | Skill + agent loop |
-| [Hook — secrets & `.env` scan](iv-hook-secrets-env-scan.md) | Block or warn before commit / shell | Cursor hook |
-| [Performance & bottlenecks](v-performance-bottleneck-scan.md) | Profile / scan; log findings | Skill |
+| Exemplo | Padrão | Gatilho |
+|--------|---------|---------|
+| [Script parametrizado + esclarecimento](ii-parameterized-script-clarify.md) | Passe argumentos; pergunte se está faltando; confirmar intenção | Habilidade (o usuário pede para executar a ferramenta) |
+| [Loop nos resultados do script](iii-loop-on-script-results.md) | Reutilize os mesmos dados de registro; refinar entre iterações | Habilidade + loop de agente |
+| [Gancho – segredos e`.env`digitalizar](iv-hook-secrets-env-scan.md) | Bloquear ou avisar antes de commit/shell | Cursor gancho |
+| [Desempenho e gargalos](v-performance-bottleneck-scan.md) | Perfil/verificação; descobertas de registro | Habilidade |
 
-## Shared logging helper
+## Auxiliar de registro compartilhado
 
-Implemented at [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) (copied into each skill’s `scripts/lib/`). Same module in `test-flake-hunt` and `perf-scan`.
+Implementado em [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) (copiado em cada habilidade`scripts/lib/`). Mesmo módulo em`test-flake-hunt`e`perf-scan`.
 
-## Shared log shape
+## Formato de log compartilhado
 
 ```text
 .cursor/skills/<skill-name>/logs/
@@ -80,24 +80,24 @@ Implemented at [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/sk
 }
 ```
 
-Add `logs/` to `.gitignore` if runs are local-only; commit **scripts** and **SKILL.md**, not ephemeral log files.
+Adicionar`logs/`para`.gitignore`se as execuções forem apenas locais; commit **scripts** e **SKILL.md**, não arquivos de log efêmeros.
 
-## Skill vs hook (which example to copy)
+## Habilidade vs gancho (qual exemplo copiar)
 
-| Need | Copy |
+| Necessidade | Copiar |
 |------|------|
-| User invokes workflow; may need parameters | [Parameterized script + clarify](ii-parameterized-script-clarify.md) |
-| Iterate on same script output until good enough | [Loop on script results](iii-loop-on-script-results.md) |
-| Automatic check on commit / git / shell | [Hook — secrets scan](iv-hook-secrets-env-scan.md) |
-| On-demand performance review | [Performance scan](v-performance-bottleneck-scan.md) |
+| O usuário invoca o fluxo de trabalho; pode precisar de parâmetros | [Script parametrizado + esclarecimento](ii-parameterized-script-clarify.md) |
+| Iterar na mesma saída do script até que esteja bom o suficiente | [Loop nos resultados do script](iii-loop-on-script-results.md) |
+| Verificação automática em commit/git/shell | [Gancho – verificação de segredos](iv-hook-secrets-env-scan.md) |
+| Avaliação de desempenho sob demanda | [Verificação de desempenho](v-performance-bottleneck-scan.md) |
 
-## Study order
+## Ordem de estudo
 
-Read [Parameterized script + clarify](ii-parameterized-script-clarify.md) first (parameters + logs), then [Loop on script results](iii-loop-on-script-results.md). Add [Hook — secrets scan](iv-hook-secrets-env-scan.md) when you need **automatic** gates.
+Leia [Script parametrizado + esclarecimento](ii-parameterized-script-clarify.md) primeiro (parâmetros + logs), depois [Loop nos resultados do script](iii-loop-on-script-results.md). Adicionar [Gancho – verificação de segredos](iv-hook-secrets-env-scan.md) quando você precisar de portões **automáticos**.
 
-## Related
+## Relacionado
 
-- [Using skills, agents & hooks](../using-skills-agents-and-hooks/i-overview.md) — when to use each layer separately
-- [Linking a fixed script](../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script)
-- [Loop prompting](../../loop-prompting/i-overview.md)
-- [How MCP works](../../how-mcp-works/i-overview.md) — live data vs static scripts
+- [Usando habilidades, agentes e ganchos](../using-skills-agents-and-hooks/i-overview.md) — quando usar cada camada separadamente
+- [Vinculando um script fixo](../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script)
+- [Aviso de loop](../../loop-prompting/i-overview.md)
+- [Como MCP funciona](../../how-mcp-works/i-overview.md) — dados ao vivo versus scripts estáticos
