@@ -10,11 +10,19 @@ API ゲートウェイ — 認証
 
 ## 1. 認証が実行される場所
 
-```text
-Client ──Authorization: Bearer …──► Gateway validates
-                                         │
-                                         ├── invalid → 401
-                                         └── valid → upstream (+ optional identity headers)
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant G as Gateway
+  participant U as Upstream
+  C->>G: Authorization Bearer token
+  alt invalid token
+    G-->>C: 401
+  else valid token
+    G->>U: forward + identity headers
+    U-->>G: response
+    G-->>C: response
+  end
 ```
 
 |レイヤー |責任 |

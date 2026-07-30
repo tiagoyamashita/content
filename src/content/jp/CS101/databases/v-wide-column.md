@@ -12,12 +12,14 @@ order: 5
 
 **幅の広い行の分散ハッシュ マップ**を考えてみましょう。
 
-```text
-Partition key: user_id = 42
-Row key (within partition): timestamp or event_id
-
-         column:email     column:last_login    column:pref:theme
-row 42   ada@…            2026-05-19T10:00Z    dark
+```mermaid
+flowchart TB
+  PK[Partition key user_id] --> Node[Same node / replica set]
+  Node --> R1[Row clustered by time]
+  Node --> R2[Sparse columns per row]
+  R2 --> C1[email]
+  R2 --> C2[last_login]
+  R2 --> C3[pref theme]
 ```
 
 **カサンドラ** 用語:

@@ -14,6 +14,14 @@ SRE ツール — Terraform: 概要とアーキテクチャ
 
 ## 2. ランニングの仕組み (メンタルモデル)
 
+
+```mermaid
+flowchart LR
+  parse[Parse .tf] --> refresh[Refresh state]
+  refresh --> diff[Diff desired vs actual]
+  diff --> apply[Apply via providers]
+  apply --> state[Update state]
+```
 1. 解析する`.tf`→ リソース + データ ソースの DAG を構築します。
 2. 制約されない限り、**状態** / プロバイダーの読み取りを更新します (**`-refresh=false`**)。
 3. 希望と実際の差 → 実行計画。

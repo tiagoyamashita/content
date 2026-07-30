@@ -11,7 +11,7 @@ AI101 — overview
 
 | Submenu | Focus | Audience |
 |---------|--------|----------|
-| [**AI Applied**](ai-applied/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
+| [**AI Engineering**](ai-engineering/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
 | [Machine learning](machine-learning/i-overview.md) | Supervised/unsupervised, evaluation, features | Builders & curious readers |
 | [Deep learning](deep-learning/i-overview.md) | Neural nets, CNNs, RNNs, transformers | Technical depth |
 | [LLMs](llms/i-overview.md) | Pre-training, alignment, RAG, fine-tuning | Engineers integrating LLMs |
@@ -20,7 +20,7 @@ AI101 — overview
 
 ```mermaid
 flowchart LR
-  Start[Your goal] --> Applied[AI Applied]
+  Start[Your goal] --> Applied[AI Engineering]
   Start --> ML[Machine learning]
   ML --> DL[Deep learning]
   DL --> LLM[LLMs]
@@ -29,7 +29,7 @@ flowchart LR
 
 | You want to… | Start here |
 |--------------|------------|
-| Write better prompts, use agents, stay safe | [AI Applied overview](ai-applied/i-overview.md) |
+| Write better prompts, use agents, stay safe | [AI Engineering overview](ai-engineering/i-overview.md) |
 | Learn sklearn, metrics, workflows | [Machine learning overview](machine-learning/i-overview.md) |
 | Understand transformers and GPT | [Deep learning](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
 
@@ -41,7 +41,7 @@ flowchart TB
   DL --> LLM[LLMs]
 ```
 
-Use **AI Applied** in parallel or first if you mainly interact with products, not train models.
+Use **AI Engineering** in parallel or first if you mainly interact with products, not train models.
 
 ## How this relates to other tracks
 
@@ -51,4 +51,4 @@ Use **AI Applied** in parallel or first if you mainly interact with products, no
 | [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
 | [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
 
-**Related:** [Loop prompting](ai-applied/loop-prompting/i-overview.md), [Skills & agent instructions](ai-applied/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-applied/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-applied/agents-and-agentic-workflows/i-overview.md).
+**Related:** [Loop prompting](ai-engineering/loop-prompting/i-overview.md), [Skills & agent instructions](ai-engineering/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-engineering/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-engineering/agents-and-agentic-workflows/i-overview.md).

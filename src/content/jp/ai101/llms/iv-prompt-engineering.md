@@ -11,6 +11,15 @@ The model weights are **fixed** at inference; **prompting** steers behaviour thr
 
 ## 1. Basic techniques
 
+
+```mermaid
+flowchart TB
+  Z[Zero-shot] --> Task[Task description]
+  F[Few-shot] --> Ex[Examples]
+  C[Chain-of-thought] --> Step[Step by step]
+  R[Role] --> Persona[Persona rules]
+```
+
 | Technique | Pattern |
 |-----------|---------|
 | **Zero-shot** | Describe task only — "Translate to French: …" |
@@ -28,9 +37,12 @@ CoT can be **zero-shot** ("Let's think step by step") or **few-shot** (examples 
 | **User** | End-user message |
 | **Assistant** | Prior model turns in multi-turn chat |
 
-```text
-System: Answer in JSON only. Refuse medical diagnosis.
-User: List 3 risks of …
+```mermaid
+sequenceDiagram
+  participant S as System
+  participant U as User
+  S->>U: Answer in JSON only
+  U->>S: List 3 risks of …
 ```
 
 APIs (OpenAI, Anthropic) map these to structured message arrays.

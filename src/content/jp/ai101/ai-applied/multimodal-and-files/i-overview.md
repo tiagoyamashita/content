@@ -9,6 +9,14 @@ Deep dive on **multimodal & files** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Files[PDF / image / sheet / audio] --> Attach[Attach or upload]
+  Attach --> Model[Multimodal model]
+  Model --> Out[Summary / extract / answer]
+```
+
 | Note | Focus |
 |------|--------|
 | [PDFs & documents](ii-pdfs-and-documents.md) | Part of multimodal & files track |

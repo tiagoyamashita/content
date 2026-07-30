@@ -9,6 +9,13 @@ Deep dive on **agents & agentic workflows** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Perceive[Perceive] --> Plan --> Act
+  Act -->|observe result| Perceive
+```
+
 | Note | Focus |
 |------|--------|
 | [Chat, assistant & agent](ii-chat-assistant-agent.md) | モード比較。ツール（組み込み、MCP、スキル+スクリプト例: Translate API） |

@@ -21,15 +21,16 @@ order: 3
 
 ## 2. モノリスの利点
 
-```text
-┌─────────────────────────────────┐
-│         Monolith (one JAR)       │
-│  ┌─────┐ ┌─────┐ ┌──────────┐  │
-│  │Auth │ │Orders│ │Inventory │  │
-│  └──┬──┘ └──┬──┘ └────┬─────┘  │
-│     └───────┴─────────┘         │
-│           shared DB              │
-└─────────────────────────────────┘
+```mermaid
+flowchart TB
+  subgraph mono[Monolith one JAR]
+    auth[Auth]
+    orders[Orders]
+    inv[Inventory]
+    auth --> db[(shared DB)]
+    orders --> db
+    inv --> db
+  end
 ```
 
 - 迅速なローカル開発 - 実行するサービス メッシュが不要
@@ -38,14 +39,14 @@ order: 3
 
 ## 3. マイクロサービスの利点
 
-```text
-     ┌─────────┐     ┌─────────┐     ┌──────────┐
-     │  Auth   │     │ Orders  │     │ Inventory│
-     │ service │     │ service │     │ service  │
-     └────┬────┘     └────┬────┘     └────┬─────┘
-          │    HTTP/gRPC   │               │
-          └────────────────┴───────────────┘
-                    message bus (optional)
+```mermaid
+flowchart LR
+  auth[Auth service] --> orders[Orders service]
+  orders --> inv[Inventory service]
+  bus[Message bus]
+  auth -.-> bus
+  orders -.-> bus
+  inv -.-> bus
 ```
 
 - 認証をスケーリングせずにピーク時に **注文** サービスをスケーリングする

@@ -9,6 +9,15 @@ Deep dive on **tools & orchestration** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Chat[Chat apps] --> AI[AI step]
+  IDE[IDE agents] --> AI
+  Auto[Automations] --> AI
+  AI --> Action[Slack / docs / code]
+```
+
 | Note | Focus |
 |------|--------|
 | [Tool map](ii-tool-map-and-patterns.md) | Part of tools & orchestration track |

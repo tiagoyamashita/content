@@ -23,6 +23,17 @@ order: 2
 **Java:** `Arrays.sort(int[])` は **デュアルピボット クイックソート** を使用します。 `Arrays.sort(Object[])` は **TimSort** (マージ + 挿入、安定) を使用します。
 
 ## 2. マージソート（分割統治）
+
+```mermaid
+flowchart TB
+  A[Array] --> L[Left half]
+  A --> R[Right half]
+  L --> L1[Sorted left]
+  R --> R1[Sorted right]
+  L1 --> M[Merge O of n]
+  R1 --> M
+  M --> Out[Sorted array]
+```
 1. **配列をサイズ 1 になるまで半分に分割します**。
 2. **征服** — シングルトンがソートされます。
 3. **結合** — ソートされた 2 つの半分を **O(n)** 時間で結合します。
@@ -63,6 +74,16 @@ private static void merge(int[] a, int[] buf, int lo, int mid, int hi) {
 ```
 
 ## 3. クイックソート
+
+```mermaid
+flowchart LR
+  In[Input] --> Pivot[Pick pivot]
+  Pivot --> Part[Partition]
+  Part --> Left[Recurse left of pivot]
+  Part --> Right[Recurse right of pivot]
+  Left --> Done[Sorted]
+  Right --> Done
+```
 **ピボット**、*パーティション**を選択して、要素 ≤ ピボットが左になり、> 右にピボットされ、両側で再帰されます。
 
 - **平均Θ(n log n)**; **ピボットが常に最小/最大の場合 (不適切なピボット ルールでソートされた入力)、最悪の Θ(n²)**。

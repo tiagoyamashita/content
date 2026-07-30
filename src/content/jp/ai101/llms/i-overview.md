@@ -22,8 +22,12 @@ Prerequisites: [Transformers & attention](../deep-learning/iv-transformers-and-a
 
 ## LLM lifecycle
 
-```text
-Pre-train (next token) → SFT (instructions) → RLHF/DPO (preferences) → Deploy (+ RAG / LoRA)
+```mermaid
+flowchart LR
+  PT[Pre-train] --> SFT[SFT]
+  SFT --> Align[RLHF / DPO]
+  Align --> Deploy[Deploy]
+  Deploy --> RAG[RAG / LoRA]
 ```
 
 | Stage | Data | Output |

@@ -35,15 +35,13 @@ This track assumes you know relational basics from [Relational (SQL)](../../CS10
 
 ## コードが実行される場所
 
-```text
-Client (Java, Python, SQL*Plus, SQL Developer)
-        │
-        ▼
-   Oracle Database
-        ├── SQL engine (SELECT, DML, DDL)
-        └── PL/SQL engine (blocks, procedures, packages, triggers)
-                    │
-                    └── Shared buffer cache & undo — same transaction as SQL
+```mermaid
+flowchart TB
+  Client[Java / Python / SQL*Plus]
+  Client --> Oracle[Oracle Database]
+  Oracle --> SQL[SQL engine]
+  Oracle --> PLSQL[PL/SQL engine]
+  PLSQL --> Cache[shared buffer cache and undo]
 ```
 
 PL/SQL and SQL share **one transaction** in a session — `COMMIT`/`ROLLBACK` apply to both.

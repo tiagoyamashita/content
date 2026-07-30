@@ -1,4 +1,10 @@
-﻿---
+﻿```mermaid
+flowchart TB
+  X[Features X] --> f[Model f]
+  f --> Class[Classification: discrete ŷ]
+  f --> Reg[Regression: continuous ŷ]
+```
+---
 label: "II"
 subtitle: "教師あり学習"
 group: "Machine learning"

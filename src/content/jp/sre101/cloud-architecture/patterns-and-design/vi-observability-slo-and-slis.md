@@ -42,6 +42,14 @@ Request abc-123
 }
 ```
 
+
+```mermaid
+flowchart LR
+  logs[Logs] --> observe[Observability]
+  metrics[Metrics] --> observe
+  traces[Traces] --> observe
+```
+
 |悪い |良い |
 |-----|------|
 |`ERROR payment failed for user`| JSON と`orderId`、`traceId`、`errorCode`|
@@ -89,10 +97,11 @@ try {
 | **SLO** | **目的** — 内部目標 | p99 レイテンシー< 200 ms over 30 days |
 | **SLA** | **Agreement** — contractual | 99.9% uptime or credit |
 
-```text
-SLI (measure)  →  SLO (target)  →  SLA (contract with customer)
-     │                │
-     └── error budget: 100% - SLO = allowed bad minutes/month
+```mermaid
+flowchart LR
+  sli[SLI measure] --> slo[SLO target]
+  slo --> sla[SLA contract]
+  slo --> budget[Error budget]
 ```
 
 **Error budget:** if SLO is 99.9%, you have ~43 min downtime/month. Budget exhausted → freeze features, focus on reliability.

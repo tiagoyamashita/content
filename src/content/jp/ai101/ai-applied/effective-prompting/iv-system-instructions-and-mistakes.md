@@ -8,6 +8,13 @@ System instructions & mistakes
 
 ## 5. System instructions vs chat message
 
+
+```mermaid
+flowchart TB
+  Sys[System / project instructions] -.->|always loaded| Model[Model]
+  User[User message — this task] --> Model
+```
+
 | Product | Where “always follow” rules live |
 |---------|----------------------------------|
 | **ChatGPT** | Custom GPT instructions, or first message |

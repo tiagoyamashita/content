@@ -1,3 +1,10 @@
+```mermaid
+flowchart LR
+  module[Module call] --> resources[Resources]
+  resources --> backend[S3 remote backend]
+  backend --> lock[DynamoDB lock]
+  backend --> consumer[Remote state consumer]
+```
 ---
 label: "III"
 subtitle: "モジュールのバックエンドと状態"

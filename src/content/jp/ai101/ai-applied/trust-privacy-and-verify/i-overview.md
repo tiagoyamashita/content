@@ -9,6 +9,14 @@ Deep dive on **trust, privacy & verify** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Output[AI output] --> Verify[Verify facts]
+  Verify --> Privacy[Check privacy]
+  Privacy --> Limits[Respect limits]
+```
+
 | Note | Focus |
 |------|--------|
 | [Hallucinations & verification](ii-hallucinations-and-verification.md) | Part of trust, privacy & verify track |

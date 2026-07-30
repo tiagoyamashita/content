@@ -14,6 +14,15 @@ order: 8
 
 ## 1. トップダウンとボトムアップ
 
+
+```mermaid
+flowchart LR
+  Naive[Naive recursion] -->|redo work| Exp[Exponential tree]
+  Naive -->|cache answers| Memo[Memoization top-down]
+  Memo --> Same[Same asymptotic cost]
+  Tab[Tabulation bottom-up] --> Same
+```
+
 |スタイル |メカニズム |長所 |
 |------|-----------|------|
 | **メモ化** |再帰 + キャッシュ (`Map` または配列) |書くのが早い |

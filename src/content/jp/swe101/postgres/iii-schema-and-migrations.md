@@ -43,10 +43,11 @@ CREATE INDEX posts_account_id_idx ON posts (account_id);
 
 ## 2.移行ワークフロー
 
-```text
-V1__create_accounts.sql   →  applied once, recorded in history table
-V2__add_posts.sql         →  runs on next deploy
-V3__index_posts.sql       →  additive, backward-compatible when possible
+```mermaid
+flowchart LR
+  V1[V1 create accounts] --> V2[V2 add posts]
+  V2 --> V3[V3 index posts]
+  V3 --> Hist[history table]
 ```
 
 |ルール |なぜ |

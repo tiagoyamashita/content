@@ -35,10 +35,11 @@ For key-value concepts (cache-aside, sessions, when not to use KV alone), see [K
 
 ## 主要な語彙
 
-```text
-Redis server
-  └── Logical DB 0..N (default 0)
-        └── Key  →  Value (string, hash, list, set, …)
+```mermaid
+flowchart TB
+  S[Redis server]
+  S --> DB0[Logical DB 0..N]
+  DB0 --> K[Key to Value]
 ```
 
 | Term | Role |
@@ -51,6 +52,13 @@ Redis server
 | **Cluster** | Sharded keys across nodes (hash slots) |
 
 ## Redis が適合する場合
+
+
+```mermaid
+flowchart LR
+  App[App tier] --> Redis[Redis cache / sessions]
+  Redis --> DB[(Postgres / MongoDB source of truth)]
+```
 
 | Good fit | Poor default |
 |----------|--------------|

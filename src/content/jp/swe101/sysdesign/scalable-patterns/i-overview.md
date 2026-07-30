@@ -52,6 +52,16 @@ order: 1
 
 ## リハーサルの質問
 
+
+```mermaid
+flowchart LR
+  Client --> CDN
+  CDN --> GW[API / Gateway]
+  GW --> Svc[Service]
+  Svc --> Q[Queue]
+  Svc --> Search[Search]
+  Svc --> DB[(DB)]
+```
 - カーソルとオフセットのページネーション — それぞれがいつ中断されるか?
 - トランザクション送信ボックス — DB とブローカーへの二重書き込みを行ってみませんか?
 - トークンバケットとリーキーバケット — バースト動作?

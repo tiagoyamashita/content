@@ -34,12 +34,13 @@ VPC CIDR: 10.0.0.0/16
 | **典型的なリソース** | ALB、要塞 (使用されている場合) |アプリサーバー、データベース |
 | **ウェブからのインバウンド** |パブリック層の LB 経由 | LB はプライベート ターゲットに転送します。
 
-```text
-Internet ──▶ IGW ──▶ ALB (public subnet)
-                         │
-                         └──▶ EC2 targets (private subnet)
-
-Private EC2 outbound: private subnet ──▶ NAT GW (public subnet) ──▶ IGW
+```mermaid
+flowchart TB
+  internet[Internet] --> igw[IGW]
+  igw --> alb[ALB public subnet]
+  alb --> app[EC2 private subnet]
+  app --> nat[NAT GW]
+  nat --> igw
 ```
 
 **NAT ゲートウェイ** のコストに関するメモ: 時間 + データ処理 — S3/DynamoDB には **VPC エンドポイント** を使用し、AWS の NAT API トラフィックを回避します。

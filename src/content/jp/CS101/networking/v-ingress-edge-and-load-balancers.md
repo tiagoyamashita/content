@@ -40,8 +40,12 @@ Kubernetes 以外のシステムは、**リバース プロキシ**、**API ゲ�
 
 トラフィック パス (通常):
 
-```text
-Internet → cloud LB (optional TLS) → Ingress controller → Service → Pod
+```mermaid
+flowchart TB
+  Net[Internet] --> LB[Cloud LB]
+  LB --> Ing[Ingress controller]
+  Ing --> Svc[Service]
+  Svc --> Pod[Pod]
 ```
 
 ## 3. エッジの TLS

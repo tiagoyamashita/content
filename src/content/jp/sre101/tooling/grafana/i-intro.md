@@ -21,6 +21,13 @@ SRE ツール — Grafana: はじめに
 
 ## 3. 一般的なスタック
 
+
+```mermaid
+flowchart LR
+  prom[Prometheus metrics] --> grafana[Grafana]
+  loki[Loki logs] --> grafana
+  tempo[Tempo traces] --> grafana
+```
 **Prometheus** → メトリクス; **ロキ** → 丸太; **テンポ** (またはイェーガー) → トレース—**Grafana** は通常、インシデント中にエンジニアが中心となる場所です。
 
 このフォルダー内の **インストール** と **ヒントとテクニック** に進みます。

@@ -46,6 +46,13 @@ order: 4
 
 ### 引き違い窓カウンター
 
+
+```mermaid
+flowchart LR
+  Bucket[Token bucket B tokens] -->|request| OK[allow if token available]
+  Bucket -->|empty| Reject[429 reject]
+  Refill[refill at R per sec] --> Bucket
+```
 - 以前のウィンドウ数と現在のウィンドウ数をブレンドします — 精度とメモリの適切なバランス (Redis 実装で一般的)。
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Token bucket allows burst then steady rate">

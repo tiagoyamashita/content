@@ -10,6 +10,15 @@ Prometheus アラートを人間とシステムに重複排除、グループ化
 
 ## 1. 役割
 
+
+```mermaid
+flowchart LR
+  prom[Prometheus] --> am[Alertmanager]
+  am --> dedupe[dedupe group route]
+  dedupe --> recv[Receivers]
+  recv --> slack[Slack]
+  recv --> pd[PagerDuty]
+```
 **Alertmanager** は **Prometheus** (または互換性のあるソース) からアラートを受信し、**重複を抑制**し、関連する通知を **グループ** して 1 つの通知にし、ラベル (チーム、重大度、地域) ごとに**ルーティング**します。
 
 

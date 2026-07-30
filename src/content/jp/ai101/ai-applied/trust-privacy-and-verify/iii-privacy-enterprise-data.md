@@ -8,6 +8,14 @@ Privacy & enterprise data
 
 ## 2. What not to paste
 
+
+```mermaid
+flowchart TD
+  Data[Work data] --> Q{Enterprise-approved?}
+  Q -->|no| Block[Do not paste]
+  Q -->|yes| OK[Approved tool + DPA]
+```
+
 | Never (unless enterprise-approved) | Why |
 |-----------------------------------|-----|
 | Passwords, API keys, tokens | Training, logs, breaches |

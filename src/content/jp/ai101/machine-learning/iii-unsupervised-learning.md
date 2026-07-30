@@ -52,8 +52,11 @@ Compress many features while preserving structure — visualisation, speed, deno
 | **t-SNE** | Non-linear | 2-D visualisation only — distances not globally meaningful |
 | **UMAP** | Non-linear | Faster than t-SNE; better global structure often |
 
-```text
-High-dim X  →  projection  →  2–50 dims for plot or downstream model
+```mermaid
+flowchart LR
+  X[High-dim X] --> Proj[Projection]
+  Proj --> Out[2–50 dims]
+  Out --> Plot[Plot or model]
 ```
 
 **Warning:** fit PCA on **train** only; transform val/test with same components.

@@ -29,6 +29,16 @@ order: 4
 - 例: フィボナッチ、LCS、編集距離、サブセット合計、ナップザック バリアント。
 
 ## 4. DP vs 貪欲 — 意思決定チェックリスト
+
+```mermaid
+flowchart TD
+  Start[Optimization problem] --> Local{Local choice always safe?}
+  Local -->|Yes prove it| Greedy[Greedy]
+  Local -->|No / unsure| Overlap{Overlapping subproblems?}
+  Overlap -->|Yes| DP[Dynamic programming]
+  Overlap -->|No| DnC[Divide and conquer]
+  DP --> Recur[Write recurrence then memoize or tabulate]
+```
 - 地元の選択があなたを罠にはめることができない場合は貪欲です（証明されています）。
 - DP 最適な答えが、重複する小さな構造化インスタンスに依存する場合。
 - 試してみてください: 最初に繰り返しを書きます。指数関数的単純ツリーの場合 → メモ化。

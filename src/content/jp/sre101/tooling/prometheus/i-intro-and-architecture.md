@@ -35,6 +35,14 @@ Prometheus が可観測性にどのように適合し、その部分がどのよ
 
 ## 5. スタック内でのペアリング
 
+
+```mermaid
+flowchart LR
+  targets[Scrape targets] --> prom[Prometheus TSDB]
+  prom --> grafana[Grafana dashboards]
+  prom --> am[Alertmanager]
+  am --> notify[Slack / PagerDuty]
+```
 - **Grafana** は、ダッシュボードに対して PromQL を使用して Prometheus をクエリします。
 - **Alertmanager** は Prometheus からアラートを受信し、ルーティング、沈黙、Slack/PagerDuty などを処理します。
 

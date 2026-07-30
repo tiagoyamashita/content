@@ -8,6 +8,17 @@ Hallucinations & verification
 
 ## 1. Hallucinations
 
+
+```mermaid
+flowchart TD
+  Out[Model output] --> Facts{Facts?}
+  Facts -->|yes| Source[Open primary source]
+  Facts -->|numbers| Sheet[Match spreadsheet]
+  Facts -->|code| Tests[Run tests]
+  Source --> Ship[Ship]
+  Sheet --> Ship
+  Tests --> Ship
+```
 **Hallucination** = plausible-sounding output that is **wrong** — fake citations, wrong numbers, invented API names.
 
 | High hallucination risk | Lower risk |

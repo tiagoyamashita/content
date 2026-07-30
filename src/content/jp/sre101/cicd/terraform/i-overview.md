@@ -41,6 +41,14 @@ Terraform — 概要
 
 ## 主要なプロパティ
 
+
+```mermaid
+flowchart LR
+  init[init] --> plan[plan]
+  plan --> apply[apply]
+  apply -.-> destroy[destroy]
+```
+
 |プロパティ |意味 |
 |----------|----------|
 | **宣言的** |希望する状態を指定します。 Terraform は diff | を計算します。

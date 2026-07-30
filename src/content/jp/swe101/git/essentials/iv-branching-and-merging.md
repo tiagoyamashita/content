@@ -25,12 +25,16 @@ Legacy: `git checkout -b feature/login` — same as `switch -c`.
 
 ## 2. 分岐図
 
-```text
-main:     A --- B --- C ----------- M
-                      \           /
-feature/login:         D --- E ---
-
-merge M combines E into main
+```mermaid
+gitGraph
+  commit id: "A"
+  commit id: "B"
+  branch feature/login
+  commit id: "D"
+  commit id: "E"
+  checkout main
+  commit id: "C"
+  merge feature/login id: "M"
 ```
 
 ## 3. マージタイプ
@@ -79,14 +83,16 @@ git fetch origin
 git rebase origin/main
 ```
 
-```text
-Before rebase:
-  main:    A - B - C
-  feature: A - B - D - E
-
-After rebase onto C:
-  main:    A - B - C
-  feature: A - B - C - D' - E'
+```mermaid
+flowchart TB
+  subgraph Before
+    M1[main A-B] 
+    F1[feature D-E]
+  end
+  subgraph After rebase onto C
+    M2[main A-B-C]
+    F2[feature C-D'-E']
+  end
 ```
 
 **黄金律:** すでに **プッシュ**され共有されているコミットをリベースしないでください。履歴が書き換えられます。ローカルのみの場合は OK、または PR マージ前の機能ブランチ。

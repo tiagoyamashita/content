@@ -28,6 +28,19 @@ public static int linearSearch(int[] a, int target) {
 ```
 
 ## 2. 二分探索
+
+```mermaid
+flowchart TD
+  Start[lo..hi] --> Mid[mid = lo + hi-lo / 2]
+  Mid --> Cmp{arr mid vs target}
+  Cmp -->|Equal| Found[Return mid]
+  Cmp -->|arr mid less| Right[lo = mid + 1]
+  Cmp -->|arr mid greater| Left[hi = mid - 1]
+  Right --> Empty{lo <= hi?}
+  Left --> Empty
+  Empty -->|Yes| Mid
+  Empty -->|No| Miss[Return -1]
+```
 **並べ替えられた**配列 (または `Comparator` による並べ替え順序) が必要です。
 
 - **Time O(log n)** — ステップごとに検索範囲を半分にします。

@@ -17,9 +17,10 @@ MongoDB is **schema-flexible**, not **schema-free**. Good models match **read an
 2. **アトミック**に更新する必要があるものは何ですか?
 3. ネストされた配列はどれくらい大きくなりますか?
 
-```text
-Read path drives layout  →  embed what you fetch together
-Write path drives splits →  reference what changes independently
+```mermaid
+flowchart LR
+  Read[Read path] --> Embed[embed what you fetch together]
+  Write[Write path] --> Ref[reference what changes independently]
 ```
 
 ## 2. 埋め込みと参照

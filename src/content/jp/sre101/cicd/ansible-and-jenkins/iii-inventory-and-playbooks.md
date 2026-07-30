@@ -1,3 +1,9 @@
+```mermaid
+flowchart LR
+  inv[Inventory groups] --> pb[Playbook]
+  pb --> web[webservers]
+  pb --> db[dbservers]
+```
 ---
 label: "III"
 subtitle: "インベントリとプレイブック"

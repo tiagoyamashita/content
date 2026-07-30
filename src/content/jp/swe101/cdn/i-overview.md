@@ -25,9 +25,13 @@ For system-design framing (pull vs push, invalidation), see [CDN & edge caching]
 
 ## CDN が当てはまる場所
 
-```text
-User  →  DNS  →  CDN edge (PoP)  →  [cache HIT → response]
-                              └──→  [cache MISS → origin (S3, ALB, app)]
+```mermaid
+flowchart TB
+  User --> DNS
+  DNS --> PoP[CDN edge PoP]
+  PoP -->|HIT| Resp[Response]
+  PoP -->|MISS| Origin[Origin S3 / ALB / app]
+  Origin --> PoP
 ```
 
 | Layer | Role |

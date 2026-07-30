@@ -37,15 +37,13 @@ myapp/
 
 ## 3. プル リクエストのライフサイクル
 
-```text
-1. Create branch locally:  git switch -c feature/oauth
-2. Commit and push:        git push -u origin feature/oauth
-3. GitHub: "Compare & pull request"
-4. Fill title + description; link issue (#42)
-5. Reviewers comment; CI runs
-6. Address feedback → push more commits (PR updates)
-7. Merge → delete branch (optional checkbox)
-8. Local: git switch main && git pull
+```mermaid
+flowchart LR
+  B[create branch] --> C[commit and push]
+  C --> PR[open PR on GitHub]
+  PR --> R[review and CI]
+  R --> M[merge]
+  M --> Sync[pull main locally]
 ```
 
 ## 4. PR 説明テンプレート

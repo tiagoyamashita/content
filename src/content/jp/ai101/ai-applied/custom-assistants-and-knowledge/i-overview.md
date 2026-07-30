@@ -9,6 +9,13 @@ Deep dive on **custom assistants & knowledge** — split into focused notes belo
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  You[You] -->|instructions + files| Asst[Custom assistant]
+  Asst -->|grounded reply| You
+```
+
 | Note | Focus |
 |------|--------|
 | [Products & building assistants](ii-products-and-building-assistants.md) | Part of custom assistants & knowledge track |

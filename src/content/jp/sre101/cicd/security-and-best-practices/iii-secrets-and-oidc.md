@@ -48,6 +48,19 @@ deploy:
 
 ## 3. OIDC — 静的キーに勝る理由
 
+
+```mermaid
+sequenceDiagram
+  participant CI as CI pipeline
+  participant IdP as OIDC provider
+  participant Cloud as Cloud IAM
+
+  CI->>IdP: request identity token
+  IdP->>CI: short-lived JWT
+  CI->>Cloud: AssumeRoleWithWebIdentity
+  Cloud->>CI: temp credentials
+```
+
 |静的 AWS キー | OIDC |
 |--|------|
 |数か月/数年生きます |議事録 TTL |

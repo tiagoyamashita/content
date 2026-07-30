@@ -17,10 +17,13 @@ order: 2
 | Cons | Hard ceiling, SPOF | App must be stateless or shared state |
 | Cloud example | `t3.micro` → `t3.xlarge` | ASG 2 → 20 EC2 instances |
 
-```text
-Vertical:  [====      ]  →  [============]
-Horizontal: [==] [==]     →  [==] [==] [==] [==] [==]
-            load balancer distributes requests
+```mermaid
+flowchart LR
+  lb[Load balancer] --> i1[Instance]
+  lb --> i2[Instance]
+  lb --> i3[Instance]
+  lb --> i4[Instance]
+  lb --> i5[Instance]
 ```
 
 ## 2. ステートレス サービス
@@ -81,6 +84,14 @@ ScaleInCooldown: 300
   <text x="316" y="56" fill="#e4e4e7" font-size="9">Primary DB</text>
   <text x="12" y="24" fill="#d4d4d8" font-size="11" font-weight="600">Closer to user = lower latency</text>
 </svg></figure>
+
+
+```mermaid
+flowchart LR
+  cdn[CDN edge] --> redis[Redis]
+  redis --> replica[Read replica]
+  replica --> db[Primary DB]
+```
 
 |レイヤー |店舗 | TTL / 無効化 |
 |------|--------|--------|

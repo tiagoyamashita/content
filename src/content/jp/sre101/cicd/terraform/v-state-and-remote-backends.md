@@ -88,11 +88,16 @@ terraform {
 
 ## 5. 状態のロック
 
-```text
-Engineer A: terraform apply  → acquires lock
-Engineer B: terraform apply  → Error: lock already held
-Engineer A: apply completes  → releases lock
-Engineer B: retry            → succeeds
+```mermaid
+sequenceDiagram
+  participant A as Engineer A
+  participant Lock as DynamoDB lock
+  participant B as Engineer B
+
+  A->>Lock: apply acquires lock
+  B->>Lock: apply blocked
+  A->>Lock: apply completes releases lock
+  B->>Lock: retry succeeds
 ```
 
 ロックを使用しない場合、2 つの適用により API 呼び出しがインターリーブされ、インフラストラクチャの不整合が生じる可能性があります。

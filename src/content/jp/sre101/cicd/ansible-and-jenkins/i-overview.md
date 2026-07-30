@@ -23,6 +23,13 @@ Ansible および Jenkins — 概要
 
 ## CI ビルド → Ansible デプロイの流れ
 
+
+```mermaid
+flowchart LR
+  jenkins[Jenkins build test] --> artifact[artifact]
+  artifact --> ansible[ansible-playbook]
+  ansible --> hosts[webservers]
+```
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 110" role="img" aria-label="Jenkins CI then Ansible deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Jenkins owns CI · Ansible owns server state</text>
   <rect x="12" y="36" width="72" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>

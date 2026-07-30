@@ -150,6 +150,7 @@ Python utilities under **`scripts/`** (stdlib + optional deps; run from repo roo
 | **`build-content-graph.py`** | Obsidian-style note graph: nodes from frontmatter `subtitle`/`group`, edges from markdown + `[[wikilinks]]` → JSON + interactive HTML |
 | **`patch-graphify-folder-stats.py`** | Post-process `graphify-out/graph.html` to show **% of nodes per top folder** (AI101, SWE101, …) |
 | **`translate-content-ja.py`** | Translate English prose to Japanese under `src/content/jp/` |
+| **`sync-en-mermaid-to-jp.py`** | Copy Mermaid diagrams from paired English notes into Japanese notes |
 | **`migrate-ai-applied.py`** | One-off migration helpers for AI101 folder moves |
 | **`restore-content-en.py`** | Restore / repair English content from backups |
 

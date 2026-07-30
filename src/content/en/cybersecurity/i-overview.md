@@ -19,7 +19,7 @@ This track is practical: threat thinking, identity, application and network cont
 | [Incident response & operations](v-incident-response-and-operations.md) | Detection, IR phases, logging, tabletop drills |
 | **[Hardware bypass](hardware-bypass/i-overview.md)** | Relay attacks, RF amplification, SMS floods, jamming — technology turned against itself |
 
-**Related in this repo:** [CI/CD security](../sre101/cicd/security-and-best-practices/i-overview.md), [Networking](../cs101/networking/i-tcp-udp-and-transport-basics.md), [Trust & verify (AI)](../ai101/ai-applied/trust-privacy-and-verify/i-overview.md).
+**Related in this repo:** [CI/CD security](../sre101/cicd/security-and-best-practices/i-overview.md), [Networking](../cs101/networking/i-tcp-udp-and-transport-basics.md), [Trust & verify (AI)](../ai101/ai-engineering/trust-privacy-and-verify/i-overview.md).
 
 ## 1. The CIA triad
 

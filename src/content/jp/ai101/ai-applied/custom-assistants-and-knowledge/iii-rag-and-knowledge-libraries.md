@@ -10,6 +10,16 @@ RAG & knowledge libraries
 
 **Retrieval-augmented generation (RAG)** = AI **searches your files** and **writes using those chunks**.
 
+
+```mermaid
+flowchart LR
+  Docs[Your files] --> Chunk[Chunk + embed]
+  Q[Question] --> Search[Similarity search]
+  Chunk --> Search
+  Search --> Prompt[Inject chunks]
+  Prompt --> LLM[LLM answer]
+```
+
 | You do | Product does |
 |--------|--------------|
 | Upload PDFs / connect drive | Chunk, embed, search on each question |

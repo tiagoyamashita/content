@@ -19,6 +19,14 @@ SRE ツール — Kubernetes: ワークロードと健全性
 
 ## 2. プローブ
 
+
+```mermaid
+flowchart LR
+  kubelet[kubelet] --> startup[startupProbe]
+  kubelet --> liveness[livenessProbe]
+  kubelet --> readiness[readinessProbe]
+  readiness --> svc[Service endpoints]
+```
 - **livenessProbe** — kubelet は、異常な場合にコンテナーを再起動します (フラップを伴う高価なチェックを回避します)。
 - **readinessProbe** — 準備が完了するまで (起動時のトラフィック シェーピング)、**Service** エンドポイントからポッドを削除します。
 - **startupProbe** — 起動が遅いアプリを保護し、活性化によってアプリが途中で強制終了されないようにします。

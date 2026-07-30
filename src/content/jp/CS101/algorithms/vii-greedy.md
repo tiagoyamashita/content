@@ -23,6 +23,17 @@ See also **Level IV — Paradigms** [Paradigms & limits](../iv-paradigms-and-lim
 | Dijkstra | Settle smallest tentative distance | Needs non-negative weights |
 
 ## 2. アクティビティの選択 (スケッチ)
+
+```mermaid
+flowchart LR
+  In[Activities] --> Sort[Sort by finish time]
+  Sort --> Scan[Scan in order]
+  Scan --> Fit{Starts after last finish?}
+  Fit -->|Yes| Take[Take activity]
+  Fit -->|No| Skip[Skip]
+  Take --> Scan
+  Skip --> Scan
+```
 **終了時間**でアクティビティを並べ替えます。最後に選択した終了後に**開始される次のアクティビティを実行します。
 
 ```java

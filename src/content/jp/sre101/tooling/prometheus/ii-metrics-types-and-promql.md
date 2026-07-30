@@ -1,3 +1,10 @@
+```mermaid
+flowchart TB
+  counter[Counter only increases]
+  gauge[Gauge up or down]
+  hist[Histogram buckets]
+  summary[Summary quantiles]
+```
 ---
 label: "II"
 subtitle: "メトリクスのタイプとPromQL"
