@@ -1,24 +1,24 @@
 ---
 label: "VI"
-subtitle: "Install & run on RTX 1080"
+subtitle: "RTX 1080 にインストールして実行する"
 group: "AI Applied"
 order: 6
 ---
-Install & run on RTX 1080
+RTX 1080 にインストールして実行する
 
-Step-by-step setup for each major local runtime on an **NVIDIA GeForce RTX 1080** (8 GB VRAM, Pascal / compute **6.1**). Assumes **Linux** (Ubuntu, Debian, Kali, etc.); Windows notes where the flow differs.
+**NVIDIA GeForce RTX 1080** (8 GB VRAM、Pascal / compute **6.1**) 上の各主要ローカル ランタイムの段階的なセットアップ。 **Linux** (Ubuntu、Debian、Kali など) を想定しています。 Windows はフローが異なる箇所をメモします。
 
-See [Model RAM requirements](iv-model-ram-requirements.md) for sizing theory. On 8 GB VRAM, start with **3B–7B** models at **Q4_K_M** or Ollama’s default quant.
+[モデル RAM の要件](iv-model-ram-requirements.md) サイズ理論について。 8 GB VRAM では、**Q4_K_M** または Ollama のデフォルト クォントの **3B–7B** モデルから開始します。
 
-## 0. RTX 1080 constraints
+## 0. RTX 1080 制約
 
-| Spec | Implication |
-|------|-------------|
-| **8 GB VRAM** | Comfortable: **3B–7B** Q4 on GPU. **8B** Q4 fits with modest context. **13B+** needs CPU offload or airLLM |
-| **Pascal (sm_61)** | Works with CUDA builds of Ollama, llama.cpp, KoboldCPP. **vLLM / TGI / TensorRT-LLM** target newer GPUs — often painful or unsupported |
-| **System RAM** | Aim for **16 GB+** so CPU offload and OS do not swap |
+|スペック |意味 |
+|------|---------------|
+| **8 GB VRAM** |快適さ: **3B ～ 7B** Q4 と GPU。 **8B** Q4 は控えめなコンテキストに適合します。 **13B+** には CPU オフロードまたは airLLM が必要です |
+| **パスカル (sm_61)** | Ollama、llama.cpp、KoboldCPP の CUDA ビルドで動作します。 **vLLM / TGI / TensorRT-LLM** 新しい GPU をターゲットにしています - 多くの場合、面倒な作業やサポートされていません |
+| **システム RAM** | CPU オフロードと OS がスワップしないように、**16 GB+** を目指します。
 
-### Shared prerequisites (all GPU paths)
+### 共有前提条件 (すべての GPU パス)
 
 ```bash
 # 1. NVIDIA driver (reboot after install)
@@ -31,32 +31,32 @@ sudo apt update
 sudo apt install -y build-essential cmake git
 ```
 
-If `nvidia-smi` fails, fix the driver before any runtime below.
+もし`nvidia-smi`失敗した場合は、以下のランタイムの前にドライバーを修正してください。
 
-### Recommended models for 8 GB VRAM
+### 8 GB VRAM の推奨モデル
 
-| Model | Format | Fits fully on GPU? |
-|-------|--------|-------------------|
-| **`qwen2.5-coder:7b`** (Ollama) | Ollama bundle | **Yes — best open coder for 8 GB** |
-| `qwen2.5-coder:3b` | Ollama / Q4 GGUF | Yes — faster, lighter |
-| `llama3.2:3b` (Ollama) | Ollama bundle | Yes — general chat, not code-tuned |
-| `qwen2.5:7b` | Ollama / Q4 GGUF | Yes at Q4 — general chat |
-| `qwen2.5-coder:14b` | Q4 GGUF | Tight — partial offload on 1080 |
-| `qwen2.5-coder:32b` | Q4 GGUF | No — needs 24 GB+ VRAM |
+|モデル |フォーマット | GPU に完全に適合しますか? |
+|------|--------|--------|
+| **`qwen2.5-coder:7b`** (Ollama) | Ollama バンドル | **はい — 8 GB** のベストオープンコーダー |
+|`qwen2.5-coder:3b`| Ollama / Q4 GGUF |はい - より速く、より軽く |
+|`llama3.2:3b`(Ollama) | Ollama バンドル |はい — コードチューニングではなく、一般的なチャット |
+|`qwen2.5:7b`| Ollama / Q4 GGUF |はい、Q4 で — 一般的なチャット |
+|`qwen2.5-coder:14b`| Q4 GGUF |タイト — 1080 での部分オフロード |
+|`qwen2.5-coder:32b`| Q4 GGUF |いいえ — 24 GB+ VRAM が必要です |
 
 ---
 
-## 1. Ollama (easiest — start here)
+## 1. Ollama (最も簡単 — ここから始めます)
 
-### Install
+＃＃＃ インストール
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-Windows/macOS: download from [ollama.com/download](https://ollama.com/download).
+Windows/macOS: [ollama.com/download](https://ollama.com/download）。
 
-### Verify GPU
+### GPU を確認してください
 
 ```bash
 ollama run qwen2.5-coder:7b "Write hello world in Python."
@@ -64,9 +64,9 @@ ollama run qwen2.5-coder:7b "Write hello world in Python."
 ollama ps
 ```
 
-`ollama ps` should show **GPU** in the processor column. If it says CPU only, check `nvidia-smi` and driver.
+`ollama ps`プロセッサ列に **GPU** と表示されるはずです。 CPU のみと表示されている場合は、チェックしてください`nvidia-smi`そしてドライバー。
 
-### Pull and run models
+### モデルをプルして実行する
 
 ```bash
 # Best coding model for 8 GB VRAM (recommended)
@@ -86,7 +86,7 @@ ollama pull llama3.2:3b
 ollama run llama3.2:3b
 ```
 
-### OpenAI-compatible API (Cursor, Continue, etc.)
+### OpenAI 互換の API (Cursor、Continue など)
 
 ```bash
 # Server starts automatically on first request; or:
@@ -102,13 +102,13 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-| Cursor / IDE setting | Value |
-|----------------------|-------|
-| Base URL | `http://localhost:11434/v1` |
-| Model | **`qwen2.5-coder:7b`** (coding) or `qwen2.5:7b` (general chat) |
-| API key | any placeholder (e.g. `ollama`) |
+| Cursor / IDE 設定 |値 |
+|----------------------|------|
+|ベース URL |`http://localhost:11434/v1`|
+|モデル | **`qwen2.5-coder:7b`** (コーディング) または`qwen2.5:7b`(一般的なチャット) |
+| API キー |任意のプレースホルダー (例:`ollama`) |
 
-### Run a custom GGUF
+### カスタム GGUF を実行する
 
 ```bash
 # After hf download (see Hugging Face note)
@@ -122,9 +122,9 @@ ollama run qwen-coder-local
 
 ---
 
-## 2. llama.cpp (CUDA build — max control)
+## 2. llama.cpp (CUDA ビルド — 最大制御)
 
-### Install (build with CUDA)
+### インストール (CUDA でビルド)
 
 ```bash
 git clone https://github.com/ggerganov/llama.cpp
@@ -133,16 +133,16 @@ cmake -B build -DGGML_CUDA=ON
 cmake --build build --config Release -j "$(nproc)"
 ```
 
-Binaries land in `build/bin/` — e.g. `llama-cli`, `llama-server`.
+バイナリが到着します`build/bin/`— 例:`llama-cli`、`llama-server`。
 
-If CMake cannot find CUDA, set:
+CMake が CUDA を見つけられない場合は、次のように設定します。
 
 ```bash
 export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 ```
 
-### Download a GGUF
+### GGUF をダウンロード
 
 ```bash
 pip install -U "huggingface_hub[cli]"
@@ -151,7 +151,7 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-### Run interactively
+### インタラクティブに実行する
 
 ```bash
 ./build/bin/llama-cli \
@@ -162,14 +162,14 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --interactive
 ```
 
-| Flag | RTX 1080 guidance |
-|------|-------------------|
-| `-ngl 99` | Offload **all** layers to GPU (use for 3B–7B Q4) |
-| `-ngl 35` | Partial offload if 8B+ OOM — rest on CPU |
-| `-c 4096` | Context tokens — drop to **2048** if OOM |
-| `-ngl 0` | Force CPU (debug only) |
+|旗 | RTX 1080 ガイダンス |
+|-----|---------------------|
+|`-ngl 99`| **すべて**のレイヤーを GPU にオフロードします (3B ～ 7B Q4 に使用) |
+|`-ngl 35`| 8B+ OOM の場合は部分オフロード — CPU で休止 |
+|`-c 4096`|コンテキスト トークン — OOM | の場合 **2048** に低下します
+|`-ngl 0`| CPU を強制する (デバッグのみ) |
 
-### HTTP server
+### HTTP サーバー
 
 ```bash
 ./build/bin/llama-server \
@@ -180,35 +180,35 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --port 8080
 ```
 
-API: `http://localhost:8080` — OpenAI-style endpoints per [llama.cpp server docs](https://github.com/ggerganov/llama.cpp/blob/master/tools/server/README.md).
+API:`http://localhost:8080`— OpenAI スタイルのエンドポイント [llama.cpp サーバー ドキュメント](https://github.com/ggerganov/llama.cpp/blob/master/tools/server/README.md）。
 
 ---
 
-## 3. LM Studio (GUI — Linux or Windows)
+## 3. LM スタジオ (GUI — Linux または Windows)
 
-### Install
+＃＃＃ インストール
 
-1. Download from [lmstudio.ai](https://lmstudio.ai) (`.AppImage` on Linux, installer on Windows).
-2. Run the app; open **Discover** → search **`Qwen2.5-Coder-7B`** → pick **Q4** quant.
-3. **My Models** → load model → **GPU** offload slider to **max** (all layers).
+1. [lmstudio.ai]()からダウンロードhttps://lmstudio.ai) (`.AppImage`Linux ではインストーラー、Windows ではインストーラー)。
+2. アプリを実行します。 **発見**を開く → 検索**`Qwen2.5-Coder-7B`** → **Q4** クォントを選択します。
+3. **マイ モデル** → モデルのロード → **GPU** スライダーを **最大** (すべてのレイヤー) にオフロードします。
 
-### Run
+＃＃＃ 走る
 
-- **Chat** tab for interactive use.
-- **Developer** → **Local Server** → start server on `http://localhost:1234/v1`.
+- インタラクティブに使用するための **チャット** タブ。
+- **開発者** → **ローカルサーバー** → サーバーを起動します`http://localhost:1234/v1`。
 
-| RTX 1080 tip | Action |
-|--------------|--------|
-| OOM on load | Smaller model or lower context in model settings |
-| Slow first token | Normal on 1080 for 7B — expect ~15–40 tok/s for 7B Q4 |
+| RTX 1080 ヒント |アクション |
+|--------------|----------|
+| OOM ロード時 |モデル設定の小さいモデルまたは下位コンテキスト |
+|最初のトークンが遅い | 7B では 1080 で通常 — 7B では ~15 ～ 40 トーク/秒が予想されます Q4 |
 
-No headless Linux server workflow — use Ollama or llama-server for SSH boxes.
+ヘッドレス Linux サーバー ワークフローはありません。SSH ボックスには Ollama または llama-server を使用します。
 
 ---
 
-## 4. KoboldCPP (portable binary + web UI)
+## 4. KoboldCPP (ポータブルバイナリ + Web UI)
 
-### Install
+＃＃＃ インストール
 
 ```bash
 # CUDA-enabled release from GitHub (pick latest cu12.x asset for Linux)
@@ -217,9 +217,9 @@ chmod +x koboldcpp-linux-x64-cuda12
 mv koboldcpp-linux-x64-cuda12 koboldcpp
 ```
 
-Windows: grab `koboldcpp.exe` CUDA build from the same releases page.
+Windows: グラブ`koboldcpp.exe`CUDA は同じリリース ページからビルドします。
 
-### Run
+＃＃＃ 走る
 
 ```bash
 ./koboldcpp --model ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf \
@@ -228,31 +228,31 @@ Windows: grab `koboldcpp.exe` CUDA build from the same releases page.
   --port 5001
 ```
 
-Open `http://localhost:5001` in a browser. Lower `--gpulayers` if you hit OOM on 8B models.
+開ける`http://localhost:5001`ブラウザで。より低い`--gpulayers`8B モデルで OOM を押した場合。
 
 ---
 
-## 5. GPT4All (desktop, optional CUDA)
+## 5. GPT4All (デスクトップ、オプションの CUDA)
 
-### Install
+＃＃＃ インストール
 
-Download from [gpt4all.io](https://gpt4all.io) — Linux `.deb` / AppImage or Windows installer.
+[gpt4all.io]()からダウンロードhttps://gpt4all.io) — Linux`.deb`/ AppImage または Windows インストーラー。
 
-### Run
+＃＃＃ 走る
 
-1. **Add Model** → choose a **3B–7B** chat model (avoid 13B+ on 1080).
-2. Settings → enable **GPU acceleration** (Vulkan/CUDA depending on build).
-3. **Local API** in settings if you need HTTP.
+1. **モデルの追加** → **3B ～ 7B** チャット モデルを選択します (1080 の 13B+ は避けてください)。
+2. 設定 → **GPU アクセラレーション** (ビルドに応じて Vulkan/CUDA) を有効にします。
+3. HTTP が必要な場合は、設定で **ローカル API** を選択します。
 
-Best for casual offline chat; developers usually prefer Ollama for API ergonomics.
+カジュアルなオフラインチャットに最適です。開発者は通常、API 人間工学よりも Ollama を好みます。
 
 ---
 
-## 6. airLLM (large HF models on 8 GB VRAM)
+## 6. airLLM (8 つの GB VRAM 上の大きな HF モデル)
 
-Layer-streaming — fits **13B+** slowly when full GPU load does not fit.
+レイヤーストリーミング — 完全な GPU ロードが適合しない場合、**13B+** の適合が遅くなります。
 
-### Install
+＃＃＃ インストール
 
 ```bash
 python3 -m venv ~/airllm-venv
@@ -261,7 +261,7 @@ pip install -U pip airllm torch --index-url https://download.pytorch.org/whl/cu1
 hf auth login
 ```
 
-### Run (Python)
+### 実行 (Python)
 
 ```python
 from airllm import AutoModel
@@ -279,15 +279,15 @@ generation = model.generate(input_tokens["input_ids"].cuda(), max_new_tokens=50)
 print(model.tokenizer.decode(generation[0]))
 ```
 
-Use for **experiments**, not low-latency chat. First run downloads weights from Hugging Face.
+低遅延チャットではなく、**実験**に使用してください。最初の実行では、Hugging Face からウェイトをダウンロードします。
 
 ---
 
-## 7. vLLM — not recommended on RTX 1080
+## 7. vLLM — RTX 1080 では推奨されません
 
-[vLLM](https://github.com/vllm-project/vllm) targets **datacenter GPUs** (Ampere **sm_80+**). Pascal **sm_61** is often **unsupported** or requires building from source with reduced features — poor ROI on a 1080.
+[vLLM](https://github.com/vllm-project/vllm) **データセンター GPUs** (アンペア **sm_80+**) をターゲットとします。 Pascal **sm_61** は多くの場合**サポートされていない**か、機能が制限されたソースからビルドする必要があります (1080 では貧弱な ROI)。
 
-If you still want to try (Linux only):
+それでも試してみたい場合 (Linux のみ):
 
 ```bash
 python3 -m venv ~/vllm-venv
@@ -299,57 +299,57 @@ python -m vllm.entrypoints.openai.api_server \
   --max-model-len 2048
 ```
 
-Expect build failures or runtime errors on Pascal. **Use Ollama or llama.cpp instead** on this card.
+Pascal ではビルドの失敗や実行時エラーが予想されます。 **このカードでは代わりに Ollama または llama.cpp を使用してください**。
 
 ---
 
-## 8. TGI & TensorRT-LLM — skip on 1080
+## 8. TGI と TensorRT-LLM — 1080 はスキップします
 
-| Platform | RTX 1080 verdict |
-|----------|------------------|
-| **[TGI](https://github.com/huggingface/text-generation-inference)** | Docker + NVIDIA stack; official images assume newer GPUs. Possible with old CUDA images but unsupported for daily use |
+|プラットフォーム | RTX 1080 評決 |
+|----------|------|
+| **[TGI](https://github.com/huggingface/text-generation-inference)** | Docker + NVIDIA スタック;公式イメージは新しい GPU を想定しています。古い CUDA イメージでは可能ですが、日常的な使用はサポートされていません。
 | **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | Optimized for **Tensor Core** GPUs (Turing+). Pascal lacks Tensor Cores — not worth installing |
 
-For production APIs on modern hardware, revisit these on a **RTX 3060 12GB+** or cloud GPU.
+最新のハードウェア上の運用 API については、**RTX 3060 12GB+** またはクラウド GPU で再確認してください。
 
 ---
 
-## 9. MLX — not applicable
+## 9. MLX — 該当なし
 
-[MLX](https://github.com/ml-explore/mlx) is **Apple Silicon only**. Skip on an RTX 1080 PC.
+[MLX](https://github.com/ml-explore/mlx) は **Apple Silicon のみ**です。 RTX 1080 PC をスキップします。
 
 ---
 
-## 10. Quick pick for RTX 1080
+## 10. RTX 1080 のクイックピック
 
-| Goal | Install | Run |
-|------|---------|-----|
-| **Local coding (recommended)** | Ollama | `ollama pull qwen2.5-coder:7b && ollama run qwen2.5-coder:7b` |
-| **IDE API for code** | Ollama | `http://localhost:11434/v1` + `qwen2.5-coder:7b` |
-| **Fastest general chat** | Ollama | `ollama pull llama3.2:3b && ollama run llama3.2:3b` |
-| **Fine-grained GPU/control** | llama.cpp CUDA build | `llama-server -ngl 99 -m …Qwen2.5-Coder…Q4_K_M.gguf` |
-| **Web UI, no terminal** | LM Studio or KoboldCPP | Search Qwen2.5-Coder-7B in GUI |
-| **13B+ experiment** | airLLM | `Qwen/Qwen2.5-Coder-14B-Instruct` + layer streaming |
+|目標 |インストール |実行 |
+|------|--------|-----|
+| **ローカルコーディング (推奨)** | Ollama |`ollama pull qwen2.5-coder:7b && ollama run qwen2.5-coder:7b`|
+| **IDE API (コード用)** | Ollama |`http://localhost:11434/v1`+`qwen2.5-coder:7b`|
+| **最速の一般チャット** | Ollama |`ollama pull llama3.2:3b && ollama run llama3.2:3b`|
+| **きめ細かい GPU/コントロール** | llama.cpp CUDA ビルド |`llama-server -ngl 99 -m …Qwen2.5-Coder…Q4_K_M.gguf`|
+| **Web UI、ターミナルなし** | LM Studio または KoboldCPP | GUI で Qwen2.5-Coder-7B を検索 |
+| **130 億以上の実験** |エアLLM |`Qwen/Qwen2.5-Coder-14B-Instruct`+ レイヤーストリーミング |
 
-## 11. Troubleshooting
+## 11. トラブルシューティング
 
-| Symptom | Fix |
-|---------|-----|
-| **CUDA OOM** | Smaller model (3B), Q4 quant, lower `-c` / context, reduce `--gpulayers` |
-| **Runs on CPU only** | `nvidia-smi`; reinstall driver; rebuild llama.cpp with `-DGGML_CUDA=ON` |
-| **Slow generation** | Normal for 7B on 1080 (~20–35 tok/s Q4); use 3B for speed |
-| **Model not found** | `ollama pull <name>` or verify GGUF path |
-| **Gated HF model** | `hf auth login` + accept license |
+|症状 |修正 |
+|----------|-----|
+| **CUDA OOM** |小型モデル (3B)、Q4 quant、下位`-c`/ コンテキスト、リデュース`--gpulayers`|
+| **CPU でのみ実行可能** |`nvidia-smi`;ドライバーを再インストールします。 llama.cppを再構築します`-DGGML_CUDA=ON`|
+| **生成が遅い** | 1080 の 7B では通常 (~20–35 tok/s Q4)。速度を上げるには 3B を使用してください |
+| **モデルが見つかりません** |`ollama pull <name>`または GGUF パスを確認します。
+| **ゲート付き HF モデル** |`hf auth login`+ ライセンスに同意する |
 
-Monitor VRAM during a run:
+実行中に VRAM を監視します。
 
 ```bash
 watch -n1 nvidia-smi
 ```
 
-## Related
+＃＃ 関連している
 
-- [Downloading from Hugging Face](ii-downloading-from-huggingface.md)
-- [Local run platforms](iii-local-run-platforms.md)
-- [Model RAM requirements](iv-model-ram-requirements.md)
-- [CPU & lightweight runners](v-cpu-and-lightweight-runners.md)
+- [ハグフェイスからダウンロード](ii-downloading-from-huggingface.md)
+- [ローカル実行プラットフォーム](iii-local-run-platforms.md)
+- [モデル RAM の要件](iv-model-ram-requirements.md)
+- [CPU と軽量ランナー](v-cpu-and-lightweight-runners.md）

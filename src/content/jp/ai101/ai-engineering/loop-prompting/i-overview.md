@@ -1,33 +1,33 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Loop prompting — overview
-**Loop prompting** is working with AI in **cycles** instead of **restarting from zero every time**. You invest once in durable instructions and context, then each turn is a small correction or trigger — not another full brief.
+ループプロンプト — 概要
+**ループ プロンプト**は、**毎回ゼロから再開**するのではなく、**サイクル**で AI で動作します。永続的な指示とコンテキストに一度投資すると、各ターンは小さな修正またはトリガーになり、別の完全な概要ではなくなります。
 
-This sits between [Effective prompting](../effective-prompting/i-overview.md) (how to write a good prompt) and [Agents](../agents-and-agentic-workflows/i-overview.md) (multi-step tool use). Loop prompting is the **habit layer**: stop re-explaining what the model should already know.
+これは [効果的なプロンプト](../effective-prompting/i-overview.md) (適切なプロンプトの書き方) および [エージェント](../agents-and-agentic-workflows/i-overview.md) (マルチステップツールの使用)。ループ プロンプトは **習慣層** です。モデルがすでに知っているはずのことを再説明するのはやめてください。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [One-shot vs loop](ii-one-shot-vs-loop.md) | Old chat habit vs set-up-once, iterate-many |
-| [Persistent instructions](iii-persistent-instructions.md) | Projects, skills, rules, saved system context |
-| [Session & recurring loops](iv-session-and-recurring-loops.md) | Same-thread refinement, `/loop`, automations |
-| [Hygiene & when to reset](v-hygiene-and-when-to-reset.md) | Context rot, stale skills, trust boundaries |
+|注 |フォーカス |
+|------|----------|
+| [ワンショット vs ループ](ii-one-shot-vs-loop.md) |古いチャット習慣と一度設定すれば何度も繰り返す習慣 |
+| [永続的な指示](iii-persistent-instructions.md) |プロジェクト、スキル、ルール、保存されたシステム コンテキスト |
+| [セッションと繰り返しループ](iv-session-and-recurring-loops.md) |同一スレッドの改良、`/loop`、自動化 |
+| [衛生状態とリセット時期](v-hygiene-and-when-to-reset.md) |コンテキストの腐敗、古くなったスキル、信頼境界 |
 
-## 1. Two kinds of loop
+## 1. 2種類のループ
 
-| Loop type | You do | Example |
-|-----------|--------|---------|
-| **Human-in-the-loop** | Keep one session or project; send short deltas | “Shorter intro.” “Fix table 2.” “Run tests again.” |
-| **Time / event loop** | Arm a recurring or watcher trigger | Cursor `/loop 5m check CI`, deploy watcher, weekly digest automation |
+|ループタイプ |あなたはそうします |例 |
+|----------|----------|----------|
+| **人間参加型** |セッションまたはプロジェクトを 1 つだけ保持します。ショートデルタを送信 | 「イントロが短い。」 「表2を修正してください。」 「もう一度テストを実行してください。」 |
+| **時間/イベントループ** |繰り返しトリガーまたはウォッチャー トリガーを準備する | Cursor`/loop 5m check CI`、ウォッチャーのデプロイ、毎週のダイジェスト自動化 |
 
-Both reuse **stored context** instead of pasting the same preamble into a new chat.
+どちらも、同じプリアンブルを新しいチャットに貼り付けるのではなく、**保存されたコンテキスト**を再利用します。
 
-## 2. Mental model
+## 2. メンタルモデル
 
 ```mermaid
 flowchart TB
@@ -43,30 +43,30 @@ flowchart TB
   end
 ```
 
-| Layer | What persists | Where (examples) |
-|-------|---------------|------------------|
-| **Identity & standards** | Tone, format, team rules | Custom GPT, Claude Project, `.cursor/rules` |
-| **Workflows** | Multi-step how-to | `SKILL.md`, saved prompt library |
-| **Repo / knowledge** | Files the model should see | Project files, RAG, `@folder` in Cursor |
-| **Session state** | Current deliverable in progress | Same chat thread, agent transcript |
+|レイヤー |何が続くのか |場所 (例) |
+|------|------|------|
+| **アイデンティティと基準** |トーン、フォーマット、チームルール |カスタム GPT、クロード プロジェクト、`.cursor/rules`|
+| **ワークフロー** |複数ステップのハウツー |`SKILL.md`、保存されたプロンプト ライブラリ |
+| **レポート/ナレッジ** |モデルが参照すべきファイル |プロジェクト ファイル、RAG、`@folder`Cursor で |
+| **セッション状態** |現在進行中の成果物 |同じチャット スレッド、エージェントのトランスクリプト |
 
-## 3. Who should read this
+＃＃３．これを読むべき人
 
-| You… | Start with |
-|------|------------|
-| Re-type the same instructions daily | [Persistent instructions](iii-persistent-instructions.md) |
-| Refine drafts across many “try again” messages | [One-shot vs loop](ii-one-shot-vs-loop.md) |
-| Want CI or deploy checked without asking each time | [Session & recurring loops](iv-session-and-recurring-loops.md) |
-| Use Cursor or IDE agents heavily | This track → [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md) |
+|あなたは… | | から始める
+|------|-----------|
+|毎日同じ指示を再入力する | [永続的な指示](iii-persistent-instructions.md) |
+|多くの「再試行」メッセージに基づいて下書きを調整する | [ワンショット vs ループ](ii-one-shot-vs-loop.md) |
+|毎回尋ねずに CI またはデプロイをチェックしてほしい | [セッションと繰り返しループ](iv-session-and-recurring-loops.md) |
+| Cursor または IDE エージェントを多用する |このトラック → [スキルとエージェントの説明](../skills-and-agent-instructions/i-overview.md) |
 
-## 4. Study order
+＃＃４．勉強の順番
 
-[One-shot vs loop](ii-one-shot-vs-loop.md) → [Persistent instructions](iii-persistent-instructions.md) → [Session & recurring loops](iv-session-and-recurring-loops.md) → [Hygiene & when to reset](v-hygiene-and-when-to-reset.md)
+[ワンショット vs ループ](ii-one-shot-vs-loop.md) → [永続的な指示](iii-persistent-instructions.md) → [セッションと繰り返しループ](iv-session-and-recurring-loops.md) → [衛生状態とリセット時期](v-hygiene-and-when-to-reset.md）
 
-## 5. Rehearsal questions
+## 5. リハーサルの質問
 
-- What is the difference between a human-in-the-loop and a time/event loop?
-- Name two places persistent instructions can live.
-- When is a new chat still the right choice?
+- 人間参加型ループと時間/イベント ループの違いは何ですか?
+- 永続命令が存在する場所を 2 つ挙げてください。
+- 新しいチャットを選択するのが依然として正しいのはどのような場合ですか?
 
-**Next:** [One-shot vs loop](ii-one-shot-vs-loop.md).
+**次:** [ワンショット vs ループ](ii-one-shot-vs-loop.md）。

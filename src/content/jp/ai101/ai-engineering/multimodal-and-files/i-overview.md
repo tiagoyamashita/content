@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Multimodal & files — overview
-Deep dive on **multimodal & files** — split into focused notes below.
+マルチモーダルとファイル — 概要
+**マルチモーダルとファイル** について詳しく説明します。以下で焦点を絞ったメモに分割します。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [PDFs & documents](ii-pdfs-and-documents.md) | Part of multimodal & files track |
-| [Images, spreadsheets & data](iii-images-spreadsheets-data.md) | Part of multimodal & files track |
-| [Voice, code & limits](iv-voice-code-and-limits.md) | Part of multimodal & files track |
+|注 |フォーカス |
+|------|----------|
+| [PDF とドキュメント](ii-pdfs-and-documents.md) |マルチモーダル & ファイル トラックの一部 |
+| [画像、スプレッドシート、データ](iii-images-spreadsheets-data.md) |マルチモーダル & ファイル トラックの一部 |
+| [音声、コード、制限](iv-voice-code-and-limits.md) |マルチモーダル & ファイル トラックの一部 |
 
-Multimodal and files
-Modern AI tools accept **images**, **PDFs**, **spreadsheets**, **audio**, and **screenshots** — not just typed prompts. Using files well beats retyping content.
+マルチモーダルとファイル
+最新の AI ツールは、入力されたプロンプトだけでなく、**画像**、**PDF**、**スプレッドシート**、**オーディオ**、**スクリーンショット**を受け入れます。ファイルを使用することは、コンテンツを再入力するよりもはるかに優れています。
 
 ```mermaid
 flowchart LR
@@ -25,6 +25,6 @@ flowchart LR
   Model --> Out[Summary / extract / answer]
 ```
 
-## Study order
+## 勉強の順番
 
-[PDFs & documents](ii-pdfs-and-documents.md) → [Images, spreadsheets & data](iii-images-spreadsheets-data.md) → [Voice, code & limits](iv-voice-code-and-limits.md)
+[PDF とドキュメント](ii-pdfs-and-documents.md) → [画像、スプレッドシート、データ](iii-images-spreadsheets-data.md) → [音声、コード、制限](iv-voice-code-and-limits.md）

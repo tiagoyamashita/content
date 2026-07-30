@@ -1,20 +1,20 @@
 ---
 label: "II"
-subtitle: "PDFs & documents"
+subtitle: "PDF とドキュメント"
 group: "AI Applied"
 order: 2
 ---
-PDFs & documents
+PDF とドキュメント
 
-## 2. PDFs and long documents
+## 2. PDF と長い文書
 
-| Technique | Example prompt |
-|-----------|----------------|
-| **Page scope** | “Only pages 12–15: list obligations.” |
-| **Structure first** | “Outline headings, then deep-dive §3.” |
-| **Compare** | “Diff v1 vs v2 PDF on pricing terms.” |
-| **Extract** | “Table of all dates and amounts as CSV.” |
+|テクニック |プロンプトの例 |
+|----------|----------------|
+| **ページ範囲** | 「義務を列挙するのは 12 ～ 15 ページのみです。」 |
+| **最初に構造** | 「見出しの概要を説明してから、§3 を詳しく掘り下げます。」 |
+| **比較** | 「価格条件に関する v1 と v2 PDF の違い。」 |
+| **抜粋** | 「CSV としてのすべての日付と金額の表。」 |
 
-**Limits:** very long PDFs may truncate — split files or use project knowledge with indexed upload.
+**制限事項:** 非常に長い PDF は切り詰められる可能性があります。ファイルが分割されるか、インデックス付きアップロードでプロジェクトのナレッジが使用されます。
 
-**Scanned PDFs:** OCR quality varies; if text is garbled, re-scan or paste critical sections.
+**スキャンされた PDF:** OCR の品質は異なります。テキストが文字化けしている場合は、重要なセクションを再スキャンするか貼り付けてください。

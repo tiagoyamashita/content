@@ -1,25 +1,25 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "How to create your custom MCP"
 order: 1
 ---
-How to create your custom MCP — overview
-Hands-on track for building an **MCP server** — a small program that exposes **tools** (and optionally **resources** / **prompts**) so Cursor, Claude Desktop, and other hosts can call **your** APIs, scripts, or data.
+カスタム MCP の作成方法 — 概要
+**MCP サーバー** を構築するための実践トラック — **ツール** (およびオプションで **リソース** / **プロンプト**) を公開する小さなプログラムで、Cursor、Claude Desktop、およびその他のホストが **あなたの** API、スクリプト、またはデータを呼び出すことができます。
 
-Read [How MCP works](../i-overview.md) first for JSON-RPC, stdio vs HTTP, and the host/client/server roles. This track is **implementation**: scaffold → define tools → test → wire into Cursor.
+[MCP の仕組み](../i-overview.md) まず、JSON ～ RPC、stdio と HTTP、およびホスト/クライアント/サーバーの役割について説明します。このトラックは **実装** です: スキャフォールディング → ツールの定義 → テスト → Cursor への接続。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [Plan your server](ii-plan-your-server.md) | Scope, tools vs resources, env vars, one job per server |
-| [Build with the SDK](iii-build-with-the-sdk.md) | TypeScript and Python project setup |
-| [Tools, resources & prompts](iv-tools-resources-and-prompts.md) | Schemas, handlers, error shapes |
-| [Test & wire into Cursor](v-test-and-wire-cursor.md) | MCP Inspector, `mcp.json`, debugging |
-| [Security & distribution](vi-security-and-distribution.md) | Secrets, scopes, npm/pip, team rollout |
+|注 |フォーカス |
+|------|----------|
+| [サーバーを計画する](ii-plan-your-server.md) |スコープ、ツールとリソース、環境変数、サーバーごとに 1 つのジョブ |
+| [SDK を使用してビルドする](iii-build-with-the-sdk.md) | TypeScript と Python プロジェクトのセットアップ |
+| [ツール、リソース、プロンプト](iv-tools-resources-and-prompts.md) |スキーマ、ハンドラー、エラー形状 |
+| [テストして Cursor に接続](v-test-and-wire-cursor.md) | MCP 検査官、`mcp.json`、デバッグ |
+| [セキュリティと配布](vi-security-and-distribution.md) |シークレット、スコープ、npm/pip、チーム ロールアウト |
 
-## What you are building
+## あなたが構築しているもの
 
 ```mermaid
 flowchart LR
@@ -28,30 +28,30 @@ flowchart LR
   Yours --> API[DB / API / script]
 ```
 
-| You write | Host handles |
-|-----------|--------------|
-| Tool names, input schemas, handler logic | Spawning process, JSON-RPC, LLM tool choice |
-| Env-based secrets (`API_KEY`) | Injecting env from `mcp.json` |
-| Returning text / JSON in MCP `content` | Feeding tool results back to the model |
+|あなたはこう書きます |ホストハンドル |
+|----------|--------------|
+|ツール名、入力スキーマ、ハンドラー ロジック |生成プロセス、JSON-RPC、LLM ツールの選択 |
+|環境ベースのシークレット (`API_KEY`) |環境を注入しています`mcp.json`|
+|テキスト / JSON を MCP で返します`content`|ツールの結果をモデルにフィードする |
 
-## When a custom MCP makes sense
+## カスタム MCP が意味をなす場合
 
-| Build custom MCP | Use existing / Skills instead |
-|------------------|-------------------------------|
-| Internal API or DB only your team has | Official `@modelcontextprotocol/server-*` already exists |
-| Repeatable agent actions (create ticket, run query) | One-off instructions → [Skills](../../skills-and-agent-instructions/i-overview.md) |
-| Same connector for Cursor + Claude Desktop | Static docs the model should read every time |
+|カスタム MCP をビルドする |代わりに既存の / スキルを使用する |
+|-----------------|----------------------------|
+|内部 API または DB はチームのみが持つ |正式`@modelcontextprotocol/server-*`すでに存在します |
+|反復可能なエージェントのアクション (チケットの作成、クエリの実行) |単発指示 → [スキル](../../skills-and-agent-instructions/i-overview.md) |
+| Cursor + Claude Desktop の同じコネクタ |モデルが毎回読み取る必要がある静的ドキュメント |
 
-## Study order
+## 勉強の順番
 
-[Plan your server](ii-plan-your-server.md) → [Build with the SDK](iii-build-with-the-sdk.md) → [Tools, resources & prompts](iv-tools-resources-and-prompts.md) → [Test & wire into Cursor](v-test-and-wire-cursor.md) → [Security & distribution](vi-security-and-distribution.md)
+[サーバーを計画する](ii-plan-your-server.md) → [SDK でビルドする](iii-build-with-the-sdk.md) → [ツール、リソース、プロンプト](iv-tools-resources-and-prompts.md) → [テストして Cursor に配線](v-test-and-wire-cursor.md) → [セキュリティと配布](vi-security-and-distribution.md)
 
-## Prerequisites
+## 前提条件
 
-| Skill | Why |
-|-------|-----|
-| Basic **JSON** | Tool inputs/outputs are JSON-shaped |
-| **Node 18+** or **Python 3.10+** | Official MCP SDKs |
-| One **external system** to wrap | REST API, Postgres, filesystem path, shell script |
+|スキル |なぜ |
+|------|-----|
+|基本 **JSON** |ツールの入力/出力は JSON 形状です。
+| **ノード 18+** または **Python 3.10+** |公式 MCP SDK |
+|ラップする 1 つの **外部システム** | REST API、Postgres、ファイルシステム パス、シェル スクリプト |
 
-**Spec reference:** [modelcontextprotocol.io](https://modelcontextprotocol.io)
+**仕様参照:** [modelcontextprotocol.io](https://modelcontextprotocol.io)

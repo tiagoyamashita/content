@@ -1,27 +1,27 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "Ollama"
 order: 1
 ---
-Ollama — overview
+Ollama — 概要
 
-**[Ollama](https://ollama.com)** runs open LLMs locally — one install, `ollama pull`, chat in the terminal or via an OpenAI-compatible API. Best first choice for **local coding with Cursor**, **offline chat**, and **quick experiments** without Hugging Face gating or manual GGUF paths.
+**[Ollama](https://ollama.com)** ローカルで open LLMs を実行します — 1 回のインストール、`ollama pull`、ターミナル内、または OpenAI 互換の API 経由でチャットします。ハグフェイス ゲートや手動 GGUF パスを使用しない **Cursor** を使用した **ローカル コーディング、**オフライン チャット**、**簡単な実験**に最適な最初の選択肢です。
 
-For comparing Ollama vs llama.cpp / vLLM, see [Local run platforms](../implementation-example/iii-local-run-platforms.md). For RAM/VRAM sizing, see [Model RAM requirements](../implementation-example/iv-model-ram-requirements.md).
+Ollama と llama.cpp / vLLM の比較については、[ローカル実行プラットフォーム](../implementation-example/iii-local-run-platforms.md）。 RAM/VRAM のサイズ設定については、[モデル RAM の要件](../implementation-example/iv-model-ram-requirements.md）。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [Install & setup](ii-install-and-setup.md) | Linux, macOS, Windows; verify install |
-| [Models — pull & manage](iii-models-pull-and-manage.md) | `pull`, `list`, `rm`, tags, embeddings |
-| [Run, chat & parameters](iv-run-chat-and-parameters.md) | `ollama run`, `/set`, context, system prompt |
-| [API & IDE integration](v-api-and-ide-integration.md) | `/v1` API, Cursor, Continue, env vars |
-| [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) | Import HF weights, `ollama create` |
-| [GPU & troubleshooting](vii-gpu-troubleshooting.md) | `ollama ps`, CPU-only fixes, OOM |
+|注 |フォーカス |
+|------|----------|
+| [インストールとセットアップ](ii-install-and-setup.md) | Linux、macOS、Windows。インストールを確認する |
+| [モデル — プルと管理](iii-models-pull-and-manage.md) |`pull`、`list`、`rm`、タグ、埋め込み |
+| [実行、チャット、パラメータ](iv-run-chat-and-parameters.md) |`ollama run`、`/set`、コンテキスト、システム プロンプト |
+| [API と IDE の統合](v-api-and-ide-integration.md) |`/v1`API、Cursor、続行、環境変数 |
+| [モデルファイルとカスタム GGUF](vi-modelfile-and-custom-gguf.md) | HF の重みをインポートします。`ollama create`|
+| [GPU とトラブルシューティング](vii-gpu-troubleshooting.md) |`ollama ps`、CPU のみの修正、OOM |
 
-## Mental model
+## メンタルモデル
 
 ```mermaid
 flowchart LR
@@ -32,30 +32,30 @@ flowchart LR
   Serve --> API[HTTP :11434/v1]
 ```
 
-| Piece | You control | Ollama handles |
-|-------|-------------|----------------|
-| **Which model** | `ollama pull qwen2.5-coder:7b` | Download, default quant |
-| **GPU vs CPU** | Model size; env vars | llama.cpp backend, offload |
-| **IDE access** | Point Cursor at `localhost:11434/v1` | Serves chat completions |
-| **Custom model** | `Modelfile` + `ollama create` | Bundles GGUF + params |
+|ピース |あなたがコントロールします | Ollama ハンドル |
+|------|---------------|----------------|
+| **どのモデル** |`ollama pull qwen2.5-coder:7b`|ダウンロード、デフォルトのクォント |
+| **GPU 対 CPU** |モデルのサイズ。環境変数 | llama.cpp バックエンド、オフロード |
+| **IDE アクセス** | Cursor をポイントします`localhost:11434/v1`|チャット補完を提供します |
+| **カスタムモデル** |`Modelfile`+`ollama create`|バンドル GGUF + params |
 
-## Recommended models (2025–2026)
+## 推奨モデル (2025 ～ 2026 年)
 
-| Use case | Model tag | VRAM (approx) |
-|----------|-----------|---------------|
-| **Local coding** | `qwen2.5-coder:7b` | ~5 GB |
-| General chat 7B | `qwen2.5:7b` | ~5 GB |
-| Fast / small GPU | `qwen2.5-coder:3b`, `llama3.2:3b` | ~2–3 GB |
-| Embeddings (RAG) | `nomic-embed-text` | Small |
-| Best open coder (24 GB+) | `qwen2.5-coder:32b` | ~20 GB |
+|使用例 |モデルタグ | VRAM (おおよそ) |
+|----------|-----------|------|
+| **ローカルコーディング** |`qwen2.5-coder:7b`| ~5 GB |
+|一般チャット 7B |`qwen2.5:7b`| ~5 GB |
+|高速/小型 GPU |`qwen2.5-coder:3b`、`llama3.2:3b`| ~2–3 GB |
+|埋め込み (RAG) |`nomic-embed-text`|小 |
+|最優秀オープンコーダー (24 GB+) |`qwen2.5-coder:32b`| ~20 GB |
 
-8 GB GPU (e.g. RTX 1080): start with **`qwen2.5-coder:7b`**. Details: [Install & run on RTX 1080](../implementation-example/vi-install-and-run-rtx-1080.md).
+8 GB GPU (例: RTX 1080): ** で始まる`qwen2.5-coder:7b`**。詳細: [RTX 1080 にインストールして実行](../implementation-example/vi-install-and-run-rtx-1080.md）。
 
-## Study order
+## 勉強の順番
 
-[Install & setup](ii-install-and-setup.md) → [Models — pull & manage](iii-models-pull-and-manage.md) → [Run, chat & parameters](iv-run-chat-and-parameters.md) → [API & IDE integration](v-api-and-ide-integration.md) → [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) → [GPU & troubleshooting](vii-gpu-troubleshooting.md)
+[インストールとセットアップ](ii-install-and-setup.md) → [モデル — プルと管理](iii-models-pull-and-manage.md) → [実行、チャット、パラメータ](iv-run-chat-and-parameters.md) → [API と IDE の統合](v-api-and-ide-integration.md) → [モデルファイルとカスタム GGUF](vi-modelfile-and-custom-gguf.md) → [GPU とトラブルシューティング](vii-gpu-troubleshooting.md）
 
-## Start here (5 minutes)
+## ここから始めます (5 分)
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
@@ -63,9 +63,9 @@ ollama pull qwen2.5-coder:7b
 ollama run qwen2.5-coder:7b
 ```
 
-Type a message; `/bye` to exit. Next: wire into Cursor — [API & IDE integration](v-api-and-ide-integration.md).
+メッセージを入力します。`/bye`終了します。次: Cursor に接続します — [API と IDE の統合](v-api-and-ide-integration.md）。
 
-## Related
+＃＃ 関連している
 
-- [TurboVec + Ollama + local files](../implementation-example/vii-turbovec-ollama-local-files.md) — RAG over your documents
-- [Downloading from Hugging Face](../implementation-example/ii-downloading-from-huggingface.md) — when you need weights Ollama does not catalog
+- [TurboVec + Ollama + ローカル ファイル](../implementation-example/vii-turbovec-ollama-local-files.md) — RAG をドキュメント上で確認
+- [ハグフェイスからダウンロード](../implementation-example/ii-downloading-from-huggingface.md) — 重みが必要な場合、Ollama はカタログ化されません

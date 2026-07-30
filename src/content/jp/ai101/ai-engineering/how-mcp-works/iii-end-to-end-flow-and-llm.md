@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "End-to-end flow & LLM"
+subtitle: "エンドツーエンドのフローと LLM"
 group: "AI Applied"
 order: 3
 ---
-End-to-end flow & LLM
+エンドツーエンドのフローと LLM
 
-## 5. End-to-end flow
+## 5. エンドツーエンドの流れ
 
 ```plantuml
 @startuml
@@ -28,15 +28,15 @@ H --> You: natural language answer
 @enduml
 ```
 
-| Step | Protocol |
+|ステップ |プロトコル |
 |------|----------|
-| You ↔ Host | Chat UI |
-| Host ↔ MCP server | **JSON-RPC** over stdio or HTTP |
-| MCP server ↔ SaaS | **That product’s API** (REST, GraphQL, SDK) |
+|あなた ↔ ホスト |チャット UI |
+|ホスト ↔ MCP サーバー | **JSON-RPC** stdio または HTTP 経由 |
+| MCP サーバー ↔ SaaS | **その製品は API** (REST、GraphQL、SDK) |
 
-## 6. Does JSON go straight to the LLM?
+## 6. JSON は LLM に直接接続されますか?
 
-**Almost — but not directly.** The MCP server sends JSON back to the **host’s MCP client**, not straight into the model API with no middle step. The **host** (Cursor, Claude Desktop) then **injects that result into the chat** as a **tool result**, and the **LLM reads it on the next turn**.
+**ほぼですが、直接ではありません。** MCP サーバーは、中間ステップなしでモデル API に直接送信するのではなく、JSON を **ホストの MCP クライアント**に送り返します。その後、**ホスト** (Cursor、クロード デスクトップ) は**その結果を**ツール結果**としてチャット**に挿入し、**IT2__ は次のターンでそれを読み取ります**。
 
 ```mermaid
 sequenceDiagram
@@ -54,15 +54,15 @@ sequenceDiagram
   Host-->>You: reply
 ```
 
-| Hop | What travels | Who sees it |
-|-----|--------------|-------------|
-| MCP client ↔ MCP server | **JSON-RPC** (wire protocol) | Host only — not shown in chat UI |
-| Host ↔ LLM | **Tool call + tool result** (text/JSON in messages) | Model uses it as context |
-| Host ↔ You | **Natural language** | What you read |
+|ホップ |旅するもの |誰が見る |
+|-----|--------------|---------------|
+| MCP クライアント ↔ MCP サーバー | **JSON-RPC** (有線プロトコル) |ホストのみ — チャットには表示されません UI |
+|ホスト ↔ LLM | **ツール呼び出し + ツール結果** (メッセージ内のテキスト/JSON) |モデルはそれをコンテキストとして使用します。
+|ホスト ↔ あなた | **自然言語** |読んだもの |
 
-So yes: the **data** is usually JSON (issue list, query rows, file contents). The LLM **does** consume that content — but **via the host**, which wraps it in the standard **tool-calling** loop. The LLM does **not** open a socket to the MCP server itself.
+そのとおりです。**データ** は通常 JSON (問題リスト、クエリ行、ファイルの内容) です。 LLM はそのコンテンツを **実際に** 消費しますが、**ホストを介して**、それを標準の **ツール呼び出し** ループにラップします。 LLM は、MCP サーバー自体へのソケットを開きません**。
 
-The loop can repeat: LLM may call **several** MCP tools before answering you.
+ループは繰り返される可能性があります。LLM は、応答する前に **いくつか** MCP ツールを呼び出す可能性があります。
 
 ```plantuml
 @startuml
@@ -82,16 +82,16 @@ H --> You: reply
 @enduml
 ```
 
-**What you see:** the final prose (and maybe tool-run indicators in the UI). **What you don’t see:** raw JSON-RPC between client and server — unless you debug logs.
+**表示内容:** 最後の散文 (およびおそらく UI のツール実行インジケーター)。 **表示されないもの:** ログをデバッグしない限り、クライアントとサーバー間の生の JSON-RPC。
 
-## 7. What the MCP server exposes
+## 7. __​​IT0__ サーバーが公開するもの
 
-After connect, the server advertises capabilities:
+接続後、サーバーは機能をアドバタイズします。
 
-| Capability | Agent can… |
-|------------|------------|
-| **Tools** | Call functions (`create_issue`, `run_query`) |
-| **Resources** | Read URIs (`file://`, `db://schema/users`) |
-| **Prompts** | Use pre-built prompt templates (less common for users) |
+|能力 |エージェントは… |
+|-----------|-----------|
+| **ツール** |関数の呼び出し (`create_issue`、`run_query`) |
+| **リソース** | URIの読み取り(`file://`、`db://schema/users`) |
+| **プロンプト** |事前に構築されたプロンプト テンプレートを使用する (ユーザーにとってはあまり一般的ではありません) |
 
-The **LLM** sees tool **names and descriptions**; the host maps model intent to MCP **tool calls**.
+**LLM** にはツール **名前と説明**が表示されます。ホストはモデルの意図を MCP **ツール呼び出し**にマッピングします。

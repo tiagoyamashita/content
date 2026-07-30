@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "Models — pull & manage"
+subtitle: "モデル — プルと管理"
 group: "Ollama"
 order: 3
 ---
-Models — pull & manage
+モデル — プルと管理
 
-Models are referenced by **tags** (`model:variant`). Ollama downloads weights on first `pull` and caches them locally.
+モデルは **タグ** (`model:variant`）。 Ollama は最初に重みをダウンロードします`pull`そしてそれらをローカルにキャッシュします。
 
 ```mermaid
 flowchart LR
@@ -15,7 +15,7 @@ flowchart LR
   Run --> Rm[ollama rm]
 ```
 
-## 1. Pull models
+## 1. プルモデル
 
 ```bash
 # Coding (recommended default)
@@ -29,9 +29,9 @@ ollama pull llama3.2:3b
 ollama pull nomic-embed-text
 ```
 
-Progress shows download size. Resume is automatic if interrupted.
+進行状況にはダウンロード サイズが表示されます。中断された場合は自動的に再開されます。
 
-## 2. List and inspect
+## 2. リストと検査
 
 ```bash
 ollama list
@@ -39,60 +39,60 @@ ollama show qwen2.5-coder:7b
 ollama show qwen2.5-coder:7b --modelfile
 ```
 
-`show` prints parameters, template, and license snippet.
+`show`パラメータ、テンプレート、ライセンス スニペットを出力します。
 
-## 3. Remove models (free disk)
+## 3. モデルを削除します (空きディスク)
 
 ```bash
 ollama rm qwen2.5:7b
 ollama rm model-name:tag
 ```
 
-List first — blobs are not removed until no model references them.
+最初にリストします — BLOB は、モデルが参照しない限り削除されません。
 
-## 4. Tag naming
+## 4. タグの命名
 
-| Pattern | Meaning |
-|---------|---------|
-| `llama3.2` | Default variant for that family |
-| `llama3.2:3b` | Specific size |
-| `qwen2.5-coder:7b` | Family + size |
-| `@sha256:…` | Pin exact blob (advanced) |
+|パターン |意味 |
+|----------|----------|
+|`llama3.2`|そのファミリーのデフォルトのバリアント |
+|`llama3.2:3b`|特定のサイズ |
+|`qwen2.5-coder:7b`|家族 + サイズ |
+|`@sha256:…`|正確な BLOB をピン留めする (上級) |
 
-Browse catalog: [ollama.com/library](https://ollama.com/library)
+カタログを参照: [ollama.com/library](https://ollama.com/library）
 
-## 5. Model picks by hardware
+## 5. ハードウェアによるモデルの選択
 
-| VRAM | Suggested tags |
+| VRAM |推奨タグ |
 |------|----------------|
-| **8 GB** | `qwen2.5-coder:7b`, `llama3.2:3b`, `qwen2.5:7b` |
-| **16 GB** | above + `qwen2.5-coder:14b` (may be tight) |
-| **24 GB+** | `qwen2.5-coder:32b`, `llama3.1:70b` (quantized) |
-| **CPU only** | `llama3.2:1b`, `qwen2.5-coder:3b` |
+| **8 GB** |`qwen2.5-coder:7b`、`llama3.2:3b`、`qwen2.5:7b`|
+| **16 GB** |上記+`qwen2.5-coder:14b`(きついかもしれません) |
+| **24 GB+** |`qwen2.5-coder:32b`、`llama3.1:70b`(量子化) |
+| **CPU のみ** |`llama3.2:1b`、`qwen2.5-coder:3b`|
 
-See [Model RAM requirements](../implementation-example/iv-model-ram-requirements.md) for theory.
+[モデル RAM の要件](../implementation-example/iv-model-ram-requirements.md）理論的には。
 
-## 6. Embedding models
+## 6. モデルの埋め込み
 
-For local RAG (with LlamaIndex, etc.):
+ローカル RAG の場合 (LlamaIndex などを使用):
 
 ```bash
 ollama pull nomic-embed-text
 ollama pull mxbai-embed-large
 ```
 
-Use the **same** Ollama base URL for embed and chat in your app. Walkthrough: [TurboVec + Ollama + local files](../implementation-example/vii-turbovec-ollama-local-files.md).
+アプリへの埋め込みとチャットには、**同じ** Ollama ベース URL を使用します。ウォークスルー: [TurboVec + Ollama + ローカル ファイル](../implementation-example/vii-turbovec-ollama-local-files.md）。
 
-## 7. Hugging Face vs Ollama library
+## 7. ハグフェイス vs Ollama ライブラリ
 
-| Source | When |
-|--------|------|
-| **`ollama pull`** | Model is in Ollama library — fastest |
-| **Modelfile + GGUF** | You downloaded a `.gguf` from HF — see [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) |
-| **Full HF safetensors** | Use transformers/vLLM, or convert to GGUF first |
+|出典 |いつ |
+|------|------|
+| **`ollama pull`** |モデルは Ollama ライブラリにあります — 最速 |
+| **モデルファイル + GGUF** |ダウンロードしたのは、`.gguf`HF から — [モデルファイルとカスタム GGUF]( を参照)vi-modelfile-and-custom-gguf.md) |
+| **完全な HF セーフテンサー** | Transformers/vLLM を使用するか、最初に GGUF に変換します。
 
-Meta Llama gated repos need HF approval; many **Qwen** and **Mistral** models pull from Ollama without HF steps.
+Meta Llama のゲート リポジトリには HF の承認が必要です。多くの **Qwen** および **Mistral** モデルは、HF の手順を行わずに Ollama から取得します。
 
-## Next
+＃＃ 次
 
-[Run, chat & parameters](iv-run-chat-and-parameters.md) — use models interactively.
+[実行、チャット、パラメータ](iv-run-chat-and-parameters.md) — モデルを対話的に使用します。

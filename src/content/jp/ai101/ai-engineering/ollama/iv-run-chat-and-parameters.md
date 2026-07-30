@@ -1,89 +1,89 @@
 ---
 label: "IV"
-subtitle: "Run, chat & parameters"
+subtitle: "実行、チャット、パラメータ"
 group: "Ollama"
 order: 4
 ---
-Run, chat & parameters
+実行、チャット、パラメータ
 
-## 1. Interactive chat
+## 1. インタラクティブなチャット
 
 ```bash
 ollama run qwen2.5-coder:7b
 ```
 
-| Command (in chat) | Action |
-|-------------------|--------|
-| `/bye`, `/exit` | Quit session |
-| `/clear` | Clear context |
-| `/set parameter value` | Change runtime param (see below) |
-| `/?` | Help |
+|コマンド (チャット内) |アクション |
+|---------------------|----------|
+|`/bye`、`/exit`|セッションを終了 |
+|`/clear`|明確なコンテキスト |
+|`/set parameter value`|実行時パラメータを変更します (以下を参照)。
+|`/?`|ヘルプ |
 
-One-shot without interactive mode:
+インタラクティブモードなしのワンショット:
 
 ```bash
 ollama run qwen2.5-coder:7b "Write a Python function to merge two dicts"
 ```
 
-## 2. Common parameters
+## 2. 共通パラメータ
 
-Set during chat with `/set` or in a **Modelfile** (persistent):
+とのチャット中に設定します`/set`または **Modelfile** (永続):
 
-| Parameter | Typical | Effect |
-|-----------|---------|--------|
-| `temperature` | `0.7` | Randomness (lower = more deterministic) |
-| `num_ctx` | `4096` | Context window tokens — raise if you have VRAM |
-| `top_p` | `0.9` | Nucleus sampling |
-| `repeat_penalty` | `1.1` | Reduce repetition |
+|パラメータ |典型的な |効果 |
+|----------|-----------|----------|
+|`temperature`|`0.7`|ランダム性 (低い = より決定的) |
+|`num_ctx`|`4096`|コンテキスト ウィンドウ トークン — VRAM がある場合に発生します。
+|`top_p`|`0.9`|核サンプリング |
+|`repeat_penalty`|`1.1`|繰り返しを減らす |
 
-Example in session:
+セッション中の例:
 
 ```text
 /set temperature 0.2
 /set num_ctx 8192
 ```
 
-Coding tasks: try **`temperature 0.1–0.3`**.
+コーディングタスク: ** を試してください`temperature 0.1–0.3`**。
 
-## 3. System prompt
+## 3. システムプロンプト
 
-In interactive chat, multiline system prompt:
+インタラクティブ チャットでは、複数行のシステム プロンプトが表示されます。
 
 ```bash
 ollama run qwen2.5-coder:7b
 >>> /set system You are a senior Python engineer. Prefer stdlib. Always show types.
 ```
 
-For permanent system prompts, use a **Modelfile** — [Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md).
+永続的なシステム プロンプトの場合は、**Modelfile** — [Modelfile &custom GGUF](vi-modelfile-and-custom-gguf.md）。
 
-## 4. What is loaded right now
+## 4. 現在ロードされているもの
 
 ```bash
 ollama ps
 ```
 
-| Column | Meaning |
-|--------|---------|
-| **MODEL** | Running tag |
-| **PROCESSOR** | `100% GPU`, `100% CPU`, or mixed |
-| **UNTIL** | Idle unload timer |
+|コラム |意味 |
+|--------|--------|
+| **MODEL** |ランニングタグ |
+| **PROCESSOR** |`100% GPU`、`100% CPU`、または混合 |
+| **UNTIL** |アイドルアンロードタイマー |
 
-If **PROCESSOR** shows CPU only on a GPU machine, see [GPU & troubleshooting](vii-gpu-troubleshooting.md).
+**PROCESSOR** が GPU マシン上でのみ CPU を表示する場合は、[GPU とトラブルシューティング](vii-gpu-troubleshooting.md）。
 
-## 5. Keep model in memory
+## 5. モデルをメモリ内に保持する
 
-Default: Ollama unloads idle models after a few minutes.
+デフォルト: Ollama は数分後にアイドル状態のモデルをアンロードします。
 
 ```bash
 # Keep loaded 30 minutes after last request (example)
 OLLAMA_KEEP_ALIVE=30m ollama serve
 ```
 
-Or per-request via API `keep_alive` field — [API & IDE integration](v-api-and-ide-integration.md).
+または、API 経由でリクエストごとに`keep_alive`フィールド — [API と IDE の統合](v-api-and-ide-integration.md）。
 
-## 6. Multi-line input
+## 6. 複数行入力
 
-Paste code blocks directly in `ollama run`. End with a blank line or use one-shot mode with heredoc:
+コードブロックを直接貼り付けます`ollama run`。空白行で終わるか、ヒアドキュメントでワンショット モードを使用します。
 
 ```bash
 ollama run qwen2.5-coder:7b <<'EOF'
@@ -94,6 +94,6 @@ def divide(a, b):
 EOF
 ```
 
-## Next
+＃＃ 次
 
-[API & IDE integration](v-api-and-ide-integration.md) — Cursor, Continue, curl.
+[API と IDE の統合](v-api-and-ide-integration.md) — Cursor、続けて、カールしてください。
