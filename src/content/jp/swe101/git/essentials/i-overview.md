@@ -23,6 +23,14 @@ Git の要点 — 概要
 
 ## 毎日の最小ループ
 
+
+```mermaid
+flowchart LR
+  S[git status] --> A[git add]
+  A --> C[git commit]
+  C --> P[git pull --rebase]
+  P --> Pu[git push]
+```
 ```bash
 git status
 git add path/to/file

@@ -54,24 +54,21 @@ order: 1
 
 ## 4. SQL 対 NoSQL (意思決定スケッチ)
 
-```text
-Need ad-hoc JOINs across many entities + ACID transactions?
-  → Relational (SQL)
-
-Need sub-millisecond key lookup, no joins?
-  → Key-value
-
-Schema varies per record, nested JSON, rapid product iteration?
-  → Document
-
-Billions of writes, partition by key, tunable consistency?
-  → Wide-column
-
-Queries are “friends of friends”, shortest path, pattern match on edges?
-  → Graph
-
-Queries are “avg CPU last hour by host”, append-only metrics?
-  → Time-series
+```mermaid
+flowchart TD
+  Need[What do you need?] --> Joins{Ad-hoc JOINs + ACID?}
+  Joins -->|Yes| SQL[Relational SQL]
+  Joins -->|No| Key{Sub-ms key lookup?}
+  Key -->|Yes| KV[Key-value]
+  Key -->|No| Nested{Flexible nested JSON?}
+  Nested -->|Yes| Doc[Document]
+  Nested -->|No| Scale{Huge partitioned writes?}
+  Scale -->|Yes| WC[Wide-column]
+  Scale -->|No| Rel{Friends-of-friends / paths?}
+  Rel -->|Yes| Graph[Graph]
+  Rel -->|No| TS{Append-only metrics over time?}
+  TS -->|Yes| Time[Time-series]
+  TS -->|No| SQL
 ```
 
 **NoSQL** は「SQL は存在しない」というわけではありません。**リレーショナル テーブルだけではありません**。多くのチームは **PostgreSQL** と **Redis** に加えて 1 つの専門ストアを運営しています。
@@ -82,6 +79,13 @@ Queries are “avg CPU last hour by host”, append-only metrics?
 
 ## 6. データがディスクに保存される仕組み (共通のアイデア)
 
+
+```mermaid
+flowchart LR
+  App[App] --> WAL[WAL append]
+  WAL --> Buf[Buffer pool]
+  Buf --> Pages[(B-tree pages on disk)]
+```
 ほとんどの店舗では次のものが使用されます。
 
 - **B-tree** (または **B+ ツリー**) レンジ スキャンおよびポイント ルックアップ用のインデックス — CS101 のバランスのとれた BST と同じファミリー。

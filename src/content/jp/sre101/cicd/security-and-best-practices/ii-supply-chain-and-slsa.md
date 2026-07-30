@@ -20,6 +20,15 @@ order: 2
 
 ## 2. SLSA レベル
 
+
+```mermaid
+flowchart LR
+  deps[Pin deps] --> sbom[Generate SBOM]
+  sbom --> scan[Scan in CI]
+  scan --> sign[Sign artifacts]
+  sign --> verify[Verify at deploy]
+```
+
 |レベル |要件 |典型的な CI 機能 |
 |----------|---------------|--------------------------|
 | **L1** |ビルドプロセスを文書化して記録 |履歴のある任意の CI |

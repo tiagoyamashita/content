@@ -8,6 +8,18 @@ MCP vs connectors & security
 
 ## 8. MCP vs “built-in connector” vs REST
 
+
+```mermaid
+flowchart TB
+  subgraph Hosts[AI hosts]
+    Cursor
+    Claude[Claude Desktop]
+  end
+  MCP[MCP server] --> Hosts
+  Native[Native connector] --> ChatGPT
+  REST[Custom REST] --> App[Your app]
+```
+
 | Approach | Who builds it | Wire to AI host |
 |----------|---------------|-----------------|
 | **MCP server** | Community or vendor | JSON-RPC (stdio/HTTP) |

@@ -11,6 +11,21 @@ order: 9
 暗黙的な決定の**状態ツリー**に関する**DFS**と同じ考え。
 
 ## 1. テンプレート
+
+```mermaid
+flowchart TD
+  Root[Partial solution] --> Choose[Choose next option]
+  Choose --> Valid{Constraints OK?}
+  Valid -->|No| Undo[Unchoose / prune]
+  Valid -->|Yes| Rec[Recurse]
+  Rec --> Done{Complete?}
+  Done -->|Yes| Keep[Record solution]
+  Done -->|No| Choose
+  Keep --> Undo
+  Undo --> More{More options?}
+  More -->|Yes| Choose
+  More -->|No| Back[Backtrack]
+```
 1. **選択** — 決定を下します。
 2. **再帰** — 残りを解決します。
 3. **選択を解除** — 状態を復元します (バックトラック)。

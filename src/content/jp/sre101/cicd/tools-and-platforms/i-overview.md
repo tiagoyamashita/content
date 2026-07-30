@@ -24,6 +24,14 @@ order: 1
 
 ## あらゆるプラットフォーム上の一般的なパイプライン
 
+
+```mermaid
+flowchart LR
+  checkout[checkout] --> build[build]
+  build --> test[test]
+  test --> publish[publish]
+  publish --> deploy[deploy]
+```
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="CI pipeline stages checkout build test publish deploy">
   <text x="12" y="20" fill="#d4d4d8" font-size="11" font-weight="600">Same stages, different YAML syntax</text>
   <rect x="12" y="36" width="56" height="28" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>

@@ -23,4 +23,17 @@ This is for **people who use agents** (especially **Cursor**, Claude Projects, C
 
 ## Study order
 
+
+```mermaid
+flowchart TB
+  subgraph Repo[Project — git]
+    PS[.cursor/skills/]
+    AG[AGENTS.md]
+  end
+  subgraph Home[Personal — ~/.cursor/skills/]
+    US[my-commit-style]
+  end
+  Repo --> Agent[Agent]
+  Home --> Agent
+```
 [Artifacts & why bother](ii-artifacts-why-and-what.md) → [Cross-tool portable setup](iii-cross-tool-portable-setup.md) → [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) → [Writing & maintaining skills](v-writing-and-maintaining-skills.md)

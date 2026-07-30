@@ -24,10 +24,11 @@ CI/CD — パート I: 基本
 
 典型的な線形パイプライン:
 
-```
-┌───────┐   ┌──────┐   ┌──────────┐   ┌────────┐
-│ build │ → │ test │ → │ security │ → │ deploy │
-└───────┘   └──────┘   └──────────┘   └────────┘
+```mermaid
+flowchart LR
+  build[build] --> test[test]
+  test --> security[security]
+  security --> deploy[deploy]
 ```
 
 

@@ -17,6 +17,21 @@ order: 6
 | **ベルマン – フォード** |任意 |負のサイクルを許可します (負のサイクルは禁止) | O(nm) |
 
 ### ダイクストラ (非負の重み)
+
+```mermaid
+flowchart TD
+  Init[dist source = 0 others INF] --> PQ[Push source into min-PQ]
+  PQ --> Empty{PQ empty?}
+  Empty -->|No| Pop[Extract-min u]
+  Pop --> Stale{d equals dist u?}
+  Stale -->|No| Empty
+  Stale -->|Yes| Relax[For each edge u to v: relax]
+  Relax --> Better{new dist better?}
+  Better -->|Yes| Update[Update dist v and push]
+  Better -->|No| Empty
+  Update --> Empty
+  Empty -->|Yes| Done[dist array]
+```
 貪欲: **最小優先順位キュー** [優先順位キュー](../data-structures/ix-priority-queue.md) を使用して、**最も近い**未解決の頂点を常に解決します。
 
 ```java

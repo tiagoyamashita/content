@@ -26,6 +26,15 @@ Directing agents
 
 Use the same building blocks as [Effective prompting](../effective-prompting/i-overview.md), plus:
 
+
+```mermaid
+flowchart LR
+  Goal[Clear done state] --> Bound[Boundaries]
+  Bound --> Tools[Tools allowed]
+  Tools --> Check[Checkpoints]
+  Check --> Verify[Verify output]
+```
+
 | Add | Example |
 |-----|---------|
 | **Clear done state** | “Done when: PR-ready diff + test command output.” |

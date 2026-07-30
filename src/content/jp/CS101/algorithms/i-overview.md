@@ -23,6 +23,19 @@ order: 1
 
 ## 2. 一般的なアルゴリズム ファミリ (マップ)
 
+
+```mermaid
+flowchart LR
+  Algo[Algorithms] --> Sort[Sorting]
+  Algo --> Search[Searching]
+  Algo --> DnC[Divide and conquer]
+  Algo --> Graph[Graph]
+  Algo --> Greedy[Greedy]
+  Algo --> DP[Dynamic programming]
+  Algo --> BT[Backtracking]
+  Algo --> Pat[Patterns]
+```
+
 |家族 |アイデア |このサブメニューの例 |
 |----------|------|--------------------------|
 | **並べ替え** |キーを順番に並べる |マージソート、クイックソート、ヒープソート |

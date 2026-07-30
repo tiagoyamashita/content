@@ -29,10 +29,11 @@ Start: **Essentials** → [Overview](essentials/i-overview.md).
 
 ## コアオブジェクト (メンタルモデル)
 
-```text
-Working tree  →  staging (index)  →  commit  →  branch pointer
-     │                │                │
-  edit files      git add         git commit    main, feature/login
+```mermaid
+flowchart LR
+  WT[Working tree] -->|git add| ST[Staging]
+  ST -->|git commit| CM[Commit]
+  CM --> BR[Branch pointer]
 ```
 
 | Object | Role |
@@ -44,12 +45,10 @@ Working tree  →  staging (index)  →  commit  →  branch pointer
 
 ## 分散型と集中型
 
-```text
-Centralized (SVN):     one server holds history; checkout is a slice
-
-Distributed (Git):   every clone is a full repo
-  your laptop ◄────► origin (GitHub)
-  teammate    ◄────► origin
+```mermaid
+flowchart LR
+  Laptop[your laptop] <-->|push pull| Origin[origin GitHub]
+  Teammate[teammate] <-->|push pull| Origin
 ```
 
 You can commit offline; sync with **`git push`** / **`git pull`** when connected.

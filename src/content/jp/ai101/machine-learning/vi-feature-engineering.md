@@ -1,4 +1,14 @@
-﻿---
+﻿```mermaid
+flowchart LR
+  Raw[Raw data] --> Num[Numeric scale]
+  Raw --> Cat[Encode categories]
+  Raw --> Text[Text features]
+  Num --> Pipe[Pipeline]
+  Cat --> Pipe
+  Text --> Pipe
+  Pipe --> Model[Model]
+```
+---
 label: "VI"
 subtitle: "特徴量エンジニアリング"
 group: "Machine learning"

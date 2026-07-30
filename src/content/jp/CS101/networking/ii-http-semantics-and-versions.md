@@ -10,6 +10,15 @@ HTTP は **アプリケーション層** プロトコルです。**メソッド*
 
 ## 1. リクエスト/レスポンスモデル
 
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  Client->>Server: GET /v1/users/42 Host api.example.com
+  Server-->>Client: 200 OK Content-Type application/json
+  Note over Client,Server: Body optional on both sides
+```
 - **クライアント**は接続を開き(通常、HTTPの場合はポート**80**、HTTPSの場合は**443**)、**リクエスト**を送信します。
 - **サーバー**は、**ステータスコード**、ヘッダー、およびオプションの本文を含む**応答**を返します。
 
@@ -36,6 +45,14 @@ HTTP は **アプリケーション層** プロトコルです。**メソッド*
 - **接続** — キープアライブ動作 (HTTP/1.1 のデフォルトは HTTP/1.0 とは異なります)。
 
 ## 4. HTTP/1.1 対 HTTP/2 対 HTTP/3 (高レベル)
+
+
+```mermaid
+flowchart LR
+  H1[HTTP/1.1] --> TCP1[Many TCP connections]
+  H2[HTTP/2] --> TCP2[One TCP many streams]
+  H3[HTTP/3] --> QUIC[QUIC over UDP]
+```
 
 |バージョン |輸送 |多重化 |典型的なメモ |
 |----------|-----------|--------------|--------------|

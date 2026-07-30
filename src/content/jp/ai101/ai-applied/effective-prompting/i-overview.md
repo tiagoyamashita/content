@@ -9,6 +9,13 @@ Deep dive on **effective prompting** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Role[Role] --> Task --> Constraints --> Format[Output format]
+  Format --> Model[Model reply]
+```
+
 | Note | Focus |
 |------|--------|
 | [Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) | Part of effective prompting track |

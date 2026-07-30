@@ -15,6 +15,13 @@ SRE ツール — Alertmanager: 構成と受信機
 
 ## 1. 必需品
 
+
+```mermaid
+flowchart TB
+  route[route tree] --> critical[critical to pager]
+  route --> warning[warning to slack]
+  route --> default[default receiver]
+```
 1 つのファイルで **ルート**、**レシーバー**、およびオプションの ** を定義します`inhibit_rules`**。 Prometheus は **ラベル** と **注釈 ** を含むアラートを送信します。ルートは ** を使用します`matchers`** (または従来の **`match:`**) ラベルに記載されています。
 
 ## 2. かなりのスケルトン

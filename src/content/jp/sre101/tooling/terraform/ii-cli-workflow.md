@@ -15,12 +15,12 @@ SRE ツール — Terraform: CLI ワークフロー
 
 ## 1.標準的なライフサイクル
 
-```text
-terraform init          # providers + backends + modules
-terraform validate      # config correctness (no API calls)
-terraform fmt -recursive
-terraform plan -out=plan.tfplan
-terraform apply plan.tfplan
+```mermaid
+flowchart LR
+  init[init] --> validate[validate]
+  validate --> fmt[fmt]
+  fmt --> plan[plan]
+  plan --> apply[apply]
 ```
 
 **`plan`** それなし **`apply`** はゲートがマージするものです。テキスト/HTML プランを CI アーティファクトにキャプチャします。

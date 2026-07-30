@@ -9,6 +9,13 @@ Deep dive on **how mcp works** — split into focused notes below.
 
 ## Map of this submenu
 
+
+```mermaid
+flowchart LR
+  Host[Host e.g. Cursor] <-->|JSON-RPC| Server[MCP server]
+  Server --> API[External API]
+```
+
 | Note | Focus |
 |------|--------|
 | [JSON-RPC & transports](ii-json-rpc-and-transports.md) | Part of how mcp works track |

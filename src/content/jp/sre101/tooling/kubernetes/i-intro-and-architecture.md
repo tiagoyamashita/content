@@ -14,6 +14,26 @@ SRE ツール — Kubernetes: 概要とアーキテクチャ
 
 ## 2. コントロール プレーンとワークロード
 
+
+```mermaid
+flowchart TB
+  subgraph cp[Control plane]
+    api[kube-apiserver]
+    etcd[etcd]
+    sched[kube-scheduler]
+    cm[controller-manager]
+  end
+  subgraph nodes[Worker nodes]
+    kubelet[kubelet]
+    pods[Pods]
+  end
+  api --> sched
+  api --> cm
+  api --> etcd
+  kubelet --> pods
+  api --> kubelet
+```
+
 |ピース |責任 |
 |------|----------------|
 | **kube-apiserver** | REST リクエストを検証します。クラスターの単一調整ファサード。 |

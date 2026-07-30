@@ -10,9 +10,12 @@ JSON-RPC & transports
 
 **MCP is not gRPC.** Messages are **JSON-RPC 2.0** (structured JSON requests/responses) sent over **stdio** (local) or **HTTP** (remote). The MCP server then talks to the real system — often a normal **REST/HTTPS API**.
 
-```text
-You → AI host (Cursor) → MCP client → MCP server → Linear/Postgres/Slack API
-                         JSON-RPC          HTTPS
+```mermaid
+flowchart LR
+  You --> Host[AI host]
+  Host <-->|JSON-RPC| Client[MCP client]
+  Client <-->|stdio / HTTP| Server[MCP server]
+  Server -->|HTTPS| API[Linear / Postgres / Slack]
 ```
 
 ## 2. Three roles

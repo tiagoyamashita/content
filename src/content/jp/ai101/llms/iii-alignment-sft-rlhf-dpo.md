@@ -1,4 +1,12 @@
-﻿---
+﻿```mermaid
+flowchart LR
+  Base[Pre-trained base] --> SFT[SFT]
+  SFT --> RLHF[RLHF]
+  SFT --> DPO[DPO]
+  RLHF --> Chat[Chat model]
+  DPO --> Chat
+```
+---
 label: "III"
 subtitle: "アライメント (SFT, RLHF, DPO)"
 group: "LLMs"

@@ -56,6 +56,14 @@ note right of M : Trained on (input, label) examples
 
 ## Three paradigms
 
+
+```mermaid
+flowchart LR
+  Sup[Supervised] -->|labelled X, y| Pred[Predict y]
+  Unsup[Unsupervised] -->|X only| Struct[Find structure]
+  RL[Reinforcement] -->|agent + reward| Policy[Learn policy]
+```
+
 | Paradigm | Data | Goal |
 |----------|------|------|
 | **Supervised** | Labelled examples | Predict labels for new inputs |

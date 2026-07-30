@@ -14,14 +14,14 @@ Chat, assistant & agent
 | **Assistant** | Question + saved docs/instructions | Reply grounded in your knowledge |
 | **Agent** | **Goal** | Plan → act → observe → repeat until done or blocked |
 
-```text
-Goal: "Find last quarter's churn drivers from these CSVs and slide outline"
-
-Agent loop:
-  1. Inspect files
-  2. Run analysis / search
-  3. Draft outline
-  4. Ask you one clarifying question OR deliver
+```mermaid
+flowchart TD
+  G[Goal + CSVs] --> I[Inspect files]
+  I --> R[Run analysis]
+  R --> D[Draft outline]
+  D --> Q{Blocked?}
+  Q -->|yes| Ask[Ask clarifying Q]
+  Q -->|no| Done[Deliver]
 ```
 
 ## 2. What “agentic orchestration” means for users
@@ -60,8 +60,12 @@ A --> You: deliverable
 
 モデルの重みは変えません。**ホストがツール呼び出しループに載せる能力**を増やします。
 
-```text
-ツールを有効化  →  ホストが名前と説明を登録  →  LLM がツール選択  →  ホストが実行  →  結果を LLM に返す
+```mermaid
+flowchart LR
+  You[Enable tools] --> Host[Host registers]
+  Host --> LLM[LLM picks tool]
+  LLM --> Run[Host runs]
+  Run --> Result[Result to LLM]
 ```
 
 | 追加するもの | LLM が得るもの |

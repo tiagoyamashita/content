@@ -10,6 +10,16 @@ Jenkins + Ansible パイプライン
 
 ## 1. 責任の分担
 
+
+```mermaid
+flowchart LR
+  checkout[Checkout] --> build[Build]
+  build --> test[Test]
+  test --> lint[Ansible Lint]
+  lint --> staging[Deploy Staging]
+  staging --> prod[Deploy Production]
+```
+
 |レイヤー |所有 |
 |------|------|
 | **Jenkins** |チェックアウト、コンパイル、単体/統合テスト、アーティファクト、ゲート |

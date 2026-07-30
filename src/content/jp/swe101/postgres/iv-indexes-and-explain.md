@@ -96,9 +96,14 @@ CREATE INDEX CONCURRENTLY posts_body_trgm_idx ON posts USING GIN (body gin_trgm_
 
 ORM ループは一度に 1 行ずつクエリを実行します。
 
-```text
-Bad:  SELECT * FROM posts WHERE account_id = $1  (×1000 accounts)
-Good: SELECT * FROM posts WHERE account_id = ANY($1)  or JOIN in one query
+```mermaid
+flowchart TB
+  subgraph Bad
+    B1[loop accounts] --> B2[SELECT posts per account x1000]
+  end
+  subgraph Good
+    G1[one query] --> G2[JOIN or ANY array]
+  end
 ```
 
 Fix in app code or with **`JOIN FETCH`** (JPA) — indexes alone do not fix N+1.

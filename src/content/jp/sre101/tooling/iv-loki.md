@@ -26,4 +26,11 @@ SRE ツール — ロキ
 
 ## 4. ペアリング
 
+
+```mermaid
+flowchart LR
+  agent[Promtail / Fluent Bit] --> loki[Loki]
+  loki --> grafana[Grafana]
+  prom[Prometheus] --> grafana
+```
 同じサービスと時間範囲の **Grafana** のログを Prometheus グラフと並べて調べます。

@@ -17,21 +17,22 @@ order: 4
 |簡単なデバッグ |冪等性が必要です、DLQ |
 |カスケード遅延 |負荷時のバッファリング |
 
-```text
-Sync:  Order Svc ──HTTP──▶ Inventory Svc ──HTTP──▶ Payment Svc
-       (failure in payment blocks whole chain)
-
-Async: Order Svc ──▶ queue ──▶ Inventory worker
-                    └──▶ Payment worker (parallel)
+```mermaid
+flowchart LR
+  order[Order Svc] --> queue[Queue]
+  queue --> inv[Inventory worker]
+  queue --> pay[Payment worker]
 ```
 
 ## 2. メッセージキュー (ポイントツーポイント)
 
 **1 つのコンシューマ** が各メッセージを処理します (競合するコンシューマ)。
 
-```text
-Producer ──▶ [ Queue ] ──▶ Consumer A
-                    └──▶ Consumer B  (only one gets each message)
+```mermaid
+flowchart LR
+  prod[Producer] --> queue[Queue]
+  queue --> ca[Consumer A]
+  queue --> cb[Consumer B]
 ```
 
 |クラウドサービス |モデル |

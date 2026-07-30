@@ -58,6 +58,14 @@ CI は、初期の段階でその正確なイメージを構築し、スキャ�
 
 ## 4. 段階的な配信
 
+
+```mermaid
+flowchart LR
+  rolling[Rolling] --> undo[rollout undo]
+  blue[Blue/green] --> switch[Switch traffic back]
+  canary[Canary 5 to 100%] --> route[Route to old version]
+```
+
 |戦略 |行動 |ロールバック |
 |----------|----------|----------|
 | **ローリング** |ポッドをバッチで交換する | `kubectl rollout undo` |

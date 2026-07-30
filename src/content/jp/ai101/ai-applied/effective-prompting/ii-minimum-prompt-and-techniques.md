@@ -17,13 +17,16 @@ Include four pieces when the task matters:
 | **Constraints** | “Keep under 300 words; preserve all numbers.” |
 | **Output format** | “Use bullet points; no intro paragraph.” |
 
-```text
-Role: …
-Task: …
-Constraints: …
-Format: …
-
-[paste content]
+```mermaid
+flowchart TB
+  subgraph Prompt[Minimum prompt]
+    R[Role]
+    T[Task]
+    C[Constraints]
+    F[Format]
+  end
+  Content[paste content] --> Prompt
+  Prompt --> Out[Model output]
 ```
 
 Weak: “Make this better.”  

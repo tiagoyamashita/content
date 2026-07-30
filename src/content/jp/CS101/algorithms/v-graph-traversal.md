@@ -11,6 +11,16 @@ order: 5
 **グラフ** [グラフ](../data-structures/xi-graph.md) および **レベル III - グラフ** (`iii-graphs.md`) を参照してください。
 
 ## 1. 幅優先検索 (BFS)
+
+```mermaid
+flowchart LR
+  Start[Start] --> Q[Enqueue start]
+  Q --> Loop{Queue empty?}
+  Loop -->|No| Deq[Dequeue v]
+  Deq --> Neigh[Enqueue unseen neighbors]
+  Neigh --> Loop
+  Loop -->|Yes| Done[Visit order by layer]
+```
 距離に基づいて **レイヤー** で探索します (**重み付けされていない** エッジ、ホップ数で)。
 
 - **キュー** ADT — 近隣のキューをエンキューし、現在の [キュー](../data-structures/v-queue.md) をデキューします。
@@ -48,6 +58,15 @@ public static List<Integer> bfsOrder(List<List<Integer>> adj, int start) {
 **最短パス長 (重みなし):** 最初に検出されたときに `dist[v]` を保存します。 `dist[w] = dist[v] + 1`。
 
 ## 2. 深さ優先検索 (DFS)
+
+```mermaid
+flowchart TB
+  V[Visit v] --> Mark[Mark seen]
+  Mark --> Edge{Unseen neighbor w?}
+  Edge -->|Yes| Rec[DFS w]
+  Rec --> Edge
+  Edge -->|No| Back[Backtrack]
+```
 バックトラックする前に **深く**してください — **スタック** または **再帰**。
 
 - **時間 O(n + m)**。

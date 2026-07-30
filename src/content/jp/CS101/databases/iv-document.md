@@ -72,6 +72,15 @@ db.products.aggregate([
 ## 4. 埋め込みと参照
 
 |パターン | | の場合に使用します。
+
+```mermaid
+flowchart LR
+  Parent[Parent document] -->|Embed| Nested[Arrays and objects inside]
+  Parent -->|Reference| Other[Other doc by id]
+  Nested --> OneTrip[One round trip read]
+  Other --> TwoTrip[Two lookups or lookup join]
+```
+
 |----------|----------|
 | **親に配列/オブジェクトを埋め込む | 1 対数。一緒に読んでください。制限されたサイズ |
 | **参考** 別のドキュメントの `_id` を格納 | 1 対多の巨大なセット。共有サブドキュメント |

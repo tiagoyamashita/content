@@ -26,9 +26,14 @@ After `-u`, plain **`git push`** / **`git pull`** use the tracking branch.
 
 ## 2. フェッチとプル
 
-```text
-fetch:  origin/main updates on your machine — your branch unchanged until merge/rebase
-pull:   fetch + merge (or rebase if configured) into current branch
+```mermaid
+flowchart LR
+  subgraph fetch
+    F1[download origin] --> F2[branch unchanged]
+  end
+  subgraph pull
+    P1[fetch] --> P2[merge or rebase into current]
+  end
 ```
 
 共有ブランチのより安全なワークフロー:
@@ -75,15 +80,14 @@ git push -u origin feature/api
 
 ## 5. コラボレーションの流れ
 
-```text
-1. git fetch / pull latest main
-2. git switch -c feature/issue-42
-3. commit locally
-4. git push -u origin feature/issue-42
-5. Open Pull Request on GitHub
-6. Review → merge on GitHub
-7. git switch main && git pull
-8. git branch -d feature/issue-42
+```mermaid
+flowchart TB
+  P1[pull latest main] --> P2[create feature branch]
+  P2 --> P3[commit locally]
+  P3 --> P4[push branch]
+  P4 --> P5[open Pull Request]
+  P5 --> P6[review and merge]
+  P6 --> P7[pull main and delete branch]
 ```
 
 PR UI、レビュー、ブランチ保護については、**GitHub** トピックを参照してください。

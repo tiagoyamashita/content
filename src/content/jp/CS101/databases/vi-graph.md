@@ -10,11 +10,11 @@ order: 6
 
 ## 1. データモデル
 
-```text
-(Ada:Person { born: 1815 })
-    -[:KNOWS { since: 1833 }]-> (Charles:Person)
-    -[:KNOWS]-> (Grace:Person)
-(Grace)-[:WROTE]-> (Algorithm:Book { title: "..." })
+```mermaid
+graph LR
+  Ada[Ada Person] -->|KNOWS| Charles[Charles Person]
+  Charles -->|KNOWS| Grace[Grace Person]
+  Grace -->|WROTE| Book[Algorithm Book]
 ```
 
 |ピース |意味 |

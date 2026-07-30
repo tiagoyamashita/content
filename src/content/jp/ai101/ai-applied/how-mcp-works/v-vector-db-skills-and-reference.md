@@ -18,10 +18,11 @@ These solve **different problems**. You often combine them.
 | **Fetch live Linear issue #42** | **MCP** tool | Exact, current ticket data |
 | **Run `SELECT * FROM orders WHERE id = …`** | **MCP** → Postgres/SQL | Structured lookup, not similarity |
 
-```text
-Skills / AGENTS.md     →  always-on instructions (small, static)
-Vector DB (RAG)        →  semantic search over large text corpus
-MCP tools              →  live actions & exact queries (APIs, SQL, GitHub)
+```mermaid
+flowchart TB
+  Skills[Skills / AGENTS.md] -->|static how-to| Agent[Agent]
+  RAG[Vector DB / RAG] -->|semantic search| Agent
+  MCP[MCP tools] -->|live data + actions| Agent
 ```
 
 ### What is a vector DB for here?

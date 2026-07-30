@@ -10,6 +10,20 @@ GitHub アクション
 
 ## 1. 中心となる概念
 
+
+```mermaid
+sequenceDiagram
+  participant Event as Trigger event
+  participant WF as Workflow
+  participant Job as Job
+  participant Step as Steps
+
+  Event->>WF: push / PR / schedule
+  WF->>Job: runs on runner
+  Job->>Step: checkout
+  Job->>Step: setup / test / deploy
+```
+
 |用語 |意味 |
 |-----|----------|
 | **ワークフロー** | YAML ファイル。イベントによって引き起こされる |

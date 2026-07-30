@@ -10,10 +10,10 @@ When one business action touches **multiple services** or **databases**, you can
 
 ## 1. 問題
 
-```text
-Order service (DB A)     Payment service (DB B)
-        │                         │
-        └──── both must succeed or neither ────┘
+```mermaid
+flowchart LR
+  O[Order service DB A] --- X[must both succeed or neither]
+  P[Payment service DB B] --- X
 ```
 
 ネットワークの分断と独立した障害により、単純な「A を呼び出してから B を呼び出す」フローが破壊されます。
@@ -61,6 +61,15 @@ Order service (DB A)     Payment service (DB B)
 </svg></figure>
 
 ### 振り付けとオーケストレーション
+
+
+```mermaid
+flowchart LR
+  S1[Create order] --> S2[Charge payment] --> S3[Reserve inventory]
+  S3 -.->|on failure| C3[Release stock]
+  S2 -.->|on failure| C2[Refund]
+  S1 -.->|on failure| C1[Cancel order]
+```
 
 | |振付 |オーケストレーション |
 |---|--------------|--------------|

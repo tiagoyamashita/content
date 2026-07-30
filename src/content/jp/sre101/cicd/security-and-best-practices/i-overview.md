@@ -41,6 +41,14 @@ order: 1
 
 ## 簡単なチェックリスト
 
+
+```mermaid
+flowchart LR
+  source[Source and deps] --> build[Build and scan]
+  build --> secrets[Secrets and IAM]
+  secrets --> gates[Deploy gates]
+```
+
 |レイヤー |こうする |
 |------|-----------|
 |依存関係 |ファイルのロック、改修/依存ボット、CVE のスキャン |

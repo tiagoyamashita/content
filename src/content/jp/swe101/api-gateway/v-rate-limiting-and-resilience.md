@@ -62,6 +62,16 @@ Gateway timeout should be **≤ CDN timeout** and **≥ upstream p99** — align
 
 アップストリームのエラー率が急上昇した場合、スレッドをキューに入れる代わりに**フェイルファスト**します。
 
+
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open: error threshold
+  Open --> HalfOpen: timeout
+  HalfOpen --> Closed: probe OK
+  HalfOpen --> Open: probe fail
+```
+
 |状態 |行動 |
 |------|----------|
 | **閉店** |通常のプロキシ |

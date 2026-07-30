@@ -97,13 +97,13 @@ Pod: [ app container ] [ Envoy sidecar ]
 | **開く** |すぐに失敗します - タイムアウトを待たないでください |
 | **ハーフオープン** |制限された呼び出しでプローブする - 回復または再オープン |
 
-```text
-Svc A ──▶ [ breaker CLOSED ] ──▶ Svc B (healthy)
-
-Svc B down → failures exceed threshold
-Svc A ──▶ [ breaker OPEN ] ──✕ fast fail (fallback or cached response)
-
-After cooldown → HALF-OPEN → test call → CLOSED if OK
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open: failures exceed threshold
+  Open --> HalfOpen: cooldown expires
+  HalfOpen --> Closed: probe succeeds
+  HalfOpen --> Open: probe fails
 ```
 
 **Resilience4j** (Java)、**Envoy 外れ値検出**、**Istio 宛先ルール**。

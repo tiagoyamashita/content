@@ -25,12 +25,13 @@ If you want how models work under the hood, see [Machine learning](../machine-le
 
 ## Mental model (user view)
 
-```text
-You  →  prompt + context  →  AI model  →  answer / action
-              ↑                    ↑
-        instructions          may use tools
-        examples              (search, code, files)
-        attached files
+```mermaid
+flowchart LR
+  You -->|prompt + context| Model[AI model]
+  Model -->|answer / action| You
+  Inst[instructions / examples] -.-> You
+  Files[attached files] -.-> You
+  Tools[search, code, files] -.-> Model
 ```
 
 | You control | AI controls |

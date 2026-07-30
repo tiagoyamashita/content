@@ -90,6 +90,23 @@ public static int rangeSum(int[] prefix, int lo, int hi) {
 
 ## 6. パターンピッカー
 
+
+```mermaid
+flowchart TD
+  Q[Array or string problem] --> Sorted{Sorted input?}
+  Sorted -->|Yes pair or triplet| TP[Two pointers]
+  Sorted -->|No| Contig{Contiguous window constraint?}
+  Contig -->|Yes| SW[Sliding window]
+  Contig -->|No| Range{Many range sums?}
+  Range -->|Yes| Pref[Prefix sums]
+  Range -->|No| Opt{Count ways or optimal on sequences?}
+  Opt -->|Yes| DP[Dynamic programming]
+  Opt -->|No| Comb{All combinations?}
+  Comb -->|Yes| BT[Backtracking]
+  Comb -->|No| Graph{Reachability on V E?}
+  Graph -->|Yes| BFS[BFS or DFS]
+```
+
 |信号 |試してみる |
 |--------|-----|
 |ソートされた入力、ペア/トリプレット | 2 つのポインタ |

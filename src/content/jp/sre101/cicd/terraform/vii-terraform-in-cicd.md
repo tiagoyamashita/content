@@ -13,6 +13,14 @@ CI/CD の Terraform
 
 ## 1. パイプラインの流れ
 
+
+```mermaid
+flowchart LR
+  pr[PR opened] --> plan[plan]
+  plan --> review[review]
+  review --> merge[merge to main]
+  merge --> apply[apply]
+```
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Terraform PR plan merge apply">
   <rect x="12" y="40" width="64" height="32" rx="3" fill="rgba(59,130,246,0.12)" stroke="#60a5fa"/>
   <text x="24" y="60" fill="#e4e4e7" font-size="8">PR opened</text>

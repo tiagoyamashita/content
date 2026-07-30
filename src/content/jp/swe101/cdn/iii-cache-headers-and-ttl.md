@@ -40,6 +40,14 @@ ETag: "config-v7"
 
 ## 2. 再検証
 
+
+```mermaid
+sequenceDiagram
+  participant E as CDN edge
+  participant O as Origin
+  E->>O: GET + If-None-Match
+  O-->>E: 304 Not Modified
+```
 TTL の有効期限が切れると、Edge は完全にダウンロードせずに **再検証**する場合があります。
 
 ```http

@@ -10,6 +10,17 @@ order: 3
 
 ## 1. 同期と非同期
 
+
+```mermaid
+flowchart LR
+  subgraph Sync
+    API1[API] -->|wait| W1[Worker]
+  end
+  subgraph Async
+    API2[API] --> Q[Queue] --> W2[Worker]
+  end
+```
+
 | |同期 HTTP/RPC |非同期キュー |
 |---|---------------------|---------------|
 |カップリング |発信者は待機します。呼び出し先は起きている必要があります |プロデューサーがエンキューして続行します。

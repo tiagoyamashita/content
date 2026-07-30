@@ -1,3 +1,9 @@
+```mermaid
+flowchart TB
+  AG[AGENTS.md — always on] --> Rules[.cursor/rules/*.mdc]
+  Rules --> Skills[.cursor/skills/*/SKILL.md]
+  Skills --> Scripts[scripts/ in skill folder]
+```
 ---
 label: "IV"
 subtitle: "Cursor skills, rules & AGENTS.md"

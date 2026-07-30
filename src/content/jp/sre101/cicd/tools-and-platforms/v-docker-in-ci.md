@@ -10,6 +10,13 @@ CI の Docker
 
 ## 1. パイプラインの流れ
 
+
+```mermaid
+flowchart LR
+  commit[git commit] --> build[docker build]
+  build --> push[push registry]
+  push --> deploy[deploy tag]
+```
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Docker build push deploy in CI">
   <rect x="12" y="40" width="64" height="32" rx="3" fill="rgba(24,24,27,0.95)" stroke="#52525b"/>
   <text x="24" y="60" fill="#e4e4e7" font-size="9">git commit</text>

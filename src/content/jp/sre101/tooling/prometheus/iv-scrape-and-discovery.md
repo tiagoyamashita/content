@@ -1,3 +1,9 @@
+```mermaid
+flowchart LR
+  sd[Service discovery] --> relabel[Relabel configs]
+  relabel --> scrape[Scrape /metrics]
+  scrape --> tsdb[TSDB ingest]
+```
 ---
 label: "IV"
 subtitle: "スクレイピングと発見"

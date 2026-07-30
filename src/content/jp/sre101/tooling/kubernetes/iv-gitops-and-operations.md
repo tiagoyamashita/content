@@ -10,6 +10,13 @@ SRE ツール — Kubernetes: GitOps と運用
 
 ## 1. GitOps の考え方
 
+
+```mermaid
+flowchart LR
+  git[Git manifests] --> ci[CI validate]
+  ci --> reconcile[Flux / Argo CD]
+  reconcile --> cluster[Kubernetes cluster]
+```
 - Manifests live in Git (**Flux**, **Argo CD**, **Terraform Kubernetes provider**, etc.)—peer review + CI validation precedes cluster reconcile.
 - Avoid silent **`kubectl apply`** hotfixes without backporting YAML—drift becomes undebuggable during incidents.
 

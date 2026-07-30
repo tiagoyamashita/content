@@ -8,6 +8,13 @@ Artifacts & why bother
 
 ## 1. Why bother?
 
+
+```mermaid
+flowchart LR
+  You[Write SKILL.md once] --> Load[Agent loads on match]
+  Load --> Task[Fewer retries per task]
+```
+
 | Without persistent instructions | With skills / rules / project docs |
 |--------------------------------|----------------------------------|
 | Repeat “use conventional commits” daily | Agent reads skill once per task |
@@ -30,7 +37,10 @@ Think of skills as **onboarding docs for the agent** — short, actionable, trig
 
 Same content idea everywhere: **when to use this + what to do + examples**.
 
-```text
-You (once)  →  write SKILL.md / rules / AGENTS.md
-Agent (each task)  →  loads matching instructions  →  fewer retries
+```mermaid
+flowchart TB
+  AG[AGENTS.md] --> Rules[rules/*.mdc]
+  AG --> Skill[SKILL.md]
+  AG --> Scripts[scripts/]
+  AG --> Docs[docs/*.md]
 ```

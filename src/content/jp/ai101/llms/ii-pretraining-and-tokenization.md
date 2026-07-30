@@ -11,8 +11,11 @@ Pre-training and tokenization
 
 Given tokens **[t₁, …, tₙ]**, predict **tₙ₊₁** (decoder-only, left-to-right).
 
-```text
-"The cat sat on the" → predict "mat"
+```mermaid
+flowchart LR
+  Text[Raw text] --> Tok[Tokenize]
+  Tok --> Emb[Embed]
+  Emb --> Gen[Generate next token]
 ```
 
 Loss = cross-entropy over vocabulary at each position. Trained on **trillions of tokens** → emergent skills (reasoning, code, multilingual).

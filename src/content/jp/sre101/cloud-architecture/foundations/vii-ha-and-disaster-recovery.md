@@ -15,12 +15,10 @@ order: 7
 | **RTO** |復旧 **時間** 目標 — 許容可能な最大 **ダウンタイム** | 4時間 |
 | **RPO** |回復 **ポイント** 目標 — 最大許容**データ損失** (時間枠) | 15分 |
 
-```text
-Failure at T0 ───────────────────────────▶ Service restored
-              │◀──── RTO (downtime) ────▶│
-
-Last good backup ──▶ Failure
-              │◀──── RPO (data lost) ───▶│
+```mermaid
+flowchart LR
+  backup[Last good backup] -->|RPO data loss window| failure[Failure at T0]
+  failure -->|RTO downtime| restored[Service restored]
 ```
 
 RTO/RPO が低い → コストと複雑さが増加します。

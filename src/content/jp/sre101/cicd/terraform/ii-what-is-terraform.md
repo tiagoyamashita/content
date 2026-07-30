@@ -43,14 +43,13 @@ terraform apply     # Create / update / delete to match config
 terraform destroy   # Tear down all managed resources
 ```
 
-```text
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│  init   │ →  │  plan   │ →  │  apply  │
-└─────────┘    └─────────┘    └─────────┘
-     │              │               │
-     ▼              ▼               ▼
- providers      diff vs        cloud API
- & backend       state          calls
+```mermaid
+flowchart LR
+  init[init] --> plan[plan]
+  plan --> apply[apply]
+  init --> initOut[providers and backend]
+  plan --> planOut[diff vs state]
+  apply --> applyOut[cloud API calls]
 ```
 
 ## 4. Terraform が変更を適用する方法

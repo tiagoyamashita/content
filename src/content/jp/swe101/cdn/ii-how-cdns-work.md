@@ -10,13 +10,19 @@ CDN は、**オリジン**の前にある**分散キャッシュ**です。ユ�
 
 ## 1. リクエスト フロー (CDN をプル)
 
-```text
-1. Browser GET https://cdn.example.com/assets/app.a1b2c3.js
-2. DNS returns CDN edge IP (Anycast or geo-routed)
-3. Edge checks cache for that URL (+ cache key rules)
-4. HIT  → 200 from edge (fast)
-5. MISS → edge GET from origin → store with TTL → 200 to user
-6. Next user in same region → HIT
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant E as CDN edge
+  participant O as Origin
+  B->>E: GET asset
+  alt cache HIT
+    E-->>B: 200 from edge
+  else cache MISS
+    E->>O: fetch from origin
+    O-->>E: response + TTL
+    E-->>B: 200 to user
+  end
 ```
 
 |用語 |意味 |
@@ -68,9 +74,10 @@ Configure **which query params** matter (`?v=3` yes, `?utm_source=` no).
 
 ## 5. TLS の終了
 
-```text
-User ──HTTPS──► CDN edge (public cert for cdn.example.com)
-                    └──HTTPS or HTTP──► origin (can use private cert)
+```mermaid
+flowchart LR
+  User -->|HTTPS| Edge[CDN edge]
+  Edge -->|HTTPS or HTTP| Origin[Origin]
 ```
 
 CDN は、ユーザーが信頼する **公開証明書** を保持します。オリジンは、VPC 内の HTTP (署名付きリクエストあり) または HTTPS にすることができます。プロバイダーのドキュメントは異なります (**オリジン アクセス コントロール**、**署名付き URL**)。

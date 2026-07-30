@@ -9,6 +9,16 @@ order: 4
 **レシピ:** 問題を小さなサブ問題に分割し、(多くの場合再帰的に) 解決し、**結果を結合します**。
 
 ## 1. テンプレート
+
+```mermaid
+flowchart TB
+  P[Problem size n] --> Base{Base case?}
+  Base -->|Yes| Sol[Solve directly]
+  Base -->|No| Div[Divide into parts]
+  Div --> Rec[Conquer recurse]
+  Rec --> Comb[Combine results]
+  Comb --> Out[Answer]
+```
 1. **基本ケース** — 小さい **n** は直接解決されます。
 2. **分割** — 入力を **n/b** 程度のサイズの **a** 部分に分割します。
 3. **征服** — 各部分を再帰します。

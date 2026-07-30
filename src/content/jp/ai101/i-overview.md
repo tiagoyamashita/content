@@ -18,10 +18,13 @@ AI101 — overview
 
 ## Which path to take
 
-```text
-Use AI at work (no training models)     →  AI Applied
-Understand ML / build models          →  Machine learning → Deep learning
-Ship LLM products                     →  LLMs (+ System design RAG patterns)
+```mermaid
+flowchart LR
+  Start[Your goal] --> Applied[AI Engineering]
+  Start --> ML[Machine learning]
+  ML --> DL[Deep learning]
+  DL --> LLM[LLMs]
+  LLM --> RAG[RAG patterns]
 ```
 
 | You want to… | Start here |
@@ -32,8 +35,10 @@ Ship LLM products                     →  LLMs (+ System design RAG patterns)
 
 ## Study order (technical track)
 
-```text
-Machine learning → Deep learning → LLMs
+```mermaid
+flowchart TB
+  ML[Machine learning] --> DL[Deep learning]
+  DL --> LLM[LLMs]
 ```
 
 Use **AI Applied** in parallel or first if you mainly interact with products, not train models.

@@ -21,10 +21,11 @@ Layer defences — no single filter catches everything.
 
 ## 2. Guardrails stack
 
-```text
-Input filter → LLM → Output filter → User
-     ↑              ↑
-  block jailbreak   redact PII, policy classifier
+```mermaid
+flowchart LR
+  In[Input filter] --> LLM[LLM]
+  LLM --> Out[Output filter]
+  Out --> User[User]
 ```
 
 | Layer | Tooling examples |

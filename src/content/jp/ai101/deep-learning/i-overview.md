@@ -18,6 +18,13 @@ Deep learning — 概要
 
 ## When deep learning vs classical ML
 
+
+```mermaid
+flowchart TB
+  ML[Classical ML] -->|tabular| Tab[Structured data]
+  DL[Deep learning] -->|images text audio| High[High-dim data]
+```
+
 | Prefer classical ML | Prefer deep learning |
 |---------------------|----------------------|
 | Small tabular datasets | Images, long text, audio |

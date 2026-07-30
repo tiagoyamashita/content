@@ -22,8 +22,15 @@ Capabilities change quickly — principles stay: **goal, constraints, verify**.
 
 Treat agent output as **draft**:
 
-```text
-Plan → approve → execute → review → ship
+```mermaid
+sequenceDiagram
+  actor You
+  participant Agent
+  You->>Agent: Plan
+  Agent->>You: Approve?
+  You->>Agent: Execute
+  Agent->>You: Review
+  You->>You: Ship
 ```
 
 For legal, medical, financial, or production deploys: **you** are accountable; the agent is a fast intern.

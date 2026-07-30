@@ -1,3 +1,11 @@
+```mermaid
+flowchart LR
+  client[Client] --> svc[ClusterIP Service]
+  svc --> pod1[Pod]
+  svc --> pod2[Pod]
+  policy[NetworkPolicy] -.-> pod1
+  policy -.-> pod2
+```
 ---
 label: "III"
 subtitle: "ネットワーキングとポリシー"
