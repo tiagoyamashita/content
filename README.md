@@ -11,7 +11,8 @@ Notes live under **`src/content/`**, split by locale:
 | Locale | Path | Description |
 |--------|------|-------------|
 | **English** | `src/content/en/` | Primary curriculum |
-| **Japanese** | `src/content/jp/` | Translated / localized notes (partial coverage) |
+| **Japanese** | `src/content/jp/` | Translated / localized notes |
+| **Portuguese (Brazil)** | `src/content/pt-br/` | Translated / localized notes |
 
 Each locale has top-level **tracks** (sidebar sections), for example:
 
@@ -77,7 +78,8 @@ content/
         │   ├── getting-started/
         │   ├── swe101/
         │   └── …
-        └── jp/               ← Japanese notes
+        ├── jp/               ← Japanese notes
+        └── pt-br/            ← Portuguese (Brazil) notes
             ├── _meta.json
             └── …
 ```
@@ -91,7 +93,7 @@ git clone https://github.com/tiagoyamashita/content.git
 cd content
 ```
 
-Open the folder in **Cursor** or VS Code. Read and edit Markdown under `src/content/en/` (or `jp/`).
+Open the folder in **Cursor** or VS Code. Read and edit Markdown under `src/content/en/` (or `jp/` / `pt-br/`).
 
 ### Load from GitHub in Cursor Notes
 
@@ -151,6 +153,7 @@ Python utilities under **`scripts/`** (stdlib + optional deps; run from repo roo
 | **`patch-graphify-folder-stats.py`** | Post-process `graphify-out/graph.html` to show **% of nodes per top folder** (AI101, SWE101, …) |
 | **`translate-content-ja.py`** | Translate English prose to Japanese under `src/content/jp/` |
 | **`sync-en-mermaid-to-jp.py`** | Copy Mermaid diagrams from paired English notes into Japanese notes |
+| **`sync-en-locale.py`** | Copy `en/` into another locale (e.g. `pt-br`) and machine-translate prose |
 | **`sync-en-locale-to-jp.py`** | Align `jp/` tree with `en/` and translate English prose to Japanese |
 | **`migrate-ai-applied.py`** | One-off migration helpers for AI101 folder moves |
 | **`restore-content-en.py`** | Restore / repair English content from backups |
