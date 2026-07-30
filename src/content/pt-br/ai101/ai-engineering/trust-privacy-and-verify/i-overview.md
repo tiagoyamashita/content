@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Trust, privacy & verify — overview
-Deep dive on **trust, privacy & verify** — split into focused notes below.
+Confiança, privacidade e verificação — visão geral
+Aprofunde-se em **confiança, privacidade e verificação** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Hallucinations & verification](ii-hallucinations-and-verification.md) | Part of trust, privacy & verify track |
-| [Privacy & enterprise data](iii-privacy-enterprise-data.md) | Part of trust, privacy & verify track |
-| [Agents, injection & limits](iv-agents-injection-limits.md) | Part of trust, privacy & verify track |
+| [Alucinações e verificação](ii-hallucinations-and-verification.md) | Parte da confiança, privacidade e rastreamento de verificação |
+| [Privacidade e dados empresariais](iii-privacy-enterprise-data.md) | Parte da confiança, privacidade e rastreamento de verificação |
+| [Agentes, injeção e limites](iv-agents-injection-limits.md) | Parte da confiança, privacidade e rastreamento de verificação |
 
-Trust, privacy and verify
-AI tools are **fast and fluent** — not automatically **true**, **private**, or **allowed** for your workplace. This note is the minimum every **user** should practice.
+Confie, privacidade e verifique
+As ferramentas AI são **rápidas e fluentes** — não automaticamente **verdadeiras**, **privadas** ou **permitidas** para seu local de trabalho. Esta nota é o mínimo que todo **usuário** deve praticar.
 
 ```mermaid
 flowchart LR
@@ -25,6 +25,6 @@ flowchart LR
   Privacy --> Limits[Respect limits]
 ```
 
-## Study order
+## Ordem de estudo
 
-[Hallucinations & verification](ii-hallucinations-and-verification.md) → [Privacy & enterprise data](iii-privacy-enterprise-data.md) → [Agents, injection & limits](iv-agents-injection-limits.md)
+[Alucinações e verificação](ii-hallucinations-and-verification.md) → [Privacidade e dados empresariais](iii-privacy-enterprise-data.md) → [Agentes, injeção e limites](iv-agents-injection-limits.md)

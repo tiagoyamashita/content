@@ -1,27 +1,27 @@
 ---
 label: "IIa"
-subtitle: "Artifact examples"
+subtitle: "Exemplos de artefatos"
 group: "AI Applied"
 order: 3
 ---
-Artifact examples
+Exemplos de artefatos
 
-Concrete samples for each artifact type from [Artifacts & why bother](ii-artifacts-why-and-what.md). Copy, trim, and adapt — keep only what is specific to your repo.
+Amostras concretas para cada tipo de artefato em [Artefatos e por que se preocupar](ii-artifacts-why-and-what.md). Copie, corte e adapte – mantenha apenas o que é específico do seu repositório.
 
-## Good vs bad (patterns that recur)
+## Bom versus ruim (padrões recorrentes)
 
-| Pattern | Bad | Good |
-|---------|-----|------|
-| Skill `description` | “Git helper” | Task + triggers: “commit message… when user asks to commit or mentions staged files” |
-| `AGENTS.md` size | Entire architecture doc pasted | Stack table + commands + links to `docs/` |
-| Rule scope | `alwaysApply: true` for niche SQL style | `globs: **/*.sql` so it loads only when relevant |
-| Skill body | Tutorial on what a PR is | Checklist + output format + your conventions |
+| Padrão | Ruim | Bom |
+|--------|-----|------|
+| Habilidade`description`| “Git ajudante” | Tarefa + gatilhos: “mensagem de commit… quando o usuário pede para commitar ou menciona arquivos preparados” |
+|`AGENTS.md`tamanho | Documento de arquitetura inteiro colado | Tabela de pilha + comandos + links para`docs/`|
+| Escopo da regra |`alwaysApply: true`para nicho estilo SQL |`globs: **/*.sql`então ele carrega apenas quando relevante |
+| Corpo de habilidade | Tutorial sobre o que é um PR | Checklist + formato de saída + suas convenções |
 
----
+###
 
-## 1. Skill (`SKILL.md`)
+## 1. Habilidade (`SKILL.md`)
 
-**Where:** `.cursor/skills/commit-messages/SKILL.md`, `.claude/skills/commit-messages/SKILL.md`, or Codex skill config.
+**Onde:**`.cursor/skills/commit-messages/SKILL.md`,`.claude/skills/commit-messages/SKILL.md`ou configuração de habilidade do Codex.
 
 ```markdown
 ---
@@ -51,9 +51,9 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
     Now enforce server-side expiry regardless of client clock.
 ```
 
-### PR review skill (second example)
+### PR habilidade de revisão (segundo exemplo)
 
-**Where:** `.cursor/skills/pr-review/SKILL.md` — pairs with [Cursor note](iv-cursor-skills-rules-agents-md.md).
+**Onde:**`.cursor/skills/pr-review/SKILL.md`— pares com [nota Cursor](iv-cursor-skills-rules-agents-md.md).
 
 ```markdown
 ---
@@ -78,11 +78,11 @@ description: Review pull requests for security, tests, and team conventions. Use
 - [ ] Public API changes update OpenAPI in `docs/api/`
 ```
 
----
+###
 
-## 2. Rules (`.mdc`)
+## 2. Regras (`.mdc`)
 
-**Where:** `.cursor/rules/typescript-errors.mdc` (Cursor only).
+**Onde:**`.cursor/rules/typescript-errors.mdc`(Cursor apenas).
 
 ```markdown
 ---
@@ -99,7 +99,7 @@ alwaysApply: false
 - Log unexpected errors with `requestId` when available
 ```
 
-**Always-on rule** (team-wide style) — use sparingly:
+**Regra sempre ativa** (estilo para toda a equipe) — use com moderação:
 
 ```markdown
 ---
@@ -114,11 +114,11 @@ alwaysApply: true
 - Run `npm test` after behaviour changes when feasible
 ```
 
----
+###
 
-## 3. `AGENTS.md`
+## 3.`AGENTS.md`
 
-**Where:** repo root (read by Cursor, Codex, Claude Code, Copilot, and others).
+**Onde:** repo root (lido por Cursor, Codex, Claude Code, Copilot e outros).
 
 ```markdown
 # AGENTS.md
@@ -161,11 +161,11 @@ Follow `.cursor/skills/commit-messages/SKILL.md`. PRs need tests for behavior ch
 | PR review | `.cursor/skills/pr-review/SKILL.md` |
 ```
 
----
+###
 
-## 4. `CLAUDE.md`
+## 4.`CLAUDE.md`
 
-**Where:** repo root (Claude Code project memory — standing instructions, not step-by-step workflows).
+**Onde:** repo root (memória do projeto Claude Code — instruções permanentes, não fluxos de trabalho passo a passo).
 
 ```markdown
 # CLAUDE.md
@@ -190,13 +190,13 @@ B2B billing dashboard. Customers manage subscriptions and invoices.
 Heavy workflows live in `.claude/skills/` — e.g. `/pr-review` for code review.
 ```
 
-**Split:** procedures → skills; stable facts and prefs → `CLAUDE.md` + `AGENTS.md`.
+**Divisão:** procedimentos → habilidades; fatos e preferências estáveis ​​→`CLAUDE.md`+`AGENTS.md`.
 
----
+###
 
-## 5. Claude Project instructions (web)
+## 5. Instruções do projeto Claude (web)
 
-**Where:** Claude.ai → Project → **Custom instructions** (not a file in git).
+**Onde:** Claude.ai → Projeto → **Instruções personalizadas** (não é um arquivo no git).
 
 ```markdown
 You help write weekly engineering status updates for the Platform team.
@@ -221,13 +221,13 @@ Concise, factual, no hype. Max ~300 words unless user asks for detail.
 Invent metrics or claim work shipped without evidence in the chat or attached files.
 ```
 
-Attach **knowledge files** (style guide PDF, roadmap) for facts; keep instructions for format and behaviour.
+Anexe **arquivos de conhecimento** (guia de estilo PDF, roteiro) para fatos; mantenha instruções para formato e comportamento.
 
----
+###
 
-## 6. Custom GPT instructions (ChatGPT)
+## 6. Instruções GPT personalizadas (ChatGPT)
 
-**Where:** ChatGPT → **Explore GPTs** → Create → **Instructions**.
+**Onde:** ChatGPT → **Explorar GPTs** → Criar → **Instruções**.
 
 ```markdown
 You are a SQL reviewer for a Postgres analytics warehouse.
@@ -252,13 +252,13 @@ Review queries for correctness, performance, and team style. Do not run queries 
 We use `snake_case` identifiers and schema `analytics.*`. Date columns are `timestamptz`.
 ```
 
-Upload a **knowledge** file with indexed column list or style guide if reviews keep missing schema details.
+Carregue um arquivo de **conhecimento** com lista de colunas indexadas ou guia de estilo se as revisões continuarem faltando detalhes do esquema.
 
----
+###
 
-## 7. Context `.md` in repo
+## 7. Contexto`.md`no repositório
 
-**Where:** `docs/agent-context.md`, `docs/architecture/overview.md`, or any path you reference from `AGENTS.md`.
+**Onde:**`docs/agent-context.md`,`docs/architecture/overview.md`, ou qualquer caminho que você faça referência`AGENTS.md`.
 
 ```markdown
 # Agent context — checkout flow
@@ -284,20 +284,20 @@ Last updated: 2026-06. For repo map and commands, see root `AGENTS.md`.
 E2E checkout uses test card `4242…` — see `tests/e2e/checkout.spec.ts`.
 ```
 
-Link from `AGENTS.md` (“Checkout flow → `docs/agent-context/checkout.md`”) instead of duplicating business rules at root.
+Link de`AGENTS.md`(“Fluxo de checkout →`docs/agent-context/checkout.md`”) em vez de duplicar regras de negócios na raiz.
 
----
+###
 
-## Quick map
+## Mapa rápido
 
-| Artifact | Example above | Loaded when |
-|----------|---------------|-------------|
-| `SKILL.md` | §1 commits, §1b PR review | Task matches skill `description` |
-| Rules `.mdc` | §2 TypeScript (+ always-on variant) | File pattern matches or `alwaysApply` |
-| `AGENTS.md` | §3 repo briefing | Agent opens repo / Codex auto-load |
-| `CLAUDE.md` | §4 standing prefs | Claude Code session start |
-| Project instructions | §5 status reports | User chats in that Claude Project |
-| Custom GPT | §6 SQL reviewer | User chats with that GPT |
-| Context `.md` | §7 checkout flow | Linked or `@`-mentioned |
+| Artefato | Exemplo acima | Carregado quando |
+|----------|---------------|------------|
+|`SKILL.md`| §1 confirma, §1b PR revisão | A tarefa corresponde à habilidade`description`|
+| Regras`.mdc`| §2 TypeScript (+ variante sempre ativa) | O padrão de arquivo corresponde ou`alwaysApply`|
+|`AGENTS.md`| §3 briefing do repositório | Agente abre repositório/carregamento automático do Codex |
+|`CLAUDE.md`| §4 preferências permanentes | Início da sessão do Claude Code |
+| Instruções do projeto | §5 relatórios de situação | Bate-papos de usuários nesse Projeto Claude |
+| GPT personalizado | §6 SQL revisor | O usuário conversa com aquele GPT |
+| Contexto`.md`| §7 Fluxo de checkout | Vinculado ou`@`mencionado |
 
-**Next:** [Cross-tool portable setup](iii-cross-tool-portable-setup.md) — same content, different folders per product.
+**Próximo:** [Configuração portátil entre ferramentas](iii-cross-tool-portable-setup.md) — mesmo conteúdo, pastas diferentes por produto.

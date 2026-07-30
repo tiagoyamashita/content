@@ -1,29 +1,29 @@
 ---
 label: "II"
-subtitle: "Hallucinations & verification"
+subtitle: "Alucinações e verificação"
 group: "AI Applied"
 order: 2
 ---
-Hallucinations & verification
+Alucinações e verificação
 
-## 1. Hallucinations
+## 1. Alucinações
 
-**Hallucination** = plausible-sounding output that is **wrong** — fake citations, wrong numbers, invented API names.
+**Alucinação** = saída aparentemente plausível que está **errada** – citações falsas, números errados, nomes API inventados.
 
-| High hallucination risk | Lower risk |
-|-------------------------|------------|
-| Obscure facts, recent events | Editing your pasted text |
-| “Give me 10 papers on …” with links | Style/format transformation |
-| Numeric detail from memory | Summarising **provided** doc |
+| Alto risco de alucinação | Menor risco |
+|--------------|------------|
+| Fatos obscuros, acontecimentos recentes | Editando seu texto colado |
+| “Dê-me 10 artigos sobre…” com links | Transformação de estilo/formato |
+| Detalhe numérico da memória | Resumindo o documento **fornecido** |
 
-| Habit | Action |
+| Hábito | Ação |
 |-------|--------|
-| **Verify facts** | Check primary source |
-| **Require citations** | Click links; confirm paper exists |
-| **Numbers** | Trace to spreadsheet or report |
-| **Code** | Run tests; don’t merge unseen |
+| **Verifique os fatos** | Verifique a fonte primária |
+| **Requer citações** | Clique em links; confirmar se existe papel |
+| **Números** | Rastrear para planilha ou relatório |
+| **Código** | Execute testes; não se funda sem ser visto |
 
-Treat AI like a **clever colleague who sometimes bluffs**.
+Trate AI como um **colega inteligente que às vezes blefa**.
 
 ```mermaid
 flowchart TD
@@ -36,11 +36,11 @@ flowchart TD
   Tests --> Ship
 ```
 
-## 4. Verification checklist (before you ship)
+## 4. Lista de verificação de verificação (antes de enviar)
 
-- [ ] Facts traced to a source **you** opened
-- [ ] Numbers match spreadsheet / system of record
-- [ ] Names, dates, URLs manually spot-checked
-- [ ] Code compiled / tests run (if applicable)
-- [ ] Tone and commitments acceptable to send under **your** name
-- [ ] No confidential content in prompt history you’ll regret
+- [] Fatos atribuídos a uma fonte **que você** abriu
+- [] Os números correspondem à planilha/sistema de registro
+- [] Nomes, datas, URLs verificados manualmente
+- [ ] Código compilado / testes executados (se aplicável)
+- [ ] Tom e compromissos aceitáveis para envio em **seu** nome
+- [] Nenhum conteúdo confidencial no histórico imediato do qual você se arrependerá

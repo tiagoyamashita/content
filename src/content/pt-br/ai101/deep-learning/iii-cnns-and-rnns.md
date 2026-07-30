@@ -1,22 +1,22 @@
 ---
 label: "III"
-subtitle: "CNNs & RNNs"
+subtitle: "CNN e RNN"
 group: "Deep learning"
 order: 3
 ---
-CNNs and RNNs
-Two specialised architectures before **transformers** dominated: **CNNs** for **spatial** data (images), **RNNs** for **sequences** (text, time series).
+CNN e RNN
+Duas arquiteturas especializadas antes dos **transformadores** dominaram: **CNNs** para dados **espaciais** (imagens), **RNNs** para **sequências** (texto, séries temporais).
 
-## 1. CNN — Convolutional Neural Network
+## 1. CNN — Rede Neural Convolucional
 
-**Idea:** slide a **filter (kernel)** over the input to detect **local patterns** (edges, textures, parts).
+**Ideia:** deslize um **filtro (kernel)** sobre a entrada para detectar **padrões locais** (arestas, texturas, partes).
 
-| Layer | Role |
+| Camada | Função |
 |-------|------|
-| **Conv** | Local feature detection; shared weights → parameter efficient |
-| **ReLU** | Non-linearity |
-| **Pooling** (max/avg) | Downsample; translation tolerance |
-| **Flatten + Dense** | Classify from high-level maps |
+| **Conv** | Detecção de recursos locais; pesos compartilhados → parâmetro eficiente |
+| **ReLU** | Não linearidade |
+| **Agrupamento** (máx./média) | Reduzir a resolução; tolerância de tradução |
+| **Achatar + Denso** | Classifique a partir de mapas de alto nível |
 
 ```mermaid
 flowchart LR
@@ -28,23 +28,23 @@ flowchart LR
   Dense --> Logits[logits]
 ```
 
-### Why CNNs for images
+### Por que CNNs para imagens
 
-| Property | Benefit |
+| Propriedade | Benefício |
 |----------|---------|
-| **Local connectivity** | Nearby pixels matter together |
-| **Weight sharing** | Same edge detector everywhere |
-| **Hierarchy** | Early layers edges → late layers objects |
+| **Conectividade local** | Pixels próximos são importantes juntos |
+| **Divisão de peso** | O mesmo detector de bordas em todos os lugares |
+| **Hierarquia** | Bordas das camadas iniciais → objetos das camadas finais |
 
-**Landmarks:** LeNet, AlexNet, VGG, **ResNet** (skip connections fix vanishing gradient).
+**Marcos:** LeNet, AlexNet, VGG, **ResNet** (pular conexões corrige gradiente de desaparecimento).
 
-### Data augmentation
+### Aumento de dados
 
-Random flip, crop, colour jitter — cheap regularisation for vision.
+Inversão aleatória, corte, instabilidade de cor – regularização barata para visão.
 
-## 2. RNN — Recurrent Neural Network
+## 2. RNN — Rede Neural Recorrente
 
-**Idea:** maintain **hidden state** **hₜ** updated at each time step:
+**Ideia:** manter o **estado oculto** **hₜ** atualizado a cada intervalo de tempo:
 
 ```mermaid
 flowchart LR
@@ -56,28 +56,28 @@ flowchart LR
   H2 --> Y2[y₂]
 ```
 
-Memory of prior inputs — for language, sensor streams.
+Memória de entradas anteriores — para linguagem, fluxos de sensores.
 
-| Variant | Fix |
-|---------|-----|
-| **Vanilla RNN** | Vanishing gradient on long sequences |
-| **LSTM** | Gates (forget, input, output) — long-range deps |
-| **GRU** | Simpler LSTM (2 gates) — often similar accuracy |
+| Variante | Correção |
+|--------|-----|
+| **Baunilha RNN** | Gradiente de desaparecimento em sequências longas |
+| **LSTM** | Portões (esquecer, entrada, saída) — dependências de longo alcance |
+| **GRU** | LSTM mais simples (2 portas) — precisão frequentemente semelhante |
 
-## 3. CNN vs RNN vs Transformer
+## 3. CNN vs RNN vs Transformador
 
-| Architecture | Inductive bias | Dominant today |
+| Arquitetura | Viés indutivo | Dominante hoje |
 |--------------|----------------|----------------|
-| **CNN** | Local spatial | Vision backbones (often + transformer head) |
-| **RNN** | Sequential recurrence | Mostly replaced in NLP |
-| **Transformer** | Global attention | NLP, vision (ViT), multimodal |
+| **CNN** | Espacial local | Backbones de visão (geralmente + cabeça de transformador) |
+| **RNN** | Recorrência sequencial | Principalmente substituído em NLP |
+| **Transformador** | Atenção global | NLP, visão (ViT), multimodal |
 
-RNNs still appear in **small on-device** or **streaming** models; most new NLP uses [Transformers](iv-transformers-and-attention.md).
+RNNs ainda aparecem em modelos de **pequenos dispositivos** ou de **streaming**; a maioria dos novos NLP usa [Transformers](iv-transformers-and-attention.md).
 
-## 4. Rehearsal questions
+## 4. Perguntas de ensaio
 
-- What does pooling buy you?
-- Why do LSTMs beat vanilla RNNs on long text?
-- Name one modern vision model family.
+- O que o pooling compra para você?
+- Por que os LSTMs superam os RNNs vanilla em textos longos?
+- Cite uma família de modelos de visão modernos.
 
-**Related:** [Transformers & attention](iv-transformers-and-attention.md), [LLMs overview](../llms/i-overview.md).
+**Relacionado:** [Transformadores e atenção](iv-transformers-and-attention.md), [LLMs visão geral](../llms/i-overview.md).

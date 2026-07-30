@@ -1,22 +1,22 @@
 ---
 label: "IV"
-subtitle: "Hooks on commit"
+subtitle: "Ganchos no commit"
 group: "Using skills, agents & hooks"
 order: 4
 ---
-Hooks on commit
+Ganchos no commit
 
-**Hooks** run on **events** — before the agent or user runs `git commit`, after a file edit, on session start, etc. The user does **not** need to ask. The product invokes your script or prompt hook.
+**Hooks** executados em **eventos** — antes da execução do agente ou usuário`git commit`, após a edição de um arquivo, no início da sessão, etc. O usuário **não** precisa perguntar. O produto invoca seu script ou gancho de prompt.
 
-## What a hook is not
+## O que um gancho não é
 
-| Hook is not… | Why |
+| Gancho não é… | Por que |
 |--------------|-----|
-| A skill | Skills need user intent; hooks are automatic |
-| `AGENTS.md` | Briefing is passive; hooks **gate or modify** actions |
-| A replacement for CI | Hooks are local/dev-time; CI still runs on push |
+| Uma habilidade | As habilidades precisam da intenção do usuário; ganchos são automáticos |
+|`AGENTS.md`| O briefing é passivo; ganchos **gate ou modificação** ações |
+| Um substituto para CI | Os ganchos são locais/dev-time; CI ainda roda em push |
 
-## Commit hook flow
+## Confirmar fluxo de gancho
 
 ```mermaid
 sequenceDiagram
@@ -33,20 +33,20 @@ sequenceDiagram
   end
 ```
 
-**Agent is not in the loop** unless the commit is blocked and the user asks why.
+**O agente não está no loop** a menos que o commit seja bloqueado e o usuário pergunte o porquê.
 
-## Live files
+## Arquivos ativos
 
-| Piece | Path |
+| Peça | Caminho |
 |-------|------|
-| Hook config | [Examples: `.cursor/hooks.json`](../examples/.cursor/hooks.json) |
-| Hook script | [Examples: `.cursor/hooks/secrets_scan.py`](../examples/.cursor/hooks/secrets_scan.py) |
-| Scan logic | [Examples: `.cursor/hooks/lib/`](../examples/.cursor/hooks/lib/) |
-| Sample config (minimal) | [sample/.cursor/hooks.json](sample/.cursor/hooks.json) |
+| Configuração do gancho | [Exemplos:`.cursor/hooks.json`](../examples/.cursor/hooks.json) |
+| Script de gancho | [Exemplos:`.cursor/hooks/secrets_scan.py`](../examples/.cursor/hooks/secrets_scan.py) |
+| Lógica de varredura | [Exemplos:`.cursor/hooks/lib/`](../examples/.cursor/hooks/lib/) |
+| Configuração de amostra (mínima) | [amostra/.cursor/hooks.json](sample/.cursor/hooks.json) |
 
-Copy the full [examples/.cursor/](../examples/.cursor/README.md) tree for a working secrets gate.
+Copie o [examples/.cursor/]( completo../examples/.cursor/README.md) árvore para um portão secreto funcional.
 
-### `hooks.json` (commit gate)
+###`hooks.json`(commit portão)
 
 ```json
 {
@@ -64,13 +64,13 @@ Copy the full [examples/.cursor/](../examples/.cursor/README.md) tree for a work
 }
 ```
 
-| Field | Meaning |
+| Campo | Significado |
 |-------|---------|
-| `beforeShellExecution` | Run before terminal runs the command |
-| `matcher` | JS regex on full shell string |
-| `failClosed` | Block commit if hook crashes or times out |
+|`beforeShellExecution`| Execute antes que o terminal execute o comando |
+|`matcher`| JS regex na string completa do shell |
+|`failClosed`| Bloquear commit se o gancho travar ou expirar |
 
-## Hook without skill
+## Gancho sem habilidade
 
 ```text
 git commit
@@ -79,29 +79,29 @@ git commit
   → fail → shell blocked; user sees user_message from hook JSON
 ```
 
-## Hook + companion skill (recommended)
+## Gancho + habilidade de companheiro (recomendado)
 
-Hooks should stay **small and deterministic**. Put **explanation and remediation** in a skill:
+Os ganchos devem permanecer **pequenos e determinísticos**. Coloque **explicação e correção** em uma habilidade:
 
-| Layer | Job |
+| Camada | Trabalho |
 |-------|-----|
-| Hook | Block + write log |
-| Skill `secrets-scan-help` | Explain log, suggest `git reset`, rotation |
+| Gancho | Bloquear + gravar log |
+| Habilidade`secrets-scan-help`| Explique o registro, sugira`git reset`, rotação |
 
-See [Examples: secrets-scan-help](../examples/.cursor/skills/secrets-scan-help/SKILL.md).
+Consulte [Exemplos: secrets-scan-help](../examples/.cursor/skills/secrets-scan-help/SKILL.md).
 
-## git pre-commit (outside Cursor)
+## git pré-commit (fora de Cursor)
 
-Same scan logic can run in `.git/hooks/pre-commit` for teammates without Cursor — see [Examples: hook doc](../examples/iv-hook-secrets-env-scan.md).
+A mesma lógica de varredura pode ser executada em`.git/hooks/pre-commit`para companheiros de equipe sem Cursor — veja [Exemplos: hook doc](../examples/iv-hook-secrets-env-scan.md).
 
-## Test hook manually
+## Teste o gancho manualmente
 
 ```bash
 echo '{"command":"git commit -m test"}' | python3 .cursor/hooks/secrets_scan.py
 ```
 
-Stage a `.env` file first to see `permission: deny`.
+Estágio um`.env`arquivo primeiro para ver`permission: deny`.
 
-## Next
+## Próximo
 
-[Combine all three](v-combine-skills-agents-hooks.md) — how `AGENTS.md`, skills, and hooks work together on a real commit.
+[Combine todos os três](v-combine-skills-agents-hooks.md) - como`AGENTS.md`, habilidades e ganchos trabalham juntos em um commit real.

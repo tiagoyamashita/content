@@ -1,16 +1,16 @@
 ---
 label: "VI"
-subtitle: "Agent orchestration"
+subtitle: "Orquestração de agentes"
 group: "Using skills, agents & hooks"
 order: 6
 ---
-Agent orchestration
+Orquestração de agentes
 
-**Agent orchestration** is how you **coordinate** multiple pieces — briefing, skills, hooks, scripts, MCP, loops — so the agent does the right thing at the right time without you re-explaining every chat.
+**Orquestração do agente** é como você **coordena** várias peças — briefing, habilidades, ganchos, scripts, MCP, loops — para que o agente faça a coisa certa no momento certo, sem que você precise explicar novamente cada chat.
 
-This folder is a **project-level orchestration** guide. For product-wide patterns (Zapier, connectors), see [Orchestration patterns](../../tools-and-orchestration/iii-orchestration-patterns.md). For multi-step reasoning, see [Agents & agentic workflows](../../agents-and-agentic-workflows/i-overview.md).
+Esta pasta é um guia de **orquestração em nível de projeto**. Para padrões de todo o produto (Zapier, conectores), consulte [Padrões de orquestração](../../tools-and-orchestration/iii-orchestration-patterns.md). Para um raciocínio em várias etapas, consulte [Agentes e fluxos de trabalho de agentes](../../agents-and-agentic-workflows/i-overview.md).
 
-## Orchestration stack (bottom → top)
+## Pilha de orquestração (inferior → superior)
 
 ```mermaid
 flowchart BT
@@ -20,17 +20,17 @@ flowchart BT
   Skills --> Act[Scripts + MCP]
 ```
 
-| Layer | Orchestrates | Example |
-|-------|--------------|---------|
-| **AGENTS.md** | *What repo is* | “Tests: `npm test`” |
-| **Hooks** | *When actions may run* | Block `git commit` if `.env` staged |
-| **Skills** | *Which playbook* | PR review vs deploy check |
-| **Scripts** | *Repeatable side effects* | `deploy_check.py` → JSON log |
-| **MCP** | *Live external data* | Query Sentry, not static skill text |
+| Camada | Orquestras | Exemplo |
+|-------|-------------|---------|
+| **AGENTS.md** | *O que é repositório* | “Testes:`npm test`” |
+| **Ganchos** | *Quando as ações podem ser executadas* | Bloquear`git commit`se`.env`encenado |
+| **Habilidades** | *Qual manual* | Revisão de PR versus verificação de implantação |
+| **Roteiros** | *Efeitos colaterais repetíveis* |`deploy_check.py`→ JSON registro |
+| **MCP** | *Dados externos ao vivo* | Query Sentry, não texto de habilidade estática |
 
-## Orchestration patterns in Cursor
+## Padrões de orquestração em Cursor
 
-### 1. Briefing + on-demand skill (default)
+### 1. Briefing + habilidade sob demanda (padrão)
 
 ```text
 Session start → AGENTS.md
@@ -38,9 +38,9 @@ User task     → matching skill
 Agent         → tools + skill procedure
 ```
 
-No hook. User drives timing. See [Skills alone](ii-use-skills-alone.md).
+Sem gancho. O usuário controla o tempo. Veja [Habilidades sozinhas](ii-use-skills-alone.md).
 
-### 2. Gate then explain (hook + companion skill)
+### 2. Gate então explique (habilidade de gancho + companheiro)
 
 ```mermaid
 sequenceDiagram
@@ -55,9 +55,9 @@ sequenceDiagram
   Hook-->>User: ALLOW
 ```
 
-Hook enforces; skill narrates. See [Hooks on commit](iv-use-hooks-on-commit.md).
+Forças de gancho; habilidade narra. Veja [Ganchos no commit](iv-use-hooks-on-commit.md).
 
-### 3. Script loop (skill + JSON log)
+### 3. Loop de script (habilidade + log JSON)
 
 ```text
 Skill runs script → log file
@@ -65,51 +65,51 @@ Agent reads log   → proposes fix
 User approves     → skill re-runs script → compare logs
 ```
 
-Same data refined across turns. See [Loop on script results](../examples/iii-loop-on-script-results.md).
+Os mesmos dados refinados entre turnos. Consulte [Loop nos resultados do script](../examples/iii-loop-on-script-results.md).
 
-### 4. Stop / subagent loops (advanced hooks)
+### 4. Loops de parada/subagente (ganchos avançados)
 
-| Hook event | Orchestration use |
+| Evento de gancho | Uso de orquestração |
 |------------|-------------------|
-| `stop` + `loop_limit` | Agent finishes → hook injects follow-up (“re-read log, iteration 2”) |
-| `subagentStart` | Approve or deny Task/subagent spawns |
-| `subagentStop` | Chain subagent with `followup_message` |
-| `preToolUse` | Block or rewrite dangerous tool calls |
+|`stop`+`loop_limit`| Agente termina → gancho injeta acompanhamento (“reler log, iteração 2”) |
+|`subagentStart`| Aprovar ou negar spawns de tarefas/subagentes |
+|`subagentStop`| Subagente de cadeia com`followup_message`|
+|`preToolUse`| Bloqueie ou reescreva chamadas de ferramentas perigosas |
 
-Use when a **skill loop** is not enough — you need the **product** to continue without a new user message.
+Use quando um **ciclo de habilidade** não for suficiente — você precisa que o **produto** continue sem uma nova mensagem de usuário.
 
-### 5. MCP + skills (live + static)
+### 5. MCP + habilidades (ao vivo + estática)
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| Skill | *How we triage production errors* |
-| MCP (Sentry) | *Current stack trace* |
+| Habilidade | *Como fazemos a triagem de erros de produção* |
+| MCP (Sentinela) | *Rastreamento de pilha atual* |
 
-Skill without MCP = stale runbook. MCP without skill = agent improvises process.
+Habilidade sem MCP = runbook obsoleto. MCP sem habilidade = agente improvisa processo.
 
-## Who orchestrates what
+## Quem orquestra o quê
 
-| Actor | Responsibility |
+| Ator | Responsabilidade |
 |-------|----------------|
-| **You** | Goals, parameters, approve destructive actions |
-| **AGENTS.md** | Stable repo facts |
-| **Hooks** | Hard gates and automation edges |
-| **Skills** | Named workflows and output shape |
-| **Agent (LLM)** | Reasoning inside skill boundaries |
-| **Scripts** | Deterministic checks and logs |
-| **CI / git** | Post-push truth (hooks are not a substitute) |
+| **Você** | Metas, parâmetros, aprovar ações destrutivas |
+| **AGENTS.md** | Fatos de recompra estáveis ​​|
+| **Ganchos** | Portões rígidos e bordas de automação |
+| **Habilidades** | Fluxos de trabalho nomeados e formato de saída |
+| **Agente (LLM)** | Raciocínio dentro dos limites das habilidades |
+| **Roteiros** | Verificações e registros determinísticos |
+| **CI/git** | Verdade pós-push (ganchos não substituem) |
 
-## Design rules
+## Regras de design
 
-| Rule | Why |
+| Regra | Por que |
 |------|-----|
-| **Hooks stay dumb** | Fast, auditable; no model latency on every commit |
-| **Skills stay procedural** | “Ask → confirm → run → read log” |
-| **AGENTS.md stays short** | Index skills; don’t duplicate checklists |
-| **One log path per iteration** | Agent cites `current_log_file` — [loop example](../examples/iii-loop-on-script-results.md) |
-| **Human approval before externals** | Email customers, prod deploy, history rewrite |
+| **Ganchos ficam burros** | Rápido, auditável; nenhuma latência de modelo em cada commit |
+| **As habilidades permanecem procedimentais** | “Perguntar → confirmar → executar → ler log” |
+| **AGENTS.md permanece curto** | Habilidades de índice; não duplique listas de verificação |
+| **Um caminho de log por iteração** | Citações de agente`current_log_file`— [exemplo de loop](../examples/iii-loop-on-script-results.md) |
+| **Aprovação humana antes de fatores externos** | Clientes de e-mail, implantação de produção, reescrita de histórico |
 
-## Example orchestration map (this repo’s samples)
+## Exemplo de mapa de orquestração (amostras deste repositório)
 
 ```text
 AGENTS.md
@@ -124,38 +124,38 @@ On block → secrets-scan-help / hook-failure-help skill
 On deploy → deploy_check.py → logs/ → agent summarizes
 ```
 
-Copy layout: [sample/](sample/.cursor/README.md) + [examples/.cursor/](../examples/.cursor/README.md).
+Layout de cópia: [amostra/](sample/.cursor/README.md) + [exemplos/.cursor/](../examples/.cursor/README.md).
 
-## vs “just chat”
+## vs “apenas conversar”
 
-| Just chat | Orchestrated project |
-|-----------|----------------------|
-| Re-paste test commands | `AGENTS.md` |
-| “Remember to check secrets” | Hook on commit |
-| Inconsistent PR reviews | `pr-review` skill |
-| Agent guesses deploy steps | `deploy-check` script + skill |
-| No audit trail | JSON logs under `logs/` |
+| Basta conversar | Projeto orquestrado |
+|-----------|-----------|
+| Cole novamente os comandos de teste |`AGENTS.md`|
+| “Lembre-se de verificar os segredos” | Gancho no commit |
+| Avaliações inconsistentes de PR |`pr-review`habilidade |
+| Agente adivinha etapas de implantação |`deploy-check`roteiro + habilidade |
+| Sem trilha de auditoria | JSON faz logon em`logs/`|
 
-## Anti-patterns
+## Antipadrões
 
-| Anti-pattern | Fix |
+| Antipadrão | Correção |
 |--------------|-----|
-| One giant `AGENTS.md` with every workflow | Split into skills; index in briefing |
-| Hook that calls the LLM for policy | `preToolUse` prompt hook only when needed; prefer script |
-| Skill that tries to block git | Use hook for enforce |
-| Orchestration without logs | Scripts write JSON; agent reads path |
-| 10 skills with overlapping descriptions | Narrow `description`; one job per folder |
+| Um gigante`AGENTS.md`com cada fluxo de trabalho | Dividir em habilidades; índice em briefing |
+| Gancho que chama o LLM para política |`preToolUse`prompt hook somente quando necessário; prefiro roteiro |
+| Habilidade que tenta bloquear o git | Use o gancho para impor |
+| Orquestração sem logs | Os scripts escrevem JSON; agente lê caminho |
+| 10 habilidades com descrições sobrepostas | Estreito`description`; um trabalho por pasta |
 
-## Rehearsal questions
+## Perguntas de ensaio
 
-- Name the four layers from briefing down to scripts.
-- Why should a commit gate be a hook, not a skill?
-- When would you add a `stop` hook instead of relying on the skill loop text?
+- Nomeie as quatro camadas, desde o briefing até os scripts.
+- Por que um commit gate deveria ser um gancho e não uma habilidade?
+- Quando você adicionaria um`stop`gancho em vez de confiar no texto do loop de habilidades?
 
-## Related
+## Relacionado
 
-- [Combine skills, agents & hooks](v-combine-skills-agents-hooks.md)
-- [Orchestration patterns](../../tools-and-orchestration/iii-orchestration-patterns.md)
-- [Agents & agentic workflows](../../agents-and-agentic-workflows/i-overview.md)
-- [Loop prompting](../../loop-prompting/i-overview.md)
-- [How MCP works](../../how-mcp-works/i-overview.md)
+- [Combine habilidades, agentes e ganchos](v-combine-skills-agents-hooks.md)
+- [Padrões de orquestração](../../tools-and-orchestration/iii-orchestration-patterns.md)
+- [Agentes e fluxos de trabalho de agentes](../../agents-and-agentic-workflows/i-overview.md)
+- [Aviso de loop](../../loop-prompting/i-overview.md)
+- [Como MCP funciona](../../how-mcp-works/i-overview.md)

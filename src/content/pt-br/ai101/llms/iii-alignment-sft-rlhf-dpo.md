@@ -1,11 +1,11 @@
 ---
 label: "III"
-subtitle: "Alignment (SFT, RLHF, DPO)"
+subtitle: "Alinhamento (SFT, RLHF, DPO)"
 group: "LLMs"
 order: 3
 ---
-Alignment — SFT, RLHF, and DPO
-Pre-trained models predict **likely** text — not necessarily **helpful** or **safe**. **Alignment** trains behaviour users expect from assistants.
+Alinhamento — SFT, RLHF e DPO
+Modelos pré-treinados prevêem texto **provável** — não necessariamente **útil** ou **seguro**. **Alinhamento** treina o comportamento que os usuários esperam dos assistentes.
 
 ```mermaid
 flowchart LR
@@ -16,65 +16,65 @@ flowchart LR
   DPO --> Chat
 ```
 
-## 1. Supervised fine-tuning (SFT)
+## 1. Ajuste fino supervisionado (SFT)
 
-Fine-tune on curated **(instruction, response)** pairs.
+Ajuste os pares selecionados **(instrução, resposta)**.
 
-| Input | Target response |
+| Entrada | Resposta alvo |
 |-------|-----------------|
-| "Summarise this article …" | Good summary |
-| "Write SQL for …" | Valid query |
+| "Resuma este artigo…" | Bom resumo |
+| "Escreva SQL para…" | Consulta válida |
 
-Teaches **format** and **task following** — foundation of chat models.
+Ensina **formato** e **acompanhamento de tarefas** — base dos modelos de chat.
 
-## 2. RLHF — Reinforcement Learning from Human Feedback
+## 2. RLHF - Aprendizagem por reforço com feedback humano
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| 1 | Model generates multiple answers |
-| 2 | **Humans rank** outputs |
-| 3 | Train **reward model** on rankings |
-| 4 | Fine-tune LLM with **PPO** to maximise reward |
+| 1 | Modelo gera múltiplas respostas |
+| 2 | **Classificação de humanos** resultados |
+| 3 | Treinar **modelo de recompensa** em rankings |
+| 4 | Ajuste LLM com **PPO** para maximizar a recompensa |
 
-| Pros | Cons |
+| Prós | Contras |
 |------|------|
-| Aligns with human preferences | Expensive labels; reward hacking risk |
-| Improves safety tone | Complex pipeline (OpenAI, Anthropic use variants) |
+| Alinha-se com as preferências humanas | Etiquetas caras; risco de hacking de recompensa |
+| Melhora o tom de segurança | Pipeline complexo (OpenAI, variantes de uso antrópico) |
 
-## 3. DPO — Direct Preference Optimisation
+## 3. DPO — Otimização de preferência direta
 
-Train directly on **(prompt, chosen, rejected)** pairs — **no separate reward model**.
+Treine diretamente em pares **(solicitados, escolhidos, rejeitados)** — **sem modelo de recompensa separado**.
 
-| vs RLHF | DPO |
-|---------|-----|
-| Pipeline | Simpler — preference loss on policy |
-| Stability | Often easier to reproduce in research |
+| versus RLHF | DPO |
+|--------|-----|
+| Gasoduto | Mais simples – perda de preferência na política |
+| Estabilidade | Muitas vezes mais fácil de reproduzir em pesquisas |
 
-Common in open-source alignment recipes.
+Comum em receitas de alinhamento de código aberto.
 
-## 4. What alignment does not fix
+## 4. O que o alinhamento não corrige
 
-| Limit | Mitigation |
+| Limite | Mitigação |
 |-------|------------|
-| **Factual errors** | RAG, tools, human review |
-| **Stale knowledge** | RAG, browsing tools |
-| **Jailbreaks** | Layered guardrails, monitoring |
-| **Private data in weights** | Don't train on secrets; use RAG |
+| **Erros factuais** | RAG, ferramentas, revisão humana |
+| **Conhecimento obsoleto** | RAG, ferramentas de navegação |
+| **Jailbreaks** | Guarda-corpos em camadas, monitoramento |
+| **Dados privados em pesos** | Não treine com segredos; usar RAG |
 
-## 5. Evaluation beyond loss
+## 5. Avaliação além da perda
 
-| Metric type | Example |
-|-------------|---------|
-| **Automated benchmarks** | MMLU, HumanEval (code) |
-| **Human eval** | Helpfulness, harmlessness |
-| **Red teaming** | Adversarial prompts |
+| Tipo de métrica | Exemplo |
+|------------|---------|
+| **Benchmarks automatizados** | MMLU, HumanEval (código) |
+| **Avaliação humana** | Prestatividade, inocuidade |
+| **Equipe vermelha** | Alertas adversários |
 
-Same spirit as [ML evaluation](../machine-learning/iv-model-evaluation-and-metrics.md) — pick metrics tied to product risk.
+O mesmo espírito da [avaliação ML](../machine-learning/iv-model-evaluation-and-metrics.md) – escolha métricas vinculadas ao risco do produto.
 
-## 6. Rehearsal questions
+## 6. Perguntas de ensaio
 
-- SFT vs RLHF — what does each add?
-- Why might a model with low training loss still give bad answers?
-- What is DPO simplifying compared to RLHF?
+- SFT vs RLHF — o que cada um adiciona?
+- Por que um modelo com baixa perda de treinamento ainda pode dar respostas ruins?
+- O que DPO está simplificando em comparação com RLHF?
 
-**Related:** [Prompt engineering](iv-prompt-engineering.md), [Safety & production](vi-safety-and-production.md).
+**Relacionado:** [Engenharia imediata](iv-prompt-engineering.md), [Segurança e produção](vi-safety-and-production.md).

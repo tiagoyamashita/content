@@ -1,28 +1,28 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "LLMs"
 order: 1
 ---
-LLMs — overview
-**Large language models (LLMs)** are **very large decoder-only transformers** trained on massive text to **predict the next token**. After pre-training, **alignment** and **prompting** make them useful assistants; **RAG** and **fine-tuning** add domain knowledge.
+LLMs — visão geral
+**Modelos de linguagem grande (LLMs)** são **transformadores somente decodificadores muito grandes** treinados em texto massivo para **prever o próximo token**. Após o pré-treinamento, **alinhamento** e **solicitações** tornam-nos assistentes úteis; **RAG** e **ajuste fino** adicionam conhecimento do domínio.
 
-Prerequisites: [Transformers & attention](../deep-learning/iv-transformers-and-attention.md), [Machine learning evaluation](../machine-learning/iv-model-evaluation-and-metrics.md).
+Pré-requisitos: [Transformadores e atenção](../deep-learning/iv-transformers-and-attention.md), [Avaliação de aprendizado de máquina](../machine-learning/iv-model-evaluation-and-metrics.md).
 
-**Using ChatGPT/Claude daily?** See [AI Applied](../ai-engineering/i-overview.md) for practical prompting, agents, and trust — this submenu is **how LLMs work and ship in products**.
+**Usando ChatGPT/Claude diariamente?** Consulte [AI Aplicado](../ai-engineering/i-overview.md) para orientações práticas, agentes e confiança - este submenu é **como LLMs funciona e envia produtos**.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Part | Topic |
+| Parte | Tópico |
 |------|--------|
-| **I — Overview** | LLM lifecycle in one page |
-| **II — Pre-training & tokenization** | Causal LM objective, scale, BPE, context window |
-| **III — Alignment (SFT, RLHF, DPO)** | Helpful, harmless, honest behaviour |
-| **IV — Prompt engineering** | Zero/few-shot, CoT, roles, structured output |
-| **V — RAG & fine-tuning** | Domain knowledge without full retrain |
-| **VI — Safety & production** | Injection, monitoring, serving |
+| **I — Visão geral** | Ciclo de vida LLM em uma página |
+| **II — Pré-treinamento e tokenização** | Objetivo causal LM, escala, BPE, janela de contexto |
+| **III — Alinhamento (SFT, RLHF, DPO)** | Comportamento útil, inofensivo e honesto |
+| **IV — Engenharia imediata** | Zero/poucos disparos, CoT, funções, resultados estruturados |
+| **V — RAG e ajuste fino** | Conhecimento de domínio sem reciclagem completa |
+| **VI — Segurança e produção** | Injeção, monitoramento, serviço |
 
-## LLM lifecycle
+## LLM ciclo de vida
 
 ```mermaid
 flowchart LR
@@ -32,23 +32,23 @@ flowchart LR
   Deploy --> RAG[RAG / LoRA]
 ```
 
-| Stage | Data | Output |
+| Palco | Dados | Saída |
 |-------|------|--------|
-| **Pre-training** | Web-scale text | Base model — completion, not chat |
-| **SFT** | Curated Q&A pairs | Follows instructions |
-| **RLHF / DPO** | Human preference rankings | Safer, more helpful tone |
-| **Production** | Your docs + prompts | Domain-specific answers |
+| **Pré-treinamento** | Texto em escala web | Modelo básico – conclusão, não bate-papo |
+| **SFT** | Pares de perguntas e respostas selecionados | Segue instruções |
+| **RLHF / DPO** | Classificações de preferência humana | Tom mais seguro e útil |
+| **Produção** | Seus documentos + instruções | Respostas específicas do domínio |
 
-## Open vs closed models
+## Modelos abertos vs fechados
 
-| | Open weights (Llama, Mistral) | API-only (GPT-4, Claude) |
-|---|------------------------------|---------------------------|
-| **Deploy** | Self-host, fine-tune | Vendor hosts |
-| **Cost** | Infra + ops | Per-token |
-| **Control** | Full | Limited |
+| | Pesos abertos (Llama, Mistral) | API-somente (GPT-4, Claude) |
+|---|---------------|-----------------------|
+| **Implantar** | Auto-hospedeiro, ajuste fino | Anfitriões de fornecedores |
+| **Custo** | Infra + operações | Por token |
+| **Controle** | Completo | Limitado |
 
-## Next
+## Próximo
 
-Continue with [Pre-training & tokenization](ii-pretraining-and-tokenization.md).
+Continue com [Pré-treinamento e tokenização](ii-pretraining-and-tokenization.md).
 
-**Related:** [Deep learning overview](../deep-learning/i-overview.md), [Order search CDC](../../swe101/sysdesign/examples/viii-order-search-cdc.md) (RAG index pattern).
+**Relacionado:** [Visão geral do aprendizado profundo](../deep-learning/i-overview.md), [Solicitar pesquisa CDC](../../swe101/sysdesign/examples/viii-order-search-cdc.md) (padrão de índice RAG).

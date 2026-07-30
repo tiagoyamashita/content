@@ -1,12 +1,12 @@
 ---
 label: "IV"
-subtitle: "Cursor skills, rules & AGENTS.md"
+subtitle: "Cursor habilidades, regras e AGENTS.md"
 group: "AI Applied"
 order: 5
 ---
-Cursor skills, rules & AGENTS.md
+Cursor habilidades, regras e AGENTS.md
 
-Cursor-specific layout for skills, rules, and repo briefing files. For portable setup across Claude Code and Codex, see [Cross-tool portable setup](iii-cross-tool-portable-setup.md).
+Layout específico de Cursor para habilidades, regras e arquivos de briefing de repositório. Para configuração portátil entre Claude Code e Codex, consulte [Configuração portátil de ferramentas cruzadas](iii-cross-tool-portable-setup.md).
 
 ```mermaid
 flowchart TB
@@ -15,9 +15,9 @@ flowchart TB
   Skills --> Scripts[scripts/ in skill folder]
 ```
 
-## 4. Cursor skills — layout
+## 4. Habilidades Cursor - layout
 
-Skills live in a **folder** with a required **`SKILL.md`**:
+As habilidades ficam em uma **pasta** com um ** obrigatório`SKILL.md`**:
 
 ```text
 .cursor/skills/                    # project — shared in git
@@ -33,17 +33,17 @@ Skills live in a **folder** with a required **`SKILL.md`**:
     SKILL.md
 ```
 
-Do **not** put custom skills in `~/.cursor/skills-cursor/` — that is for Cursor built-ins.
+**Não** coloque habilidades personalizadas`~/.cursor/skills-cursor/`- isso é para Cursor integrados.
 
-| Location | Use for |
+| Localização | Usar para |
 |----------|---------|
-| `.cursor/skills/` (project) | Team workflows in git |
-| `~/.cursor/skills/` (user) | Personal habits across repos |
-| `reference.md` in skill folder | Long checklists, API details |
-| `examples.md` in skill folder | Good/bad output samples |
-| `scripts/` in skill folder | **Executable files** (`.sh`, `.py`) — **not** embedded in `SKILL.md`; skill text points at the path |
+|`.cursor/skills/`(projeto) | Fluxos de trabalho de equipe no git |
+|`~/.cursor/skills/`(usuário) | Hábitos pessoais em repositórios |
+|`reference.md`na pasta de habilidades | Listas de verificação longas, detalhes API |
+|`examples.md`na pasta de habilidades | Amostras de resultados bons/ruins |
+|`scripts/`na pasta de habilidades | **Arquivos executáveis** (`.sh`,`.py`) — **não** incorporado em`SKILL.md`; texto de habilidade aponta para o caminho |
 
-### SKILL.md template (PR review)
+### Modelo SKILL.md (revisão de PR)
 
 ```markdown
 ---
@@ -77,17 +77,17 @@ description: Review pull requests for security, tests, and team conventions. Use
 See [reference.md](reference.md) for security checklist and past incident patterns.
 ```
 
-Frontmatter fields:
+Campos de frontmatter:
 
-| Field | Required | Purpose |
-|-------|----------|---------|
-| `name` | Yes | Stable id; lowercase, hyphens |
-| `description` | Yes | **What** + **when** — drives auto-load |
-| `disable-model-invocation` | No | If `true`, only runs when user invokes explicitly |
+| Campo | Obrigatório | Finalidade |
+|-------|----------|--------|
+|`name`| Sim | ID estável; minúsculas, hífens |
+|`description`| Sim | **O que** + **quando** — impulsiona o carregamento automático |
+|`disable-model-invocation`| Não | Se`true`, só é executado quando o usuário invoca explicitamente |
 
-### Linking a fixed script
+### Vinculando um script fixo
 
-**Scripts are not inside `SKILL.md`.** The markdown file only holds **instructions** (when to run, which path). The actual code lives in **`scripts/`** as separate `.sh`, `.py`, or other files next to `SKILL.md`.
+**Scripts não estão dentro`SKILL.md`.** O arquivo markdown contém apenas **instruções** (quando executar, qual caminho). O código real reside em **`scripts/`** como separado`.sh`,`.py`ou outros arquivos próximos a`SKILL.md`.
 
 ```text
 WRONG — script body pasted in SKILL.md
@@ -100,7 +100,7 @@ RIGHT — script file + pointer in SKILL.md
       smoke-test.sh    →  #!/usr/bin/env bash … (real file on disk)
 ```
 
-Skills do **not** auto-run scripts. You **bundle** the script in the skill folder and tell the agent in **`SKILL.md`** to **execute** it via the Shell tool when the workflow runs.
+As habilidades **não** executam scripts automaticamente. Você **agrupa** o script na pasta de habilidades e informa ao agente em **`SKILL.md`** para **executá-lo** por meio da ferramenta Shell quando o fluxo de trabalho for executado.
 
 ```text
 .cursor/skills/deploy-staging/
@@ -110,13 +110,13 @@ Skills do **not** auto-run scripts. You **bundle** the script in the skill folde
     validate-release.py
 ```
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **`scripts/`** | Canonical copy of the script the team maintains |
-| **`SKILL.md`** | When to run, exact command, how to read output |
-| **Agent Shell** | Runs the command you specified — not magic wiring |
+| **`scripts/`** | Cópia canônica do script que a equipe mantém |
+| **`SKILL.md`** | Quando executar, comando exato, como ler a saída |
+| **Agente Shell** | Executa o comando que você especificou - não a fiação mágica |
 
-**1. Add the script** (executable, repo-relative paths inside):
+**1. Adicione o script** (caminhos executáveis ​​e relativos ao repositório dentro):
 
 ```bash
 chmod +x .cursor/skills/deploy-staging/scripts/smoke-test.sh
@@ -129,7 +129,7 @@ set -euo pipefail
 curl -fsS "${STAGING_URL:-https://staging.example.com}/health"
 ```
 
-**2. Link it in `SKILL.md`** — use imperative language and the path from **repo root**:
+**2. Vincule-o`SKILL.md`** — use linguagem imperativa e o caminho de **repo root**:
 
 ```markdown
 ---
@@ -144,9 +144,8 @@ description: Deploy to staging and run smoke checks. Use when the user asks to d
 1. `npm run build`
 2. `npm run deploy:staging`
 3. **Always run the smoke script before reporting success:**
-   ```bash
-   .cursor/skills/deploy-staging/scripts/smoke-test.sh
-   ```
+   ```festa
+   .cursor/skills/deploy-staging/scripts/smoke-test.sh```
 4. Paste the script output in your reply. If non-zero exit, stop — do not claim deploy succeeded.
 
 ## Do not
@@ -155,26 +154,26 @@ description: Deploy to staging and run smoke checks. Use when the user asks to d
 - Skip the script unless the user explicitly says to skip verification
 ```
 
-**3. Test** — fresh chat, prompt “deploy to staging”, confirm the agent runs your script path.
+**3. Teste** — novo bate-papo, prompt “implantar no teste”, confirme se o agente executa o caminho do script.
 
-#### Path rules
+#### Regras de caminho
 
-| Do | Avoid |
+| Faça | Evite |
 |----|-------|
-| Paths from **repo root** in `SKILL.md` | Paths relative to the skill folder only (agent cwd is usually project root) |
-| One clear command per script | “Run something like curl …” (agent may improvise) |
-| `scripts/` under the skill folder | Scattered one-off scripts with no owner |
-| Forward slashes in paths | Backslashes |
+| Caminhos de **repo root** em`SKILL.md`| Caminhos relativos apenas à pasta de habilidades (o agente cwd geralmente é a raiz do projeto) |
+| Um comando claro por script | “Execute algo como curl…” (agente pode improvisar) |
+|`scripts/`na pasta de habilidades | Scripts únicos dispersos sem dono |
+| Barras em caminhos | Barras invertidas |
 
-#### Alternatives (same idea, different anchor)
+#### Alternativas (mesma ideia, âncora diferente)
 
-| Approach | When |
+| Abordagem | Quando |
 |----------|------|
-| **`scripts/` in skill folder** | Team-owned workflow script; versioned with the skill |
-| **`npm run smoke:staging`** in `package.json` | Script already part of app toolchain; skill says `npm run …` |
-| **`AGENTS.md` Commands** | One-liner used across many skills (“tests = `npm test`”) |
-| **MCP tool** | Script wraps a **live API** or DB the agent must call repeatedly — see [How MCP works](../how-mcp-works/i-overview.md) |
-| **Cursor hook** (`.cursor/hooks.json`) | Run **automatically** on events (after edit, before shell) — not skill-triggered |
+| **`scripts/`na pasta de habilidades** | Script de fluxo de trabalho de propriedade da equipe; versionado com a habilidade |
+| **`npm run smoke:staging`** em`package.json`| O script já faz parte do conjunto de ferramentas do aplicativo; habilidade diz`npm run …`|
+| **`AGENTS.md`Comandos** | One-liner usado em muitas habilidades (“testes =`npm test`”) |
+| **Ferramenta MCP** | O script envolve um **live API** ou DB que o agente deve chamar repetidamente — veja [Como MCP funciona](../how-mcp-works/i-overview.md) |
+| **Cursor gancho** (`.cursor/hooks.json`) | Executar **automaticamente** em eventos (após a edição, antes do shell) — não acionado por habilidade |
 
 ```text
 Skill + script     → agent runs YOUR file when the TASK matches (deploy, review, …)
@@ -182,28 +181,28 @@ Hook               → Cursor runs YOUR file on EVENTS (afterFileEdit, beforeShe
 MCP server         → agent calls a TOOL (search, create ticket, query API)
 ```
 
-Use a **skill-linked script** for repeatable **procedures** (“always run this check”). Use a **hook** when it must fire **without** the user asking. Use **MCP** when the agent needs **live data**, not a fixed local command.
+Use um **script vinculado a habilidades** para **procedimentos** repetíveis (“sempre execute esta verificação”). Use um **hook** quando ele precisar ser acionado **sem** que o usuário pergunte. Use **MCP** quando o agente precisar de **dados ativos**, não de um comando local fixo.
 
-#### Safety
+#### Segurança
 
-- No secrets in scripts — read from env (`STAGING_URL`, `API_KEY`)
-- Keep scripts short and reviewable; avoid `rm -rf` or broad `git` commands unless intentional
-- For destructive ops, add `disable-model-invocation: true` and require explicit `/deploy-staging` or user confirmation in the skill body
+- Sem segredos em scripts - leia do env (`STAGING_URL`,`API_KEY`)
+- Mantenha os scripts curtos e revisáveis; evitar`rm -rf`ou amplo`git`comandos, a menos que seja intencional
+- Para operações destrutivas, adicione`disable-model-invocation: true`e exigir explícito`/deploy-staging`ou confirmação do usuário no corpo da habilidade
 
-See [Writing & maintaining skills](v-writing-and-maintaining-skills.md) for testing and team ownership.
+Consulte [Habilidades de escrita e manutenção](v-writing-and-maintaining-skills.md) para testes e propriedade da equipe.
 
-## 5. Cursor rules vs skills
+## 5. Cursor regras versus habilidades
 
-| | **Rules** (`.cursor/rules/*.mdc`) | **Skills** (`SKILL.md`) |
-|---|-----------------------------------|-------------------------|
-| **Purpose** | Coding standards, conventions | Multi-step workflows |
-| **When loaded** | Always, or when file pattern matches | When task matches `description` |
-| **Size** | Keep short — applied often | Can be longer; loaded on demand |
-| **Example** | “Use `async/await` in `**/*.ts`” | “How to run and interpret our smoke tests” |
+| | **Regras** (`.cursor/rules/*.mdc`) | **Habilidades** (`SKILL.md`) |
+|---|-----------------------------------|---------------------|
+| **Objetivo** | Padrões de codificação, convenções | Fluxos de trabalho em várias etapas |
+| **Quando carregado** | Sempre ou quando o padrão do arquivo corresponder | Quando a tarefa corresponde`description`|
+| **Tamanho** | Seja breve – aplicado com frequência | Pode ser mais longo; carregado sob demanda |
+| **Exemplo** | "Usar`async/await`em`**/*.ts`” | “Como executar e interpretar nossos testes de fumaça” |
 
-Use **rules** for “how code should look”; use **skills** for “how to run a process.”
+Use **regras** para “como o código deve ser”; use **habilidades** para “como executar um processo”.
 
-### Rule template
+### Modelo de regra
 
 ```markdown
 ---
@@ -219,37 +218,37 @@ alwaysApply: false
 - Prefer `Result<T, E>` from `lib/result.ts` over throwing in domain code
 ```
 
-| `alwaysApply` | `globs` | Effect |
+|`alwaysApply`|`globs`| Efeito |
 |---------------|---------|--------|
-| `true` | ignored | Rule in every chat in this project |
-| `false` | `**/*.ts` | Rule when agent touches matching files |
-| `false` | omitted | Rule available; agent decides relevance |
+|`true`| ignorado | Governe em todos os chats deste projeto |
+|`false`|`**/*.ts`| Regra quando o agente toca nos arquivos correspondentes |
+|`false`| omitido | Regra disponível; agente decide relevância |
 
-**User rules** (Cursor Settings → Rules) apply across all projects. Prefer **project rules** in `.cursor/rules/` for team standards in git.
+**Regras do usuário** (Cursor Configurações → Regras) se aplicam a todos os projetos. Prefira **regras do projeto** em`.cursor/rules/`para padrões de equipe no git.
 
-### Quick picker
+### Seletor rápido
 
-| You want… | Use |
+| Você quer… | Usar |
 |-----------|-----|
-| “Always use conventional commits when I ask to commit” | **Skill** (triggered by task) |
-| “Never empty catch in TypeScript” | **Rule** with `globs` |
-| “Our whole team uses the same tab width” | **Rule** with `alwaysApply: true` |
-| “How to triage production alerts” | **Skill** |
+| “Sempre use commits convencionais quando eu pedir para fazer commit” | **Habilidade** (acionada por tarefa) |
+| “Nunca esvazie a captura no TypeScript” | **Regra** com`globs`|
+| “Toda a nossa equipe usa a mesma largura de aba” | **Regra** com`alwaysApply: true`|
+| “Como fazer a triagem de alertas de produção” | **Habilidade** |
 
-## 6. AGENTS.md and project context files
+## 6. AGENTS.md e arquivos de contexto do projeto
 
-**`AGENTS.md`** at repo root gives agents a **map of the repo**. Cursor, Codex, Claude Code, and Copilot read it; keep it the **portable baseline**.
+(R)`AGENTS.md`** na raiz do repositório fornece aos agentes um **mapa do repositório**. Cursor, Codex, Claude Code e Copilot leram; mantenha-o na **linha de base portátil**.
 
-| Section | Content |
-|---------|---------|
-| **Stack** | Language, framework, test runner |
-| **Layout** | Where routes, models, tests live |
-| **Commands** | Install, dev, test, lint, migrate |
-| **Do not** | Generated folders, secrets, vendored trees |
-| **PR / commit** | Link to skill or one-paragraph standard |
-| **Skills** | Optional list: “PR review → `.cursor/skills/pr-review/`” |
+| Seção | Conteúdo |
+|--------|---------|
+| **Pilha** | Linguagem, estrutura, executor de testes |
+| **Layout** | Onde vivem rotas, modelos, testes |
+| **Comandos** | Instalar, desenvolver, testar, lint, migrar |
+| **Não** | Pastas geradas, segredos, árvores vendidas |
+| **PR /commit** | Link para habilidade ou padrão de um parágrafo |
+| **Habilidades** | Lista opcional: “revisão PR →`.cursor/skills/pr-review/`” |
 
-Keep it **short** — link to longer docs instead of pasting them.
+Seja **curto** – crie links para documentos mais longos em vez de colá-los.
 
 ```markdown
 # AGENTS.md
@@ -296,9 +295,9 @@ Use skill `.cursor/skills/commit-messages/SKILL.md`. Behaviour changes need test
 Checkout flow: `docs/agent-context/checkout.md`
 ```
 
-### Nested `AGENTS.md`
+### Aninhado`AGENTS.md`
 
-Some tools (especially Codex) load **`AGENTS.md` in subfolders** when work happens there. Use nested files for monorepo packages:
+Algumas ferramentas (especialmente Codex) carregam **`AGENTS.md`em subpastas** quando o trabalho acontece lá. Use arquivos aninhados para pacotes monorepo:
 
 ```text
 repo/
@@ -307,7 +306,7 @@ repo/
     AGENTS.md               # billing-specific commands and layout
 ```
 
-## 7. Wiring it together
+## 7. Conectando tudo
 
 ```text
 User: "Review this PR"
@@ -318,6 +317,6 @@ User: "Review this PR"
     SKILL.md
 ```
 
-You type a short prompt; the stack supplies the rest.
+Você digita um pequeno prompt; a pilha fornece o resto.
 
-**Next:** [Writing & maintaining skills](v-writing-and-maintaining-skills.md) — descriptions, testing, team ownership.
+**Próximo:** [Habilidades de redação e manutenção](v-writing-and-maintaining-skills.md) — descrições, testes, propriedade da equipe.

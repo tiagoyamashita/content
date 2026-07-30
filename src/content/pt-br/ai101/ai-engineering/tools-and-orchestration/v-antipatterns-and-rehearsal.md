@@ -1,24 +1,24 @@
 ---
 label: "V"
-subtitle: "Anti-patterns & rehearsal"
+subtitle: "Antipadrões e ensaio"
 group: "AI Applied"
 order: 5
 ---
-Anti-patterns & rehearsal
+Antipadrões e ensaio
 
-## 5. Anti-patterns
+## 5. Antipadrões
 
-| Anti-pattern | Problem |
-|--------------|---------|
-| Same sensitive doc in 5 different free-tier chats | Spread of data; inconsistent answers |
-| Agent with full repo write, no review | Broken builds |
-| Automation posting AI text without review | Embarrassment, compliance |
-| Chasing every new tool weekly | No accumulated prompt/context library |
+| Antipadrão | Problema |
+|-------------|---------|
+| O mesmo documento confidencial em 5 chats de nível gratuito diferentes | Divulgação de dados; respostas inconsistentes |
+| Agente com gravação de repositório completo, sem revisão | Construções quebradas |
+| Automação postando texto AI sem revisão | Constrangimento, conformidade |
+| Perseguindo cada nova ferramenta semanalmente | Nenhuma biblioteca de prompt/contexto acumulada |
 
-## 6. Rehearsal questions
+## 6. Perguntas de ensaio
 
-- Name two orchestration patterns besides copy-paste.
-- When is a “mini” model enough?
-- Is MCP gRPC or HTTP? ([How MCP works](../how-mcp-works/i-overview.md))
+- Cite dois padrões de orquestração além de copiar e colar.
+- Quando um modelo “mini” é suficiente?
+- MCP é gRPC ou HTTP? ([Como MCP funciona](../how-mcp-works/i-overview.md))
 
-**Related:** [How MCP works](../how-mcp-works/i-overview.md), [Agents](../agents-and-agentic-workflows/i-overview.md), [Custom assistants](../custom-assistants-and-knowledge/i-overview.md).
+**Relacionado:** [Como MCP funciona](../how-mcp-works/i-overview.md), [Agentes](../agents-and-agentic-workflows/i-overview.md), [Assistentes personalizados](../custom-assistants-and-knowledge/i-overview.md).

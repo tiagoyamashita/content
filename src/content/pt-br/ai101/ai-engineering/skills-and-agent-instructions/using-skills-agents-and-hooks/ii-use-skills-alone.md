@@ -1,51 +1,50 @@
 ---
 label: "II"
-subtitle: "Skills alone"
+subtitle: "Habilidades sozinhas"
 group: "Using skills, agents & hooks"
 order: 2
 ---
-Skills alone
+Habilidades sozinhas
 
-A **skill** runs when the **user’s task** matches the skill `description`. Nothing happens until the user (or an explicit skill command) invokes that workflow.
+Uma **habilidade** é executada quando a **tarefa do usuário** corresponde à habilidade`description`. Nada acontece até que o usuário (ou um comando de habilidade explícito) invoque esse fluxo de trabalho.
 
-## What a skill is not
+## O que uma habilidade não é
 
-| Skill is not… | Why |
+| Habilidade não é… | Por que |
 |---------------|-----|
-| A hook | Hooks fire on events; skills wait for intent |
-| `AGENTS.md` | Briefing loads every chat; skills load on match |
-| A script | Scripts live in `scripts/`; skill text tells the agent **when** to run them |
+| Um gancho | Ganchos disparam em eventos; habilidades esperam pela intenção |
+|`AGENTS.md`| O briefing carrega todos os chats; carga de habilidades na partida |
+| Um roteiro | Os scripts vivem em`scripts/`; o texto da habilidade informa ao agente **quando** executá-las |
 
-## Sample skill (copy-ready)
+## Habilidade de amostra (pronta para cópia)
 
-Live file: [sample/.cursor/skills/pr-review-lite/SKILL.md](sample/.cursor/skills/pr-review-lite/SKILL.md)
+Arquivo ativo: [sample/.cursor/skills/pr-review-lite/SKILL.md](sample/.cursor/skills/pr-review-lite/SKILL.md)
 
 ```text
 .cursor/skills/pr-review-lite/
   SKILL.md
 ```
 
-### Trigger
+### Acionar
 
-User says any of:
+O usuário diz qualquer um dos seguintes:
 
-- “review this PR”
-- “code review”
-- “check my diff before merge”
+- “revise isto PR”
+- “revisão de código”
+- “verifique minha diferença antes de mesclar”
 
-Cursor matches `description` in frontmatter → skill loads.
+Cursor corresponde`description`no frontmatter → cargas de habilidades.
 
-### What the agent does
+### O que o agente faz
 
-1. Read the diff (tool)
-2. Follow checklist in `SKILL.md`
-3. Output: Summary / Blockers / Suggestions / Tests
+1. Leia o diff (ferramenta)
+2. Siga a lista de verificação em`SKILL.md`3. Saída: Resumo/Bloqueadores/Sugestões/Testes
 
-**No hook involved.** User could commit without running this skill — it is advisory unless you also add a hook.
+**Nenhum gancho envolvido.** O usuário pode confirmar sem executar esta habilidade — é aconselhável, a menos que você também adicione um gancho.
 
-## Skill + script (optional)
+## Habilidade + script (opcional)
 
-For workflows that must run the **same command** every time, point the skill at a script — see [Examples: deploy-check](../examples/ii-parameterized-script-clarify.md).
+Para fluxos de trabalho que devem executar o **mesmo comando** sempre, aponte a habilidade para um script — consulte [Exemplos: deploy-check](../examples/ii-parameterized-script-clarify.md).
 
 ```text
 Skill says WHEN + HOW to ask user
@@ -53,7 +52,7 @@ Script does the deterministic work + JSON log
 Agent reads log and summarizes
 ```
 
-## User-only flow
+## Fluxo somente do usuário
 
 ```mermaid
 sequenceDiagram
@@ -67,20 +66,19 @@ sequenceDiagram
   Agent-->>User: review output
 ```
 
-## When to use skills alone
+## Quando usar habilidades sozinho
 
-| Good for | Example |
+| Bom para | Exemplo |
 |----------|---------|
-| Optional expert workflows | PR review, perf scan, deploy check |
-| Needs user parameters | environment, path, dry-run |
-| Iteration loops | Read log → fix → re-run ([loop example](../examples/iii-loop-on-script-results.md)) |
+| Fluxos de trabalho especializados opcionais | PR revisão, verificação de desempenho, verificação de implantação |
+| Precisa de parâmetros do usuário | ambiente, caminho, simulação |
+| Loops de iteração | Ler log → corrigir → executar novamente ([exemplo de loop](../examples/iii-loop-on-script-results.md)) |
 
-## Test
+## Teste
 
-1. Copy [sample/.cursor/skills/pr-review-lite/](sample/.cursor/skills/pr-review-lite/) → your `.cursor/skills/`
-2. Fresh chat: *“review this PR”*
-3. Agent should use the skill checklist format
+1. Copie [sample/.cursor/skills/pr-review-lite/](sample/.cursor/skills/pr-review-lite/) → seu`.cursor/skills/`2. Novo bate-papo: *“revise este PR”*
+3. O agente deve usar o formato de lista de verificação de habilidades
 
-## Next
+## Próximo
 
-[AGENTS.md alone](iii-use-agents-md-alone.md) — context that loads **every** session without a trigger phrase.
+[AGENTS.md sozinho](iii-use-agents-md-alone.md) — contexto que carrega **cada** sessão sem uma frase de gatilho.

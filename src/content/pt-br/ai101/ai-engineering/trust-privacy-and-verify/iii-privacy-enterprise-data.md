@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "Privacy & enterprise data"
+subtitle: "Privacidade e dados empresariais"
 group: "AI Applied"
 order: 3
 ---
-Privacy & enterprise data
+Privacidade e dados empresariais
 
-## 2. What not to paste
+## 2. O que não colar
 
 ```mermaid
 flowchart TD
@@ -15,22 +15,22 @@ flowchart TD
   Q -->|yes| OK[Approved tool + DPA]
 ```
 
-| Never (unless enterprise-approved) | Why |
+| Nunca (a menos que seja aprovado pela empresa) | Por que |
 |-----------------------------------|-----|
-| Passwords, API keys, tokens | Training, logs, breaches |
-| Unredacted customer PII | GDPR, contracts |
-| Unreleased financials, M&A | Material non-public info |
-| Patient / student records | HIPAA, FERPA |
-| Legal privileged docs | Without policy sign-off |
+| Senhas, chaves API, tokens | Treinamento, registros, violações |
+| Cliente não editado PII | GDPR, contratos |
+| Finanças não divulgadas, fusões e aquisições | Informações relevantes não públicas |
+| Registros de pacientes/alunos | HIPAA, FERPA |
+| Documentos jurídicos privilegiados | Sem aprovação política |
 
-Use **company-approved** tools with **DPA** and **no training on data** when handling work data.
+Use ferramentas **aprovadas pela empresa** com **DPA** e **sem treinamento em dados** ao lidar com dados de trabalho.
 
-## 3. Enterprise vs consumer tiers
+## 3. Camadas Empresa vs Consumidor
 
-| Check | Consumer free | Enterprise / team |
+| Verifique | Livre do consumidor | Empresa / equipe |
 |-------|---------------|-------------------|
-| Data used for training | Often opt-out varies | Usually contractually limited |
-| Admin controls | Minimal | SSO, retention, audit |
-| Model behaviour | Standard | May add compliance filters |
+| Dados utilizados para treinamento | Muitas vezes a desativação varia | Geralmente limitado contratualmente |
+| Controles administrativos | Mínimo | SSO, retenção, auditoria |
+| Comportamento do modelo | Padrão | Pode adicionar filtros de conformidade |
 
-When in doubt, ask **IT / security** — not the chatbot.
+Em caso de dúvida, pergunte a **IT / segurança** — não ao chatbot.

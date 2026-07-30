@@ -1,14 +1,14 @@
 ---
 label: "V"
-subtitle: "Combine skills, agents & hooks"
+subtitle: "Combine habilidades, agentes e ganchos"
 group: "Using skills, agents & hooks"
 order: 5
 ---
-Combine skills, agents & hooks
+Combine habilidades, agentes e ganchos
 
-Use **each layer for one job**. Together they cover: always-on context, on-demand expertise, and automatic gates.
+Use **cada camada para um trabalho**. Juntos, eles abrangem: contexto sempre ativo, experiência sob demanda e portas automáticas.
 
-## Full repo layout
+## Layout completo do repositório
 
 ```text
 repo/
@@ -24,9 +24,9 @@ repo/
       hook-failure-help/              ← generic blocked-action help
 ```
 
-Copy samples from [sample/](sample/.cursor/README.md) + scripts from [examples/.cursor/](../examples/.cursor/README.md).
+Copie amostras de [sample/](sample/.cursor/README.md) + scripts de [examples/.cursor/](../examples/.cursor/README.md).
 
-## Scenario A — User asks for PR review (skill only)
+## Cenário A — O usuário solicita revisão de PR (somente habilidade)
 
 ```text
 1. AGENTS.md → agent knows npm test, folder layout
@@ -36,7 +36,7 @@ Copy samples from [sample/](sample/.cursor/README.md) + scripts from [examples/.
 5. No hook fires
 ```
 
-## Scenario B — Agent tries to commit with `.env` staged (hook only)
+## Cenário B — Agente tenta se comprometer com`.env`encenado (apenas gancho)
 
 ```text
 1. AGENTS.md → line: "Commits gated by secrets scan hook"
@@ -46,7 +46,7 @@ Copy samples from [sample/](sample/.cursor/README.md) + scripts from [examples/.
 5. secrets-scan-help skill can load if user says "why blocked"
 ```
 
-## Scenario C — Deploy check before release (skill + script)
+## Cenário C — Implantar verificação antes do lançamento (habilidade + script)
 
 ```text
 1. AGENTS.md → links deploy-check skill
@@ -56,7 +56,7 @@ Copy samples from [sample/](sample/.cursor/README.md) + scripts from [examples/.
 5. Hook not involved unless user commits afterward
 ```
 
-## Scenario D — Blocked commit → explain → fix → retry
+## Cenário D — Confirmação bloqueada → explicar → corrigir → tentar novamente
 
 ```mermaid
 sequenceDiagram
@@ -78,36 +78,36 @@ sequenceDiagram
   H-->>A: permission allow
 ```
 
-## Responsibility matrix
+## Matriz de responsabilidade
 
-| Concern | AGENTS.md | Skill | Hook |
-|---------|-----------|-------|------|
-| Test command | ✓ | | |
-| PR checklist | index link | ✓ procedure | |
-| Block bad commit | one-line note | explain fix | ✓ enforce |
-| Parameterized deploy | index link | ✓ ask + run script | |
-| JSON logs | | agent reads | hook writes |
+| Preocupação | AGENTS.md | Habilidade | Gancho |
+|--------|-----------|-------|------|
+| Comando de teste | ✓ | | |
+| Lista de verificação PR | link de índice | ✓ procedimento | |
+| Bloquear commit incorreto | nota de uma linha | explicar a correção | ✓ fazer cumprir |
+| Implantação parametrizada | link de índice | ✓ perguntar + executar script | |
+| JSON registros | | agente lê | gancho escreve |
 
-## Anti-patterns
+## Antipadrões
 
-| Don’t | Do instead |
+| Não | Em vez disso, faça |
 |-------|------------|
-| Put full PR checklist in `AGENTS.md` | Skill + link from `AGENTS.md` |
-| Put commit rules only in a skill | Hook for enforce; skill for explain |
-| Make hook call the LLM | Hook = script; skill handles prose |
-| Duplicate same text in 3 files | `AGENTS.md` indexes skills; skills reference scripts |
+| Coloque a lista de verificação PR completa`AGENTS.md`| Habilidade + link de`AGENTS.md`|
+| Colocar regras de commit apenas em uma habilidade | Gancho para fazer cumprir; habilidade para explicar |
+| Faça o gancho chamar o LLM | Gancho = roteiro; habilidade lida com prosa |
+| Duplicar o mesmo texto em 3 arquivos |`AGENTS.md`habilidades de índices; scripts de referência de habilidades |
 
-## Install checklist
+## Lista de verificação de instalação
 
-1. [ ] `AGENTS.md` at repo root — [sample](sample/AGENTS.md)
-2. [ ] `.cursor/skills/` — [pr-review-lite](sample/.cursor/skills/pr-review-lite/SKILL.md) + [examples skills](../examples/.cursor/README.md)
-3. [ ] `.cursor/hooks.json` + `hooks/` — [examples hooks](../examples/.cursor/hooks.json)
-4. [ ] `.gitignore` — `logs/` under skills and hooks
-5. [ ] Fresh chat + test each path (review, deploy, staged `.env` commit)
+1. [ ]`AGENTS.md`na raiz do repositório - [amostra](sample/AGENTS.md)
+2. [ ]`.cursor/skills/`- [pré-revisão-lite](sample/.cursor/skills/pr-review-lite/SKILL.md) + [exemplos de habilidades](../examples/.cursor/README.md)
+3. [ ]`.cursor/hooks.json`+`hooks/`— [exemplos de ganchos](../examples/.cursor/hooks.json)
+4. [ ]`.gitignore`-`logs/`sob habilidades e ganchos
+5. [] Novo bate-papo + teste de cada caminho (revisão, implantação, preparação`.env`comprometer-se)
 
-## Related
+## Relacionado
 
-- [Agent orchestration](vi-agent-orchestration.md) — full stack and advanced patterns
-- [Examples overview](../examples/i-overview.md)
-- [Writing & maintaining skills](../v-writing-and-maintaining-skills.md)
-- [Loop prompting](../../loop-prompting/i-overview.md)
+- [Orquestração de agentes](vi-agent-orchestration.md) — pilha completa e padrões avançados
+- [Visão geral dos exemplos](../examples/i-overview.md)
+- [Habilidades de escrita e manutenção](../v-writing-and-maintaining-skills.md)
+- [Aviso de loop](../../loop-prompting/i-overview.md)

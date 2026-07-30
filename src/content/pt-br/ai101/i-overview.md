@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Artificial intelligence"
+subtitle: "Visão geral"
+group: "Inteligência artificial"
 order: 1
 ---
-AI101 — overview
-**Artificial intelligence** in this track covers **using AI in daily work**, **machine learning**, **deep learning**, and **LLMs** — from practical prompting through how models work.
+AI101 — visão geral
+**Inteligência artificial** neste curso abrange **o uso de AI no trabalho diário**, **aprendizado de máquina**, **aprendizado profundo** e **LLMs** — desde sugestões práticas até como os modelos funcionam.
 
-## Map of AI101
+## Mapa de AI101
 
-| Submenu | Focus | Audience |
-|---------|--------|----------|
-| [**AI Engineering**](ai-engineering/i-overview.md) | Prompting, agents, tools, skills, custom assistants, trust | **Everyone who uses ChatGPT, Claude, Cursor, Copilot** |
-| [Machine learning](machine-learning/i-overview.md) | Supervised/unsupervised, evaluation, features | Builders & curious readers |
-| [Deep learning](deep-learning/i-overview.md) | Neural nets, CNNs, RNNs, transformers | Technical depth |
-| [LLMs](llms/i-overview.md) | Pre-training, alignment, RAG, fine-tuning | Engineers integrating LLMs |
+| Submenu | Foco | Público |
+|--------|--------|----------|
+| [**AI Engenharia**](ai-engineering/i-overview.md) | Solicitações, agentes, ferramentas, habilidades, assistentes personalizados, confiança | **Todos que usam ChatGPT, Claude, Cursor, Copilot** |
+| [Aprendizado de máquina](machine-learning/i-overview.md) | Supervisionado/não supervisionado, avaliação, recursos | Construtores e leitores curiosos |
+| [Aprendizagem profunda](deep-learning/i-overview.md) | Redes neurais, CNNs, RNNs, transformadores | Profundidade técnica |
+| [LLMs](llms/i-overview.md) | Pré-treinamento, alinhamento, RAG, ajuste fino | Engenheiros integrando LLMs |
 
-## Which path to take
+##Qual caminho seguir
 
 ```mermaid
 flowchart LR
@@ -27,13 +27,13 @@ flowchart LR
   LLM --> RAG[RAG patterns]
 ```
 
-| You want to… | Start here |
-|--------------|------------|
-| Write better prompts, use agents, stay safe | [AI Engineering overview](ai-engineering/i-overview.md) |
-| Learn sklearn, metrics, workflows | [Machine learning overview](machine-learning/i-overview.md) |
-| Understand transformers and GPT | [Deep learning](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
+| Você quer… | Comece aqui |
+|-------------|------------|
+| Escreva avisos melhores, use agentes e mantenha-se seguro | [AI Visão geral da engenharia](ai-engineering/i-overview.md) |
+| Aprenda sklearn, métricas, fluxos de trabalho | [Visão geral do aprendizado de máquina](machine-learning/i-overview.md) |
+| Entenda os transformadores e GPT | [Aprendizagem profunda](deep-learning/i-overview.md) → [LLMs](llms/i-overview.md) |
 
-## Study order (technical track)
+## Ordem de estudo (faixa técnica)
 
 ```mermaid
 flowchart TB
@@ -41,14 +41,14 @@ flowchart TB
   DL --> LLM[LLMs]
 ```
 
-Use **AI Engineering** in parallel or first if you mainly interact with products, not train models.
+Use **AI Engineering** em paralelo ou primeiro se você interage principalmente com produtos, e não treina modelos.
 
-## How this relates to other tracks
+## Como isso se relaciona com outras faixas
 
-| Track | Overlap |
+| Acompanhar | Sobreposição |
 |-------|---------|
 | [Python](../../swe101/python/i-basics-and-syntax.md) | pandas, scikit-learn, PyTorch |
-| [System design](../../swe101/sysdesign/i-core-building-blocks.md) | Serving models, RAG, search indexes |
-| [CS101 data structures](../../CS101/data-structures/i-array.md) | Vectors, matrices intuition |
+| [Projeto do sistema](../../swe101/sysdesign/i-core-building-blocks.md) | Servindo modelos, RAG, índices de pesquisa |
+| [CS101 estruturas de dados](../../CS101/data-structures/i-array.md) | Vetores, matrizes intuição |
 
-**Related:** [Loop prompting](ai-engineering/loop-prompting/i-overview.md), [Skills & agent instructions](ai-engineering/skills-and-agent-instructions/i-overview.md), [Effective prompting](ai-engineering/effective-prompting/i-overview.md), [Agents & agentic workflows](ai-engineering/agents-and-agentic-workflows/i-overview.md).
+**Relacionado:** [Solicitação de loop](ai-engineering/loop-prompting/i-overview.md), [Habilidades e instruções do agente](ai-engineering/skills-and-agent-instructions/i-overview.md), [Solicitação eficaz](ai-engineering/effective-prompting/i-overview.md), [Agentes e fluxos de trabalho de agentes](ai-engineering/agents-and-agentic-workflows/i-overview.md).

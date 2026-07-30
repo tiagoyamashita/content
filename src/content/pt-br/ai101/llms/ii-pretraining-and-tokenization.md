@@ -1,15 +1,15 @@
 ---
 label: "II"
-subtitle: "Pre-training & tokenization"
+subtitle: "Pré-treinamento e tokenização"
 group: "LLMs"
 order: 2
 ---
-Pre-training and tokenization
-**Pre-training** teaches a transformer to model text by **next-token prediction**. **Tokenization** maps raw text to **subword ids** the model consumes.
+Pré-treinamento e tokenização
+**Pré-treinamento** ensina um transformador a modelar texto por meio da **previsão do próximo token**. **Tokenização** mapeia texto bruto para **IDs de subpalavras** que o modelo consome.
 
-## 1. Causal language modelling
+## 1. Modelagem de linguagem causal
 
-Given tokens **[t₁, …, tₙ]**, predict **tₙ₊₁** (decoder-only, left-to-right).
+Dados os tokens **[t₁,…, tₙ]**, preveja **tₙ₊₁** (somente decodificador, da esquerda para a direita).
 
 ```mermaid
 flowchart LR
@@ -18,59 +18,59 @@ flowchart LR
   Emb --> Gen[Generate next token]
 ```
 
-Loss = cross-entropy over vocabulary at each position. Trained on **trillions of tokens** → emergent skills (reasoning, code, multilingual).
+Perda = entropia cruzada sobre o vocabulário em cada posição. Treinado em **trilhões de tokens** → habilidades emergentes (raciocínio, código, multilíngue).
 
-## 2. Scale laws
+## 2. Leis de escala
 
-Performance improves predictably with:
+O desempenho melhora de forma previsível com:
 
-| Knob | Effect |
+| Botão | Efeito |
 |------|--------|
-| **Parameters** | Capacity |
-| **Data** | Coverage |
-| **Compute** | Training steps |
+| **Parâmetros** | Capacidade |
+| **Dados** | Cobertura |
+| **Cálculo** | Etapas de treinamento |
 
-Larger models need more data and FLOPs — training runs use thousands of GPUs for weeks.
+Modelos maiores precisam de mais dados e FLOPs – as execuções de treinamento usam milhares de GPUs durante semanas.
 
-## 3. Tokenization — BPE
+## 3. Tokenização — BPE
 
-**Byte-Pair Encoding:** merge frequent byte/character pairs → **subword** vocabulary (30k–100k tokens).
+**Codificação de pares de bytes:** mescla pares frequentes de bytes/caracteres → **subpalavra** vocabulário (30k–100k tokens).
 
-| Text | Tokens (example) |
+| Texto | Tokens (exemplo) |
 |------|------------------|
-| `"tokenization"` | `["token", "ization"]` |
-| Rare words | Split into known pieces |
+|`"tokenization"`|`["token", "ization"]`|
+| Palavras raras | Dividido em pedaços conhecidos |
 
-**Implications:**
+**Implicações:**
 
-| Topic | Detail |
+| Tópico | Detalhe |
 |-------|--------|
-| **Billing** | API cost often per **token**, not word |
-| **Context limit** | Max **tokens** in window |
-| **Typos / unicode** | May split oddly — affects robustness |
+| **Faturamento** | API custa frequentemente por **token**, não por palavra |
+| **Limite de contexto** | Máximo de **tokens** na janela |
+| **Erros de digitação/unicode** | Pode dividir-se estranhamente – afeta a robustez |
 
-## 4. Context window
+## 4. Janela de contexto
 
-Max tokens model attends to at once — historically 2K–4K; modern models **128K–1M+** (with cost).
+O modelo máximo de tokens atende de uma só vez – historicamente 2K – 4K; modelos modernos **128K–1M+** (com custo).
 
-| Long context use | Pattern |
+| Uso de contexto longo | Padrão |
 |------------------|---------|
-| Whole document Q&A | Stuff doc + question in prompt |
-| Very long docs | [RAG](v-rag-and-fine-tuning.md) — retrieve chunks |
+| Perguntas e respostas do documento completo | Documento de material + pergunta no prompt |
+| Documentos muito longos | [RAG](v-rag-and-fine-tuning.md) — recuperar pedaços |
 
-## 5. Base vs instruct model
+## 5. Modelo base versus modelo de instrução
 
-| Model | Behaviour |
+| Modelo | Comportamento |
 |-------|-----------|
-| **Base** | Continues text — not chat-safe |
-| **Instruct / chat** | After SFT + alignment — follows user messages |
+| **Base** | Continua o texto – não é seguro para bate-papo |
+| **Instruir / conversar** | Após SFT + alinhamento — segue as mensagens do usuário |
 
-Always use **instruct** checkpoints for products unless you control prompting carefully.
+Sempre use pontos de verificação de **instrução** para produtos, a menos que você controle cuidadosamente as solicitações.
 
-## 6. Rehearsal questions
+## 6. Perguntas de ensaio
 
-- What is the pre-training objective of GPT-style models?
-- Why subword tokenization vs one token per word?
-- Base vs instruct — which for a customer support bot?
+- Qual é o objetivo de pré-treinamento dos modelos estilo GPT?
+- Por que tokenização de subpalavras versus um token por palavra?
+- Base vs instrução — qual para um bot de suporte ao cliente?
 
-**Related:** [Alignment](iii-alignment-sft-rlhf-dpo.md), [Transformers](../deep-learning/iv-transformers-and-attention.md).
+**Relacionado:** [Alinhamento](iii-alignment-sft-rlhf-dpo.md), [Transformadores](../deep-learning/iv-transformers-and-attention.md).

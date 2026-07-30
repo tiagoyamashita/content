@@ -1,15 +1,15 @@
 ---
 label: "IV"
-subtitle: "Transformers & attention"
+subtitle: "Transformadores e atenção"
 group: "Deep learning"
 order: 4
 ---
-Transformers and attention
-**"Attention is All You Need"** (Vaswani et al., 2017) — the architecture behind modern **LLMs**, **BERT**, and most NLP/vision transformers.
+Transformadores e atenção
+**"Atenção é tudo que você precisa"** (Vaswani et al., 2017) — a arquitetura por trás dos modernos **LLMs**, **BERT** e da maioria dos transformadores NLP/vision.
 
-## 1. Self-attention
+## 1. Autoatenção
 
-Each token builds a representation by **attending** to all other tokens in the sequence.
+Cada token constrói uma representação **atendendo** a todos os outros tokens na sequência.
 
 ```mermaid
 flowchart LR
@@ -21,21 +21,21 @@ flowchart LR
   V --> Attn
 ```
 
-| Symbol | Meaning |
+| Símbolo | Significado |
 |--------|---------|
-| **Q** (query) | What am I looking for? |
-| **K** (key) | What do I offer? |
-| **V** (value) | What information do I pass if selected? |
+| **Q** (consulta) | O que estou procurando? |
+| **K** (chave) | O que eu ofereço? |
+| **V** (valor) | Quais informações passo caso seja selecionado? |
 
-Output = **weighted sum** of values; weights = similarity of query to each key.
+Saída = **soma ponderada** dos valores; pesos = similaridade de consulta para cada chave.
 
-## 2. Multi-head attention
+## 2. Atenção multifacetada
 
-Run **h** attention heads in parallel with **different** learned projections — capture different relationship types (syntax, coreference, etc.).
+Execute **h** cabeças de atenção em paralelo com **diferentes** projeções aprendidas - capture diferentes tipos de relacionamento (sintaxe, correferência, etc.).
 
-Concatenate heads → linear projection.
+Concatenar cabeças → projeção linear.
 
-## 3. Transformer block
+## 3. Bloco transformador
 
 ```mermaid
 flowchart LR
@@ -46,31 +46,31 @@ flowchart LR
   Add2 --> Out[output]
 ```
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **Add & Norm** | Residual + layer normalisation — stable deep training |
-| **Feed-forward** | Per-token MLP — extra capacity |
+| **Adicionar e norma** | Normalização residual + camada – treinamento profundo estável |
+| **Feedforward** | MLP por token — capacidade extra |
 
-Stack **N** blocks → deep transformer.
+Empilhe **N** blocos → transformador profundo.
 
-## 4. Positional encoding
+## 4. Codificação posicional
 
-Attention alone is **permutation-invariant** — order must be injected:
+A atenção por si só é **invariante à permutação** — a ordem deve ser injetada:
 
-| Style | Used in |
+| Estilo | Usado em |
 |-------|---------|
-| **Sinusoidal** (fixed) | Original transformer |
-| **Learned embeddings** | GPT, BERT |
+| **Senoidal** (fixo) | Transformador original |
+| **Incorporações aprendidas** | GPT, BERT |
 
-## 5. Encoder vs decoder
+## 5. Codificador vs decodificador
 
-| Architecture | Attention mask | Examples |
+| Arquitetura | Máscara de atenção | Exemplos |
 |--------------|----------------|----------|
-| **Encoder-only** | Bidirectional — all tokens see all | BERT (classification, embeddings) |
-| **Decoder-only** | Causal — token t sees ≤ t | GPT, LLaMA ([LLMs](../llms/i-overview.md)) |
-| **Encoder-decoder** | Encoder bidirectional; decoder causal cross-attn | T5, original translation |
+| **Somente codificador** | Bidirecional — todos os tokens ver todos | BERT (classificação, incorporações) |
+| **Somente decodificador** | Causal — token t vê ≤ t | GPT, LLaMA ([LLMs](../llms/i-overview.md)) |
+| **Codificador-decodificador** | Codificador bidirecional; decodificador causal cross-attn | T5, tradução original |
 
-**LLMs** for chat are almost always **decoder-only** causal LMs.
+**LLMs** para bate-papo são quase sempre LMs causais **somente decodificador**.
 
 ```mermaid
 flowchart LR
@@ -79,14 +79,14 @@ flowchart LR
   Both[Encoder-decoder] -->|cross-attn| T5[T5]
 ```
 
-## 6. Complexity note
+## 6. Nota de complexidade
 
-Self-attention is **O(n²)** in sequence length **n** — context window and compute drive cost. Techniques: **FlashAttention**, sparse attention, sliding window (some long-context models).
+A autoatenção é **O(n²)** no comprimento da sequência **n** — janela de contexto e custo da unidade de computação. Técnicas: **FlashAttention**, atenção escassa, janela deslizante (alguns modelos de contexto longo).
 
-## 7. Rehearsal questions
+## 7. Perguntas de ensaio
 
-- What problem does positional encoding solve?
-- Decoder-only vs encoder-only — which for next-token prediction?
-- Why √dₖ in the attention scale?
+- Que problema a codificação posicional resolve?
+- Somente decodificador versus somente codificador — qual para previsão do próximo token?
+- Por que √dₖ na escala de atenção?
 
-**Related:** [LLMs — pre-training](../llms/ii-pretraining-and-tokenization.md), [Neural networks & training](ii-neural-networks-and-training.md).
+**Relacionado:** [LLMs — pré-treinamento](../llms/ii-pretraining-and-tokenization.md), [Redes neurais e treinamento](ii-neural-networks-and-training.md).

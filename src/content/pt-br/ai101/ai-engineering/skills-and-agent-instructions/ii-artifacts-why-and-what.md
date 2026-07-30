@@ -1,21 +1,21 @@
 ---
 label: "II"
-subtitle: "Artifacts & why bother"
+subtitle: "Exemplos de artefatos"
 group: "AI Applied"
 order: 2
 ---
-Artifacts & why bother
+Artefatos e por que se preocupar
 
-## 1. Why bother?
+## 1. Por que se preocupar?
 
-| Without persistent instructions | With skills / rules / project docs |
+| Sem instruções persistentes | Com habilidades/regras/documentos do projeto |
 |--------------------------------|----------------------------------|
-| Repeat “use conventional commits” daily | Agent reads skill once per task |
-| Agent guesses stack and folder layout | Points at `SKILL.md` or `AGENTS.md` |
-| Inconsistent PR and doc format | Same template every time |
-| Long chat preamble every session | Short prompt + loaded context |
+| Repita “usar commits convencionais” diariamente | Agente lê habilidade uma vez por tarefa |
+| Agente adivinha layout de pilha e pasta | Pontos em`SKILL.md`ou`AGENTS.md`|
+| PR e formato de documento inconsistentes | Sempre o mesmo modelo |
+| Longo preâmbulo de bate-papo em cada sessão | Prompt curto + contexto carregado |
 
-Think of skills as **onboarding docs for the agent** — short, actionable, trigger-aware.
+Pense nas habilidades como **documentos de integração para o agente** — curtos, acionáveis ​​e com reconhecimento de gatilhos.
 
 ```mermaid
 flowchart LR
@@ -23,26 +23,26 @@ flowchart LR
   Load --> Task[Fewer retries per task]
 ```
 
-**Promotion rule:** if you have typed the same instruction **three times**, move it to a skill, rule, or `AGENTS.md`. See [Persistent instructions](../loop-prompting/iii-persistent-instructions.md).
+**Regra de promoção:** se você digitou a mesma instrução **três vezes**, mova-a para uma habilidade, regra ou`AGENTS.md`. Consulte [Instruções persistentes](../loop-prompting/iii-persistent-instructions.md).
 
-## 2. What to create (pick by product)
+## 2. O que criar (escolha por produto)
 
-| Artifact | Product | Scope |
+| Artefato | Produto | Escopo |
 |----------|---------|--------|
-| **Skill (`SKILL.md`)** | Cursor, **Claude Code**, Codex (configured) | Task-specific workflows (review, deploy, SQL) — **instructions in markdown** |
-| **`scripts/` in skill folder** | Cursor (via agent Shell) | **Separate** `.sh` / `.py` files; `SKILL.md` says when and which path to run |
-| **Rules (`.mdc`)** | Cursor | Always-on or file-pattern coding standards |
-| **`AGENTS.md`** | Cursor, **Codex**, Claude Code, Copilot, many others | Repo-wide agent briefing at root |
-| **`CLAUDE.md`** | Claude Code | Project memory / standing instructions |
-| **Project instructions** | Claude Projects (web) | Tone, format, attached knowledge |
-| **Custom GPT instructions** | ChatGPT | Persona + process for one assistant |
-| **Context `.md` in repo** | Any IDE agent | `docs/agent-context.md`, architecture notes |
+| **Habilidade (`SKILL.md`)** | Cursor, **Código Claude**, Codex (configurado) | Fluxos de trabalho específicos de tarefas (revisão, implantação, SQL) — **instruções em remarcação** |
+| **`scripts/`na pasta de habilidades** | Cursor (através do agente Shell) | **Separar**`.sh`-&#09;o`.py`arquivos;`SKILL.md`diz quando e qual caminho executar |
+| **Regras (`.mdc`)** | Cursor | Padrões de codificação sempre ativos ou de padrão de arquivo |
+| **`AGENTS.md`** | Cursor, **Codex**, Claude Code, Copilot, muitos outros | Briefing do agente para todo o repositório na raiz |
+| **`CLAUDE.md`** | Código Cláudio | Memória do projeto / instruções permanentes |
+| **Instruções do projeto** | Projetos Claude (web) | Tom, formato, conhecimento anexado |
+| **Instruções GPT personalizadas** | Bate-papoGPT | Persona + processo para um assistente |
+| **Contexto`.md`em repositório** | Qualquer agente IDE |`docs/agent-context.md`, notas de arquitetura |
 
-Same content idea everywhere: **when to use this + what to do + examples**.
+A mesma ideia de conteúdo em todos os lugares: **quando usar + o que fazer + exemplos**.
 
-See [Artifact examples](iia-artifact-examples.md) for copy-paste samples of each row above.
+Consulte [Exemplos de artefatos](iia-artifact-examples.md) para copiar e colar amostras de cada linha acima.
 
-## 3. Which artifact? (decision guide)
+## 3. Qual artefato? (guia de decisão)
 
 ```text
 Need a multi-step workflow (review, deploy, incident writeup)?
@@ -64,15 +64,15 @@ Deep domain doc (one feature area) linked from AGENTS.md?
   → docs/.../context.md
 ```
 
-| Question | Answer |
+| Pergunta | Resposta |
 |----------|--------|
-| “Always use Prettier defaults” | **Rule** (`alwaysApply` or `globs`) |
-| “How we run smoke tests and read output” | **Skill** |
-| “We use Next.js 15; tests are `npm test`” | **`AGENTS.md`** |
-| “Never invent dates in status reports” | **Project instructions** or Custom GPT |
-| Same workflow in Cursor and Claude Code | **`SKILL.md`** in both `.cursor/skills/` and `.claude/skills/` |
+| “Sempre use padrões mais bonitos” | **Regra** (`alwaysApply`ou`globs`) |
+| “Como executamos testes de fumaça e lemos resultados” | **Habilidade** |
+| “Usamos Next.js 15; os testes são`npm test`” | **`AGENTS.md`** |
+| “Nunca invente datas em relatórios de situação” | **Instruções do projeto** ou GPT personalizado |
+| Mesmo fluxo de trabalho em Cursor e Claude Code | **`SKILL.md`** em ambos`.cursor/skills/`e`.claude/skills/`|
 
-## 4. Layering (use together)
+## 4. Camadas (use juntas)
 
 ```mermaid
 flowchart TB
@@ -82,16 +82,16 @@ flowchart TB
   AG --> Docs[docs/*.md]
 ```
 
-Do **not** paste the entire skill into `AGENTS.md` — link to it. Keep `AGENTS.md` under ~2–3 screens; Codex enforces a size cap by default.
+**Não** cole toda a habilidade em`AGENTS.md`- link para ele. Manter`AGENTS.md`em cerca de 2–3 telas; O Codex impõe um limite de tamanho por padrão.
 
-## 5. Common mistakes
+## 5. Erros comuns
 
-| Mistake | Fix |
-|---------|-----|
-| One giant instructions blob | Split: `AGENTS.md` + skills + `reference.md` |
-| Vague skill `description` (“helps with code”) | Name task + trigger words: “PR, diff, code review” |
-| Duplicating the same rule in 5 files | Single source; link from `AGENTS.md` |
-| Secrets or live API keys in skills | Redacted examples; env vars only |
-| Skills never updated after process change | Owner + quarterly review |
+| Erro | Correção |
+|--------|-----|
+| Uma bolha gigante de instruções | Dividir:`AGENTS.md`+ habilidades +`reference.md`|
+| Habilidade vaga`description`(“ajuda com código”) | Nomeie a tarefa + palavras de gatilho: “PR, diff, revisão de código” |
+| Duplicando a mesma regra em 5 arquivos | Fonte única; link de`AGENTS.md`|
+| Segredos ou chaves API ao vivo em habilidades | Exemplos redigidos; apenas env vars |
+| Habilidades nunca atualizadas após mudança de processo | Proprietário + revisão trimestral |
 
-**Next:** [Artifact examples](iia-artifact-examples.md) → [Cross-tool portable setup](iii-cross-tool-portable-setup.md).
+**Próximo:** [Exemplos de artefatos](iia-artifact-examples.md) → [Configuração portátil de ferramentas cruzadas](iii-cross-tool-portable-setup.md).

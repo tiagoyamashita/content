@@ -1,12 +1,12 @@
 ---
 label: "II"
-subtitle: "Tool map"
+subtitle: "Mapa de ferramentas"
 group: "AI Applied"
 order: 2
 ---
-Tool map
+Mapa de ferramentas
 
-## 1. Tool map
+## 1. Mapa de ferramentas
 
 ```mermaid
 flowchart TB
@@ -16,14 +16,14 @@ flowchart TB
   Auto[Automation] --> Chain[Trigger → AI → action]
 ```
 
-| Category | Examples | Best for |
+| Categoria | Exemplos | Melhor para |
 |----------|----------|----------|
-| **General chat** | ChatGPT, Claude, Gemini | Writing, analysis, brainstorming |
-| **IDE / code** | Cursor, GitHub Copilot, Cody | Implementation, refactors, tests — use [Skills](../skills-and-agent-instructions/i-overview.md) |
-| **Office / enterprise** | Microsoft Copilot, Google Duet | Email, slides, sheets in tenant |
-| **Search + AI** | Perplexity, Gemini with search | Cited quick research |
-| **Automation** | Zapier, Make, n8n | Trigger → AI step → action |
-| **Meeting / voice** | Otter, Fireflies, native transcribe | Notes, follow-ups |
-| **Design / image** | Midjourney, DALL·E, Ideogram | Visuals from prompts |
+| **Bate-papo geral** | ChatGPT, Claude, Gêmeos | Redação, análise, brainstorming |
+| **IDE / código** | Cursor, GitHub Copiloto, Cody | Implementação, refatorações, testes — use [Habilidades](../skills-and-agent-instructions/i-overview.md) |
+| **Escritório / empresa** | Copiloto da Microsoft, Google Duet | Email, slides, planilhas no locatário |
+| **Pesquisa + AI** | Perplexidade, Gêmeos com busca | Pesquisa rápida citada |
+| **Automação** | Zapier, Faça, n8n | Gatilho → etapa AI → ação |
+| **Reunião / voz** | Lontra, vaga-lumes, transcrição nativa | Notas, acompanhamentos |
+| **Design/imagem** | Meio da jornada, DALL·E, Ideograma | Visuais de prompts |
 
-Pick **one primary chat** and **one primary coding assistant** to avoid context sprawl.
+Escolha **um bate-papo principal** e **um assistente de codificação principal** para evitar a expansão do contexto.

@@ -1,20 +1,20 @@
-# Agent briefing — this repo
+# Briefing do agente – este repositório
 
-Short facts every agent session should know. Procedures live in `.cursor/skills/`.
+Breves fatos que toda sessão de agente deveria saber. Os procedimentos vivem em`.cursor/skills/`.
 
-## Stack
+## Pilha
 
-- Content / markdown repo (educational notes)
-- Python 3.10+ for example scripts under `.cursor/skills/`
+- Repositório de conteúdo/markdown (notas educacionais)
+- Python 3.10+, por exemplo, scripts em`.cursor/skills/`
 
-## Commands
+## Comandos
 
-| Task | Command |
+| Tarefa | Comando |
 |------|---------|
-| Smoke test deploy skill | `python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run` |
-| Run tests (if package exists) | `npm test` |
+| Habilidade de implantação de teste de fumaça |`python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run`|
+| Execute testes (se o pacote existir) |`npm test`|
 
-## Layout
+##Layout
 
 ```text
 src/content/en/     ← English notes
@@ -23,21 +23,20 @@ src/content/en/     ← English notes
 AGENTS.md           ← this file (always loaded)
 ```
 
-## Skills (on demand)
+## Habilidades (sob demanda)
 
-| Skill | When |
+| Habilidade | Quando |
 |-------|------|
-| `pr-review-lite` | User asks for PR / code review |
-| `deploy-check` | User asks about deploy readiness |
-| `secrets-scan-help` | Commit blocked by secrets hook |
-| `hook-failure-help` | User asks why a hook blocked an action |
+|`pr-review-lite`| Usuário solicita PR / revisão de código |
+|`deploy-check`| O usuário pergunta sobre a preparação para implantação |
+|`secrets-scan-help`| Commit bloqueado por gancho de segredos |
+|`hook-failure-help`| Usuário pergunta por que um gancho bloqueou uma ação |
 
-## Hooks (automatic)
+## Ganchos (automáticos)
 
-- **`beforeShellExecution`** on `git commit` → `.cursor/hooks/secrets_scan.py` blocks staged `.env` and obvious secrets.
-- Hooks run **without** user prompt. Use `secrets-scan-help` skill to explain failures.
+- **`beforeShellExecution`** sobre`git commit`→`.cursor/hooks/secrets_scan.py`blocos encenados`.env`e segredos óbvios.
+- Hooks são executados **sem** prompt do usuário. Usar`secrets-scan-help`habilidade para explicar falhas.
 
-## Conventions
+## Convenções
 
-- Do not commit `.cursor/skills/*/logs/` or `.cursor/hooks/logs/`
-- Do not put real API keys in markdown — use placeholders
+- Não se comprometa`.cursor/skills/*/logs/`ou`.cursor/hooks/logs/`- Não coloque chaves API reais no markdown - use espaços reservados

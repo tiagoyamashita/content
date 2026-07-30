@@ -1,25 +1,25 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "AI Applied"
 order: 1
 ---
-Tools & orchestration — overview
-Deep dive on **tools & orchestration** — split into focused notes below.
+Ferramentas e orquestração — visão geral
+Aprofunde-se em **ferramentas e orquestração** — dividido em notas específicas abaixo.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Tool map](ii-tool-map-and-patterns.md) | Part of tools & orchestration track |
-| [Orchestration patterns](iii-orchestration-patterns.md) | Part of tools & orchestration track |
-| [Connectors, models & teams](iv-connectors-models-and-teams.md) | Part of tools & orchestration track |
-| [Anti-patterns & rehearsal](v-antipatterns-and-rehearsal.md) | Part of tools & orchestration track |
+| [Mapa de ferramentas](ii-tool-map-and-patterns.md) | Parte da trilha de ferramentas e orquestração |
+| [Padrões de orquestração](iii-orchestration-patterns.md) | Parte da trilha de ferramentas e orquestração |
+| [Conectores, modelos e equipes](iv-connectors-models-and-teams.md) | Parte da trilha de ferramentas e orquestração |
+| [Antipadrões e ensaio](v-antipatterns-and-rehearsal.md) | Parte da trilha de ferramentas e orquestração |
 
-Tools and orchestration
-**Orchestration** means connecting AI to **where you already work** — chat apps, IDEs, browsers, docs, Slack — so tasks flow without copy-pasting between ten tabs.
+Ferramentas e orquestração
+**Orquestração** significa conectar AI a **onde você já trabalha** — aplicativos de bate-papo, IDEs, navegadores, documentos, Slack — para que as tarefas fluam sem copiar e colar entre dez guias.
 
-This is for **users** choosing and wiring tools, not building ML pipelines.
+Isso é para **usuários** escolherem e conectarem ferramentas, não para construir pipelines ML.
 
 ```mermaid
 flowchart LR
@@ -29,6 +29,6 @@ flowchart LR
   AI --> Action[Slack / docs / code]
 ```
 
-## Study order
+## Ordem de estudo
 
-[Tool map](ii-tool-map-and-patterns.md) → [Orchestration patterns](iii-orchestration-patterns.md) → [Connectors, models & teams](iv-connectors-models-and-teams.md) → [Anti-patterns & rehearsal](v-antipatterns-and-rehearsal.md)
+[Mapa de ferramentas](ii-tool-map-and-patterns.md) → [Padrões de orquestração](iii-orchestration-patterns.md) → [Conectores, modelos e equipes](iv-connectors-models-and-teams.md) → [Antipadrões e ensaio](v-antipatterns-and-rehearsal.md)

@@ -1,14 +1,14 @@
 ---
 label: "III"
-subtitle: "Orchestration patterns"
+subtitle: "Padrões de orquestração"
 group: "AI Applied"
 order: 3
 ---
-Orchestration patterns
+Padrões de orquestração
 
-## 2. Orchestration patterns
+## 2. Padrões de orquestração
 
-### Copy-paste bridge (lowest friction)
+### Ponte copiar e colar (menor fricção)
 
 ```mermaid
 flowchart LR
@@ -17,39 +17,39 @@ flowchart LR
   Paste --> Dest[Destination]
 ```
 
-Fine for occasional tasks; does not scale.
+Ótimo para tarefas ocasionais; não escala.
 
-### Connected apps (connectors)
+### Aplicativos conectados (conectores)
 
-ChatGPT / Claude / Copilot **connectors** read Google Drive, Slack, GitHub, etc.
+ChatGPT / Claude / Copilot **conectores** leia Google Drive, Slack, GitHub, etc.
 
-| Benefit | Watch out |
-|---------|-----------|
-| Less manual upload | Permissions — only connect what you’re allowed to share |
-| Fresher context | Model may still misread or summarise wrong |
+| Benefício | Cuidado |
+|--------|-----------|
+| Menos upload manual | Permissões – conecte apenas o que você tem permissão para compartilhar |
+| Contexto mais atual | O modelo ainda pode interpretar mal ou resumir errado |
 
-### IDE + repo context
+### IDE + contexto do repositório
 
-**Cursor:** codebase index, rules, terminal, multi-file agent.
+**Cursor:** índice de base de código, regras, terminal, agente de vários arquivos.
 
-| Practice | Why |
+| Prática | Por que |
 |----------|-----|
-| Keep `README` / rules accurate | Agent follows wrong patterns otherwise |
-| Small, scoped tasks | Easier review |
-| Use `@file` / mentions | Pin exact context |
+| Manter`README`/ regras precisas | Caso contrário, o agente segue padrões errados |
+| Tarefas pequenas e com escopo definido | Revisão mais fácil |
+| Usar`@file`/menções | Fixar contexto exato |
 
-### MCP (Model Context Protocol)
+### MCP (protocolo de contexto de modelo)
 
-**MCP** plugs the agent into **live systems** (GitHub, Postgres, Sentry) via **MCP servers**. Wire format is **JSON-RPC** over **stdio** (local) or **HTTP** (remote) — **not gRPC**. The server then calls each product’s normal **REST/HTTPS API**.
+**MCP** conecta o agente a **sistemas ativos** (GitHub, Postgres, Sentry) por meio de **servidores **MCP**. O formato de transmissão é **JSON-RPC** sobre **stdio** (local) ou **HTTP** (remoto) — **não gRPC**. O servidor então chama o **REST/HTTPS API** normal de cada produto.
 
-| You see | Under the hood |
-|---------|----------------|
-| “Search our Linear tickets” in Cursor | Host → MCP server → Linear HTTPS API |
-| MCP settings / `mcp.json` | Spawns or connects to connector process |
+| Você vê | Sob o capô |
+|--------|----------------|
+| “Pesquise nossos tickets Lineares” em Cursor | Host → Servidor MCP → Linear HTTPS API |
+| MCP configurações /`mcp.json`| Gera ou se conecta ao processo do conector |
 
-**Deep dive:** [How MCP works](../how-mcp-works/i-overview.md) — transports, roles, security, vs skills.
+**Aprofundamento:** [Como MCP funciona](../how-mcp-works/i-overview.md) — transportes, funções, segurança versus habilidades.
 
-### Automation chains
+### Cadeias de automação
 
 ```mermaid
 flowchart LR
@@ -58,9 +58,9 @@ flowchart LR
   Notion --> Slack[Slack notify]
 ```
 
-| Platform | Strength |
+| Plataforma | Força |
 |----------|----------|
-| **Zapier / Make** | No-code; many SaaS integrations |
-| **n8n** | Self-host; technical teams |
+| **Zapier / Make** | Sem código; muitas integrações SaaS |
+| **n8n** | Auto-hospedeiro; equipas técnicas |
 
-Put **human approval** steps before external sends (email to customers, public posts).
+Coloque etapas de **aprovação humana** antes dos envios externos (e-mail para clientes, postagens públicas).

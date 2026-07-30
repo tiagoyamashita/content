@@ -1,27 +1,27 @@
 ---
 label: "IV"
-subtitle: "Connectors, models & teams"
+subtitle: "Conectores, modelos e equipes"
 group: "AI Applied"
 order: 4
 ---
-Connectors, models & teams
+Conectores, modelos e equipes
 
-## 3. Choosing models in the UI
+## 3. Escolhendo modelos no UI
 
-| Situation | Typical choice |
+| Situação | Escolha típica |
 |-----------|----------------|
-| Fast drafts, simple edits | Smaller / “mini” model |
-| Long docs, nuance, coding | Flagship model |
-| Huge context (whole codebase) | Long-context or “project” mode |
-| Privacy / compliance | Enterprise workspace, no training on data |
+| Rascunhos rápidos, edições simples | Modelo menor/“mini” |
+| Documentos longos, nuances, codificação | Modelo carro-chefe |
+| Contexto enorme (base de código inteira) | Contexto longo ou modo “projeto” |
+| Privacidade/conformidade | Espaço de trabalho empresarial, sem treinamento em dados |
 
-**Model switching:** draft cheap → polish with flagship on final pass.
+**Troca de modelo:** rascunho barato → polimento com carro-chefe na passagem final.
 
-## 4. Team orchestration
+## 4. Orquestração da equipe
 
-| Practice | Purpose |
+| Prática | Finalidade |
 |----------|---------|
-| **Shared prompt library** | Consistent quality across team |
-| **Approved connectors only** | Reduce data leakage |
-| **Naming conventions for Projects** | Find customer / product context |
-| **Review before client-facing** | Quality and liability |
+| **Biblioteca de prompts compartilhada** | Qualidade consistente em toda a equipe |
+| **Somente conectores aprovados** | Reduzir o vazamento de dados |
+| **Convenções de nomenclatura para projetos** | Encontre o contexto do cliente/produto |
+| **Revise antes de atender o cliente** | Qualidade e responsabilidade |

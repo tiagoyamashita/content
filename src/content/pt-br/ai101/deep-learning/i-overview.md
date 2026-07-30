@@ -1,30 +1,30 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Deep learning"
 order: 1
 ---
-Deep learning — overview
-**Deep learning** uses **neural networks** with many layers to learn hierarchical representations — strong on **images**, **audio**, **text**, and other high-dimensional data. It is a **subset** of [machine learning](../machine-learning/i-overview.md) with heavier **compute** and **data** requirements.
+Aprendizado profundo – visão geral
+O **aprendizado profundo** usa **redes neurais** com muitas camadas para aprender representações hierárquicas, com destaque para **imagens**, **áudio**, **texto** e outros dados de alta dimensão. É um **subconjunto** de [aprendizado de máquina](../machine-learning/i-overview.md) com requisitos mais pesados ​​de **computação** e **dados**.
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Part | Topic |
+| Parte | Tópico |
 |------|--------|
-| **I — Overview** | How deep learning fits AI101 |
-| **II — Neural networks & training** | Neurons, backprop, optimisers, batch training |
-| **III — CNNs & RNNs** | Spatial and sequential architectures |
-| **IV — Transformers & attention** | Self-attention, encoder/decoder, foundation for LLMs |
+| **I — Visão geral** | Como o aprendizado profundo se encaixa AI101 |
+| **II — Redes neurais e treinamento** | Neurônios, backprop, otimizadores, treinamento em lote |
+| **III — CNNs e RNNs** | Arquiteturas espaciais e sequenciais |
+| **IV — Transformadores e atenção** | Autoatenção, codificador/decodificador, base para LLMs |
 
-## When deep learning vs classical ML
+## Quando aprendizagem profunda versus ML clássico
 
-| Prefer classical ML | Prefer deep learning |
+| Prefira o clássico ML | Prefira aprendizado profundo |
 |---------------------|----------------------|
-| Small tabular datasets | Images, long text, audio |
-| Need interpretable coefficients | Need representation learning |
-| Limited GPU budget | Large data + compute |
+| Pequenos conjuntos de dados tabulares | Imagens, texto longo, áudio |
+| Precisa de coeficientes interpretáveis ​​| Precisa de aprendizagem de representação |
+| Orçamento limitado de GPU | Grandes dados + computação |
 
-Many production systems use **both** — gradient boosting on tabular features + neural net on text/images.
+Muitos sistemas de produção usam **ambos** — aumento de gradiente em recursos tabulares + rede neural em texto/imagens.
 
 ```mermaid
 flowchart TB
@@ -32,16 +32,16 @@ flowchart TB
   DL[Deep learning] -->|images text audio| High[High-dim data]
 ```
 
-## Stack
+## Pilha
 
-| Layer | Common tools |
-|-------|--------------|
-| **Framework** | PyTorch (research/industry), TensorFlow/Keras |
-| **Training** | GPU/TPU, mixed precision |
-| **Serving** | TorchServe, ONNX, Triton |
+| Camada | Ferramentas comuns |
+|-------|-------------|
+| **Estrutura** | PyTorch (pesquisa/indústria), TensorFlow/Keras |
+| **Treinamento** | GPU/TPU, precisão mista |
+| **Servindo** | TorchServe, ONNX, Tritão |
 
-## Next
+## Próximo
 
-Continue with [Neural networks & training](ii-neural-networks-and-training.md).
+Continue com [Redes neurais e treinamento](ii-neural-networks-and-training.md).
 
-**Related:** [Machine learning overview](../machine-learning/i-overview.md), [LLMs overview](../llms/i-overview.md).
+**Relacionado:** [Visão geral do aprendizado de máquina](../machine-learning/i-overview.md), [LLMs visão geral](../llms/i-overview.md).

@@ -1,13 +1,13 @@
 ---
 label: "II"
-subtitle: "Neural networks & training"
+subtitle: "Redes neurais e treinamento"
 group: "Deep learning"
 order: 2
 ---
-Neural networks and training
-A **neural network** stacks **layers** of neurons — each computes **activation(weights · input + bias)**. **Training** adjusts weights via **backpropagation** and **gradient descent** to minimise **loss**.
+Redes neurais e treinamento
+Uma **rede neural** empilha **camadas** de neurônios — cada uma calcula a **ativação(pesos · entrada + polarização)**. **O treinamento** ajusta os pesos por meio de **propagação** e **gradiente descendente** para minimizar a **perda**.
 
-## 1. Single neuron
+## 1. Neurônio único
 
 ```mermaid
 flowchart LR
@@ -16,24 +16,24 @@ flowchart LR
   Act --> Out[output]
 ```
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **w** | Weights — learnable |
-| **b** | Bias — learnable |
-| **activation** | Non-linearity — without it, stack of layers collapses to linear |
+| **o** | Pesos - que podem ser aprendidos |
+| **ca** | Viés - aprendido |
+| **ativação** | Não linearidade — sem ela, a pilha de camadas se torna linear |
 
-### Activation functions
+### Funções de ativação
 
-| Function | Use |
+| Função | Usar |
 |----------|-----|
-| **ReLU** max(0,x) | Default hidden layers |
-| **Sigmoid** | Binary output (legacy hidden) |
-| **Softmax** | Multi-class probabilities (sum to 1) |
-| **GELU** | Smooth; common in transformers |
+| **ReLU** max(0,x) | Camadas ocultas padrão |
+| **Sigmóide** | Saída binária (herdado oculto) |
+| **Softmax** | Probabilidades multiclasse (soma 1) |
+| **GELU** | Suave; comum em transformadores |
 
-## 2. Network architecture
+## 2. Arquitetura de rede
 
-**Dense (fully connected):** every input connects to every output in the layer.
+**Denso (totalmente conectado):** cada entrada se conecta a cada saída na camada.
 
 ```mermaid
 flowchart LR
@@ -43,7 +43,7 @@ flowchart LR
   Loss -->|backprop| H
 ```
 
-More layers = **deeper** network = richer (hierarchical) features.
+Mais camadas = rede **mais profunda** = recursos mais ricos (hierárquicos).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 130" role="img" aria-label="Neural network layers">
   <text x="30" y="18" fill="#71717a" font-size="10" text-anchor="middle">Input</text>
@@ -62,51 +62,51 @@ More layers = **deeper** network = richer (hierarchical) features.
   <line x1="198" y1="75" x2="352" y2="65" stroke="#3f3f46" stroke-width="0.8"/>
 </svg></figure>
 
-## 3. Backpropagation
+## 3. Retropropagação
 
-**Forward pass:** compute predictions and loss.
-**Backward pass:** chain rule → **∂Loss/∂w** for each weight.
-**Update:** **w ← w − η · gradient** (η = learning rate).
+**Forward pass:** calcula previsões e perdas.
+**Passe para trás:** regra da cadeia → **∂Loss/∂w** para cada peso.
+**Atualização:** **w ← w − η · gradiente** (η = taxa de aprendizagem).
 
-Automatic differentiation (PyTorch `autograd`, TF) implements this.
+Diferenciação automática (PyTorch`autograd`, TF) implementa isso.
 
-## 4. Optimisers
+## 4. Otimizadores
 
-| Optimiser | Notes |
+| Otimizador | Notas |
 |-----------|-------|
-| **SGD + momentum** | Classic; needs lr tuning |
-| **Adam** | Adaptive per-parameter lr — common default |
-| **AdamW** | Adam + decoupled weight decay |
+| **SGD + impulso** | Clássico; precisa de ajuste lr |
+| **Adão** | LR adaptável por parâmetro — padrão comum |
+| **AdamW** | Adam + redução de peso dissociada |
 
-## 5. Mini-batch training
+## 5. Treinamento em minilote
 
-| Mode | Trade-off |
+| Modo | Troca |
 |------|-----------|
-| **Full batch** | Stable gradient; memory heavy |
-| **Mini-batch** (32–512) | GPU-efficient; noisy gradient helps generalisation |
-| **SGD batch=1** | Noisy; rarely used alone at scale |
+| **Lote completo** | Gradiente estável; memória pesada |
+| **Minilote** (32–512) | GPU-eficiente; gradiente barulhento ajuda generalização |
+| **SGD lote=1** | Barulhento; raramente usado sozinho em escala |
 
-**Epoch** = one full pass over training set.
+**Época** = uma passagem completa pelo conjunto de treinamento.
 
-### Learning rate schedule
+### Cronograma de taxa de aprendizagem
 
-| Issue | Fix |
+| Edição | Correção |
 |-------|-----|
-| Loss diverges | Lower lr |
-| Loss flat | Warm-up + cosine decay; check data |
+| Perda diverge | Inferior lr |
+| Perda plana | Aquecimento + decaimento do cosseno; verificar dados |
 
-## 6. Regularisation in deep nets
+## 6. Regularização em redes profundas
 
-| Method | See also |
+| Método | Veja também |
 |--------|----------|
-| **Dropout** | Randomly zero activations during train |
-| **Weight decay** | L2 on weights (AdamW) |
-| **Early stopping** | Stop on val loss |
-| **Data augmentation** | Images — random crop/flip |
+| **Abandono** | Aleatoriamente zero ativações durante o trem |
+| **Queda de peso** | L2 em pesos (AdamW) |
+| **Parada antecipada** | Pare na perda de val |
+| **Aumento de dados** | Imagens – corte/inversão aleatória |
 
-[Overfitting](../machine-learning/v-overfitting-regularization-and-tuning.md) applies the same bias-variance intuition.
+[Sobreajuste](../machine-learning/v-overfitting-regularization-and-tuning.md) aplica a mesma intuição de viés-variância.
 
-## 7. PyTorch sketch
+## 7. Esboço PyTorch
 
 ```python
 import torch.nn as nn
@@ -123,10 +123,10 @@ class MLP(nn.Module):
         return self.net(x)
 ```
 
-## 8. Rehearsal questions
+## 8. Perguntas de ensaio
 
-- Why are non-linear activations required?
-- One sentence: what does backprop compute?
-- Mini-batch size affects what two things?
+- Por que são necessárias ativações não lineares?
+- Uma frase: o que o backprop calcula?
+- O tamanho do minilote afeta quais duas coisas?
 
-**Related:** [CNNs & RNNs](iii-cnns-and-rnns.md), [Transformers](iv-transformers-and-attention.md).
+**Relacionado:** [CNNs e RNNs](iii-cnns-and-rnns.md), [Transformadores](iv-transformers-and-attention.md).

@@ -1,42 +1,42 @@
 ---
 label: "V"
-subtitle: "Writing & maintaining skills"
+subtitle: "Escrita e manutenção de habilidades"
 group: "AI Applied"
 order: 6
 ---
-Writing & maintaining skills
+Escrita e manutenção de habilidades
 
-How to write instructions agents actually follow — and keep them accurate as your process changes.
+Como escrever instruções que os agentes realmente seguem — e mantê-las precisas à medida que o seu processo muda.
 
-## 7. Writing instructions agents actually follow
+## 7. Escrevendo instruções que os agentes realmente seguem
 
-### Be concise
+### Seja conciso
 
-The agent already knows generic programming. Add only **what is specific to you**.
+O agente já conhece programação genérica. Adicione apenas **o que é específico para você**.
 
-| Skip | Include |
+| Pular | Incluir |
 |------|---------|
-| “JSON is a data format…” | “Our API returns `{ data, error }` envelope” |
-| Long tutorials | Checklists, commands, templates |
-| Repeating `AGENTS.md` in every skill | “See AGENTS.md for test command” |
+| “JSON é um formato de dados…” | “Nosso API retorna`{ data, error }`envelope” |
+| Tutoriais longos | Listas de verificação, comandos, modelos |
+| Repetindo`AGENTS.md`em todas as habilidades | “Veja AGENTS.md para comando de teste” |
 
-Target **under ~500 lines** in main `SKILL.md`; move depth to `reference.md`.
+Segmentar **abaixo de aproximadamente 500 linhas** no principal`SKILL.md`; mover profundidade para`reference.md`.
 
-### Write descriptions that trigger
+### Escreva descrições que acionem
 
-The `description` field is how the agent decides to load the skill. Include **what it does** and **when to use it** with words users actually say.
+O`description`campo é como o agente decide carregar a habilidade. Inclua **o que ele faz** e **quando usá-lo** com as palavras que os usuários realmente dizem.
 
-| Weak | Strong |
+| Fraco | Forte |
 |------|--------|
-| “Helps with git.” | “Write conventional commit messages for staged changes. Use when the user asks to commit, write a commit message, or mentions staged files.” |
-| “Code review skill.” | “Review pull requests for security, tests, and team conventions. Use when reviewing PRs, diffs, or when the user asks for a code review.” |
-| “Docs helper.” | “Edit swe101 markdown notes: frontmatter, `_meta.json`, kebab filenames. Use when user mentions content repo, note structure, or `_meta.json`.” |
+| “Ajuda com o git.” | "Escreva mensagens de commit convencionais para alterações preparadas. Use quando o usuário solicitar uma confirmação, escreva uma mensagem de confirmação ou mencione arquivos preparados." |
+| “Habilidade de revisão de código.” | "Revise solicitações pull para segurança, testes e convenções de equipe. Use ao revisar PRs, diferenças ou quando o usuário solicitar uma revisão de código." |
+| “Ajudante de documentos.” | “Editar notas de remarcação swe101: frontmatter,`_meta.json`, nomes de arquivos kebab. Use quando o usuário menciona repositório de conteúdo, estrutura de notas ou`_meta.json`.” |
 
-Add **synonyms** your team uses: “PR”, “pull request”, “diff”, “merge request”.
+Adicione **sinônimos** que sua equipe usa: “PR”, “pull request”, “diff”, “merge request”.
 
-### Progressive disclosure
+### Divulgação progressiva
 
-Structure the skill so the agent reads the minimum first:
+Estruture a habilidade para que o agente leia primeiro o mínimo:
 
 ```markdown
 # Deploy to staging
@@ -61,63 +61,63 @@ Structure the skill so the agent reads the minimum first:
 See [reference.md](reference.md) for DB failover and on-call escalation.
 ```
 
-| Layer | File | Content |
-|-------|------|---------|
-| Trigger + summary | `SKILL.md` top | What, when, quick steps |
-| Repeatable checklist | `SKILL.md` body | Checkboxes, commands |
-| Rare edge cases | `reference.md` | Long prose, links, history |
-| Good/bad samples | `examples.md` | Optional; reduces format drift |
-| Fixed commands | `scripts/*.sh` | **Separate file** next to `SKILL.md` — agent runs via Shell when skill says so; code is **not** inside the `.md` — see [linking scripts](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script) |
+| Camada | Arquivo | Conteúdo |
+|-------|------|--------|
+| Gatilho + resumo |`SKILL.md`topo | O que, quando, etapas rápidas |
+| Lista de verificação repetível |`SKILL.md`corpo | Caixas de seleção, comandos |
+| Casos extremos raros |`reference.md`| Prosa longa, links, história |
+| Amostras boas/ruins |`examples.md`| Opcional; reduz desvio de formato |
+| Comandos fixos |`scripts/*.sh`| **Arquivo separado** ao lado de`SKILL.md`— o agente é executado via Shell quando a habilidade diz isso; código **não** está dentro do`.md`— veja [vinculando scripts](iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script) |
 
-### Test before you trust it
+### Teste antes de confiar
 
-1. Start a **fresh chat** (no prior context).
-2. Use a **short prompt** that should trigger the skill — e.g. “review this diff”.
-3. Check: Did it follow your output format? Run the right command from `AGENTS.md`?
-4. If not: tighten `description` trigger words or add a missing checklist item.
-5. Repeat after major model or Cursor updates.
+1. Inicie um **novo bate-papo** (sem contexto anterior).
+2. Use um **prompt curto** que deve acionar a habilidade — por exemplo, “revisar esta diferença”.
+3. Verifique: seguiu seu formato de saída? Execute o comando correto de`AGENTS.md`?
+4. Caso contrário: aperte`description`palavras de gatilho ou adicione um item ausente da lista de verificação.
+5. Repita após atualizações principais do modelo ou Cursor.
 
-## 8. Example skills (starter ideas)
+## 8. Exemplos de habilidades (ideias iniciais)
 
-| Skill name | Triggers in description |
-|------------|-------------------------|
-| `commit-messages` | commit, staged, conventional commits |
-| `pr-review` | PR, diff, code review, pull request |
-| `api-design-notes` | REST, OpenAPI, new endpoint |
-| `incident-writeup` | postmortem, incident, outage, RCA |
-| `weekly-status` | status report, standup summary, leadership update |
-| `deploy-staging` | deploy, staging, release |
-| `content-notes` | swe101, frontmatter, `_meta.json` (this repo) |
+| Nome da habilidade | Gatilhos na descrição |
+|------------|------------------------|
+|`commit-messages`| commit, commits preparados e convencionais |
+|`pr-review`| PR, diff, revisão de código, solicitação pull |
+|`api-design-notes`| REST, OpenAPI, novo terminal |
+|`incident-writeup`| post-mortem, incidente, interrupção, RCA |
+|`weekly-status`| relatório de status, resumo standup, atualização de liderança |
+|`deploy-staging`| implantar, preparar, liberar |
+|`content-notes`| swe101, frontmatter,`_meta.json`(este repositório) |
 
-Copy starters from [Artifact examples](iia-artifact-examples.md); add your commands and checklists.
+Copie os iniciadores de [Exemplos de artefatos](iia-artifact-examples.md); adicione seus comandos e listas de verificação.
 
-## 9. ChatGPT / Claude (web) equivalents
+## 9. Equivalentes ChatGPT / Claude (web)
 
-| Cursor skill | Non-Cursor |
-|--------------|------------|
-| `SKILL.md` body | Custom GPT **Instructions** |
-| `description` triggers | First lines: “Use this when user …” |
-| `reference.md` | Uploaded PDF / project knowledge file |
-| Rules `alwaysApply` | “Always follow these rules:” in Project instructions |
-| `AGENTS.md` | Pasted “Project context” block or uploaded repo summary |
+| Habilidade Cursor | Não-Cursor |
+|-------------|------------|
+|`SKILL.md`corpo | GPT personalizado **Instruções** |
+|`description`gatilhos | Primeiras linhas: “Use isto quando usuário…” |
+|`reference.md`| Carregado arquivo PDF / conhecimento do projeto |
+| Regras`alwaysApply`| “Siga sempre estas regras:” em Instruções do projeto |
+|`AGENTS.md`| Bloco “Contexto do projeto” colado ou resumo do repositório carregado |
 
-You can **maintain one markdown source** in git (`docs/skills/weekly-status.md`) and copy sections into each product when they change.
+Você pode **manter uma fonte de redução** no git (`docs/skills/weekly-status.md`) e copie seções em cada produto quando eles mudarem.
 
-## 10. Team workflow
+## 10. Fluxo de trabalho da equipe
 
-| Practice | Why |
+| Prática | Por que |
 |----------|-----|
-| **Project skills in git** | Whole team gets same agent behaviour |
-| **Owner per skill** | Someone updates when process changes |
-| **Changelog in skill** | “v2: added security checklist 2026-06” at bottom of `SKILL.md` |
-| **Review skills like code** | Bad instructions scale mistakes |
-| **PR touches skill → test in agent** | Same as code: verify before merge |
+| **Habilidades de projeto em git** | Toda a equipe obtém o mesmo comportamento do agente |
+| **Proprietário por habilidade** | Alguém atualiza quando o processo muda |
+| **Registro de alterações na habilidade** | “v2: lista de verificação de segurança adicionada 2026-06” na parte inferior`SKILL.md`|
+| **Analise habilidades como código** | Erros de escala de instruções incorretas |
+| **PR toca habilidade → teste no agente** | Igual ao código: verifique antes de mesclar |
 
-Start with **one** high-friction workflow (PR review or commits); expand when it works.
+Comece com **um** fluxo de trabalho de alto atrito (revisão ou confirmação de PR); expandir quando funcionar.
 
-### Sync across tools
+### Sincronize entre ferramentas
 
-When you support Cursor and Claude Code:
+Quando você oferece suporte a Cursor e Claude Code:
 
 ```text
 docs/skills/pr-review/SKILL.md   # optional single source
@@ -125,35 +125,34 @@ docs/skills/pr-review/SKILL.md   # optional single source
   → copy or symlink to .claude/skills/pr-review/
 ```
 
-Document the sync step in README or a one-line script — avoid silent drift.
+Documente a etapa de sincronização em README ou em um script de uma linha – evite desvios silenciosos.
 
-## 11. Maintenance checklist
+## 11. Lista de verificação de manutenção
 
-- [ ] `description` says **what** and **when** with trigger terms
-- [ ] Main file scannable (headings, checklists)
-- [ ] Commands copy-pasteable and **tested** on current branch
-- [ ] No secrets or internal URLs that expire without notice
-- [ ] Long content split into `reference.md`
-- [ ] Linked from `AGENTS.md` or README if repo-wide
-- [ ] Owner named in skill footer or team runbook
-- [ ] Reviewed after process or tooling change (quarterly minimum)
+- [ ]`description`diz **o que** e **quando** com termos de gatilho
+- [] Arquivo principal escaneável (títulos, listas de verificação)
+- [] Comandos que podem ser copiados e colados e **testados** no branch atual
+- [] Sem segredos ou URLs internos que expiram sem aviso prévio
+- [] Conteúdo longo dividido em`reference.md`- [] Vinculado de`AGENTS.md`ou README se for para todo o repositório
+- [] Proprietário nomeado no rodapé da habilidade ou no runbook da equipe
+- [ ] Revisado após mudança de processo ou ferramental (mínimo trimestral)
 
-## 12. Anti-patterns
+## 12. Antipadrões
 
-| Mistake | Fix |
-|---------|-----|
-| Skill duplicates entire `AGENTS.md` | Link to `AGENTS.md`; skill = workflow only |
-| 200-line `description` | Move detail to body; description ≤ ~1–3 sentences |
-| Checklist items never checked in practice | Remove or demote to `reference.md` |
-| Skill for “always format imports this way” | Use a **rule** with `globs` instead |
-| Never invoked — wrong product folder | `.cursor/skills/` vs `.claude/skills/` per tool |
+| Erro | Correção |
+|--------|-----|
+| Habilidade duplicada inteira`AGENTS.md`| Link para`AGENTS.md`; habilidade = somente fluxo de trabalho |
+| 200 linhas`description`| Mova o detalhe para o corpo; descrição ≤ ~1–3 frases |
+| Itens da lista de verificação nunca verificados na prática | Remover ou rebaixar para`reference.md`|
+| Habilidade para “sempre formatar as importações desta forma” | Use uma **regra** com`globs`em vez disso |
+| Nunca invocado — pasta de produto errada |`.cursor/skills/`contra`.claude/skills/`por ferramenta |
 
-## 13. Rehearsal questions
+## 13. Perguntas de ensaio
 
-- Skill vs rule — which for “always use Prettier defaults”?
-- What two things belong in a skill `description`?
-- Why keep `SKILL.md` short and put details in `reference.md`?
-- Same skill in Cursor and Claude Code — what changes, what stays the same?
-- How do you verify a skill works before merging it to main?
+- Habilidade versus regra — qual é “sempre usar padrões mais bonitos”?
+- Quais são as duas coisas que pertencem a uma habilidade`description`?
+- Por que manter`SKILL.md`curta e coloque detalhes`reference.md`?
+- Mesma habilidade em Cursor e Claude Code — o que muda, o que permanece igual?
+- Como você verifica se uma habilidade funciona antes de mesclá-la com a principal?
 
-**Related:** [How MCP works](../how-mcp-works/i-overview.md) (live tools vs static skills), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Custom assistants](../custom-assistants-and-knowledge/i-overview.md), [Effective prompting](../effective-prompting/i-overview.md), [Persistent instructions](../loop-prompting/iii-persistent-instructions.md).
+**Relacionado:** [Como MCP funciona](../how-mcp-works/i-overview.md) (ferramentas ativas versus habilidades estáticas), [Agentes e fluxos de trabalho de agente](../agents-and-agentic-workflows/i-overview.md), [Ferramentas e orquestração](../tools-and-orchestration/i-overview.md), [Assistentes personalizados](../custom-assistants-and-knowledge/i-overview.md), [Solicitação eficaz](../effective-prompting/i-overview.md), [Instruções persistentes](../loop-prompting/iii-persistent-instructions.md).

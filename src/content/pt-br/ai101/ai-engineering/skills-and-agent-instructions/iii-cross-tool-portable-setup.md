@@ -1,35 +1,35 @@
 ---
 label: "III"
-subtitle: "Cross-tool portable setup"
+subtitle: "Exemplos de artefatos"
 group: "AI Applied"
 order: 4
 ---
-Cross-tool portable setup
+Configuração portátil entre ferramentas
 
-## 3. Cross-tool: Cursor, Claude Code, Codex
+## 3. Ferramenta cruzada: Cursor, Claude Code, Codex
 
-**Short answer:** yes — the **same idea** works across tools, but **folder paths differ**. The **`SKILL.md` format** is an open pattern ([Agent Skills](https://agentskills.io)); **`AGENTS.md`** is the cross-tool “README for agents.”
+**Resposta curta:** sim — a **mesma ideia** funciona em todas as ferramentas, mas **os caminhos das pastas são diferentes**. O **`SKILL.md`formato** é um padrão aberto ([Habilidades do agente](https://agentskills.io)); **`AGENTS.md`** é a ferramenta cruzada “README para agentes”.
 
-| Tool | Skills folder | Project context | Notes |
+| Ferramenta | Pasta de habilidades | Contexto do projeto | Notas |
 |------|---------------|-----------------|-------|
-| **Cursor** | `.cursor/skills/name/SKILL.md` or `~/.cursor/skills/` | `AGENTS.md`, `.cursor/rules/*.mdc` | Rules (`.mdc`) are Cursor-only |
-| **Claude Code** | `.claude/skills/name/SKILL.md` or `~/.claude/skills/` | `CLAUDE.md`, `AGENTS.md` | Invoke with `/skill-name`; same YAML frontmatter |
-| **OpenAI Codex** | Skills via Codex config / discovery | `AGENTS.md` (root + nested), `~/.codex/AGENTS.md` | Loads `AGENTS.md` chain automatically; 32 KiB default cap |
-| **GitHub Copilot** | Agent Skills (evolving) | `AGENTS.md`, `.github/copilot-instructions.md` | Prefer `AGENTS.md` for portability |
-| **Windsurf, Aider, others** | Varies | Often reads **`AGENTS.md`** | Check tool docs |
+| **Cursor** |`.cursor/skills/name/SKILL.md`ou`~/.cursor/skills/`|`AGENTS.md`,`.cursor/rules/*.mdc`| Regras (`.mdc`) são apenas Cursor |
+| **Código Claude** |`.claude/skills/name/SKILL.md`ou`~/.claude/skills/`|`CLAUDE.md`,`AGENTS.md`| Invocar com`/skill-name`; mesmo frontmatter YAML |
+| **Códice OpenAI** | Habilidades via configuração/descoberta do Codex |`AGENTS.md`(raiz + aninhado),`~/.codex/AGENTS.md`| Cargas`AGENTS.md`cadeia automaticamente; Limite padrão de 32 KiB |
+| **GitHub Copiloto** | Habilidades do agente (em evolução) |`AGENTS.md`,`.github/copilot-instructions.md`| Prefiro`AGENTS.md`para portabilidade |
+| **Windsurf, Aider, outros** | Varia | Lê frequentemente **`AGENTS.md`** | Verifique a documentação da ferramenta |
 
-### What ports vs what does not
+### Quais portas versus o que não funciona
 
-| Ports everywhere | Tool-specific |
+| Portos em todos os lugares | Específico da ferramenta |
 |------------------|---------------|
-| `AGENTS.md` body | `.cursor/rules/*.mdc` |
-| `SKILL.md` name, description, markdown body | Cursor `@` mention syntax |
-| Checklists, commands, templates | `disable-model-invocation` handling |
-| `docs/` context files | Personal skill paths (`~/.cursor/` vs `~/.claude/`) |
+|`AGENTS.md`corpo |`.cursor/rules/*.mdc`|
+|`SKILL.md`nome, descrição, corpo de redução | Cursor`@`mencionar sintaxe |
+| Listas de verificação, comandos, modelos |`disable-model-invocation`manipulação |
+|`docs/`arquivos de contexto | Caminhos de habilidades pessoais (`~/.cursor/`contra`~/.claude/`) |
 
-Paste Cursor-only rules into **`AGENTS.md`** or **`CLAUDE.md`** when teammates use other agents.
+Cole regras somente Cursor em **`AGENTS.md`** ou **`CLAUDE.md`** quando companheiros de equipe usam outros agentes.
 
-## Portable setup (one repo, many agents)
+## Configuração portátil (um repositório, muitos agentes)
 
 ```text
 repo/
@@ -43,16 +43,16 @@ repo/
     pr-review/SKILL.md           ← Claude Code
 ```
 
-### Sync strategies
+### Estratégias de sincronização
 
-| Strategy | Detail | Best when |
+| Estratégia | Detalhe | Melhor quando |
 |----------|--------|-----------|
-| **Duplicate** | Same `SKILL.md` in `.cursor/` and `.claude/` | Small team; few skills |
-| **Symlink** | One file, two paths (OS permitting) | Local dev on macOS/Linux |
-| **`docs/skills/` source** | Canonical copy; script copies on change | CI or pre-commit sync |
-| **`AGENTS.md` only** | No per-tool skills; workflows in linked docs | Light agent use |
+| **Duplicado** | Mesmo`SKILL.md`em`.cursor/`e`.claude/`| Equipe pequena; poucas habilidades |
+| **Link simbólico** | Um arquivo, dois caminhos (se OS permitir) | Desenvolvedor local no macOS/Linux |
+| **`docs/skills/`fonte** | Cópia canônica; cópias de script em mudança | CI ou sincronização pré-commit |
+| **`AGENTS.md`apenas** | Sem habilidades por ferramenta; fluxos de trabalho em documentos vinculados | Uso de agente leve |
 
-Example sync script (manual or CI):
+Exemplo de script de sincronização (manual ou CI):
 
 ```bash
 #!/bin/sh
@@ -64,24 +64,24 @@ for skill in docs/skills/*/; do
 done
 ```
 
-Document “run `./sync-skills.sh` after editing skills” in README.
+Documento “executar`./sync-skills.sh`após habilidades de edição” em README.
 
-Content in `SKILL.md` (name, description, checklist, templates) transfers well — only the **parent directory** changes.
+Conteúdo em`SKILL.md`(nome, descrição, lista de verificação, modelos) transfere bem - apenas o **diretório pai** muda.
 
-### What does *not* port directly
+### O que *não* é portado diretamente
 
-| Cursor-only | Use elsewhere as |
-|-------------|------------------|
-| `.cursor/rules/*.mdc` | Bullet list in `AGENTS.md` or `CLAUDE.md` |
-| `disable-model-invocation` in frontmatter | Claude Code: similar flags; Codex: manual skill config |
-| `@file` Cursor mentions | Claude Code `@` imports; Codex: paths in `AGENTS.md` |
+| Cursor-somente | Use em outro lugar como |
+|------------|------------------|
+|`.cursor/rules/*.mdc`| Lista com marcadores em`AGENTS.md`ou`CLAUDE.md`|
+|`disable-model-invocation`em frontmatter | Código Claude: bandeiras semelhantes; Codex: configuração de habilidade manual |
+|`@file`Cursor menciona | Código Claude`@`importações; Codex: caminhos em`AGENTS.md`|
 
-## Codex specifics
+## Especificidades do Codex
 
-- **`AGENTS.md`** at repo root (and nested dirs) is loaded **automatically** each run — closest to “always-on” context.
-- **Skills** in Codex are a separate layer (metadata + instructions); configure per [Codex docs](https://developers.openai.com/codex/guides/agents-md).
-- Run `codex /init` to scaffold `AGENTS.md`; keep under the size limit or raise `project_doc_max_bytes`.
-- **Monorepos:** add package-level `AGENTS.md` with local test commands; Codex walks up/down the tree.
+- **`AGENTS.md`** na raiz do repositório (e diretórios aninhados) é carregado **automaticamente** a cada execução - mais próximo do contexto “sempre ativo”.
+- **Habilidades** no Codex são uma camada separada (metadados + instruções); configurar de acordo com [documentos do Codex](https://developers.openai.com/codex/guides/agents-md).
+- Correr`codex /init`para andaime`AGENTS.md`; manter abaixo do limite de tamanho ou aumentar`project_doc_max_bytes`.
+- **Monorepos:** adiciona nível de pacote`AGENTS.md`com comandos de teste locais; Codex sobe e desce na árvore.
 
 ```text
 monorepo/
@@ -90,29 +90,29 @@ monorepo/
   apps/api/AGENTS.md        # go test ./..., OpenAPI location
 ```
 
-## Claude Code specifics
+## Especificidades do Código Claude
 
-- Same **`SKILL.md`** shape as Cursor: `name`, `description`, markdown body.
-- **`/skill-name`** runs a skill manually; good `description` → auto-load when relevant.
-- Long procedures belong in **skills**; stable facts in **`CLAUDE.md`** or **`AGENTS.md`**.
-- **`CLAUDE.md`** is not a substitute for skills — keep deploy/review runbooks in `.claude/skills/`.
+- Mesmo **`SKILL.md`** forma como Cursor:`name`,`description`, corpo de marcação.
+- **`/skill-name`** executa uma habilidade manualmente; bom`description`→ carregamento automático quando relevante.
+- Procedimentos longos pertencem a **habilidades**; fatos estáveis ​​​​em **`CLAUDE.md`** ou **`AGENTS.md`**.
+- **`CLAUDE.md`** não substitui habilidades — mantenha os runbooks de implantação/revisão em`.claude/skills/`.
 
-## Copilot and `.github/copilot-instructions.md`
+## Copiloto e`.github/copilot-instructions.md`
 
-Copilot may read **`.github/copilot-instructions.md`**. For portability, keep **`AGENTS.md`** as source of truth and either:
+O copiloto pode ler **`.github/copilot-instructions.md`**. Para portabilidade, mantenha **`AGENTS.md`** como fonte da verdade e:
 
-- Duplicate a short summary into `copilot-instructions.md`, or
-- Point Copilot users to `AGENTS.md` in team docs.
+- Duplicar um breve resumo em`copilot-instructions.md`, ou
+- Apontar usuários do Copilot para`AGENTS.md`nos documentos da equipe.
 
-Prefer one maintained file over three diverging copies.
+Prefira um arquivo mantido a três cópias divergentes.
 
-## Maintenance when tools update
+## Manutenção quando as ferramentas são atualizadas
 
-| Event | Action |
+| Evento | Ação |
 |-------|--------|
-| New team member on different IDE | Verify `AGENTS.md` + their tool’s skill folder |
-| Skill `description` stops triggering | Re-test in fresh session; add trigger synonyms |
-| Codex “context too large” | Trim `AGENTS.md`; link to `docs/` |
-| Process change (new test command) | Update `AGENTS.md` first, then skills that reference it |
+| Novo membro da equipe em diferentes IDE | Verificar`AGENTS.md`+ pasta de habilidades da ferramenta |
+| Habilidade`description`para de disparar | Teste novamente em uma nova sessão; adicionar sinônimos de gatilho |
+| Codex “contexto muito grande” | Aparar`AGENTS.md`; link para`docs/`|
+| Alteração de processo (novo comando de teste) | Atualizar`AGENTS.md`primeiro, depois as habilidades que o referenciam |
 
-**Next:** [Cursor skills, rules & AGENTS.md](iv-cursor-skills-rules-agents-md.md) for Cursor-only details.
+**Próximo:** [Cursor habilidades, regras e AGENTS.md](iv-cursor-skills-rules-agents-md.md) para detalhes somente de Cursor.

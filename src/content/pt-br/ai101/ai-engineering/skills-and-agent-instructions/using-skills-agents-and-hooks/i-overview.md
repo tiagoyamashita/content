@@ -1,20 +1,20 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Using skills, agents & hooks"
 order: 1
 ---
-Using skills, agents & hooks — overview
+Usando habilidades, agentes e ganchos — visão geral
 
-**Agent orchestration** at the project level: coordinate **AGENTS.md**, **skills**, **hooks**, and **scripts** so the right workflow runs at the right time. See [Agent orchestration](vi-agent-orchestration.md) for the full stack and patterns.
+**Orquestração de agentes** no nível do projeto: coordene **AGENTS.md**, **habilidades**, **ganchos** e **scripts** para que o fluxo de trabalho certo seja executado no momento certo. Consulte [Orquestração de agentes](vi-agent-orchestration.md) para a pilha completa e os padrões.
 
-Three different layers — **do not merge them into one file**. Each has its own trigger and job.
+Três camadas diferentes — **não as mescle em um arquivo**. Cada um tem seu próprio gatilho e trabalho.
 
-| Layer | File(s) | When it runs | Who starts it |
-|-------|---------|--------------|---------------|
-| **Agent briefing** | `AGENTS.md` (repo root) | Every agent session in this repo | Cursor / Claude Code automatically |
-| **Skill** | `.cursor/skills/<name>/SKILL.md` | When user prompt matches `description` | **User** (or explicit skill invoke) |
-| **Hook** | `.cursor/hooks.json` + `.cursor/hooks/*` | On events: shell, commit, edit, stop | **Product** — no user prompt |
+| Camada | Arquivo(s) | Quando é executado | Quem inicia |
+|-------|------------|-------------|---------------|
+| **Informações do agente** |`AGENTS.md`(raiz do repositório) | Cada sessão de agente neste repositório | Cursor / Código Claude automaticamente |
+| **Habilidade** |`.cursor/skills/<name>/SKILL.md`| Quando a solicitação do usuário corresponde`description`| **Usuário** (ou invocação de habilidade explícita) |
+| **Gancho** |`.cursor/hooks.json`+`.cursor/hooks/*`| Em eventos: shell, commit, edit, stop | **Produto** — sem solicitação do usuário |
 
 ```mermaid
 flowchart TB
@@ -26,35 +26,35 @@ flowchart TB
   Hook -->|allow| Session
 ```
 
-## Map of this submenu
+## Mapa deste submenu
 
-| Note | Focus |
+| Nota | Foco |
 |------|--------|
-| [Skills alone](ii-use-skills-alone.md) | On-demand workflows — user asks, skill loads |
-| [AGENTS.md alone](iii-use-agents-md-alone.md) | Standing repo context — no trigger phrase needed |
-| [Hooks on commit](iv-use-hooks-on-commit.md) | Automatic gates before `git commit` |
-| [Combine all three](v-combine-skills-agents-hooks.md) | End-to-end commit flow + when to use which |
-| [Agent orchestration](vi-agent-orchestration.md) | Full stack, patterns, loops, MCP + skills |
+| [Habilidades sozinhas](ii-use-skills-alone.md) | Fluxos de trabalho sob demanda – solicitações do usuário, cargas de habilidades |
+| [AGENTS.md sozinho](iii-use-agents-md-alone.md) | Contexto de repositório permanente - nenhuma frase de gatilho necessária |
+| [Ganchos no commit](iv-use-hooks-on-commit.md) | Portões automáticos antes`git commit`|
+| [Combine todos os três](v-combine-skills-agents-hooks.md) | Fluxo de commit ponta a ponta + quando usar qual |
+| [Orquestração de agentes](vi-agent-orchestration.md) | Pilha completa, padrões, loops, MCP + habilidades |
 
-**Runnable scripts + full hook implementation:** [Examples](../examples/i-overview.md) (copy `examples/.cursor/` to your project).
+**Scripts executáveis ​​+ implementação completa de gancho:** [Exemplos](../examples/i-overview.md) (cópia`examples/.cursor/`ao seu projeto).
 
-**Sample files to copy:** [sample/.cursor/](sample/.cursor/README.md) — minimal `AGENTS.md`, skills, and `hooks.json` layout.
+**Exemplos de arquivos para copiar:** [sample/.cursor/](sample/.cursor/README.md) - mínimo`AGENTS.md`, habilidades e`hooks.json`layout.
 
-## Quick picker
+## Seletor rápido
 
-| You want… | Use | Not |
+| Você quer… | Usar | Não |
 |-----------|-----|-----|
-| “Always know our test command” | `AGENTS.md` | Skill |
-| “Run PR review when I ask” | Skill | Hook |
-| “Block commit if `.env` staged” | Hook | Skill alone |
-| “Explain hook failure in chat” | Skill (companion) | Hook (hooks don’t chat) |
+| “Sempre conheça nosso comando de teste” |`AGENTS.md`| Habilidade |
+| “Execute a revisão PR quando eu pedir” | Habilidade | Gancho |
+| “Bloquear commit se`.env`encenado” | Gancho | Habilidade sozinha |
+| “Explique a falha do gancho no chat” | Habilidade (companheiro) | Gancho (ganchos não conversam) |
 
-## Study order
+## Ordem de estudo
 
-[Skills alone](ii-use-skills-alone.md) → [AGENTS.md alone](iii-use-agents-md-alone.md) → [Hooks on commit](iv-use-hooks-on-commit.md) → [Combine all three](v-combine-skills-agents-hooks.md) → [Agent orchestration](vi-agent-orchestration.md).
+[Habilidades sozinhas](ii-use-skills-alone.md) → [AGENTS.md sozinho](iii-use-agents-md-alone.md) → [Ganchos no commit](iv-use-hooks-on-commit.md) → [Combine todos os três](v-combine-skills-agents-hooks.md) → [Orquestração de agentes](vi-agent-orchestration.md).
 
-## Related
+## Relacionado
 
-- [Artifacts & why bother](../ii-artifacts-why-and-what.md)
-- [Cursor skills, rules & AGENTS.md](../iv-cursor-skills-rules-agents-md.md)
-- [Examples — parameterized scripts & logs](../examples/i-overview.md)
+- [Artefatos e por que se preocupar](../ii-artifacts-why-and-what.md)
+- [Cursor habilidades, regras e AGENTS.md](../iv-cursor-skills-rules-agents-md.md)
+- [Exemplos — scripts e logs parametrizados](../examples/i-overview.md)
