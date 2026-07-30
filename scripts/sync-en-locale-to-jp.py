@@ -612,8 +612,24 @@ def phase_translate(
     targets: list[Path] = []
     for path in iter_content_files(JP_ROOT):
         text, _, _ = read_preserve(path)
-        if force or needs_translation(text):
-            targets.append(path)
+        if not (force or needs_translation(text)):
+            continue
+        if path.name == "_meta.json" and not force:
+            try:
+                data = json.loads(text)
+            except json.JSONDecodeError:
+                targets.append(path)
+                continue
+            label = data.get("label")
+            if isinstance(label, str) and (
+                label in KEEP_GROUP_AS_IS
+                or looks_japanese(label)
+                or (len(CJK_RE.findall(label)) == 0 and len(label) <= 24)
+            ):
+                continue
+        targets.append(path)
+    # Prefer markdown bodies first so --limit batches make progress
+    targets.sort(key=lambda p: (0 if p.suffix == ".md" else 1, str(p)))
     if limit:
         targets = targets[:limit]
     print(f"translate candidates: {len(targets)} workers={workers}")
