@@ -1,17 +1,17 @@
 ---
 label: "VIII"
-subtitle: "Dynamic programming"
-group: "Data structures & algorithms"
+subtitle: "Programação dinâmica"
+group: "Estruturas de dados e algoritmos"
 order: 8
 ---
-Dynamic programming (DP)
-Solve optimization or counting problems by reusing answers to **overlapping subproblems**.
+Programação dinâmica (DP)
+Resolva problemas de otimização ou contagem reutilizando respostas para **subproblemas sobrepostos**.
 
-**Requirements**
-1. **Optimal substructure** — optimal solution built from optimal subsolutions.
-2. **Overlapping subproblems** — same subproblem appears many times in a naive recursion tree.
+**Requisitos**
+1. **Subestrutura ideal** — solução ideal construída a partir de subsoluções ideais.
+2. **Subproblemas sobrepostos** — o mesmo subproblema aparece muitas vezes em uma árvore de recursão ingênua.
 
-## 1. Top-down vs bottom-up
+## 1. De cima para baixo versus de baixo para cima
 
 ```mermaid
 flowchart LR
@@ -21,13 +21,13 @@ flowchart LR
   Tab[Tabulation bottom-up] --> Same
 ```
 
-| Style | Mechanism | Pros |
+| Estilo | Mecanismo | Prós |
 |-------|-----------|------|
-| **Memoization** | Recursion + cache (`Map` or array) | Fast to write |
-| **Tabulation** | Fill table in dependency order | No recursion depth; often faster |
+| **Memoização** | Recursão + cache (`Map`ou matriz) | Rápido para escrever |
+| **Tabulação** | Preencha a tabela em ordem de dependência | Sem profundidade de recursão; muitas vezes mais rápido |
 
-## 2. Fibonacci (toy example)
-Naive recursion **O(2ⁿ)**; memo or table **O(n)**.
+## 2. Fibonacci (exemplo de brinquedo)
+Recursão ingênua **O(2ⁿ)**; memorando ou tabela **O(n)**.
 
 ```java
 // Compile: javac --release 22 …
@@ -56,13 +56,13 @@ public static long fibTab(int n) {
 }
 ```
 
-## 3. 0/1 knapsack
-**n** items; item **i** has weight **wᵢ** and value **vᵢ**; capacity **W**. Each item **at most once**.
+## 3. Mochila 0/1
+**n** itens; o item **i** tem peso **wᵢ** e valor **vᵢ**; capacidade **W**. Cada item **no máximo uma vez**.
 
-**State:** `dp[i][c]` = max value using items `0..i-1` with capacity **c**.  
-**Transition:** skip item **i** or take it if it fits.
+**Estado:**`dp[i][c]`= valor máximo usando itens`0..i-1`com capacidade **c**.  
+**Transição:** pule o item **i** ou pegue-o se couber.
 
-**Time O(n · W)**, **space O(n · W)** (or O(W) with one row).
+**Tempo O(n · W)**, **espaço O(n · W)** (ou O(W) com uma linha).
 
 ```java
 // Compile: javac --release 22 …
@@ -81,8 +81,8 @@ public static int knapsack01(int[] weight, int[] value, int capacity) {
 }
 ```
 
-## 4. Longest common subsequence (LCS)
-**State:** `dp[i][j]` = LCS length of first **i** chars of **A** and first **j** of **B**.
+## 4. Subsequência comum mais longa (LCS)
+**Estado:**`dp[i][j]`= LCS comprimento dos primeiros caracteres **i** de **A** e do primeiro **j** de **B**.
 
 ```java
 // Compile: javac --release 22 …
@@ -101,18 +101,18 @@ public static int lcsLength(String a, String b) {
 }
 ```
 
-## 5. Edit distance (Levenshtein)
-Minimum insert / delete / replace to turn **A** into **B** — classic **2D DP**, **O(|A| · |B|)**.
+## 5. Editar distância (Levenshtein)
+Inserção/exclusão/substituição mínima para transformar **A** em **B** — clássico **2D DP**, **O(|A| · |B|)**.
 
-## 6. DP design checklist
-1. Define **state** (what subproblem means).
-2. Write **recurrence** + **base cases**.
-3. Decide iteration order (bottom-up) or memo keys (top-down).
-4. Track **time/space** in table size.
+## 6. Lista de verificação de design DP
+1. Defina **estado** (o que significa subproblema).
+2. Escreva **recorrência** + **casos base**.
+3. Decida a ordem da iteração (de baixo para cima) ou as chaves de memorando (de cima para baixo).
+4. Acompanhe **tempo/espaço** no tamanho da tabela.
 
-## 7. Solving with the JDK (already implemented)
+## 7. Resolvendo com o JDK (já implementado)
 
-There is **no** `DynamicProgramming.solve()` in Java. You use **arrays** and **maps** the JDK already provides:
+Não há **não**`DynamicProgramming.solve()`em Java. Você usa **arrays** e **maps** o JDK já fornece:
 
 ```java
 // Compile: javac --release 22 …
@@ -135,11 +135,11 @@ int ans = memo.get(key);
 // Edit distance / LCS — still nested loops on int[][]
 ```
 
-| DP need | JDK |
-|---------|-----|
-| 2D table | `int[][]`, `long[][]` |
-| Memoization | `HashMap`, `Map.computeIfAbsent` |
-| Initialize row | `Arrays.fill` |
-| Min/max in recurrence | `Math.min`, `Math.max` |
+| DP necessidade | JDK |
+|--------|-----|
+| Mesa 2D |`int[][]`,`long[][]`|
+| Memoização |`HashMap`,`Map.computeIfAbsent`|
+| Inicializar linha |`Arrays.fill`|
+| Mín/máx em recorrência |`Math.min`,`Math.max`|
 
-For **Fibonacci-scale** toy problems only, `Map` memo is enough; production DP stays **iterative tables** for stack safety.
+Apenas para problemas de brinquedos na **escala Fibonacci**,`Map`memorando é suficiente; produção DP permanece **tabelas iterativas** para segurança da pilha.

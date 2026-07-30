@@ -1,25 +1,25 @@
 ---
 label: "IV"
-subtitle: "Types of blockchains"
-group: "Cryptocurrency101"
+subtitle: "Tipos de blockchain"
+group: "Criptomoedas 101"
 order: 4
 ---
-Cryptocurrency101 — Part IV: Types of blockchains
-Blockchains differ by **who can join**, **how agreement is reached**, **what layer** they sit on, and **how state is modeled**. This page classifies the landscape and maps **this track’s networks** to each type.
+Cryptocurrency101 — Parte IV: Tipos de blockchains
+Blockchains diferem por **quem pode aderir**, **como o acordo é alcançado**, **em que camada** eles se situam e **como o estado é modelado**. Esta página classifica a paisagem e mapeia **as redes desta trilha** para cada tipo.
 
-Builds on **Part III** [How transactions are stored](iii-how-transactions-are-stored.md) (UTXO vs account).
+Baseia-se na **Parte III** [Como as transações são armazenadas](iii-how-transactions-are-stored.md) (UTXO vs conta).
 
-## 1. Permission — who can read and write
+## 1. Permissão — quem pode ler e escrever
 
-| Type | Read | Write (submit txs) | Run validator | Examples |
+| Tipo | Leia | Escreva (envie txs) | Execute o validador | Exemplos |
 |------|------|--------------------|---------------|----------|
-| **Public permissionless** | Anyone | Anyone (pay fee) | Open or stake-based | Bitcoin, Ethereum, BNB Chain, Cardano, TON, Tron |
-| **Public permissioned** | Anyone | Approved identities | Approved set | Some “enterprise” pilots |
-| **Private / consortium** | Members | Members | Known operators | Hyperledger-style networks |
+| **Público sem permissão** | Qualquer um | Qualquer pessoa (pagar taxa) | Aberto ou baseado em estacas | Bitcoin, Ethereum, Cadeia BNB, Cardano, TON, Tron |
+| **Permissão pública** | Qualquer um | Identidades aprovadas | Conjunto aprovado | Alguns pilotos “empresariais” |
+| **Particular/consórcio** | Membros | Membros | Operadores conhecidos | Redes estilo Hyperledger |
 
-This track focuses on **public** chains where you deploy **FeeSplitter**-style contracts and use public explorers.
+Este curso se concentra em cadeias **públicas** onde você implanta contratos no estilo **FeeSplitter** e usa exploradores públicos.
 
-## 2. Layer — L1, L2, sidechains
+## 2. Camada — L1, L2, cadeias laterais
 
 ```text
                     ┌─────────────────┐
@@ -32,44 +32,44 @@ This track focuses on **public** chains where you deploy **FeeSplitter**-style c
                     └─────────────────┘
 ```
 
-| Layer | Role | Trade-off |
+| Camada | Função | Troca |
 |-------|------|-----------|
-| **L1 (base layer)** | Consensus, security, native asset | Higher fees, highest trust anchor |
-| **L2** | Batches many txs, posts proof/state to L1 | Cheaper; extra bridge / operator assumptions |
-| **Sidechain** | Separate chain with own validators | Often faster; security not identical to L1 |
+| **L1 (camada base)** | Consenso, segurança, ativo nativo | Taxas mais altas, âncora de maior confiança |
+| **L2** | Lotes de muitos txs, posta prova/estado em L1 | Mais barato; suposições extras de ponte/operador |
+| **Cadeia lateral** | Cadeia separada com validadores próprios | Muitas vezes mais rápido; segurança não é idêntica a L1 |
 
-| Network in this track | Layer | Notes |
+| Rede nesta faixa | Camada | Notas |
 |-----------------------|-------|-------|
-| [BNB Chain](networks/bnb/i-overview.md) | **L1** (EVM) | Own validators; EVM-compatible |
-| [Tron](networks/tron/i-overview.md) | **L1** (TVM) | EVM-like Solidity; energy/bandwidth model |
-| [TON](networks/ton/i-overview.md) | **L1** | Sharded design; message-based contracts |
+| [BNB Cadeia](networks/bnb/i-overview.md) | **L1** (EVM) | Validadores próprios; EVM-compatível |
+| [Tron](networks/tron/i-overview.md) | **L1** (TVM) | EVM-como Solidez; modelo energia/largura de banda |
+| [TON](networks/ton/i-overview.md) | **L1** | Design fragmentado; contratos baseados em mensagens |
 | [Cardano](networks/ada/i-overview.md) | **L1** | eUTXO; PoS (Ouroboros) |
 
-## 3. Consensus — how the next block is chosen
+## 3. Consenso — como o próximo bloco é escolhido
 
-You do not need to implement consensus to write contracts — but it explains **finality** and **fees**.
+Você não precisa implementar o consenso para redigir contratos — mas isso explica a **finalidade** e as **taxas**.
 
-| Family | Idea | Used by (examples) |
+| Família | Idéia | Usado por (exemplos) |
 |--------|------|-------------------|
-| **Proof of Work (PoW)** | Miners spend compute to find valid block | Bitcoin (historically many chains) |
-| **Proof of Stake (PoS)** | Staked validators propose/vote on blocks | Ethereum post-merge, Cardano, BNB (PoSA) |
-| **Delegated PoS (DPoS)** | Token holders vote for limited validator set | Tron (SR model) |
-| **Other / hybrid** | Combinations, BFT committees | Various L1s |
+| **Prova de Trabalho (PoW)** | Mineiros gastam computação para encontrar bloco válido | Bitcoin (historicamente muitas cadeias) |
+| **Prova de Participação (PoS)** | Validadores apostados propõem/votam em blocos | Pós-fusão Ethereum, Cardano, BNB (PoSA) |
+| **PoS delegado (DPoS)** | Detentores de tokens votam em conjunto limitado de validadores | Tron (modelo SR) |
+| **Outro/híbrido** | Combinações, comitês BFT | Vários L1s |
 
-| Question | Why you care |
-|----------|--------------|
-| **Block time** | How fast “1 confirmation” appears |
-| **Finality** | When reversal becomes impractical |
-| **Validator set** | Centralization vs decentralization trade-off |
+| Pergunta | Por que você se importa |
+|----------|-------------|
+| **Tempo de bloqueio** | Com que rapidez aparece “1 confirmação” |
+| **Finalidade** | Quando a reversão se torna impraticável |
+| **Conjunto validador** | Compensação entre centralização e descentralização |
 
-## 4. Execution model — how smart contracts run
+## 4. Modelo de execução – como funcionam os contratos inteligentes
 
-| Model | Chains | Developer experience |
+| Modelo | Correntes | Experiência do desenvolvedor |
 |-------|--------|----------------------|
-| **EVM** (stack VM) | Ethereum, **BNB**, many L2s | **Solidity**, Hardhat, Foundry |
-| **EVM-like TVM** | **Tron** | Solidity + TronWeb; energy/bandwidth |
-| **TON VM** | **TON** | **FunC**, **Tact**; messages between contracts |
-| **eUTXO** | **Cardano** | **Aiken**, Plutus — validators on outputs |
+| **EVM** (pilha VM) | Ethereum, **BNB**, muitos L2s | **Solidity**, Capacete de Segurança, Fundição |
+| **EVM-como TVM** | **Tron** | Solidez + TronWeb; energia/largura de banda |
+| **TON VM** | **TON** | **FunC**, **Tato**; mensagens entre contratos |
+| **eUTXO** | **Cardano** | **Aiken**, Plutus — validadores em resultados |
 
 ```plantuml
 @startuml
@@ -85,65 +85,65 @@ package "eUTXO validators" {
 @enduml
 ```
 
-### EVM family (BNB, Tron)
+### Família EVM (BNB, Tron)
 
-- One **contract address** with **storage** and **payable** functions
-- **`msg.value`** carries native coin
-- **`call` / `transfer`** send to other accounts
-- Same **fee-split** Solidity pattern with small deployment differences
+- Um **endereço de contrato** com funções de **armazenamento** e **a pagar**
+- **`msg.value`** carrega moeda nativa
+- **`call`-&#09;o`transfer`**enviar para outras contas
+- Mesmo padrão de solidez de **divisão de taxas** com pequenas diferenças de implantação
 
 ### TON
 
-- **Accounts** and **messages** between contracts
-- Contracts can reject or bounce messages
-- Jettons = token standard (analogous to ERC-20)
+- **Contas** e **mensagens** entre contratos
+- Os contratos podem rejeitar ou devolver mensagens
+- Jettons = token padrão (análogo a ERC-20)
 
 ### Cardano eUTXO
 
-- Logic validates **that outputs** of a transaction are correct
-- No global `msg.value` — you build **outputs** with correct amounts
-- **Datum** carries state; **redeemer** carries call args
+- A lógica valida **que as saídas** de uma transação estão corretas
+- Não global`msg.value`— você cria **resultados** com quantidades corretas
+- **Datum** carrega estado; **redentor** carrega argumentos de chamada
 
-See comparison in [Fee split pattern](v-fee-split-pattern.md).
+Veja a comparação em [Padrão de divisão de taxas](v-fee-split-pattern.md).
 
-## 5. Token standards by chain type
+## 5. Padrões de token por tipo de cadeia
 
-| Chain | Native coin | Fungible token standard |
-|-------|-------------|-------------------------|
-| BNB Chain | BNB | BEP-20 (ERC-20 compatible) |
+| Corrente | Moeda nativa | Padrão de token fungível |
+|-------|-------------|-------------|
+| BNB Cadeia | BNB | BEP-20 (ERC-20 compatível) |
 | Tron | TRX | TRC-20 |
 | TON | TON | Jettons |
-| Cardano | ADA | Native assets on UTXO |
+| Cardano | ADA | Ativos nativos em UTXO |
 
-Native coin always pays **network fees**; tokens move via contract or ledger rules.
+A moeda nativa sempre paga **taxas de rede**; os tokens são movidos por meio de regras de contrato ou razão.
 
-## 6. Comparison — networks in this track
+## 6. Comparação - redes nesta faixa
 
-| | **BNB / Tron** | **TON** | **Cardano (ADA)** |
+| | **BNB/Tron** | **TON** | **Cardano (ADA)** |
 |---|----------------|---------|-------------------|
-| **Ledger model** | Account | Account + async messages | **eUTXO** |
-| **Language** | Solidity | Tact (high level) | Aiken / Plutus |
-| **Gas / fees** | BNB gas / TRX energy | TON compute + storage | ADA tx fee + min-ADA per output |
-| **Tooling** | Hardhat, MetaMask / TronLink | Blueprint, Tonkeeper | Aiken, Lucid |
-| **Best tutorial path** | Closest to Ethereum docs | Different message model | Different mental model |
+| **Modelo razão** | Conta | Conta + mensagens assíncronas | **eUTXO** |
+| **Idioma** | Solidez | Tato (alto nível) | Aiken / Plutus |
+| **Gás / taxas** | BNB gás / TRX energia | TON computação + armazenamento | ADA taxa de transferência + min-ADA por produção |
+| **Ferramentas** | Capacete de segurança, MetaMask / TronLink | Projeto, Tonkeeper | Aiken, Lúcido |
+| **Melhor caminho tutorial** | Mais próximo dos documentos do Ethereum | Modelo de mensagem diferente | Modelo mental diferente |
 
-**Pick one network** to learn deployment first — [BNB Chain](networks/bnb/i-overview.md) is the closest to mainstream Ethereum tutorials.
+**Escolha uma rede** para aprender a implantação primeiro — [BNB Chain](networks/bnb/i-overview.md) é o mais próximo dos tutoriais convencionais do Ethereum.
 
-## 7. Choosing a chain (engineering lens)
+## 7. Escolhendo uma corrente (lente de engenharia)
 
-| Need | Often lean toward |
+| Necessidade | Muitas vezes inclina-se para |
 |------|-------------------|
-| **Solidity + EVM tooling** | BNB Chain, Tron |
-| **Low fees, Telegram ecosystem** | TON |
-| **Formal methods / UTXO audit story** | Cardano |
-| **Maximum DeFi liquidity** | Ethereum L1 or large L2 (not a separate page in this track) |
-| **Regulated enterprise private ledger** | Permissioned chain — out of scope here |
+| **Solidez + ferramentas EVM** | BNB Corrente, Tron |
+| **Taxas baixas, ecossistema Telegram** | TON |
+| **Métodos formais / UTXO história de auditoria** | Cardano |
+| **Liquidez DeFi máxima** | Ethereum L1 ou grande L2 (não é uma página separada nesta faixa) |
+| **Registro privado empresarial regulamentado** | Cadeia permitida — fora do escopo aqui |
 
-None of these choices remove **audit**, **testnet**, or **legal** review — see [Overview — safety](i-overview.md).
+Nenhuma dessas opções remove **auditoria**, **testnet** ou revisão **legal** — consulte [Visão geral — segurança](i-overview.md).
 
-## 8. Related
+## 8. Relacionado
 
-- **Part III** — [How transactions are stored](iii-how-transactions-are-stored.md)
-- **Part V** — [Fee split pattern](v-fee-split-pattern.md)
-- **Part VI** — [Deploy & hosting](vi-deploy-pricing-and-hosting.md)
-- Network deep dives: [BNB](networks/bnb/i-overview.md) · [Tron](networks/tron/i-overview.md) · [TON](networks/ton/i-overview.md) · [Cardano](networks/ada/i-overview.md)
+- **Parte III** — [Como as transações são armazenadas](iii-how-transactions-are-stored.md)
+- **Parte V** — [Padrão de divisão de taxas](v-fee-split-pattern.md)
+- **Parte VI** — [Implantação e hospedagem](vi-deploy-pricing-and-hosting.md)
+- Aprofundamentos da rede: [BNB](networks/bnb/i-overview.md) · [Tron](networks/tron/i-overview.md) · [TON](networks/ton/i-overview.md) · [Cardano](networks/ada/i-overview.md)

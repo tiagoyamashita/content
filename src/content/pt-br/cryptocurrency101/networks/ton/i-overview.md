@@ -1,29 +1,29 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "TON"
 order: 1
 ---
-TON — overview
-**The Open Network (TON)** uses the **TON VM**. High-level contracts are usually written in **Tact** (recommended) or lower-level **FunC**. Native coin is **TON**; fungible tokens are **Jettons**.
+TON — visão geral
+**A Rede Aberta (TON)** usa **TON VM**. Contratos de alto nível geralmente são escritos em **Tact** (recomendado) ou **FunC** de nível inferior. A moeda nativa é **TON**; tokens fungíveis são **Jettons**.
 
-Parent track: [Cryptocurrency101 overview](../../i-overview.md).
+Trilha principal: [Visão geral do Cryptocurrency101](../../i-overview.md).
 
-## Network profile
+## Perfil de rede
 
 | | **TON** |
 |---|---------|
-| **Type** | Layer-1, sharded (workchains) |
-| **Languages** | **Tact** (primary for apps), **FunC** (lower level) |
-| **Tooling** | Blueprint, TON SDK, Tonkeeper |
-| **Native coin** | TON (nanotons internally) |
+| **Tipo** | Camada 1, fragmentada (cadeias de trabalho) |
+| **Idiomas** | **Tact** (principal para aplicativos), **FunC** (nível inferior) |
+| **Ferramentas** | Projeto, TON SDK, Tonkeeper |
+| **Moeda nativa** | TON (nanotons internamente) |
 | **Tokens** | Jettons |
 
-## Account + message model
+## Conta + modelo de mensagem
 
-Contracts communicate via **messages** (not only external calls). Incoming value arrives in **`context().value`**; you **send** outputs with `send()`.
+Os contratos se comunicam por **mensagens** (não apenas por chamadas externas). O valor recebido chega em **`context().value`**; você **envia** resultados com`send()`.
 
-## Fee split pattern
+## Padrão de divisão de taxas
 
 ```plantuml
 @startuml
@@ -39,7 +39,7 @@ SC -> REC: send remainder
 @enduml
 ```
 
-## Example — Tact
+## Exemplo - Tato
 
 ```tact
 import "@stdlib/deploy";
@@ -87,74 +87,74 @@ contract FeeSplitter with Deployable {
 }
 ```
 
-| Concept | TON |
-|---------|-----|
-| **`context().value`** | TON attached to this message |
-| **`SendPayGasSeparately`** | Gas paid from contract balance — common pattern |
-| **Deploy** | Blueprint: `npx blueprint run deployFeeSplitter` |
+| Conceito | TON |
+|--------|-----|
+| **`context().value`** | TON anexado a esta mensagem |
+| **`SendPayGasSeparately`** | Gás pago a partir do saldo do contrato — padrão comum |
+| **Implantar** | Projeto:`npx blueprint run deployFeeSplitter`|
 
-### FunC (lower level — sketch)
+### FunC (nível inferior — esboço)
 
-FunC uses **cell** messages and explicit **send_raw_message** — more boilerplate. Prefer **Tact** unless you maintain legacy contracts.
+FunC usa mensagens **cell** e **send_raw_message** explícitas – mais clichê. Prefira o **Tact**, a menos que você mantenha contratos legados.
 
 ```text
 ;; FunC: same math — fee = amount * feeBps / 10000
 ;; two outbound messages with split values
 ```
 
-## Jetton fee split (idea)
+## Divisão de taxas do Jetton (ideia)
 
-1. User sends Jetton transfer to contract wallet.  
-2. Contract Jetton wallet receives notification.  
-3. Contract sends fee Jettons to treasury and remainder to recipient (two `transfer` messages).
+1. O usuário envia a transferência do Jetton para a carteira do contrato.  
+2. A carteira Contract Jetton recebe notificação.  
+3. O contrato envia Jettons de taxa para a tesouraria e o restante para o destinatário (dois`transfer`mensagens).
 
-Jetton flows add wallet contracts — start with native TON split first.
+Os fluxos Jetton adicionam contratos de carteira – comece primeiro com a divisão TON nativa.
 
-## Deploy pricing
+## Implantar preços
 
-TON charges **gas** (computation) plus **storage** rent for contract code and data on-chain. Paid in **TON** — no separate server.
+TON cobra **gás** (computação) mais aluguel de **armazenamento** para código de contrato e dados na cadeia. Pago em **TON** — sem servidor separado.
 
-| Item | Typical range (2026) | Notes |
+| Artigo | Faixa típica (2026) | Notas |
 |------|----------------------|-------|
-| **Simple Tact contract deploy** | **~$0.50 – $5** USD | Small FeeSplitter-style |
-| **Complex Jetton + wallets** | **$5 – $30+** | Multiple contracts |
-| **Each incoming `Pay` message** | **~$0.01 – $0.10** | Forward fees + storage refresh |
-| **TON testnet** | **$0** | Faucet TON |
+| **Implantação de contrato Simple Tact** | **~$0,50 – $5** USD | Estilo FeeSplitter pequeno |
+| **Jetton complexo + carteiras** | **$5 – $30+** | Vários contratos |
+| **Cada entrada`Pay`mensagem** | **~$0,01 – $0,10** | Taxas futuras + atualização de armazenamento |
+| **TON rede de teste** | **$0** | Torneira TON |
 
-### Cost components
+### Componentes de custo
 
 ```text
 deploy  ≈  forward_fee + storage_fee (code cells) + execution
 message ≈  gas for send() + value forwarded
 ```
 
-| Component | Meaning |
+| Componente | Significado |
 |-----------|---------|
-| **Storage fee** | One-time-ish cost to store bytecode on-chain |
-| **Compute fee** | VM steps during deploy and each message |
-| **Forward fee** | Paid for outbound internal messages |
+| **Taxa de armazenamento** | Custo único para armazenar bytecode na cadeia |
+| **Taxa de cálculo** | VM etapas durante a implantação e cada mensagem |
+| **Taxa de encaminhamento** | Pago por mensagens internas enviadas |
 
-Blueprint deploy output shows **estimated TON** before broadcast:
+A saída de implantação do blueprint mostra **IT0__** estimado antes da transmissão:
 
 ```text
 npx blueprint run deployFeeSplitter --testnet
 # review "Total cost" in terminal
 ```
 
-| FeeSplitter (Tact) | Order of magnitude |
-|--------------------|--------------------|
-| Deploy | ~0.05 – 0.5 TON |
-| One `Pay` handling | ~0.005 – 0.05 TON (excluding forwarded value) |
+| FeeSplitter (Tato) | Ordem de grandeza |
+|--------------------|-----|
+| Implantar | ~0,05 – 0,5 TON |
+| Um`Pay`manipulação | ~0,005 – 0,05 TON (excluindo valor encaminhado) |
 
-Use [TON viewer](https://tonviewer.com/) on testnet to inspect deploy transaction fees.
+Use [visualizador TON](https://tonviewer.com/) na testnet para inspecionar taxas de transação de implantação.
 
-## Compare
+## Comparar
 
-| | **TON** | **BNB / Tron** |
+| | **TON** | **BNB /Tron** |
 |---|---------|----------------|
-| Language | Tact / FunC | Solidity |
-| Model | Messages + async | Synchronous call |
+| Idioma | Tato / DiversãoC | Solidez |
+| Modelo | Mensagens + assíncronas | Chamada síncrona |
 
-## Next
+## Próximo
 
-[Cardano (ADA)](../ada/i-overview.md) — UTXO / Aiken, [Examples — TON 2% deploy](../../examples/iii-ton-two-percent-fee-split.md), or [overview](../../i-overview.md).
+[Cardano (ADA)](../ada/i-overview.md) — UTXO / Aiken, [Exemplos — TON implantação de 2%](../../examples/iii-ton-two-percent-fee-split.md) ou [visão geral](../../i-overview.md).

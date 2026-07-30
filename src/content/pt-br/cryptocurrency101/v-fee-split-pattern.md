@@ -1,13 +1,13 @@
 ---
 label: "V"
-subtitle: "Fee split pattern"
-group: "Cryptocurrency101"
+subtitle: "Padrão de divisão de taxas"
+group: "Criptomoedas 101"
 order: 5
 ---
-Cryptocurrency101 — Part V: Fee split pattern
-Every **network** page in this track implements the same business rule: split an incoming payment into a **protocol fee** and a **recipient remainder**.
+Cryptocurrency101 — Parte V: Padrão de divisão de taxas
+Cada página de **rede** nesta faixa implementa a mesma regra de negócios: dividir um pagamento recebido em uma **taxa de protocolo** e um **resto do destinatário**.
 
-## 1. The rule
+## 1. A regra
 
 ```text
 Incoming payment (amount)
@@ -15,11 +15,11 @@ Incoming payment (amount)
   → remainder = amount - fee              → recipient
 ```
 
-| Term | Meaning |
+| Prazo | Significado |
 |------|---------|
-| **`feeBps`** | Fee in **basis points** (100 bps = 1%) |
-| **`feeAccount`** | Treasury / protocol wallet |
-| **`recipient`** | End payee |
+| **`feeBps`** | Comissão em **pontos base** (100 pontos de base = 1%) |
+| **`feeAccount`** | Carteira de tesouraria/protocolo |
+| **`recipient`** | Fim do beneficiário |
 
 ```plantuml
 @startuml
@@ -36,55 +36,55 @@ SC -> REC: send remainder
 @enduml
 ```
 
-## 2. How networks implement it
+## 2. Como as redes o implementam
 
 | | **BNB / Tron (EVM/TVM)** | **TON** | **Cardano (eUTXO)** |
 |---|--------------------------|---------|---------------------|
-| **Model** | Account — `msg.value` | Message value + sends | **Outputs** must split value |
-| **Language** | Solidity | Tact | Aiken / Plutus |
-| **Failure mode** | `require` / revert | Bounce / exit code | Phase-2 validation fail |
+| **Modelo** | Conta -`msg.value`| Valor da mensagem + envios | **Saídas** devem dividir o valor |
+| **Idioma** | Solidez | Tato | Aiken / Plutus |
+| **Modo de falha** |`require`/ reverter | Código de rejeição/saída | Falha na validação da fase 2 |
 
-**EVM chains (BNB, Tron)** look almost the same in code — differences are RPC, gas token, and tooling.
+**EVM cadeias (BNB, Tron)** parecem quase iguais no código - as diferenças são RPC, token de gás e ferramentas.
 
-**Cardano** validators **check** that a transaction’s **outputs** split value correctly — logic feels different from `msg.value` in Solidity.
+Os validadores **Cardano** **verificam** se as **saídas** de uma transação dividem o valor corretamente - a lógica parece diferente de`msg.value`em Solidez.
 
-See [Types of blockchains](iv-types-of-blockchains.md) for the account vs UTXO mental model.
+Veja [Tipos de blockchains](iv-types-of-blockchains.md) para o modelo mental conta vs UTXO.
 
-## 3. Fee math for users
+## 3. Taxas matemáticas para usuários
 
-For payment amount **A** and fee rate **bps**:
+Para valor de pagamento **A** e taxa de taxa **bps**:
 
 ```text
 fee       = A × bps / 10000
 remainder = A - fee
 ```
 
-| User sends | Contract behavior |
+| O usuário envia | Comportamento contratual |
 |------------|-------------------|
-| **Too little** (`msg.value < intended A`) | May still run — split on **actual** `msg.value` |
-| **Zero** | Revert — `require(msg.value > 0)` on EVM |
-| **Enough value, no gas token** | Tx fails — see [Failed transactions & funds](vii-failed-transactions-and-funds.md) |
+| **Muito pouco** (`msg.value < intended A`) | Ainda pode ser executado - dividido em **real**`msg.value`|
+| **Zero** | Reverter —`require(msg.value > 0)`em EVM |
+| **Valor suficiente, sem token de gás** | Falha na transferência — consulte [Transações e fundos com falha](vii-failed-transactions-and-funds.md) |
 
-**UX tip:** Show **“You pay: A + estimated network fee ~X”** in the dApp before confirm.
+**UX dica:** Mostre **“Você paga: A + taxa de rede estimada ~X”** no dApp antes de confirmar.
 
-## 4. Network pages
+## 4. Páginas de rede
 
-| Network | Page |
-|---------|------|
-| BNB Chain | [BNB — overview](networks/bnb/i-overview.md) |
-| Tron | [Tron — overview](networks/tron/i-overview.md) |
-| TON | [TON — overview](networks/ton/i-overview.md) |
-| Cardano | [Cardano — overview](networks/ada/i-overview.md) |
+| Rede | Página |
+|--------|------|
+| BNB Cadeia | [BNB — visão geral](networks/bnb/i-overview.md) |
+| Tron | [Tron – visão geral](networks/tron/i-overview.md) |
+| TON | [TON — visão geral](networks/ton/i-overview.md) |
+| Cardano | [Cardano — visão geral](networks/ada/i-overview.md) |
 
-## 5. Full deploy examples (2% app / 98% to)
+## 5. Exemplos de implantação completa (2% aplicativo / 98% para)
 
-| Example | Stack |
-|---------|--------|
-| [Tron — 2% fee split](examples/ii-tron-two-percent-fee-split.md) | Solidity, TronBox, `pay(toAccount)` |
-| [TON — 2% fee split](examples/iii-ton-two-percent-fee-split.md) | Tact, Blueprint, `Pay{ toAccount }` |
+| Exemplo | Pilha |
+|--------|--------|
+| [Tron – divisão de taxas de 2%](examples/ii-tron-two-percent-fee-split.md) | Solidez, TronBox,`pay(toAccount)`|
+| [TON — divisão de taxas de 2%](examples/iii-ton-two-percent-fee-split.md) | Tato, Projeto,`Pay{ toAccount }`|
 
-## 6. Related
+## 6. Relacionado
 
-- **Part IV** — [Types of blockchains](iv-types-of-blockchains.md)
-- **Part VI** — [Deploy & hosting](vi-deploy-pricing-and-hosting.md)
-- **Part VII** — [Failed transactions & funds](vii-failed-transactions-and-funds.md)
+- **Parte IV** — [Tipos de blockchains](iv-types-of-blockchains.md)
+- **Parte VI** — [Implantação e hospedagem](vi-deploy-pricing-and-hosting.md)
+- **Parte VII** — [Transações e fundos com falha](vii-failed-transactions-and-funds.md)

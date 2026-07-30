@@ -1,25 +1,25 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Cardano (ADA)"
 order: 1
 ---
-Cardano (ADA) — overview
-**Cardano** uses the **eUTXO** model — value lives in **outputs**, not a single contract balance. Validators (on-chain scripts) **check** that a transaction is allowed; **Aiken** is a modern language for writing them. **Plutus** (Haskell) is the original platform language.
+Cardano (ADA) — visão geral
+**Cardano** usa o modelo **eUTXO** — o valor reside em **produtos**, não em um único saldo de contrato. Validadores (scripts on-chain) **verificam** se uma transação é permitida; **Aiken** é uma linguagem moderna para escrevê-los. **Plutus** (Haskell) é a linguagem original da plataforma.
 
-Parent track: [Cryptocurrency101 overview](../../i-overview.md).
+Trilha principal: [Visão geral do Cryptocurrency101](../../i-overview.md).
 
-## Network profile
+## Perfil de rede
 
 | | **Cardano** |
 |---|-------------|
-| **Type** | Layer-1, eUTXO |
-| **Languages** | **Aiken** (recommended), **Plutus Tx** (Haskell) |
-| **Tooling** | cardano-cli, Mesh SDK, Blockfrost |
-| **Native coin** | ADA (lovelace: 1 ADA = 1_000_000 lovelace) |
-| **Tokens** | Native assets on UTXO (policy ID + asset name) |
+| **Tipo** | Camada 1, eUTXO |
+| **Idiomas** | **Aiken** (recomendado), **Plutus Tx** (Haskell) |
+| **Ferramentas** | cardano-cli, malha SDK, Blockfrost |
+| **Moeda nativa** | ADA (amor: 1 ADA = 1_000_000 amor) |
+| **Tokens** | Ativos nativos em UTXO (política ID + nome do ativo) |
 
-## How eUTXO differs from EVM
+## Como eUTXO difere de EVM
 
 ```text
 EVM (BNB/Tron):  contract holds balance → pay() splits inside contract
@@ -30,9 +30,9 @@ Cardano:         transaction has INPUTS and OUTPUTS
                  one output → recipient (remainder)
 ```
 
-You often **build the transaction off-chain** (dApp or wallet); the **validator** proves the split is correct.
+Muitas vezes você **cria a transação fora da cadeia** (dApp ou carteira); o **validador** prova que a divisão está correta.
 
-## Fee split pattern
+## Padrão de divisão de taxas
 
 ```plantuml
 @startuml
@@ -51,9 +51,9 @@ V -> REC: output lovelace = remainder
 @enduml
 ```
 
-## Example — Aiken validator (sketch)
+## Exemplo — Validador Aiken (esboço)
 
-Validator checks that spending from the contract input splits value correctly. **Datum** holds config; **redeemer** carries recipient intent.
+O validador verifica se os gastos provenientes da entrada do contrato dividem o valor corretamente. **Datum** contém configuração; **redentor** carrega a intenção do destinatário.
 
 ```aiken
 use aiken/crypto.{VerificationKeyHash}
@@ -103,15 +103,15 @@ validator fee_split(config: Config) {
 }
 ```
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **`Config`** | On-chain datum — fee account pubkey hash, `fee_bps` |
-| **`Redeemer`** | Who receives remainder this spend |
-| **`spend` validator** | Returns `True` only if outputs match fee math |
+| **`Config`** | Dados on-chain – hash pubkey da conta de taxa,`fee_bps`|
+| **`Redeemer`** | Quem recebe o restante desse gasto |
+| **`spend`validador** | Devoluções`True`somente se os resultados corresponderem à matemática das taxas |
 
-Full production validators also handle **minimum ADA** per output, **native tokens**, and **reference inputs** — see [Aiken docs](https://aiken-lang.org).
+Validadores de produção completa também lidam com **um mínimo de ADA** por saída, **tokens nativos** e **entradas de referência** — consulte [documentos da Aiken](https://aiken-lang.org).
 
-## Off-chain transaction build (concept)
+## Construção de transação fora da cadeia (conceito)
 
 ```text
 1. Payer selects UTXO with amount lovelace
@@ -124,74 +124,74 @@ Full production validators also handle **minimum ADA** per output, **native toke
 5. Attach datum + redeemer; sign; submit
 ```
 
-Libraries (**Mesh**, **Lucid**) automate UTXO selection and balancing.
+Bibliotecas (**Mesh**, **Lucid**) automatizam a seleção e o balanceamento de UTXO.
 
-## Plutus (Haskell) — same logic
+## Plutus (Haskell) — mesma lógica
 
-Plutus Tx compiles to the same on-chain script; syntax is heavier:
+Plutus Tx compila no mesmo script on-chain; a sintaxe é mais pesada:
 
 ```haskell
 -- Plutus: validator checks output values — same fee/remainder rules as Aiken
 ```
 
-New projects often choose **Aiken** for clarity and faster compile times.
+Novos projetos geralmente escolhem **Aiken** para maior clareza e tempos de compilação mais rápidos.
 
-## Deploy pricing
+## Implantar preços
 
-On Cardano you pay **ADA transaction fees** to include the **validator script** in a transaction (mint / publish). There is **no EVM-style single deploy gas meter** — cost scales with **transaction size** and **script bytes**. Still **no server** to host the script.
+No Cardano você paga **ADA taxas de transação** para incluir o **script validador** em uma transação (cunhar/publicar). **Não há medidor de gás de implantação única no estilo EVM-** — escalas de custo com **tamanho da transação** e **bytes de script**. Ainda **não há servidor** para hospedar o script.
 
-| Item | Typical range (2026) | Notes |
+| Artigo | Faixa típica (2026) | Notas |
 |------|----------------------|-------|
-| **Publish simple Aiken validator** | **~$2 – $15** USD | Script size + min ADA in script UTXO |
-| **Large Plutus script** | **$15 – $100+** | Heavy bytecode |
-| **Each spend (use validator)** | **~$0.15 – $0.50** | Tx fee + min-ADA outputs |
-| **Preprod / preview testnet** | **$0** | Faucet ADA |
+| **Publicar validador Aiken simples** | **~$2 – $15** USD | Tamanho do script + min ADA no script UTXO |
+| **Script Plutus grande** | **$15 – $100+** | Bytecode pesado |
+| **Cada gasto (usar validador)** | **~$0,15 – $0,50** | Taxa de Tx + min-ADA saídas |
+| **Pré-produção/testnet de visualização** | **$0** | Torneira ADA |
 
-### What drives cost
+### O que impulsiona o custo
 
 ```text
 tx_fee_lovelace ≈ a + b × tx_size_bytes
 min_ada         ≈  per output (script UTXO needs deposit)
 ```
 
-| Factor | Effect |
+| Fator | Efeito |
 |--------|--------|
-| **Script size** | Larger Aiken/Plutus → bigger tx → higher fee |
-| **Min ADA** | Outputs with tokens/scripts lock ~1–3+ ADA until spent |
-| **Reference scripts** | Reuse script on-chain — pay once, reference later (CIP-33) |
+| **Tamanho do roteiro** | Maior Aiken/Plutus → maior tx → taxa mais alta |
+| **Mín ADA** | Saídas com tokens/scripts bloqueiam ~1–3+ ADA até serem gastas |
+| **Scripts de referência** | Reutilizar script on-chain – pague uma vez, consulte depois (CIP-33) |
 
-| FeeSplitter validator | Order of magnitude |
-|-----------------------|--------------------|
-| Publish script + mint address | ~1 – 5 ADA total (fee + deposit) |
-| One validated spend tx | ~0.2 – 0.5 ADA |
+| Validador FeeSplitter | Ordem de grandeza |
+|-----------------------|-----|
+| Publicar roteiro + endereço mint | ~1 – 5 ADA total (taxa + depósito) |
+| Um tx de gasto validado | ~0,2 – 0,5 ADA |
 
-**Estimate:**
+**Estimativa:**
 
 ```text
 cardano-cli transaction build … --testnet-magic 1
 # inspect "fee" in build output before sign
 ```
 
-Or use **Mesh** / **Lucid** `complete()` — returns fee before submit.
+Ou use **Mesh** / **Lucid**`complete()`— retorna a taxa antes de enviar.
 
-### Deploy vs use
+### Implantar versus usar
 
-| Step | On-chain action | Paid once per… |
+| Etapa | Ação em cadeia | Pago uma vez por… |
 |------|-----------------|----------------|
-| **Compile Aiken** | Off-chain — free | — |
-| **Publish validator** | Transaction includes script | Deploy |
-| **User pays via split** | Tx spending script UTXO | Each payment |
+| **Compilar Aiken** | Fora da cadeia – grátis | — |
+| **Publicar validador** | Transação inclui script | Implantar |
+| **Usuário paga via parcelado** | Script de gastos Tx UTXO | Cada pagamento |
 
-Off-chain **tx builder** can run on serverless (no 24/7 host) — validator bytecode remains on-chain.
+O **construtor tx** fora da cadeia pode ser executado sem servidor (sem host 24 horas por dia, 7 dias por semana) - o bytecode do validador permanece na cadeia.
 
-## Compare
+## Comparar
 
-| | **Cardano** | **BNB / Tron** |
+| | **Cardano** | **BNB/Tron** |
 |---|-------------|----------------|
-| Model | UTXO | Account |
-| Split execution | Validator + tx builder | `pay()` in contract |
-| Language | Aiken / Plutus | Solidity |
+| Modelo | UTXO | Conta |
+| Execução dividida | Validador + construtor tx |`pay()`em contrato |
+| Idioma | Aiken / Plutus | Solidez |
 
-## Next
+## Próximo
 
-Return to [Cryptocurrency101 overview](../../i-overview.md) or compare [BNB Chain](../bnb/i-overview.md) (simplest Solidity example).
+Retorne para [Visão geral do Cryptocurrency101](../../i-overview.md) ou compare [BNB Cadeia](../bnb/i-overview.md) (exemplo mais simples do Solidity).

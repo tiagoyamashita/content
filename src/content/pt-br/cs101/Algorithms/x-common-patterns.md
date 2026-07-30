@@ -1,16 +1,16 @@
 ---
 label: "X"
-subtitle: "Common patterns"
-group: "Data structures & algorithms"
+subtitle: "Padrões comuns"
+group: "Estruturas de dados e algoritmos"
 order: 10
 ---
-Common algorithmic patterns
-Reusable techniques on **arrays** and **strings** — often **O(n)** or **O(n log n)** after sorting.
+Padrões algorítmicos comuns
+Técnicas reutilizáveis em **arrays** e **strings** — geralmente **O(n)** ou **O(n log n)** após a classificação.
 
-## 1. Two pointers
-Two indices move through a structure toward each other or in the same direction.
+## 1. Duas dicas
+Dois índices se movem através de uma estrutura um em direção ao outro ou na mesma direção.
 
-**Sorted array pair sum** — find two values with target **T**:
+**Soma do par de matrizes classificadas** — encontre dois valores com destino **T**:
 
 ```java
 // Compile: javac --release 22 …
@@ -32,12 +32,12 @@ public static boolean hasPairSum(int[] sorted, int target) {
 }
 ```
 
-**Remove duplicates in-place** (sorted): slow pointer for write position, fast for scan.
+**Remover duplicatas no local** (classificado): ponteiro lento para posição de gravação, rápido para digitalização.
 
-## 2. Sliding window
-Maintain a **window** `[left, right]` on an array; expand **right**, shrink **left** when a constraint breaks.
+## 2. Janela deslizante
+Mantenha uma **janela**`[left, right]`em uma matriz; expandir **direita**, encolher **esquerda** quando uma restrição for quebrada.
 
-**Longest substring without repeating characters:**
+**Substring mais longa sem caracteres repetidos:**
 
 ```java
 // Compile: javac --release 22 …
@@ -60,10 +60,9 @@ public static int longestUniqueSubstring(String s) {
 }
 ```
 
-**Time O(n)** — each index moves at most **n** steps total.
+**Time O(n)** — cada índice se move no máximo **n** passos no total.
 
-## 3. Prefix sums
-`prefix[i]` = sum of `a[0..i-1]` → range sum **O(1)** after **O(n)** preprocess.
+## 3. Somas de prefixo`prefix[i]`= soma de`a[0..i-1]`→ soma do intervalo **O(1)** após o pré-processamento **O(n)**.
 
 ```java
 // Compile: javac --release 22 …
@@ -81,13 +80,12 @@ public static int rangeSum(int[] prefix, int lo, int hi) {
 }
 ```
 
-## 4. Frequency counting
-`Map` or fixed array for alphabet size — anagrams, majority element (with Boyer–Moore), character replacement problems.
+## 4. Contagem de frequência`Map`ou matriz fixa para tamanho do alfabeto - anagramas, elemento majoritário (com Boyer – Moore), problemas de substituição de caracteres.
 
-## 5. Sort then scan
-Sort intervals, merge overlapping; sort pairs by one coordinate for greedy interval scheduling.
+## 5. Classifique e digitalize
+Classifique intervalos, mescle sobreposição; classifique os pares por uma coordenada para agendamento de intervalo ganancioso.
 
-## 6. Pattern picker
+## 6. Seletor de padrões
 
 ```mermaid
 flowchart TD
@@ -105,16 +103,16 @@ flowchart TD
   Graph -->|Yes| BFS[BFS or DFS]
 ```
 
-| Signal | Try |
+| Sinal | Experimente |
 |--------|-----|
-| Sorted input, pair/triplet | Two pointers |
-| Contiguous subarray / substring constraint | Sliding window |
-| Many range sum queries | Prefix sums |
-| "Count ways" / optimal on sequences | DP |
-| All combinations / permutations | Backtracking |
-| Graph reachability | BFS / DFS |
+| Entrada classificada, par/tripleto | Duas dicas |
+| Restrição contígua de submatriz/substring | Janela deslizante |
+| Muitas consultas de soma de intervalo | Somas de prefixo |
+| "Contar formas" / ideal em sequências | DP |
+| Todas as combinações/permutações | Retrocesso |
+| Acessibilidade do gráfico | BFS / DFS |
 
-## 7. Solving with the JDK (already implemented)
+## 7. Resolvendo com o JDK (já implementado)
 
 ```java
 // Compile: javac --release 22 …
@@ -141,12 +139,12 @@ freq.merge(token, 1L, Long::sum);
 int[] sorted = Arrays.stream(nums).sorted().toArray();
 ```
 
-| Pattern | JDK helpers |
-|---------|-------------|
-| Two pointers | indices on array / `List` |
-| Sliding window | `HashMap`, `HashSet` |
-| Prefix sum | `long[]`, `Arrays` |
-| Sort + scan | `Arrays.sort`, `Comparator` |
-| Count | `Map.merge`, `getOrDefault` |
+| Padrão | JDK ajudantes |
+|--------|-------------|
+| Duas dicas | índices na matriz /`List`|
+| Janela deslizante |`HashMap`,`HashSet`|
+| Soma do prefixo |`long[]`,`Arrays`|
+| Classificar + digitalizar |`Arrays.sort`,`Comparator`|
+| Contagem |`Map.merge`,`getOrDefault`|
 
-See **[Solving with the JDK](xi-solving-with-the-jdk.md)** for a full cheat sheet.
+Veja **[Resolvendo com o JDK](xi-solving-with-the-jdk.md)** para obter uma folha de dicas completa.

@@ -1,23 +1,23 @@
 ---
 label: "III"
-subtitle: "TON — 2% fee split deploy"
+subtitle: "TON – implantação de divisão de taxa de 2%"
 group: "Examples"
 order: 3
 ---
-Example — TON: 2% fee split (full deploy)
-Deploy a **Tact** contract on **TON** with **Blueprint** that accepts **TON**, sends **2%** to your **app account**, and **98%** to a **to** account passed in each **Pay** message.
+Exemplo — TON: divisão de taxas de 2% (implantação completa)
+Implante um contrato do **Tact** em **TON** com **Blueprint** que aceita **TON**, envia **2%** para sua **conta do aplicativo** e **98%** para uma conta **para** passada em cada mensagem de **Pay**.
 
-Parent: [Examples overview](i-overview.md) · Network: [TON overview](../networks/ton/i-overview.md).
+Pai: [Visão geral dos exemplos](i-overview.md) · Rede: [TON visão geral](../networks/ton/i-overview.md).
 
-**Not financial advice.** Minimal contract for learning — audit before production.
+**Não é aconselhamento financeiro.** Contrato mínimo para aprendizagem – auditoria antes da produção.
 
-## 1. What you are building
+## 1. O que você está construindo
 
-| Role | Address | Receives |
+| Função | Endereço | Recebe |
 |------|---------|----------|
-| **App account** | Treasury wallet (`EQ…` / `UQ…`) | **2%** per payment |
-| **To account** | Recipient in each `Pay` message | **98%** remainder |
-| **Contract** | Deployed workchain address | Runs split logic |
+| **Conta do aplicativo** | Carteira do Tesouro (`EQ…`-&#09;o`UQ…`) | **2%** por pagamento |
+| **Para conta** | Destinatário em cada`Pay`mensagem | **98%** restante |
+| **Contrato** | Endereço da cadeia de trabalho implantada | Executa lógica dividida |
 
 ```text
 User sends Pay{ toAccount } with 1 TON attached:
@@ -25,9 +25,9 @@ User sends Pay{ toAccount } with 1 TON attached:
   toAccount   ← 0.98 TON
 ```
 
-TON uses **messages**, not `msg.value` — value is **`context().value`** on the incoming message.
+TON usa **mensagens**, não`msg.value`— o valor é **`context().value`** na mensagem recebida.
 
-## 2. Project layout (Blueprint)
+## 2. Layout do projeto (Blueprint)
 
 ```text
 ton-fee-split-2pct/
@@ -44,16 +44,16 @@ ton-fee-split-2pct/
     TwoPercentFeeSplitter.ts          # generated after build
 ```
 
-| Path | Purpose |
+| Caminho | Finalidade |
 |------|---------|
-| **`two_percent_fee_splitter.tact`** | Contract: 2% to `appAccount`, rest to `msg.toAccount` |
-| **`deployTwoPercentFeeSplitter.ts`** | Deploy with app address + `feeBps = 200` |
-| **`TwoPercentFeeSplitter.spec.ts`** | Sandbox test before testnet |
-| **`wrappers/`** | TypeScript bindings (`blueprint build`) |
+| **`two_percent_fee_splitter.tact`** | Contrato: 2% para`appAccount`, descanse para`msg.toAccount`|
+| **`deployTwoPercentFeeSplitter.ts`** | Implantar com endereço do aplicativo +`feeBps = 200`|
+| **`TwoPercentFeeSplitter.spec.ts`** | Teste sandbox antes do testnet |
+| **`wrappers/`** | Ligações TypeScript (`blueprint build`) |
 
-## 3. Contract — full Tact source
+## 3. Contrato – fonte completa do Tact
 
-**`contracts/two_percent_fee_splitter.tact`**
+(R)`contracts/two_percent_fee_splitter.tact`(R)
 
 ```tact
 import "@stdlib/deploy";
@@ -110,14 +110,14 @@ contract TwoPercentFeeSplitter with Deployable {
 }
 ```
 
-| Constant | Value for 2% |
+| Constante | Valor para 2% |
 |----------|----------------|
-| **`feeBps`** | `200` |
-| **Fee on 1 TON** | `0.02 TON` nanotons internally |
+| **`feeBps`** |`200`|
+| **Taxa sobre 1 TON** |`0.02 TON`nanotons internamente |
 
-## 4. Blueprint package setup
+## 4. Configuração do pacote Blueprint
 
-**`package.json`**
+(R)`package.json`(R)
 
 ```json
 {
@@ -142,16 +142,16 @@ contract TwoPercentFeeSplitter with Deployable {
 }
 ```
 
-Scaffold faster with:
+Andaime mais rápido com:
 
 ```text
 npm create ton@latest ton-fee-split-2pct
 # choose Blueprint + Tact, then replace contracts/ with the file above
 ```
 
-## 5. Deploy script
+## 5. Implantar script
 
-**`scripts/deployTwoPercentFeeSplitter.ts`**
+(R)`scripts/deployTwoPercentFeeSplitter.ts`(R)
 
 ```typescript
 import { toNano } from "@ton/core";
@@ -178,15 +178,15 @@ export async function run(provider: NetworkProvider) {
 }
 ```
 
-| Env | How |
+| Ambiente | Como |
 |-----|-----|
-| **Testnet** | `npx blueprint run deployTwoPercentFeeSplitter --testnet` |
-| **Wallet** | Tonkeeper / TonConnect via Blueprint UI |
-| **Mnemonic** | `.env` — never commit |
+| **Rede de teste** |`npx blueprint run deployTwoPercentFeeSplitter --testnet`|
+| **Carteira** | Tonkeeper/TonConnect via Blueprint UI |
+| **Mnemônico** |`.env`— nunca se comprometa |
 
-## 6. Test in sandbox (before testnet)
+## 6. Teste no sandbox (antes do testnet)
 
-**`tests/TwoPercentFeeSplitter.spec.ts`**
+(R)`tests/TwoPercentFeeSplitter.spec.ts`(R)
 
 ```typescript
 import { Blockchain } from "@ton/sandbox";
@@ -227,7 +227,7 @@ npm install
 npm test
 ```
 
-## 7. Deploy flow
+## 7. Fluxo de implantação
 
 ```plantuml
 @startuml
@@ -254,17 +254,17 @@ npx blueprint run deployTwoPercentFeeSplitter --testnet
 # copy contract address from output
 ```
 
-## 8. Send a payment (user flow)
+## 8. Envie um pagamento (fluxo do usuário)
 
-User wallet sends an internal message to the contract:
+A carteira do usuário envia uma mensagem interna ao contrato:
 
-| Field | Value |
+| Campo | Valor |
 |-------|-------|
-| **To** | Contract address |
-| **Amount** | Payment + gas buffer (e.g. 1.05 TON for 1 TON pay) |
-| **Payload** | `Pay { toAccount: <recipient EQ…> }` |
+| **Para** | Endereço do contrato |
+| **Valor** | Pagamento + reserva de gás (por exemplo, 1,05 TON por 1 pagamento de TON) |
+| **Carga útil** |`Pay { toAccount: <recipient EQ…> }`|
 
-**TypeScript client (after deploy)**
+**Cliente TypeScript (após implantação)**
 
 ```typescript
 import { Address, toNano } from "@ton/core";
@@ -284,16 +284,16 @@ await contract.send(
 );
 ```
 
-**Tonkeeper manual test:** use a dApp or Blueprint script — raw wallets need a small UI to encode `Pay`.
+**Teste manual do Tonkeeper:** use um script dApp ou Blueprint — carteiras brutas precisam de um pequeno UI para codificar`Pay`.
 
-## 9. Verify on explorer
+## 9. Verifique no explorer
 
-| Check | Expected |
+| Verifique | Esperado |
 |-------|----------|
-| Tonviewer status | **Success** (not bounced) |
-| Outgoing messages | One to **appAccount** (~2%), one to **toAccount** (~98%) |
-| `get fee_bps` | `200` |
-| Bounced message | **No** — otherwise payout failed |
+| Status do Tonviewer | **Sucesso** (não devolvido) |
+| Mensagens enviadas | Um para **appAccount** (~2%), um para **toAccount** (~98%) |
+|`get fee_bps`|`200`|
+| Mensagem devolvida | **Não** — caso contrário, o pagamento falhou |
 
 ```text
 1 TON payment:
@@ -301,42 +301,42 @@ await contract.send(
   remainder = 0.98 TON                 → to
 ```
 
-Contract keeps little TON if **`SendPayGasSeparately`** — gas comes from attached value; fund contract with a small float for heavy traffic.
+O contrato mantém pouco TON se **`SendPayGasSeparately`** — o gás provém do valor agregado; contrato de financiamento com pequeno float para tráfego pesado.
 
-See [Verify safe & completed](../ix-verify-safe-and-completed.md#5-ton).
+Consulte [Verificar segurança e conclusão](../ix-verify-safe-and-completed.md#5-ton).
 
-## 10. Common failures
+## 10. Falhas comuns
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `no value` | Message sent with 0 TON | Attach amount |
-| Bounced `Pay` | Bad `toAccount` or insufficient forward fee | More TON attached; valid address |
-| Deploy costly | Large code cells | Optimize; test cost in Blueprint output |
-| Wrong split | Wrong `feeBps` at deploy | Redeploy with `200` |
+| Sintoma | Causa | Correção |
+|--------|-------|-----|
+|`no value`| Mensagem enviada com 0 TON | Anexar valor |
+| Devolvido`Pay`| Ruim`toAccount`ou taxa a termo insuficiente | Mais TON em anexo; endereço válido |
+| Implantar caro | Células de código grandes | Otimizar; custo de teste na saída do Blueprint |
+| Divisão errada | Errado`feeBps`na implantação | Reimplantar com`200`|
 
-## 11. Mainnet checklist
+## 11. Lista de verificação da rede principal
 
-| # | Item |
+| # | Artigo |
 |---|------|
-| 1 | `npm test` green |
-| 2 | Deploy on **testnet**; send test `Pay` |
-| 3 | Confirm splits on Tonviewer |
-| 4 | Set production **app account** address |
-| 5 | `blueprint run deploy --mainnet` |
-| 6 | Canary with small TON amount |
+| 1 |`npm test`verde |
+| 2 | Implante em **testnet**; enviar teste`Pay`|
+| 3 | Confirme divisões no Tonviewer |
+| 4 | Definir endereço de produção da **conta do aplicativo** |
+| 5 |`blueprint run deploy --mainnet`|
+| 6 | Canário com pequena quantidade de TON |
 
-## 12. Tron vs TON (this example)
+## 12. Tron vs TON (este exemplo)
 
-| | **Tron example** | **TON example** |
+| | **Exemplo de Tron** | **TON exemplo** |
 |---|------------------|-----------------|
-| Language | Solidity | Tact |
-| Call | `pay(toAccount)` + TRX | `Pay { toAccount }` message + TON |
-| Value | `msg.value` | `context().value` |
-| Tooling | TronBox | Blueprint |
-| Explorer | Tronscan | Tonviewer |
+| Idioma | Solidez | Tato |
+| Ligue |`pay(toAccount)`+ TRX |`Pay { toAccount }`mensagem + TON |
+| Valor |`msg.value`|`context().value`|
+| Ferramentas | TronBox | Projeto |
+| Explorador | Tronscan | Visualizador de tons |
 
-## 13. Related
+## 13. Relacionado
 
-- [Tron — 2% fee split deploy](ii-tron-two-percent-fee-split.md)
-- [TON network overview](../networks/ton/i-overview.md)
-- [Verify before broadcast](../viii-verify-before-broadcast.md)
+- [Tron – implantação de divisão de taxa de 2%](ii-tron-two-percent-fee-split.md)
+- [TON visão geral da rede](../networks/ton/i-overview.md)
+- [Verifique antes da transmissão](../viii-verify-before-broadcast.md)

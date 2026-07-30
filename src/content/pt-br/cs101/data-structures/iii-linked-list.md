@@ -1,24 +1,24 @@
 ---
 label: "III"
-subtitle: "Linked list"
-group: "Data structures & algorithms"
+subtitle: "Lista vinculada"
+group: "Estruturas de dados e algoritmos"
 order: 3
 ---
-Linked list
-Pointer-based sequence: singly and doubly linked. In **Java**, “pointers” are **object references**: a field like `Node next` holds the address of another node on the **heap**; you never do manual `free` — unreachable nodes are **garbage-collected**.
+Lista vinculada
+Sequência baseada em ponteiro: ligada simples e duplamente. Em **Java**, “ponteiros” são **referências de objetos**: um campo como`Node next`contém o endereço de outro nó no **heap**; você nunca faz manual`free`— nós inacessíveis são **coletados como lixo**.
 
-**Java baseline:** snippets assume **Java SE 22** (`javac --release 22`); they remain valid on **JDK 21 LTS**.
+**Java linha de base:** trechos assumem **Java SE 22** (`javac --release 22`); eles permanecem válidos em **JDK 21 LTS**.
 
-**Singly linked:** each node holds `value` and `next`. The list is reached from a **head** reference. Insert after a node you already hold: **O(1)**. Find the k-th element by walking: **O(k)**; search by value without index: **O(n)**.
+**Vinculado individualmente:** cada nó contém`value`e`next`. A lista é acessada a partir de uma referência **head**. Insira após um nó que você já possui: **O(1)**. Encontre o k-ésimo elemento caminhando: **O(k)**; pesquisa por valor sem índice: **O(n)**.
 
-**Doubly linked:** nodes add `prev`, so you can remove a node in **O(1)** when you hold its reference, and walk backward without scanning from the head.
+**Duplamente vinculado:** nós são adicionados`prev`, para que você possa remover um nó em **O(1)** ao manter sua referência e caminhar para trás sem digitalizar a partir da cabeça.
 
-- **vs array:** lists win on **O(1) splice** at a known node; arrays win on **O(1) index** and sequential **cache** behavior.
-- **Java cost:** every node is a **separate object** (header + fields + alignment). A dense `int[]` or `ArrayList<Integer>` is usually more cache-friendly than a long chain of `Integer` nodes (and avoids **autoboxing** if you stay primitive).
+- **vs array:** lista a vitória em **O(1) splice** em um nó conhecido; matrizes vencem no índice **O(1)** e no comportamento de **cache** sequencial.
+- **Java custo:** cada nó é um **objeto separado** (cabeçalho + campos + alinhamento). Um denso`int[]`ou`ArrayList<Integer>`geralmente é mais amigável ao cache do que uma longa cadeia de`Integer`nós (e evita **autoboxing** se você permanecer primitivo).
 
-## 1. Singly linked — minimal custom list (Java)
+## 1. Vinculado individualmente - lista personalizada mínima (Java)
 
-Typical pattern: a **static nested class** `Node<E>`. Libraries often keep it **`private`**; here **`Node` is `public static`** so examples can call **`addAfter`** with a node reference without awkward accessors. **`head`** is `null` when the list is empty.
+Padrão típico: uma **classe aninhada estática**`Node<E>`. As bibliotecas costumam mantê-lo **`private`**; aqui **`Node`é`public static`** então exemplos podem chamar **`addAfter`** com uma referência de nó sem acessadores estranhos. **`head`** é`null`quando a lista está vazia.
 
 ```java
 // Compile: javac --release 22 …
@@ -102,7 +102,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 }
 ```
 
-**Usage sketch:** prepend `3`, then insert `9` after the head.
+**Esboço de uso:** preceder`3`, em seguida, insira`9`depois da cabeça.
 
 ```java
 // Compile: javac --release 22 …
@@ -112,11 +112,11 @@ SinglyLinkedList.Node<Integer> h = list.getHeadNode();
 list.addAfter(h, 9); // 3 -> 9
 ```
 
-**Removing the first node** is **O(1)**: `head = head.next` (after null-check). Removing an **arbitrary** interior node in a singly linked list is **O(1)** only if you already have the **predecessor** reference; otherwise you must walk from `head` (**O(n)**) to find it.
+**Remover o primeiro nó** é **O(1)**:`head = head.next`(após verificação nula). Remover um nó interior **arbitrário** em uma lista vinculada individualmente é **O(1)** somente se você já tiver a referência do **predecessor**; caso contrário, você deve caminhar de`head`(**O(n)**) para encontrá-lo.
 
-## 2. `java.util.LinkedList<E>` — JDK doubly linked deque
+## 2.`java.util.LinkedList<E>`- JDK deque duplamente vinculado
 
-The standard library’s **`LinkedList`** is a **doubly linked** list that also implements **`Deque<E>`** (double-ended queue): efficient **`addFirst` / `addLast` / `removeFirst` / `removeLast`**.
+A biblioteca padrão **`LinkedList`** é uma lista **duplamente vinculada** que também implementa **`Deque<E>`** (fila dupla): eficiente **`addFirst`-&#09;o`addLast`-&#09;o`removeFirst`-&#09;o`removeLast`**.
 
 ```java
 // Compile: javac --release 22 …
@@ -137,23 +137,23 @@ ListIterator<String> it = names.listIterator(1);
 it.add("Linus"); // insert before "Ada" when cursor is at index 1
 ```
 
-**Iterator and structural changes:** if you modify the list through **`add` / `remove`** while iterating with a fail-fast iterator (the usual **`for (E x : list)`**), you can get **`ConcurrentModificationException`**. Use **`ListIterator`**’s **`add` / `remove`**, or collect changes separately.
+**Iterador e mudanças estruturais:** se você modificar a lista por meio de **`add`-&#09;o`remove`** enquanto itera com um iterador fail-fast (o usual **`for (E x : list)`**), você pode obter **`ConcurrentModificationException`**. Usar **`ListIterator`** é **`add`-&#09;o`remove`**, ou colete as alterações separadamente.
 
-## 3. `LinkedList` vs `ArrayList` in Java
+## 3.`LinkedList`contra`ArrayList`em Java
 
-| Operation / concern | `ArrayList<E>` | `LinkedList<E>` |
+| Operação/preocupação |`ArrayList<E>`|`LinkedList<E>`|
 |---------------------|----------------|-----------------|
-| Random access `get(i)` | **O(1)** | **O(n)** (walk from nearer end) |
-| Insert/remove at **known index** | **O(n)** shift | **O(n)** to reach index, then **O(1)** link fix |
-| Insert/remove at **head** (deque usage) | **O(n)** unless you use extra tricks | **O(1)** |
-| Memory | one backing array + slack | **one object per element** + links |
-| Cache | contiguous, friendly | pointer chasing, less friendly |
+| Acesso aleatório`get(i)`| **O(1)** | **O(n)** (caminhar do final mais próximo) |
+| Inserir/remover em **índice conhecido** | **O(n)** mudança | **O(n)** para alcançar o índice, então **O(1)** correção do link |
+| Inserir/remover em **head** (uso deque) | **O(n)** a menos que você use truques extras | **O(1)** |
+| Memória | uma matriz de apoio + folga | **um objeto por elemento** + links |
+| Cache | contíguo, amigável | perseguição de ponteiro, menos amigável |
 
-For most **sequential** workloads, **`ArrayList`** is the default choice in Java. **`LinkedList`** shines when you truly need many **O(1)** inserts/removes at **ends** or with a **`ListIterator`** walking a **large** list — still profile; modern CPUs often favor compact arrays.
+Para a maioria das cargas de trabalho **sequenciais**, **`ArrayList`** é a escolha padrão em Java. **`LinkedList`** brilha quando você realmente precisa de muitas inserções/remoções **O(1)** nas **extremidades** ou com um **`ListIterator`** percorrendo uma lista **grande** - ainda perfil; CPUs modernos geralmente favorecem arrays compactos.
 
-## 4. Doubly linked — why `prev` helps
+## 4. Duplamente vinculado - por que`prev`ajuda
 
-With **`prev`**, **`unlink(node)`** rewires neighbor pointers in **O(1)** without scanning for the predecessor. The JDK’s **`LinkedList`** does this internally for **`remove(Obj)`** once the node is found (finding is still **O(n)** unless you already hold a **`ListIterator`** position).
+Com **`prev`**, **`unlink(node)`** reconecta ponteiros vizinhos em **O(1)** sem procurar o antecessor. Os JDK **`LinkedList`** faz isso internamente para **`remove(Obj)`** assim que o nó for encontrado (a descoberta ainda será **O(n)**, a menos que você já possua um **`ListIterator`**posição).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" role="img" aria-label="Singly linked list and O(1) insert after a known node">
   <defs>

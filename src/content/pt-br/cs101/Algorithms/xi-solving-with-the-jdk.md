@@ -1,45 +1,45 @@
 ---
 label: "XI"
-subtitle: "Solving with the JDK"
-group: "Data structures & algorithms"
+subtitle: "Resolvendo com o JDK"
+group: "Estruturas de dados e algoritmos"
 order: 11
 ---
-Solving algorithm problems with the JDK
-In coursework you implement algorithms by hand to learn **how** they work. In **real Java**, you compose **already implemented** types from **`java.util`** and **`java.util.Arrays`** — the same ADTs from the **Data structures** submenu, wired for production.
+Resolvendo problemas de algoritmo com JDK
+Nos cursos, você implementa algoritmos manualmente para aprender **como** eles funcionam. Em **Java** real, você compõe tipos **já implementados** de **`java.util`** e **`java.util.Arrays`** — os mesmos ADTs do submenu **Estruturas de dados**, conectados para produção.
 
-**Java baseline:** **Java SE 22** (`javac --release 22`); also fine on **JDK 21 LTS**.
+**Java linha de base:** **Java SE 22** (`javac --release 22`); também está bem em **JDK 21 LTS**.
 
-## 1. Mindset
+## 1. Mentalidade
 
-| Goal | Hand-rolled (learning) | JDK (shipping code) |
+| Meta | Enrolado à mão (aprendizagem) | JDK (código de envio) |
 |------|------------------------|---------------------|
-| Sort an array | merge / quick sort | `Arrays.sort`, `List.sort` |
-| Find in sorted data | binary search loop | `Arrays.binarySearch` |
-| Find / count fast | linear scan | `HashMap`, `HashSet` |
-| FIFO traversal | linked queue class | `ArrayDeque` + `Queue` |
-| Best-next (Dijkstra, Prim) | heap sift code | `PriorityQueue` |
-| Graph reachability | BFS/DFS loops | `ArrayDeque` + adjacency list you build |
+| Classificar uma matriz | mesclar/classificação rápida |`Arrays.sort`,`List.sort`|
+| Encontre em dados classificados | loop de pesquisa binária |`Arrays.binarySearch`|
+| Encontre / conte rapidamente | varredura linear |`HashMap`,`HashSet`|
+| FIFO passagem | classe de fila vinculada |`ArrayDeque`+`Queue`|
+| Melhor próximo (Dijkstra, Prim) | código de peneiração de heap |`PriorityQueue`|
+| Acessibilidade do gráfico | BFS/DFS ciclos |`ArrayDeque`+ lista de adjacências que você constrói |
 
-The **JDK does not** ship a `Graph` class with Dijkstra or MST built in — you still write **short loops**, but you **reuse** queues, heaps, maps, and sorts instead of reimplementing them.
+O **JDK não** envia um`Graph`classe com Dijkstra ou MST integrado - você ainda escreve **loops curtos**, mas **reutiliza** filas, heaps, mapas e classificações em vez de reimplementá-los.
 
-## 2. Cheat sheet: problem → API
+## 2. Folha de dicas: problema → API
 
-| Problem type | Primary JDK tools |
+| Tipo de problema | Ferramentas primárias JDK |
 |--------------|-------------------|
-| Sort keys | `Arrays.sort`, `Collections.sort`, `Comparator` |
-| Search sorted array | `Arrays.binarySearch`, `Collections.binarySearch` |
-| Lookup / dedupe | `HashMap`, `HashSet`, `Map.computeIfAbsent` |
-| Queue (BFS) | `ArrayDeque`, `Queue.offer` / `poll` |
-| Stack (DFS iterative) | `ArrayDeque` as `Deque`, `push` / `pop` |
-| Min / max next | `PriorityQueue` (min-heap by default) |
-| Top-k largest | `PriorityQueue` (min-heap size k) or `stream().sorted().limit(k)` |
-| Stable sort objects | `Arrays.sort(Object[])` (TimSort) |
-| Merge intervals | `Arrays.sort` by start + scan |
-| Count frequencies | `HashMap.merge`, `getOrDefault` |
-| Range sum queries | prefix array (manual) or `long[]` + loops |
-| Permutations / subsets (small n) | backtrack yourself; optional `Stream` helpers |
+| Chaves de classificação |`Arrays.sort`,`Collections.sort`,`Comparator`|
+| Pesquisar matriz ordenada |`Arrays.binarySearch`,`Collections.binarySearch`|
+| Pesquisa/desduplicação |`HashMap`,`HashSet`,`Map.computeIfAbsent`|
+| Fila (BFS) |`ArrayDeque`,`Queue.offer`-&#09;o`poll`|
+| Pilha (DFS iterativa) |`ArrayDeque`como`Deque`,`push`-&#09;o`pop`|
+| Mín/máx próximo |`PriorityQueue`(min-heap por padrão) |
+| Top-k maiores |`PriorityQueue`(tamanho mínimo de heap k) ou`stream().sorted().limit(k)`|
+| Objetos de classificação estável |`Arrays.sort(Object[])`(TimSort) |
+| Mesclar intervalos |`Arrays.sort`por iniciar + digitalizar |
+| Frequências de contagem |`HashMap.merge`,`getOrDefault`|
+| Consultas de soma de intervalo | matriz de prefixo (manual) ou`long[]`+ laços |
+| Permutações/subconjuntos (n pequeno) | retroceda; opcional`Stream`ajudantes |
 
-## 3. Sorting and searching
+## 3. Classificando e pesquisando
 
 ```java
 // Compile: javac --release 22 …
@@ -64,9 +64,9 @@ Arrays.sort(jobs, Comparator.comparingInt(Job::deadline));
 int idx = Arrays.binarySearch(nums, 4); // >= 0 if found
 ```
 
-**`Arrays.binarySearch`** returns **≥ 0** if found, else **`-(insertionPoint) - 1`**. Array must be **sorted** first.
+(R)`Arrays.binarySearch`** retorna **≥ 0** se encontrado, caso contrário **`-(insertionPoint) - 1`**. A matriz deve ser **classificada** primeiro.
 
-## 4. Maps and sets
+## 4. Mapas e conjuntos
 
 ```java
 // Compile: javac --release 22 …
@@ -86,7 +86,7 @@ if (seen.add(x)) {
 }
 ```
 
-## 5. Queues, stacks, heaps (graphs and greedy)
+## 5. Filas, pilhas, heaps (gráficos e gananciosos)
 
 ```java
 // Compile: javac --release 22 …
@@ -113,7 +113,7 @@ for (int x : nums) {
 }
 ```
 
-## 6. Collections utilities
+## 6. Utilitários de coleções
 
 ```java
 // Compile: javac --release 22 …
@@ -127,9 +127,9 @@ Collections.swap(list, i, j);
 int freq = Collections.frequency(list, target);
 ```
 
-## 7. Streams (optional, same complexity class)
+## 7. Streams (opcional, mesma classe de complexidade)
 
-Use when readability wins; know the underlying algorithm (sort is **O(n log n)**).
+Use quando a legibilidade vencer; conheça o algoritmo subjacente (a classificação é **O(n log n)**).
 
 ```java
 // Compile: javac --release 22 …
@@ -141,21 +141,21 @@ int sum = Arrays.stream(a).sum();
 int[] sorted = Arrays.stream(a).sorted().toArray();
 ```
 
-## 8. What you still implement yourself
+## 8. O que você ainda implementa
 
-- **Graph** storage (adjacency list / matrix).
-- **BFS / DFS / Dijkstra / MST** control loops (using JDK queues/heaps).
-- **DP** table fill (arrays + loops, sometimes `HashMap` memo keys).
-- **Backtracking** recursion with choose / unchoose.
+- **Armazenamento de gráficos** (lista/matriz de adjacências).
+- **BFS / DFS / Dijkstra / MST** loops de controle (usando filas/heaps JDK).
+- **DP** preenchimento de tabela (arrays + loops, às vezes`HashMap`teclas de memorando).
+- **Recuo** recursão com escolha/desmarcação.
 
-## 9. Per-topic pointers
+## 9. Indicadores por tópico
 
-| Note | JDK focus |
+| Nota | JDK foco |
 |------|-----------|
-| [Sorting](ii-sorting.md) | `Arrays.sort`, `Comparator` |
-| [Searching](iii-searching.md) | `binarySearch`, `HashMap` |
-| [Graph traversal](v-graph-traversal.md) | `ArrayDeque`, `Queue` |
-| [Shortest paths & MST](vi-shortest-paths-and-mst.md) | `PriorityQueue`, sort edges for Kruskal |
-| [Greedy](vii-greedy.md) | sort + `PriorityQueue` |
-| [Dynamic programming](viii-dynamic-programming.md) | `int[][]`, `HashMap` memo |
-| [Common patterns](x-common-patterns.md) | `HashMap`, `Arrays.sort`, streams |
+| [Classificando](ii-sorting.md) |`Arrays.sort`,`Comparator`|
+| [Pesquisando](iii-searching.md) |`binarySearch`,`HashMap`|
+| [Percurso do gráfico](v-graph-traversal.md) |`ArrayDeque`,`Queue`|
+| [Caminhos mais curtos & MST](vi-shortest-paths-and-mst.md) |`PriorityQueue`, classifique as arestas para Kruskal |
+| [Ambicioso](vii-greedy.md) | classificar +`PriorityQueue`|
+| [Programação dinâmica](viii-dynamic-programming.md) |`int[][]`,`HashMap`memorando |
+| [Padrões comuns](x-common-patterns.md) |`HashMap`,`Arrays.sort`, fluxos |

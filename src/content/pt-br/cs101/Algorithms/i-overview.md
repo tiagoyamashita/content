@@ -1,26 +1,26 @@
 ---
 label: "I"
-subtitle: "Algorithms overview"
-group: "Data structures & algorithms"
+subtitle: "Visão geral dos algoritmos"
+group: "Estruturas de dados e algoritmos"
 order: 1
 ---
-Algorithms — overview
-An **algorithm** is a finite, step-by-step procedure that takes **input** and produces **output**. In CS101 you care about three questions: **Is it correct?** **How much time?** **How much memory?**
+Algoritmos — visão geral
+Um **algoritmo** é um procedimento finito passo a passo que recebe **entradas** e produz **saída**. Em CS101 você se preocupa com três perguntas: **Está correto?** **Quanto tempo?** **Quanta memória?**
 
-**Java baseline:** code snippets use **Java SE 22** (`javac --release 22`); they also run on **JDK 21 LTS**.
+**Java linha de base:** trechos de código usam **Java SE 22** (`javac --release 22`); eles também são executados em **JDK 21 LTS**.
 
-## 1. Correctness vs efficiency
-- **Correctness:** for every valid input, the output matches the problem definition (often proved by **invariant** or **induction**).
-- **Efficiency:** measured with **asymptotic notation** — **O**, **Θ**, **Ω** — ignoring constant factors and lower-order terms for large **n**.
-- **Worst case** is the usual default in coursework unless the problem asks for **average** or **amortized** cost.
+## 1. Correção vs eficiência
+- **Correção:** para cada entrada válida, a saída corresponde à definição do problema (geralmente provada por **invariante** ou **indução**).
+- **Eficiência:** medida com **notação assintótica** — **O**, **Θ**, **Ω** — ignorando fatores constantes e termos de ordem inferior para grandes **n**.
+- **O pior caso** é o padrão usual no curso, a menos que o problema solicite um custo **médio** ou **amortizado**.
 
-| Symbol | Meaning (informal) |
+| Símbolo | Significado (informal) |
 |--------|-------------------|
-| **O(f(n))** | Grows no faster than **f** (upper bound) |
-| **Θ(f(n))** | Tight bound — same order as **f** |
-| **Ω(f(n))** | Grows at least as fast as **f** (lower bound) |
+| **O(f(n))** | Não cresce mais rápido que **f** (limite superior) |
+| **Θ(f(n))** | Limite apertado - mesma ordem de **f** |
+| **Ω(f(n))** | Cresce pelo menos tão rápido quanto **f** (limite inferior) |
 
-## 2. Common algorithm families (map)
+## 2. Famílias de algoritmos comuns (mapa)
 
 ```mermaid
 flowchart LR
@@ -34,35 +34,35 @@ flowchart LR
   Algo --> Pat[Patterns]
 ```
 
-| Family | Idea | Examples in this submenu |
-|--------|------|-------------------------|
-| **Sorting** | Arrange keys in order | merge sort, quicksort, heapsort |
-| **Searching** | Find a target | linear search, binary search |
-| **Divide & conquer** | Split, solve, combine | merge sort, binary search |
-| **Graph** | Traverse or optimize on **V, E** | BFS, DFS, Dijkstra |
-| **Greedy** | Local best choice | activity selection, MST |
-| **Dynamic programming** | Optimal substructure + overlapping subproblems | knapsack, LCS, edit distance |
-| **Backtracking** | Explore choices, undo on failure | N-queens, subsets |
-| **Patterns** | Reuse idioms on arrays/strings | two pointers, sliding window |
+| Família | Idéia | Exemplos neste submenu |
+|--------|------|------------------------|
+| **Classificação** | Organizar as chaves em ordem | classificação por mesclagem, classificação rápida, heapsort |
+| **Pesquisando** | Encontre um alvo | pesquisa linear, pesquisa binária |
+| **Dividir e conquistar** | Dividir, resolver, combinar | classificação por mesclagem, pesquisa binária |
+| **Gráfico** | Percorrer ou otimizar em **V, E** | BFS, DFS, Dijkstra |
+| **Ganancioso** | Melhor escolha local | seleção de atividades, MST |
+| **Programação dinâmica** | Subestrutura ótima + subproblemas sobrepostos | mochila, LCS, editar distância |
+| **Retrocesso** | Explore escolhas, desfaça em caso de falha | N-queens, subconjuntos |
+| **Padrões** | Reutilizar expressões idiomáticas em arrays/strings | dois ponteiros, janela deslizante |
 
-**Data structures** (array, list, stack, queue, heap, hash table, graph storage) live in the **Data structures** submenu; **algorithms** are the **procedures** that use them.
+**Estruturas de dados** (matriz, lista, pilha, fila, heap, tabela hash, armazenamento de gráfico) ficam no submenu **Estruturas de dados**; **algoritmos** são os **procedimentos** que os utilizam.
 
-## 3. How to read a complexity claim
-- **O(n log n)** sort comparisons for comparison-based sorts (lower bound for general comparison sorts).
-- **O(n)** BFS/DFS on a graph stored as adjacency lists when **n = |V|**, **m = |E|** — often written **O(n + m)**.
-- **Space** counts **extra** memory beyond the input (output not always counted).
+## 3. Como ler uma afirmação de complexidade
+- **O(n log n)** comparações de classificação para classificações baseadas em comparação (limite inferior para classificações de comparação geral).
+- **O(n)** BFS/DFS em um gráfico armazenado como listas de adjacência quando **n = |V|**, **m = |E|** — geralmente escrito **O(n + m)**.
+- **Espaço** conta a memória **extra** além da entrada (a saída nem sempre é contada).
 
-## 4. Learn the algorithm, solve with the JDK
-1. **Study** the hand-rolled version in each note (merge sort, BFS loop, knapsack table).
-2. **Ship** with **`java.util`** / **`Arrays`**: `Arrays.sort`, `Arrays.binarySearch`, `HashMap`, `ArrayDeque`, `PriorityQueue`.
-3. The JDK gives you **O(1) amortized** map ops, **O(log n)** heap ops, and **O(n log n)** sort — you write the **problem-specific loop**, not another heap from scratch.
+## 4. Aprenda o algoritmo, resolva com o JDK
+1. **Estude** a versão enrolada à mão em cada nota (merge sort, loop BFS, tabela de mochila).
+2. **Enviar** com **`java.util`** / **`Arrays`**:`Arrays.sort`,`Arrays.binarySearch`,`HashMap`,`ArrayDeque`,`PriorityQueue`.
+3. O JDK fornece operações de mapa **O(1) amortizadas**, operações de heap **O(log n)** e classificação **O(n log n)** — você escreve o **loop específico do problema**, e não outro heap do zero.
 
-Full **problem → API** tables and copy-paste examples: **[Solving with the JDK](xi-solving-with-the-jdk.md)**.
+**problema completo → API** tabelas e exemplos de copiar e colar: **[Resolvendo com o JDK](xi-solving-with-the-jdk.md)**.
 
-## 5. Pseudocode → Java habit
-1. State **input size** **n** (or **n, m** for graphs).
-2. Name the **loop invariant** or **recurrence**.
-3. Implement with clear types; prefer library structures when teaching ADTs (`Queue`, `PriorityQueue`, `Arrays.sort`).
+## 5. Pseudocódigo → hábito Java
+1. Indique **tamanho de entrada** **n** (ou **n, m** para gráficos).
+2. Nomeie a **invariante de loop** ou **recorrência**.
+3. Implementar com tipos claros; prefira estruturas de biblioteca ao ensinar ADTs (`Queue`,`PriorityQueue`,`Arrays.sort`).
 
 ```java
 // Compile: javac --release 22 …
@@ -85,8 +85,8 @@ public static int binarySearch(int[] arr, int target) {
 }
 ```
 
-## 6. Related notes
-- **Solving with the JDK** [Solving with the JDK](xi-solving-with-the-jdk.md) — cheat sheet for production Java.
-- **Data structures** submenu — stacks, queues, heaps, graphs.
-- **Level V — Paradigms & limits** [Paradigms & limits](../v-paradigms-and-limits.md) — theory: greedy proofs, DP vs divide & conquer, NP-hardness.
-- **Level III — Graphs** (`iii-graphs.md`) — graph modeling at course level.
+## 6. Notas relacionadas
+- **Resolvendo com o JDK** [Resolvendo com o JDK](xi-solving-with-the-jdk.md) — folha de dicas para produção Java.
+- Submenu **Estruturas de dados** — pilhas, filas, heaps, gráficos.
+- **Nível V — Paradigmas e limites** [Paradigmas e limites](../v-paradigms-and-limits.md) - teoria: provas gananciosas, DP vs dividir e conquistar, NP-dureza.
+- **Nível III — Gráficos** (`iii-graphs.md`) — modelagem de gráficos em nível de curso.

@@ -1,15 +1,15 @@
 ---
 label: "III"
-subtitle: "How transactions are stored"
-group: "Cryptocurrency101"
+subtitle: "Como as transações são armazenadas"
+group: "Criptomoedas 101"
 order: 3
 ---
-Cryptocurrency101 — Part III: How transactions are stored
-Transactions are not rows in one company’s SQL database. They are **signed messages** grouped into **blocks**, linked into a **chain**, and copied across **nodes**. **How** balances are represented differs: **UTXO** (outputs) vs **account** (global balances).
+Cryptocurrency101 — Parte III: Como as transações são armazenadas
+As transações não são linhas no banco de dados SQL de uma empresa. Elas são **mensagens assinadas** agrupadas em **blocos**, vinculadas em uma **cadeia** e copiadas entre **nós**. **A forma** de representação dos saldos difere: **UTXO** (saídas) vs **conta** (saldos globais).
 
-Assumes **Part II** [What is cryptocurrency?](ii-what-is-cryptocurrency.md).
+Assume **Parte II** [O que é criptomoeda?](ii-what-is-cryptocurrency.md).
 
-## 1. Lifecycle — from wallet to chain
+## 1. Ciclo de vida — da carteira à rede
 
 ```plantuml
 @startuml
@@ -28,25 +28,25 @@ BC --> User: Confirmations grow over time
 @enduml
 ```
 
-| Stage | What is stored | Where |
+| Palco | O que está armazenado | Onde |
 |-------|----------------|-------|
-| **Created** | Unsigned or signed tx in wallet memory | Your device |
-| **Broadcast** | Signed tx bytes | **Mempool** on nodes (pending) |
-| **Included** | Tx inside a **block** | On-chain — permanent for practical purposes |
-| **Confirmed** | Block buried under newer blocks | Deeper = harder to reverse |
+| **Criado** | Tx não assinado ou assinado na memória da carteira | Seu dispositivo |
+| **Transmissão** | Bytes tx assinados | **Mempool** em nós (pendente) |
+| **Incluído** | Tx dentro de um **bloco** | On-chain — permanente para fins práticos |
+| **Confirmado** | Bloco enterrado sob blocos mais novos | Mais profundo = mais difícil de reverter |
 
-## 2. What a transaction contains
+## 2. O que uma transação contém
 
-Every chain packages slightly different fields, but the pattern is:
+Cada rede contém campos ligeiramente diferentes, mas o padrão é:
 
-| Field (conceptual) | Purpose |
+| Campo (conceitual) | Finalidade |
 |--------------------|---------|
-| **Inputs / from** | What you spend or which account sends |
-| **Outputs / to** | Recipients and amounts |
-| **Amount / value** | Native coin or token quantity |
-| **Fee** | Payment to validators for inclusion |
-| **Nonce / sequence** | Prevents replay and double-spend ordering (account chains) |
-| **Signature** | Proves authorization |
+| **Entradas / de** | O que você gasta ou qual conta envia |
+| **Saídas / para** | Destinatários e montantes |
+| **Quantidade/valor** | Quantidade de moedas ou tokens nativos |
+| **Taxa** | Pagamento aos validadores pela inclusão |
+| **Nonce / sequência** | Evita repetição e pedidos de gasto duplo (cadeias de contas) |
+| **Assinatura** | Comprova autorização |
 
 ```text
 Signed transaction
@@ -55,11 +55,11 @@ Signed transaction
   └── signature = proof from private key
 ```
 
-If the signature is invalid or rules are broken, nodes **reject** the tx (mempool) or mark it **failed** when executed in a block.
+Se a assinatura for inválida ou as regras forem quebradas, os nós **rejeitam** o tx (mempool) ou marcam-no como **failed** quando executado em um bloco.
 
-## 3. Blocks and the chain
+## 3. Blocos e a corrente
 
-A **block** is a batch of transactions plus metadata:
+Um **bloco** é um lote de transações mais metadados:
 
 ```text
 Block N
@@ -77,31 +77,31 @@ Genesis → Block 1 → Block 2 → Block 3 → …
          prev hash  prev hash
 ```
 
-| Property | Meaning |
+| Propriedade | Significado |
 |----------|---------|
-| **Immutability (practical)** | Changing an old block breaks the hash chain — nodes reject it |
-| **Transparency** | Explorers (BscScan, Tronscan, …) index blocks for humans |
-| **Replication** | Many nodes store full or partial copies |
+| **Imutabilidade (prático)** | Alterar um bloco antigo quebra a cadeia de hash – os nós o rejeitam |
+| **Transparência** | Blocos de índice Explorers (BscScan, Tronscan,…) para humanos |
+| **Replicação** | Muitos nós armazenam cópias completas ou parciais |
 
-**Confirmations** = number of blocks added after the block that included your tx. More confirmations → more expensive to rewrite history.
+**Confirmações** = número de blocos adicionados após o bloco que incluiu seu tx. Mais confirmações → mais caro reescrever a história.
 
-## 4. Where data lives — nodes
+## 4. Onde residem os dados - nós
 
-| Node type | Stores | Role |
+| Tipo de nó | Lojas | Função |
 |-----------|--------|------|
-| **Full node** | Full blocks + (usually) current state | Validates everything |
-| **Archive node** | Full history + old state | Analytics, indexers |
-| **Light client** | Headers + proofs | Wallet-style verification with less disk |
+| **Nó completo** | Blocos completos + (geralmente) estado atual | Valida tudo |
+| **Nó de arquivo** | História completa + estado antigo | Analytics, indexadores |
+| **Cliente leve** | Cabeçalhos + provas | Verificação estilo carteira com menos disco |
 
-Your **wallet** talks to an RPC provider or your own node — it does not need to store the entire chain locally unless you run a node.
+Sua **carteira** se comunica com um provedor RPC ou com seu próprio nó — ela não precisa armazenar toda a cadeia localmente, a menos que você execute um nó.
 
-## 5. Two storage models — UTXO vs account
+## 5. Dois modelos de armazenamento — UTXO vs conta
 
-This is the most important split for reading contracts and explorers.
+Esta é a divisão mais importante para leitura de contratos e exploradores.
 
-### UTXO (Unspent Transaction Output)
+### UTXO (saída de transação não gasta)
 
-Used by **Bitcoin** and **Cardano (eUTXO)**.
+Usado por **Bitcoin** e **Cardano (eUTXO)**.
 
 ```text
 No single "balance" field per address on-chain.
@@ -114,11 +114,11 @@ Ledger = set of outputs:
 Spend = consume whole outputs, create new outputs (change back to self)
 ```
 
-| Idea | Detail |
+| Idéia | Detalhe |
 |------|--------|
-| **UTXO** | A discrete chunk of value with a locking condition |
-| **Transaction** | Consumes one or more UTXOs as **inputs**, creates new **outputs** |
-| **Balance** | Sum of UTXOs you can unlock — wallet software computes this |
+| **UTXO** | Um pedaço discreto de valor com uma condição de bloqueio |
+| **Transação** | Consome um ou mais UTXOs como **entradas**, cria novas **saídas** |
+| **Saldo** | Soma de UTXOs que você pode desbloquear – o software da carteira calcula isso |
 
 ```plantuml
 @startuml
@@ -136,11 +136,11 @@ TX -> FEE: remainder to validators
 @enduml
 ```
 
-**Cardano** extends this with **eUTXO** — outputs carry **datum** (data) and validators check that the **next** transaction’s outputs are legal. See [Cardano](networks/ada/i-overview.md).
+**Cardano** estende isso com **eUTXO** — as saídas carregam **dados** (dados) e os validadores verificam se as saídas da **próxima** transação são legais. Veja [Cardano](networks/ada/i-overview.md).
 
-### Account model
+### Modelo de conta
 
-Used by **Ethereum**, **BNB Chain**, **Tron**, **TON** (account-based messaging).
+Usado por **Ethereum**, **BNB Chain**, **Tron**, **TON** (mensagens baseadas em conta).
 
 ```text
 Global state:
@@ -149,11 +149,11 @@ Global state:
   contract 0x123… →  bytecode + storage slots
 ```
 
-| Idea | Detail |
+| Idéia | Detalhe |
 |------|--------|
-| **Account** | One row-like record per address |
-| **Transaction** | Updates balances and/or runs contract code |
-| **`msg.value`** | Native coin sent with the call (EVM) |
+| **Conta** | Um registro semelhante a uma linha por endereço |
+| **Transação** | Atualiza saldos e/ou executa código de contrato |
+| **`msg.value`** | Moeda nativa enviada com a chamada (EVM) |
 
 ```plantuml
 @startuml
@@ -168,66 +168,66 @@ TX -> B: balance := 3 BNB
 @enduml
 ```
 
-**EVM chains (BNB, Tron)** look almost the same in code — RPC, gas token, and tooling differ. See [BNB](networks/bnb/i-overview.md), [Tron](networks/tron/i-overview.md).
+**EVM cadeias (BNB, Tron)** parecem quase iguais no código – RPC, token de gás e ferramentas são diferentes. Consulte [BNB](networks/bnb/i-overview.md), [Tron](networks/tron/i-overview.md).
 
-### Side-by-side
+### Lado a lado
 
-| | **UTXO / eUTXO** | **Account** |
-|---|------------------|-------------|
-| **State unit** | Outputs to spend | Per-address balance + contract storage |
-| **“Balance”** | Derived from outputs | Stored directly |
-| **Smart contracts** | Validators on outputs | Bytecode at address |
-| **Fee math** | Inputs − outputs = fee | `gas_used × gas_price` |
-| **This track** | Cardano | BNB, Tron, TON |
+| | **UTXO /eUTXO** | **Conta** |
+|---|------------------|---------|
+| **Unidade estadual** | Resultados a gastar | Saldo por endereço + armazenamento de contrato |
+| **“Equilíbrio”** | Derivado de resultados | Armazenado diretamente |
+| **Contratos inteligentes** | Validadores de resultados | Bytecode no endereço |
+| **Matemática de taxas** | Entradas − saídas = taxa |`gas_used × gas_price`|
+| **Esta faixa** | Cardano | BNB, Tron, TON |
 
-## 6. Contract storage (account chains)
+## 6. Armazenamento de contrato (cadeias de contas)
 
-On EVM-style chains, a deployed contract has:
+Nas cadeias EVM-style, um contrato implantado tem:
 
-| Store | Holds |
+| Loja | Detém |
 |-------|--------|
-| **Bytecode** | Immutable program (unless proxy patterns) |
-| **Storage slots** | Mutable key/value (balances mapping, `feeBps`, `owner`, …) |
-| **Balance** | Native coin held by the contract address |
+| **Bytecódigo** | Programa imutável (a menos que padrões de proxy) |
+| **Slots de armazenamento** | Chave/valor mutável (mapeamento de saldos,`feeBps`,`owner`, …) |
+| **Saldo** | Moeda nativa detida pelo endereço do contrato |
 
-Transactions that **call** the contract read/write storage according to the code. Events (`Paid`, `Transfer`) are **logs** — indexed by explorers but not “storage” in the same sense.
+Transações que **chamam** o armazenamento de leitura/gravação do contrato de acordo com o código. Eventos (`Paid`,`Transfer`) são **logs** – indexados por exploradores, mas não “armazenamento” no mesmo sentido.
 
-## 7. Mempool and ordering
+## 7. Mempool e pedidos
 
-Before inclusion, signed txs wait in the **mempool**:
+Antes da inclusão, os txs assinados aguardam no **mempool**:
 
-| Behavior | Effect |
+| Comportamento | Efeito |
 |----------|--------|
-| **Higher fee** | Often picked first under congestion |
-| **Invalid tx** | Dropped — never stored on-chain |
-| **Replaced** | Some chains support fee-bump replacement |
+| **Taxa mais alta** | Frequentemente escolhido primeiro em congestionamentos |
+| **Tx inválido** | Caiu – nunca armazenado na rede |
+| **Substituído** | Algumas redes apoiam a substituição do aumento de taxas |
 
-If your tx never leaves the mempool (fee too low), **no on-chain record** — you pay nothing on-chain.
+Se o seu tx nunca sair do mempool (taxa muito baixa), **sem registro na rede** – você não paga nada na rede.
 
-## 8. Finality and reversions
+## 8. Finalidade e reversões
 
-| Outcome | Stored on-chain? | Fee charged? |
-|---------|------------------|------------|
-| **Rejected at mempool** | No | No |
-| **Included, execution failed (revert)** | Yes — failed execution record | Usually **yes** (work was done) |
-| **Included, success** | Yes — state updated | Yes |
+| Resultado | Armazenado na rede? | Taxa cobrada? |
+|--------|------------------|-----------|
+| **Rejeitado no mempool** | Não | Não |
+| **Incluído, falha na execução (reversão)** | Sim — registro de execução com falha | Normalmente **sim** (o trabalho foi feito) |
+| **Incluído, sucesso** | Sim — estado atualizado | Sim |
 
-Details by network: [Failed transactions & funds](vii-failed-transactions-and-funds.md).
+Detalhes por rede: [Transações e fundos com falha](vii-failed-transactions-and-funds.md).
 
-## 9. How to read an explorer
+## 9. Como ler um explorador
 
-| Explorer column | UTXO chain (Cardano) | Account chain (BNB) |
+| Coluna do explorador | Corrente UTXO (Cardano) | Cadeia de contas (BNB) |
 |-----------------|----------------------|---------------------|
-| **Inputs / outputs** | UTXO list | Often “From / To” |
-| **Value** | Sum of outputs | `Value` field + internal txs |
-| **Status** | Valid / phase-2 fail | Success / Fail (revert) |
-| **Logs** | Less common | Events from contracts |
+| **Entradas/saídas** | Lista UTXO | Freqüentemente “De / Para” |
+| **Valor** | Soma das realizações |`Value`campo + txs internos |
+| **Status** | Válido/falha na fase 2 | Sucesso/Falha (reverter) |
+| **Registros** | Menos comum | Eventos de contratos |
 
-After broadcast: [Verify safe & completed](ix-verify-safe-and-completed.md).
+Após a transmissão: [Verificar segurança e conclusão](ix-verify-safe-and-completed.md).
 
-## 10. Related
+## 10. Relacionado
 
-- **Part II** — [What is cryptocurrency?](ii-what-is-cryptocurrency.md)
-- **Part IV** — [Types of blockchains](iv-types-of-blockchains.md)
-- **Part VII** — [Failed transactions & funds](vii-failed-transactions-and-funds.md)
-- **Part IX** — [Verify safe & completed](ix-verify-safe-and-completed.md)
+- **Parte II** — [O que é criptomoeda?](ii-what-is-cryptocurrency.md)
+- **Parte IV** — [Tipos de blockchains](iv-types-of-blockchains.md)
+- **Parte VII** — [Transações e fundos com falha](vii-failed-transactions-and-funds.md)
+- **Parte IX** — [Verifique se está seguro e concluído](ix-verify-safe-and-completed.md)

@@ -1,18 +1,18 @@
 ---
 label: "IX"
-subtitle: "Backtracking"
-group: "Data structures & algorithms"
+subtitle: "Retrocesso"
+group: "Estruturas de dados e algoritmos"
 order: 9
 ---
-Backtracking
-**Systematic trial and error:** build a candidate solution step by step; when a choice leads to a dead end, **undo** (backtrack) and try the next option.
+Retrocesso
+**Tentativa e erro sistemáticos:** crie uma solução candidata passo a passo; quando uma escolha leva a um beco sem saída, **desfaça** (retroceda) e tente a próxima opção.
 
-Same idea as **DFS** on an implicit **state tree** of decisions.
+Mesma ideia de **DFS** em uma **árvore de estado** implícita de decisões.
 
-## 1. Template
-1. **Choose** — make a decision.
-2. **Recurse** — solve the rest.
-3. **Unchoose** — restore state (backtrack).
+## 1. Modelo
+1. **Escolha** — tome uma decisão.
+2. **Recurse** — resolva o resto.
+3. **Desmarcar** — restaurar estado (retroceder).
 
 ```mermaid
 flowchart TD
@@ -29,7 +29,7 @@ flowchart TD
   More -->|No| Back[Backtrack]
 ```
 
-Often prune branches early with **constraints** (invalid partial solutions).
+Freqüentemente, podar ramificações antecipadamente com **restrições** (soluções parciais inválidas).
 
 ```java
 // Compile: javac --release 22 …
@@ -47,18 +47,18 @@ public static void subsets(int n, int start, List<Integer> cur, List<List<Intege
 }
 ```
 
-## 2. Classic problems
+## 2. Problemas clássicos
 
-| Problem | State | Pruning |
-|---------|-------|---------|
-| **Subsets / combinations** | Include or skip each element | None or size limit |
-| **Permutations** | Used flags on elements | — |
-| **N-queens** | Row-by-row column placement | No two queens attack |
-| **Sudoku** | Empty cell choices | Row/col/box conflicts |
-| **Graph coloring** | Color next vertex | Adjacent colors differ |
+| Problema | Estado | Poda |
+|--------|-------|---------|
+| **Subconjuntos/combinações** | Incluir ou pular cada elemento | Nenhum ou limite de tamanho |
+| **Permutações** | Bandeiras usadas em elementos | — |
+| **N-queens** | Posicionamento de coluna linha por linha | Não há ataque de duas rainhas |
+| **Sudoku** | Opções de células vazias | Conflitos de linha/coluna/caixa |
+| **Coloração de gráfico** | Colorir próximo vértice | As cores adjacentes diferem |
 
-## 3. N-queens (sketch)
-Place queens row by row; in row **r**, try each column **c** not attacked by prior queens.
+## 3. N-queens (esboço)
+Coloque as rainhas linha por linha; na linha **r**, tente cada coluna **c** não atacada pelas rainhas anteriores.
 
 ```java
 // Compile: javac --release 22 …
@@ -85,16 +85,16 @@ private static boolean safe(int[] cols, int row, int col) {
 }
 ```
 
-## 4. Complexity
-Worst case is often **exponential** in branching factor × depth — backtracking is for **small** search spaces or **heavy pruning**.
+## 4. Complexidade
+O pior caso geralmente é **exponencial** no fator de ramificação × profundidade - o retrocesso é para espaços de pesquisa **pequenos** ou **poda pesada**.
 
-## 5. Backtracking vs DP
-- **Backtracking:** enumerate **all** valid configurations (or count them).
-- **DP:** when subproblems **overlap** and you need **optimal value**, not every solution listing.
+## 5. Retrocesso vs DP
+- **Retrocesso:** enumere **todas** as configurações válidas (ou conte-as).
+- **DP:** quando subproblemas **se sobrepõem** e você precisa de **valor ideal**, nem toda listagem de soluções.
 
-## 6. Solving with the JDK (already implemented)
+## 6. Resolvendo com o JDK (já implementado)
 
-Backtracking is **custom recursion**; the JDK helps with **containers** and **bookkeeping**:
+Retrocesso é **recursão personalizada**; o JDK ajuda com **contêineres** e **contabilidade**:
 
 ```java
 // Compile: javac --release 22 …
@@ -114,11 +114,11 @@ List<Integer> candidates = new ArrayList<>(List.of(1, 2, 3));
 Collections.shuffle(candidates); // needs Random seed for reproducibility
 ```
 
-| Backtracking need | JDK |
+| Necessidade de retrocesso | JDK |
 |-------------------|-----|
-| Current path | `ArrayList` |
-| All solutions | `List<List<T>>` |
-| Used flags | `boolean[]`, `HashSet` |
-| Copy state | `new ArrayList<>(path)`, `Arrays.copyOf` |
+| Caminho atual |`ArrayList`|
+| Todas as soluções |`List<List<T>>`|
+| Bandeiras usadas |`boolean[]`,`HashSet`|
+| Copiar estado |`new ArrayList<>(path)`,`Arrays.copyOf`|
 
-**Permutations / combinations** for tiny **n** only: libraries exist, but interviews expect the **recursive** template in §1.
+**Permutações/combinações** apenas para **n** minúsculos: existem bibliotecas, mas as entrevistas esperam o modelo **recursivo** em §1.

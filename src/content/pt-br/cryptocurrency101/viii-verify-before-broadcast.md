@@ -1,15 +1,15 @@
 ---
 label: "VIII"
-subtitle: "Verify before broadcast"
-group: "Cryptocurrency101"
+subtitle: "Verifique antes da transmissão"
+group: "Criptomoedas 101"
 order: 8
 ---
-Cryptocurrency101 — Part VIII: Verify before broadcast
-Catch most logic and config errors **before** paying mainnet fees: **compile → test → simulate → testnet → mainnet**.
+Cryptocurrency101 — Parte VIII: Verifique antes da transmissão
+Capture a maioria dos erros de lógica e configuração **antes** de pagar as taxas da mainnet: **compilar → testar → simular → testnet → mainnet**.
 
-You cannot guarantee **zero** failures (congestion, wallet bugs, MEV), but everything left of **Broadcast** in the diagrams below is **free or testnet-cheap**.
+Você não pode garantir **zero** falhas (congestionamento, bugs de carteira, MEV), mas tudo o que resta do **Broadcast** nos diagramas abaixo é **gratuito ou barato para testnet**.
 
-## 1. End-to-end sequence
+## 1. Sequência de ponta a ponta
 
 ```plantuml
 @startuml
@@ -63,21 +63,21 @@ end
 @enduml
 ```
 
-## 2. Pre-flight checklist
+## 2. Lista de verificação pré-voo
 
-| Step | What you verify | Tool / how | Fails before chain? |
+| Etapa | O que você verifica | Ferramenta / como | Falha antes da cadeia? |
 |------|-----------------|------------|---------------------|
-| **1. Compile** | Syntax, types, bytecode size | `hardhat compile`, `blueprint build`, `aiken build` | **Yes** |
-| **2. Unit tests** | Fee math, zero address rejected | Hardhat, Foundry, Aiken | **Yes** |
-| **3. Static analysis** | Reentrancy, overflow | Slither, Mythril (optional) | **Yes** |
-| **4. Config review** | `feeAccount`, `feeBps ≤ 10000` | Code review | **Yes** |
-| **5. Simulate call** | Tx would succeed without sending | `eth_call`, `triggerConstantContract`, `cardano-cli build` | **Yes** |
-| **6. Estimate cost** | Enough native coin + gas headroom | `estimateGas`, energy estimate | **Yes** |
-| **7. Wallet / nonce** | Correct network, balance | MetaMask, TronLink, Tonkeeper | **Yes** if blocked |
-| **8. Testnet E2E** | Deploy + `pay()` + balances | BSC testnet, Shasta, Preprod | Cheap |
-| **9. Mainnet canary** | One small real `pay()` | Mainnet explorer | Costs real fee |
+| **1. Compilar** | Sintaxe, tipos, tamanho do bytecode |`hardhat compile`,`blueprint build`,`aiken build`| **Sim** |
+| **2. Testes unitários** | Taxa matemática, endereço zero rejeitado | Capacete de segurança, fundição, Aiken | **Sim** |
+| **3. Análise estática** | Reentrada, transbordamento | Slither, Mythril (opcional) | **Sim** |
+| **4. Revisão de configuração** |`feeAccount`,`feeBps ≤ 10000`| Revisão de código | **Sim** |
+| **5. Simular chamada** | Tx teria sucesso sem enviar |`eth_call`,`triggerConstantContract`,`cardano-cli build`| **Sim** |
+| **6. Estimar custo** | Moeda nativa suficiente + margem de gás |`estimateGas`, estimativa de energia | **Sim** |
+| **7. Carteira / nonce** | Rede correta, equilíbrio | MetaMask, TronLink, Tonkeeper | **Sim** se bloqueado |
+| **8. Rede de teste E2E** | Implantar +`pay()`+ saldos | BSC testnet, Shasta, pré-produção | Barato |
+| **9. Canário da rede principal ** | Um pequeno real`pay()`| Explorador da rede principal | Custa taxa real |
 
-## 3. EVM simulation (BNB / Tron)
+## 3. Simulação EVM (BNB / Tron)
 
 ```plantuml
 @startuml
@@ -107,27 +107,27 @@ const gas = await contract.pay.estimateGas(recipient, { value: amount });
 await contract.pay(recipient, { value: amount, gasLimit: gas * 110n / 100n });
 ```
 
-## 4. Tools by network
+## 4. Ferramentas por rede
 
-| Network | Simulate / dry-run | Testnet | Explorer |
+| Rede | Simular/ensaio | Rede de teste | Explorador |
 |---------|-------------------|---------|----------|
-| [BNB](networks/bnb/i-overview.md) | `eth_call`, `staticCall`, Foundry | BSC testnet | BscScan |
-| [Tron](networks/tron/i-overview.md) | `triggerConstantContract` | Shasta / Nile | Tronscan |
-| [TON](networks/ton/i-overview.md) | Blueprint, `@ton/sandbox` | TON testnet | Tonviewer |
-| [ADA](networks/ada/i-overview.md) | `cardano-cli transaction build`, Lucid | Preprod / Preview | Cardanoscan |
+| [BNB](networks/bnb/i-overview.md) |`eth_call`,`staticCall`, Fundição | BSC rede de teste | BscScan |
+| [Tron](networks/tron/i-overview.md) |`triggerConstantContract`| Shasta / Nilo | Tronscan |
+| [TON](networks/ton/i-overview.md) | Projeto,`@ton/sandbox`| TON rede de teste | Visualizador de tons |
+| [ADA](networks/ada/i-overview.md) |`cardano-cli transaction build`, Lúcido | Pré-produção/visualização | Cardanoscan |
 
-## 5. Common revert reasons (FeeSplitter)
+## 5. Motivos comuns de reversão (FeeSplitter)
 
-| Contract check | User mistake | Simulation catches? |
-|----------------|--------------|---------------------|
-| `msg.value > 0` | Sends 0 native coin | **Yes** |
-| `recipient != address(0)` | Zero address | **Yes** |
-| `payOk` / transfer fail | Recipient rejects | **Yes** on testnet |
-| Out of gas | Gas limit too low | **estimateGas** helps |
-| Wrong network | Mainnet vs testnet | Wallet UI |
-| Insufficient balance | Value + gas | **Often before** broadcast — [Part VII](vii-failed-transactions-and-funds.md) |
+| Verificação do contrato | Erro do usuário | Simulação pega? |
+|----------------|-------------|---------------------|
+|`msg.value > 0`| Envia 0 moeda nativa | **Sim** |
+|`recipient != address(0)`| Endereço zero | **Sim** |
+|`payOk`/falha na transferência | Destinatário rejeita | **Sim** na testnet |
+| Sem gás | Limite de gás muito baixo | **estimateGas** ajuda |
+| Rede errada | Rede principal vs rede de teste | Carteira UI |
+| Saldo insuficiente | Valor + gás | **Muitas vezes antes** da transmissão — [Parte VII](vii-failed-transactions-and-funds.md) |
 
-## 6. Decision gates
+## 6. Portas de decisão
 
 ```plantuml
 @startuml
@@ -164,8 +164,8 @@ stop
 @enduml
 ```
 
-## 7. Related
+## 7. Relacionado
 
-- **Part VII** — [Failed transactions & funds](vii-failed-transactions-and-funds.md)
-- **Part IX** — [Verify safe & completed](ix-verify-safe-and-completed.md)
-- **Part VI** — [Deploy & hosting](vi-deploy-pricing-and-hosting.md)
+- **Parte VII** — [Transações e fundos com falha](vii-failed-transactions-and-funds.md)
+- **Parte IX** — [Verifique se está seguro e concluído](ix-verify-safe-and-completed.md)
+- **Parte VI** — [Implantação e hospedagem](vi-deploy-pricing-and-hosting.md)

@@ -1,22 +1,22 @@
 ---
 label: "VI"
-subtitle: "Shortest paths & MST"
-group: "Data structures & algorithms"
+subtitle: "Caminhos mais curtos e MST"
+group: "Estruturas de dados e algoritmos"
 order: 6
 ---
-Shortest paths & minimum spanning trees
-Weighted graphs: edges carry **cost** or **distance**.
+Caminhos mais curtos e árvores de abrangência mínima
+Gráficos ponderados: arestas carregam **custo** ou **distância**.
 
-## 1. Single-source shortest paths
+## 1. Caminhos mais curtos de fonte única
 
-| Algorithm | Graph | Weights | Time (typical) |
+| Algoritmo | Gráfico | Pesos | Tempo (típico) |
 |-----------|-------|---------|----------------|
-| **BFS** | Any | All equal (unweighted) | O(n + m) |
-| **Dijkstra** | Directed/undirected | **Non-negative** | O((n + m) log n) with binary heap |
-| **Bellman–Ford** | Any | Allows negative (no neg cycles) | O(nm) |
+| **BFS** | Qualquer | Todos iguais (sem ponderação) | O(n +m) |
+| **Dijkstra** | Dirigido/não direcionado | **Não negativo** | O((n + m) log n) com heap binário |
+| **Bellman-Ford** | Qualquer | Permite negativo (sem ciclos negativos) | O(nm) |
 
-### Dijkstra (non-negative weights)
-Greedy: always settle the **closest** unsettled vertex using a **min-priority queue** [Priority queue](../data-structures/ix-priority-queue.md).
+### Dijkstra (pesos não negativos)
+Ganancioso: sempre resolva o vértice não resolvido **mais próximo** usando uma fila de **prioridade mínima** [Fila de prioridade](../data-structures/ix-priority-queue.md).
 
 ```mermaid
 flowchart TD
@@ -67,30 +67,30 @@ public static int[] dijkstra(List<List<int[]>> adj, int source) {
 }
 ```
 
-**Do not** run Dijkstra on graphs with **negative** edge weights without adjustment — use **Bellman–Ford** instead.
+**Não** execute Dijkstra em gráficos com pesos de aresta **negativos** sem ajuste — em vez disso, use **Bellman–Ford**.
 
-## 2. All-pairs shortest paths (names only)
-- **Floyd–Warshall:** **O(n³)**, dynamic programming on triples — dense graphs, small **n**.
-- **Johnson:** reweight + Dijkstra from each vertex — sparse graphs with possible negatives (advanced).
+## 2. Caminhos mais curtos para todos os pares (apenas nomes)
+- **Floyd–Warshall:** **O(n³)**, programação dinâmica em triplos — gráficos densos, pequeno **n**.
+- **Johnson:** reponderar + Dijkstra de cada vértice — gráficos esparsos com possíveis negativos (avançado).
 
-## 3. Minimum spanning tree (MST)
-**Undirected**, connected, weighted: pick **n − 1** edges connecting all vertices with **minimum total weight**, **no cycles**.
+## 3. Árvore geradora mínima (MST)
+**Não direcionado**, conectado, ponderado: escolha **n − 1** arestas conectando todos os vértices com **peso total mínimo**, **sem ciclos**.
 
-| Algorithm | Idea | Time |
+| Algoritmo | Idéia | Tempo |
 |-----------|------|------|
-| **Kruskal** | Sort edges; add if no cycle (union–find) | O(m log m) |
-| **Prim** | Grow tree from a start; always add cheapest edge to tree | O((n + m) log n) with heap |
+| **Kruskal** | Classificar bordas; adicione se não houver ciclo (union–find) | O(m log m) |
+| ** Primordial ** | Cresça uma árvore desde o início; sempre adicione a borda mais barata à árvore | O((n + m) log n) com heap |
 
-Both are **greedy**; correctness proofs use **cut property** / **exchange argument** [Greedy](vii-greedy.md).
+Ambos são **gananciosos**; provas de correção usam **propriedade de corte** / **argumento de troca** [Greedy](vii-greedy.md).
 
-## 4. When to use what
-- **Maps / routing (non-negative):** Dijkstra.
-- **Currency arbitrage (negative cycle detection):** Bellman–Ford.
-- **Network design (connect all sites cheaply):** MST (Kruskal or Prim).
+## 4. Quando usar o quê
+- **Mapas / roteamento (não negativo):** Dijkstra.
+- **arbitragem de moeda (detecção de ciclo negativo):** Bellman–Ford.
+- **Design de rede (conectar todos os sites de forma barata):** MST (Kruskal ou Prim).
 
-## 5. Solving with the JDK (already implemented)
+## 5. Resolvendo com o JDK (já implementado)
 
-**Dijkstra** and **Prim** use **`PriorityQueue`** (binary heap in the JDK). **Kruskal** uses **`Arrays.sort`** on edges + **union–find** (you still implement UF, or use a small helper class).
+**Dijkstra** e **Prim** usam **`PriorityQueue`** (pilha binária em JDK). **Kruskal** usa **`Arrays.sort`** nas arestas + **union–find** (você ainda implementa UF ou usa uma pequena classe auxiliar).
 
 ```java
 // Compile: javac --release 22 …
@@ -110,11 +110,11 @@ Arrays.sort(edges, Comparator.comparingInt(Edge::w));
 // Multi-source BFS (unweighted) — one Queue per wave or one BFS with Queue
 ```
 
-| Algorithm | JDK building blocks |
+| Algoritmo | JDK blocos de construção |
 |-----------|---------------------|
-| BFS (unweighted shortest) | `ArrayDeque`, `Queue` |
-| Dijkstra / Prim | `PriorityQueue`, `Comparator` |
-| Kruskal | `Arrays.sort`, union–find (custom ~20 lines) |
-| Non-negative edge relax | `Math.min` on `int[] dist` |
+| BFS (mais curto não ponderado) |`ArrayDeque`,`Queue`|
+| Dijkstra / Prim |`PriorityQueue`,`Comparator`|
+| Kruskal |`Arrays.sort`, union–find (personalizado ~20 linhas) |
+| Borda não negativa relaxa |`Math.min`sobre`int[] dist`|
 
-Third-party libraries (e.g. JGraphT) add full graph algorithms; **CS101** and interviews expect you to write the **short loop** using **`PriorityQueue`**.
+Bibliotecas de terceiros (por exemplo, JGraphT) adicionam algoritmos gráficos completos; **CS101** e entrevistas esperam que você escreva o **loop curto** usando **`PriorityQueue`**.

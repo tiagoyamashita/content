@@ -1,23 +1,23 @@
 ---
 label: "II"
-subtitle: "What is cryptocurrency?"
-group: "Cryptocurrency101"
+subtitle: "O que é criptomoeda?"
+group: "Criptomoedas 101"
 order: 2
 ---
-Cryptocurrency101 — Part II: What is cryptocurrency?
-**Cryptocurrency** is digital value tracked on a **shared ledger** (usually a **blockchain**) where ownership is enforced by **cryptography**, not by a single company database. **Part III** covers [how transactions are stored](iii-how-transactions-are-stored.md); **Part IV** covers [types of blockchains](iv-types-of-blockchains.md).
+Cryptocurrency101 — Parte II: O que é criptomoeda?
+**Criptomoeda** é um valor digital rastreado em um **razão compartilhado** (geralmente um **blockchain**) onde a propriedade é imposta por **criptografia**, e não por um único banco de dados da empresa. **A Parte III** cobre [como as transações são armazenadas](iii-how-transactions-are-stored.md); **Parte IV** cobre [tipos de blockchains](iv-types-of-blockchains.md).
 
-This track is **conceptual and educational**, not financial advice.
+Este curso é **conceitual e educacional**, não um aconselhamento financeiro.
 
-## 1. Core idea
+## 1. Ideia central
 
-| Term | Plain meaning |
+| Prazo | Significado simples |
 |------|----------------|
-| **Cryptocurrency** | Digital asset whose transfers are recorded on a network many parties can verify |
-| **Blockchain** | A chain of blocks — each block batches recent transactions and links to the previous block |
-| **Ledger** | The record of who holds what (or which outputs are unspent) |
-| **Node** | Software that stores a copy of (or subset of) the ledger and follows network rules |
-| **Wallet** | Keys + software that **signs** transactions — does not “hold coins” inside the app; the chain does |
+| **Criptomoeda** | Ativo digital cujas transferências são registradas em uma rede que muitas partes podem verificar |
+| **Bloqueio** | Uma cadeia de blocos — cada bloco agrupa transações recentes e vincula-se ao bloco anterior |
+| **Registro** | O registro de quem detém o quê (ou quais resultados não foram gastos) |
+| **Nó** | Software que armazena uma cópia (ou subconjunto) do razão e segue as regras da rede |
+| **Carteira** | Chaves + software que **assina** transações — não “guarda moedas” dentro do aplicativo; a cadeia faz |
 
 ```text
 Traditional bank app          Cryptocurrency network
@@ -27,11 +27,11 @@ You trust the bank            You verify rules via open protocol + crypto
 Chargeback / reversal         Finality rules differ — often irreversible
 ```
 
-You are not buying “a file on your USB stick.” You control **keys** that authorize moves on a **network-wide** record.
+Você não está comprando “um arquivo no seu stick USB”. Você controla **chaves** que autorizam movimentações em um registro de **toda a rede**.
 
-## 2. Keys, addresses, and signatures
+## 2. Chaves, endereços e assinaturas
 
-Ownership is **public-key cryptography**:
+A propriedade é **criptografia de chave pública**:
 
 ```text
 Private key  →  kept secret  →  signs transactions (proves authorization)
@@ -39,21 +39,21 @@ Public key   →  derived      →  often hashed into an "address"
 Address      →  shared       →  where others send value
 ```
 
-| Piece | Role |
+| Peça | Função |
 |-------|------|
-| **Private key** | Like a password you must never share — anyone with it can spend |
-| **Signature** | Math proof that the holder of the private key approved **this exact** transaction |
-| **Address** | Destination label (0x… on EVM, `T…` on Tron, `addr1…` on Cardano, etc.) |
+| **Chave privada** | Como uma senha que você nunca deve compartilhar – qualquer pessoa com ela pode gastar |
+| **Assinatura** | Prova matemática de que o detentor da chave privada aprovou **esta exata** transação |
+| **Endereço** | Rótulo de destino (0x… em EVM,`T…`em Tron,`addr1…`em Cardano, etc.) |
 
-**Lost keys = lost access** for most networks — there is usually no “reset password” at a central authority.
+**Chaves perdidas = acesso perdido** para a maioria das redes — geralmente não há “redefinição de senha” em uma autoridade central.
 
-## 3. Native coin vs token
+## 3. Moeda nativa vs token
 
-| | **Native coin** | **Token** |
+| | **Moeda nativa** | **Token** |
 |---|-----------------|-----------|
-| **Examples** | BTC, ETH, BNB, TRX, TON, ADA | USDT on BSC, BEP-20, TRC-20, Jettons |
-| **Pays network fees?** | **Yes** — gas / energy / tx fee | Usually **no** — you still need native coin for fees |
-| **Defined by** | Protocol rules of the chain | Smart contract or ledger rules on top of the chain |
+| **Exemplos** | BTC, ETH, BNB, TRX, TON, ADA | USDT em BSC, BEP-20, TRC-20, Jettons |
+| **Paga taxas de rede?** | **Sim** — taxa de gás/energia/tx | Normalmente **não** – você ainda precisa de moeda nativa para taxas |
+| **Definido por** | Regras de protocolo da cadeia | Contrato inteligente ou regras de contabilidade no topo da cadeia |
 
 ```text
 User wallet
@@ -61,15 +61,15 @@ User wallet
   └── USDT (token)     → contract balance; transfer needs BNB for gas
 ```
 
-Network-specific pages ([BNB](networks/bnb/i-overview.md), [Tron](networks/tron/i-overview.md), [TON](networks/ton/i-overview.md), [Cardano](networks/ada/i-overview.md)) spell out native coins and token standards.
+Páginas específicas da rede ([BNB](networks/bnb/i-overview.md), [Tron](networks/tron/i-overview.md), [TON](networks/ton/i-overview.md), [Cardano](networks/ada/i-overview.md)) explicitam moedas nativas e padrões de tokens.
 
-## 4. Smart contracts (high level)
+## 4. Contratos inteligentes (alto nível)
 
-A **smart contract** is **program code deployed on the blockchain** that runs when users send transactions to it. It can:
+Um **contrato inteligente** é um **código de programa implantado no blockchain** que é executado quando os usuários enviam transações para ele. Pode:
 
-- Hold value and release it when rules are met
-- Split payments (see [Fee split pattern](v-fee-split-pattern.md))
-- Implement tokens, swaps, voting, escrow
+- Manter o valor e liberá-lo quando as regras forem cumpridas
+- Pagamentos divididos (consulte [Padrão de divisão de taxas](v-fee-split-pattern.md))
+- Implementar tokens, swaps, votação, depósito
 
 ```plantuml
 @startuml
@@ -88,43 +88,43 @@ N --> User: Receipt (success or revert)
 @enduml
 ```
 
-The contract **lives on the chain** — you do not host it on a VPS. You pay **once to deploy**, then **fees per transaction**. See [Deploy & hosting](vi-deploy-pricing-and-hosting.md).
+O contrato **está na cadeia** — você não o hospeda em um VPS. Você paga **uma vez para implantar** e depois **taxas por transação**. Consulte [Implantação e hospedagem](vi-deploy-pricing-and-hosting.md).
 
-## 5. Decentralization is a spectrum
+## 5. A descentralização é um espectro
 
-| Style | Who runs nodes | Examples |
+| Estilo | Quem executa os nós | Exemplos |
 |-------|----------------|----------|
-| **Public permissionless** | Anyone | Bitcoin, Ethereum, BNB Chain, Cardano |
-| **Consortium / permissioned** | Approved operators | Some enterprise chains |
-| **Centralized ledger** | One company | Not classic “crypto” — more like internal DB |
+| **Público sem permissão** | Qualquer um | Bitcoin, Ethereum, Cadeia BNB, Cardano |
+| **Consórcio/permissionado** | Operadores aprovados | Algumas cadeias empresariais |
+| **Lista centralizado** | Uma empresa | Não é a “cripto” clássica – é mais como DB interno |
 
-“Decentralized” does **not** mean “no humans” — it means **no single party** must be trusted for the **rules** of the ledger, within the limits of the protocol and client software you use.
+“Descentralizado” **não** significa “sem humanos” — significa que **nenhuma parte** deve ser confiável para as **regras** do livro-razão, dentro dos limites do protocolo e do software cliente que você usa.
 
-## 6. What cryptocurrency is not
+## 6. O que criptomoeda não é
 
-| Misconception | Reality |
+| Equívoco | Realidade |
 |---------------|---------|
-| **Anonymous by default** | Most chains are **pseudonymous** — addresses are public on explorers |
-| **Instant free money** | Fees, volatility, scams, and failed txs are common |
-| **Backed by all governments** | Varies — many assets are not legal tender |
-| **Reversible like PayPal** | On-chain transfers are often **final** once confirmed |
-| **Stored inside the wallet app** | Wallet holds **keys**; balances live on the **ledger** |
+| **Anônimo por padrão** | A maioria das redes são **pseudônimos** – os endereços são públicos nos exploradores |
+| **Dinheiro grátis instantâneo** | Taxas, volatilidade, fraudes e transações malsucedidas são comuns |
+| **Apoiado por todos os governos** | Varia — muitos ativos não têm curso legal |
+| **Reversível como PayPal** | As transferências na rede geralmente são **finais** depois de confirmadas |
+| **Armazenado dentro do aplicativo de carteira** | A carteira contém **chaves**; os saldos estão no **razão** |
 
-## 7. How this track uses these ideas
+## 7. Como esta faixa usa essas ideias
 
-Later parts and **network** pages assume you know:
+Partes posteriores e páginas de **rede** presumem que você sabe:
 
-| Concept | Used for |
-|---------|----------|
-| **Signed transactions** | Every `pay()` or transfer |
-| **Native coin for fees** | [Insufficient funds](vii-failed-transactions-and-funds.md) |
-| **Smart contracts** | FeeSplitter examples on each chain |
-| **Account vs UTXO** | [Types of blockchains](iv-types-of-blockchains.md) — Solidity vs Aiken feel different |
+| Conceito | Usado para |
+|--------|----------|
+| **Transações assinadas** | Todo`pay()`ou transferência |
+| **Moeda nativa para taxas** | [Fundos insuficientes](vii-failed-transactions-and-funds.md) |
+| **Contratos inteligentes** | Exemplos de FeeSplitter em cada cadeia |
+| **Conta vs UTXO** | [Tipos de blockchain](iv-types-of-blockchains.md) - Solidity vs Aiken parece diferente |
 
-## 8. Related
+## 8. Relacionado
 
-- **Part I** — [Overview](i-overview.md) — track map
-- **Part III** — [How transactions are stored](iii-how-transactions-are-stored.md)
-- **Part IV** — [Types of blockchains](iv-types-of-blockchains.md)
-- [Cybersecurity — hashing & signatures](../cybersecurity/i-overview.md) (intuition)
-- **Part V** — [Fee split pattern](v-fee-split-pattern.md)
+- **Parte I** — [Visão geral](i-overview.md) — mapa da trilha
+- **Parte III** — [Como as transações são armazenadas](iii-how-transactions-are-stored.md)
+- **Parte IV** — [Tipos de blockchains](iv-types-of-blockchains.md)
+- [Cibersegurança — hashing e assinaturas](../cybersecurity/i-overview.md) (intuição)
+- **Parte V** — [Padrão de divisão de taxas](v-fee-split-pattern.md)

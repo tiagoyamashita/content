@@ -1,37 +1,37 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "Tron"
 order: 1
 ---
-Tron — overview
-**Tron** is a **TVM** (Tron Virtual Machine) network — **Solidity**-compatible for most contracts, with native coin **TRX** and tokens **TRC-20**. Account model and fee-split logic mirror [BNB Chain (EVM)](../bnb/i-overview.md).
+Tron – visão geral
+**Tron** é uma rede **TVM** (Máquina Virtual Tron) — compatível com **Solidity** para a maioria dos contratos, com moeda nativa **TRX** e tokens **TRC-20**. Modelo de conta e espelho lógico de divisão de taxas [BNB Chain (EVM)](../bnb/i-overview.md).
 
-Parent track: [Cryptocurrency101 overview](../../i-overview.md).
+Trilha principal: [Visão geral do Cryptocurrency101](../../i-overview.md).
 
-## Network profile
+## Perfil de rede
 
 | | **Tron** |
 |---|----------|
-| **Type** | Layer-1, TVM (EVM-like) |
-| **Language** | **Solidity** (0.5.x–0.8.x with Tron adjustments) |
-| **Tooling** | TronBox, TronIDE, TronLink wallet |
-| **Native coin** | TRX |
+| **Tipo** | Camada-1, TVM (EVM-like) |
+| **Idioma** | **Solidez** (0,5.x–0,8.x com ajustes Tron) |
+| **Ferramentas** | Carteira TronBox, TronIDE, TronLink |
+| **Moeda nativa** | TRX |
 | **Tokens** | TRC-20 |
-| **Energy / bandwidth** | Staked TRX or burned TRX for execution (not identical to ETH gas) |
+| **Energia / largura de banda** | TRX estaqueado ou TRX queimado para execução (não idêntico ao gás ETH) |
 
-## Differences from BNB / Ethereum
+## Diferenças de BNB/Ethereum
 
-| Topic | Tron note |
+| Tópico | Nota Tron |
 |-------|-----------|
-| **Address format** | Base58 `T…` addresses (not `0x` in wallets) |
-| **`address payable`** | Same Solidity patterns for TRX transfer |
-| **Units** | 1 TRX = 1_000_000 sun |
-| **Solidity** | Avoid unsupported opcodes; test on Nile/Shasta testnet |
+| **Formato de endereço** | Base58`T…`endereços (não`0x`em carteiras) |
+| **`address payable`** | Mesmos padrões de solidez para transferência TRX |
+| **Unidades** | 1 TRX = 1_000_000 sol |
+| **Solidez** | Evite opcodes não suportados; teste na testnet do Nilo/Shasta |
 
-## Fee split pattern
+## Padrão de divisão de taxas
 
-Same rule as BNB: **fee** → treasury, **remainder** → recipient.
+Mesma regra de BNB: **taxa** → tesouraria, **resto** → destinatário.
 
 ```plantuml
 @startuml
@@ -47,7 +47,7 @@ SC -> REC: remainder (sun)
 @enduml
 ```
 
-## Example — Solidity (TVM)
+## Exemplo — Solidez (TVM)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -80,9 +80,9 @@ contract TronFeeSplitter {
 }
 ```
 
-Deploy with **TronBox** or compile in **TronIDE**, then call `pay` with TRX attached.
+Implante com **TronBox** ou compile em **TronIDE** e depois chame`pay`com TRX anexado.
 
-### TRC-20 fee split (sketch)
+### TRC-20 divisão de taxas (esboço)
 
 ```solidity
 function payTrc20(ITRC20 token, address recipient, uint256 amount) external {
@@ -93,7 +93,7 @@ function payTrc20(ITRC20 token, address recipient, uint256 amount) external {
 }
 ```
 
-## Testnet flow
+## Fluxo de rede de teste
 
 ```text
 1. TronLink wallet on Shasta / Nile testnet
@@ -101,54 +101,54 @@ function payTrc20(ITRC20 token, address recipient, uint256 amount) external {
 3. pay(recipient) sending TRX — verify balances on Tronscan
 ```
 
-## Deploy pricing
+## Implantar preços
 
-Tron uses **Energy** and **Bandwidth**, not ETH-style gas. Deploying a contract **burns TRX** or consumes **staked energy** — you still **do not** run a server for the contract.
+Tron usa **Energia** e **Largura de banda**, não gás estilo ETH-. A implantação de um contrato **queima TRX** ou consome **energia apostada** — você ainda **não** executa um servidor para o contrato.
 
-| Item | Typical range (2026) | Notes |
+| Artigo | Faixa típica (2026) | Notas |
 |------|----------------------|-------|
-| **Simple Solidity deploy** | **~$5 – $40** USD | Depends on bytecode size and energy price |
-| **With staked TRX for energy** | Lower TRX burn | Stake TRX → daily energy quota |
-| **Each `pay()` call** | **~$0.01 – $0.30** | If caller has no free bandwidth |
-| **Shasta / Nile testnet** | **$0** | Faucet TRX |
+| **Implantação simples do Solidity** | **~$5 – $40** USD | Depende do tamanho do bytecode e do preço da energia |
+| **Com TRX apostado para energia** | Menor queima de TRX | Participação TRX → cota diária de energia |
+| **Cada`pay()`ligar** | **~$0,01 – $0,30** | Se o chamador não tiver largura de banda livre |
+| **Rede de teste Shasta/Nilo** | **$0** | Torneira TRX |
 
-### Energy model (sketch)
+### Modelo de energia (esboço)
 
 ```text
 deploy_cost ≈ energy_used × energy_price (in TRX)
 ```
 
-| Action | Resource |
+| Ação | Recurso |
 |--------|----------|
-| **Deploy contract** | High **energy** (one-time) |
-| **TRC-20 transfer** | Energy + bandwidth |
-| **TRX `call{value}`** | Energy for TVM execution |
+| **Implantar contrato** | Alta **energia** (uma vez) |
+| **TRC-20 transferência** | Energia + largura de banda |
+| **TRX`call{value}`** | Energia para execução de TVM |
 
-TronIDE / TronBox often show **estimated energy** before confirm. Check [Tronscan](https://tronscan.org/) for account energy and bandwidth.
+TronIDE / TronBox geralmente mostra **energia estimada** antes de confirmar. Verifique [Tronscan](https://tronscan.org/) para contabilizar energia e largura de banda.
 
-| FeeSplitter sketch | Order of magnitude |
+| Esboço de FeeSplitter | Ordem de grandeza |
 |--------------------|------------------|
-| Deploy | ~50M – 150M energy (varies by optimization) |
-| `pay()` | ~30k – 100k energy |
+| Implantar | ~50M – 150M de energia (varia de acordo com a otimização) |
+|`pay()`| ~30k – 100k de energia |
 
-**Tip:** On testnet, request faucet TRX and deploy twice — compare energy on Tronscan contract creation tx.
+**Dica:** Na testnet, solicite o faucet TRX e implante duas vezes – compare a energia no tx de criação do contrato Tronscan.
 
-### vs BNB
+### versus BNB
 
 | | **Tron** | **BSC** |
-|---|----------|---------|
-| Fee token | TRX / energy | BNB gas |
-| Simple deploy | Often **higher** than BSC | Usually **cheapest** EVM-like |
-| UX | TronLink energy bar | MetaMask gwei |
+|---|----------|-----|
+| Token de taxa | TRX / energia | BNB gás |
+| Implantação simples | Frequentemente **maior** que BSC | Geralmente **mais barato** EVM-like |
+| UX | Barra de energia TronLink | MetaMask gwei |
 
-## Compare
+## Comparar
 
 | | **Tron** | **BNB** |
-|---|----------|---------|
-| Language | Solidity | Solidity |
-| Gas | Energy / bandwidth | BNB gas |
-| Wallet UX | TronLink | MetaMask |
+|---|----------|-----|
+| Idioma | Solidez | Solidez |
+| Gás | Energia/largura de banda | BNB gás |
+| Carteira UX | TronLink | MetaMask |
 
-## Next
+## Próximo
 
-[TON](../ton/i-overview.md) — Tact, [Examples — Tron 2% deploy](../../examples/ii-tron-two-percent-fee-split.md), or [Cryptocurrency101 overview](../../i-overview.md).
+[TON](../ton/i-overview.md) - Tato, [Exemplos - implantação de Tron 2%] (../../examples/ii-tron-two-percent-fee-split.md) ou [Visão geral do Cryptocurrency101](../../i-overview.md).

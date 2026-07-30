@@ -1,76 +1,76 @@
 ---
 label: "IX"
-subtitle: "Priority queue"
-group: "Data structures & algorithms"
+subtitle: "Fila prioritária"
+group: "Estruturas de dados e algoritmos"
 order: 9
 ---
-Priority queue — “who goes next?” by importance, not arrival time
-A **priority queue** is an **abstract data type** for a collection where each item has a **priority** (often just a number or anything **comparable**). The defining behavior: you can **insert** in any order, but **extract** always removes the item with the **highest** or **lowest** priority among those still inside — **not** the oldest (that would be a **FIFO queue**) and **not** the newest (that would be a **stack**).
+Fila prioritária – “quem é o próximo?” por importância, não por hora de chegada
+Uma **fila de prioridade** é um **tipo de dados abstrato** para uma coleção onde cada item tem uma **prioridade** (geralmente apenas um número ou qualquer coisa **comparável**). O comportamento definidor: você pode **inserir** em qualquer ordem, mas **extrair** sempre remove o item com a prioridade **mais alta** ou **mais baixa** entre aqueles que ainda estão dentro — **não** o mais antigo (isso seria uma fila **FIFO**) e **não** o mais novo (que seria uma **pilha**).
 
-**Java baseline:** `PriorityQueue` snippets assume **Java SE 22** (`javac --release 22`). They use **`record`** and other features available since **Java 16**; they also run on **JDK 21 LTS**.
+**Java linha de base:**`PriorityQueue`trechos assumem **Java SE 22** (`javac --release 22`). Eles usam **`record`** e outros recursos disponíveis desde **Java 16**; eles também são executados em **JDK 21 LTS**.
 
-If you picture a **hospital triage** desk: arrivals are not served strictly first-come-first-served; the **most urgent** case jumps ahead. A normal **queue** is a single orderly line; a **priority queue** is “always serve whoever is currently most important.”
-
-
-## 1. Queue vs stack vs priority queue (one minute)
-
-| ADT | Who leaves on “remove best” or dequeue/pop? | Typical mental model |
-|-----|-----------------------------------------------|----------------------|
-| **Queue** | The **oldest** still waiting (**FIFO**) | Line at a shop |
-| **Stack** | The **newest** still there (**LIFO**) | Pile of plates |
-| **Priority queue** | The **smallest** or **largest** key still there (by your ordering rule) | Triage, CPU scheduling |
-
-**Peek** (or **find-min** / **find-max**) reads that same “best” element **without** removing it. **Insert** adds something with its own priority; it does **not** have to sit at the “front” of anything — the structure keeps the invariant internally.
+Se você imaginar um balcão de **triagem hospitalar**: as chegadas não são atendidas estritamente por ordem de chegada; o caso **mais urgente** avança. Uma **fila** normal é uma única linha ordenada; uma **fila prioritária** é “sempre atender quem é mais importante no momento”.
 
 
-## 2. Operations (what APIs usually expose)
+## 1. Fila vs pilha vs fila prioritária (um minuto)
 
-Names vary by language and textbook; mentally map them like this:
+| ADT | Quem sai em “remover melhor” ou desenfileirar/pop? | Modelo mental típico |
+|-----|----------------------------------------------------------|---------------------|
+| **Fila** | O **mais antigo** ainda está esperando (**FIFO**) | Fila em uma loja |
+| **Pilha** | O **mais novo** ainda está lá (**LIFO**) | Pilha de pratos |
+| **Fila prioritária** | A chave **menor** ou **maior** ainda existe (de acordo com sua regra de pedido) | Triagem, agendamento CPU |
 
-- **`insert(x)`** / **`add(x)`** / **`offer(x)`** — put `x` in the collection.
-- **`extract-min()`** or **`extract-max()`** — remove and return the best element under the queue’s ordering. On an **empty** structure, behavior is either **error** or a **sentinel** value (Java’s `poll()` returns **`null`** for empty).
-- **`peek-min()`** / **`peek-max()`** — return the best element **without** removing it (Java: **`peek()`**).
-- **`isEmpty()`**, **`size()`** — usual bookkeeping.
-- **`clear()`** — drop everything.
-
-**Optional (advanced):** **`decrease-key`** / **`increase-key`** when you already have a **handle** to an item inside the structure and its priority changes — needed for a fast **Dijkstra** shortest-path implementation with a **binary heap** that can update priorities. The standard **`java.util.PriorityQueue`** does **not** support efficient decrease-key on arbitrary elements; for that you either use a **indexed heap** pattern, a **Fibonacci heap** in theory-heavy settings, or another graph library.
-
-**Merge** (combine two priority queues) appears in some theoretic APIs; practical code often just inserts from one heap into another.
+**Peek** (ou **find-min** / **find-max**) lê o mesmo “melhor” elemento **sem** removê-lo. **Inserir** adiciona algo com prioridade própria; ela **não** precisa ficar na “frente” de nada — a estrutura mantém o invariante internamente.
 
 
-## 3. Min-heap vs max-heap (same idea, flipped order)
+## 2. Operações (o que APIs geralmente expõem)
 
-- **Min-priority queue:** “best” = **smallest** key. **Extract** = **extract-min**. Used for **Dijkstra** (smallest tentative distance first), **Prim** on graphs, **merging sorted streams** with a small heap of “current heads.”
-- **Max-priority queue:** “best” = **largest** key. Used for “top **k**” style problems, **heapsort** descending, **Huffman**-style constructions where you repeatedly take the two **largest** (depending on formulation).
+Os nomes variam de acordo com o idioma e o livro didático; mapeie-os mentalmente assim:
 
-Implementation-wise, a **min-heap** is a complete binary tree where each parent is **≤** its children; a **max-heap** flips to **≥**. One implementation can do both by swapping the comparison or using a **reversed comparator** in Java.
+- **`insert(x)`** / **`add(x)`** / **`offer(x)`** - colocar`x`na coleção.
+- **`extract-min()`** ou **`extract-max()`** — remove e retorna o melhor elemento na ordem da fila. Em uma estrutura **vazia**, o comportamento é **error** ou um valor **sentinel** (Java’s`poll()`retorna **`null`** para vazio).
+- **`peek-min()`** / **`peek-max()`** — retorna o melhor elemento **sem** removê-lo (Java: **`peek()`**).
+- **`isEmpty()`**, **`size()`** — escrituração contábil habitual.
+- **`clear()`** - largue tudo.
+
+**Opcional (avançado):** **`decrease-key`** / **`increase-key`** quando você já tem um **handle** para um item dentro da estrutura e sua prioridade muda — necessário para uma implementação rápida do caminho mais curto **Dijkstra** com um **heap binário** que pode atualizar prioridades. O padrão **`java.util.PriorityQueue`** **não** oferece suporte a teclas de diminuição eficientes em elementos arbitrários; para isso, você usa um padrão **heap indexado**, um **heap Fibonacci** em configurações com muita teoria ou outra biblioteca de gráficos.
+
+**Merge** (combinar duas filas de prioridade) aparece em alguns APIs teóricos; o código prático geralmente é apenas inserido de um heap em outro.
 
 
-## 4. Tie-breaking and “duplicate priorities”
+## 3. Heap mínimo vs heap máximo (mesma ideia, ordem invertida)
 
-If two items have the **same** numeric priority, the ADT often does **not** guarantee which one comes out first unless the implementation documents **FIFO stability** within equal keys (many heaps are **not** stable). If order among equals matters, common fixes:
+- **Fila de prioridade mínima:** “melhor” = **menor** chave. **Extrair** = **extrair-min**. Usado para **Dijkstra** (menor distância provisória primeiro), **Prim** em gráficos, **mesclando fluxos classificados** com um pequeno monte de “cabeças atuais”.
+- **Fila de prioridade máxima:** “melhor” = **maior** chave. Usado para problemas de estilo “top **k**”, **heapsort** descendente, construções de estilo **Huffman** onde você pega repetidamente os dois **maiores** (dependendo da formulação).
 
-- Pack a **secondary key** (e.g. `(priority, sequenceNumber)` with lexicographic comparison so older entries sort first among ties), or
-- Store **unique ids** and break ties explicitly in a **`Comparator`**.
+Em termos de implementação, um **min-heap** é uma árvore binária completa onde cada pai é **≤** seus filhos; um **max-heap** muda para **≥**. Uma implementação pode fazer as duas coisas trocando a comparação ou usando um **comparador reverso** em Java.
 
 
-## 5. Implementations and time bounds
+## 4. Desempate e “prioridades duplicadas”
 
-Naive ideas:
+Se dois itens têm a **mesma** prioridade numérica, o ADT geralmente **não** garante qual deles sai primeiro, a menos que a implementação documente a **estabilidade de FIFO** dentro de chaves iguais (muitos heaps **não** são estáveis). Se a ordem entre iguais é importante, soluções comuns:
 
-- **Unsorted array or list:** **insert** **O(1)** (append), but **extract-min** scans everything — **O(n)**.
-- **Sorted array:** **extract-min** from one end **O(1)**, but **insert** may shift — **O(n)** in the worst case.
+- Leve uma **chave secundária** (ex.`(priority, sequenceNumber)`com comparação lexicográfica para que as entradas mais antigas sejam classificadas primeiro entre os empates), ou
+- Armazene **ids exclusivos** e rompa vínculos explicitamente em um **`Comparator`**.
 
-The usual sweet spot for a general mutable priority queue is a **binary heap** (see **Binary heap** in this submenu, [Binary heap](viii-binary-heap.md)): store a **complete binary tree** in an array, restore **heap order** after each insert (**bubble up** / **swim**) and after each extract (**sink down** / **sift**). Height is **O(log n)**, so:
 
-| Operation | Binary heap (typical) |
-|-----------|------------------------|
-| **insert** | **O(log n)** |
-| **peek** best | **O(1)** |
-| **extract** best | **O(log n)** |
-| **build** from **n** keys (bottom-up) | **O(n)** — better than **n** separate inserts |
+## 5. Implementações e prazos
 
-**Fibonacci heaps** and friends improve some **amortized** bounds for specialized graph algorithms in theory; in day-to-day libraries you still see **binary heaps** first.
+Idéias ingênuas:
+
+- **Matriz ou lista não classificada:** **inserir** **O(1)** (acrescentar), mas **extrair-min** verifica tudo — **O(n)**.
+- **Matriz classificada:** **extrair-min** de uma extremidade **O(1)**, mas **inserir** pode mudar — **O(n)** no pior caso.
+
+O ponto ideal usual para uma fila de prioridade mutável geral é um **heap binário** (veja **heap binário** neste submenu, [heap binário](viii-binary-heap.md)): armazene uma **árvore binária completa** em um array, restaure a **ordem do heap** após cada inserção (**bubble up** / **swim**) e após cada extração (**sink down** / **sift**). A altura é **O(log n)**, então:
+
+| Operação | Pilha binária (típica) |
+|-----------|-------------|
+| **inserir** | **O(logn)** |
+| **espiar** melhor | **O(1)** |
+| **extrair** melhor | **O(logn)** |
+| **construir** a partir de chaves **n** (de baixo para cima) | **O(n)** — melhor que **n** inserções separadas |
+
+** Montes de Fibonacci ** e amigos melhoram alguns limites ** amortizados ** para algoritmos gráficos especializados em teoria; nas bibliotecas do dia-a-dia você ainda vê **heaps binários** primeiro.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 212" role="img" aria-label="Min heap before extract min and after moving last leaf to root and sinking down">
   <text x="12" y="22" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">extract-min restores heap in O(log n)</text>
@@ -124,11 +124,11 @@ The usual sweet spot for a general mutable priority queue is a **binary heap** (
 </svg></figure>
 
 
-## 6. Java `PriorityQueue`
+## 6. Java`PriorityQueue`
 
-**`java.util.PriorityQueue<E>`** is a **min-heap** when elements use **natural ordering** (`Comparable`), or a heap ordered by an explicit **`Comparator`**. It is **not thread-safe**. Iterator order is **not** “priority order”; use **`poll()`** in a loop to drain in sorted order.
+(R)`java.util.PriorityQueue<E>`** é um **min-heap** quando os elementos usam **ordenação natural** (`Comparable`) ou um heap ordenado por um ** explícito`Comparator`**. **não é seguro para threads**. A ordem do iterador **não** é “ordem de prioridade”; usar **`poll()`** em um loop para drenar na ordem de classificação.
 
-**Min-heap of integers** (smallest `poll` first):
+**Pilha mínima de números inteiros** (menor`poll`primeiro):
 
 ```java
 // Compile: javac --release 22 …
@@ -143,7 +143,7 @@ pq.poll();  // 10
 pq.poll();  // 20
 ```
 
-**Max-heap** (largest first): reverse the comparison.
+**Max-heap** (o maior primeiro): inverta a comparação.
 
 ```java
 // Compile: javac --release 22 …
@@ -156,7 +156,7 @@ maxPq.offer(30);
 maxPq.peek();  // 30
 ```
 
-**Custom type** (e.g. jobs with deadlines — **earlier deadline = higher priority** here as smaller integer wins):
+**Tipo personalizado** (por exemplo, trabalhos com prazos — **prazo anterior = prioridade mais alta** aqui, pois números inteiros menores vencem):
 
 ```java
 // Compile: javac --release 22 …
@@ -180,30 +180,30 @@ jobs.offer(new Job("patch", 2));
 jobs.poll();  // patch — deadline 2 first
 ```
 
-(You can instead use a `class` with **`Comparable`** or pass **`Comparator.comparingInt(Job::deadline)`** to the **`PriorityQueue`** constructor — same ordering.)
+(Você pode usar um`class`com **`Comparable`** ou passe **`Comparator.comparingInt(Job::deadline)`** para o **`PriorityQueue`** construtor — mesma ordem.)
 
-**Empty-safe:** **`poll()`** and **`peek()`** return **`null`** when empty; **`remove()`** throws **`NoSuchElementException`**.
+**Esvazio-seguro:** **`poll()`** e **`peek()`** retornar **`null`** quando vazio; **`remove()`** lança **`NoSuchElementException`**.
 
-**Gotchas**
+**Pegadinhas**
 
-- **`null`** elements are **not** allowed.
-- If you change a field that participates in ordering **after** inserting an object, the heap **does not** automatically reorder — you must **remove and re-insert**, or use a structure designed for **decrease-key**.
-- Initial capacity is a **hint** only; the heap grows as needed.
-
-
-## 7. Where priority queues appear
-
-- **Graph algorithms:** **Dijkstra** (closest unvisited vertex first), **Prim** (cheapest edge to the growing tree), **A-star** (`A*`) search with a heuristic.
-- **CPU / OS scheduling:** pick the next runnable process by priority (real schedulers add fairness, aging, etc.).
-- **Discrete-event simulation:** next event is the one with the **minimum** simulated time.
-- **Streaming “top k”:** keep a **size-k** max-heap while scanning values (see max-heap pattern above).
-- **Merge k sorted lists / files:** one heap entry per list holding `(nextValue, listId)`; repeatedly **poll** smallest and advance that list.
+- **`null`** elementos **não** são permitidos.
+- Se você alterar um campo que participa da ordenação **após** inserir um objeto, o heap **não** será reordenado automaticamente — você deverá **remover e inserir novamente** ou usar uma estrutura projetada para **tecla de diminuição**.
+- A capacidade inicial é apenas uma **dica**; a pilha cresce conforme necessário.
 
 
-## 8. Related notes
+## 7. Onde aparecem as filas prioritárias
 
-- **Binary heap** in this submenu [Binary heap](viii-binary-heap.md) — array layout, index formulas, **buildHeap**, **heapsort**.
-- **Queue** [Queue](v-queue.md) — strict **FIFO**; no per-item priority unless you simulate it badly.
-- **Level II** overview: `ii-trees-heaps-hashing.md` (if present in your curriculum track).
+- **Algoritmos de gráfico:** **Dijkstra** (vértice não visitado mais próximo primeiro), **Prim** (borda mais barata para a árvore em crescimento), **A-star** (`A*`) pesquisa com uma heurística.
+- **CPU / OS agendamento:** escolha o próximo processo executável por prioridade (agendadores reais adicionam justiça, envelhecimento, etc.).
+- **Simulação de eventos discretos:** o próximo evento é aquele com o tempo **mínimo** simulado.
+- **Streaming “top k”:** mantenha um heap máximo de **tamanho k** enquanto verifica os valores (veja o padrão de heap máximo acima).
+- **Mesclar k listas/arquivos classificados:** uma entrada de heap por lista`(nextValue, listId)`; repetidamente **pesquisar** o menor e avançar nessa lista.
 
-Once you are comfortable with “insert anywhere, always take best,” the heap note is the natural next step: it is the standard **machinery** behind this ADT.
+
+## 8. Notas relacionadas
+
+- **Pilha binária** neste submenu [Pilha binária](viii-binary-heap.md) — layout de array, fórmulas de índice, **buildHeap**, **heapsort**.
+- **Fila** [Fila](v-queue.md) — estrito **FIFO**; nenhuma prioridade por item, a menos que você simule mal.
+- Visão geral do **Nível II**:`ii-trees-heaps-hashing.md`(se presente em seu currículo).
+
+Quando você estiver confortável com “insira em qualquer lugar, sempre pegue o melhor”, a nota heap é o próximo passo natural: é o **maquinário** padrão por trás deste ADT.

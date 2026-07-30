@@ -1,18 +1,18 @@
 ---
 label: "III"
-subtitle: "Searching"
-group: "Data structures & algorithms"
+subtitle: "Procurando"
+group: "Estruturas de dados e algoritmos"
 order: 3
 ---
-Searching
-Find whether a **target** exists (or where it sits) in a collection.
+Procurando
+Descubra se um **alvo** existe (ou onde ele está) em uma coleção.
 
-## 1. Linear search
-Scan from one end until you find the target or exhaust the structure.
+## 1. Pesquisa linear
+Digitalize de uma extremidade até encontrar o alvo ou esgotar a estrutura.
 
-- **Time O(n)** — **n** elements.
-- **Space O(1)** extra.
-- Works on **any** order; works on **linked** lists without random access.
+- **Tempo O(n)** — **n** elementos.
+- **Espaço O(1)** extra.
+- Funciona em **qualquer** pedido; funciona em listas **vinculadas** sem acesso aleatório.
 
 ```java
 // Compile: javac --release 22 …
@@ -26,13 +26,13 @@ public static int linearSearch(int[] a, int target) {
 }
 ```
 
-## 2. Binary search
-Requires a **sorted** array (or sorted order by `Comparator`).
+## 2. Pesquisa binária
+Requer uma matriz **classificada** (ou ordenada por`Comparator`).
 
-- **Time O(log n)** — halve the search range each step.
-- **Space O(1)** iterative; **O(log n)** recursion stack if recursive.
+- **Tempo O(log n)** — reduza pela metade o intervalo de pesquisa em cada etapa.
+- **Espaço O(1)** iterativo; **O(log n)** pilha de recursão se recursiva.
 
-**Invariant:** if target is present, its index lies in `[lo, hi]`.
+**Invariante:** se o alvo estiver presente, seu índice estará em`[lo, hi]`.
 
 ```mermaid
 flowchart TD
@@ -75,23 +75,23 @@ public static int binarySearchManual(int[] sorted, int target) {
 }
 ```
 
-**Common bug:** `mid = (lo + hi) / 2` can overflow in some languages; use **`lo + (hi - lo) / 2`**.
+**Erro comum:**`mid = (lo + hi) / 2`pode transbordar em alguns idiomas; usar **`lo + (hi - lo) / 2`**.
 
-## 3. Binary search on answer (pattern)
-When the problem asks for the **minimum x** such that a predicate `P(x)` flips from false to true (monotone), binary search on **x** in a range — not on array indices.
+## 3. Pesquisa binária na resposta (padrão)
+Quando o problema pede o **mínimo x** tal que um predicado`P(x)`muda de falso para verdadeiro (monótono), pesquisa binária em **x** em um intervalo - não em índices de array.
 
-Examples: first bad version, capacity to ship packages in D days, minimum eating speed.
+Exemplos: primeira versão ruim, capacidade de envio de pacotes em dias D, velocidade mínima de alimentação.
 
-## 4. Hash-based lookup
-With a **hash table** [Hash table](../data-structures/x-hash-table.md), average **O(1)** insert and lookup — no sorted order required; worst case **O(n)** without good hashing.
+## 4. Pesquisa baseada em hash
+Com uma **tabela hash** [tabela hash](../data-structures/x-hash-table.md), inserção e pesquisa média **O(1)** — nenhuma ordem de classificação é necessária; pior caso **O(n)** sem um bom hash.
 
-| Method | Preconditions | Time |
+| Método | Pré-condições | Tempo |
 |--------|---------------|------|
-| Linear | None | O(n) |
-| Binary | Sorted | O(log n) |
-| Hash | Hashable keys | O(1) average |
+| Linear | Nenhum | Sobre(n) |
+| Binário | Ordenado | O(logn) |
+| Hash | Chaves hasháveis ​​| O(1) média |
 
-## 5. Solving with the JDK (already implemented)
+## 5. Resolvendo com o JDK (já implementado)
 
 ```java
 // Compile: javac --release 22 …
@@ -118,11 +118,11 @@ for (int x : data) {
 }
 ```
 
-| Task | JDK |
+| Tarefa | JDK |
 |------|-----|
-| Sorted array lookup | `Arrays.binarySearch` (sort first) |
-| List membership | `list.contains`, or `HashSet` for many queries |
-| Key → value | `HashMap.get`, `getOrDefault`, `containsKey` |
-| Count occurrences | `Collections.frequency` (list) or `Map.merge` |
+| Pesquisa de matriz classificada |`Arrays.binarySearch`(classificar primeiro) |
+| Associação à lista |`list.contains`, ou`HashSet`para muitas consultas |
+| Chave → valor |`HashMap.get`,`getOrDefault`,`containsKey`|
+| Contar ocorrências |`Collections.frequency`(lista) ou`Map.merge`|
 
-**Interview vs production:** know the manual binary search loop; in projects call **`Arrays.binarySearch`** on sorted data.
+**Entrevista vs produção:** conheça o loop de pesquisa binária manual; em projetos ligue **`Arrays.binarySearch`** em dados classificados.

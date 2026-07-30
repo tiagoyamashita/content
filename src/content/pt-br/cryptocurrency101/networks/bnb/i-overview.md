@@ -1,28 +1,28 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "Visão geral"
 group: "BNB Chain"
 order: 1
 ---
-BNB Chain — overview
-**BNB Smart Chain (BSC)** is an **EVM-compatible** network — same account model and **Solidity** as Ethereum, but native gas is **BNB**. DeFi and token projects often deploy here for lower fees than Ethereum mainnet.
+Cadeia BNB — visão geral
+**BNB Smart Chain (BSC)** é uma rede **EVM-compatível** — mesmo modelo de conta e **Solidity** do Ethereum, mas o gás nativo é **BNB**. Projetos DeFi e token geralmente são implantados aqui por taxas mais baixas do que a rede principal Ethereum.
 
-Parent track: [Cryptocurrency101 overview](../../i-overview.md).
+Trilha principal: [Visão geral do Cryptocurrency101](../../i-overview.md).
 
-## Network profile
+## Perfil de rede
 
-| | **BNB Smart Chain** |
+| | **BNB Cadeia Inteligente** |
 |---|----------------------|
-| **Type** | Layer-1, EVM |
-| **Language** | **Solidity** (primary) |
-| **Tooling** | Hardhat, Foundry, Remix, MetaMask |
-| **Native coin** | BNB |
-| **Tokens** | BEP-20 (ERC-20 compatible) |
-| **RPC example** | `https://bsc-dataseed.binance.org` |
+| **Tipo** | Camada-1, EVM |
+| **Idioma** | **Solidez** (primário) |
+| **Ferramentas** | Capacete de segurança, fundição, remix, MetaMask |
+| **Moeda nativa** | BNB |
+| **Tokens** | BEP-20 (ERC-20 compatível) |
+| **RPC exemplo** |`https://bsc-dataseed.binance.org`|
 
-## Fee split pattern
+## Padrão de divisão de taxas
 
-Payer sends **BNB** to the contract; contract sends **fee** to treasury and **remainder** to recipient.
+O pagador envia **BNB** para o contrato; o contrato envia **taxa** ao tesouro e **resto** ao destinatário.
 
 ```plantuml
 @startuml
@@ -38,7 +38,7 @@ SC -> REC: transfer remainder
 @enduml
 ```
 
-## Example — Solidity
+## Exemplo - Solidez
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -76,15 +76,15 @@ contract FeeSplitter {
 }
 ```
 
-| Line | Role |
+| Linha | Função |
 |------|------|
-| **`feeBps / 10_000`** | Basis points — 250 bps = 2.5% |
-| **`call{value:}`** | Forward native BNB |
-| **`immutable`** | Fee config fixed at deploy — use proxy pattern if you need upgrades |
+| **`feeBps / 10_000`** | Pontos base — 250 pontos base = 2,5% |
+| **`call{value:}`** | Encaminhar nativo BNB |
+| **`immutable`** | Configuração de taxa corrigida na implantação – use padrão de proxy se precisar de atualizações |
 
-### BEP-20 variant (sketch)
+### BEP-20 variante (esboço)
 
-For **tokens**, use `IERC20.transferFrom` from payer, then split `amount` (no `msg.value`):
+Para **tokens**, use`IERC20.transferFrom`do pagador e depois dividir`amount`(não`msg.value`):
 
 ```solidity
 function payToken(IERC20 token, address recipient, uint256 amount) external {
@@ -95,7 +95,7 @@ function payToken(IERC20 token, address recipient, uint256 amount) external {
 }
 ```
 
-## Deploy and call (Hardhat sketch)
+## Implantar e chamar (esboço do capacete de segurança)
 
 ```text
 npx hardhat compile
@@ -107,30 +107,30 @@ npx hardhat run scripts/deploy.js --network bscTestnet
 await feeSplitter.pay(recipientAddress, { value: ethers.parseEther("1.0") });
 ```
 
-## Deploy pricing
+## Implantar preços
 
-You pay **BNB gas once** to publish bytecode — no monthly hosting fee. The contract then lives at a fixed **address** on BSC.
+Você paga **BNB gás uma vez** para publicar bytecode – sem taxa mensal de hospedagem. O contrato então fica em um **endereço** fixo em BSC.
 
-| Item | Typical range (2026) | Notes |
+| Artigo | Faixa típica (2026) | Notas |
 |------|----------------------|-------|
-| **Simple contract** (FeeSplitter ~1–3 KB bytecode) | **~$0.50 – $5** USD | BSC gas floor ~**0.05 gwei**; very cheap vs Ethereum |
-| **Complex DeFi / proxy + logic** | **$5 – $50+** | More bytecode + constructor args |
-| **Each `pay()` call** | **~$0.001 – $0.05** | Simple transfer logic, low gas |
-| **BSC testnet** | **$0** | Faucet BNB — always test here first |
+| **Contrato simples** (FeeSplitter ~1–3 KB bytecode) | **~$0,50 – $5** USD | BSC piso de gás ~**0,05 gwei**; muito barato vs Ethereum |
+| **DeFi complexo / proxy + lógica** | **$5 – $50+** | Mais argumentos de bytecode + construtor |
+| **Cada`pay()`ligar** | **~$0,001 – $0,05** | Lógica de transferência simples, baixo teor de gás |
+| **BSC rede de teste** | **$0** | Torneira BNB – sempre teste aqui primeiro |
 
-### How cost is calculated
+### Como o custo é calculado
 
 ```text
 deploy_cost_BNB = gas_used × gas_price_gwei × 1e-9
 USD             ≈ deploy_cost_BNB × BNB_price
 ```
 
-| FeeSplitter sketch | Ballpark gas |
-|--------------------|--------------|
-| Deploy | ~300,000 – 800,000 gas |
-| `pay()` | ~50,000 – 80,000 gas |
+| Esboço de FeeSplitter | Gás aproximado |
+|--------------------|-------------|
+| Implantar | ~300.000 – 800.000 gás |
+|`pay()`| ~50.000 – 80.000 gás |
 
-**Estimate before mainnet:**
+**Estimativa antes da mainnet:**
 
 ```javascript
 const gas = await ethers.provider.estimateGas({
@@ -140,24 +140,24 @@ const gas = await ethers.provider.estimateGas({
 const fee = gas * gasPrice; // compare to wallet BNB balance
 ```
 
-Or in Hardhat: deploy script prints gas used. Use [BscScan gas tracker](https://bscscan.com/gastracker) for current gwei.
+Ou no Hardhat: implantar script imprime gás usado. Use [rastreador de gás BscScan](https://bscscan.com/gastracker) para o gwei atual.
 
-### What is not a deploy fee
+### O que não é uma taxa de implantação
 
-| Cost | Part of deploy? |
+| Custo | Parte da implantação? |
 |------|-----------------|
-| Contract audit | No — professional services, $thousands |
-| Domain / website | No — optional off-chain |
-| RPC node (Alchemy, etc.) | No — free tier usually enough to deploy |
+| Auditoria de contrato | Não — serviços profissionais, $milhares |
+| Domínio/site | Não — opcional fora da cadeia |
+| Nó RPC (Alquimia, etc.) | Não — nível gratuito geralmente é suficiente para implantação |
 
-## Compare
+## Comparar
 
-| Network | Same Solidity? |
-|---------|----------------|
-| [Tron](../tron/i-overview.md) | Very similar (TVM) |
-| [TON](../ton/i-overview.md) | No — Tact |
-| [Cardano (ADA)](../ada/i-overview.md) | No — Aiken / UTXO |
+| Rede | Mesma Solidez? |
+|--------|----------------|
+| [Tron](../tron/i-overview.md) | Muito semelhante (TVM) |
+| [TON](../ton/i-overview.md) | Não - Tato |
+| [Cardano (ADA)](../ada/i-overview.md) | Não - Aiken / UTXO |
 
-## Next
+## Próximo
 
-[Tron](../tron/i-overview.md) — Solidity on TVM, or return to [Cryptocurrency101 overview](../../i-overview.md).
+[Tron](../tron/i-overview.md) — Solidez em TVM, ou retornar para [visão geral do Cryptocurrency101](../../i-overview.md).

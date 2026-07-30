@@ -1,17 +1,17 @@
 ---
 label: "IV"
-subtitle: "Divide & conquer"
-group: "Data structures & algorithms"
+subtitle: "Dividir e conquistar"
+group: "Estruturas de dados e algoritmos"
 order: 4
 ---
-Divide & conquer
-**Recipe:** split the problem into smaller subproblems, solve them (often recursively), **combine** results.
+Dividir e conquistar
+**Receita:** divida o problema em subproblemas menores, resolva-os (geralmente de forma recursiva), **combine** os resultados.
 
-## 1. Template
-1. **Base case** — small **n** solved directly.
-2. **Divide** — split input into **a** parts of size about **n/b**.
-3. **Conquer** — recurse on each part.
-4. **Combine** — merge partial answers in **O(n)** or similar.
+## 1. Modelo
+1. **Caso base** — pequenos **n** resolvidos diretamente.
+2. **Dividir** — divide a entrada em **a** partes de tamanho aproximadamente **n/b**.
+3. **Conquistar** — recursão em cada parte.
+4. **Combinar** — mesclar respostas parciais em **O(n)** ou similar.
 
 ```mermaid
 flowchart TB
@@ -23,23 +23,23 @@ flowchart TB
   Comb --> Out[Answer]
 ```
 
-Examples: **merge sort**, **binary search**, **maximum subarray** (cross-midpoint case), **Karatsuba** multiplication (advanced).
+Exemplos: **merge sort**, **pesquisa binária**, **subarray máximo** (caso de ponto médio cruzado), **Karatsuba** multiplicação (avançado).
 
-## 2. Recurrence (sketch)
-Many algorithms satisfy **T(n) = a T(n/b) + f(n)**:
+## 2. Recorrência (esboço)
+Muitos algoritmos satisfazem **T(n) = a T(n/b) + f(n)**:
 
-- **a** = number of subproblems per call.
-- **n/b** = subproblem size.
-- **f(n)** = divide + combine cost.
+- **a** = número de subproblemas por chamada.
+- **n/b** = tamanho do subproblema.
+- **f(n)** = dividir + combinar custo.
 
-**Merge sort:** **a = 2**, **b = 2**, **f(n) = Θ(n)** → **T(n) = Θ(n log n)**.
+**Classificação de mesclagem:** **a = 2**, **b = 2**, **f(n) = Θ(n)** → **T(n) = Θ(n log n)**.
 
-**Binary search:** one subproblem of half size, **O(1)** work → **T(n) = T(n/2) + O(1) = O(log n)**.
+**Pesquisa binária:** um subproblema de metade do tamanho, **O(1)** trabalho → **T(n) = T(n/2) + O(1) = O(log n)**.
 
-The **Master theorem** (see [Paradigms & limits](../v-paradigms-and-limits.md)) classifies many such recurrences without expanding the recursion tree.
+O **Teorema Mestre** (veja [Paradigmas e limites](../v-paradigms-and-limits.md)) classifica muitas dessas recorrências sem expandir a árvore de recursão.
 
-## 3. Maximum subarray (Kadane vs divide & conquer)
-**Kadane** (linear scan) is the practical **O(n)** solution:
+## 3. Submatriz máxima (Kadane vs dividir e conquistar)
+**Kadane** (varredura linear) é a solução prática **O(n)**:
 
 ```java
 // Compile: javac --release 22 …
@@ -55,19 +55,19 @@ public static int maxSubarraySum(int[] a) {
 }
 ```
 
-**Divide & conquer** version: max sum is either entirely in left half, right half, or **crossing** the middle — recurse on halves and combine with an **O(n)** crossing scan. Still **O(n log n)** overall; teaches the **combine** step.
+Versão **Dividir e conquistar**: a soma máxima está inteiramente na metade esquerda, na metade direita ou **cruzando** o meio - recursiva nas metades e combinada com uma varredura de cruzamento **O(n)**. Ainda **O(n log n)** geral; ensina a etapa **combinar**.
 
-## 4. When divide & conquer is not enough
-If subproblems **overlap** (same subproblem solved many times), pure recursion wastes work — use **memoization** or **tabulation** (**dynamic programming**, [Dynamic programming](viii-dynamic-programming.md)).
+## 4. Quando dividir e conquistar não é suficiente
+Se os subproblemas **se sobrepõem** (o mesmo subproblema é resolvido muitas vezes), a recursão pura desperdiça trabalho — use **memoização** ou **tabulação** (**programação dinâmica**, [programação dinâmica](viii-dynamic-programming.md)).
 
-| Overlapping subproblems? | Typical approach |
+| Subproblemas sobrepostos? | Abordagem típica |
 |------------------------|------------------|
-| No | Divide & conquer |
-| Yes | Dynamic programming |
+| Não | Dividir e conquistar |
+| Sim | Programação dinâmica |
 
-## 5. Solving with the JDK (already implemented)
+## 5. Resolvendo com o JDK (já implementado)
 
-Divide & conquer in the wild is mostly **library calls** plus your **combine** logic:
+Dividir e conquistar na natureza consiste principalmente em **chamadas de biblioteca** mais sua lógica de **combinar**:
 
 ```java
 // Compile: javac --release 22 …
@@ -85,8 +85,8 @@ Arrays.sort(rightHalf);
 // Max subarray — Kadane is O(n); no JDK one-liner, but simple loop (see §3)
 ```
 
-| D&C idea | JDK helper |
+| Idéia de D&C | JDK ajudante |
 |----------|------------|
-| Search sorted range | `Arrays.binarySearch` |
-| Sort subranges before merge | `Arrays.sort(from, to)` |
-| Copy block | `System.arraycopy`, `Arrays.copyOfRange` |
+| Intervalo classificado de pesquisa |`Arrays.binarySearch`|
+| Classifique os subintervalos antes da mesclagem |`Arrays.sort(from, to)`|
+| Bloco de cópia |`System.arraycopy`,`Arrays.copyOfRange`|

@@ -1,20 +1,20 @@
 ---
 label: "IV"
-subtitle: "Stack"
-group: "Data structures & algorithms"
+subtitle: "Pilha"
+group: "Estruturas de dados e algoritmos"
 order: 4
 ---
-Stack — two backing implementations
-The **stack ADT** is defined by its **operations**, not by whether you use a list or an array underneath. This note compares two standard backings: a **singly linked list** (head = top) and a **dynamic array** (top at the logical back).
+Stack — duas implementações de apoio
+A **stack ADT** é definida por suas **operações**, não pelo fato de você usar uma lista ou um array abaixo dela. Esta nota compara dois suportes padrão: uma **lista vinculada individualmente** (cabeça = topo) e uma **matriz dinâmica** (parte superior na parte traseira lógica).
 
-**Java baseline:** snippets assume **Java SE 22** — set the language level to **22** in your IDE or compile with **`javac --release 22`**. The features used here (generics, `var` only if added, `Deque`, etc.) also run on **JDK 21 LTS**; treat **22** as the minimum this material is checked against, and use an **LTS** JDK in production if your team requires it.
+**Java linha de base:** os snippets assumem **Java SE 22** — defina o nível de linguagem como **22** em seu IDE ou compile com **`javac --release 22`**. Os recursos usados ​​aqui (genéricos,`var`somente se adicionado,`Deque`, etc.) também são executados em **JDK 21 LTS**; trate **22** como o mínimo em relação ao qual este material é verificado e use um **LTS** JDK na produção se sua equipe exigir.
 
-## 1. Stack as an ADT (recap)
-**Operations** usually include `push(x)`, `pop()`, `peek()` / `top()`, `isEmpty()`, and often `size()` / `clear()`. **Invariant:** `pop` removes the **most recently pushed** item (LIFO).
+## 1. Pilha como ADT (recapitulação)
+**Operações** geralmente incluem`push(x)`,`pop()`,`peek()`-&#09;o`top()`,`isEmpty()`, e muitas vezes`size()`-&#09;o`clear()`. **Invariante:**`pop`remove o item **enviado mais recentemente** (LIFO).
 
-A stack is **not** meant for arbitrary **index access**, **search**, or **insert/remove in the middle**. If you need those behaviors, model a **different** structure (e.g. deque, list, or array used as a sequence).
+Uma pilha **não** se destina a **acesso ao índice** arbitrário, **pesquisa** ou **inserir/remover no meio**. Se você precisar desses comportamentos, modele uma estrutura **diferente** (por exemplo, deque, lista ou array usado como uma sequência).
 
-**Uses:** DFS, undo, bracket matching, postfix evaluation, call-stack intuition.
+**Usos:** DFS, desfazer, correspondência de colchetes, avaliação de postfix, intuição de pilha de chamadas.
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 168" role="img" aria-label="Stack after three pushes then one pop removes newest item at top">
@@ -41,9 +41,9 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="12" y="154" fill="#71717a" font-size="10">Only the top changes on push/pop — both backings keep every op O(1) at the top.</text>
 </svg></figure>
 
-### Per-operation visuals (ADT)
+### Visuais por operação (ADT)
 
-**`push(x)`** — new element becomes the **top**; everything already on the stack stays **below** it.
+(R)`push(x)`** — o novo elemento se torna o **topo**; tudo que já está na pilha fica **abaixo** dela.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" role="img" aria-label="push adds a new top element">
   <defs>
@@ -71,7 +71,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="230" y="32" fill="#71717a" font-size="10">the new value is always LIFO “first out” next.</text>
 </svg></figure>
 
-**`peek()`** / **`top()`** — inspect the top **without** removing it; the drawing is **unchanged** after a peek.
+(R)`peek()`** / **`top()`** — inspecione a parte superior **sem** removê-la; o desenho permanece **inalterado** depois de uma espiada.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 126" role="img" aria-label="peek reads top without changing stack">
   <text x="10" y="20" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">peek() / top()</text>
@@ -88,7 +88,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="200" y="84" fill="#71717a" font-size="10">no pop, no size change.</text>
 </svg></figure>
 
-**`pop()`** — remove and return the **current** top (the same cell **`peek`** would read).
+(R)`pop()`** — remove e retorna o topo **atual** (a mesma célula **`peek`** leria).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 126" role="img" aria-label="pop removes and returns top element">
   <defs>
@@ -113,7 +113,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="228" y="62" fill="#71717a" font-size="10">Top moves down; size drops by 1.</text>
 </svg></figure>
 
-**`isEmpty()`** — true when there is **no** top (nothing to `peek` or `pop`).
+(R)`isEmpty()`** — verdadeiro quando não há **nenhum** topo (nada para`peek`ou`pop`).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="isEmpty true when stack has no elements">
   <text x="10" y="18" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">isEmpty()</text>
@@ -127,7 +127,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="290" y="64" fill="#86efac" font-size="11" font-weight="600">→ false</text>
 </svg></figure>
 
-**`size()`** — logical count of elements **including** the top; this stack has **three** values total.
+(R)`size()`** — contagem lógica de elementos **incluindo** o topo; esta pilha tem **três** valores no total.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 128" role="img" aria-label="size counts elements in stack">
   <text x="10" y="18" fill="#d4d4d8" font-size="12" font-family="system-ui,sans-serif" font-weight="600">size()</text>
@@ -141,7 +141,7 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="100" y="78" fill="#60a5fa" font-size="12" font-family="ui-monospace" font-weight="600">size = 3</text>
 </svg></figure>
 
-**`clear()`** — drop every element; afterward **`isEmpty()`** is true and **`size()`** is **`0`**.
+(R)`clear()`** — elimine todos os elementos; depois **`isEmpty()`** é verdade e **`size()`** é **`0`**.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" role="img" aria-label="clear removes all stack elements">
   <defs>
@@ -160,9 +160,9 @@ A stack is **not** meant for arbitrary **index access**, **search**, or **insert
   <text x="268" y="74" fill="#86efac" font-size="10" font-weight="600">size = 0</text>
 </svg></figure>
 
-### Example usage (Java)
+### Exemplo de uso (Java)
 
-The **library** type you usually want is **`Deque<E>`** with **`ArrayDeque<E>`** (covered later in this note under Java). Here is the same ADT vocabulary in a few lines:
+O tipo de **biblioteca** que você normalmente deseja é **`Deque<E>`** com **`ArrayDeque<E>`** (abordado posteriormente nesta nota em Java). Aqui está o mesmo vocabulário ADT em algumas linhas:
 
 ```java
 // Compile: javac --release 22 …
@@ -180,7 +180,7 @@ stack.clear();
 stack.isEmpty();  // true
 ```
 
-**Balanced brackets** is a classic stack exercise: on an opening symbol, **`push`**; on a closing symbol, **`pop`** and check it pairs with what you popped; at end of string, **`isEmpty()`** must be **true**.
+**Colchetes balanceados** é um exercício clássico de pilha: em um símbolo de abertura, **`push`**; em um símbolo de fechamento, **`pop`** e verifique se combina com o que você estourou; no final da string, **`isEmpty()`** deve ser **verdadeiro**.
 
 ```java
 // Compile: javac --release 22 …
@@ -222,14 +222,14 @@ public final class BracketExamples {
 ```
 
 
-## 2. Singly linked list as backing
-Treat the **head pointer as the top**. An **empty** stack is an empty list: `head == null`.
+## 2. Lista vinculada individualmente como apoio
+Trate o **ponteiro principal como o topo**. Uma pilha **vazia** é uma lista vazia:`head == null`.
 
-**Push:** allocate a new node, point it at the old head, assign `head` to the new node — **Θ(1)**.  
-**Pop:** read `head`, advance `head` to `head.next`, return the old top’s value — **Θ(1)**.  
-You **do not need a tail pointer**: every stack operation touches only the head.
+**Push:** aloque um novo nó, aponte-o para o cabeçalho antigo, atribua`head`para o novo nó — **Θ(1)**.  
+**Pop:** leia`head`, avançar`head`para`head.next`, retorne o valor do topo antigo - **Θ(1)**.  
+Você **não precisa de um ponteiro de cauda**: cada operação de pilha toca apenas a cabeça.
 
-**`push(x)`** (list backing) — new node’s **`next`** is the old head; **`head`** moves to the new node.
+(R)`push(x)`** (lista de apoio) — novos nós **`next`** é a cabeça velha; **`head`** move para o novo nó.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 108" role="img" aria-label="Linked list push prepends new node at head">
   <defs>
@@ -261,7 +261,7 @@ You **do not need a tail pointer**: every stack operation touches only the head.
   <text x="8" y="98" fill="#71717a" font-size="9">One pointer write for the new node’s next, one for head — both O(1).</text>
 </svg></figure>
 
-**`pop()`** (list backing) — save the head’s value, set **`head = head.next`**, return the saved value.
+(R)`pop()`** (lista de apoio) — salve o valor da cabeça, defina **`head = head.next`**, retorne o valor salvo.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 108" role="img" aria-label="Linked list pop advances head and returns old top">
   <defs>
@@ -293,9 +293,9 @@ You **do not need a tail pointer**: every stack operation touches only the head.
   <text x="8" y="98" fill="#71717a" font-size="9">Old top becomes unreachable (GC) unless you keep a reference elsewhere.</text>
 </svg></figure>
 
-### Java: head-as-top stack (teaching class)
+### Java: pilha head-as-top (dando aula)
 
-This mirrors the **prepend / delete-first** list operations from the linked-list note: **`head`** is the **top**; no tail pointer.
+Isso reflete as operações de lista **prepend / delete-first** da nota da lista vinculada: **`head`** é o **topo**; sem ponteiro de cauda.
 
 ```java
 // Compile: javac --release 22 …
@@ -355,22 +355,20 @@ public class LinkedStack<E> {
 }
 ```
 
-### Walkthrough (duplicate values)
-Push values in order **1**, then **3** (first occurrence), then **3** (second occurrence), then **2**. When two nodes hold the same display value, label them **3⁽¹⁾** and **3⁽²⁾** in reasoning:
+### Passo a passo (valores duplicados)
+Envie os valores na ordem **1**, depois **3** (primeira ocorrência), depois **3** (segunda ocorrência) e depois **2**. Quando dois nós possuem o mesmo valor de exibição, rotule-os como **3⁽¹⁾** e **3⁽²⁾** no raciocínio:
 
-1. `push(1)` — head → `1`  
-2. `push(3⁽¹⁾)` — head → `3⁽¹⁾` → `1`  
-3. `push(3⁽²⁾)` — head → `3⁽²⁾` → `3⁽¹⁾` → `1` (head is the **second** three)  
-4. `push(2)` — head → `2` → `3⁽²⁾` → `3⁽¹⁾` → `1`
+1.`push(1)`— cabeça →`1`2.`push(3⁽¹⁾)`— cabeça →`3⁽¹⁾`→`1`3.`push(3⁽²⁾)`— cabeça →`3⁽²⁾`→`3⁽¹⁾`→`1`(a cabeça é o **segundo** três)  
+4.`push(2)`— cabeça →`2`→`3⁽²⁾`→`3⁽¹⁾`→`1`
 
-In drawings, the **top** is often placed on the **left** and older nodes extend to the **right**; new pushes arrive at the head, so older elements appear “deeper” in the chain.
+Nos desenhos, o **topo** geralmente é colocado à **esquerda** e os nós mais antigos se estendem para a **direita**; novos empurrões chegam à cabeça, de modo que os elementos mais antigos aparecem “mais profundos” na cadeia.
 
-**Pop:** always detach the head (same as list delete-at-head). Example pops in order return **2**, then **3⁽²⁾**, then **3⁽¹⁾**, then **1**; after the fourth pop, `head` is **null** — stack empty.
+**Pop:** sempre desconecte o cabeçalho (o mesmo que excluir lista no cabeçalho). Exemplo aparece na ordem return **2**, depois **3⁽²⁾**, depois **3⁽¹⁾**, depois **1**; depois do quarto pop,`head`é **null** – pilha vazia.
 
-**Clear:** set `head = null` — **Θ(1)** time; nodes become unreachable and a **GC** can reclaim them (in managed languages), or you free them explicitly in C/C++.
+**Limpar:** definido`head = null`— **Θ(1)** tempo; os nós tornam-se inacessíveis e um **GC** pode recuperá-los (em linguagens gerenciadas) ou você os libera explicitamente em C/C++.
 
-### Why not doubly linked?
-A doubly linked list still supports stack ops, but each node stores an **extra pointer** (`prev`). Stacks never need backward traversal for correct behavior, so the **memory overhead** buys nothing you use.
+### Por que não duplamente vinculado?
+Uma lista duplamente vinculada ainda suporta operações de pilha, mas cada nó armazena um **ponteiro extra** (`prev`). As pilhas nunca precisam de retrocesso para comportamento correto, portanto, a **sobrecarga de memória** não compra nada que você usa.
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img" aria-label="Singly linked stack head on left as top nodes to the right">
@@ -396,26 +394,26 @@ A doubly linked list still supports stack ops, but each node stores an **extra p
 </svg></figure>
 
 
-## 3. Array (dynamic array) as backing
-Track a **`size`** (logical element count). **Empty** stack: `size == 0`.
+## 3. Array (matriz dinâmica) como suporte
+Acompanhe um **`size`** (contagem de elementos lógicos). **Pilha vazia**:`size == 0`.
 
-**Where is the top?** If you always **insert at index 0**, every push must **shift** all existing elements — **Θ(n)** per push. Instead, grow at the **back**: the **next push** writes at index **`size`**, then increment `size`. The **top** (for `peek` / `pop`) is at index **`size - 1`**.
+**Onde está o topo?** Se você sempre **inserir no índice 0**, cada push deve **deslocar** todos os elementos existentes — **Θ(n)** por push. Em vez disso, cresça na **parte traseira**: o **próximo push** grava no índice **`size`**, então incremente`size`. O **topo** (para`peek`-&#09;o`pop`) está no índice **`size - 1`**.
 
-### Same sequence on the array
-Capacity large enough; start `size = 0`.
+### Mesma sequência no array
+Capacidade suficientemente grande; começar`size = 0`.
 
-| Step | Action | Array indices (conceptual) | size after |
+| Etapa | Ação | Índices de array (conceituais) | tamanho depois |
 |------|--------|---------------------------|------------|
-| — | empty | `[ · · · · ]` | 0 |
-| 1 | push 1 | `[1, ·, ·, ·]` | 1 |
-| 2 | push 3⁽¹⁾ | `[1, 3, ·, ·]` | 2 |
-| 3 | push 3⁽²⁾ | `[1, 3, 3, ·]` | 3 |
-| 4 | push 2 | `[1, 3, 3, 2]` | 4 |
+| — | vazio |`[ · · · · ]`| 0 |
+| 1 | empurre 1 |`[1, ·, ·, ·]`| 1 |
+| 2 | empurre 3⁽¹⁾ |`[1, 3, ·, ·]`| 2 |
+| 3 | empurre 3⁽²⁾ |`[1, 3, 3, ·]`| 3 |
+| 4 | empurre 2 |`[1, 3, 3, 2]`| 4 |
 
-**Pop:** read `arr[size - 1]`, then `size--` — **Θ(1)** (you may clear the slot for GC or security — see below).  
-**Push:** **amortized Θ(1)** on a **dynamic array** because the table occasionally **resizes** (copy all elements to a new larger block — that step is **Θ(n)**, but rare enough that the average over many pushes stays constant).
+**Pop:** leia`arr[size - 1]`, então`size--`— **Θ(1)** (você pode liberar espaço para GC ou segurança — veja abaixo).  
+**Push:** **amortizado Θ(1)** em um **array dinâmico** porque a tabela ocasionalmente **redimensiona** (copie todos os elementos para um novo bloco maior - essa etapa é **Θ(n)**, mas rara o suficiente para que a média de muitos push permaneça constante).
 
-**`push(x)`** (array backing) — write at index **`size`**, then **`size++`**. No shifting when the top stays at the back.
+(R)`push(x)`** (backing de array) — escreva no índice **`size`**, então **`size++`**. Não há mudança quando a parte superior fica na parte de trás.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 124" role="img" aria-label="Array push writes at index size then increments size">
   <defs>
@@ -450,7 +448,7 @@ Capacity large enough; start `size = 0`.
   <text x="10" y="108" fill="#71717a" font-size="9">Resize copies everything only when capacity is exceeded — usual push stays O(1) amortized.</text>
 </svg></figure>
 
-**`pop()`** (array backing) — read **`arr[size - 1]`**, then decrement **`size`**; the slot above the new top may still hold a stale value until overwritten or cleared.
+(R)`pop()`** (suporte de array) - leia **`arr[size - 1]`**, então diminua **`size`**; o slot acima do novo topo ainda pode manter um valor obsoleto até ser substituído ou limpo.
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 118" role="img" aria-label="Array pop reads top index then decrements size">
   <defs>
@@ -482,9 +480,9 @@ Capacity large enough; start `size = 0`.
   <text x="360" y="68" fill="#71717a" font-size="9">stale / optional clear</text>
 </svg></figure>
 
-### Java: array-backed stack with grow
+### Java: pilha apoiada por array com crescimento
 
-**Top** at **`size - 1`**; next **`push`** writes **`data[size]`** then **`size++`**. On **`pop`**, return **`data[size - 1]`**, **`size--`**, and **`null`** out the slot you left so references are not retained (matches the “sensitive data / GC” discussion below).
+**Top** em **`size - 1`**; próximo **`push`** escreve **`data[size]`** então **`size++`**. Sobre **`pop`**, retornar **`data[size - 1]`**, **`size--`**, e **`null`** fora do espaço que você deixou para que as referências não sejam retidas (corresponde à discussão “dados confidenciais / GC” abaixo).
 
 ```java
 // Compile: javac --release 22 …
@@ -544,10 +542,10 @@ public class ArrayStack<E> {
 }
 ```
 
-### Clearing an array-backed stack
-- **Only `size = 0`:** fast, but old references may still sit in unused slots; in **Java** and similar runtimes, objects may **not** become collectable until references are dropped — problematic for **sensitive** data.  
-- **Set every old slot to `null`:** secure for references, but **Θ(n)** to clear.  
-- **Common compromise:** `size = 0` **and** replace the backing array with a **fresh empty array** (or shrink) so the old block is droppable — **Θ(1)** assignment of a new array reference; GC reclaims the old storage when safe.
+### Limpando uma pilha baseada em array
+- ** Apenas`size = 0`:** rápido, mas referências antigas ainda podem ficar em slots não utilizados; em **Java** e tempos de execução semelhantes, os objetos podem **não** se tornar colecionáveis ​​até que as referências sejam descartadas – problemático para dados **confidenciais**.  
+- **Defina todos os slots antigos para`null`:** seguro para referências, mas **Θ(n)** para limpar.  
+- **Compromisso comum:**`size = 0`**e** substitua o array de apoio por um **array vazio novo** (ou reduza) para que o bloco antigo possa ser descartado - **Θ(1)** atribuição de uma nova referência de array; GC recupera o armazenamento antigo quando seguro.
 
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 108" role="img" aria-label="Array backed stack top at index size minus one">
@@ -571,13 +569,13 @@ public class ArrayStack<E> {
 </svg></figure>
 
 
-## 4. Java: `Deque`, `ArrayDeque`, and the legacy `Stack` class
+## 4. Java:`Deque`,`ArrayDeque`e o legado`Stack`aula
 
-The **collections framework** models a stack as a **`Deque<E>`** (double-ended queue) used at **one end only**. Prefer **`Deque`** implementations over the old **`java.util.Stack`** type.
+A **estrutura de coleções** modela uma pilha como **`Deque<E>`** (fila dupla) usada em **apenas uma extremidade**. Prefira **`Deque`** implementações em relação ao antigo **`java.util.Stack`** tipo.
 
-### Prefer `Deque` + `ArrayDeque` for a stack
+### Prefira`Deque`+`ArrayDeque`para uma pilha
 
-**`ArrayDeque<E>`** is a **resizable ring buffer** (like the circular queue in these notes): **`push` / `pop` / `peek`** are **amortized O(1)** with **no per-element boxing** of nodes (unlike a linked `Deque` built from `LinkedList` entries). It is the usual default for a **single-threaded** stack or work queue.
+(R)`ArrayDeque<E>`** é um **buffer de anel redimensionável** (como a fila circular nestas notas): **`push`-&#09;o`pop`-&#09;o`peek`** são **amortizados O(1)** sem **sem boxe por elemento** de nós (ao contrário de um vinculado`Deque`construído a partir de`LinkedList`entradas). É o padrão usual para uma pilha de **threaded único** ou fila de trabalho.
 
 ```java
 // Compile: javac --release 22 …
@@ -619,32 +617,32 @@ String out = stack.pop();    // "b" — empty ⇒ NoSuchElementException
   <text x="320" y="144" fill="#71717a" font-size="10">the deque’s head, not index size−1.</text>
 </svg></figure>
 
-On **`Deque`**, the **stack** naming maps like this (see `Deque` Javadoc): **`push(e)`** ≡ **`addFirst(e)`**, **`pop()`** ≡ **`removeFirst()`**, **`peek()`** ≡ **`peekFirst()`**. So the **top** of the stack is the **front** of the deque — the same “newest at one end” idea as a **head-based** singly linked stack in §2, not the “back at `size−1`” picture in §3 (both are valid ADT realizations; Java’s API just picked the **front** for `push`).
+Sobre **`Deque`**, a **pilha** mapas de nomenclatura como este (veja`Deque`Javadoc): **`push(e)`** ≡ **`addFirst(e)`**, **`pop()`** ≡ **`removeFirst()`**, **`peek()`** ≡ **`peekFirst()`**. Portanto, o **topo** da pilha é a **frente** do deque - a mesma ideia “mais recente em uma extremidade” que uma pilha **baseada na cabeça** unida individualmente em §2, não a “parte traseira em`size−1`”imagem em §3 (ambas são realizações ADT válidas; API de Java apenas escolheu a **frente** para`push`).
 
-### Why avoid `java.util.Stack`?
+### Por que evitar`java.util.Stack`'ca?
 
-**`Stack`** extends **`Vector`** (a growable array from Java 1.0). Problems in modern code:
+(R)`Stack`** estende **`Vector`** (um array expansível de Java 1.0). Problemas no código moderno:
 
-- **Synchronized on every public method** — you pay locking even when only one thread uses it.
-- **`Stack` is not an interface** — harder to swap implementations or mock in tests.
-- Design is **legacy**; the library and **Effective Java**–style guidance say: **use `Deque`**.
+- **Sincronizado em todos os métodos públicos** — você paga pelo bloqueio mesmo quando apenas um thread o utiliza.
+- **`Stack`não é uma interface** — mais difícil de trocar implementações ou simular em testes.
+- Design é **legado**; a biblioteca e a orientação do estilo **Effective Java** dizem: **use`Deque`**.
 
-If you truly need a **thread-safe** stack, use **`ConcurrentLinkedDeque`** (lock-free, unbounded) or wrap a **`Deque`** with **`Collections.synchronizedDeque`**, or a **`BlockingDeque`** when producers/consumers must block — not `Stack`.
+Se você realmente precisa de uma pilha **thread-safe**, use **`ConcurrentLinkedDeque`** (sem bloqueio, ilimitado) ou embrulhe um **`Deque`** com **`Collections.synchronizedDeque`**, ou um **`BlockingDeque`** quando os produtores/consumidores devem bloquear - não`Stack`.
 
-### `peek` vs `element`, `remove` vs `poll`
+###`peek`contra`element`,`remove`contra`poll`
 
-**`Deque`** inherits **`Queue`** methods with slightly different **empty** behavior:
+(R)`Deque`** herda **`Queue`** métodos com comportamento **vazio** ligeiramente diferente:
 
-| Intent | Typical stack use | On empty `Deque` |
+| Intenção | Uso típico de pilha | Em vazio`Deque`|
 |--------|-------------------|-------------------|
-| Read top without removing | **`peek()`** / **`peekFirst()`** | returns **`null`** |
-| Read top (stricter) | **`element()`** | throws **`NoSuchElementException`** |
-| Pop | **`pop()`** / **`removeFirst()`** | throws **`NoSuchElementException`** |
-| Pop tolerant | **`pollFirst()`** | returns **`null`** |
+| Leia o topo sem remover | **`peek()`** / **`peekFirst()`** | retorna **`null`** |
+| Leia o topo (mais rigoroso) | **`element()`** | arremessos **`NoSuchElementException`** |
+| Pop | **`pop()`** / **`removeFirst()`** | arremessos **`NoSuchElementException`** |
+| Tolerante ao pop | **`pollFirst()`** | retorna **`null`** |
 
-Choose **`peek` / `poll`** when emptiness is normal; use **`element` / `remove`** when empty means a bug.
+Escolher **`peek`-&#09;o`poll`** quando o vazio é normal; usar **`element`-&#09;o`remove`** quando vazio significa um bug.
 
-**Empty-safe pop** (no exception when the stack might already be drained):
+**Empty-safe pop** (sem exceção quando a pilha já pode estar esgotada):
 
 ```java
 // Compile: javac --release 22 …
@@ -655,24 +653,24 @@ Deque<String> stack = new ArrayDeque<>();
 String topOrNull = stack.pollFirst(); // null if empty — same end as pop()
 ```
 
-### `ArrayDeque` rules and limits
+###`ArrayDeque`regras e limites
 
-- **`null` is not allowed** — `push(null)` throws **`NullPointerException`**. A **`LinkedList`** used as a **`Deque`** may still accept **`null`** in older patterns, but mixing **`null`** elements with **`peek()`** is a bad idea — **`peek()`** already returns **`null`** when the deque is **empty**.
-- **No random access** — `ArrayDeque` is not a **`List`**; do not treat it like an array with indices.
-- **Iterator order** is **front → back** (same as left-to-right in the `Deque` contract), **not** “pop order until you drain it” as a special mode — for a pure stack you only **`push` / `pop` / `peek`** from one end.
+- **`null`não é permitido** —`push(null)`arremessos **`NullPointerException`**. Um **`LinkedList`** usado como **`Deque`** ainda pode aceitar **`null`**em padrões mais antigos, mas misturando**`null`** elementos com **`peek()`** é uma má ideia - **`peek()`** já retorna **`null`** quando o deque está **vazio**.
+- **Sem acesso aleatório** —`ArrayDeque`não é um **`List`**; não o trate como um array com índices.
+- **A ordem do iterador** é **frente → trás** (o mesmo que da esquerda para a direita no`Deque`contrato), **não** “fazer pedido até que você o drene” como um modo especial — para uma pilha pura você apenas **`push`-&#09;o`pop`-&#09;o`peek`** de uma extremidade.
 
-### JVM `StackOverflowError` (name collision)
+### JVM`StackOverflowError`(colisão de nomes)
 
-**`StackOverflowError`** is thrown when a **thread’s call stack** (activation frames for nested method calls) grows too deep — recursion with no base case, or very deep chains. It is **unrelated** to the **`java.util.Stack`** collection type; only the word “stack” is shared.
+(R)`StackOverflowError`** é lançado quando uma **pilha de chamadas de thread** (quadros de ativação para chamadas de métodos aninhados) cresce muito profundamente — recursão sem caso base ou cadeias muito profundas. Não está relacionado ** com **`java.util.Stack`**tipo de coleção; apenas a palavra “pilha” é compartilhada.
 
-## 5. Summary
+## 5. Resumo
 
-| | **Singly linked (head = top)** | **Array (back = top)** |
-|--|-------------------------------|-------------------------|
-| **push** | Θ(1) prepend | amortized Θ(1); rare Θ(n) resize |
-| **pop** | Θ(1) detach head | Θ(1) at `size-1` |
-| **peek / empty / size** | Θ(1) | Θ(1) |
-| **clear** | Θ(1) `head=null` (+ GC / free) | Θ(1) drop ref to new empty array, or Θ(n) null slots |
-| **Extra** | no tail needed | index discipline; sensitive data ⇒ mind stale slots |
+| | **Vinculado individualmente (head = top)** | **Matriz (atrás = topo)** |
+|--|------------------------------------------|------------------------|
+| **empurrar** | Θ(1) preceder | amortizado Θ(1); raro Θ(n) redimensionar |
+| **pop** | Θ(1) separar cabeça | Θ(1) em`size-1`|
+| **espiar / esvaziar / tamanho** | Θ(1) | Θ(1) |
+| **claro** | Θ(1)`head=null`(+ GC / grátis) | Θ(1) elimina a referência para um novo array vazio ou Θ(n) slots nulos |
+| **Extra** | não é necessária cauda | disciplina de índice; dados confidenciais ⇒ mente em slots obsoletos |
 
-Both realize the **same stack ADT**; choose based on **allocation tolerance**, **cache behavior**, and **language/runtime** details (e.g. reference clearing). In **Java**, prefer **`Deque<E>`** with **`ArrayDeque<E>`** for a default stack (§4); avoid **`java.util.Stack`**.
+Ambos realizam a **mesma pilha ADT**; escolha com base em **tolerância de alocação**, **comportamento de cache** e detalhes de **idioma/tempo de execução** (por exemplo, limpeza de referência). Em **Java**, prefira **`Deque<E>`** com **`ArrayDeque<E>`** para uma pilha padrão (§4); evitar **`java.util.Stack`**.

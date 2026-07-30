@@ -1,30 +1,30 @@
 ---
 label: "II"
-subtitle: "Sorting"
-group: "Data structures & algorithms"
+subtitle: "Classificando"
+group: "Estruturas de dados e algoritmos"
 order: 2
 ---
-Sorting
-Arrange elements in **non-decreasing** order (or by a **`Comparator`**). **Comparison sorts** only use **compare** — no special key structure.
+Classificando
+Organize os elementos em ordem **não decrescente** (ou por um **`Comparator`**). **Classificações por comparação** usam apenas **comparar** — sem estrutura de chave especial.
 
-## 1. Comparison sorts (summary)
+## 1. Classificações de comparação (resumo)
 
-| Algorithm | Best | Average | Worst | Extra space | Stable? |
+| Algoritmo | Melhor | Média | Pior | Espaço extra | Estável? |
 |-----------|------|---------|-------|-------------|---------|
-| Bubble / insertion | O(n) | O(n²) | O(n²) | O(1) | Yes |
-| Selection | O(n²) | O(n²) | O(n²) | O(1) | No |
-| Merge sort | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
-| Quicksort | O(n log n) | O(n log n) | O(n²) | O(log n) stack | No |
-| Heapsort | O(n log n) | O(n log n) | O(n log n) | O(1) | No |
+| Bolha / inserção | Sobre(n) | O(n²) | O(n²) | O(1) | Sim |
+| Seleção | O(n²) | O(n²) | O(n²) | O(1) | Não |
+| Mesclar classificação | O(n log n) | O(n log n) | O(n log n) | Sobre(n) | Sim |
+| Classificação rápida | O(n log n) | O(n log n) | O(n²) | Pilha O(log n) | Não |
+| Sortimento | O(n log n) | O(n log n) | O(n log n) | O(1) | Não |
 
-**Stable:** equal keys keep their relative input order. **In-place:** O(1) extra aside from recursion stack.
+**Estável:** chaves iguais mantêm sua ordem de entrada relativa. **No local:** O(1) extra além da pilha de recursão.
 
-**Java:** `Arrays.sort(int[])` uses **dual-pivot quicksort**; `Arrays.sort(Object[])` uses **TimSort** (merge + insertion, stable).
+**Java:**`Arrays.sort(int[])`usa **quicksort de pivô duplo**;`Arrays.sort(Object[])`usa **TimSort** (mesclagem + inserção, estável).
 
-## 2. Merge sort (divide & conquer)
-1. **Divide** array into halves until size 1.
-2. **Conquer** — singletons are sorted.
-3. **Combine** — merge two sorted halves in **O(n)** time.
+## 2. Classificação por mesclagem (dividir e conquistar)
+1. **Divida** o array em metades até o tamanho 1.
+2. **Conquistar** — os singletons são classificados.
+3. **Combinar** — mescla duas metades classificadas em tempo **O(n)**.
 
 ```mermaid
 flowchart TB
@@ -37,7 +37,7 @@ flowchart TB
   M --> Out[Sorted array]
 ```
 
-**Time Θ(n log n)**; **space Θ(n)** for a typical auxiliary buffer.
+**Tempo Θ(n log n)**; **espaço Θ(n)** para um buffer auxiliar típico.
 
 ```java
 // Compile: javac --release 22 …
@@ -72,8 +72,8 @@ private static void merge(int[] a, int[] buf, int lo, int mid, int hi) {
 }
 ```
 
-## 3. Quicksort
-Pick a **pivot**, **partition** so elements ≤ pivot are left, > pivot right, recurse on both sides.
+## 3. Classificação rápida
+Escolha um **pivô**, **partição** para que os elementos ≤ pivô fiquem à esquerda, > pivô à direita, recursivos em ambos os lados.
 
 ```mermaid
 flowchart LR
@@ -85,8 +85,8 @@ flowchart LR
   Right --> Done
 ```
 
-- **Average Θ(n log n)**; **worst Θ(n²)** if pivot is always min/max (sorted input with bad pivot rule).
-- **Mitigation:** random pivot, median-of-three, or switch to insertion sort on small ranges.
+- **Média Θ(n log n)**; **pior Θ(n²)** se o pivô for sempre mínimo/máximo (entrada classificada com regra de pivô incorreta).
+- **Mitigação:** pivô aleatório, mediana de três ou mudança para classificação por inserção em intervalos pequenos.
 
 ```java
 // Compile: javac --release 22 …
@@ -118,20 +118,20 @@ private static int partition(int[] a, int lo, int hi) {
 ```
 
 ## 4. Heapsort
-1. **Build** a max-heap in the array (**O(n)** bottom-up).
-2. Repeatedly swap root with last unsorted position and **sink** root — **O(log n)** per step → **O(n log n)** total.
+1. **Construa** um heap máximo na matriz (**O(n)** de baixo para cima).
+2. Troque repetidamente a raiz pela última posição não classificada e **sink** root — **O(log n)** por etapa → **O(n log n)** total.
 
-Uses the **binary heap** ADT [Binary heap](../data-structures/viii-binary-heap.md); **in-place** if you heapify the array itself.
+Usa o **heap binário** ADT [heap binário](../data-structures/viii-binary-heap.md); **no local** se você heapificar o próprio array.
 
-## 5. When to use which
-- **General purpose in Java:** `Arrays.sort`.
-- **Need stability on objects:** `Arrays.sort(Object[])` or explicit merge sort.
-- **External sort (data on disk):** merge sort — sequential passes.
-- **Top-k / partial order:** heap or `PriorityQueue`, not full sort.
+## 5. Quando usar qual
+- **Uso geral em Java:**`Arrays.sort`.
+- **Precisa de estabilidade em objetos:**`Arrays.sort(Object[])`ou classificação de mesclagem explícita.
+- **Classificação externa (dados no disco):** classificação por mesclagem — passagens sequenciais.
+- **Top-k/ordem parcial:** heap ou`PriorityQueue`, não tipo completo.
 
-## 6. Solving with the JDK (already implemented)
+## 6. Resolvendo com o JDK (já implementado)
 
-You rarely write merge/quick sort in application code — call the library after choosing **primitive vs object** and **stable vs unstable**.
+Você raramente escreve mesclagem/classificação rápida no código do aplicativo — chame a biblioteca depois de escolher **primitivo vs objeto** e **estável vs instável**.
 
 ```java
 // Compile: javac --release 22 …
@@ -156,11 +156,11 @@ for (int x : a) {
 }
 ```
 
-| Need | API |
+| Necessidade | API |
 |------|-----|
-| Sort `int[]` / `double[]` | `Arrays.sort` |
-| Sort `Object[]` or `List` | `Arrays.sort`, `list.sort(Comparator)`, `Collections.sort` |
-| Custom order | `Comparator.comparing`, `comparingInt`, `reverseOrder` |
-| Only k largest / smallest | `PriorityQueue` size **k** |
+| Organizar`int[]`-&#09;o`double[]`|`Arrays.sort`|
+| Organizar`Object[]`ou`List`|`Arrays.sort`,`list.sort(Comparator)`,`Collections.sort`|
+| Pedido personalizado |`Comparator.comparing`,`comparingInt`,`reverseOrder`|
+| Apenas k maior/menor |`PriorityQueue`tamanho **k** |
 
-More examples: **[Solving with the JDK](xi-solving-with-the-jdk.md)**.
+Mais exemplos: **[Resolvendo com o JDK](xi-solving-with-the-jdk.md)**.

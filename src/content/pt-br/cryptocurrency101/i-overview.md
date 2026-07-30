@@ -1,66 +1,66 @@
 ---
 label: "I"
-subtitle: "Overview"
-group: "Cryptocurrency101"
+subtitle: "Visão geral"
+group: "Criptomoedas 101"
 order: 1
 ---
-Cryptocurrency101 — overview
-**Cryptocurrency101** introduces **blockchain networks**, how **transactions are stored**, **types of blockchains**, and a recurring **fee-split** smart contract pattern across **BNB**, **Tron**, **TON**, and **Cardano**.
+Criptomoeda101 — visão geral
+**Cryptocurrency101** apresenta **redes blockchain**, como **as transações são armazenadas**, **tipos de blockchains** e um padrão recorrente de contrato inteligente de **divisão de taxas** em **BNB**, **Tron**, **TON** e **Cardano**.
 
-This track is **conceptual and educational**, not financial advice. Contracts shown are **minimal sketches** — audit and test before mainnet use.
+Este curso é **conceitual e educacional**, não um aconselhamento financeiro. Os contratos mostrados são **esboços mínimos** — auditoria e teste antes do uso da rede principal.
 
-## Map of this track
+## Mapa desta trilha
 
-| Part | Focus |
+| Parte | Foco |
 |------|--------|
-| **I — Overview** | This page — track map, prerequisites, safety |
-| **II — What is cryptocurrency?** | Keys, coins vs tokens, smart contracts |
-| **III — How transactions are stored** | Blocks, chain, mempool, UTXO vs account |
-| **IV — Types of blockchains** | L1/L2, consensus, EVM vs eUTXO |
-| **V — Fee split pattern** | Shared `feeBps` / treasury / recipient rule |
-| **VI — Deploy & hosting** | On-chain deployment, no VPS hosting |
-| **VII — Failed transactions & funds** | Reverts, gas, insufficient balance |
-| **VIII — Verify before broadcast** | Compile, simulate, testnet, canary |
-| **IX — Verify safe & completed** | Explorers, confirmations, per network |
+| **I — Visão geral** | Esta página — mapa de trilhas, pré-requisitos, segurança |
+| **II — O que é criptomoeda?** | Chaves, moedas versus tokens, contratos inteligentes |
+| **III — Como as transações são armazenadas** | Blocos, cadeia, mempool, UTXO vs conta |
+| **IV — Tipos de blockchains** | L1/L2, consenso, EVM vs eUTXO |
+| **V — Padrão de divisão de taxas** | Compartilhado`feeBps`/tesouraria/regra do destinatário |
+| **VI — Implantação e hospedagem** | Implantação na cadeia, sem hospedagem VPS |
+| **VII — Transações e fundos com falha** | Reverte, gás, saldo insuficiente |
+| **VIII — Verifique antes da transmissão** | Compilar, simular, testnet, canário |
+| **IX — Verifique se está seguro e concluído** | Exploradores, confirmações, por rede |
 
-## Examples
+## Exemplos
 
-| Example | Focus |
-|---------|--------|
-| [Examples overview](examples/i-overview.md) | 2% fee split deploy walkthroughs |
-| [Tron — 2% fee split](examples/ii-tron-two-percent-fee-split.md) | Solidity + TronBox, full project |
-| [TON — 2% fee split](examples/iii-ton-two-percent-fee-split.md) | Tact + Blueprint, full project |
+| Exemplo | Foco |
+|--------|--------|
+| [Visão geral dos exemplos](examples/i-overview.md) | Instruções de implantação com divisão de taxa de 2% |
+| [Tron – divisão de taxas de 2%](examples/ii-tron-two-percent-fee-split.md) | Solidez + TronBox, projeto completo |
+| [TON — divisão de taxas de 2%](examples/iii-ton-two-percent-fee-split.md) | Tato + Blueprint, projeto completo |
 
-## Networks (submenu)
+## Redes (submenu)
 
-| Submenu | Network | VM / model | Contract language |
-|---------|---------|------------|-------------------|
-| [BNB Chain](networks/bnb/i-overview.md) | BNB Smart Chain (BSC) | EVM | **Solidity** |
-| [Tron](networks/tron/i-overview.md) | Tron | TVM (EVM-like) | **Solidity** |
-| [TON](networks/ton/i-overview.md) | The Open Network | TON VM | **FunC** / **Tact** |
+| Submenu | Rede | VM / modelo | Idioma do contrato |
+|--------|---------|------------|--------|
+| [BNB Cadeia](networks/bnb/i-overview.md) | BNB Cadeia Inteligente (BSC) | EVM | **Solidez** |
+| [Tron](networks/tron/i-overview.md) | Tron | TVM (EVM-como) | **Solidez** |
+| [TON](networks/ton/i-overview.md) | A Rede Aberta | TON VM | **FunC** / **Tato** |
 | [Cardano (ADA)](networks/ada/i-overview.md) | Cardano | eUTXO | **Aiken** / **Plutus** |
 
-Start with foundations: [What is cryptocurrency?](ii-what-is-cryptocurrency.md) → [How transactions are stored](iii-how-transactions-are-stored.md) → [Types of blockchains](iv-types-of-blockchains.md).
+Comece com os fundamentos: [O que é criptomoeda?](ii-what-is-cryptocurrency.md) → [Como as transações são armazenadas](iii-how-transactions-are-stored.md) → [Tipos de blockchains](iv-types-of-blockchains.md).
 
-## Prerequisites
+## Pré-requisitos
 
-| Topic | Where |
+| Tópico | Onde |
 |-------|--------|
-| Hashing, signatures (intuition) | [Cybersecurity](../cybersecurity/i-overview.md) |
-| General programming | [SWE101](../swe101/i-overview.md) |
+| Hashing, assinaturas (intuição) | [Cibersegurança](../cybersecurity/i-overview.md) |
+| Programação geral | [SWE101](../swe101/i-overview.md) |
 
-## Safety notes
+## Notas de segurança
 
-| Risk | Mitigation |
+| Risco | Mitigação |
 |------|------------|
-| **Reentrancy** (EVM) | Checks-effects-interactions; careful use of `call` |
-| **Integer rounding** | Basis points; document rounding toward zero |
-| **Admin keys** | Separate from fee recipient; multisig in production |
-| **Regulation** | Fees and custody may be regulated — legal review |
+| **Reentrância** (EVM) | Verificações-efeitos-interações; uso cuidadoso de`call`|
+| **Arredondamento inteiro** | Pontos base; documento arredondando para zero |
+| **Chaves de administrador** | Separado do destinatário da taxa; multisig em produção |
+| **Regulamento** | As taxas e a custódia podem ser regulamentadas — revisão jurídica |
 
-Full verification guides: [Verify before broadcast](viii-verify-before-broadcast.md) · [Verify safe & completed](ix-verify-safe-and-completed.md).
+Guias de verificação completos: [Verificar antes da transmissão](viii-verify-before-broadcast.md) · [Verifique se está seguro e concluído](ix-verify-safe-and-completed.md).
 
-## Next
+## Próximo
 
-1. [What is cryptocurrency?](ii-what-is-cryptocurrency.md)  
-2. Or jump to a network: [BNB Chain](networks/bnb/i-overview.md) (Solidity, EVM) — closest to Ethereum tutorials.
+1. [O que é criptomoeda?](ii-what-is-cryptocurrency.md)  
+2. Ou pule para uma rede: [BNB Chain](networks/bnb/i-overview.md) (Solidity, EVM) — mais próximo dos tutoriais do Ethereum.

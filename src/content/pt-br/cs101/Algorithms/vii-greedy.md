@@ -1,28 +1,28 @@
 ---
 label: "VII"
-subtitle: "Greedy"
-group: "Data structures & algorithms"
+subtitle: "Ambicioso"
+group: "Estruturas de dados e algoritmos"
 order: 7
 ---
-Greedy algorithms
-At each step, take the **locally best** option that looks good now — **without** revisiting past choices.
+Algoritmos gananciosos
+Em cada etapa, escolha a opção **melhor localmente** que parece boa agora — **sem** revisitar escolhas anteriores.
 
-**When it works:** you can prove the local choice is safe (exchange argument, matroid, or known theorem). **When it fails:** a counterexample where greedy misses the global optimum (e.g. **0/1 knapsack** — use DP).
+**Quando funciona:** você pode provar que a escolha local é segura (argumento de troca, matróide ou teorema conhecido). **Quando falha:** um contra-exemplo em que o ganancioso erra o ótimo global (por exemplo, **0/1 mochila** — use DP).
 
-See also **Level V — Paradigms** [Paradigms & limits](../v-paradigms-and-limits.md).
+Veja também **Nível V — Paradigmas** [Paradigmas e limites](../v-paradigms-and-limits.md).
 
-## 1. Classic problems
+## 1. Problemas clássicos
 
-| Problem | Greedy rule | Notes |
-|---------|-------------|-------|
-| Activity selection | Pick earliest **finishing** compatible activity | Sort by finish time |
-| Huffman coding | Merge two least frequent symbols | Uses min-heap |
-| Fractional knapsack | Take items by **value/weight** ratio | Optimal; 0/1 version is not greedy |
-| MST (Prim / Kruskal) | Cheapest safe edge | [Shortest paths & MST](vi-shortest-paths-and-mst.md) |
-| Dijkstra | Settle smallest tentative distance | Needs non-negative weights |
+| Problema | Regra gananciosa | Notas |
+|--------|-------------|-------|
+| Seleção de atividades | Escolha a atividade compatível com **acabamento** mais antiga | Ordenar por hora de término |
+| Codificação Huffman | Mesclar dois símbolos menos frequentes | Usa min-heap |
+| Mochila fracionada | Considere os itens pela relação **valor/peso** | Ótimo; A versão 0/1 não é gananciosa |
+| MST (Prim/Kruskal) | Borda segura mais barata | [Caminhos mais curtos & MST](vi-shortest-paths-and-mst.md) |
+| Dijkstra | Estabeleça a menor distância provisória | Necessita de pesos não negativos |
 
-## 2. Activity selection (sketch)
-Sort activities by **finish time**. Take the next activity that **starts after** the last chosen finish.
+## 2. Seleção de atividades (esboço)
+Classifique as atividades por **horário de término**. Faça a próxima atividade que **começa após** o último término escolhido.
 
 ```mermaid
 flowchart LR
@@ -56,24 +56,24 @@ public static int maxActivities(Activity[] acts) {
 }
 ```
 
-## 3. Proof habit
-1. **Greedy choice property:** some optimal solution can use the greedy first pick.
-2. **Optimal substructure:** after that pick, solve the rest optimally.
+## 3. Hábito de prova
+1. **Propriedade de escolha gananciosa:** alguma solução ideal pode usar a primeira escolha gananciosa.
+2. **Subestrutura ideal:** após essa escolha, resolva o resto de forma otimizada.
 
-If step 1 fails, try **DP** or **branch and bound**.
+Se a etapa 1 falhar, tente **DP** ou **branch and bind**.
 
-## 4. Greedy vs dynamic programming
+## 4. Programação gananciosa versus programação dinâmica
 
-| | Greedy | DP |
+| | Ganancioso | DP |
 |--|--------|-----|
-| Choices | One committed step | Explore subproblem table |
-| Subproblems | Usually non-overlapping | Overlapping |
-| Time | Often sort + linear scan | Often pseudo-polynomial or O(n²) |
-| Example win | MST, Huffman | 0/1 knapsack, LCS |
+| Escolhas | Um passo comprometido | Explorar tabela de subproblemas |
+| Subproblemas | Geralmente não sobrepostos | Sobreposição |
+| Tempo | Frequentemente classificação + varredura linear | Freqüentemente pseudo-polinomial ou O(n²) |
+| Exemplo de vitória | MST, Huffman | Mochila 0/1, LCS |
 
-## 5. Solving with the JDK (already implemented)
+## 5. Resolvendo com o JDK (já implementado)
 
-Greedy code is usually **sort** + **one pass** + sometimes a **heap**:
+O código ganancioso geralmente é **sort** + **uma passagem** + às vezes um **heap**:
 
 ```java
 // Compile: javac --release 22 …
@@ -98,8 +98,8 @@ Item[] items = { /* … */ };
 Arrays.sort(items, Comparator.comparingDouble(it -> -(double) it.v / it.w));
 ```
 
-| Greedy step | JDK |
-|-------------|-----|
-| Order candidates | `Arrays.sort`, `Comparator` |
-| Repeatedly take smallest | `PriorityQueue` |
-| Take current max | `Collections.max`, `stream().max` |
+| Passo ganancioso | JDK |
+|------------|-----|
+| Solicitar candidatos |`Arrays.sort`,`Comparator`|
+| Pegue repetidamente o menor |`PriorityQueue`|
+| Pegue o máximo atual |`Collections.max`,`stream().max`|

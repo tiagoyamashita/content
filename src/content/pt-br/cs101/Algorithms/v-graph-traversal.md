@@ -1,20 +1,20 @@
 ---
 label: "V"
-subtitle: "Graph traversal"
-group: "Data structures & algorithms"
+subtitle: "Percurso gráfico"
+group: "Estruturas de dados e algoritmos"
 order: 5
 ---
-Graph traversal — BFS & DFS
-On a graph **G = (V, E)**, traversal visits vertices systematically. Store the graph as an **adjacency list** for sparse graphs — **O(n + m)** space and time for traversals when **n = |V|**, **m = |E|**.
+Percurso gráfico - BFS e DFS
+Em um gráfico **G = (V, E)**, a travessia visita os vértices sistematicamente. Armazene o gráfico como uma **lista de adjacências** para gráficos esparsos — **O(n + m)** espaço e tempo para travessias quando **n = |V|**, **m = |E|**.
 
-See **Graph** [Graph](../data-structures/xi-graph.md) and **Level III — Graphs** (`iii-graphs.md`).
+Consulte **Gráfico** [Gráfico](../data-structures/xi-graph.md) e **Nível III — Gráficos** (`iii-graphs.md`).
 
-## 1. Breadth-first search (BFS)
-Explore in **layers** by distance (in **unweighted** edges, hop count).
+## 1. Pesquisa ampla (BFS)
+Explore em **camadas** por distância (em bordas **não ponderadas**, contagem de saltos).
 
-- **Queue** ADT — enqueue neighbors, dequeue current [Queue](../data-structures/v-queue.md).
-- **Time O(n + m)** with adjacency lists.
-- **Uses:** shortest path in **unweighted** graphs, level order, connectivity.
+- **Queue** ADT — enfileira vizinhos, desenfileira atual [Queue](../data-structures/v-queue.md).
+- **Tempo O(n + m)** com listas de adjacências.
+- **Usos:** caminho mais curto em gráficos **não ponderados**, ordem de nível, conectividade.
 
 ```mermaid
 flowchart LR
@@ -54,13 +54,13 @@ public static List<Integer> bfsOrder(List<List<Integer>> adj, int start) {
 }
 ```
 
-**Shortest path lengths (unweighted):** store `dist[v]` when first discovered; `dist[w] = dist[v] + 1`.
+**Comprimento de caminho mais curto (não ponderado):** armazenar`dist[v]`quando descoberto pela primeira vez;`dist[w] = dist[v] + 1`.
 
-## 2. Depth-first search (DFS)
-Go **deep** before backtracking — **stack** or **recursion**.
+## 2. Pesquisa em profundidade (DFS)
+Vá **fundo** antes de retroceder — **pilha** ou **recursão**.
 
-- **Time O(n + m)**.
-- **Uses:** cycle detection, topological sort, connected components, maze exploration.
+- **Tempo O(n + m)**.
+- **Usos:** detecção de ciclo, classificação topológica, componentes conectados, exploração de labirinto.
 
 ```mermaid
 flowchart TB
@@ -87,31 +87,31 @@ public static void dfsRecursive(List<List<Integer>> adj, int v, boolean[] seen, 
 }
 ```
 
-**Iterative DFS** uses an explicit `Deque` as a stack (`push` / `pop` at same end).
+**Iterativo DFS** usa um explícito`Deque`como uma pilha (`push`-&#09;o`pop`no mesmo fim).
 
-## 3. BFS vs DFS
+## 3. BFS versus DFS
 
 | | BFS | DFS |
 |--|-----|-----|
-| Structure | Queue | Stack / recursion |
-| Unweighted shortest path | Yes | No (unless first hit by luck) |
-| Memory on wide graphs | Can be large frontier | Path depth only |
-| Topological sort | No | Yes (with extra state) |
+| Estrutura | Fila | Pilha/recursão |
+| Caminho mais curto não ponderado | Sim | Não (a menos que seja atingido pela sorte) |
+| Memória em gráficos largos | Pode ser uma grande fronteira | Somente profundidade do caminho |
+| Ordenação topológica | Não | Sim (com estado extra) |
 
-## 4. Topological sort (DAG)
-**Directed acyclic graph** — order vertices so every edge goes **forward** in the order.
+## 4. Classificação topológica (DAG)
+**Gráfico acíclico direcionado** — ordene os vértices para que cada aresta vá **avançar** na ordem.
 
-- **Kahn (BFS):** repeatedly remove vertices with **in-degree 0**.
-- **DFS:** finish-time order (reverse postorder).
+- **Kahn (BFS):** remova vértices repetidamente com **no grau 0**.
+- **DFS:** ordem de término (pós-ordem reversa).
 
-If you cannot process all vertices, the graph has a **cycle**.
+Se você não conseguir processar todos os vértices, o gráfico terá um **ciclo**.
 
-## 5. Connected components
-Run BFS or DFS from each unvisited vertex; each run labels one **component** (undirected) or **reachable set** (directed).
+## 5. Componentes conectados
+Execute BFS ou DFS de cada vértice não visitado; cada execução rotula um **componente** (não direcionado) ou **conjunto alcançável** (direcionado).
 
-## 6. Solving with the JDK (already implemented)
+## 6. Resolvendo com o JDK (já implementado)
 
-There is **no** `Graph.bfs()` in the standard library. You keep an **adjacency list** (`List<List<Integer>>` or `Map`) and use JDK **queues** / **sets**:
+Não há **não**`Graph.bfs()`na biblioteca padrão. Você mantém uma **lista de adjacências** (`List<List<Integer>>`ou`Map`) e use JDK **queues** / **sets**:
 
 ```java
 // Compile: javac --release 22 …
@@ -137,13 +137,13 @@ int[] indegree = new int[n];
 List<Integer> topo = new ArrayList<>();
 ```
 
-| Role | JDK type |
+| Função | JDK tipo |
 |------|----------|
-| FIFO frontier (BFS) | `Queue` + `ArrayDeque` |
-| Stack (DFS) | `ArrayDeque` `push` / `pop` |
-| Visited set | `HashSet`, `boolean[]` |
-| Neighbor list | `List<List<Integer>>`, `Map<Integer, List<Integer>>` |
+| Fronteira FIFO (BFS) |`Queue`+`ArrayDeque`|
+| Pilha (DFS) |`ArrayDeque` `push`-&#09;o`pop`|
+| Conjunto visitado |`HashSet`,`boolean[]`|
+| Lista de vizinhos |`List<List<Integer>>`,`Map<Integer, List<Integer>>`|
 
-**Topological sort:** Kahn’s algorithm = **`Queue`** + indegree array; no single `Collections.topologicalSort`.
+**Classificação topológica:** Algoritmo de Kahn = **`Queue`** + matriz de graus; nenhum único`Collections.topologicalSort`.
 
-See **[Queue](../data-structures/v-queue.md)**, **[Stack](../data-structures/iv-stack.md)**, and **[Solving with the JDK](xi-solving-with-the-jdk.md)**.
+Consulte **[Fila](../data-structures/v-queue.md)**, **[Pilha](../data-structures/iv-stack.md)** e **[Resolvendo com o JDK](xi-solving-with-the-jdk.md)**.

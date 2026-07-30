@@ -1,23 +1,23 @@
 ---
 label: "VII"
-subtitle: "Failed transactions & funds"
-group: "Cryptocurrency101"
+subtitle: "Transações e fundos com falha"
+group: "Criptomoedas 101"
 order: 7
 ---
-Cryptocurrency101 — Part VII: Failed transactions & insufficient funds
-On-chain failures often **still cost fees**. Users need **two** buckets of money on most chains: **payment amount** and **network fee** — confusing them is the most common “insufficient funds” mistake.
+Cryptocurrency101 — Parte VII: Transações falhadas e fundos insuficientes
+As falhas na rede muitas vezes **ainda custam taxas**. Os usuários precisam de **dois** baldes de dinheiro na maioria das redes: **valor do pagamento** e **taxa de rede** — confundi-los é o erro mais comum de “fundos insuficientes”.
 
-See **Part III** [How transactions are stored](iii-how-transactions-are-stored.md) for mempool vs on-chain.
+Consulte **Parte III** [Como as transações são armazenadas](iii-how-transactions-are-stored.md) para mempool vs on-chain.
 
-## 1. Failed transactions — do you still pay?
+## 1. Transações falhadas – você ainda paga?
 
-**Usually yes** for anything that reached the network and consumed execution — but **how much** differs by chain and failure type.
+**Geralmente sim** para qualquer coisa que tenha alcançado a rede e consumido a execução — mas **o quanto** difere por cadeia e tipo de falha.
 
-| Outcome | BNB / Tron (EVM/TVM) | TON | Cardano |
-|---------|----------------------|-----|---------|
-| **Rejected before broadcast** | **No** on-chain fee | **No** | **No** |
-| **Reverted on-chain** (`require` failed) | **Yes** — gas used up to revert | **Yes** — compute for work done | **Yes** — tx fee if included in block |
-| **Invalid tx** (bad signature, nonce) | **No** — not included | **No** | **No** |
+| Resultado | BNB / Tron (EVM/TVM) | TON | Cardano |
+|--------|-----------|-----|--------|
+| **Rejeitado antes da transmissão** | **Não** taxa na rede | **Não** | **Não** |
+| **Revertido na cadeia** (`require`falhou) | **Sim** — gás utilizado para reverter | **Sim** — cálculo do trabalho realizado | **Sim** — taxa de transferência se incluída no bloco |
+| **Tx inválido** (assinatura incorreta, nonce) | **Não** — não incluído | **Não** | **Não** |
 
 ```text
 EVM rule of thumb:
@@ -26,18 +26,18 @@ EVM rule of thumb:
   "Out of gas" → still pay for gas attempted (capped)
 ```
 
-| Example | Who pays | Why |
-|---------|----------|-----|
-| User calls `pay()` but `require(msg.value > 0)` fails | **Caller** | Tx mined, reverted |
-| Deploy tx runs out of gas | **Deployer** | Partial deploy may still cost |
-| Tx never leaves mempool (low fee) | **Nobody** | Not included in block |
-| Cardano phase-2 validation fail | **Submitter** | Fee often charged once in block |
+| Exemplo | Quem paga | Por que |
+|--------|----------|-----|
+| Chamadas de usuário`pay()`mas`require(msg.value > 0)`falha | **Chamador** | Tx extraído, revertido |
+| Implantar tx fica sem gás | **Implantador** | A implantação parcial ainda pode custar |
+| Tx nunca sai do mempool (taxa baixa) | **Ninguém** | Não incluído no bloco |
+| Falha na validação da fase 2 do Cardano | **Remetente** | Taxa frequentemente cobrada uma vez no bloco |
 
-**Design implication:** failed `pay()` attempts still cost gas — keep checks cheap and test on testnet.
+**Implicação de design:** falhou`pay()`as tentativas ainda custam gasolina – mantenha os cheques baratos e teste na testnet.
 
-**Not the same as:** credit-card auth holds — on-chain fees are generally **not refunded** on revert.
+**Não é o mesmo que:** retenções de autorização de cartão de crédito — as taxas da rede geralmente **não são reembolsadas** na reversão.
 
-## 2. Insufficient funds — two buckets (EVM / BNB / Tron)
+## 2. Fundos insuficientes — dois baldes (EVM / BNB / Tron)
 
 ```text
 wallet balance = BNB or TRX
@@ -47,12 +47,12 @@ To call pay(recipient) { value: 1 BNB }:
   plus  ~0.0001+ BNB → gas / energy (never reaches recipient)
 ```
 
-| Situation | What happens | On-chain fee charged? |
-|-----------|--------------|------------------------|
-| **Balance < msg.value** | Wallet **blocks** send | **No** |
-| **Balance = msg.value exactly** | May **fail** (out of gas) | **Often yes** if included |
-| **Balance covers gas only, value = 0** | `require` **revert** | **Yes** if mined |
-| **Deployer balance < deploy gas** | Deploy fails | Usually **no** if wallet simulates |
+| Situação | O que acontece | Taxa na rede cobrada? |
+|-----------|--------------|------------|
+| **Saldo < msg.valor** | Carteira **bloqueia** enviar | **Não** |
+| **Saldo = msg.value exatamente** | Pode **falhar** (sem gás) | **Muitas vezes sim** se incluído |
+| **Saldo abrange apenas gás, valor = 0** |`require`**reverter** | **Sim** se extraído |
+| **Saldo do implantador < gás de implantação** | A implantação falha | Normalmente **não** se a carteira simular |
 
 ```plantuml
 @startuml
@@ -85,38 +85,38 @@ end
 @enduml
 ```
 
-## 3. By network
+## 3. Por rede
 
-| Network | “Not enough funds” usually means | Typical message |
-|---------|----------------------------------|-----------------|
-| **BNB / Tron** | BNB/TRX < `value` + gas/energy | MetaMask / TronLink |
-| **TON** | TON < message value + forward + gas | Tonkeeper |
-| **Cardano** | ADA < outputs + fee + **min-ADA** | Build fails in wallet |
+| Rede | “Fundos insuficientes” geralmente significa | Mensagem típica |
+|--------|----------------------------------|-----------------|
+| **BNB/Tron** | BNB/TRX <`value`+ gás/energia | MetaMask/TronLink |
+| **TON** | TON < valor da mensagem + encaminhamento + gás | Tonkeeper |
+| **Cardano** | ADA < saídas + taxa + **min-ADA** | A compilação falha na carteira |
 
-**Tron:** Low **energy** — may burn more TRX; keep buffer.
+**Tron:** Baixa **energia** — pode queimar mais TRX; mantenha o buffer.
 
-**Cardano:** Builder fails **before** submit if inputs cannot cover outputs — often **no** on-chain fee.
+**Cardano:** O construtor falha **antes** de enviar se as entradas não puderem cobrir as saídas – muitas vezes **sem** taxa na cadeia.
 
-## 4. Developer / deployer shortfalls
+## 4. Deficiências do desenvolvedor/implantador
 
-| Role | Shortfall | Result |
+| Função | Déficit | Resultado |
 |------|-----------|--------|
-| **Deployer** | Not enough for deploy tx | Cancelled in wallet |
-| **User** | Not enough for `pay()` | See tables above |
-| **Token path** | No `approve` | Revert on `transferFrom` |
+| **Implantador** | Não é suficiente para implantar tx | Cancelado na carteira |
+| **Usuário** | Não é suficiente para`pay()`| Veja tabelas acima |
+| **Caminho do token** | Não`approve`| Reverter ativado`transferFrom`|
 
-## 5. Prevention checklist
+## 5. Lista de verificação de prevenção
 
-| Check | Where |
+| Verifique | Onde |
 |-------|--------|
-| `balance >= amount + estimateGas(...)` | dApp before Sign |
-| `staticCall` / simulate with same `value` | Catches revert |
-| Show fee breakdown (protocol + network) | UI copy |
-| Test `balance = amount + 1 wei` on testnet | Reproduces no-gas-left |
-| Token: `approve` + balance ≥ amount | ERC-20 / TRC-20 |
+|`balance >= amount + estimateGas(...)`| dApp antes de assinar |
+|`staticCall`/simular com o mesmo`value`| Capturas revertem |
+| Mostrar detalhamento de taxas (protocolo + rede) | UI cópia |
+| Teste`balance = amount + 1 wei`na rede de teste | Reproduz sem gás deixado |
+| Símbolo:`approve`+ saldo ≥ valor | ERC-20 / TRC-20 |
 
-## 6. Related
+## 6. Relacionado
 
-- **Part V** — [Fee split pattern](v-fee-split-pattern.md)
-- **Part VIII** — [Verify before broadcast](viii-verify-before-broadcast.md)
-- **Part IX** — [Verify safe & completed](ix-verify-safe-and-completed.md)
+- **Parte V** — [Padrão de divisão de taxas](v-fee-split-pattern.md)
+- **Parte VIII** — [Verificar antes da transmissão](viii-verify-before-broadcast.md)
+- **Parte IX** — [Verifique se está seguro e concluído](ix-verify-safe-and-completed.md)

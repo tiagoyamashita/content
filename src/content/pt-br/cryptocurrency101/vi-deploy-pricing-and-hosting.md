@@ -1,13 +1,13 @@
 ---
 label: "VI"
-subtitle: "Deploy & hosting"
-group: "Cryptocurrency101"
+subtitle: "Implantar e hospedar"
+group: "Criptomoedas 101"
 order: 6
 ---
-Cryptocurrency101 — Part VI: Deploy & hosting
-Smart contracts **live on the blockchain** — replicated on network nodes. You **do not** host bytecode on a VPS. You pay **once to deploy**, then **gas per transaction**. A website or API is optional.
+Cryptocurrency101 — Parte VI: Implantação e hospedagem
+Contratos inteligentes **vivem no blockchain** — replicados em nós da rede. Você **não** hospeda bytecode em um VPS. Você paga **uma vez para implantar** e depois **gás por transação**. Um site ou API é opcional.
 
-## 1. Where the contract lives
+## 1. Onde reside o contrato
 
 ```text
 Your laptop / CI  ──deploy tx──►  Blockchain nodes  ──►  contract address
@@ -16,43 +16,43 @@ Your laptop / CI  ──deploy tx──►  Blockchain nodes  ──►  contrac
                                     for "hosting"
 ```
 
-| Cost | When |
+| Custo | Quando |
 |------|------|
-| **Deploy** | One-time gas to store bytecode |
-| **Per call** | Users or you pay when `pay()` runs |
-| **Server** | **Optional** — only for website / tx builder UI |
+| **Implantar** | Gás único para armazenar bytecode |
+| **Por chamada** | Usuários ou você paga quando`pay()`corre |
+| **Servidor** | **Opcional** — apenas para construtor de site/tx UI |
 
-## 2. Deploy pricing (approximate)
+## 2. Preço de implantação (aproximado)
 
-**USD ranges shift with coin price and network load** — order-of-magnitude only; simulate on testnet first.
+**USD varia de acordo com o preço da moeda e a carga da rede** — apenas ordem de grandeza; simule primeiro no testnet.
 
-| Network | What you pay | Simple contract (e.g. FeeSplitter) | Testnet |
-|---------|--------------|-------------------------------------|---------|
-| [BNB Chain](networks/bnb/i-overview.md) | BNB gas | ~**$0.50 – $5** mainnet | Free BNB from faucet |
-| [Tron](networks/tron/i-overview.md) | TRX (energy / bandwidth) | ~**$5 – $40** mainnet | Free TRX on Shasta/Nile |
-| [TON](networks/ton/i-overview.md) | TON (storage + compute) | ~**$0.50 – $5** mainnet | Free TON from faucet |
-| [Cardano (ADA)](networks/ada/i-overview.md) | ADA tx fee + min UTXO | ~**$2 – $15** mainnet | Free ADA from faucet |
+| Rede | O que você paga | Contrato simples (por exemplo, FeeSplitter) | Rede de teste |
+|---------|----------|--------------------------|---------|
+| [BNB Cadeia](networks/bnb/i-overview.md) | BNB gás | ~**$0,50 – $5** rede principal | BNB grátis da torneira |
+| [Tron](networks/tron/i-overview.md) | TRX (energia/largura de banda) | ~**$5 – $40** rede principal | TRX grátis em Shasta/Nilo |
+| [TON](networks/ton/i-overview.md) | TON (armazenamento + computação) | ~**$0,50 – $5** rede principal | TON grátis da torneira |
+| [Cardano (ADA)](networks/ada/i-overview.md) | ADA taxa de transferência + min UTXO | ~**$2 – $15** rede principal | ADA grátis da torneira |
 
-| Ongoing cost | Server required? |
+| Custo contínuo | Servidor necessário? |
 |--------------|------------------|
-| **None** for “hosting” the contract | **No** — network runs bytecode |
-| **Per call** — gas when `pay()` runs | Optional server only for website |
+| **Nenhum** para “hospedar” o contrato | **Não** — a rede executa bytecode |
+| **Por chamada** — gás quando`pay()`corre | Servidor opcional apenas para site |
 
-Details and estimation formulas: each [network page](networks/bnb/i-overview.md).
+Detalhes e fórmulas de estimativa: cada [página da rede](networks/bnb/i-overview.md).
 
-## 3. Developer deploy checklist
+## 3. Lista de verificação de implantação do desenvolvedor
 
-| Step | Action |
+| Etapa | Ação |
 |------|--------|
-| 1 | Compile on target network toolchain |
-| 2 | Unit-test fee math and zero-address checks |
-| 3 | Deploy to **testnet** |
-| 4 | Run test `pay()` with faucet coins |
-| 5 | Mainnet deploy + small canary `pay()` |
+| 1 | Compilar no conjunto de ferramentas da rede de destino |
+| 2 | Taxa de teste unitário matemática e verificações de endereço zero |
+| 3 | Implantar em **testnet** |
+| 4 | Executar teste`pay()`com moedas de torneira |
+| 5 | Implantação da rede principal + pequeno canário`pay()`|
 
-Full verification flow: [Verify before broadcast](viii-verify-before-broadcast.md).
+Fluxo de verificação completo: [Verificar antes da transmissão](viii-verify-before-broadcast.md).
 
-## 4. Related
+## 4. Relacionado
 
-- **Part V** — [Fee split pattern](v-fee-split-pattern.md)
-- **Part VIII** — [Verify before broadcast](viii-verify-before-broadcast.md)
+- **Parte V** — [Padrão de divisão de taxas](v-fee-split-pattern.md)
+- **Parte VIII** — [Verificar antes da transmissão](viii-verify-before-broadcast.md)

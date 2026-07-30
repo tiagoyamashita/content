@@ -1,19 +1,19 @@
 ---
 label: "I"
-subtitle: "Array"
-group: "Data structures & algorithms"
+subtitle: "Variedade"
+group: "Estruturas de dados e algoritmos"
 order: 1
 ---
-Array (static)
-Contiguous indexed storage in the RAM model.
+Matriz (estática)
+Armazenamento indexado contíguo no modelo RAM.
 
-An **array** stores elements in consecutive memory words. In Java, when you declare an array, you must always specify its size explicitly (for example, `int[] arr = new int[5];`). There is **no default size** for arrays in Java—if you simply write `int[] arr;`, the variable `arr` just points to null and no array is actually allocated. You must use `new` and provide the exact length. Once created, a Java array's length cannot change.
+Um **array** armazena elementos em palavras de memória consecutivas. Em Java, ao declarar um array, você deve sempre especificar seu tamanho explicitamente (por exemplo,`int[] arr = new int[5];`). Não há **tamanho padrão** para arrays em Java—se você simplesmente escrever`int[] arr;`, a variável`arr`apenas aponta para nulo e nenhuma matriz é realmente alocada. Você deve usar`new`e forneça o comprimento exato. Uma vez criado, o comprimento de um array Java não pode ser alterado.
 
-Index `i` reaches `A[i]` in **O(1)** time in the standard RAM model because the address is `base + i × wordSize`.
+Índice`i`alcança`A[i]`em tempo **O(1)** no modelo RAM padrão porque o endereço é`base + i × wordSize`.
 
-- **Strengths:** random access, cache-friendly scans, simple layout.
-- **Limits:** fixed length (static array); inserting in the middle requires shifting **O(n)** elements to keep indices dense.
-- **Related:** see **Dynamic array** in this submenu for growable vectors; the full complexity and ADT context live in **Level III — Foundations** [Foundations](../iii-foundations.md).
+- **Pontos fortes:** acesso aleatório, verificações compatíveis com cache, layout simples.
+- **Limites:** comprimento fixo (array estático); a inserção no meio requer a mudança de elementos **O(n)** para manter os índices densos.
+- **Relacionado:** consulte **Matriz dinâmica** neste submenu para vetores crescentes; toda a complexidade e o contexto ADT residem em **Nível III — Fundações** [Fundações](../iii-foundations.md).
 
 <figure class="notes-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" role="img" aria-label="Array index maps to contiguous memory; middle insert shifts elements right">
   <defs>
