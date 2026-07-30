@@ -1,13 +1,13 @@
 ---
 label: "II"
-subtitle: "One-shot vs loop"
+subtitle: "ワンショット vs ループ"
 group: "AI Applied"
 order: 2
 ---
-One-shot vs loop
-**One-shot prompting** treats every chat like a blank slate. **Loop prompting** assumes most of the briefing already lives somewhere durable — your job each turn is to **steer**, not **rebrief**.
+ワンショット vs ループ
+**ワンショット プロンプト** では、すべてのチャットが白紙の状態のように扱われます。 **ループ プロンプト**は、ブリーフィングの大部分がすでに耐久性のある場所に存在していることを前提としています。各ターンの仕事は**説明**ではなく、**舵取り**です。
 
-## 1. One-shot habit (still common)
+## 1. 単発の癖（今でもよくある）
 
 ```text
 Open new chat
@@ -19,16 +19,16 @@ Open new chat
   → tomorrow: repeat everything
 ```
 
-| Cost | Detail |
-|------|--------|
-| **Time** | Minutes of setup per session |
-| **Quality drift** | Yesterday’s wording ≠ today’s |
-| **Lost iteration** | Good refinements trapped in old threads |
-| **Token waste** | Same context re-sent every message |
+|コスト |詳細 |
+|------|----------|
+| **時間** |セッションごとのセットアップ時間 (分) |
+| **品質のドリフト** |昨日の言葉遣い≠今日の言葉遣い |
+| **失われたイテレーション** |古いスレッドに閉じ込められた優れた改良点 |
+| **トークンの無駄** |すべてのメッセージを同じコンテキストで再送信する |
 
-One-shot is fine for **truly novel** tasks. It is expensive for **recurring** work (weekly reports, PR reviews, support replies, doc edits).
+**本当に斬新な**タスクの場合は、ワンショットで十分です。 **定期的な**作業 (週次レポート、PR レビュー、サポートへの返信、ドキュメントの編集) にはコストがかかります。
 
-## 2. Loop habit
+## 2. ループ癖
 
 ```mermaid
 flowchart LR
@@ -38,21 +38,21 @@ flowchart LR
   T3 --> T4[Next week: new file]
 ```
 
-Each turn is a **delta** — a correction, a new attachment, or a changed input — not a rebuilt system prompt.
+各ターンは **デルタ** (修正、新しい添付ファイル、または変更された入力) であり、再構築されたシステム プロンプトではありません。
 
-## 3. Side-by-side
+## 3. 並列
 
-| Dimension | One-shot | Loop |
-|-----------|----------|------|
-| **Setup per session** | Full prompt | Mostly already stored |
-| **Typical message length** | Long | Short |
-| **Context location** | Chat only | Project + chat |
-| **Best for** | One-off, sensitive isolation | Repeat workflows, same standards |
-| **Failure mode** | Inconsistent outputs | Stale or wrong stored context |
+|寸法 |ワンショット |ループ |
+|----------|----------|------|
+| **セッションごとのセットアップ** |完全なプロンプト |ほとんどはすでに保存されています |
+| **一般的なメッセージの長さ** |ロング |短い |
+| **コンテキストの場所** |チャットのみ |プロジェクト + チャット |
+| **こんな用途に最適** |一回限りの高感度分離 |同じ標準でワークフローを繰り返す |
+| **障害モード** |一貫性のない出力 |保存されたコンテキストが古いか間違っている |
 
-## 4. The iteration loop (human)
+## 4. 反復ループ (人間)
 
-From [Effective prompting — iteration](../effective-prompting/iii-iteration-and-templates.md), upgraded:
+[効果的なプロンプト — 反復] より(../effective-prompting/iii-iteration-and-templates.md)、アップグレードされました:
 
 ```text
 1. Rough ask (context already loaded)
@@ -61,31 +61,31 @@ From [Effective prompting — iteration](../effective-prompting/iii-iteration-an
 4. Save what worked → skill or template (not just chat history)
 ```
 
-**Loop rule:** if you typed the same paragraph twice this week, **promote it** to persistent instructions — see [Persistent instructions](iii-persistent-instructions.md).
+**ループ ルール:** 今週同じ段落を 2 回入力した場合、**それを永続的な命令に昇格**します。[永続的な命令]( を参照)iii-persistent-instructions.md）。
 
-## 5. Loop is not “never start fresh”
+## 5. ループは「決して新しく始めない」わけではありません
 
-| Start a **new** chat when… | **Continue** the loop when… |
-|----------------------------|-----------------------------|
-| Topic or audience changed completely | Same deliverable or workflow |
-| Context is polluted with wrong assumptions | Refining output quality |
-| You need isolation (confidential mix-up) | Agent already read the right files |
-| Model stuck in a bad pattern | Small directed fixes work |
+| **新しい**チャットを開始するには… | **ループを続行**する場合… |
+|----------------------------|----------------------------|
+|トピックや対象者が完全に変わった |同じ成果物またはワークフロー |
+|コンテキストは間違った仮定によって汚染されています。出力品質を洗練する |
+|隔離が必要です (機密取り違え) |エージェントはすでに正しいファイルを読み取っています |
+|モデルが悪いパターンにはまってしまう |小規模な直接修正が機能する |
 
-## 6. Relation to agents
+## 6. エージェントとの関係
 
-| | Loop prompting | Agents |
+| |ループプロンプト |エージェント |
 |---|----------------|--------|
-| **Focus** | Don’t rebrief; iterate cheaply | Many steps + tools toward a goal |
-| **Your input** | Short steering | Goal + boundaries + checkpoints |
-| **Overlap** | Agent sessions *are* loops when context persists | Agents benefit from stored skills/rules |
+| **焦点** |反省しないでください。安価に反復する |目標に向けた多くのステップとツール |
+| **あなたの意見** |ショートステアリング |目標 + 境界線 + チェックポイント |
+| **オーバーラップ** |コンテキストが持続する場合、エージェント セッションは「ループ」になります。エージェントは保存されたスキル/ルールから恩恵を受ける |
 
-Read [Agents — overview](../agents-and-agentic-workflows/i-overview.md) for tool-heavy multi-step work. Use loop prompting for **everyday** repeat steering.
+[エージェント — 概要](../agents-and-agentic-workflows/i-overview.md) 工具を大量に使用する複数のステップの作業に適しています。 **毎日**ステアリングを繰り返す場合は、ループ プロンプトを使用します。
 
-## 7. Rehearsal questions
+## 7. リハーサルの質問
 
-- Why does one-shot prompting waste tokens?
-- What makes a good “delta” message in a loop?
-- When should you still open a new chat?
+- ワンショットプロンプトがトークンを無駄にするのはなぜですか?
+- ループ内の優れた「デルタ」メッセージとは何ですか?
+- 新しいチャットはいつ開くべきですか?
 
-**Next:** [Persistent instructions](iii-persistent-instructions.md).
+**次へ:** [永続的な指示](iii-persistent-instructions.md）。

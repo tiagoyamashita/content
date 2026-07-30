@@ -1,29 +1,29 @@
 ---
 label: "III"
-subtitle: "Images, spreadsheets & data"
+subtitle: "画像、スプレッドシート、データ"
 group: "AI Applied"
 order: 3
 ---
-Images, spreadsheets & data
+画像、スプレッドシート、データ
 
-## 3. Images and screenshots
+## 3. 画像とスクリーンショット
 
-| Use case | Prompt tip |
-|----------|------------|
-| **UI / bug report** | “List UI elements; suggest likely cause (hypothesis).” |
-| **Chart** | “Describe trend; don’t invent numbers not visible.” |
-| **Handwriting / whiteboard** | “Transcribe; mark illegible as [?].” |
-| **Generate image** | Separate tools (DALL·E, Midjourney) — be specific on style, aspect ratio |
+|使用例 |即時ヒント |
+|----------|-----------|
+| **UI / バグレポート** | 「UI 要素をリストアップし、考えられる原因 (仮説) を提案します。」 |
+| **チャート** | 「トレンドを説明し、目に見えない数字をでっち上げないでください。」 |
+| **手書き/ホワイトボード** | 「転記し、判読できない箇所には [?] を付けてください。」 |
+| **画像を生成** |個別のツール (DALL・E、Midjourney) — スタイル、アスペクト比を具体的に指定してください。
 
-**Do not** send images you’re not allowed to share (patient IDs, unreleased designs on personal chat).
+**共有が許可されていない画像 (患者 ID、個人チャット上の未公開デザインなど) は送信しないでください**。
 
-## 4. Spreadsheets and data
+## 4. スプレッドシートとデータ
 
-| Task | Approach |
+|タスク |アプローチ |
 |------|----------|
-| **Explore** | Upload CSV; “summary stats and anomalies” |
-| **Formula help** | Describe goal + sample rows |
-| **Charts** | “Suggest chart type; describe axes” — rebuild in Excel/Sheets yourself |
-| **Sensitive data** | Aggregate or redact PII first; use enterprise tier |
+| **探索** | CSV をアップロードします。 「概要統計と異常」 |
+| **数式ヘルプ** |目標とサンプル行を説明する |
+| **チャート** | 「グラフの種類を提案し、軸を説明する」 - Excel/スプレッドシートで自分で再構築する |
+| **機密データ** |最初に PII を集約または編集します。エンタープライズ層を使用する |
 
-AI may **hallucinate rows** — spot-check against source for decisions.
+AI は **行を幻覚させる** - 決定のソースに対してスポットチェックを行う可能性があります。

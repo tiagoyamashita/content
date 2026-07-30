@@ -1,21 +1,21 @@
 ---
 label: "III"
-subtitle: "Loop on script results"
+subtitle: "スクリプトの結果をループする"
 group: "Skills examples"
 order: 3
 ---
-Loop on script results
+スクリプトの結果をループする
 
-**Goal:** Run a script, read its **log file**, and **iterate** on the same data — refine fixes or analysis without re-fetching from scratch each time. Keeps `current_log_file` in the conversation as the source of truth.
+**目標:** スクリプトを実行し、**ログ ファイル**を読み取り、同じデータを**反復**します。毎回最初から再フェッチすることなく、修正や分析を改良します。キープする`current_log_file`会話の中で真実の情報源として。
 
-## Live files (copy-ready)
+## ライブ ファイル (コピー準備完了)
 
-| File | Path |
+|ファイル |パス |
 |------|------|
-| Skill instructions | [`.cursor/skills/test-flake-hunt/SKILL.md`](.cursor/skills/test-flake-hunt/SKILL.md) |
-| Script | [`.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py`](.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py) |
+|スキルの説明 | [`.cursor/skills/test-flake-hunt/SKILL.md`](.cursor/skills/test-flake-hunt/SKILL.md) |
+|スクリプト | [`.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py`](.cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py) |
 
-## Folder layout
+## フォルダーのレイアウト
 
 ```text
 .cursor/skills/test-flake-hunt/
@@ -24,21 +24,20 @@ Loop on script results
   logs/
 ```
 
-## Loop pattern (from SKILL.md)
+## ループパターン (SKILL.md より)
 
-1. **Round 1** — run `python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[pattern]"`
-2. Store `current_log_file` from script output.
-3. **Round 2+** — read same log; propose fix; re-run only to verify.
-4. **Stop** at `exit_code == 0`, user stop, or 5 iterations without progress.
+1. **ラウンド 1** — 実行`python3 .cursor/skills/test-flake-hunt/scripts/run_flaky_tests.py "[pattern]"`2.ストア`current_log_file`スクリプト出力から。
+3. **ラウンド 2+** — 同じログを読み取ります。修正を提案する。確認のためのみ再実行してください。
+4. **停車**`exit_code == 0`、ユーザー停止、または進行なしの 5 回の反復。
 
-## Optional: Cursor `stop` hook
+## オプション: Cursor`stop`フック
 
-For automatic “keep going” loops, use a `stop` hook with `loop_limit` — see [Hook — secrets scan](iv-hook-secrets-env-scan.md). Skills alone rely on the agent following the loop in `SKILL.md`.
+自動「継続」ループの場合は、`stop`フック付き`loop_limit`— [フック — シークレットスキャン](を参照)iv-hook-secrets-env-scan.md）。スキルのみがループインに従うエージェントに依存します。`SKILL.md`。
 
-## Tie-in
+## タイイン
 
-[Loop prompting](../../loop-prompting/i-overview.md) — short deltas each turn (“iteration 3: read last log, fix `auth.test.ts`”).
+[ループプロンプト](../../loop-prompting/i-overview.md) — 各ターンの短いデルタ (「反復 3: 最後のログを読み取り、修正する」`auth.test.ts`”）。
 
-## Next
+＃＃ 次
 
-[Hook — secrets & `.env` scan](iv-hook-secrets-env-scan.md) — automatic checks without user asking.
+[フック — 秘密と`.env`スキャン]（iv-hook-secrets-env-scan.md) — ユーザーの要求なしで自動チェックします。

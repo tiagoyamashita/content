@@ -1,14 +1,14 @@
 ---
 label: "VI"
-subtitle: "Modelfile & custom GGUF"
+subtitle: "モデルファイルとカスタム GGUF"
 group: "Ollama"
 order: 6
 ---
-Modelfile & custom GGUF
+モデルファイルとカスタム GGUF
 
-When a model is **not** in the Ollama library — or you want a **custom system prompt and parameters** baked in — use a **Modelfile** and `ollama create`.
+モデルが Ollama ライブラリに**ない**場合、または**カスタム システム プロンプトとパラメータ**を焼き付けたい場合は、**Modelfile** を使用し、`ollama create`。
 
-## 1. Modelfile basics
+## 1. モデルファイルの基本
 
 ```dockerfile
 FROM qwen2.5-coder:7b
@@ -22,17 +22,17 @@ ollama create python-tutor -f Modelfile
 ollama run python-tutor
 ```
 
-| Instruction | Purpose |
-|-------------|---------|
-| `FROM` | Base model tag **or** path to `.gguf` |
-| `SYSTEM` | Default system prompt |
-| `PARAMETER` | Default runtime params |
-| `TEMPLATE` | Chat template (advanced — usually inherited from base) |
-| `LICENSE` | License text metadata |
+|指示 |目的 |
+|-----------|-----------|
+|`FROM`|基本モデルのタグ **または** へのパス`.gguf`|
+|`SYSTEM`|デフォルトのシステムプロンプト |
+|`PARAMETER`|デフォルトのランタイムパラメータ |
+|`TEMPLATE`|チャット テンプレート (高度 - 通常は基本から継承) |
+|`LICENSE`|ライセンステキストメタデータ |
 
-## 2. Import a local GGUF (from Hugging Face)
+## 2. ローカル GGUF をインポートします (Hugging Face から)
 
-Download GGUF first — see [Downloading from Hugging Face](../implementation-example/ii-downloading-from-huggingface.md):
+最初に GGUF をダウンロードします — [Hugging Face からのダウンロード](を参照)../implementation-example/ii-downloading-from-huggingface.md):
 
 ```bash
 hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
@@ -40,7 +40,7 @@ hf download bartowski/Qwen2.5-Coder-7B-Instruct-GGUF \
   --local-dir ./models
 ```
 
-Modelfile:
+モデルファイル:
 
 ```dockerfile
 FROM ./models/Qwen2.5-Coder-7B-Instruct-Q4_K_M.gguf
@@ -52,9 +52,9 @@ ollama create qwen-coder-local -f Modelfile
 ollama run qwen-coder-local
 ```
 
-Use **absolute or repo-relative** paths to the `.gguf` file in `FROM`.
+**絶対パスまたはリポジトリ相対**パスを使用して、`.gguf`ファイルに入れる`FROM`。
 
-## 3. Derive from existing model
+## 3. 既存のモデルから派生する
 
 ```bash
 ollama show qwen2.5-coder:7b --modelfile > Modelfile
@@ -62,23 +62,23 @@ ollama show qwen2.5-coder:7b --modelfile > Modelfile
 ollama create my-qwen-dev -f Modelfile
 ```
 
-## 4. List custom models
+## 4. カスタム モデルをリストする
 
 ```bash
 ollama list
 ```
 
-Custom names appear alongside library pulls (`python-tutor`, `qwen-coder-local`, etc.).
+カスタム名はライブラリ プルの横に表示されます (`python-tutor`、`qwen-coder-local`、など）。
 
-## 5. Share with team
+## 5. チームと共有する
 
-| Approach | Detail |
-|----------|--------|
-| **Commit Modelfile** | Team runs `ollama create` after pulling same GGUF |
-| **Commit only Modelfile + HF instructions** | Modelfile points to `FROM qwen2.5-coder:7b` — everyone `ollama pull` |
-| **Do not commit** multi-GB `.gguf` blobs | Use `hf download` or `ollama pull` in README |
+|アプローチ |詳細 |
+|----------|----------|
+| **モデルファイルをコミット** |チームラン`ollama create`同じ GGUF をプルした後 |
+| **Modelfile + HF 命令のみをコミットします** |モデルファイルが指すもの`FROM qwen2.5-coder:7b`- みんな`ollama pull`|
+| **コミットしないでください** multi-GB`.gguf`ブロブ |使用`hf download`または`ollama pull`README で |
 
-Example repo snippet:
+リポジトリの例:
 
 ```text
 models/
@@ -87,14 +87,14 @@ models/
   *.gguf                 ← gitignored
 ```
 
-## 6. When not to use Modelfile
+## 6. Modelfile を使用しない場合
 
-| Situation | Better path |
-|-----------|-------------|
-| Model already in library | `ollama pull` only |
-| Need max inference control | llama.cpp directly — [Local run platforms](../implementation-example/iii-local-run-platforms.md) |
-| Production multi-user serving | vLLM / TGI — not Ollama desktop |
+|状況 |より良い道 |
+|----------|---------------|
+|モデルはすでにライブラリにあります |`ollama pull`のみ |
+|最大限の推論制御が必要 | llama.cpp を直接 — [ローカル実行プラットフォーム](../implementation-example/iii-local-run-platforms.md) |
+|本番環境のマルチユーザー サービス | vLLM / TGI — Ollama デスクトップではありません |
 
-## Next
+＃＃ 次
 
-[GPU & troubleshooting](vii-gpu-troubleshooting.md) — fix CPU-only, OOM, slow generation.
+[GPU とトラブルシューティング](vii-gpu-troubleshooting.md) — CPU のみ、OOM、生成の遅さを修正します。
