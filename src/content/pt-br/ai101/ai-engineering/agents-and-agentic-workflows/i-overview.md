@@ -1,0 +1,32 @@
+---
+label: "I"
+subtitle: "Overview"
+group: "AI Applied"
+order: 1
+---
+Agents & agentic workflows — overview
+Deep dive on **agents & agentic workflows** — split into focused notes below.
+
+## Map of this submenu
+
+| Note | Focus |
+|------|--------|
+| [Chat, assistant & agent](ii-chat-assistant-agent.md) | Modes compared; tools (built-ins, MCP, skills + scripts e.g. Translate API) |
+| [Directing agents](iii-directing-agents.md) | Part of agents & agentic workflows track |
+| [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) | Part of agents & agentic workflows track |
+| [My setup](v-my-setup.md) | Rules agent vs repo agents; multi-repo and same-repo parallel work |
+
+Agents and agentic workflows
+An **AI agent** (in products you use) is a model that ** pursues a goal over multiple steps** — planning, calling **tools** (search, code, files, APIs), and adjusting when something fails — instead of answering in one shot.
+
+You do not deploy agents yourself; you **direct** them in Cursor, ChatGPT, Claude, Copilot, and automation platforms.
+
+```mermaid
+flowchart LR
+  Perceive[Perceive] --> Plan --> Act
+  Act -->|observe result| Perceive
+```
+
+## Study order
+
+[Chat, assistant & agent](ii-chat-assistant-agent.md) → [Directing agents](iii-directing-agents.md) → [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) → [My setup](v-my-setup.md)
