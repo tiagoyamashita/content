@@ -1,12 +1,12 @@
 ---
 label: "III"
-subtitle: "Iteration & templates"
+subtitle: "イテレーションとテンプレート"
 group: "AI Applied"
 order: 3
 ---
-Iteration & templates
+イテレーションとテンプレート
 
-## 3. Iteration loop (how pros work)
+## 3. 反復ループ (プロの作業方法)
 
 ```mermaid
 flowchart LR
@@ -17,17 +17,17 @@ flowchart LR
   Save -.->|next task| Draft
 ```
 
-| Feedback to the model | Better than |
-|-----------------------|-------------|
-| “Shorter; drop adjectives; keep all dates.” | “Try again.” |
-| “Wrong: revenue is in table 2, not table 1.” | “That’s wrong.” |
-| “Use the template in my first message.” | Starting a new chat |
+|モデルへのフィードバック | | よりも優れています
+|----------------------|-----------|
+| 「もっと短くし、形容詞を削除し、すべての日付を保持します。」 | "もう一度やり直してください。" |
+| 「間違っています。収益は表 1 ではなく、表 2 にあります。」 | 「それは違います。」 |
+| 「最初のメッセージにはテンプレートを使用してください。」 |新しいチャットを開始する |
 
-**New chat vs continue:** new chat when topic changes or context is polluted; continue when refining the same deliverable.
+**新しいチャットと継続:** トピックが変更された場合、またはコンテキストが汚染された場合は新しいチャット。同じ成果物を改良するときに続行します。
 
-## 4. Templates by task type
+## 4. タスクの種類別のテンプレート
 
-### Summarise
+### 要約
 
 ```text
 Summarise for a busy [role].
@@ -40,7 +40,7 @@ Source:
 """
 ```
 
-### Compare options
+### オプションを比較する
 
 ```text
 Compare A vs B for [decision].
@@ -49,7 +49,7 @@ Output: table + one-paragraph recommendation.
 Context: …
 ```
 
-### Code help (without shipping blindly)
+### コードヘルプ (やみくもに出荷することはありません)
 
 ```text
 Language: [X]. Goal: [one sentence].
@@ -58,7 +58,7 @@ Flag assumptions and edge cases.
 Do not invent APIs — say if unsure.
 ```
 
-### Email / message draft
+### 電子メール/メッセージの下書き
 
 ```text
 Tone: [direct / warm / formal].
@@ -67,4 +67,4 @@ Goal: [what should reader do after reading].
 Facts only from below — do not invent names or dates.
 ```
 
-**Next:** [System instructions & mistakes](iv-system-instructions-and-mistakes.md).
+**次へ:** [システムの指示と間違い](iv-system-instructions-and-mistakes.md）。

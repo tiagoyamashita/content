@@ -1,13 +1,13 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Agents & agentic workflows — overview
-Deep dive on **agents & agentic workflows** — split into focused notes below.
+エージェントとエージェントのワークフロー — 概要
+**エージェントとエージェントのワークフロー**について詳しく説明します。以下で焦点を絞ったメモに分割します。
 
-## Map of this submenu
+## このサブメニューのマップ
 
 
 ```mermaid
@@ -16,17 +16,17 @@ flowchart LR
   Act -->|observe result| Perceive
 ```
 
-| Note | Focus |
-|------|--------|
-| [Chat, assistant & agent](ii-chat-assistant-agent.md) | モード比較。ツール（組み込み、MCP、スキル+スクリプト例: Translate API） |
-| [Directing agents](iii-directing-agents.md) | Part of agents & agentic workflows track |
-| [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) | Part of agents & agentic workflows track |
+|注 |フォーカス |
+|------|----------|
+| [チャット、アシスタント、エージェント](ii-chat-assistant-agent.md) | モード比較。ツール（組み込み、MCP、スキル+スクリプト例: Translate API） |
+| [Directing agents](iii-directing-agents.md) |エージェントとエージェント ワークフロー トラックの一部 |
+| [製品と関係者](iv-products-and-human-in-the-loop.md) |エージェントとエージェント ワークフロー トラックの一部 |
 
-Agents and agentic workflows
-An **AI agent** (in products you use) is a model that ** pursues a goal over multiple steps** — planning, calling **tools** (search, code, files, APIs), and adjusting when something fails — instead of answering in one shot.
+エージェントとエージェントのワークフロー
+**AI エージェント** (使用している製品内) は、一度で答えるのではなく、**複数のステップ** (計画、**ツール** (検索、コード、ファイル、API) の呼び出し、何かが失敗した場合の調整) にわたって目標を追求するモデルです。
 
-You do not deploy agents yourself; you **direct** them in Cursor, ChatGPT, Claude, Copilot, and automation platforms.
+自分でエージェントを導入するわけではありません。 Cursor、ChatGPT、Claude、Copilot、自動化プラットフォームで**指示**します。
 
-## Study order
+## 勉強の順番
 
-[Chat, assistant & agent](ii-chat-assistant-agent.md) → [Directing agents](iii-directing-agents.md) → [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md)
+[チャット、アシスタント、エージェント](ii-chat-assistant-agent.md) → [監督エージェント](iii-directing-agents.md) → [製品と参加者](iv-products-and-human-in-the-loop.md)

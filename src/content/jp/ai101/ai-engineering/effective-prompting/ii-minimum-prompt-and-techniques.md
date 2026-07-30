@@ -1,21 +1,21 @@
 ---
 label: "II"
-subtitle: "Minimum prompt & techniques"
+subtitle: "最低限のプロンプトとテクニック"
 group: "AI Applied"
 order: 2
 ---
-Minimum prompt & techniques
+最低限のプロンプトとテクニック
 
-## 1. The minimum good prompt
+## 1. 最低限の適切なプロンプト
 
-Include four pieces when the task matters:
+タスクが重要な場合は、次の 4 つの要素を含めます。
 
-| Piece | Example |
-|-------|---------|
-| **Role / perspective** | “You are a concise editor for a technical blog.” |
-| **Task** | “Rewrite the draft below for clarity.” |
-| **Constraints** | “Keep under 300 words; preserve all numbers.” |
-| **Output format** | “Use bullet points; no intro paragraph.” |
+|ピース |例 |
+|------|-----------|
+| **役割/視点** | 「あなたは技術ブログの簡潔な編集者です。」 |
+| **タスク** | 「わかりやすくするために、以下の草案を書き直してください。」 |
+| **制約** | 「単語数は 300 語以内にし、数字はすべて保持してください。」 |
+| **出力形式** | 「箇条書きを使用し、導入段落は使用しません。」 |
 
 ```mermaid
 flowchart TB
@@ -29,17 +29,17 @@ flowchart TB
   Prompt --> Out[Model output]
 ```
 
-Weak: “Make this better.”  
-Strong: “List three concrete edits; for each, quote the original sentence and your revision.”
+弱者：「これをもっと良くしてください。」  
+強者: 「具体的な編集を 3 つ挙げてください。それぞれについて、元の文と改訂版を引用してください。」
 
-## 2. Techniques that actually help
+## 2. 実際に役立つテクニック
 
-| Technique | When to use | Example phrase |
-|-----------|-------------|----------------|
-| **Zero-shot** | Simple, well-known task | “Translate to Japanese: …” |
-| **Few-shot** | You have a style template | Paste 2 examples, then “Now do the same for …” |
-| **Chain-of-thought** | Math, logic, planning | “Think step by step, then give the final answer.” |
-| **Draft → critique → revise** | Important documents | “First draft, then list weaknesses, then improved version.” |
-| **Audience toggle** | Same content, different reader | “Explain twice: for executives, then for engineers.” |
+|テクニック |いつ使用するか |フレーズ例 |
+|----------|---------------|-----|
+| **ゼロショット** |シンプルでよく知られたタスク | 「日本語に翻訳：…」 |
+| **数ショット** |スタイル テンプレートがあります | 2 つの例を貼り付けて、「今度は同じことを…」 |
+| **思考の連鎖** |数学、論理、計画 | 「段階的に考えて、最終的な答えを出す。」 |
+| **草案→批評→改訂** |重要な書類 | 「最初の草案、次に弱点のリスト、そして改良版。」 |
+| **視聴者切り替え** |同じコンテンツ、異なるリーダー | 「二度説明してください。経営者向け、次にエンジニア向けです。」 |
 
-**Chain-of-thought:** ask for reasoning **before** the final answer when mistakes are costly. Hide the steps in your copy if you only need the conclusion.
+**思考の連鎖:** 間違いが大きな損害をもたらす場合は、最終的な答えが出る前**に推論を求めます。結論だけが必要な場合は、コピー内の手順を非表示にします。

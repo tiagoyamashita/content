@@ -1,12 +1,12 @@
 ---
 label: "II"
-subtitle: "Plan your server"
+subtitle: "サーバーを計画する"
 group: "How to create your custom MCP"
 order: 2
 ---
-Plan your server
+サーバーを計画する
 
-Before writing code, decide **what the agent may do** and **what it must never do**. MCP servers are small connectors — not full applications.
+コードを記述する前に、*エージェントが実行できること**と**決して実行してはいけないこと**を決定してください。 MCP サーバーは小規模なコネクタであり、完全なアプリケーションではありません。
 
 ```mermaid
 flowchart TD
@@ -15,38 +15,38 @@ flowchart TD
   Auth --> Transport[stdio or HTTP]
 ```
 
-## 1. One server, one integration
+## 1. 1 つのサーバー、1 つの統合
 
-| Good | Avoid |
-|------|-------|
-| `company-crm-mcp` — CRM search + create lead | One mega-server for CRM + GitHub + email + shell |
-| `team-runbooks-mcp` — read internal wiki pages | Exposing every database table as a separate tool |
-| `deploy-status-mcp` — query CI / release API | Passing raw SQL from the model with no guardrails |
+|良い |避ける |
+|------|------|
+|`company-crm-mcp`— CRM 検索 + リードの作成 | CRM + GitHub + 電子メール + シェル用の 1 つのメガサーバー |
+|`team-runbooks-mcp`— 内部 Wiki ページを読む |すべてのデータベース テーブルを個別のツールとして公開する |
+|`deploy-status-mcp`— クエリ CI / リリース API |ガードレールのないモデルから生の SQL を渡す |
 
-Hosts list **all tools** from enabled servers. Fewer, clearer tools → better tool choice by the LLM.
+ホストには、有効なサーバーからの **すべてのツール** がリストされます。より少ない、より明確なツール → LLM によるより適切なツールの選択。
 
-## 2. Tools vs resources vs prompts
+## 2. ツール、リソース、プロンプト
 
-| MCP primitive | What it is | Example |
-|---------------|------------|---------|
-| **Tool** | Function the model **calls** with arguments | `search_issues`, `run_health_check` |
-| **Resource** | **Readable** URI the user or model can fetch | `runbook://oncall/checkout` |
-| **Prompt** | Pre-built **template** the host can insert | `summarize-incident` with slots |
+| MCP プリミティブ |それは何ですか |例 |
+|---------------|-----------|----------|
+| **ツール** |引数を指定してモデルを **呼び出し**する関数 |`search_issues`、`run_health_check`|
+| **リソース** | **読み取り可能** URI ユーザーまたはモデルは | を取得できます。`runbook://oncall/checkout`|
+| **プロンプト** |ホストが挿入できる事前構築済み **テンプレート** |`summarize-incident`スロット付き |
 
-**Start with tools only** — they cover 90% of custom integrations. Add resources when the agent should **read** stable documents; add prompts when you want reusable slash-command style templates.
+**ツールのみから始めてください** — これらのツールはカスタム統合の 90% をカバーします。エージェントが安定したドキュメントを**読み取る**必要がある場合は、リソースを追加します。再利用可能なスラッシュ コマンド スタイルのテンプレートが必要な場合は、プロンプトを追加します。
 
-## 3. Design each tool
+## 3. 各ツールを設計する
 
-For every tool, write a one-line spec before coding:
+すべてのツールについて、コーディングする前に 1 行の仕様を作成します。
 
-| Field | Question |
-|-------|----------|
-| **Name** | snake_case verb phrase — `get_order`, not `order` |
-| **Description** | What it does **and when** the model should use it (hosts show this to the LLM) |
-| **Inputs** | Minimal JSON schema — required vs optional |
-| **Output** | Text summary for the model, or structured JSON as text |
-| **Side effects** | Read-only vs writes — mark destructive tools clearly in the description |
-| **Auth** | Which env var or config file supplies the API token |
+|フィールド |質問 |
+|------|----------|
+| **名前** | Snake_case 動詞句 —`get_order`、 ない`order`|
+| **説明** |それが何をするのか **そしていつ** モデルがそれを使用すべきか (ホストはこれを LLM に示します) |
+| **入力** |最小限の JSON スキーマ — 必須とオプション |
+| **出力** |モデルのテキスト概要、またはテキストとして構造化された JSON |
+| **副作用** |読み取り専用と書き込み — 説明で破壊ツールを明確にマークします。
+| **認証** | API トークンを提供する環境変数または構成ファイルはどれですか。
 
 ```text
 Tool: search_customers
@@ -56,13 +56,13 @@ Output: JSON array of { id, name, email } (max 10)
 Auth: CRM_API_KEY from environment
 ```
 
-## 4. Configuration and secrets
+## 4. 設定と秘密
 
-| Pattern | Use |
-|---------|-----|
-| **Environment variables** | API keys, base URLs — injected by host `mcp.json` |
-| **Config file path** | `CONFIG_PATH` pointing at YAML the server reads at startup |
-| **No secrets in repo** | Never commit tokens; document required env vars in README |
+|パターン |使用 |
+|----------|-----|
+| **環境変数** | API キー、ベース URL — ホストによって挿入される`mcp.json`|
+| **構成ファイルのパス** |`CONFIG_PATH`YAML を指し、サーバーは起動時に読み取ります。
+| **リポジトリにはシークレットはありません** |決してトークンをコミットしないでください。 README で必要な環境変数を文書化する |
 
 ```json
 "env": {
@@ -71,23 +71,23 @@ Auth: CRM_API_KEY from environment
 }
 ```
 
-## 5. Transport choice
+## 5. 輸送手段の選択
 
-| Transport | When |
+|輸送 |いつ |
 |-----------|------|
-| **stdio** (default) | Local dev, Cursor, Claude Desktop — host spawns your process |
-| **Streamable HTTP** | Team-hosted connector, shared service, remote agents |
+| **stdio** (デフォルト) |ローカル開発者、Cursor、クロード デスクトップ — ホストがプロセスを生成します |
+| **ストリーミング可能な HTTP** |チームホスト型コネクタ、共有サービス、リモートエージェント |
 
-This track focuses on **stdio** — fastest path to a working custom server. See [JSON-RPC & transports](../ii-json-rpc-and-transports.md) for HTTP deployment.
+このトラックは **stdio**、つまり動作するカスタム サーバーへの最速パスに焦点を当てています。 [JSON-RPC とトランスポート](を参照してください)../ii-json-rpc-and-transports.md) HTTP デプロイメント用。
 
-## 6. Checklist before coding
+## 6. コーディング前のチェックリスト
 
-- [ ] Server name and version (`my-team-crm`, `1.0.0`)
-- [ ] List of 1–8 tools with descriptions
-- [ ] Env vars documented
-- [ ] Read vs write tools identified; writes need human-in-the-loop in product UX where possible
-- [ ] Error messages return **actionable text** (rate limit, 404, invalid id) — the model will read them
+- [ ] サーバー名とバージョン (`my-team-crm`、`1.0.0`)
+- [ ] 1 ～ 8 のツールのリストと説明
+- [ ] 環境変数を文書化
+- [ ] 読み取りツールと書き込みツールが識別されました。可能な場合、書き込みには製品 UX での人間参加が必要です
+- [ ] エラー メッセージは **実用的なテキスト** (レート制限、404、無効な ID) を返します - モデルはそれらを読み取ります
 
-## Next
+＃＃ 次
 
-[Build with the SDK](iii-build-with-the-sdk.md) — scaffold TypeScript or Python.
+[SDK を使用してビルドする](iii-build-with-the-sdk.md) — TypeScript または Python をスキャフォールドします。

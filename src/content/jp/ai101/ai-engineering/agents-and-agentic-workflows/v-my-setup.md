@@ -1,21 +1,21 @@
 ---
 label: "V"
-subtitle: "My setup"
+subtitle: "私のセットアップ"
 group: "AI Applied"
 order: 5
 ---
-My setup — multi-agent Cursor workflow
-How I run **Cursor agents** day to day: one chat owns **global rules**, other chats do **repo work**, and I keep **parallel work** safe when several agents touch the same codebase.
+私のセットアップ — マルチエージェント Cursor ワークフロー
+**Cursor エージェント**を毎日どのように実行しているか: 1 つのチャットが **グローバル ルール**を所有し、他のチャットが **リポジトリ作業**を行い、複数のエージェントが同じコードベースに触れるときの **並行作業**を安全に保ちます。
 
-This is a personal operating model, not a product requirement. Related: [Directing agents](iii-directing-agents.md), [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md), [Agent orchestration](../skills-and-agent-instructions/using-skills-agents-and-hooks/vi-agent-orchestration.md).
+これは個人の運用モデルであり、製品要件ではありません。関連: [監督エージェント](iii-directing-agents.md)、[Cursor スキル、ルール & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md)、[エージェント オーケストレーション](../skills-and-agent-instructions/using-skills-agents-and-hooks/vi-agent-orchestration.md）。
 
-## 1. Roles at a glance
+## 1. 役割の概要
 
-| Agent chat | Owns | Does not own |
-|------------|------|--------------|
-| **Rules agent** | User rules, global habits, cross-repo conventions | Feature PRs in product repos |
-| **Repo agents** | One (or few) git remotes / worktrees each | Editing my global rule set “while they’re at it” |
-| **Me** | Merge decisions, which chat is allowed to write | Blind trust of every tool call |
+|エージェントチャット |所有 |所有していない |
+|-----------|------|--------------|
+| **ルールエージェント** |ユーザー ルール、グローバルな習慣、リポジトリ間の規則 |製品リポジトリの機能 PR |
+| **レポエージェント** |それぞれ 1 つ (またはいくつか) の git リモート/ワークツリー |グローバル ルール セットを「作業中に」編集する |
+| **私** |決定をマージします。チャットが書き込みを許可される |すべてのツール呼び出しを盲目的に信頼する |
 
 ```mermaid
 flowchart TB
@@ -40,20 +40,20 @@ flowchart TB
   GR -.->|loaded by| C
 ```
 
-**Rule:** the Rules agent changes **how all agents behave**. Repo agents change **code**. Mixing those jobs in one chat causes surprise diffs and half-finished rule edits.
+**ルール:** ルール エージェントは **すべてのエージェントの動作**を変更します。リポジトリ エージェントが **コード**を変更します。 1 つのチャットにこれらのジョブを混在させると、予期せぬ差分や中途半端なルール編集が発生します。
 
-## 2. Rules agent (global)
+## 2. ルールエージェント (グローバル)
 
-Use a **dedicated chat** (and often a scratch or notes workspace) whose only job is instruction surface area:
+唯一の役割が指示領域である **専用チャット** (多くの場合、スクラッチ ワークスペースやメモ ワークスペース) を使用します。
 
-| Layer | Typical location | Scope |
-|-------|------------------|-------|
-| **User rules** | Cursor user rules (account / settings) | Every project |
-| **User skills** | `~/.cursor/skills/` | Every project |
-| **User hooks** | User-level hooks if you use them | Every project |
-| **Team rules** | Only when you explicitly open that repo | That remote |
+|レイヤー |典型的な場所 |範囲 |
+|------|------|------|
+| **ユーザールール** | Cursor ユーザー ルール (アカウント/設定) |すべてのプロジェクト |
+| **ユーザースキル** |`~/.cursor/skills/`|すべてのプロジェクト |
+| **ユーザーフック** |ユーザーレベルのフック (使用する場合) |すべてのプロジェクト |
+| **チームルール** |そのリポジトリを明示的に開いた場合のみ |そのリモコン |
 
-Prompt pattern for the Rules agent:
+Rules エージェントのプロンプト パターン:
 
 ```text
 You only edit global / user-level Cursor rules and skills.
@@ -77,11 +77,11 @@ sequenceDiagram
   Repo->>Repo: Follows updated global rule
 ```
 
-Keep a short **changelog** in the Rules chat (or a private note): date, what changed, why — so you can roll back bad global instructions.
+ルール チャット (または個人的なメモ) に短い **変更ログ** を記録してください: 日付、変更内容、理由 - これにより、不適切なグローバル指示をロールバックできます。
 
-## 3. Repo agents (different remotes)
+## 3. リポジトリエージェント (異なるリモート)
 
-Spin **one agent chat per active repo** (or per epic). Point the workspace root at that clone before asking for edits.
+**アクティブなリポジトリごとに 1 つのエージェント チャット** (またはエピックごと) をスピンします。編集を要求する前に、ワークスペースのルートがそのクローンを指すようにしてください。
 
 ```mermaid
 flowchart LR
@@ -100,16 +100,16 @@ flowchart LR
   Session3 --> R3[(origin infra)]
 ```
 
-| Practice | Why |
+|練習 |なぜ |
 |----------|-----|
-| **Name the chat** after the repo / ticket | Less context bleed |
-| **One branch per agent** when possible | Cleaner PRs |
-| **Tell the agent the repo path** if roots can move | Avoid editing the wrong tree |
-| **Don’t ask Chat B to “also fix global rules”** | That’s the Rules agent’s job |
+| **チャットにリポジトリ/チケットの名前を付けます** |文脈のにじみが少なくなる |
+| **可能な場合、エージェントごとに 1 つのブランチ** |よりクリーンな PR |
+| **ルートを移動できる場合は、エージェントにリポジトリ パスを伝えます** |間違ったツリーを編集しないようにする |
+| **チャット B に「グローバル ルールも修正してください」と依頼しないでください** |それがルールエージェントの仕事です |
 
-## 4. Same repo, same time
+## 4. 同じリポジトリ、同じ時間
 
-Several agents on **one remote** is fine if they don’t fight over the same files. Prefer **git worktrees** (or separate clones) so each chat has its own checkout and branch.
+同じファイルをめぐって競合しない限り、**1 つのリモート**上に複数のエージェントが存在しても問題ありません。 **git worktree** (または個別のクローン) を使用して、各チャットが独自のチェックアウトとブランチを持つようにします。
 
 ```mermaid
 flowchart TB
@@ -124,15 +124,15 @@ flowchart TB
   WT -->|"PR 2"| Remote
 ```
 
-### Coordination checklist
+### 調整チェックリスト
 
-| Risk | Mitigation |
-|------|------------|
-| Two agents edit the same file | Split by directory / ownership; or serialize |
-| Both commit on one branch | **One branch per agent**; rebase/merge via you |
-| Stale context after pull | Tell each chat when `main` moved |
-| Hook / lock file fights | Don’t run long installers in two trees at once without need |
-| Rules change mid-flight | Pause repo agents; update Rules agent; resume |
+|リスク |緩和 |
+|------|-----------|
+| 2 人のエージェントが同じファイルを編集する |ディレクトリ/所有権ごとに分割。またはシリアル化する |
+|両方とも 1 つのブランチにコミットします。 **エージェントごとに 1 つのブランチ**;あなた経由でリベース/マージ |
+|プル後のコンテキストが古い |各チャットにいつかを伝えます`main`移動しました |
+|フック/ロックファイルの戦い | 2 つのツリーで長いインストーラーを必要なしに同時に実行しないでください。
+|飛行中にルールが変更される |リポジトリエージェントを一時停止します。ルールエージェントを更新します。履歴書 |
 
 ```mermaid
 sequenceDiagram
@@ -154,15 +154,15 @@ sequenceDiagram
   Note over You,GH: If conflict, merge one first then rebase the other
 ```
 
-### When *not* to parallelize
+### 並列化を「しない」場合
 
-- Large renames / moves that touch the whole tree  
-- Shared generated locks (`package-lock.json`) without a plan  
-- “Refactor everything” + “ship a hotfix” in the same hours  
+- ツリー全体に影響を与える大規模な名前変更/移動  
+- 生成された共有ロック (`package-lock.json`) 計画なし  
+- 「すべてをリファクタリング」+「ホットフィックスを配布」を同じ時間内に行う
 
-Then: **one agent**, or hotfix first, refactor second.
+次に: **1 つのエージェント**、または最初にホットフィックス、次にリファクタリングを行います。
 
-## 5. End-to-end day shape
+## 5. エンドツーエンドの一日の形
 
 ```mermaid
 flowchart TD
@@ -178,9 +178,9 @@ flowchart TD
   YouMerge --> Done[Done / next ticket]
 ```
 
-## 6. Prompt snippets I reuse
+## 6. 再利用するプロンプト スニペット
 
-**Rules agent**
+**ルールエージェント**
 
 ```text
 Scope: user-level Cursor rules only.
@@ -188,7 +188,7 @@ Output: proposed rule text, files touched, rollback note.
 Do not modify any git repo application source.
 ```
 
-**Repo agent**
+**レポエージェント**
 
 ```text
 Repo: <path or name>. Branch: feat/<ticket>.
@@ -196,21 +196,21 @@ Do not change user/global Cursor rules.
 If a standing rule should change, say so — I will run the Rules agent.
 ```
 
-**Same-repo parallel**
+**同じリポジトリの並列**
 
 ```text
 You own paths: <dirs>. Other agent owns: <dirs>.
 Do not edit outside your paths. Worktree: <path>. Branch: <name>.
 ```
 
-## 7. Related notes
+## 7. 関連メモ
 
-| Topic | Note |
-|-------|------|
-| How to steer agents | [Directing agents](iii-directing-agents.md) |
-| Where rules/skills live | [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md) |
-| Human approval loops | [Products & human-in-the-loop](iv-products-and-human-in-the-loop.md) |
+|トピック |注 |
+|------|------|
+|エージェントを操作する方法 | [監督エージェント](iii-directing-agents.md) |
+|ルール/スキルが存在する場所 | [Cursor スキル、ルール、AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md) |
+|人間の承認ループ | [製品と関係者](iv-products-and-human-in-the-loop.md) |
 
-## Next
+＃＃ 次
 
-Return to [Agents & agentic workflows overview](i-overview.md).
+[エージェントとエージェント ワークフローの概要] に戻る(i-overview.md）。

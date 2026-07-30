@@ -1,21 +1,21 @@
 ---
 label: "IV"
-subtitle: "System instructions & mistakes"
+subtitle: "システムの指示と間違い"
 group: "AI Applied"
 order: 4
 ---
-System instructions & mistakes
+システムの指示と間違い
 
-## 5. System instructions vs chat message
+## 5. システムの指示とチャット メッセージの比較
 
-| Product | Where “always follow” rules live |
-|---------|----------------------------------|
-| **ChatGPT** | Custom GPT instructions, or first message |
-| **Claude** | Project instructions |
-| **Cursor** | Rules, `.cursorrules`, project docs |
-| **Copilot** | Copilot instructions in VS Code |
+|製品 | 「常に従う」ルールが生きている場所 |
+|---------|---------------------------------|
+| **チャットGPT** |カスタム GPT 命令、または最初のメッセージ |
+| **クロード** |プロジェクトの指示 |
+| **Cursor** |ルール、`.cursorrules`、プロジェクトドキュメント |
+| **副操縦士** | VS コードのコパイロット命令 |
 
-Put **stable** rules in system/project instructions; put **this task’s** content in the user message.
+**安定した**ルールをシステム/プロジェクトの指示に含めます。 **このタスク**の内容をユーザー メッセージに含めます。
 
 ```mermaid
 flowchart TB
@@ -23,22 +23,22 @@ flowchart TB
   User[User message — this task] --> Model
 ```
 
-## 6. Common mistakes
+## 6. よくある間違い
 
-| Mistake | Fix |
-|---------|-----|
-| Vague goal | One measurable deliverable |
-| Wall of text, no structure | Headings, delimiters `"""…"""` |
-| Asking for “best” without criteria | List criteria or weights |
-| Trusting first answer on facts | Ask for sources; verify ([Trust & verify](../trust-privacy-and-verify/i-overview.md)) |
-| Pasting secrets | Redact; use enterprise tier if required |
+|間違い |修正 |
+|----------|-----|
+|漠然とした目標 | 1 つの測定可能な成果物 |
+|テキストの壁、構造なし |見出し、区切り文字`"""…"""`|
+|基準を持たずに「最高」を求める |リストの基準または重み |
+|事実に関する最初の回答を信頼する |情報源を尋ねてください。 verify ([信頼して検証](../trust-privacy-and-verify/i-overview.md)) |
+|シークレットの貼り付け |編集;必要に応じてエンタープライズ層を使用する |
 
-## 7. Rehearsal questions
+## 7. リハーサルの質問
 
-- What four pieces belong in a “minimum good prompt”?
-- When is chain-of-thought worth the extra tokens?
-- Why save prompts that worked?
+- 「ミニマムグッドプロンプト」に属する 4 つの作品は何ですか?
+- 思考の連鎖が追加のトークンを支払う価値があるのはどのような場合ですか?
+- 機能したプロンプトをなぜ保存するのでしょうか?
 
-**Next:** [Loop prompting — Overview](../loop-prompting/i-overview.md).
+**次へ:** [ループ プロンプト — 概要](../loop-prompting/i-overview.md）。
 
-**Related:** [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Custom assistants](../custom-assistants-and-knowledge/i-overview.md).
+**関連:** [エージェントとエージェントのワークフロー](../agents-and-agentic-workflows/i-overview.md)、[カスタムアシスタント](../custom-assistants-and-knowledge/i-overview.md）。

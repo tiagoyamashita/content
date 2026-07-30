@@ -1,36 +1,36 @@
 ---
 label: "II"
-subtitle: "Products & building assistants"
+subtitle: "製品と建築アシスタント"
 group: "AI Applied"
 order: 2
 ---
-Products & building assistants
+製品と建築アシスタント
 
-## 1. Product equivalents
+## 1. 製品の同等品
 
-| Product | Feature | What you configure |
-|---------|---------|-------------------|
-| **ChatGPT** | Custom GPTs, Memory (optional) | Instructions, files, actions |
-| **Claude** | Projects | Project knowledge + instructions |
-| **Gemini** | Gems | Persona + optional files |
-| **Copilot** | Copilot Studio / M365 Copilot | Tenant data, plugins |
-| **NotebookLM** | Notebooks | Sources → grounded Q&A, audio overview |
-| **Cursor** | Rules, docs index | Repo + `.cursor/rules` |
+|製品 |特集 |構成内容 |
+|----------|----------|--------|
+| **チャットGPT** |カスタム GPT、メモリ (オプション) |手順、ファイル、アクション |
+| **クロード** |プロジェクト |プロジェクトの知識 + 指示 |
+| **ジェミニ** |宝石 |ペルソナ + オプション ファイル |
+| **副操縦士** |コパイロット スタジオ / M365 コパイロット |テナント データ、プラグイン |
+| **ノートブックLM** |ノート |ソース → 根拠のある Q&A、オーディオの概要 |
+| **Cursor** |ルール、ドキュメントのインデックス |リポジトリ +`.cursor/rules`|
 
-Same idea everywhere: **instructions + knowledge + (optional) tools**.
+考え方はどこでも同じです: **説明書 + 知識 + (オプションの) ツール**。
 
-## 2. What to put in “knowledge”
+＃＃２ 「知識」に何を入れるか
 
-| Good sources | Poor sources |
+|良い情報源 |情報源が悪い |
 |--------------|--------------|
-| Policy PDFs, playbooks, FAQs | Random outdated exports |
-| Product specs, API docs you own | Confidential you’re not allowed to upload |
-| Meeting notes **you** curate | Entire email archive unfiltered |
-| Style guide, brand voice | Competitor docs you don’t have rights to |
+|ポリシー PDF、ハンドブック、FAQ |ランダムな古いエクスポート |
+|製品仕様、所有する API ドキュメント |アップロードできない機密情報 |
+|会議メモ **あなた**が管理 |フィルタリングされていない電子メール アーカイブ全体 |
+|スタイルガイド、ブランドボイス |あなたが権利を持たない競合他社のドキュメント |
 
-**Refresh:** stale knowledge → confident wrong answers. Date your uploads; replace quarterly.
+**リフレッシュ:** 古い知識 → 自信を持って間違った答え。アップロードの日付を記入します。四半期ごとに交換します。
 
-## 3. Building a useful custom assistant
+## 3. 便利なカスタム アシスタントの構築
 
 ```text
 1. One sentence purpose   ("Answers support tier-1 about Billing v2")
@@ -42,7 +42,7 @@ Same idea everywhere: **instructions + knowledge + (optional) tools**.
 7. Test with edge cases   (unknown product, angry user, non-English)
 ```
 
-### Instruction template
+### 指示テンプレート
 
 ```text
 Purpose: …

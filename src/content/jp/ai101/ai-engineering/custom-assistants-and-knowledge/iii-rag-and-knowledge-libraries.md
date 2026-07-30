@@ -1,14 +1,14 @@
 ---
 label: "III"
-subtitle: "RAG & knowledge libraries"
+subtitle: "RAG とナレッジ ライブラリ"
 group: "AI Applied"
 order: 3
 ---
-RAG & knowledge libraries
+RAG とナレッジ ライブラリ
 
-## 4. RAG without the jargon
+## 4. 専門用語を使わない RAG
 
-**Retrieval-augmented generation (RAG)** = AI **searches your files** and **writes using those chunks**.
+**検索拡張世代 (RAG)** = AI **ファイルを検索**し、**それらのチャンクを使用して書き込みます**。
 
 ```mermaid
 flowchart LR
@@ -19,28 +19,28 @@ flowchart LR
   Prompt --> LLM[LLM answer]
 ```
 
-| You do | Product does |
-|--------|--------------|
-| Upload PDFs / connect drive | Chunk, embed, search on each question |
-| Ask question | Inject relevant passages into prompt |
+|あなたはそうします |製品は次のことを行います |
+|------|--------------|
+| PDF のアップロード / ドライブの接続 |各質問のチャンク、埋め込み、検索 |
+|質問する |関連する文章をプロンプトに挿入 |
 
-Tips for better answers:
+より良い回答のためのヒント:
 
-| Tip | Why |
+|ヒント |なぜ |
 |-----|-----|
-| **Descriptive filenames** | Helps retrieval and your sanity |
-| **One topic per doc** | Reduces wrong chunks mixed in |
-| **Ask “quote the source”** | Easier to verify |
-| **Split huge PDFs** | By chapter if product allows |
+| **わかりやすいファイル名** |回復と正気の維持に役立ちます |
+| **ドキュメントごとに 1 つのトピック** | | 間違ったチャンクが混入するのを減らします。
+| **「出典を引用してください」** |検証が簡単 |
+| **巨大な PDF を分割** |製品が許可する場合は章ごとに |
 
-Technical depth: [LLM RAG](../../llms/v-rag-and-fine-tuning.md), [Order search example](../../swe101/sysdesign/examples/viii-order-search-cdc.md).
+技術的な深さ: [LLM RAG](../../llms/v-rag-and-fine-tuning.md)、[注文検索例](../../swe101/sysdesign/examples/viii-order-search-cdc.md）。
 
-## 5. Team knowledge libraries
+## 5. チームのナレッジ ライブラリ
 
-| Approach | Fit |
+|アプローチ |フィット |
 |----------|-----|
-| **Single shared Project/GPT** | Small team, one domain |
-| **Per-product assistants** | Different policies and tone |
-| **Wiki + AI sidebar** | Notion AI, Confluence AI on existing wiki |
+| **単一の共有プロジェクト/GPT** |小さなチーム、1 つのドメイン |
+| **製品ごとのアシスタント** |さまざまな政策と論調 |
+| **Wiki + AI サイドバー** |既存の Wiki 上の Notion AI、Confluence AI |
 
-Governance: owner per assistant, changelog when policies update.
+ガバナンス: アシスタントごとの所有者、ポリシー更新時の変更ログ。

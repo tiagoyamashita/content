@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Custom assistants & knowledge — overview
-Deep dive on **custom assistants & knowledge** — split into focused notes below.
+カスタム アシスタントとナレッジ — 概要
+**カスタム アシスタントとナレッジ**について詳しく説明します。以下で焦点を絞ったメモに分割します。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [Products & building assistants](ii-products-and-building-assistants.md) | Part of custom assistants & knowledge track |
-| [RAG & knowledge libraries](iii-rag-and-knowledge-libraries.md) | Part of custom assistants & knowledge track |
-| [Memory & governance](iv-memory-and-governance.md) | Part of custom assistants & knowledge track |
+|注 |フォーカス |
+|------|----------|
+| [製品と建築アシスタント](ii-products-and-building-assistants.md) |カスタム アシスタントとナレッジ トラックの一部 |
+| [RAG とナレッジ ライブラリ](iii-rag-and-knowledge-libraries.md) |カスタム アシスタントとナレッジ トラックの一部 |
+| [メモリとガバナンス](iv-memory-and-governance.md) |カスタム アシスタントとナレッジ トラックの一部 |
 
-Custom assistants and knowledge
-Products let you attach **your** documents and **standing instructions** so AI answers like a teammate who read the handbook — without fine-tuning models yourself.
+カスタムアシスタントとナレッジ
+製品を使用すると、**ドキュメントと**説明書**を添付できるため、AI はモデルを自分で微調整することなく、ハンドブックを読んだチームメイトのように回答できます。
 
 ```mermaid
 flowchart LR
@@ -24,6 +24,6 @@ flowchart LR
   Asst -->|grounded reply| You
 ```
 
-## Study order
+## 勉強の順番
 
-[Products & building assistants](ii-products-and-building-assistants.md) → [RAG & knowledge libraries](iii-rag-and-knowledge-libraries.md) → [Memory & governance](iv-memory-and-governance.md)
+[製品と建築アシスタント](ii-products-and-building-assistants.md) → [RAG & ナレッジ ライブラリ](iii-rag-and-knowledge-libraries.md) → [メモリとガバナンス](iv-memory-and-governance.md)

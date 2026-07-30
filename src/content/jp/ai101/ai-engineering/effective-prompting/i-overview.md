@@ -1,24 +1,24 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-Effective prompting — overview
-Deep dive on **effective prompting** — split into focused notes below.
+効果的なプロンプト — 概要
+**効果的なプロンプト**について詳しく説明します。以下で焦点を絞ったメモに分割します。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) | Part of effective prompting track |
-| [Iteration & templates](iii-iteration-and-templates.md) | Part of effective prompting track |
-| [System instructions & mistakes](iv-system-instructions-and-mistakes.md) | Part of effective prompting track |
+|注 |フォーカス |
+|------|----------|
+| [最低限のプロンプトとテクニック](ii-minimum-prompt-and-techniques.md) |効果的なプロンプトトラックの一部 |
+| [イテレーションとテンプレート](iii-iteration-and-templates.md) |効果的なプロンプトトラックの一部 |
+| [システムの指示と間違い](iv-system-instructions-and-mistakes.md) |効果的なプロンプトトラックの一部 |
 
-Effective prompting
-**Prompting** is how you steer ChatGPT, Claude, Gemini, and similar tools. You are not “programming” the model — you are **specifying the task** so the model has enough context to help once, not after five retries.
+効果的なプロンプト
+**プロンプト** は、ChatGPT、Claude、Gemini、および同様のツールを操作する方法です。モデルを「プログラミング」しているわけではありません。**タスクを指定している**ので、5 回の再試行ではなく、1 回だけ役立つ十分なコンテキストがモデルに与えられます。
 
-For API-level detail (roles, JSON mode), see [LLM prompt engineering](../../llms/iv-prompt-engineering.md). This note is for **everyday use**.
+API レベルの詳細 (ロール、JSON モード) については、[LLM プロンプト エンジニアリング](../../llms/iv-prompt-engineering.md）。このメモは**日常使用**用です。
 
 ```mermaid
 flowchart LR
@@ -26,8 +26,8 @@ flowchart LR
   Format --> Model[Model reply]
 ```
 
-Once a prompt works repeatedly, promote it to persistent instructions — see [Loop prompting](../loop-prompting/i-overview.md).
+プロンプトが繰り返し動作したら、それを永続的な命令にプロモートします。[ループ プロンプト]( を参照)../loop-prompting/i-overview.md）。
 
-## Study order
+## 勉強の順番
 
-[Minimum prompt & techniques](ii-minimum-prompt-and-techniques.md) → [Iteration & templates](iii-iteration-and-templates.md) → [System instructions & mistakes](iv-system-instructions-and-mistakes.md) → [Loop prompting](../loop-prompting/i-overview.md)
+[最低限のプロンプトとテクニック](ii-minimum-prompt-and-techniques.md) → [反復とテンプレート](iii-iteration-and-templates.md) → [システムの指示と間違い](iv-system-instructions-and-mistakes.md) → [ループプロンプト](../loop-prompting/i-overview.md)

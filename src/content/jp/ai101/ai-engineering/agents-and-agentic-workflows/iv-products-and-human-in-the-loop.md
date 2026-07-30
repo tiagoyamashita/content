@@ -1,26 +1,26 @@
 ---
 label: "IV"
-subtitle: "Products & human-in-the-loop"
+subtitle: "製品と人間関係者"
 group: "AI Applied"
 order: 4
 ---
-Products & human-in-the-loop
+製品と人間関係者
 
-## 5. Agentic patterns in products (2025–2026)
+## 5. 製品における薬剤パターン (2025 ～ 2026 年)
 
-| Product area | Agent-like behaviour |
-|--------------|----------------------|
-| **Cursor Agent** | Multi-file code changes, terminal, browser |
-| **ChatGPT** | Agent mode, deep research, connectors |
-| **Claude** | Projects + tool use, computer use (where enabled) |
-| **Microsoft Copilot** | M365 graph + actions in tenant |
-| **Devin / coding agents** | Long-horizon software tasks (human review critical) |
+|製品分野 |エージェントのような動作 |
+|--------------|---------------------|
+| **Cursor エージェント** |複数ファイルのコード変更、ターミナル、ブラウザ |
+| **チャットGPT** |エージェント モード、詳細な調査、コネクタ |
+| **クロード** |プロジェクト + ツールの使用、コンピューターの使用 (有効な場合) |
+| **Microsoft Copilot** | M365 グラフ + テナント内のアクション |
+| **デビン / コーディング エージェント** |長期的なソフトウェア タスク (人間によるレビューが重要) |
 
-Capabilities change quickly — principles stay: **goal, constraints, verify**.
+機能は急速に変化しますが、**目標、制約、検証**という原則は変わりません。
 
-## 6. Human-in-the-loop
+## 6. 人間参加型
 
-Treat agent output as **draft**:
+エージェントの出力を **ドラフト** として扱います:
 
 ```mermaid
 sequenceDiagram
@@ -33,12 +33,12 @@ sequenceDiagram
   You->>You: Ship
 ```
 
-For legal, medical, financial, or production deploys: **you** are accountable; the agent is a fast intern.
+法務、医療、財務、実稼働環境の展開の場合: **あなた**は責任を負います。エージェントは優秀なインターンです。
 
-## 7. Rehearsal questions
+## 7. リハーサルの質問
 
-- How is an agent different from a long chat thread?
-- Name two guardrails before letting an agent edit code.
-- What is orchestration in one sentence for a non-developer?
+- エージェントは長いチャット スレッドとどう違うのですか?
+- エージェントにコードを編集させる前に、2 つのガードレールに名前を付けます。
+- 非開発者にとってオーケストレーションを一言で言うと何ですか?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**関連:** [ツールとオーケストレーション](../tools-and-orchestration/i-overview.md)、[スキルとエージェントの指示](../skills-and-agent-instructions/i-overview.md)、[信頼して検証](../trust-privacy-and-verify/i-overview.md）。

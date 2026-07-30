@@ -1,14 +1,14 @@
 ---
 label: "IV"
-subtitle: "Memory & governance"
+subtitle: "メモリとガバナンス"
 group: "AI Applied"
 order: 4
 ---
-Memory & governance
+メモリとガバナンス
 
-## 6. Memory features
+## 6. メモリ機能
 
-Some products **remember** facts across chats (“user prefers bullet points”).
+一部の製品は、チャット全体で事実を**記憶**します (「ユーザーは箇条書きを好む」)。
 
 ```mermaid
 flowchart LR
@@ -18,17 +18,17 @@ flowchart LR
   Mem -->|wrong?| Fix[Correct or delete]
 ```
 
-| Upside | Downside |
-|--------|----------|
-| Less repetition | Wrong memory persists — correct or delete |
-| Personalisation | Privacy — know what vendor stores |
+|アップサイド |マイナス面 |
+|----------|----------|
+|繰り返しが少なくなる |間違った記憶が残る - 修正または削除 |
+|パーソナライゼーション |プライバシー — どのベンダーがストアしているかを知る |
 
-Turn off or clear memory for **shared machines** or **sensitive work**.
+**共有マシン**または**機密性の高い作業**のメモリをオフにするかクリアします。
 
-## 7. Rehearsal questions
+## 7. リハーサルの質問
 
-- Custom GPT vs one-off chat — when is setup worth it?
-- Why ask the model to quote sources?
-- What belongs in instructions vs uploaded files?
+- カスタム GPT と 1 回限りのチャット — セットアップに価値があるのはどのような場合ですか?
+- なぜモデルに情報源の引用を求めるのでしょうか?
+- 指示とアップロードされたファイルにはどちらが含まれますか?
 
-**Related:** [Effective prompting](../effective-prompting/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**関連:** [効果的なプロンプト](../effective-prompting/i-overview.md)、[信頼して検証](../trust-privacy-and-verify/i-overview.md）。
