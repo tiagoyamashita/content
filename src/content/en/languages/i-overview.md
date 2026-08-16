@@ -10,7 +10,7 @@ Human-language study notes (not programming languages — those live under **SWE
 
 | Submenu | Focus |
 |---------|--------|
-| [**Japanese**](japanese/beginner-alphabet/i-overview.md) | Alphabet, vocabulary, office/daily phrases |
+| [**Japanese**](japanese/beginner-alphabet/i-overview.md) | Alphabet, vocabulary, office/daily phrases, philosophy |
 
 ## Japanese
 
@@ -20,6 +20,7 @@ Human-language study notes (not programming languages — those live under **SWE
 | [Vocabulary](japanese/vocabulary/i-common-words.md) | Common words, corporate structure, keigo, email |
 | [Daily conversations](japanese/vocabulary/daily-conversations/i-overview.md) | Office greetings, meetings, phone, incidents |
 | [Day-to-day](japanese/day2day/i-beginner.md) | Verbs and office replies |
+| [Philosophy](japanese/philosophy/i-overview.md) | 信義礼智仁, Bushido, samurai, Confucian compounds |
 
 Start here: [Beginner alphabet overview](japanese/beginner-alphabet/i-overview.md).
 
