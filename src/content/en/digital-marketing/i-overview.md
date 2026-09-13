@@ -72,6 +72,8 @@ Roman numerals match note labels (`I`, `II`, …) used elsewhere in this repo.
 | [Internal linking & schema](on-page-seo/iv-internal-linking-and-schema.md) | Site architecture, breadcrumbs, structured data basics |
 | [Technical checklist](on-page-seo/v-technical-checklist.md) | HTTPS, speed, mobile, sitemaps, robots, Core Web Vitals |
 | [Sitemaps — Google & Bing](on-page-seo/vi-sitemaps-google-and-bing.md) | Submit and update `/sitemap.xml` in GSC and Bing Webmaster Tools |
+| [MEO & Google Maps](on-page-seo/vii-meo-and-google-maps.md) | Local pack, Google Business Profile, NAP, reviews |
+| [AI SEO](on-page-seo/viii-ai-seo.md) | AI Overviews, citations in ChatGPT / Perplexity / Copilot |
 
 ### Content strategy
 
@@ -193,7 +195,7 @@ Link building does not replace good content or a working product — it **amplif
 | Site is new with thin content | [On-page SEO](on-page-seo/i-overview.md) + [Content strategy](content-strategy/i-overview.md) before outreach |
 | Core pages exist and convert | [Link building](link-building/i-overview.md), [Email](email-marketing/i-overview.md), light [Paid](paid-advertising/i-overview.md) tests |
 | Manual penalty or toxic links | Link audit — see [Measurement & pitfalls](link-building/v-measurement-and-pitfalls.md) |
-| Local business | Local SEO (on-page + directories) + community partnerships |
+| Local business | [MEO & Google Maps](on-page-seo/vii-meo-and-google-maps.md) + community partnerships |
 | Proven landing page, need volume | [Paid](paid-advertising/i-overview.md) with strict CPA/ROAS caps and UTM hygiene |
 
 **Related:** [Startups — overview](../startups/i-overview.md) for MVP hosting and analytics on a budget.
@@ -205,6 +207,7 @@ Link building does not replace good content or a working product — it **amplif
 | Learn the full track in order | [Foundations](foundations/i-overview.md) → On-page SEO → Content → Link building |
 | Earn backlinks for an existing site | [Link building — Overview](link-building/i-overview.md) |
 | Fix "Google can't find my pages" | [Technical checklist](on-page-seo/v-technical-checklist.md) + [Sitemaps — Google & Bing](on-page-seo/vi-sitemaps-google-and-bing.md) |
+| Show up in AI answers | [AI SEO](on-page-seo/viii-ai-seo.md) |
 | Know if marketing is working | [Analytics — Overview](analytics/i-overview.md) |
 | Build an owned audience | [Email marketing — Overview](email-marketing/i-overview.md) |
 | Buy traffic safely | [Paid advertising — Overview](paid-advertising/i-overview.md) — after conversions are tracked |

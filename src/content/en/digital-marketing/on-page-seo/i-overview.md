@@ -18,6 +18,8 @@ Off-page factors (backlinks) live in [Link building](../link-building/i-overview
 | [Internal linking & schema](iv-internal-linking-and-schema.md) | Architecture, breadcrumbs, structured data |
 | [Technical checklist](v-technical-checklist.md) | HTTPS, speed, mobile, sitemaps, robots |
 | [Sitemaps — Google & Bing](vi-sitemaps-google-and-bing.md) | Submit and resubmit `/sitemap.xml` in GSC and Bing |
+| [MEO & Google Maps](vii-meo-and-google-maps.md) | Map pack, Google Business Profile, NAP, reviews |
+| [AI SEO](viii-ai-seo.md) | AI Overviews, citations in ChatGPT / Perplexity / Copilot |
 
 ## 1. Crawl → index → rank
 

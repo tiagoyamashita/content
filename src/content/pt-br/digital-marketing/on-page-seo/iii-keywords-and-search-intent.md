@@ -81,7 +81,8 @@ Semantic coverage beats exact-match density.
 | Query type | On-page note |
 |------------|--------------|
 | **Branded** | Homepage + dedicated pages rank; protect brand in titles |
-| **Local** ("plumber austin") | Location pages, Google Business Profile, NAP consistency |
+| **Local** ("plumber austin") | Location pages, NAP — [MEO & Google Maps](vii-meo-and-google-maps.md) |
+| **AI / conversational** ("what is X, briefly") | Answer-first pages — [AI SEO](viii-ai-seo.md) |
 
 ## 8. Rehearsal questions
 

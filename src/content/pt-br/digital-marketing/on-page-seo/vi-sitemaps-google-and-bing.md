@@ -77,4 +77,4 @@ A sitemap is a **hint**. Orphan URLs with no internal links may still sit in “
 - How do you resubmit after adding URLs — new filename or the same path?
 - Why verify Bing even if GSC already has the sitemap?
 
-**Next:** [Content strategy — Overview](../content-strategy/i-overview.md).
+**Next:** [MEO & Google Maps](vii-meo-and-google-maps.md).
