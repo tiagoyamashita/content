@@ -14,7 +14,7 @@ Search Console & rank tracking
 | **Performance** | Queries, impressions, clicks, CTR, average position |
 | **Pages** | Which URLs earn search traffic |
 | **Indexing → Pages** | Indexed vs not indexed and why |
-| **Sitemaps** | Submit and monitor crawl |
+| **Sitemaps** | Submit and monitor crawl — also [Bing](../on-page-seo/vi-sitemaps-google-and-bing.md) |
 | **Links** | Top linked pages, external links, anchor text sample |
 
 Verify property for **exact** host (https + www or non-www).
