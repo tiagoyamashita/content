@@ -1,35 +1,35 @@
 ---
 label: "VI"
-subtitle: "Security & distribution"
+subtitle: "セキュリティと配布"
 group: "How to create your custom MCP"
 order: 6
 ---
-Security & distribution
+セキュリティと配布
 
-Custom MCP servers run **on the user’s machine** with whatever credentials you put in `env`. Treat them like small services with production hygiene.
+カスタム MCP サーバーは、入力した資格情報に関係なく **ユーザーのマシン**上で実行されます`env`。生産衛生を備えた小規模なサービスのようにそれらを扱います。
 
-## 1. Security checklist
+## 1. セキュリティチェックリスト
 
-| Risk | Mitigation |
-|------|------------|
-| **Leaked API keys** in `mcp.json` | Use env from OS secret store; `.gitignore` local overrides; document placeholders only in committed config |
-| **Overpowered token** | Scoped API keys (read-only CRM, single GitHub repo) |
-| **Prompt injection → tool abuse** | Narrow tools; no arbitrary code execution; confirm writes in UI ([Trust & verify](../../trust-privacy-and-verify/i-overview.md)) |
-| **Path traversal** | If reading files, canonicalize paths and jail to allowlisted roots |
-| **SSRF** | Do not pass user URLs straight to server-side `fetch` without allowlist |
-| **Logging secrets** | Redact tokens in stderr logs |
+|リスク |緩和 |
+|------|-----------|
+| **漏洩したAPIキー**`mcp.json`| OS シークレット ストアの env を使用します。`.gitignore`ローカルオーバーライド。コミットされた構成内でのみドキュメントのプレースホルダー |
+| **圧倒的なトークン** |スコープ付き API キー (読み取り専用 CRM、単一 GitHub リポジトリ) |
+| **即時注入 → ツールの乱用** |狭いツール。任意のコードが実行されることはありません。 UI への書き込みを確認します ([信頼して検証](../../trust-privacy-and-verify/i-overview.md)) |
+| **パストラバーサル** |ファイルを読み取る場合は、パスを正規化し、ホワイトリストに登録されたルートにジェイルします。
+| **SSRF** |ユーザーの URL をサーバー側に直接渡さないでください`fetch`ホワイトリストなし |
+| **シークレットのロギング** | stderr ログ内のトークンを編集する |
 
-MCP does not add permissions — your API token still only does what the upstream API allows.
+MCP は権限を追加しません。API トークンは依然として、アップストリームの API が許可することのみを実行します。
 
-## 2. Least-privilege tools
+## 2. 最小権限のツール
 
-| Pattern | Example |
-|---------|---------|
-| Separate read vs write tools | `get_order` vs `cancel_order` — disable write server in low-trust contexts |
-| Allowlisted actions | `rerun_job` only for job ids matching `^ci-\d+$` |
-| Rate limiting | Throttle expensive API calls server-side |
+|パターン |例 |
+|----------|----------|
+|個別の読み取りツールと書き込みツール |`get_order`対`cancel_order`— 信頼性の低いコンテキストで書き込みサーバーを無効にする |
+|許可リストに登録されたアクション |`rerun_job`ジョブ ID が一致する場合のみ`^ci-\d+$`|
+|レート制限 |スロットルコストの高い API 呼び出しがサーバー側 |
 
-## 3. README template for your repo
+## 3. リポジトリの README テンプレート
 
 ```markdown
 # my-mcp-server
@@ -51,16 +51,16 @@ Add to `.cursor/mcp.json` (see docs).
 npm run build && npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-## 4. Distribution options
+## 4. 配布オプション
 
-| Method | Audience |
-|--------|----------|
-| **Git repo + `mcp.json` snippet** | Internal team |
-| **npm** `npx -y @yourorg/my-mcp-server` | TS servers — same pattern as official MCP packages |
-| **pip** + `uvx` | Python FastMCP packages |
-| **Single binary** (Go/Rust) | Air-gapped or no Node/Python on host |
+|方法 |観客 |
+|----------|----------|
+| **Git リポジトリ +`mcp.json`スニペット** |社内チーム |
+| **npm**`npx -y @yourorg/my-mcp-server`| TS サーバー — 公式 MCP パッケージと同じパターン |
+| **ピップ** +`uvx`| Python FastMCP パッケージ |
+| **単一バイナリ** (Go/Rust) |エアギャップがあるか、ホスト上にノード/Python がありません |
 
-Published package example in `mcp.json`:
+で公開されたパッケージの例`mcp.json`:
 
 ```json
 {
@@ -74,34 +74,34 @@ Published package example in `mcp.json`:
 }
 ```
 
-## 5. Versioning and breaking changes
+## 5. バージョン管理と重大な変更
 
-| Change | Practice |
-|--------|----------|
-| Rename tool | Major version bump; document migration |
-| Add optional field | Minor — backward compatible |
-| Remove tool | Major; warn in server startup log |
+|変更 |練習 |
+|----------|----------|
+|名前変更ツール |メジャーバージョンのバンプ。ドキュメントの移行 |
+|オプションのフィールドを追加 |マイナー - 下位互換性 |
+|ツールを削除 |選考科目;サーバー起動ログで警告 |
 
-## 6. MCP vs Skills — when to add which
+## 6. MCP とスキル — いつどちらを追加するか
 
-| Layer | Holds |
-|-------|-------|
-| **MCP server** | Live data, authenticated APIs, mutations |
-| **Skill** | How your team wants the agent to use those tools ([Skills](../../skills-and-agent-instructions/i-overview.md)) |
+|レイヤー |ホールド |
+|------|------|
+| **MCP サーバー** |ライブ データ、認証された API、突然変異 |
+| **スキル** |チームがエージェントにこれらのツール ([スキル]() をどのように使用してもらいたいか../../skills-and-agent-instructions/i-overview.md)) |
 
-Example: MCP exposes `search_logs`; a Skill says “always filter `env=prod` and last 1h unless user specifies otherwise.”
+例: MCP が公開する`search_logs`;スキルには「常にフィルターする」というものがあります。`env=prod`ユーザーが別途指定しない限り、最後の 1 時間。」
 
-## 7. Operational monitoring
+## 7. 運用監視
 
-| Signal | Action |
-|--------|--------|
-| Tool latency | Log duration to stderr; alert on p95 |
-| API 401/403 | Clear error text — “rotate CRM_API_KEY” |
-| Crash on startup | CI job that runs Inspector headless against mock env |
+|信号 |アクション |
+|----------|----------|
+|ツールの遅延 |標準エラー出力へのログ期間。 p95 の警告 |
+| API 401/403 |エラー テキストをクリア — 「CRM_API_KEY を回転」 |
+|起動時にクラッシュする | CI モック環境に対してヘッドレスで Inspector を実行するジョブ |
 
-## Related
+＃＃ 関連している
 
-- [How MCP works](../i-overview.md)
-- [JSON-RPC & transports](../ii-json-rpc-and-transports.md)
-- [MCP vs connectors & security](../iv-mcp-vs-connectors-and-security.md)
-- [Agents & MCP wiring](../../agents-and-agentic-workflows/ii-chat-assistant-agent.md)
+- [MCP の仕組み](../i-overview.md)
+- [JSON-RPC & トランスポート](../ii-json-rpc-and-transports.md)
+- [MCP 対コネクタとセキュリティ](../iv-mcp-vs-connectors-and-security.md)
+- [エージェントと MCP の配線](../../agents-and-agentic-workflows/ii-chat-assistant-agent.md)

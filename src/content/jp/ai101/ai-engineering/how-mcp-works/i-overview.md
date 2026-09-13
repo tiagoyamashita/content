@@ -1,26 +1,26 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "AI Applied"
 order: 1
 ---
-How MCP works — overview
-Deep dive on **how mcp works** — split into focused notes below.
+MCP の仕組み — 概要
+**mcp の仕組み** について詳しく説明します。以下で焦点を絞ったメモに分割します。
 
-## Map of this submenu
+## このサブメニューのマップ
 
-| Note | Focus |
-|------|--------|
-| [JSON-RPC & transports](ii-json-rpc-and-transports.md) | Part of how mcp works track |
-| [End-to-end flow & LLM](iii-end-to-end-flow-and-llm.md) | Part of how mcp works track |
-| [MCP vs connectors & security](iv-mcp-vs-connectors-and-security.md) | Part of how mcp works track |
-| [Vector DB, skills & reference](v-vector-db-skills-and-reference.md) | Part of how mcp works track |
-| **[How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md)** | Plan, build, test, and ship your own MCP server |
+|注 |フォーカス |
+|------|----------|
+| [JSON-RPC & トランスポート](ii-json-rpc-and-transports.md) | mcp の仕組みの一部
+| [エンドツーエンドのフローと LLM](iii-end-to-end-flow-and-llm.md) | mcp の仕組みの一部
+| [MCP 対コネクタとセキュリティ](iv-mcp-vs-connectors-and-security.md) | mcp の仕組みの一部
+| [Vector DB、スキルとリファレンス](v-vector-db-skills-and-reference.md) | mcp の仕組みの一部
+| **[カスタム MCP の作成方法](how-to-create-your-custom-mcp/i-overview.md)** |独自の MCP サーバーを計画、構築、テスト、出荷する |
 
-How MCP works
-**MCP (Model Context Protocol)** is how tools like **Cursor**, **Claude Desktop**, and **Claude Code** plug into **external systems** — databases, GitHub, Linear, Sentry — through small **connector programs** called **MCP servers**.
+MCP の仕組み
+**MCP (モデル コンテキスト プロトコル)** は、**Cursor**、**Claude Desktop**、**Claude Code** などのツールを、**MCP サーバー** と呼ばれる小さな **コネクタ プログラム** を通じて **外部システム** (データベース、GitHub、Linear、Sentry) に接続する方法です。
 
-You configure them once; the agent **calls tools** the server exposes. This note explains **how that connection works** — API, gRPC, or something else.
+一度設定すれば完了です。エージェントはサーバーが公開する **ツール** を呼び出します。このノートでは、**その接続がどのように機能するか** — API、gRPC などについて説明します。
 
 ```mermaid
 flowchart LR
@@ -28,8 +28,8 @@ flowchart LR
   Server --> API[External API]
 ```
 
-## Study order
+## 勉強の順番
 
-[JSON-RPC & transports](ii-json-rpc-and-transports.md) → [End-to-end flow & LLM](iii-end-to-end-flow-and-llm.md) → [MCP vs connectors & security](iv-mcp-vs-connectors-and-security.md) → [Vector DB, skills & reference](v-vector-db-skills-and-reference.md)
+[JSON-RPC & トランスポート](ii-json-rpc-and-transports.md) → [エンドツーエンドのフローと LLM](iii-end-to-end-flow-and-llm.md) → [MCP vs コネクタとセキュリティ](iv-mcp-vs-connectors-and-security.md) → [Vector DB、スキルとリファレンス](v-vector-db-skills-and-reference.md)
 
-**Build your own:** [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md) — after you understand transports and the end-to-end flow.
+**独自のビルド:** [カスタム MCP の作成方法](how-to-create-your-custom-mcp/i-overview.md) — トランスポートとエンドツーエンドのフローを理解した後。

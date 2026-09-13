@@ -1,12 +1,12 @@
 ---
 label: "VII"
-subtitle: "GPU & troubleshooting"
+subtitle: "GPU とトラブルシューティング"
 group: "Ollama"
 order: 7
 ---
-GPU & troubleshooting
+GPU とトラブルシューティング
 
-## 1. Confirm GPU is used
+## 1. GPU が使用されていることを確認します
 
 ```bash
 ollama run qwen2.5-coder:7b "hi"
@@ -15,62 +15,62 @@ ollama ps
 watch -n1 nvidia-smi
 ```
 
-| `ollama ps` shows | Meaning |
-|-------------------|---------|
-| **100% GPU** | Good — model on card |
-| **100% CPU** | GPU not used — see fixes below |
-| **Mixed %** | Partial offload — normal for tight VRAM |
+|`ollama ps`ショー |意味 |
+|---------------------|----------|
+| **100% GPU** |良い — カード上のモデル |
+| **100% CPU** | GPU は使用されていません - 以下の修正を参照してください。
+| **混合%** |部分的なオフロード — タイトな VRAM では通常です。
 
-## 2. CPU-only when GPU expected
+## 2. CPU - GPU が予期される場合のみ
 
-| Check | Fix |
-|-------|-----|
-| `nvidia-smi` fails | Install/fix NVIDIA driver; reboot |
-| Model too large | Smaller tag (`3b` not `32b`) |
-| Driver too old | Update to 535+ / 550+ |
-| Wrong Ollama build | Reinstall from [ollama.com](https://ollama.com/download) |
-| Force CPU test | `OLLAMA_NUM_GPU=0` — remove for normal use |
+|チェック |修正 |
+|------|-----|
+|`nvidia-smi`失敗する | NVIDIA ドライバーをインストール/修正します。再起動 |
+|モデルが大きすぎます |小さいタグ (`3b`ない`32b`) |
+|ドライバーが古すぎる | 535+ / 550+ にアップデート |
+|間違った Ollama ビルド | [ollama.com]() から再インストールしますhttps://ollama.com/download) |
+| CPU テストを強制する |`OLLAMA_NUM_GPU=0`— 通常使用の場合は取り外してください |
 
-Linux: ensure user can access GPU (`nvidia-smi` as same user running Ollama).
+Linux: ユーザーが GPU にアクセスできることを確認します (`nvidia-smi`Ollama を実行している同じユーザーとして)。
 
-## 3. Out of memory (OOM)
+## 3. メモリ不足 (OOM)
 
-| Symptom | Fix |
-|---------|-----|
-| CUDA OOM / crash on load | Smaller model; `qwen2.5-coder:3b` |
-| OOM during long chat | Lower `num_ctx` (`/set num_ctx 2048`) |
-| Multiple models loaded | `ollama ps` — wait for idle unload or restart service |
-| Disk full on pull | `ollama rm` old models; `df -h ~/.ollama` |
+|症状 |修正 |
+|----------|-----|
+| CUDA OOM / ロード時にクラッシュ |小型モデル。`qwen2.5-coder:3b`|
+|長いチャット中の OOM |より低い`num_ctx`（`/set num_ctx 2048`) |
+|複数のモデルがロードされました |`ollama ps`— アイドル状態のアンロードを待つか、サービスを再起動します。
+|プル時にディスクがいっぱいです |`ollama rm`古いモデル。`df -h ~/.ollama`|
 
-VRAM guide: [Model RAM requirements](../implementation-example/iv-model-ram-requirements.md). RTX 1080 specifics: [Install & run on RTX 1080](../implementation-example/vi-install-and-run-rtx-1080.md).
+VRAM ガイド: [モデル RAM の要件](../implementation-example/iv-model-ram-requirements.md）。 RTX 1080 の詳細: [RTX 1080 にインストールして実行](../implementation-example/vi-install-and-run-rtx-1080.md）。
 
-## 4. Slow generation
+## 4. 生成が遅い
 
-| Cause | Guidance |
-|-------|----------|
-| **7B on older GPU** | ~20–35 tok/s is normal for RTX 1080 |
-| **CPU inference** | Much slower — fix GPU first |
-| **Cold start** | First token after idle load is slower |
-| **Context too long** | KV cache cost — shorten `num_ctx` |
+|原因 |ガイダンス |
+|------|----------|
+| **古い GPU** では 7B | RTX 1080 では、~20 ～ 35 tok/s が正常です。
+| **CPU 推論** |はるかに遅い — 最初に GPU を修正してください。
+| **コールドスタート** |アイドル ロード後の最初のトークンが遅くなる |
+| **コンテキストが長すぎます** | KV キャッシュ コスト — 短縮`num_ctx`|
 
-## 5. Connection errors (API / Cursor)
+## 5. 接続エラー (API / Cursor)
 
-| Error | Fix |
-|-------|-----|
-| `connection refused` | `ollama serve` or `systemctl start ollama` |
-| Wrong model name | `ollama list` — use exact tag |
-| Cursor cannot reach API | Base URL must be `http://localhost:11434/v1` |
-| Remote machine | SSH tunnel or set `OLLAMA_HOST` (trusted network only) |
+|エラー |修正 |
+|------|-----|
+|`connection refused`|`ollama serve`または`systemctl start ollama`|
+|モデル名が間違っています |`ollama list`— 正確なタグを使用する |
+| Cursor は API に到達できません |ベース URL は次のようにする必要があります`http://localhost:11434/v1`|
+|リモートマシン | SSH トンネルまたはセット`OLLAMA_HOST`(信頼されたネットワークのみ) |
 
-## 6. Pull / download failures
+## 6. プル/ダウンロードの失敗
 
-| Problem | Fix |
-|---------|-----|
-| Interrupted download | Re-run `ollama pull` — resumes |
-| No disk space | Remove models with `ollama rm` |
-| Proxy / firewall | Configure system proxy; check corporate SSL inspection |
+|問題 |修正 |
+|----------|-----|
+|ダウンロードの中断 |再実行`ollama pull`— 履歴書 |
+|ディスク容量がありません |モデルを削除するには`ollama rm`|
+|プロキシ/ファイアウォール |システムプロキシを設定します。企業のSSL検査をチェックする |
 
-## 7. Reset
+## 7. リセット
 
 ```bash
 sudo systemctl stop ollama
@@ -80,10 +80,10 @@ sudo systemctl start ollama
 ollama pull qwen2.5-coder:7b
 ```
 
-Use reset only when cache is corrupted — re-downloads all models.
+キャッシュが破損している場合にのみリセットを使用します。すべてのモデルを再ダウンロードします。
 
-## Related
+＃＃ 関連している
 
-- [Install & setup](ii-install-and-setup.md)
-- [API & IDE integration](v-api-and-ide-integration.md)
-- [Implementation examples](../implementation-example/i-overview.md)
+- [インストールとセットアップ](ii-install-and-setup.md)
+- [API と IDE の統合](v-api-and-ide-integration.md)
+- [実装例](../implementation-example/i-overview.md）

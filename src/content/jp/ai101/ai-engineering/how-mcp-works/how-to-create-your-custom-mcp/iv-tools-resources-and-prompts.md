@@ -1,24 +1,24 @@
 ---
 label: "IV"
-subtitle: "Tools, resources & prompts"
+subtitle: "ツール、リソース、プロンプト"
 group: "How to create your custom MCP"
 order: 4
 ---
-Tools, resources & prompts
+ツール、リソース、プロンプト
 
-## 1. Tool design rules
+## 1. ツール設計ルール
 
-| Rule | Why |
+|ルール |なぜ |
 |------|-----|
-| **Verb-first names** | `create_ticket`, `list_deployments` — clear intent for the LLM |
-| **Rich descriptions** | Host shows name + description when picking tools — include “use when…” |
-| **Small inputs** | Prefer `id` + `limit` over huge nested blobs |
-| **Bounded output** | Truncate lists (top 10–50); summarize large payloads |
-| **Explicit read/write** | Description: “Read-only” or “Creates a record — requires user confirmation in UI” |
+| **動詞と名** |`create_ticket`、`list_deployments`— LLM の明確な意図 |
+| **豊富な説明** |ホストはツールを選択するときに名前と説明を表示します - 「次の場合に使用する」を含める |
+| **小さな入力** |好む`id`+`limit`巨大な入れ子になった BLOB 上 |
+| **制限された出力** |リスト (上位 10 ～ 50) を切り詰めます。大きなペイロードを要約する |
+| **明示的な読み取り/書き込み** |説明: 「読み取り専用」または「レコードを作成します - UI でのユーザー確認が必要です」 |
 
-### Input validation
+### 入力の検証
 
-Use **Zod** (TypeScript) or type hints (FastMCP) so bad arguments fail **before** your API call:
+**Zod** (TypeScript) またはタイプ ヒント (FastMCP) を使用して、API 呼び出しの **前** に不正な引数が失敗するようにします。
 
 ```typescript
 {
@@ -28,11 +28,11 @@ Use **Zod** (TypeScript) or type hints (FastMCP) so bad arguments fail **before*
 }
 ```
 
-Return validation errors as tool results with `isError: true` so the model can retry.
+検証エラーをツールの結果として返します。`isError: true`そのため、モデルは再試行できます。
 
-## 2. Tool result shape
+## 2. ツール結果の形状
 
-MCP tools return **content** blocks — usually text:
+MCP ツールは **content** ブロックを返します (通常はテキスト:)
 
 ```typescript
 return {
@@ -42,15 +42,15 @@ return {
 };
 ```
 
-| Content type | Use |
+|コンテンツタイプ |使用 |
 |--------------|-----|
-| `text` | JSON as formatted string, human summaries, logs |
-| `image` | Base64 or URL (when host supports it) |
-| `resource` | Reference to a resource URI |
+|`text`|書式設定された文字列としての JSON、人による要約、ログ |
+|`image`| Base64 または URL (ホストがサポートしている場合) |
+|`resource`|リソースへの参照 URI |
 
-For structured data, **JSON.stringify** into text is fine — the model parses it on the next turn.
+構造化データの場合、**JSON.stringify** をテキストに変換しても問題ありません。モデルは次のターンにそれを解析します。
 
-### Errors the model can fix
+### モデルで修正できるエラー
 
 ```typescript
 return {
@@ -59,13 +59,13 @@ return {
 };
 ```
 
-Avoid stack traces in production — log server-side, return short messages.
+運用環境ではスタック トレースを回避します。サーバー側でログを記録し、短いメッセージを返します。
 
-## 3. Resources (optional)
+## 3. リソース (オプション)
 
-Resources expose **readable** content by URI — good for runbooks, config snippets, cached exports.
+リソースは、**読み取り可能な** コンテンツを URI によって公開します。これは、Runbook、構成スニペット、キャッシュされたエクスポートに適しています。
 
-TypeScript (conceptual):
+TypeScript (概念的):
 
 ```typescript
 server.resource(
@@ -83,14 +83,14 @@ server.resource(
 );
 ```
 
-| Tools | Resources |
-|-------|-----------|
-| Model **invokes** with parameters | Model or user **reads** by URI |
-| Search, create, mutate | Static or slowly changing docs |
+|ツール |リソース |
+|------|-----------|
+|モデルはパラメータを指定して**呼び出し**します。モデルまたはユーザー **IT0__ による **読み取り** |
+|検索、作成、変更 |静的またはゆっくりと変化するドキュメント |
 
-## 4. Prompts (optional)
+## 4. プロンプト (オプション)
 
-Prompts are **named templates** with arguments — like slash commands:
+プロンプトは、スラッシュ コマンドなどの引数を備えた **名前付きテンプレート**です。
 
 ```typescript
 server.prompt(
@@ -110,30 +110,30 @@ server.prompt(
 );
 ```
 
-Most custom servers skip prompts until tools are stable.
+ほとんどのカスタム サーバーは、ツールが安定するまでプロンプトをスキップします。
 
-## 5. Multiple related tools — example set
+## 5. 複数の関連ツール — サンプル セット
 
-| Tool | Type | Description snippet |
-|------|------|---------------------|
-| `list_projects` | Read | List projects user can access. Call before other project tools. |
-| `get_issue` | Read | Fetch one issue by id. |
-| `search_issues` | Read | Search by query string; max 20 results. |
-| `add_comment` | Write | Add comment to issue — destructive. |
+|ツール |タイプ |説明の抜粋 |
+|------|------|----------|
+|`list_projects`|読む |ユーザーがアクセスできるプロジェクトのリスト。他のプロジェクト ツールの前に呼び出します。 |
+|`get_issue`|読む | ID で 1 つの課題を取得します。 |
+|`search_issues`|読む |クエリ文字列で検索します。最大 20 件の結果。 |
+|`add_comment`|書く |問題にコメントを追加します — 破壊的です。 |
 
-Ordering hints in descriptions (`Call list_projects first`) improve multi-step agent runs.
+説明内の順序のヒント (`Call list_projects first`) 複数ステップのエージェントの実行を改善します。
 
-## 6. Anti-patterns
+## 6. アンチパターン
 
-| Anti-pattern | Fix |
+|アンチパターン |修正 |
 |--------------|-----|
-| One tool that runs arbitrary SQL | Parameterized queries or fixed report ids |
-| `run_shell` with full bash | Never — or strictly allowlisted commands in a sandbox |
-| Returning 10 MB JSON | Paginate, summarize server-side |
-| Tool names that differ only by case | Stick to snake_case |
+|任意の SQL | を実行する 1 つのツールパラメータ化されたクエリまたは固定レポート ID |
+|`run_shell`フルバッシュで |決して、またはサンドボックス内で厳密に許可リストに登録されたコマンドを使用しない |
+| 10 MB JSON を返します |ページネーション、サーバー側の要約 |
+|大文字と小文字のみが異なるツール名 |ヘビケースにこだわる |
 
-See [Security & distribution](vi-security-and-distribution.md) and [MCP vs connectors & security](../iv-mcp-vs-connectors-and-security.md).
+[セキュリティと配布](vi-security-and-distribution.md) および [MCP 対コネクタとセキュリティ](../iv-mcp-vs-connectors-and-security.md）。
 
-## Next
+＃＃ 次
 
-[Test & wire into Cursor](v-test-and-wire-cursor.md) — run the server in an IDE.
+[テストして Cursor に接続](v-test-and-wire-cursor.md) - IDE でサーバーを実行します。

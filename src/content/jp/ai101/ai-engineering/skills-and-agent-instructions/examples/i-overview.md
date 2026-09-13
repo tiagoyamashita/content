@@ -1,22 +1,22 @@
 ---
 label: "I"
-subtitle: "Overview"
+subtitle: "概要"
 group: "Skills examples"
 order: 1
 ---
-Skills examples — overview
+スキルの例 - 概要
 
-Four **copy-paste patterns** for skills, scripts, and hooks. Every example includes:
+スキル、スクリプト、フックの 4 つの **コピー＆ペースト パターン**。すべての例には次のものが含まれます。
 
-- A **`scripts/`** Python file (real code — not inside `SKILL.md`)
-- **Structured runtime logs** (timestamp, duration, exit code, results) via the stdlib `json` module
-- Instructions for the agent on **what to do with the log output**
+-A **`scripts/`** Python ファイル (実際のコード - 内部にはありません)`SKILL.md`)
+- **構造化されたランタイム ログ** (タイムスタンプ、期間、終了コード、結果) (stdlib 経由)`json`モジュール
+- **ログ出力の処理方法**に関するエージェントへの指示
 
-Scripts are **not** embedded in markdown — see [Where scripts live](../i-overview.md#where-scripts-live-not-inside-the-md).
+スクリプトはマークダウンに埋め込まれません**。[スクリプトが存在する場所](を参照)../i-overview.md#where-scripts-live-not-inside-the-md）。
 
-Runnable files live under **[`.cursor/`](.cursor/README.md)** — copy that folder into your project root (see [Copy to your project](#copy-to-your-project)).
+実行可能なファイルは **[ の下にあります`.cursor/`](.cursor/README.md)** — そのフォルダーをプロジェクトのルートにコピーします ([プロジェクトにコピー](を参照)#copy-to-your-project））。
 
-## Copy to your project
+## プロジェクトにコピーする
 
 ```bash
 cd src/content/en/ai101/ai-engineering/skills-and-agent-instructions/examples
@@ -24,40 +24,40 @@ chmod +x scripts/copy-to-project.sh
 ./scripts/copy-to-project.sh /path/to/your-project
 ```
 
-Or manually: copy `examples/.cursor/skills/`, `examples/.cursor/hooks/`, and `examples/.cursor/hooks.json` → your repo `.cursor/`. No path edits needed — `SKILL.md` files already use `.cursor/...`.
+または手動でコピーします。`examples/.cursor/skills/`、`examples/.cursor/hooks/`、 そして`examples/.cursor/hooks.json`→ あなたのレポ`.cursor/`。パスの編集は必要ありません —`SKILL.md`ファイルはすでに使用されています`.cursor/...`。
 
-Smoke test:
+煙テスト:
 
 ```bash
 python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run
 ```
 
-## Why Python (not bash)
+## なぜ Python (bash ではない) なのか
 
-| | **Python** | **bash** |
-|---|------------|----------|
-| JSON logs | `json.dump` — no `jq` | Heredocs + escaping bugs |
-| Args | `argparse` | Manual `case` / `getopts` |
-| Parsing diffs, AST, perf | `re`, `pathlib`, `ast` | Fragile `grep`/`awk` |
-| Hooks | Read stdin JSON, return dict | Same, but easier to get wrong |
-| Deps | **stdlib only** in these examples | Often needs `jq`, `curl` |
+| | **Python** | **バッシュ** |
+|---|-----------|----------|
+| JSON ログ |`json.dump`- いいえ`jq`|ヒアドキュメント + バグのエスケープ |
+|引数 |`argparse`|マニュアル`case`/`getopts`|
+|差分の解析、AST、perf |`re`、`pathlib`、`ast`|壊れやすい`grep`/`awk`|
+|フック | stdin JSON を読み取り、dict を返します。同じですが、間違いやすいです |
+|デプス |これらの例では **stdlib のみ**頻繁に必要となる`jq`、`curl`|
 
-Use **Python 3.10+**. No pip packages required for the examples below.
+**Python 3.10+** を使用してください。以下の例では pip パッケージは必要ありません。
 
-## Map of examples
+## 例のマップ
 
-| Example | Pattern | Trigger |
-|---------|---------|---------|
-| [Parameterized script + clarify](ii-parameterized-script-clarify.md) | Pass args; ask if missing; confirm intent | Skill (user asks to run tool) |
-| [Loop on script results](iii-loop-on-script-results.md) | Re-use same log data; refine across iterations | Skill + agent loop |
-| [Hook — secrets & `.env` scan](iv-hook-secrets-env-scan.md) | Block or warn before commit / shell | Cursor hook |
-| [Performance & bottlenecks](v-performance-bottleneck-scan.md) | Profile / scan; log findings | Skill |
+|例 |パターン |トリガー |
+|----------|----------|----------|
+| [パラメータ化されたスクリプト + 明確にする](ii-parameterized-script-clarify.md) |引数を渡します。行方不明かどうかを尋ねます。意図を確認する |スキル (ユーザーがツールの実行を要求) |
+| [スクリプト結果のループ](iii-loop-on-script-results.md) |同じログ データを再利用します。反復全体で絞り込む |スキル + エージェント ループ |
+| [フック — 秘密と`.env`スキャン]（iv-hook-secrets-env-scan.md) |コミット/シェルの前にブロックまたは警告 | Cursor フック |
+| [パフォーマンスとボトルネック](v-performance-bottleneck-scan.md) |プロファイル/スキャン;ログの調査結果 |スキル |
 
-## Shared logging helper
+## 共有ログヘルパー
 
-Implemented at [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) (copied into each skill’s `scripts/lib/`). Same module in `test-flake-hunt` and `perf-scan`.
+[で実装されました。`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) (各スキルにコピーされます)`scripts/lib/`）。同じモジュール`test-flake-hunt`そして`perf-scan`。
 
-## Shared log shape
+## 共有ログ形状
 
 ```text
 .cursor/skills/<skill-name>/logs/
@@ -80,24 +80,24 @@ Implemented at [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/sk
 }
 ```
 
-Add `logs/` to `.gitignore` if runs are local-only; commit **scripts** and **SKILL.md**, not ephemeral log files.
+追加`logs/`に`.gitignore`実行がローカルのみの場合。一時的なログ ファイルではなく、**script** と **SKILL.md** をコミットします。
 
-## Skill vs hook (which example to copy)
+## スキルとフック (どちらの例をコピーするか)
 
-| Need | Copy |
+|必要 |コピー |
 |------|------|
-| User invokes workflow; may need parameters | [Parameterized script + clarify](ii-parameterized-script-clarify.md) |
-| Iterate on same script output until good enough | [Loop on script results](iii-loop-on-script-results.md) |
-| Automatic check on commit / git / shell | [Hook — secrets scan](iv-hook-secrets-env-scan.md) |
-| On-demand performance review | [Performance scan](v-performance-bottleneck-scan.md) |
+|ユーザーがワークフローを呼び出します。パラメータが必要な場合があります | [パラメータ化されたスクリプト + 明確にする](ii-parameterized-script-clarify.md) |
+|十分な結果が得られるまで、同じスクリプト出力を繰り返します。 [スクリプト結果のループ](iii-loop-on-script-results.md) |
+|コミット/git/シェルの自動チェック | [フック — 秘密のスキャン](iv-hook-secrets-env-scan.md) |
+|オンデマンドのパフォーマンス レビュー | [パフォーマンススキャン](v-performance-bottleneck-scan.md) |
 
-## Study order
+## 勉強の順番
 
-Read [Parameterized script + clarify](ii-parameterized-script-clarify.md) first (parameters + logs), then [Loop on script results](iii-loop-on-script-results.md). Add [Hook — secrets scan](iv-hook-secrets-env-scan.md) when you need **automatic** gates.
+[パラメータ化されたスクリプト + 明確にする](ii-parameterized-script-clarify.md) 最初に (パラメータ + ログ)、次に [スクリプト結果のループ](iii-loop-on-script-results.md）。 [フック — シークレット スキャン](iv-hook-secrets-env-scan.md) **自動**ゲートが必要な場合。
 
-## Related
+＃＃ 関連している
 
-- [Using skills, agents & hooks](../using-skills-agents-and-hooks/i-overview.md) — when to use each layer separately
-- [Linking a fixed script](../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script)
-- [Loop prompting](../../loop-prompting/i-overview.md)
-- [How MCP works](../../how-mcp-works/i-overview.md) — live data vs static scripts
+- [スキル、エージェント、フックの使用](../using-skills-agents-and-hooks/i-overview.md) — 各レイヤーを個別に使用する場合
+- [修正スクリプトのリンク](../iv-cursor-skills-rules-agents-md.md#linking-a-fixed-script)
+- [ループプロンプト](../../loop-prompting/i-overview.md)
+- [MCP の仕組み](../../how-mcp-works/i-overview.md) — ライブデータと静的スクリプト

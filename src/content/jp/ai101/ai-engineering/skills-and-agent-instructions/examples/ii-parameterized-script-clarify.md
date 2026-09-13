@@ -1,24 +1,24 @@
 ---
 label: "II"
-subtitle: "Parameterized script + clarify"
+subtitle: "パラメータ化されたスクリプト + 明確化"
 group: "Skills examples"
 order: 2
 ---
-Parameterized script + clarify
+パラメータ化されたスクリプト + 明確化
 
-**Goal:** Run a script with **parameters** (`environment`, `dry_run`, etc.). If the user did not supply enough info, the agent **asks** for missing values and **confirms intent** before executing. The script **logs** runtime and results to JSON.
+**目標:** **パラメータ**を使用してスクリプトを実行します(`environment`、`dry_run`、など）。ユーザーが十分な情報を提供しなかった場合、エージェントは実行前に欠落値を**確認し、**意図を確認**します。スクリプトは実行時間と結果を JSON に **ログ**します。
 
-## Live files (copy-ready)
+## ライブ ファイル (コピー準備完了)
 
-| File | Path |
+|ファイル |パス |
 |------|------|
-| Skill instructions | [`.cursor/skills/deploy-check/SKILL.md`](.cursor/skills/deploy-check/SKILL.md) |
-| Script | [`.cursor/skills/deploy-check/scripts/deploy_check.py`](.cursor/skills/deploy-check/scripts/deploy_check.py) |
-| Logging helper | [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) |
+|スキルの説明 | [`.cursor/skills/deploy-check/SKILL.md`](.cursor/skills/deploy-check/SKILL.md) |
+|スクリプト | [`.cursor/skills/deploy-check/scripts/deploy_check.py`](.cursor/skills/deploy-check/scripts/deploy_check.py) |
+|ロギングヘルパー | [`.cursor/skills/deploy-check/scripts/lib/run_log.py`](.cursor/skills/deploy-check/scripts/lib/run_log.py) |
 
-Copy all of [`.cursor/`](.cursor/README.md) to your project — paths already use `.cursor/skills/...`.
+[ をすべてコピーします`.cursor/`](.cursor/README.md) をプロジェクトへ — パスはすでに使用されています`.cursor/skills/...`。
 
-## Folder layout
+## フォルダーのレイアウト
 
 ```text
 .cursor/skills/deploy-check/
@@ -29,16 +29,15 @@ Copy all of [`.cursor/`](.cursor/README.md) to your project — paths already us
   logs/                    ← gitignore; created at runtime
 ```
 
-## What the skill teaches the agent
+## スキルがエージェントに教えること
 
-From [`SKILL.md`](.cursor/skills/deploy-check/SKILL.md):
+から [`SKILL.md`](.cursor/skills/deploy-check/SKILL.md):
 
-1. **Ask** if `environment` is missing (`staging` | `production`).
-2. **Confirm** before run — especially for production.
-3. **Run** `python3 .cursor/skills/deploy-check/scripts/deploy_check.py …`
-4. **Read** the JSON log under `logs/` and summarize `duration_ms`, `exit_code`, `messages`.
+1. **質問**`environment`がありません (`staging`|`production`）。
+2. 実行前に**確認**してください (特に運用環境の場合)。
+3. **実行**`python3 .cursor/skills/deploy-check/scripts/deploy_check.py …`4. 以下の JSON ログを **読んでください**`logs/`そして要約します`duration_ms`、`exit_code`、`messages`。
 
-## Agent flow
+## エージェントの流れ
 
 ```text
 User: "check if we're ready to deploy"
@@ -50,16 +49,16 @@ User: "check if we're ready to deploy"
   → Agent reads log → reports results
 ```
 
-## Test
+＃＃ テスト
 
-After copy to your project:
+プロジェクトにコピーした後、次のようにします。
 
 ```bash
 python3 .cursor/skills/deploy-check/scripts/deploy_check.py --environment staging --dry-run
 ```
 
-Fresh agent chat: *"run deploy check"* — agent should ask for environment before running.
+新しいエージェント チャット: *「デプロイ チェックの実行」* — エージェントは実行前に環境を尋ねる必要があります。
 
-## Next
+＃＃ 次
 
-[Loop on script results](iii-loop-on-script-results.md) — reuse log data across iterations.
+[スクリプト結果のループ](iii-loop-on-script-results.md) - 繰り返しにわたってログ データを再利用します。

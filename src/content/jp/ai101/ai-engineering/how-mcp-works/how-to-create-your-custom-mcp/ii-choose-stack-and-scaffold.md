@@ -1,26 +1,26 @@
 ---
 label: "II"
-subtitle: "Choose stack & scaffold"
+subtitle: "スタックと足場を選択してください"
 group: "How to create your custom MCP"
 order: 2
 ---
-Choose stack & scaffold
+スタックと足場を選択してください
 
-Pick **TypeScript** or **Python** — both have official MCP SDKs. For most IDE teams already on Node, **TypeScript** matches Cursor examples; **Python** is fastest if your logic is already in Python scripts or data libs.
+**TypeScript** または **Python** を選択します。どちらにも公式の MCP SDK があります。すでに Node を使用しているほとんどの IDE チームの場合、**TypeScript** は Cursor の例と一致します。 **Python** は、ロジックが既に Python スクリプトまたはデータ ライブラリに含まれている場合に最も高速です。
 
-## 1. Stack comparison
+## 1. スタックの比較
 
-| | **TypeScript** | **Python (FastMCP)** |
-|---|----------------|----------------------|
-| **Package** | `@modelcontextprotocol/sdk` | `mcp` (`FastMCP`) |
-| **Runtime** | Node 18+ | Python 3.10+ |
-| **Schema** | Zod | Type hints / Pydantic |
-| **Best when** | JS/TS monorepo, npm publish | Data/ML scripts, FastAPI teams |
-| **Cursor spawn** | `node dist/index.js` | `python server.py` or `uv run` |
+| | **TypeScript** | **Python (高速MCP)** |
+|---|--|-----------|
+| **パッケージ** |`@modelcontextprotocol/sdk`|`mcp`(`FastMCP`) |
+| **ランタイム** |ノード 18+ | Python 3.10+ |
+| **スキーマ** |ゾッド |タイプヒント / Pydantic |
+| **最適な時期** | JS/TS モノリポジトリ、npm パブリッシュ |データ/ML スクリプト、FastAPI チーム |
+| **Cursor スポーン** |`node dist/index.js`|`python server.py`または`uv run`|
 
-Start with **stdio** transport — one subprocess, no open ports. Add HTTP later only if you need a remote team-hosted server.
+**stdio** トランスポートから開始します。サブプロセスは 1 つで、開いているポートはありません。リモートのチームがホストするサーバーが必要な場合にのみ、後で HTTP を追加します。
 
-## 2. TypeScript scaffold
+## 2. TypeScript スキャフォールド
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -30,7 +30,7 @@ npm install -D typescript @types/node
 npx tsc --init --module NodeNext --moduleResolution NodeNext --outDir dist --rootDir src
 ```
 
-**`package.json`** — add bin entry for Cursor:
+**`package.json`** — Cursor の bin エントリを追加します。
 
 ```json
 {
@@ -45,7 +45,7 @@ npx tsc --init --module NodeNext --moduleResolution NodeNext --outDir dist --roo
 }
 ```
 
-**Layout:**
+**レイアウト:**
 
 ```text
 my-mcp-server/
@@ -56,7 +56,7 @@ my-mcp-server/
 └── tsconfig.json
 ```
 
-## 3. Python scaffold
+## 3. Python 足場
 
 ```bash
 mkdir my-mcp-server && cd my-mcp-server
@@ -65,7 +65,7 @@ source .venv/bin/activate
 pip install mcp
 ```
 
-**Layout:**
+**レイアウト:**
 
 ```text
 my-mcp-server/
@@ -76,26 +76,26 @@ my-mcp-server/
 └── .venv/
 ```
 
-With **uv** (recommended for reproducible spawns):
+**uv** を使用する場合 (再現可能なスポーンに推奨):
 
 ```bash
 uv init my-mcp-server
 uv add mcp
 ```
 
-## 4. Naming and versioning
+## 4. 命名とバージョン管理
 
-| Field | Guidance |
-|-------|----------|
-| **Server `name`** | Short snake-case id: `acme-tickets`, not `My Cool Server` |
-| **Version** | Semver in server metadata — helps debug which build Cursor launched |
-| **Tool names** | Verb + noun: `search_tickets`, `create_ticket` — stable across releases |
+|フィールド |ガイダンス |
+|------|----------|
+| **サーバ`name`** |短いスネークケース ID:`acme-tickets`、 ない`My Cool Server`|
+| **バージョン** |サーバー メタデータの Semver — Cursor が起動したビルドのデバッグに役立ちます。
+| **ツール名** |動詞+名詞:`search_tickets`、`create_ticket`— リリース間で安定 |
 
-Hosts show tool names to the model; renames break agent habits — treat tool names like a small public API.
+ホストはモデルにツール名を表示します。名前を変更してエージェントの習慣を打ち破ります。ツール名を小さなパブリック API のように扱います。
 
-## 5. Environment and secrets
+## 5. 環境と秘密
 
-Never hard-code tokens. Read from env vars the host passes in `mcp.json`:
+トークンをハードコーディングしないでください。ホストが渡す環境変数から読み取る`mcp.json`:
 
 ```json
 "env": {
@@ -104,8 +104,8 @@ Never hard-code tokens. Read from env vars the host passes in `mcp.json`:
 }
 ```
 
-In code: `process.env.ACME_API_TOKEN` (TS) or `os.environ["ACME_API_TOKEN"]` (Python). Fail fast at startup if required vars are missing.
+コード内:`process.env.ACME_API_TOKEN`(TS) または`os.environ["ACME_API_TOKEN"]`(Python)。必要な変数が欠落している場合、起動時に失敗します。
 
-## Next
+＃＃ 次
 
-[Define tools & resources](iii-define-tools-and-resources.md) — design what the agent can call before writing handlers.
+[ツールとリソースを定義する](iii-define-tools-and-resources.md) — ハンドラーを作成する前に、エージェントが呼び出せるものを設計します。

@@ -1,13 +1,13 @@
 ---
 label: "IV"
-subtitle: "Session & recurring loops"
+subtitle: "セッションと繰り返しループ"
 group: "AI Applied"
 order: 4
 ---
-Session & recurring loops
-Beyond stored instructions, you can **loop inside one session** (refine the same work) or **loop on a schedule / event** (rerun without opening a new chat). Both are loop prompting — the trigger differs.
+セッションと繰り返しループ
+保存された指示を超えて、**1 つのセッション内でループ** (同じ作業を調整) したり、**スケジュール/イベントでループ** (新しいチャットを開かずに再実行) することができます。どちらもループ プロンプトであり、トリガーが異なります。
 
-## 1. Session loop (same thread)
+## 1. セッションループ (同じスレッド)
 
 ```text
 Turn 1: produce draft
@@ -16,18 +16,18 @@ Turn 3: change format
 Turn 4: verify against source
 ```
 
-| Practice | Why |
+|練習 |なぜ |
 |----------|-----|
-| Reference prior output (“section 2 only”) | Model uses thread context |
-| One change per message | Easier to undo mentally |
-| Pin files with `@` in IDE | Context stays attached |
-| Say “stop and summarize state” before break | Easier resume |
+|以前の出力を参照 (「セクション 2 のみ」) |モデルはスレッド コンテキストを使用します。
+|メッセージごとに 1 つの変更 |精神的に元に戻すのが簡単 |
+|ファイルをピン留めする`@`IDE で |コンテキストは接続されたままになります |
+|休憩前に「停止して状態を要約する」と言います |より簡単な履歴書 |
 
-**Resume later:** same project/thread if the tool keeps history; otherwise paste **state summary** + last good artifact — not the whole thread.
+**後で再開:** ツールが履歴を保持している場合は同じプロジェクト/スレッド。それ以外の場合は、スレッド全体ではなく、**状態の概要** + 最後の良好な成果物を貼り付けてください。
 
-## 2. Recurring loop (time-based)
+## 2. 繰り返しループ (時間ベース)
 
-**Cursor `/loop`** runs a prompt on an interval — you define the task once, the agent reruns on a schedule.
+**Cursor`/loop`** は一定の間隔でプロンプトを実行します。タスクを一度定義すると、エージェントはスケジュールに従って再実行されます。
 
 ```text
 /loop 5m check if main CI is green; if failed paste last error
@@ -35,13 +35,13 @@ Turn 4: verify against source
 /loop 1d summarize overnight Sentry errors
 ```
 
-| Pattern | Use |
-|---------|-----|
-| **Fixed interval** | Poll CI, inbox, metrics dashboard |
-| **Dynamic interval** | Agent picks next delay after each run (busy vs quiet) |
-| **Run once immediately** | Confirm setup before waiting for first tick |
+|パターン |使用 |
+|----------|-----|
+| **固定間隔** | CI、受信トレイ、メトリクス ダッシュボードをポーリング |
+| **動的間隔** |エージェントは各実行後に次の遅延を選択します (忙しいか静かか) |
+| **すぐに 1 回実行します** |最初のティックを待つ前に設定を確認してください |
 
-Syntax varies by product; the idea is universal: **arm → wake → act → re-arm** until you stop.
+構文は製品によって異なります。このアイデアは普遍的です。停止するまで**腕を立てる→目覚める→行動する→再び腕を立てる**。
 
 ```mermaid
 flowchart LR
@@ -51,9 +51,9 @@ flowchart LR
   ReArm -.-> Wake
 ```
 
-## 3. Event-driven loop (watcher)
+## 3. イベント駆動型ループ (ウォッチャー)
 
-Instead of blind polling, wake when something **changes**:
+ブラインド ポーリングの代わりに、**変化**があったときに起動します。
 
 ```text
 Watch: git branch updates, log line matches, file saved, webhook fires
@@ -61,17 +61,17 @@ Watch: git branch updates, log line matches, file saved, webhook fires
   → optional fallback heartbeat if no event
 ```
 
-| Event | Example prompt |
-|-------|----------------|
-| PR opened | “Review diff; comment checklist only” |
-| Build failed | “Parse log; suggest fix; link doc” |
-| New CSV in folder | “Same weekly report template as last Friday” |
+|イベント |プロンプトの例 |
+|------|----------------|
+| PR がオープンしました | 「差分をレビューします。コメントチェックリストのみ」 |
+|ビルドに失敗しました | 「ログを解析し、修正を提案し、ドキュメントをリンクする」 |
+|フォルダー内の新しい CSV | 「先週の金曜日と同じ週次レポートのテンプレート」 |
 
-Event loops reduce noise vs `sleep 30s` forever.
+イベント ループはノイズを低減します。`sleep 30s`永遠に。
 
-## 4. Automation platforms (no IDE)
+## 4. 自動化プラットフォーム (IDE なし)
 
-Same loop shape outside Cursor:
+Cursor の外側でも同じループ形状:
 
 ```text
 Trigger (schedule / form / webhook)
@@ -80,24 +80,24 @@ Trigger (schedule / form / webhook)
   → (optional) human approval gate
 ```
 
-| Platform | Good for |
+|プラットフォーム |良いこと |
 |----------|----------|
-| **Zapier / Make** | SaaS glue, non-developers |
-| **n8n** | Self-hosted, complex branches |
-| **GitHub Actions + AI** | CI-adjacent loops on repo events |
+| **ザピア / メイク** | SaaS 接着剤、非開発者 |
+| **n8n** |自己ホスト型の複雑なブランチ |
+| **GitHub アクション + AI** | CI-リポジトリ イベントの隣接ループ |
 
-See [Orchestration patterns](../tools-and-orchestration/iii-orchestration-patterns.md). Put **approval** before customer-facing sends.
+[オーケストレーション パターン](../tools-and-orchestration/iii-orchestration-patterns.md）。顧客向けの送信の前に**承認**を行ってください。
 
-## 5. Designing a good loop prompt
+## 5. 優れたループ プロンプトを設計する
 
-Recurring prompts must be **self-contained** each tick — the model may not remember yesterday.
+定期的なプロンプトは各ティックごとに**自己完結型**である必要があります。モデルは昨日のことを覚えていない可能性があります。
 
-| Include every run | Omit (store elsewhere) |
-|-------------------|------------------------|
-| What to check / read | Long style guide → skill |
-| Pass / fail criteria | Full repo map → `AGENTS.md` |
-| Output format | Historical context unless needed |
-| Stop conditions | “Be helpful” fluff |
+|すべての実行を含める |省略 (別の場所に保存) |
+|---------------------|--------------------------|
+|何を確認するか/読んでください |長いスタイルガイド → スキル |
+|合格/不合格の基準 |完全なリポジトリマップ →`AGENTS.md`|
+|出力形式 |必要な場合を除き、歴史的背景 |
+|停止条件 | 「役に立ちなさい」綿毛 |
 
 ```text
 Loop: Every 5m
@@ -107,32 +107,32 @@ If red: paste failing job name + last 20 log lines + one-line likely cause.
 Do not fix code unless I say FIX.
 ```
 
-## 6. Stopping and supervision
+## 6. 停止と監視
 
-| Risk | Mitigation |
-|------|------------|
-| Runaway polling / cost | Max duration; exponential backoff |
-| Repeated wrong “fixes” | Loop = report only; separate FIX command |
-| Alert fatigue | Only notify on state **change** |
-| Stale loop after task done | Explicit “stop loop” or kill command |
+|リスク |緩和 |
+|------|-----------|
+|ランナウェイポーリング/コスト |最大持続時間。指数バックオフ |
+|間違った「修正」を繰り返す |ループ = レポートのみ。個別の FIX コマンド |
+|アラート疲労 |状態**変更**時にのみ通知 |
+|タスク完了後の古いループ |明示的な「ループ停止」またはコマンドの強制終了 |
 
-**Human-in-the-loop** for loops that edit production, send email, or spend money.
+**制作の編集、電子メールの送信、またはお金の支出を行うループの **人間参加型**。
 
-## 7. Loop vs agent run
+## 7. ループとエージェントの実行
 
-| | Session refine loop | Recurring `/loop` |
-|---|---------------------|-------------------|
-| **Trigger** | You send next message | Timer or event |
-| **Scope** | One deliverable | Monitoring / batch |
-| **Context** | Thread history | Fresh read each tick |
-| **Best** | Writing, coding, analysis | Ops, CI, digests |
+| |セッションリファインループ |繰り返し発生する`/loop`|
+|---|---------------------|--------|
+| **トリガー** |次のメッセージを送信します |タイマーまたはイベント |
+| **範囲** | 1 つの成果物 |監視・バッチ |
+| **コンテキスト** |スレッド履歴 |各ティックを新たに読み取り |
+| **最高** |ライティング、コーディング、分析 |オペレーション、CI、ダイジェスト |
 
-Full **agents** combine tools inside one triggered run — [Directing agents](../agents-and-agentic-workflows/iii-directing-agents.md).
+完全な **エージェント** は、トリガーされた 1 つの実行内でツールを組み合わせます — [エージェントの指示](../agents-and-agentic-workflows/iii-directing-agents.md）。
 
-## 8. Rehearsal questions
+## 8. リハーサルの質問
 
-- How does a session loop differ from a time-based loop?
-- Why should recurring prompts be self-contained each tick?
-- Name one stop condition you would add to a CI watch loop.
+- セッション ループは時間ベースのループとどう違うのですか?
+- 繰り返しのプロンプトがティックごとに自己完結型である必要があるのはなぜですか?
+- CI 監視ループに追加する停止条件を 1 つ挙げてください。
 
-**Next:** [Hygiene & when to reset](v-hygiene-and-when-to-reset.md).
+**次へ:** [衛生状態とリセット時期](v-hygiene-and-when-to-reset.md）。

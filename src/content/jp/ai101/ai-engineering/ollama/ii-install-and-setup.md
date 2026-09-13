@@ -1,79 +1,79 @@
 ---
 label: "II"
-subtitle: "Install & setup"
+subtitle: "インストールとセットアップ"
 group: "Ollama"
 order: 2
 ---
-Install & setup
+インストールとセットアップ
 
-## 1. Install
+## 1. インストール
 
-### Linux (script — recommended)
+### Linux (スクリプト - 推奨)
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-Installs the `ollama` binary and a **systemd** service (starts on boot on most distros).
+をインストールします`ollama`バイナリと **systemd** サービス (ほとんどのディストリビューションでは起動時に開始されます)。
 
 ### macOS
 
-Download from [ollama.com/download](https://ollama.com/download) or:
+[ollama.com/download]() からダウンロードします。https://ollama.com/download） または：
 
 ```bash
 brew install ollama
 ```
 
-Uses **Metal** on Apple Silicon automatically.
+Apple Silicon 上で **Metal** が自動的に使用されます。
 
-### Windows
+### ウィンドウ
 
-Installer from [ollama.com/download](https://ollama.com/download). Uses **CUDA** when an NVIDIA GPU and driver are present.
+インストーラーは [ollama.com/download](https://ollama.com/download）。 NVIDIA GPU およびドライバーが存在する場合は **CUDA** を使用します。
 
-## 2. Verify
+## 2. 確認する
 
 ```bash
 ollama --version
 ollama list          # empty until first pull
 ```
 
-Start the server (often auto-started after install):
+サーバーを起動します (多くの場合、インストール後に自動起動します)。
 
 ```bash
 ollama serve         # foreground — optional if service already running
 ```
 
-Check the API:
+API を確認します。
 
 ```bash
 curl http://localhost:11434/api/tags
 ```
 
-## 3. GPU prerequisites (NVIDIA Linux)
+## 3. GPU 前提条件 (NVIDIA Linux)
 
 ```bash
 nvidia-smi
 ```
 
-| Check | Expected |
-|-------|----------|
-| Driver | 535+ (550+ recommended) |
-| GPU listed | Your card (e.g. RTX 1080) |
-| No errors | Fix driver before blaming Ollama |
-
-Ollama bundles its own CUDA runtime — you do **not** need a separate CUDA toolkit install for basic use.
-
-## 4. Where files live
-
-| Path | Contents |
+|チェック |予想される |
 |------|----------|
-| `~/.ollama/models/` | Downloaded model blobs (large) |
-| `~/.ollama/` | Config and state |
-| **Service** | `systemctl status ollama` (Linux) |
+|ドライバー | 535+ (550+ を推奨) |
+| GPU リスト |あなたのカード (例: RTX 1080) |
+|エラーはありません | Ollama を責める前にドライバーを修正してください。
 
-Free disk before large pulls — a 7B model is roughly **4–8 GB** on disk depending on quant.
+Ollama には独自の CUDA ランタイムがバンドルされています。基本的な使用のために別の CUDA ツールキットをインストールする必要は**ありません**。
 
-## 5. Service management (Linux)
+## 4. ファイルが存在する場所
+
+|パス |目次 |
+|------|----------|
+|`~/.ollama/models/`|ダウンロードされたモデル BLOB (大) |
+|`~/.ollama/`|構成と状態 |
+| **サービス** |`systemctl status ollama`(Linux) |
+
+大規模なプルの前にディスクを解放する — 7B モデルはクォントに応じてディスク上におよそ **4 ～ 8 GB** あります。
+
+## 5. サービス管理 (Linux)
 
 ```bash
 sudo systemctl enable ollama
@@ -81,12 +81,12 @@ sudo systemctl start ollama
 sudo systemctl status ollama
 ```
 
-Logs:
+ログ:
 
 ```bash
 journalctl -u ollama -f
 ```
 
-## Next
+＃＃ 次
 
-[Models — pull & manage](iii-models-pull-and-manage.md) — download your first models.
+[モデル — プルと管理](iii-models-pull-and-manage.md) — 最初のモデルをダウンロードします。

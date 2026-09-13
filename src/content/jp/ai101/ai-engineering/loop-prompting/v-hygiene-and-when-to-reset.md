@@ -1,81 +1,81 @@
 ---
 label: "V"
-subtitle: "Hygiene & when to reset"
+subtitle: "衛生状態とリセット時期"
 group: "AI Applied"
 order: 5
 ---
-Hygiene & when to reset
-Loop prompting fails when **stored context lies** or **threads rot**. Maintain persistent layers like code: review, version, and reset deliberately.
+衛生状態とリセット時期
+**保存されたコンテキストが存在しない**、または**スレッドが腐っている**場合、ループ プロンプトは失敗します。コードのような永続的なレイヤーを維持します。レビュー、バージョンアップ、リセットを意図的に行います。
 
-## 1. Context rot symptoms
+## 1. コンテキスト腐敗の症状
 
-| Symptom | Likely cause |
-|---------|--------------|
-| Model “forgets” rules mid-thread | Context window filled with old turns |
-| Contradictory answers | Polluted thread + outdated skill |
-| Wrong file patterns | Rules glob mismatch after refactor |
-| Loop keeps reporting stale status | Watcher not reset after deploy |
+|症状 |考えられる原因 |
+|----------|--------------|
+|モデルがスレッドの途中でルールを「忘れる」 |コンテキスト ウィンドウが古いターンでいっぱい |
+|矛盾した答え |汚染されたスレッド + 時代遅れのスキル |
+|間違ったファイル パターン |リファクタリング後のルール グロブの不一致 |
+|ループが古いステータスを報告し続ける |デプロイ後にウォッチャーがリセットされない |
 
-## 2. When to reset
+## 2. いつリセットするか
 
-| Reset **thread** | Reset **instructions / skill** |
-|------------------|--------------------------------|
-| Model stuck repeating mistake | Process or stack changed |
-| Topic pivot | Instructions have wrong facts |
-| Confidential bleed | Skill copied from old job |
-| Long thread > ~20 heavy turns | Quarterly review either way |
+| **スレッド**をリセット | **指示/スキル**をリセット |
+|-----------------|--------------------------------|
+|モデルがスタックしてミスを繰り返す |プロセスまたはスタックが変更されました |
+|トピックピボット |指示には誤った事実が含まれています |
+|機密の出血 |古い仕事からコピーされたスキル |
+|長い糸 > ~20 重回転 |いずれにしても四半期レビュー |
 
-**New chat + same project** often fixes thread rot without losing persistent instructions.
+**新しいチャット + 同じプロジェクト** は、永続的な指示を失わずにスレッドの腐敗を修正することがよくあります。
 
-## 3. Maintenance cadence
+## 3. メンテナンスの頻度
 
-| Artifact | Review |
-|----------|--------|
-| Custom GPT / Project instructions | When output quality slips |
-| `SKILL.md` | After workflow or CLI changes |
-| `.cursor/rules` | After major refactor |
-| `AGENTS.md` | When test commands or layout change |
-| Automation loops | After repo rename, branch policy change |
+|アーティファクト |レビュー |
+|----------|----------|
+|カスタム GPT / プロジェクト手順 |出力品質が低下した場合 |
+|`SKILL.md`|ワークフローまたは CLI の変更後 |
+|`.cursor/rules`|大規模なリファクタリング後 |
+|`AGENTS.md`|テストコマンドやレイアウトが変更された場合 |
+|自動化ループ |リポジトリ名の変更後、ブランチ ポリシーの変更 |
 
-Add **last reviewed** date in skill footer if your team forgets.
+チームが忘れた場合は、**最終レビュー** の日付をスキル フッターに追加します。
 
-## 4. Trust and verification in loops
+## 4. ループ内の信頼と検証
 
-Loops amplify mistakes — the same wrong check runs every 5 minutes.
+ループは間違いを増幅させます。同じ間違ったチェックが 5 分ごとに実行されます。
 
-| Habit | Apply to |
-|-------|----------|
-| **Verify sources** | Research loops, data summaries |
-| **Diff before accept** | Code loops, agent edits |
-| **Human gate** | External sends, merges, spend |
-| **Log loop output** | Audit what auto-ran |
+|習慣 |申請先 |
+|------|----------|
+| **ソースを確認してください** |研究ループ、データ概要 |
+| **受け入れる前の差分** |コードループ、エージェント編集 |
+| **ヒューマン ゲート** |外部送信、マージ、消費 |
+| **ログループ出力** |自動実行されたものを監査する |
 
-See [Trust, privacy & verify](../trust-privacy-and-verify/i-overview.md).
+[信頼、プライバシー、検証] を参照してください(../trust-privacy-and-verify/i-overview.md）。
 
-## 5. Security boundaries
+## 5. セキュリティの境界
 
-| Never loop unattended… | Without… |
-|------------------------|----------|
-| Send email / Slack to customers | Approval step |
-| Merge to main | CI + human review |
-| Use production credentials | Scoped read-only tokens |
-| Paste secrets into instructions | Redaction and env vars |
+|無人でループしないでください… |それがなければ… |
+|--------------------------|----------|
+|顧客にメール/Slack を送信 |承認ステップ |
+|メインにマージ | CI + 人間によるレビュー |
+|本番環境の資格情報を使用する |スコープ付き読み取り専用トークン |
+|シークレットを手順に貼り付ける |リダクションと環境変数 |
 
-Recurring prompts in shared terminals or logs can **leak** task details — scope loops to trusted environments.
+共有端末やログでプロンプトが繰り返し表示されると、タスクの詳細が**漏洩**する可能性があり、信頼できる環境へのループがスコープされます。
 
-## 6. Team rollout
+## 6. チームの展開
 
-| Step | Action |
-|------|--------|
-| 1 | Identify top 3 repeated prompts → skills or project |
-| 2 | Document in repo (`AGENTS.md`, team wiki) |
-| 3 | Short internal examples of **delta** messages |
-| 4 | Shared review of skills like code |
-| 5 | Measure time saved; drop unused loops |
+|ステップ |アクション |
+|------|----------|
+| 1 |繰り返されるプロンプトの上位 3 つを特定 → スキルまたはプロジェクト |
+| 2 |リポジトリ内のドキュメント (`AGENTS.md`、チームウィキ） |
+| 3 | **デルタ** メッセージの短い内部例 |
+| 4 |コードなどのスキルの共有レビュー |
+| 5 |節約された時間を測定します。未使用のループを削除する |
 
-## 7. Decision checklist
+## 7. 意思決定チェックリスト
 
-Before starting a loop workflow:
+ループワークフローを開始する前に:
 
 ```text
 [ ] Persistent layer holds stable rules (not retyped each time)
@@ -86,10 +86,10 @@ Before starting a loop workflow:
 [ ] Stop condition defined for recurring loops
 ```
 
-## 8. Rehearsal questions
+## 8. リハーサルの質問
 
-- What is context rot and one fix?
-- When should you update a skill vs start a new chat?
-- Why are unattended loops risky for customer email?
+- コンテキストの腐敗と 1 つの修正とは何ですか?
+- スキルを更新するのと、新しいチャットを開始するのはいつがよいでしょうか?
+- 無人ループが顧客の電子メールにとって危険なのはなぜですか?
 
-**Next:** [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md) or [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md).
+**次へ:** [エージェントとエージェントのワークフロー](../agents-and-agentic-workflows/i-overview.md) または [スキルとエージェントの指示](../skills-and-agent-instructions/i-overview.md）。

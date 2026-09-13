@@ -204,13 +204,37 @@ def google_translate_http(text: str, sl: str = "en", tl: str = "ja") -> str:
 
 
 def get_translator():
+    backends = []
     try:
         from deep_translator import GoogleTranslator
 
         t = GoogleTranslator(source="en", target="ja")
-        return lambda s: t.translate(s)
+        backends.append(("deep", lambda s: t.translate(s)))
     except ImportError:
-        return google_translate_http
+        pass
+    try:
+        from deep_translator import MyMemoryTranslator
+
+        mm = MyMemoryTranslator(source="en-US", target="ja-JP")
+        backends.append(("mymemory", lambda s: mm.translate(s)))
+    except Exception:
+        pass
+    backends.append(("http", google_translate_http))
+
+    def translate(s: str) -> str:
+        last_err: Exception | None = None
+        for name, fn in backends:
+            try:
+                out = fn(s)
+                if out is None:
+                    raise RuntimeError(f"{name} returned None")
+                return out
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                continue
+        raise RuntimeError(f"all translators failed: {last_err}")
+
+    return translate
 
 
 def looks_japanese(text: str) -> bool:
@@ -336,7 +360,7 @@ def translate_chunk(translator_fn, text: str, retries: int = 5) -> str:
                     if len(buf) + len(line) + 1 > 4000:
                         if buf.strip():
                             parts.append(translator_fn(buf.strip()))
-                            time.sleep(0.05)
+                            time.sleep(0.02)
                         buf = line
                     else:
                         buf = f"{buf}\n{line}" if buf else line
@@ -361,7 +385,7 @@ def translate_mixed_block(translator_fn, block: str) -> str:
             out.append(part)
         elif part.strip():
             out.append(translate_chunk(translator_fn, part))
-            time.sleep(0.04)
+            time.sleep(0.01)
         else:
             out.append(part)
     return "".join(out)
@@ -382,7 +406,7 @@ def translate_prose(translator_fn, text: str) -> str:
             out.append(translate_mixed_block(translator_fn, block))
             continue
         out.append(translate_chunk(translator_fn, block))
-        time.sleep(0.04)
+        time.sleep(0.01)
     return restore_segments("".join(out), saved)
 
 
@@ -404,7 +428,7 @@ def translate_frontmatter(translator_fn, fm: str) -> str:
             out.append(f'{prefix}{key}{colon}"{val}"{suffix}')
         else:
             out.append(line)
-        time.sleep(0.05)
+        time.sleep(0.02)
     return "\n".join(out)
 
 
@@ -435,7 +459,7 @@ def translate_meta_text(translator_fn, raw: str) -> str:
         label = data["label"]
         if not looks_japanese(label) and label not in KEEP_GROUP_AS_IS:
             data["label"] = translate_chunk(translator_fn, label)
-            time.sleep(0.05)
+            time.sleep(0.02)
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
@@ -588,8 +612,24 @@ def phase_translate(
     targets: list[Path] = []
     for path in iter_content_files(JP_ROOT):
         text, _, _ = read_preserve(path)
-        if force or needs_translation(text):
-            targets.append(path)
+        if not (force or needs_translation(text)):
+            continue
+        if path.name == "_meta.json" and not force:
+            try:
+                data = json.loads(text)
+            except json.JSONDecodeError:
+                targets.append(path)
+                continue
+            label = data.get("label")
+            if isinstance(label, str) and (
+                label in KEEP_GROUP_AS_IS
+                or looks_japanese(label)
+                or (len(CJK_RE.findall(label)) == 0 and len(label) <= 24)
+            ):
+                continue
+        targets.append(path)
+    # Prefer markdown bodies first so --limit batches make progress
+    targets.sort(key=lambda p: (0 if p.suffix == ".md" else 1, str(p)))
     if limit:
         targets = targets[:limit]
     print(f"translate candidates: {len(targets)} workers={workers}")

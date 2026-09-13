@@ -1,34 +1,34 @@
 ---
 label: "IV"
-subtitle: "Voice, code & limits"
+subtitle: "音声、コード、制限"
 group: "AI Applied"
 order: 4
 ---
-Voice, code & limits
+音声、コード、制限
 
-## 5. Voice and meetings
+## 5. 音声と会議
 
-| Workflow | Tools pattern |
-|----------|---------------|
-| Record → transcribe → summarise | Native or Otter/Fireflies |
-| Action items | “Extract tasks with owners and dates; mark uncertain as TBD.” |
-| Follow-up email | “Draft recap from transcript; don’t add commitments we didn’t make.” |
+|ワークフロー |ツールパターン |
+|----------|------|
+|録音→文字起こし→まとめ |在来種またはカワウソ/ホタル |
+|アクションアイテム | 「所有者と日付を含むタスクを抽出します。不確実なものには TBD とマークを付けます。」 |
+|フォローアップメール | 「トランスクリプトから要約草案を作成します。私たちが行っていない約束を追加しないでください。」 |
 
-Review transcripts before sharing externally — names and confidential topics.
+名前や機密トピックなどを外部に共有する前に、トランスクリプトを確認します。
 
-## 6. Code and repos (light user view)
+## 6. コードとリポジトリ (ライト ユーザー ビュー)
 
-Non-developers: paste snippets or logs. Developers: use [IDE orchestration](../tools-and-orchestration/i-overview.md).
+非開発者: スニペットまたはログを貼り付けます。開発者: [IDE オーケストレーション](../tools-and-orchestration/i-overview.md）。
 
-| Input | Prompt |
-|-------|--------|
-| Stack trace | “Explain in plain English; suggest next debug step.” |
-| Config file | “What does this setting do; safe to change for X?” |
+|入力 |プロンプト |
+|------|----------|
+|スタックトレース | 「わかりやすい英語で説明し、次のデバッグ手順を提案してください。」 |
+|設定ファイル | 「この設定は何をするのでしょうか。X に対して変更しても安全ですか?」 |
 
-## 7. Rehearsal questions
+## 7. リハーサルの質問
 
-- Why specify page numbers on a PDF question?
-- One risk of uploading a customer CSV to a consumer chat app?
-- When is image input better than describing the UI in words?
+- PDF の質問にページ番号を指定するのはなぜですか?
+- 顧客 CSV を消費者向けチャット アプリにアップロードするリスクは 1 つありますか?
+- UI を言葉で説明するよりも画像入力の方が適切な場合は何ですか?
 
-**Related:** [Custom assistants](../custom-assistants-and-knowledge/i-overview.md), [Trust & verify](../trust-privacy-and-verify/i-overview.md).
+**関連:** [カスタム アシスタント](../custom-assistants-and-knowledge/i-overview.md)、[信頼して検証](../trust-privacy-and-verify/i-overview.md）。
