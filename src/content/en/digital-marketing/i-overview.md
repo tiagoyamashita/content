@@ -71,6 +71,7 @@ Roman numerals match note labels (`I`, `II`, …) used elsewhere in this repo.
 | [Keywords & search intent](on-page-seo/iii-keywords-and-search-intent.md) | Query types, mapping keywords to pages, cannibalization |
 | [Internal linking & schema](on-page-seo/iv-internal-linking-and-schema.md) | Site architecture, breadcrumbs, structured data basics |
 | [Technical checklist](on-page-seo/v-technical-checklist.md) | HTTPS, speed, mobile, sitemaps, robots, Core Web Vitals |
+| [Sitemaps — Google & Bing](on-page-seo/vi-sitemaps-google-and-bing.md) | Submit and update `/sitemap.xml` in GSC and Bing Webmaster Tools |
 
 ### Content strategy
 
@@ -203,7 +204,7 @@ Link building does not replace good content or a working product — it **amplif
 |--------------|------------|
 | Learn the full track in order | [Foundations](foundations/i-overview.md) → On-page SEO → Content → Link building |
 | Earn backlinks for an existing site | [Link building — Overview](link-building/i-overview.md) |
-| Fix "Google can't find my pages" | [On-page SEO — Technical checklist](on-page-seo/v-technical-checklist.md) |
+| Fix "Google can't find my pages" | [Technical checklist](on-page-seo/v-technical-checklist.md) + [Sitemaps — Google & Bing](on-page-seo/vi-sitemaps-google-and-bing.md) |
 | Know if marketing is working | [Analytics — Overview](analytics/i-overview.md) |
 | Build an owned audience | [Email marketing — Overview](email-marketing/i-overview.md) |
 | Buy traffic safely | [Paid advertising — Overview](paid-advertising/i-overview.md) — after conversions are tracked |

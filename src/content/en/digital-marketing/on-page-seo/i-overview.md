@@ -17,6 +17,7 @@ Off-page factors (backlinks) live in [Link building](../link-building/i-overview
 | [Keywords & search intent](iii-keywords-and-search-intent.md) | Query types, keyword mapping, cannibalization |
 | [Internal linking & schema](iv-internal-linking-and-schema.md) | Architecture, breadcrumbs, structured data |
 | [Technical checklist](v-technical-checklist.md) | HTTPS, speed, mobile, sitemaps, robots |
+| [Sitemaps — Google & Bing](vi-sitemaps-google-and-bing.md) | Submit and resubmit `/sitemap.xml` in GSC and Bing |
 
 ## 1. Crawl → index → rank
 

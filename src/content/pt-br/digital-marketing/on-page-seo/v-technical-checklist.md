@@ -15,7 +15,7 @@ Technical SEO ensures bots and users can **reach**, **render**, and **trust** yo
 | **No accidental `noindex`** | View source / CMS SEO settings on production |
 | **Robots.txt** | Not blocking `/` or entire site; allow CSS/JS if needed for rendering |
 | **Search Console verified** | Property for correct domain (www vs non-www) |
-| **Sitemap submitted** | `/sitemap.xml` in Search Console |
+| **Sitemap submitted** | `/sitemap.xml` in Google Search Console **and** Bing Webmaster Tools — [Sitemaps — Google & Bing](vi-sitemaps-google-and-bing.md) |
 
 ## 2. Crawlability
 
@@ -80,7 +80,7 @@ Incorrect hreflang hurts more than omitting it — validate carefully.
 
 ```text
 [ ] HTTPS, single preferred host
-[ ] GSC + sitemap
+[ ] GSC + Bing + sitemap
 [ ] Title/meta on core pages
 [ ] No staging noindex on prod
 [ ] Mobile-friendly test pass
@@ -101,6 +101,6 @@ Incorrect hreflang hurts more than omitting it — validate carefully.
 
 - Name three items on the technical pre-flight checklist.
 - What are LCP and CLS measuring?
-- Why submit a sitemap to Search Console?
+- Why submit a sitemap to Search Console **and** Bing Webmaster Tools?
 
-**Next:** [Content strategy — Overview](../content-strategy/i-overview.md).
+**Next:** [Sitemaps — Google & Bing](vi-sitemaps-google-and-bing.md).
