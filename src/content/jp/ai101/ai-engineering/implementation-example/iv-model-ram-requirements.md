@@ -1,116 +1,116 @@
 ---
 label: "IV"
-subtitle: "Model RAM requirements"
+subtitle: "モデル RAM の要件"
 group: "AI Applied"
 order: 4
 ---
-Model RAM requirements
+モデル RAM の要件
 
-Local inference needs RAM (and VRAM on GPU) for **weights** plus **KV cache** for the context window. Undersizing causes OOM kills, swapping, or refusal to load.
+ローカル推論には、**重み**用の RAM (および GPU の VRAM) と、コンテキスト ウィンドウ用の **KV キャッシュ**が必要です。サイズを小さくすると、OOM の強制終了、スワップ、またはロードの拒否が発生します。
 
-## 1. Quick rules
+## 1. 簡単なルール
 
-| Component | What it is | Rough sizing |
-|-----------|------------|--------------|
-| **Weights** | Frozen parameters on disk / in memory | Depends on parameter count × bytes per weight |
-| **KV cache** | Attention state for prompt + generation | Grows with **context length** and batch size |
-| **Overhead** | Runtime, tokenizer, graph | Often **1–3 GB** extra on GPU; less on pure CPU GGUF |
+|コンポーネント |それは何ですか |おおよそのサイズ |
+|----------|---------------|--------------|
+| **重み** |ディスク上/メモリ内のフリーズされたパラメータ |パラメータ数 × 重みあたりのバイト数に依存します。
+| **KV キャッシュ** |プロンプト + 生成のアテンション状態 | **コンテキストの長さ**とバッチ サイズに応じて増加します |
+| **オーバーヘッド** |ランタイム、トークナイザー、グラフ |多くの場合、GPU に **1–3 GB** が追加されます。純粋な CPU GGUF については省略します。
 
-**Parameters → weight memory (unquantized):**
+**パラメータ → ウェイトメモリ (量子化されていない):**
 
 ```text
 GB ≈ (parameters in billions) × (bytes per parameter) × 1.07
 ```
 
-| Precision | Bytes/param | 7B model | 13B | 70B |
-|-----------|-------------|----------|-----|-----|
+|精度 |バイト/パラメータ | 7Bモデル | 13B | 70B |
+|----------|---------------|----------|-----|-----|
 | FP16 | 2 | ~14 GB | ~26 GB | ~140 GB |
 | INT8 | 1 | ~7 GB | ~13 GB | ~70 GB |
 | INT4 | 0.5 | ~3.5 GB | ~6.5 GB | ~35 GB |
 
-The **1.07** factor accounts for small overhead; real GGUF quants vary by scheme (Q4_K_M vs Q8_0).
+**1.07** 係数により、小さなオーバーヘッドが考慮されます。実際の GGUF クオントはスキームによって異なります (Q4_K_M と Q8_0)。
 
-## 2. GGUF quant cheat sheet (7B-class model)
+## 2. GGUF Quant チートシート (7B クラス モデル)
 
-Approximate **weight-only** RAM for a ~7B model:
+約 7B モデルの **重量のみ** RAM:
 
-| Quant | ~Weight RAM | Quality | Typical use |
-|-------|-------------|---------|-------------|
-| Q8_0 | ~7.5 GB | Near FP16 | 16 GB machines, quality-sensitive |
-| Q6_K | ~6 GB | Excellent | Sweet spot on 16 GB |
-| **Q4_K_M** | **~4.5 GB** | Good default | **8–16 GB** laptops |
-| Q3_K_M | ~3.5 GB | Noticeable loss | Tight RAM only |
-| Q2_K | ~2.5 GB | Degraded | Experimentation only |
+|量子 | ~重量 RAM |品質 |一般的な使用法 |
+|----------|---------------|-----------|-------------|
+| Q8_0 | ~7.5 GB | FP16 付近 | 16 GB マシン、品質重視 |
+| Q6_K | ~6 GB |素晴らしい | 16 GB のスイート スポット |
+| **Q4_K_M** | **~4.5 GB** |良いデフォルト | **8 ～ 16 GB** ラップトップ |
+| Q3_K_M | ~3.5 GB |顕著な損失 |タイトな RAM のみ |
+| Q2_K | ~2.5 GB |劣化した |実験のみ |
 
-Scale linearly by parameter count: a **3B** Q4_K_M is ~**2 GB** weights; **13B** Q4_K_M is ~**8 GB**.
+パラメーター数によって線形にスケールします。**3B** Q4_K_M は ~**2 GB** の重みです。 **13B** Q4_K_M は ~**8 GB** です。
 
-## 3. Context length adds RAM
+## 3. コンテキストの長さにより RAM が追加されます
 
-KV cache dominates at long contexts:
+KV キャッシュは長いコンテキストで優勢です。
 
 ```text
 KV cache grows with: layers × hidden_dim × context_tokens × 2 (K+V) × dtype
 ```
 
-| Practical takeaway | Guidance |
-|--------------------|----------|
-| Default 4k context | Usually fine on top of weight table |
-| 8k–32k context | Add **2–8+ GB** depending on model size |
-| 128k context | Often needs **dedicated GPU** or aggressive offload |
+|実践的なポイント |ガイダンス |
+|---------------------|----------|
+|デフォルトの 4K コンテキスト |通常は重量表の上に問題ありません |
+| 8k ～ 32k コンテキスト |モデルのサイズに応じて **2–8+ GB** を追加します。
+| 128k コンテキスト |多くの場合、**専用の GPU** または積極的なオフロードが必要です。
 
-If the app lets you set **context length**, lower it when you hit OOM before downsizing the model.
+アプリで **コンテキストの長さ**を設定できる場合は、OOM を押したときにモデルを縮小する前にその長さを下げてください。
 
-## 4. Model size → minimum practical RAM
+## 4. モデルのサイズ → 実用的な最小値 RAM
 
-Assumes **Q4_K_M**, **4k context**, small overhead. Add **4 GB** for OS + browser if this is your daily driver laptop.
+**Q4_K_M**、**4K コンテキスト**、オーバーヘッドが小さいことを前提としています。毎日使用するノートパソコンの場合は、OS + ブラウザーに **4 GB** を追加します。
 
-| Model (params) | Weight RAM (Q4_K_M) | **System RAM minimum** | Comfortable |
-|----------------|---------------------|------------------------|-------------|
-| 1–3B | 1–2 GB | **8 GB** | 16 GB |
-| 7–8B | 4–5 GB | **8 GB** (tight) | **16 GB** |
+|モデル (パラメータ) |体重 RAM (Q4_K_M) | **システム RAM 最小値** |快適 |
+|-----|---------------------|--------------------------|---------------|
+| 1-3B | 1–2 GB | **8 GB** | 16 GB |
+| 7–8B | 4–5 GB | **8 GB** (タイト) | **16 GB** |
 | 13–14B | 8–9 GB | **16 GB** | **32 GB** |
 | 32B | ~18 GB | **32 GB** | **48–64 GB** |
-| 70B | ~35 GB | **64 GB** + GPU or heavy offload | **96 GB+** |
+| 70B | ~35 GB | **64 GB** + GPU または重いオフロード | **96 GB+** |
 
-**GPU VRAM:** weights + KV usually must fit on card for full-speed GPU inference. A **12 GB** card runs **7B Q4** comfortably; **24 GB** handles **13B Q4** or **7B** at long context.
+**GPU VRAM:** 重み + KV は通常、フルスピードの GPU 推論のためにカードに収まる必要があります。 **12 GB** カードは **7B Q4** を快適に実行します。 **24 GB** は、ロング コンテキストで **13B Q4** または **7B** を処理します。
 
-## 5. CPU vs GPU memory
+## 5. CPU メモリと GPU メモリ
 
-| Mode | Behavior |
+|モード |行動 |
 |------|----------|
-| **Full GPU** | Weights + KV on VRAM; fastest |
-| **Partial offload** (llama.cpp `-ngl`) | Some layers on GPU, rest in RAM — flexible but slower |
-| **CPU only** | All in system RAM — works with GGUF; expect low tokens/sec |
-| **airLLM-style layer streaming** | Layers pulled to GPU in waves — fits huge models on small VRAM (see [CPU & lightweight runners](v-cpu-and-lightweight-runners.md)) |
+| **完全な GPU** | VRAM 上の重み + KV。最速 |
+| **部分オフロード** (llama.cpp`-ngl`) |一部のレイヤーは GPU にあり、残りは RAM にあります - 柔軟ですが遅い |
+| **CPU のみ** |すべてシステム RAM 内 — GGUF と連携します。 1 秒あたりのトークン数が少ないことが予想されます |
+| **airLLM スタイルのレイヤー ストリーミング** |ウェーブで GPU にレイヤーをプル — 小さな VRAM に大規模なモデルを適合 ([CPU と軽量ランナー](を参照)v-cpu-and-lightweight-runners.md)) |
 
-## 6. Example picks by machine
+## 6. マシンによるピックの例
 
-| Your hardware | Reasonable starting models |
-|---------------|----------------------------|
-| 8 GB RAM, no GPU | 1–3B Q4 (`qwen2.5-coder:1.5b`, Llama 3.2 1B/3B) |
-| 16 GB RAM, no GPU | 7B Q4_K_M (`qwen2.5-coder:7b`) |
-| **8 GB VRAM (RTX 1080)** | **`qwen2.5-coder:7b`** — best open coder for the tier |
-| 16 GB RAM + 8 GB VRAM | 7B Q4/Q8 on GPU (`qwen2.5-coder:7b`); or 13B partial offload |
-| 32 GB RAM + 24 GB VRAM | `qwen2.5-coder:32b` full GPU; or 13B Q4 with headroom |
-| 64 GB+ RAM | 32B–70B with mix of CPU/GPU offload |
+|あなたのハードウェア |リーズナブルなスタートモデル |
+|--------------|----------------------------|
+| 8 GB RAM、GPU なし | 1–3B Q4 (`qwen2.5-coder:1.5b`、ラマ 3.2 1B/3B) |
+| 16 GB RAM、GPU なし | 7B Q4_K_M (`qwen2.5-coder:7b`) |
+| **8 GB VRAM (RTX 1080)** | **`qwen2.5-coder:7b`** — この層で最高のオープンコーダー |
+| 16 GB RAM + 8 GB VRAM | 7B Q4/Q8 上の GPU (`qwen2.5-coder:7b`);または 13B 部分オフロード |
+| 32 GB RAM + 24 GB VRAM |`qwen2.5-coder:32b`完全な GPU;またはヘッドルームのある 13B Q4 |
+| 64 GB+ RAM | CPU/GPU オフロードを組み合わせた場合の 32B ～ 70B |
 
-### Qwen2.5-Coder family (weight RAM at Q4_K_M)
+### Qwen2.5-Coder ファミリ (Q4_K_M での重み RAM)
 
-| Model | ~Weight RAM | Min VRAM (4k ctx) | Notes |
-|-------|-------------|-------------------|-------|
-| 0.5B / 1.5B | under 1 GB | 4 GB | Toy / autocomplete |
-| 3B | ~2 GB | 6 GB | Fast coding on old GPUs |
-| **7B** | **~4.5 GB** | **8 GB** | **Sweet spot for RTX 1080** |
-| 14B | ~8.5 GB | 12 GB | Needs 12 GB+ card or offload |
-| 32B | ~18 GB | 24 GB | Top open coder; matches GPT-4o class on many code benches |
+|モデル | ~重量 RAM |最小 VRAM (4k ctx) |メモ |
+|----------|---------------|----------|----------|
+| 0.5B / 1.5B | 1 GB 未満 | 4 GB |おもちゃ / オートコンプリート |
+| 3B | ~2 GB | 6 GB |古い GPU での高速コーディング |
+| **7B** | **~4.5 GB** | **8 GB** | **RTX 1080 のスイート スポット** |
+| 14B | ~8.5 GB | 12 GB | 12 GB+ カードまたはオフロードが必要 |
+| 32B | ~18 GB | 24 GB |トップのオープンコーダー。多くのコードベンチの GPT-4o クラスと一致します。
 
-## 7. Check before you commit
+## 7. コミットする前に確認してください
 
-1. Note **parameter count** and **quant** on the HF or Ollama model card.
-2. Add weight estimate from tables above.
-3. Add **2–4 GB** KV + overhead for your target context.
-4. Leave **20% headroom** — OS and desktop apps need RAM too.
+1. HF または Ollama モデル カードの **パラメータ カウント** および **量子** に注意してください。
+2. 上の表から推定重量を追加します。
+3. ターゲット コンテキストに **2–4 GB** KV + オーバーヘッドを追加します。
+4. **20% の余裕** を残す — OS とデスクトップ アプリには RAM も必要です。
 
-## Next
+＃＃ 次
 
-[CPU & lightweight runners](v-cpu-and-lightweight-runners.md) — when you cannot fit weights fully on GPU.
+[CPU と軽量ランナー](v-cpu-and-lightweight-runners.md) — GPU に重みを完全に適合できない場合。

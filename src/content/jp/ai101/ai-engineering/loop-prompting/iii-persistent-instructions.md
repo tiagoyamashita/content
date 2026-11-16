@@ -1,13 +1,13 @@
 ---
 label: "III"
-subtitle: "Persistent instructions"
+subtitle: "永続的な指示"
 group: "AI Applied"
 order: 3
 ---
-Persistent instructions
-**Persistent instructions** are the “prompt you don’t repeat” — loaded automatically when the product thinks they apply. Build this layer once; your daily loop becomes short commands.
+永続的な指示
+**永続的な指示** は「繰り返してはいけないプロンプト」であり、製品が適用されると判断したときに自動的に読み込まれます。このレイヤーを一度構築します。毎日のループが短いコマンドになります。
 
-## 1. Stack (pick what your tool supports)
+## 1. スタック (ツールがサポートするものを選択してください)
 
 ```mermaid
 flowchart TB
@@ -17,33 +17,33 @@ flowchart TB
   K --> P[Prompt library]
 ```
 
-| Layer | ChatGPT / Claude | Cursor / IDE |
-|-------|------------------|--------------|
-| **Project / Custom GPT** | Instructions + uploaded files | Rules, `AGENTS.md`, index |
-| **Workflows** | Custom GPT actions, projects | `SKILL.md` |
-| **Knowledge** | Project knowledge, RAG | `@` mentions, codebase index |
+|レイヤー | ChatGPT / クロード | Cursor / IDE |
+|------|---------------|--------------|
+| **プロジェクト / カスタム GPT** |手順 + アップロードされたファイル |ルール、`AGENTS.md`、インデックス |
+| **ワークフロー** |カスタム GPT アクション、プロジェクト |`SKILL.md`|
+| **知識** |プロジェクトの知識、RAG |`@`メンション、コードベースのインデックス |
 
-Deep dives: [Custom assistants](../custom-assistants-and-knowledge/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md).
+詳細: [カスタム アシスタント](../custom-assistants-and-knowledge/i-overview.md)、[スキルとエージェントの指示](../skills-and-agent-instructions/i-overview.md）。
 
-## 2. What belongs in persistent layer
+## 2. 永続層に属するもの
 
-| Store persistently | Keep per-message |
-|--------------------|------------------|
-| Role, tone, audience | Today’s data, one-off facts |
-| Output format defaults | “Use Tuesday’s numbers only” |
-| Team naming, stack, test commands | “Stop after step 2” |
-| Verification habits (“cite sources”) | Specific file paths this turn |
-| Things you say every week | Novel constraints for this draft |
+|永続的に保存 |メッセージごとに保持する |
+|-----------------|-----------------|
+|役割、口調、聴衆 |今日のデータ、一度限りの事実 |
+|出力形式のデフォルト | 「火曜日の番号のみを使用してください」 |
+|チームの名前付け、スタック、テスト コマンド | 「ステップ 2 の後で停止」 |
+|検証の習慣 (「出典を引用」) |このターンの特定のファイル パス |
+|あなたが毎週言うこと |このドラフトの新しい制約 |
 
-**Rule:** if you have sent it **three times**, externalize it.
+**ルール:****3 回**送信した場合は、外部化します。
 
-## 3. Claude Projects / ChatGPT Custom GPTs
+## 3. クロード プロジェクト / ChatGPT カスタム GPTs
 
-| Field | Loop prompting use |
-|-------|-------------------|
-| **Instructions** | Stable persona + quality bar |
-| **Knowledge files** | Policies, glossaries, past examples |
-| **Conversation** | Short deltas inside the project |
+|フィールド |使用を促すループ |
+|------|---------------------|
+| **指示** |安定したペルソナ + 品質バー |
+| **ナレッジ ファイル** |方針、用語集、過去の事例 |
+| **会話** |プロジェクト内の短いデルタ |
 
 ```text
 Project: “Acme PM assistant”
@@ -52,23 +52,23 @@ Project: “Acme PM assistant”
   Loop message: “Summarise this Slack export for exec standup.”
 ```
 
-Same project next week — only swap the export.
+来週も同じプロジェクト - エクスポートを交換するだけです。
 
-## 4. Cursor: rules, skills, AGENTS.md
+## 4. Cursor: ルール、スキル、AGENTS.md
 
-| Artifact | Loads when | Example content |
-|----------|------------|-----------------|
-| **`.cursor/rules/*.mdc`** | File patterns or always | TypeScript error handling |
-| **`SKILL.md`** | Task matches description | “How we run smoke tests” |
-| **`AGENTS.md`** | Agent opens repo | Test command, folder map |
+|アーティファクト | | のときにロードされます。コンテンツ例 |
+|----------|-----------|------|
+| **`.cursor/rules/*.mdc`** |ファイル パターンまたは常に | TypeScript エラー処理 |
+| **`SKILL.md`** |タスクは説明と一致します | 「スモークテストの実行方法」 |
+| **`AGENTS.md`** |エージェントがリポジトリを開きます |テスト コマンド、フォルダー マップ |
 
-You say **“review this PR”** — rules enforce style, skills define the checklist, `AGENTS.md` says how to run tests. No essay in the chat box.
+**「この PR を確認してください」** と言います — ルールはスタイルを強制し、スキルはチェックリストを定義します。`AGENTS.md`テストの実行方法を説明します。チャットボックスにエッセイはありません。
 
-See [Cursor skills, rules & AGENTS.md](../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md).
+[Cursor スキル、ルール、AGENTS.md](を参照)../skills-and-agent-instructions/iv-cursor-skills-rules-agents-md.md）。
 
-## 5. Prompt library (lightweight persistence)
+## 5. プロンプトライブラリ (軽量永続性)
 
-Not everything needs a Custom GPT. A **personal library** works:
+すべてにカスタム GPT が必要なわけではありません。 **個人ライブラリ**は機能します:
 
 ```text
 prompts/
@@ -77,11 +77,11 @@ prompts/
   code-review-delta.md  # “checklist already in SKILL; paste diff”
 ```
 
-Loop = open template in a **project that already has instructions**, paste only the variable part.
+ループ = **既に命令が含まれているプロジェクト**でテンプレートを開き、変数部分のみを貼り付けます。
 
-## 6. Promotion workflow
+## 6. プロモーションのワークフロー
 
-When a one-shot chat went well:
+ワンショット チャットがうまくいった場合:
 
 ```text
 1. Highlight reusable blocks (role, format, checks)
@@ -91,19 +91,19 @@ When a one-shot chat went well:
 5. Test one short prompt — does quality hold?
 ```
 
-## 7. Anti-patterns
+## 7. アンチパターン
 
-| Mistake | Fix |
-|---------|-----|
-| Dump entire wiki into instructions | Link or RAG; keep instructions scannable |
-| Duplicate rules in 5 places | One source of truth; link from `AGENTS.md` |
-| Never update after process change | Review skills quarterly |
-| Secrets in instructions | Never — use env vars and redacted examples |
+|間違い |修正 |
+|----------|-----|
+| Wiki 全体を手順にダンプする |リンクまたは RAG;指示をスキャンできるようにしておきます。
+| 5 か所でルールが重複しています |真実の情報源が 1 つあります。からのリンク`AGENTS.md`|
+|プロセス変更後は更新しない |スキルを四半期ごとにレビューする |
+|説明書の秘密 |決して使用しないでください - 環境変数と編集された例を使用してください。
 
-## 8. Rehearsal questions
+## 8. リハーサルの質問
 
-- Name three artifacts that store persistent instructions in Cursor.
-- What should stay in the message vs move to project instructions?
-- What is the “three times” promotion rule?
+- Cursor に永続的な命令を保存する 3 つのアーティファクトに名前を付けます。
+- プロジェクトの指示に移すのではなく、メッセージに何を残す必要がありますか?
+――「3倍」昇格ルールとは何ですか？
 
-**Next:** [Session & recurring loops](iv-session-and-recurring-loops.md).
+**次:** [セッションと繰り返しループ](iv-session-and-recurring-loops.md）。

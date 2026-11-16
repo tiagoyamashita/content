@@ -1,12 +1,12 @@
 ---
 label: "V"
-subtitle: "API & IDE integration"
+subtitle: "API と IDE の統合"
 group: "Ollama"
 order: 5
 ---
-API & IDE integration
+API と IDE の統合
 
-Ollama exposes an **OpenAI-compatible** HTTP API so IDEs and tools work with a local model instead of a cloud API.
+Ollama は **OpenAI 互換** HTTP API を公開するため、IDE とツールはクラウド API ではなくローカル モデルで動作します。
 
 ```mermaid
 flowchart LR
@@ -15,23 +15,23 @@ flowchart LR
   Model --> IDE
 ```
 
-## 1. Base URL and auth
+## 1. ベース URL と認証
 
-| Setting | Value |
-|---------|-------|
-| **Base URL** | `http://localhost:11434/v1` |
-| **API key** | Any placeholder (e.g. `ollama`) — not enforced locally |
-| **Model name** | Exact tag: `qwen2.5-coder:7b` |
+|設定 |値 |
+|----------|----------|
+| **ベース URL** |`http://localhost:11434/v1`|
+| **API キー** |任意のプレースホルダー (例:`ollama`) — ローカルでは強制されません |
+| **モデル名** |正確なタグ:`qwen2.5-coder:7b`|
 
-Server starts on first request, or run explicitly:
+サーバーは最初のリクエストで起動するか、明示的に実行されます。
 
 ```bash
 ollama serve
 ```
 
-## 2. Test with curl
+## 2.カールでテストする
 
-**Chat completions:**
+**チャットの完了:**
 
 ```bash
 curl http://localhost:11434/v1/chat/completions \
@@ -44,7 +44,7 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-**Streaming:**
+**ストリーミング:**
 
 ```bash
 curl http://localhost:11434/v1/chat/completions \
@@ -56,7 +56,7 @@ curl http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-**Embeddings:**
+**埋め込み:**
 
 ```bash
 curl http://localhost:11434/v1/embeddings \
@@ -69,18 +69,14 @@ curl http://localhost:11434/v1/embeddings \
 
 ## 3. Cursor
 
-1. Pull model: `ollama pull qwen2.5-coder:7b`
-2. Cursor Settings → **Models** → add **OpenAI-compatible** provider (wording varies by version):
-   - Base URL: `http://localhost:11434/v1`
-   - API key: `ollama`
-   - Model: `qwen2.5-coder:7b`
-3. Select that model in chat or agent mode.
+1.プルモデル:`ollama pull qwen2.5-coder:7b`2. Cursor 設定 → **モデル** → **OpenAI 互換** プロバイダーを追加します (表現はバージョンによって異なります)。
+   - ベース URL:`http://localhost:11434/v1`- API キー:`ollama`- モデル：`qwen2.5-coder:7b`3. チャットまたはエージェント モードでそのモデルを選択します。
 
-Ollama must be running on the **same machine** as Cursor (or use SSH tunnel for remote).
+Ollama は Cursor と **同じマシン** 上で実行されている必要があります (またはリモートに SSH トンネルを使用します)。
 
-## 4. Continue (VS Code / JetBrains)
+## 4. 続行 (VS コード / JetBrains)
 
-In `config.json`:
+で`config.json`:
 
 ```json
 {
@@ -94,31 +90,31 @@ In `config.json`:
 }
 ```
 
-Continue detects local Ollama when the extension is installed and `ollama` is on PATH.
+続行すると、拡張機能がインストールされているときにローカル Ollama が検出され、`ollama`PATH にあります。
 
-## 5. Environment variables
+## 5. 環境変数
 
-| Variable | Effect |
-|----------|--------|
-| `OLLAMA_HOST` | Bind address (default `127.0.0.1:11434`) |
-| `OLLAMA_KEEP_ALIVE` | How long models stay loaded (e.g. `30m`, `0` = unload immediately) |
-| `OLLAMA_NUM_GPU` | Force GPU layer count; `0` = CPU only |
-| `OLLAMA_MODELS` | Custom models directory |
+|変数 |効果 |
+|----------|----------|
+|`OLLAMA_HOST`|バインドアドレス (デフォルト`127.0.0.1:11434`) |
+|`OLLAMA_KEEP_ALIVE`|モデルがロードされたままになる時間 (例:`30m`、`0`= すぐにアンロード) |
+|`OLLAMA_NUM_GPU`| GPU 層の数を強制します。`0`= CPU のみ |
+|`OLLAMA_MODELS`|カスタム モデル ディレクトリ |
 
-Example — listen on LAN (use only on trusted networks):
+例 — LAN でリッスンします (信頼できるネットワークでのみ使用します):
 
 ```bash
 OLLAMA_HOST=0.0.0.0:11434 ollama serve
 ```
 
-## 6. Security
+## 6. セキュリティ
 
-| Risk | Mitigation |
-|------|------------|
-| Open port on LAN/internet | Keep `127.0.0.1` unless you intend remote access |
-| No API auth | Do not expose `:11434` to the public internet |
-| Sensitive prompts | Local only — data stays on machine; still log-aware |
+|リスク |緩和 |
+|------|-----------|
+| LAN/インターネットでポートを開く |保つ`127.0.0.1`リモート アクセスを意図しない限り |
+| API 認証がありません |暴露しないでください`:11434`公共のインターネットへ |
+|機密性の高いプロンプト |ローカルのみ — データはマシン上に残ります。まだログを認識します |
 
-## Next
+＃＃ 次
 
-[Modelfile & custom GGUF](vi-modelfile-and-custom-gguf.md) — import models not in the library.
+[モデルファイルとカスタム GGUF](vi-modelfile-and-custom-gguf.md) - ライブラリにないモデルをインポートします。

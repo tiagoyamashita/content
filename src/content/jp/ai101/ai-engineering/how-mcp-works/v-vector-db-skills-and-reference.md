@@ -1,14 +1,14 @@
 ---
 label: "V"
-subtitle: "Vector DB, skills & reference"
+subtitle: "概要"
 group: "AI Applied"
 order: 5
 ---
-Vector DB, skills & reference
+Vector DB、スキルとリファレンス
 
-## 10. When you need MCP vs skills vs vector DB
+## 10. MCP 対スキル対ベクトル DB が必要な場合
 
-These solve **different problems**. You often combine them.
+これらは**さまざまな問題**を解決します。それらを組み合わせることがよくあります。
 
 ```mermaid
 flowchart TB
@@ -17,13 +17,13 @@ flowchart TB
   MCP[MCP tools] -->|live data + actions| Agent
 ```
 
-| Need | Mechanism | Example |
-|------|-----------|---------|
-| **How to write a PR review** | [Skill](../skills-and-agent-instructions/i-overview.md) | Static playbook in `SKILL.md` |
-| **Repo layout and test command** | `AGENTS.md` / rules | Always-in-context project facts |
-| **Search 10k support PDFs by meaning** | **Vector DB + RAG** | “What’s our refund policy for EU?” |
-| **Fetch live Linear issue #42** | **MCP** tool | Exact, current ticket data |
-| **Run `SELECT * FROM orders WHERE id = …`** | **MCP** → Postgres/SQL | Structured lookup, not similarity |
+|必要 |メカニズム |例 |
+|------|-----------|-----------|
+| **PR レビューの書き方** | [スキル]（../skills-and-agent-instructions/i-overview.md) |静的プレイブック`SKILL.md`|
+| **リポジトリのレイアウトとテスト コマンド** |`AGENTS.md`/ ルール |常にコンテキスト内のプロジェクトの事実 |
+| **10,000 のサポート PDF を意味で検索** | **ベクトル DB + RAG** | 「EU の返金ポリシーは何ですか?」 |
+| **リニア問題 #42 をライブで取得** | **MCP** ツール |正確な現在のチケットデータ |
+| **走る`SELECT * FROM orders WHERE id = …`** | **MCP** → Postgres/SQL |類似性ではなく構造化検索 |
 
 ```text
 Skills / AGENTS.md     →  always-on instructions (small, static)
@@ -31,64 +31,64 @@ Vector DB (RAG)        →  semantic search over large text corpus
 MCP tools              →  live actions & exact queries (APIs, SQL, GitHub)
 ```
 
-### What is a vector DB for here?
+### ここでのベクトル DB とは何ですか?
 
-A **vector database** stores **embeddings** — numeric representations of text — so you can find **“chunks similar in meaning”** to the user’s question, not just keyword matches.
+**ベクター データベース** には **埋め込み** (テキストの数値表現) が保存されているため、キーワードの一致だけでなく、ユーザーの質問と **「意味が似ているチャンク」** を見つけることができます。
 
 ```text
 Offline:  docs → chunk → embed → store vectors (+ metadata)
 Online:   question → embed → nearest-neighbour search → top-k chunks → prompt → LLM
 ```
 
-That pattern is **[RAG](../../llms/v-rag-and-fine-tuning.md)**. The vector DB is the **retrieval engine**; the LLM still writes the answer using those chunks.
+そのパターンは **[RAG](../../llms/v-rag-and-fine-tuning.md)**。ベクトル DB は **検索エンジン** です。 LLM は依然としてそれらのチャンクを使用して応答を書き込みます。
 
-### When to use a vector DB
+### ベクトル DB を使用する場合
 
-| Use vector DB when… | Why |
+|次の場合にベクトル DB を使用します。なぜ |
 |---------------------|-----|
-| **Large, changing document set** | Policies, manuals, wiki, past tickets — too big to paste into every prompt |
-| **Questions are fuzzy / paraphrased** | User says “cancel subscription”; doc says “terminate plan” — similarity helps |
-| **You need citations from prose** | Answer must quote handbook sections |
-| **Keyword search fails** | Synonyms, typos, cross-language, conceptual questions |
+| **大量の変化するドキュメント セット** |ポリシー、マニュアル、Wiki、過去のチケット - 大きすぎてすべてのプロンプトに貼り付けることができません |
+| **質問があいまい/言い換えられています** |ユーザーが「サブスクリプションをキャンセル」と言った場合。ドキュメントには「計画を終了」と書かれています - 類似性が役立ちます |
+| **散文からの引用が必要です** |回答はハンドブックのセクションを引用する必要があります。
+| **キーワード検索が失敗します** |同義語、タイプミス、クロスランゲージ、概念的な質問 |
 
-### When you do **not** need a vector DB
+### ベクトル DB が**必要ない**場合
 
-| Skip vector DB when… | Use instead |
-|----------------------|-------------|
-| **Small, fixed context** | Skills, `AGENTS.md`, a few uploaded files (ChatGPT Project, Cursor rules) |
-| **Exact ID or key lookup** | SQL, REST API via **MCP** (`get_order`, `fetch_issue`) |
-| **Live operational state** | “Is deploy green?” → monitoring API, not doc search |
-| **Structured filters** | `status=open AND team=billing` → database query, not k-NN |
-| **Whole repo fits in agent context** | IDE indexes open files; `@docs` may be enough for one codebase |
+|次の場合にベクトル DB をスキップします… |代わりに使用してください |
+|---------------------|---------------|
+| **小規模で固定されたコンテキスト** |スキル、`AGENTS.md`、いくつかのアップロードされたファイル (ChatGPT プロジェクト、Cursor ルール) |
+| **正確な ID またはキー検索** | SQL、REST API (**MCP** 経由)`get_order`、`fetch_issue`) |
+| **実際の動作状態** | 「デプロイはグリーンですか?」 → ドキュメント検索ではなく API を監視 |
+| **構造化フィルター** |`status=open AND team=billing`→ k-NN ではなく、データベース クエリ |
+| **リポジトリ全体がエージェント コンテキストに適合します** | IDE は、開いているファイルにインデックスを付けます。`@docs`1 つのコードベースには十分かもしれません |
 
-### Where vector DBs sit relative to MCP
+### ベクトル DB が MCP を基準にして配置される場所
 
-Vector DBs are **not** part of JSON-RPC or the MCP spec. They are **storage behind** retrieval — often reached in one of two ways:
+Vector DB は、JSON-RPC または MCP 仕様の一部ではありません**。これらは **検索の背後にある** ものであり、多くの場合、次の 2 つの方法のいずれかでアクセスされます。
 
-**A) Product-built RAG (you don’t wire MCP)**
+**A) 製品で構築された RAG (MCP は配線しません)**
 
-ChatGPT Projects, NotebookLM, Copilot — they chunk, embed, and search **inside the product**. You upload files; no vector MCP required.
+ChatGPT プロジェクト、NotebookLM、Copilot — これらは、**製品内**に分割、埋め込み、検索します。ファイルをアップロードします。ベクトル MCP は必要ありません。
 
-**B) MCP exposes search as a tool**
+**B) MCP は検索をツールとして公開します**
 
-Your app or a custom MCP server wraps the vector store:
+アプリまたはカスタム MCP サーバーはベクター ストアをラップします。
 
 ```text
 LLM → host → MCP tool "search_handbook" → vector DB (similarity) → chunks → tool result → LLM
 ```
 
-**Local stack example:** [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md) — no managed vector service; files and index on disk.
+**ローカル スタックの例:** [TurboVec + Ollama + ローカル ファイル](../../implementation-example/vii-turbovec-ollama-local-files.md) — マネージド ベクター サービスなし。ディスク上のファイルとインデックス。
 
-Same JSON-RPC path as any other MCP tool; the server runs embed + k-NN, returns text chunks.
+他の MCP ツールと同じ JSON-RPC パス。サーバーは embed + k-NN を実行し、テキスト チャンクを返します。
 
-**C) Your backend does RAG before the agent**
+**C) バックエンドはエージェントの前に RAG を実行します**
 
 ```text
 User question → your API retrieves from vector DB → builds prompt → LLM
 Separate MCP tools for: create_ticket, run_sql, post_slack
 ```
 
-Common in production: **RAG for knowledge**, **MCP for actions**.
+運用環境での共通点: **RAG は知識**、**MCP はアクション**。
 
 ```plantuml
 @startuml
@@ -116,7 +116,7 @@ Host --> User
 @enduml
 ```
 
-### Quick decision tree
+### クイックデシジョンツリー
 
 ```text
 Is it "find relevant paragraphs in lots of text"?
@@ -129,31 +129,31 @@ Is it "how should the agent behave"?
   Yes → skill / AGENTS.md / custom GPT instructions
 ```
 
-Skills = **playbook**. Vector DB = **semantic memory over documents**. MCP = **live hands** into systems.
+スキル = **プレイブック**。ベクトル DB = **ドキュメント上の意味記憶**。 MCP = **システムに実際に手を入れる**。
 
-**Deeper:** [RAG & fine-tuning](../../llms/v-rag-and-fine-tuning.md), [Custom assistants & knowledge](../custom-assistants-and-knowledge/i-overview.md).
+**さらに詳しく:** [RAG と微調整](../../llms/v-rag-and-fine-tuning.md)、[カスタム アシスタントとナレッジ](../custom-assistants-and-knowledge/i-overview.md）。
 
-## 11. Quick reference
+## 11. クイックリファレンス
 
-| Question | Answer |
-|----------|--------|
-| What is JSON-RPC? | **Remote procedure call** — invoke a named **method** with JSON **params**, get JSON **result** or **error** |
-| Is MCP gRPC? | **No** — JSON-RPC 2.0 |
-| Does MCP server reply to the LLM directly? | **No** — reply goes to **host**, host passes **tool result** to LLM |
-| Local Cursor MCP? | Usually **stdio** (subprocess) |
-| Hosted team MCP? | **Streamable HTTP** (POST + optional SSE) |
-| How does server reach Linear? | **HTTPS REST** (or vendor SDK) |
-| Do I write JSON-RPC? | **No** — host and server handle it |
-| When do I need a vector DB? | **Large text corpus + fuzzy semantic search** (RAG) — not for exact API/SQL lookups |
-| Vector DB part of MCP? | **No** — optional **backend** behind an MCP search tool or your own RAG app |
+|質問 |答え |
+|----------|----------|
+| JSON～RPC とは何ですか? | **リモート プロシージャ コール** - JSON **params** を使用して名前付き **メソッド** を呼び出し、JSON **結果** または **エラー** を取得します。
+| MCP は gRPC ですか? | **いいえ** — JSON-RPC 2.0 |
+| MCP サーバーは LLM に直接応答しますか? | **いいえ** — 応答は **ホスト** に送信され、ホストは **ツールの結果** を LLM に渡します。
+|ローカル Cursor MCP? |通常 **stdio** (サブプロセス) |
+|ホストチーム MCP? | **ストリーミング可能な HTTP** (POST + オプションの SSE) |
+|サーバーはどのようにしてリニアに到達しますか? | **HTTPS REST** (またはベンダー SDK) |
+| JSON-RPC と書きますか? | **いいえ** — ホストとサーバーが処理します。
+|ベクター DB が必要になるのはどのような場合ですか? | **大規模なテキスト コーパス + ファジー セマンティック検索** (RAG) — 正確な API/SQL 検索用ではありません。
+| DB は MCP の一部ですか? | **いいえ** — MCP 検索ツールまたは独自の RAG アプリの背後にあるオプションの **バックエンド** |
 
-## 12. Rehearsal questions
+## 12. リハーサルの質問
 
-- What does JSON-RPC stand for, and what three fields identify a request?
-- MCP vs vector DB — which for “open Linear issue #42” vs “what does our handbook say about refunds”?
-- What protocol carries messages between MCP client and server?
-- Who sits between the MCP server and the LLM?
-- stdio vs Streamable HTTP — when is each used?
-- Who calls Linear’s API — the LLM or the MCP server?
+- JSON-RPC は何を表しますか?また、リクエストを識別する 3 つのフィールドはどれですか?
+- MCP 対ベクトル DB — 「未解決のリニア問題 #42」と「払い戻しについてのハンドブックの記載」はどちらでしょうか?
+- MCP クライアントとサーバーの間でメッセージを伝送するプロトコルは何ですか?
+- MCP サーバーと LLM の間に誰が座りますか?
+- stdio と Streamable HTTP — それぞれはいつ使用されますか?
+- Linear の API 、つまり LLM または MCP サーバーを呼び出すのは誰ですか?
 
-**Related:** [Tools & orchestration](../tools-and-orchestration/i-overview.md), [Agents & agentic workflows](../agents-and-agentic-workflows/i-overview.md), [Skills & agent instructions](../skills-and-agent-instructions/i-overview.md), [How to create your custom MCP](how-to-create-your-custom-mcp/i-overview.md), [TurboVec + Ollama + local files](../../implementation-example/vii-turbovec-ollama-local-files.md).
+**関連:** [ツールとオーケストレーション](../tools-and-orchestration/i-overview.md)、[エージェントとエージェントのワークフロー](../agents-and-agentic-workflows/i-overview.md)、[スキルとエージェントの指示](../skills-and-agent-instructions/i-overview.md)、[カスタム MCP の作成方法](how-to-create-your-custom-mcp/i-overview.md)、[TurboVec + Ollama + ローカル ファイル](../../implementation-example/vii-turbovec-ollama-local-files.md）。

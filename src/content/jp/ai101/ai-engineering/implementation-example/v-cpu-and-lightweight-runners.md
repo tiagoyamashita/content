@@ -1,41 +1,41 @@
 ---
 label: "V"
-subtitle: "CPU & lightweight runners"
+subtitle: "CPU と軽量ランナー"
 group: "AI Applied"
 order: 5
 ---
-CPU & lightweight runners
+CPU と軽量ランナー
 
-Not every machine has a 24 GB GPU. These runtimes prioritize **low VRAM**, **CPU inference**, or **layer offloading** so you can still run useful open models on a laptop or small cloud instance.
+すべてのマシンに 24 の GB GPU が搭載されているわけではありません。これらのランタイムは **低 VRAM**、**CPU 推論**、または **レイヤー オフロード**を優先するため、ラップトップまたは小規模なクラウド インスタンスでも有用なオープン モデルを実行できます。
 
-## 1. Runner comparison
+## 1. ランナーの比較
 
-| Runner | Idea | GPU needed? | Best when |
-|--------|------|-------------|-----------|
-| **[llama.cpp](https://github.com/ggerganov/llama.cpp)** | Optimized GGUF inference; partial `-ngl` offload | Optional | Default for CPU + GGUF; huge community |
-| **[Ollama](https://ollama.com)** | Wraps llama.cpp (and others) with easy pulls | Optional | Same as llama.cpp but simpler UX |
-| **[airLLM](https://github.com/lyogavin/airllm)** | Stream **one layer at a time** through GPU | Small VRAM OK | 70B-class on **4 GB** VRAM (slow) |
-| **[MLX](https://github.com/ml-explore/mlx)** | Apple Metal kernels | Apple Silicon | Best local perf on M1/M2/M3 Macs |
-| **[GPT4All](https://gpt4all.io)** | Desktop app + CPU backends | Optional | Non-technical users, offline chat |
-| **[KoboldCPP](https://github.com/LostRuins/koboldcpp)** | llama.cpp fork + UI | Optional | Single portable binary |
-| **[llamafile](https://github.com/Mozilla-Ocho/llamafile)** | Model + runtime in one file | Optional | Drop-in executable, no install |
-| **transformers + `device_map="cpu"`** | Pure PyTorch on CPU | No | Prototyping only — very slow at scale |
+|ランナー |アイデア | GPU が必要ですか? |最適な時期 |
+|----------|------|---------------|----------|
+| **[ラマ.cpp](https://github.com/ggerganov/llama.cpp)** |最適化された GGUF 推論。部分的`-ngl`オフロード |オプション | CPU + GGUF のデフォルト。巨大なコミュニティ |
+| **[Ollama](https://ollama.com)** |簡単なプルで llama.cpp (およびその他) をラップします |オプション | llama.cpp と同じですが、より単純です UX |
+| **[airLLM](https://github.com/lyogavin/airllm)** | GPU を通じて **一度に 1 つのレイヤー** をストリーミングします。小規模 VRAM OK | **4 GB** VRAM の 70B クラス (遅い) |
+| **[MLX](https://github.com/ml-explore/mlx)** | Apple Metal カーネル |アップルシリコン | M1/M2/M3 Mac で最高のローカル パフォーマンス |
+| **[GPT4すべて](https://gpt4all.io)** |デスクトップ アプリ + CPU バックエンド |オプション |技術者以外のユーザー、オフライン チャット |
+| **[コボルドCPP](https://github.com/LostRuins/koboldcpp)** | llama.cpp フォーク + UI |オプション |単一のポータブルバイナリ |
+| **[ラマファイル](https://github.com/Mozilla-Ocho/llamafile)** | 1 つのファイル内のモデル + ランタイム |オプション |ドロップイン実行可能ファイル、インストール不要 |
+| **トランスフォーマー +`device_map="cpu"`** | CPU の純粋な PyTorch |いいえ |プロトタイピングのみ - 大規模にすると非常に遅い |
 
-## 2. airLLM — big models, tiny VRAM
+## 2. airLLM — 大きなモデル、小さな VRAM
 
-**airLLM** keeps full weights in **system RAM** and moves **one transformer layer** into GPU memory per forward step.
+**airLLM** は、**システム RAM** に全ウェイトを保持し、前進ステップごとに **1 つのトランス層**を GPU メモリに移動します。
 
 ```text
 70B model in RAM  →  layer 0 to GPU → compute → layer 1 to GPU → … → logits
 ```
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Run models far larger than VRAM | **Much slower** than full GPU load |
-| Works with Hugging Face safetensors | Python + CUDA setup; less polished than Ollama |
-| Useful for occasional batch jobs | Poor for low-latency chat |
+| VRAM よりもはるかに大きなモデルを実行する | **完全な GPU ロードよりもはるかに遅い** |
+|ハグフェイスセーフテンサーと併用可能 | Python + CUDA セットアップ; Ollama よりも洗練されていません。
+|時折のバッチ ジョブに便利 |低遅延チャットには不向き |
 
-Typical install:
+通常のインストール:
 
 ```bash
 pip install airllm
@@ -48,83 +48,83 @@ model = AutoModel.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
 # inference API per project README — layer-wise GPU execution
 ```
 
-Use when you **must** run a specific HF model and only have **4–8 GB VRAM**, not for interactive coding assistants.
+特定の HF モデルを**実行する必要があり**、**4–8 GB VRAM** しかない場合に使用します。対話型コーディング アシスタントには使用しません。
 
-## 3. llama.cpp on CPU (no GPU)
+## 3. CPU 上の llama.cpp (GPU なし)
 
-Download a **Q4_K_M** GGUF and run:
+**Q4_K_M** GGUF をダウンロードして実行します。
 
 ```bash
 ./llama-cli -m ./models/model-Q4_K_M.gguf -p "Hello" -n 128 -ngl 0
 ```
 
-| Flag | Meaning |
-|------|---------|
-| `-ngl 0` | **No** GPU layers — pure CPU |
-| `-ngl 35` | Offload 35 layers to GPU (model-dependent) |
-| `-c 4096` | Context size — lower if OOM |
+|旗 |意味 |
+|-----|----------|
+|`-ngl 0`| **いいえ** GPU レイヤー — 純粋な CPU |
+|`-ngl 35`| 35 層を GPU にオフロード (モデルに依存) |
+|`-c 4096`|コンテキスト サイズ — OOM の場合は小さくなります |
 
-**llama-server** exposes the same stack over HTTP for apps.
+**llama-server** は、アプリの HTTP 上で同じスタックを公開します。
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Runs on almost any x86/ARM machine | Tokens/sec low on CPU (1–20 typical) |
-| Quantized RAM footprint | Long prompts feel sluggish |
-| Same binary scales from Pi to workstation | No training — inference only |
+|ほぼすべての x86/ARM マシン上で動作します。 CPU の 1 秒あたりのトークン数が少ない (通常 1 ～ 20) |
+|量子化された RAM フットプリント |長いプロンプトは遅く感じる |
+| Pi からワークステーションまで同じバイナリ スケール |トレーニングなし - 推論のみ |
 
-Pair with [Model RAM requirements](iv-model-ram-requirements.md) — **3B Q4** on **8 GB** RAM is realistic; **7B** on **16 GB** is the comfort zone for CPU.
+[モデル RAM 要件](iv-model-ram-requirements.md) — **3B Q4** on **8 GB** RAM は現実的です。 **16 GB** の **7B** は、CPU にとってコンフォート ゾーンです。
 
-## 4. Apple Silicon — MLX
+## 4. Apple シリコン — MLX
 
-On Mac, **MLX** often beats generic CPU paths by using **unified memory** efficiently:
+Mac では、**ユニファイド メモリ**を効率的に使用することで、**MLX** が一般的な CPU パスよりも優れていることがよくあります。
 
 ```bash
 pip install mlx-lm
 mlx_lm.generate --model mlx-community/Llama-3.2-3B-Instruct-4bit --prompt "Hello"
 ```
 
-| Pros | Cons |
+|長所 |短所 |
 |------|------|
-| Strong perf per watt on M-series | macOS / Apple hardware only |
-| 4-bit MLX models on HF | Smaller catalog than GGUF |
-| Good for local dev with Cursor | Not for Linux server deploy |
+| M-シリーズのワットあたりの強力なパフォーマンス | macOS / Apple ハードウェアのみ |
+| HF 上の 4 ビット MLX モデル | GGUF より小さいカタログ |
+| Cursor を使用するローカル開発者に適しています。 Linux サーバーのデプロイには対応していません |
 
-## 5. Ollama CPU mode
+## 5. Ollama CPU モード
 
-If no GPU is detected, Ollama still runs — backed by llama.cpp CPU kernels:
+GPU が検出されない場合でも、llama.cpp CPU カーネルを利用して Ollama が引き続き実行されます。
 
 ```bash
 ollama pull qwen2.5-coder:7b
 ollama run qwen2.5-coder:7b
 ```
 
-Prefer **smaller** tags (`3b`, `1.5b`) for CPU-only. Set `OLLAMA_NUM_GPU=0` to force CPU on hybrid machines when debugging.
+**小さい**タグを優先します(`3b`、`1.5b`) CPU のみ。セット`OLLAMA_NUM_GPU=0`デバッグ時にハイブリッド マシンで CPU を強制します。
 
-## 6. When to use which
+## 6. いつどれを使用するか
 
-| Goal | Pick |
+|目標 |選択 |
 |------|------|
-| Daily local **coding** | Ollama + **`qwen2.5-coder:7b`** |
-| Daily local chat (general) | Ollama + `qwen2.5:7b` or `llama3.2:3b` |
-| Tightest RAM, full control | llama.cpp + Q4_K_M GGUF |
-| MacBook dev machine | MLX or Ollama |
-| 70B on 8 GB VRAM experiment | airLLM |
-| Air-gapped USB stick | llamafile or portable KoboldCPP |
-| Production API throughput | **Not** these — use vLLM on GPU ([platforms note](iii-local-run-platforms.md)) |
+|毎日のローカル **コーディング** | Ollama + **`qwen2.5-coder:7b`** |
+|毎日のローカルチャット (一般) | Ollama +`qwen2.5:7b`または`llama3.2:3b`|
+|最も厳しい RAM、フル コントロール |ラマ.cpp + Q4_K_M GGUF |
+| MacBook 開発マシン | MLX または Ollama |
+| 8 GB VRAM 実験で 70B |エアLLM |
+|エアギャップ付き USB スティック | llamafile またはポータブル KoboldCPP |
+|本番 API スループット | **これらではありません** — GPU では vLLM を使用してください ([プラットフォームに関する注意](iii-local-run-platforms.md)) |
 
-## 7. Realistic expectations (CPU)
+## 7. 現実的な期待 (CPU)
 
-| Model | Rough tokens/sec (modern laptop CPU) |
-|-------|--------------------------------------|
-| qwen2.5-coder 1.5B Q4 | 20–45 |
+|モデル |大まかなトークン/秒 (最新のラップトップ CPU) |
+|------|--------------------------------------|
+| qwen2.5-コーダー 1.5B Q4 | 20–45 |
 | 1–3B Q4 | 15–40 |
-| qwen2.5-coder 7B Q4 | 3–12 |
+| qwen2.5-コーダー 7B Q4 | 3–12 |
 | 13B Q4 | 1–5 |
 
-Numbers vary wildly by AVX support, core count, and power limits. For coding assistance, **`qwen2.5-coder:7b` on GPU** or a **hosted API** usually beats **7B on CPU**.
+数値は、AVX サポート、コア数、電力制限によって大きく異なります。コーディングのサポートについては、**`qwen2.5-coder:7b`GPU** または **ホストされた API** の場合は、通常、CPU** の **7B を上回ります。
 
-## Related
+＃＃ 関連している
 
-- [Downloading from Hugging Face](ii-downloading-from-huggingface.md)
-- [Local run platforms](iii-local-run-platforms.md)
-- [Model RAM requirements](iv-model-ram-requirements.md)
+- [ハグフェイスからダウンロード](ii-downloading-from-huggingface.md)
+- [ローカル実行プラットフォーム](iii-local-run-platforms.md)
+- [モデル RAM の要件](iv-model-ram-requirements.md）
