@@ -12,7 +12,7 @@ SWE101 — overview
 | Area | Examples in this track |
 |------|-------------------------|
 | **Version control** | [Git](git/i-overview.md) |
-| **Languages** | [Java](java/intro/i-basics-and-syntax.md), [Python](python/i-basics-and-syntax.md), [Rust](rust/i-basics-and-toolchain.md), [JavaScript](javascript/i-overview.md) |
+| **Languages** | [Java](java/intro/i-basics-and-syntax.md), [Python](python/i-basics-and-syntax.md), [Rust](rust/i-basics-and-toolchain.md), [Go](languages&frameworks/go/i-basics-and-toolchain.md), [JavaScript](javascript/i-overview.md) |
 | **Frameworks** | [Spring Boot](java/springboot/i-intro-and-project-layout.md), [React](javascript/react/i-overview.md), [Angular](javascript/angular/i-overview.md), [React Native](javascript/react-native/i-overview.md), [Flutter](flutter/i-overview.md), [jQuery](javascript/jquery/i-overview.md), [HTMX](htmx/i-overview.md), [Bootstrap](javascript/bootstrap/i-overview.md) |
 | **Web UI & styling** | [HTMX](htmx/i-overview.md), [CSS](css/i-overview.md), [Sass/Less](css/sass/i-overview.md) |
 | **Backend & data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md), [Kafka](kafka/i-overview.md), [PL/SQL](plsql/i-overview.md) |
@@ -30,9 +30,9 @@ Software is grouped by **who uses it**, **where it runs**, and **how it is sold*
 | **Web application** | Browser + server | SaaS dashboards, e-commerce, admin tools | [React](javascript/react/i-overview.md), [Angular](javascript/angular/i-overview.md), [Spring Boot](java/springboot/i-intro-and-project-layout.md), [HTMX](htmx/i-overview.md), Django, Next.js | Latency, auth, SEO (public sites), responsive UI |
 | **Mobile app** | Phone/tablet (iOS, Android) | Banking, social, field service | [React Native](javascript/react-native/i-overview.md), [Flutter](flutter/i-overview.md), SwiftUI, Jetpack Compose | App store rules, offline, push notifications |
 | **Desktop application** | Windows, macOS, Linux | IDEs, creative tools, point-of-sale | Electron, .NET WPF/MAUI, Qt, Tauri | Installers, auto-update, local file access |
-| **API / backend service** | Servers, containers | REST/GraphQL microservices, webhooks | [Spring Boot](java/springboot/i-intro-and-project-layout.md), FastAPI, Express, NestJS, ASP.NET Core | Uptime, scaling, versioning, idempotency |
+| **API / backend service** | Servers, containers | REST/GraphQL microservices, webhooks | [Spring Boot](java/springboot/i-intro-and-project-layout.md), [Go net/http](languages&frameworks/go/vi-http-and-cli.md), FastAPI, Express, NestJS, ASP.NET Core | Uptime, scaling, versioning, idempotency |
 | **Embedded / firmware** | Microcontrollers, devices | Appliances, sensors, automotive ECU | FreeRTOS, Zephyr, Arduino (sketch model) | Memory limits, real-time, safety |
-| **CLI / developer tool** | Terminal, CI | `git`, build tools, linters | Click (Python), Cobra (Go), Clap ([Rust](rust/i-basics-and-toolchain.md)) | Scriptability, cross-platform, fast startup |
+| **CLI / developer tool** | Terminal, CI | `git`, build tools, linters | Click (Python), Cobra ([Go](languages&frameworks/go/vi-http-and-cli.md)), Clap ([Rust](rust/i-basics-and-toolchain.md)) | Scriptability, cross-platform, fast startup |
 | **Batch / data pipeline** | Schedulers, Spark, warehouses | ETL, reports, ML training jobs | Apache Spark, Airflow, dbt | Throughput, cost, data correctness |
 | **Internal tool** | Company network | Support consoles, ops dashboards | Same as web — often [React](javascript/react/i-overview.md) + [Spring Boot](java/springboot/i-intro-and-project-layout.md) or [HTMX](htmx/i-overview.md) | SSO, audit logs, low polish OK |
 | **Platform / infrastructure** | Cloud, k8s | Databases, queues, CDNs | Kubernetes, Terraform, Spring Cloud (see **SRE101**) | Reliability, multi-tenant isolation |
@@ -118,7 +118,7 @@ Small teams blur roles; large orgs specialize.
 | Phase | SWE101 topics that help |
 |-------|-------------------------|
 | **Design** | [System design](sysdesign/classic-designs/i-overview.md), [PlantUML](plantuml/i-overview.md), [Obsidian](obsidian/i-overview.md) |
-| **Implement** | Languages, [Java Spring Boot](java/springboot/i-intro-and-project-layout.md), [React](javascript/react/i-overview.md) |
+| **Implement** | Languages, [Java Spring Boot](java/springboot/i-intro-and-project-layout.md), [Go](languages&frameworks/go/i-basics-and-toolchain.md), [React](javascript/react/i-overview.md) |
 | **Store data** | [Postgres](postgres/i-overview.md), [MongoDB](mongodb/i-overview.md), [Redis](redis/i-overview.md) |
 | **Integrate & ship** | [Git](git/i-overview.md), [API gateway](api-gateway/i-overview.md) |
 | **Scale & operate** | [CDN](cdn/i-overview.md), bottleneck analysis in sysdesign |

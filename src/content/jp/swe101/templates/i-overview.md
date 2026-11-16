@@ -7,7 +7,7 @@ order: 1
 Templates — overview
 **Copy-paste starting points** organized by **domain** (controllers, DTOs, services, …), then by **language / framework**. Use these when you need a known-good shape fast — not as a substitute for the deeper language tracks.
 
-Related: [SWE101 overview](../i-overview.md), language tracks under `languages&frameworks/` (Java, Python, JavaScript, …).
+Related: [SWE101 overview](../i-overview.md), language tracks under `languages&frameworks/` (Java, Python, [Go](../languages&frameworks/go/i-basics-and-toolchain.md), JavaScript, …).
 
 ## Core REST package
 
