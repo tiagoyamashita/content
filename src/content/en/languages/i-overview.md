@@ -24,4 +24,4 @@ Human-language study notes (not programming languages — those live under **SWE
 
 Start here: [Beginner alphabet overview](japanese/beginner-alphabet/i-overview.md).
 
-**Related:** programming languages are under [SWE101](../swe101/i-overview.md) → languages & frameworks.
+**Related:** programming languages are under [SWE101](../swe101/i-overview.md) → languages & frameworks ([Go](../swe101/languages&frameworks/go/i-basics-and-toolchain.md), Java, Python, Rust, …).
